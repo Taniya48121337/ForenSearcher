@@ -67,8 +67,11 @@ _INSPECT_MODEL_DIRECTORIES = {
 }
 
 
-def _demo_memory_policy(context_length: int = 0) -> MemoryPolicy:
+def _demo_memory_policy(context_length: int = 0, *, state_renderer: str | None = None) -> MemoryPolicy:
+    if state_renderer is None:
+        state_renderer = load_config().runtime.state_renderer
     return MemoryPolicy(
+        state_renderer=state_renderer,
         max_model_view_chars=80_000 if context_length >= 131_072 else 40_000,
         max_history_entries=16,
         max_read_chars=12_000 if context_length >= 131_072 else 6_000,

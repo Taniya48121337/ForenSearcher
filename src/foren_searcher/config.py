@@ -57,6 +57,7 @@ class RuntimeConfig:
     workspace_timeout_s: int = 3600
     max_concurrency: int = 4
     max_workspaces_per_round: int = 3
+    state_renderer: str = "legacy"   # 送模型前的输入压缩档位：legacy | compact_8k | compact_16k（state_render.py）
 
 
 @dataclass(frozen=True)

@@ -1073,6 +1073,7 @@ class WorkspaceRunner:
                 "max_turns": self.max_turns,
                 "remaining_turns": self.max_turns - turn_index,
                 "max_model_view_chars": self.harness.memory_policy.max_model_view_chars,
+                "state_renderer": self.harness.memory_policy.state_renderer,
             }
             if deadline is not None:
                 constraints["remaining_seconds"] = max(0.0, deadline - loop.time())

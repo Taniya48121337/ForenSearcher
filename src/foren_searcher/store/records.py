@@ -43,9 +43,15 @@ class MemoryPolicy:
     max_findings_per_report: int = 64
     max_report_chars: int = 64000
     max_query_chars: int = 4000
+    state_renderer: str = "legacy"   # legacy | compact_8k | compact_16k：送模型前把输入压到哪一档（见 state_render.py）
 
     def __post_init__(self) -> None:
-        """构造后逐项确认所有上限都是正整数。"""
+        """构造后逐项确认所有上限都是正整数，渲染档位名合法。"""
+
+        from ..state_render import TIERS
+
+        if self.state_renderer not in TIERS:
+            raise ValueError(f"state_renderer must be one of {', '.join(TIERS)}")
 
         # 用字段名循环可以保证新增上限时复用相同的严格校验。
         for name in (

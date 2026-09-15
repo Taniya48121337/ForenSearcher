@@ -25,6 +25,7 @@ from functools import lru_cache, partial
 from pathlib import Path
 from typing import Any, Callable, Protocol, SupportsIndex
 
+from .state_render import render_payload
 from .contracts import (
     GiaFinishDecision,
     GiaInvestigateDecision,
@@ -562,6 +563,13 @@ def _inspect_model_catalog(action: dict[str, Any]) -> dict[str, Any]:
         "operation_catalog": catalog})
 
 
+def _payload_state_renderer(payload: dict[str, Any]) -> str:
+    view = payload.get("model_view") if payload.get("workspace_id") else payload.get("global_view")
+    constraints = view.get("runtime_constraints") if isinstance(view, dict) else None
+    renderer = constraints.get("state_renderer") if isinstance(constraints, dict) else None
+    return renderer if isinstance(renderer, str) and renderer else "legacy"
+
+
 def _generation_messages(system_prompt: str, payload: dict[str, Any], *, defer_feedback: bool = False) -> list[dict[str, str]]:
     """将 HI 的实际行动与观察按对话顺序交给模型，避免把工具历史误读为待执行计划。"""
 
@@ -571,6 +579,11 @@ def _generation_messages(system_prompt: str, payload: dict[str, Any], *, defer_f
     if defer_feedback:
         payload = {key: value for key, value in payload.items()
                    if key not in {"previous_invalid_output", "validation_error"}}
+    # 状态渲染：档位由运行时写在 runtime_constraints.state_renderer 里；legacy 原样。
+    # 只影响送给模型的文本，不改 Store 里记录的 model_view，也不改 openrouter 用来生成输出 schema 的原 payload。
+    renderer = _payload_state_renderer(payload)
+    if renderer != "legacy":
+        payload = render_payload(payload, renderer)
     if payload.get("workspace_id") and isinstance(payload.get("available_actions"), list):
         actions = [_inspect_model_catalog(action) if isinstance(action, dict) else action
                    for action in payload["available_actions"]]

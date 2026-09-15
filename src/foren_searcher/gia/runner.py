@@ -139,6 +139,7 @@ class GiaRunner:
                 "turn_index": turn_index,
                 "max_turns": self.max_turns,
                 "remaining_turns": self.max_turns - turn_index,
+                "state_renderer": self.memory_policy.state_renderer,
             }
             if round_in_progress:
                 model_view["runtime_constraints"]["round_in_progress"] = True
