@@ -13,7 +13,7 @@
 ```
 ForenSearcher/
 ├── README.md            ← 你正在读的这个：是什么、怎么装、怎么跑
-├── DESIGN.md            ← 系统设计定案 + 22 条"不要再引入"的设计 + 6 个待决定问题
+├── DESIGN.md            ← 系统设计定案 + 22 条"不要再引入"的设计 + 已定决策 + 自我发展循环主线
 ├── pyproject.toml       ← Python 包定义与依赖
 ├── docs/                ← 所有文档，按项目发展阶段编号排列（见 docs/README.md）
 ├── src/foren_searcher/  ← 全部源代码
@@ -53,7 +53,7 @@ pip install -e ".[free-search]"    # 免费搜索后端（ddgs）
 pip install -e ".[local-models]"   # 本地 Transformers 模型
 ```
 
-运行调查还需要一个外部目录：**Harness-1** 仓库（论文 arXiv 2606.02373 的运行框架）。用 `--harness-root <路径>` 或环境变量 `FOREN_HARNESS_ROOT` 指向它。这个依赖是否保留是待决定问题之一（见 DESIGN.md 第 7 节）。
+目前运行调查还需要一个外部目录：**Harness-1** 私有分叉，用 `--harness-root <路径>` 或环境变量 `FOREN_HARNESS_ROOT` 指向它。2026-09-15 已决定剥离这个依赖（见 DESIGN.md 第 7 节），在代码改完之前仍需提供。
 
 ## 配置模型
 
@@ -97,11 +97,13 @@ python -m foren_searcher.web_demo --harness-root <Harness-1 路径> --open
 
 ## 接下来该做什么
 
-按优先级：
+2026-09-15 六个待决问题已全部拍板，并确立了"证据锚定的自我发展循环"为主线（DESIGN.md 第 7、8、9 节；讨论理由见 `docs/05_项目审查/设计讨论记录_20260915.md`）。按顺序：
 
-1. 对 DESIGN.md 第 7 节的六个待决定问题逐一拍板（模型口径、HI 是否多模态、Harness-1 去留、消融清单、新任务适应、新颖性定位）。
-2. 把 `experiments/sft_data` 里仍用旧 rubric（r2）评审的 27 个 run 统一用 r6 重评；对 2–3 个短案例做 3 次重复采样，确认分差不是噪声；冻结一个真正未见的保留集。
-3. 在开发集（340 行）上做一次学生模型的 LoRA SFT，在保留集上看有没有可测差异。这是从"数据构造试验"跨到"研究"的门槛。
+1. 代码拆包为 `foren_searcher/hi/`、`gia/`、`store/`；`harness1.py` 归档，`demo.py` 去掉 `--harness-root` 硬依赖；路径和模型名全部配置化（本地 / 服务器两份配置）。
+2. 本地用 Qwen3.5-4B 跑通"构造数据 → 训一步 → 存 LoRA → 加载推理 → 打分"链路。
+3. 服务器（8×A100）上用 Qwen3.5-9B 做第一次真实 SFT，在留出集上看有没有可测差异。这是从"数据构造试验"跨到"研究"的门槛。
+4. 移植 Harness-1 的四个机制进 `WorkspaceHarness`（重要性分级精选集、内容指纹去重、句子级压缩、离线核验器），每个都要证明确实触发并在留出集上有用。
+5. 按 `docs/06_数据集候选表_20260915.md` 每个能力维度挑一个训练集，先写适配器说明再下载。
 
 在第 3 步有结果之前，不要再往 `experiments/sft_data` 加新案例、新 rubric 版本或新诊断脚本。
 
