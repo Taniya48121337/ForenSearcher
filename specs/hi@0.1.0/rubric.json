@@ -1,0 +1,222 @@
+[
+  {
+    "id": "hi.no_unsupported_assertion",
+    "error_type": "unsupported_assertion",
+    "axis": "absence",
+    "text": "不得写出任何在所引 E 的原文或像素中找不到支持的陈述。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_wrong_citation",
+    "error_type": "wrong_citation",
+    "axis": "absence",
+    "text": "不得把讲别的事的 E 当作某句话的依据；引用必须指向真正支持该句的 E。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_fabricated_evidence_id",
+    "error_type": "fabricated_evidence_id",
+    "axis": "absence",
+    "text": "不得引用不存在或本步不可见的 E 编号。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_source_restriction_miss",
+    "error_type": "source_restriction_miss",
+    "axis": "absence",
+    "text": "不得引用任务排除的来源，或超出允许日期范围的来源。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_attribution_drift",
+    "error_type": "attribution_drift",
+    "axis": "absence",
+    "text": "不得把“来源声称 X”写成“X 成立”，不得把申请/批准/执行/发生互换。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_scope_overreach",
+    "error_type": "scope_overreach",
+    "axis": "absence",
+    "text": "不得用少数帧、采样点或局部片段推断整段视频、连续区间或全局。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_misread_fine_text",
+    "error_type": "misread_fine_text",
+    "axis": "absence",
+    "text": "不得把图片/页面中的细小文字、数字、日期读成别的内容；看不清时保留未知。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_sloppy_numeric",
+    "error_type": "sloppy_numeric",
+    "axis": "absence",
+    "text": "不得比较口径、单位、分母或时间范围不一致的数值。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_omitted_required_fact",
+    "error_type": "omitted_required_fact",
+    "axis": "absence",
+    "text": "不得遗漏任务明确要求且材料中可得的事实。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_completed_without_finishing",
+    "error_type": "completed_without_finishing",
+    "axis": "absence",
+    "text": "任务要求项未全部覆盖时不得报 COMPLETED。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_incomplete_though_answerable",
+    "error_type": "incomplete_though_answerable",
+    "axis": "absence",
+    "text": "可见材料已足以回答时不应报 INCOMPLETE。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_empty_report",
+    "error_type": "empty_report",
+    "axis": "absence",
+    "text": "不得提交没有 Finding 且未说明无法取得材料原因的报告。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_illegal_action",
+    "error_type": "illegal_action",
+    "axis": "absence",
+    "text": "不得输出接口校验通不过的动作或参数。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_redundant_action",
+    "error_type": "redundant_action",
+    "axis": "absence",
+    "text": "不得重复与历史参数相同且不会带来新信息的动作。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_evidence_dropped",
+    "error_type": "evidence_dropped",
+    "axis": "absence",
+    "text": "不得在 focus_evidence_ids 中丢掉后续比较仍需要的 E。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_wrong_tool",
+    "error_type": "wrong_tool",
+    "axis": "absence",
+    "text": "不得用 SEARCH 读已有 R，或用取帧查看已有帧等与目标不匹配的工具。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.no_ignored_feedback",
+    "error_type": "ignored_feedback",
+    "axis": "absence",
+    "text": "工具返回 failed/feedback 后不得原样重复同一请求。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.finding_cites_evidence",
+    "error_type": "unsupported_assertion",
+    "axis": "presence",
+    "text": "每条 Finding 至少引用一条真正支持它的 E。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.completed_covers_task",
+    "error_type": "completed_without_finishing",
+    "axis": "presence",
+    "text": "COMPLETED 报告覆盖任务列出的全部要求项。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  },
+  {
+    "id": "hi.incomplete_states_reason",
+    "error_type": "empty_report",
+    "axis": "presence",
+    "text": "INCOMPLETE 报告在 status_reason 说明缺什么、为何取不到。",
+    "role": "HI",
+    "severity": null,
+    "applies_when": "always",
+    "evidence_refs": [],
+    "replayable": true
+  }
+]

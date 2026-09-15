@@ -1,0 +1,46 @@
+{
+  "spec_id": "hi",
+  "version": "0.1.0",
+  "parent": null,
+  "harness_params": {
+    "image_input_limit": 8,
+    "max_workspace_turns": 12,
+    "read_page_chars": 6000,
+    "max_model_view_chars": 180000,
+    "max_evidence_cards": 12,
+    "max_candidate_cards": 8,
+    "state_renderer": "legacy"
+  },
+  "changelog": [
+    {
+      "targets": [
+        "unsupported_assertion",
+        "wrong_citation",
+        "fabricated_evidence_id",
+        "source_restriction_miss",
+        "attribution_drift",
+        "scope_overreach",
+        "misread_fine_text",
+        "sloppy_numeric",
+        "omitted_required_fact",
+        "completed_without_finishing",
+        "incomplete_though_answerable",
+        "empty_report",
+        "illegal_action",
+        "redundant_action",
+        "evidence_dropped",
+        "wrong_tool",
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "unnecessary_round",
+        "dependent_sibling_tasks"
+      ],
+      "rationale": "初始版本：收编运行时提示与试点指令，rubric 按 errors.py 逐类生成"
+    }
+  ],
+  "output_schema": "contracts.parse_hi_decision",
+  "verifier": "verifier@0.0.0",
+  "notes": "student_prompt 来自 local_models._HI_MULTIMODAL_SYSTEM_PROMPT；运行时的时间预算附注不在此内。",
+  "hash": "sha256:4bc81adc89dcc6384659067f009534460c1c7cd068e8325e4ae98b1527bec2ba"
+}
