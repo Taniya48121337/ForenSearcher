@@ -1,0 +1,149 @@
+{
+  "rubric_id": "UTQR-8",
+  "title": "Unified Causal-Recovery Rubric for Human-Like Tool Trajectories",
+  "evaluation_unit": "one executed base trajectory plus a fixed causal neighborhood of label-blind counterfactual replays, including a complete evidence-challenge recovery suffix",
+  "design_principle": "A trajectory is suitable for SFT only when its action sequence is grounded in visible task evidence, remains stable under irrelevant changes, changes appropriately under relevant interventions, survives removal of answer-like control affordances, and completes unannounced recovery from diagnosis through fresh evidence to a local repair or principled abstention. Fluent success or a challenge action by itself is insufficient.",
+  "required_machine_probes": [
+    "semantic_mask",
+    "schema_compatible_swap",
+    "identity_mismatch",
+    "ab_role_swap",
+    "reduced_control",
+    "structure_only",
+    "unannounced_repair",
+    "step_intervention"
+  ],
+  "hard_gates": [
+    {
+      "id": "H1",
+      "name": "safe_executed_outcome",
+      "failure": "The base episode is nonterminal, hidden-outcome incorrect, incompletely bound, rejected, or provenance-open."
+    },
+    {
+      "id": "H2",
+      "name": "evidence_task_identity_integrity",
+      "failure": "A claim field is unsupported, evidence belongs to a different task, entity, role, or scope, or donor identity leaks into the claim."
+    },
+    {
+      "id": "H3",
+      "name": "causal_probe_completeness_and_response",
+      "failure": "A required counterfactual probe is missing, evidence masking leaves the same unsupported claim, relevant evidence changes do not affect dependent fields, or A/B exchange fails expected equivariance."
+    },
+    {
+      "id": "H4",
+      "name": "control_plane_autonomy",
+      "failure": "Compiled actions, singleton target values, restoration recipes, materializable target calls, or categorical router answers are visible; a semantic decision lacks at least two admissible alternatives; a prospective tool rationale does not identify a visible diagnostic and contrast a plausible alternative; or outcome previews guide the selection."
+    },
+    {
+      "id": "H5",
+      "name": "unannounced_causal_recovery",
+      "failure": "The policy fails to detect a student-visible integrity defect before stop; challenges an atom without a visible reason; challenges the wrong active atom; requests a check unrelated to the defect; fails to execute a fresh context or measurement action after the challenge; binds or stops before consuming the fresh result; repairs independent fields; or fails to reach an executed local repair or principled abstention. Explicit repair hints are not accepted as diagnosis."
+    },
+    {
+      "id": "H6",
+      "name": "causal_and_transferable_sft_target",
+      "failure": "A positive target was not executed, is removable without changing a later decision, exposes oracle or private state, teaches a materialized bookkeeping action as semantic reasoning, or fails to state the concrete consequence of newly created evidence."
+    }
+  ],
+  "criteria": [
+    {"id": "C1", "name": "safe_outcome_and_binding", "weight": 14, "minimum": 0.95, "critical": true},
+    {"id": "C2", "name": "evidence_task_provenance_and_scope", "weight": 14, "minimum": 0.90, "critical": true},
+    {"id": "C3", "name": "causal_evidence_sensitivity", "weight": 14, "minimum": 0.85, "critical": true},
+    {"id": "C4", "name": "off_target_invariance_and_role_equivariance", "weight": 12, "minimum": 0.85, "critical": true},
+    {"id": "C5", "name": "choice_surface_and_reduced_control_autonomy", "weight": 12, "minimum": 0.85, "critical": true},
+    {"id": "C6", "name": "tool_information_gain_and_economy", "weight": 10, "minimum": 0.85, "critical": true},
+    {"id": "C7", "name": "unannounced_detection_fresh_check_and_local_recovery", "weight": 10, "minimum": 0.85, "critical": true},
+    {"id": "C8", "name": "natural_human_decision_process", "weight": 8, "minimum": 0.80, "critical": false},
+    {"id": "C9", "name": "sft_transfer_and_target_hygiene", "weight": 6, "minimum": 0.90, "critical": true}
+  ],
+  "challenge_recovery_contract": {
+    "precondition": "At least one active EvidenceAtom has a concrete integrity defect recoverable from student-visible content; tool availability alone is not evidence of a defect.",
+    "challenge_action": [
+      "name one or more active suspect EvidenceAtom IDs",
+      "choose only defect codes supported by their visible observations or provenance",
+      "select the minimal claim-field subset whose current support depends on the suspect evidence",
+      "request context reinspection or evidence remeasurement according to the defect",
+      "do not expose the private intervention operator, affected-field answer, or repair recipe"
+    ],
+    "required_suffix": [
+      "execute the requested fresh check in the real environment",
+      "name every newly created EvidenceAtom that changes or preserves the belief",
+      "compare fresh and challenged evidence semantically",
+      "reopen and repair only dependent fields, or abstain when support remains insufficient",
+      "bind only active compatible evidence",
+      "execute terminal validation only after all obligations close"
+    ],
+    "counterfactual_checks": [
+      "removing the defect must suppress the unnecessary challenge",
+      "moving the defect to another active atom must move the challenge target",
+      "moving the defect to another field dependency must move target_fields without reopening independent fields",
+      "changing defect family must change the requested check when method relevance changes",
+      "irrelevant metadata changes must not alter the recovery route",
+      "removing the fresh result must prevent the same repaired commitment"
+    ],
+    "failure_examples": [
+      "challenge every case defensively",
+      "copy a hidden intervention label into reasoning",
+      "challenge correctly but stop without a fresh check",
+      "remeasure but ignore the resulting EvidenceAtom",
+      "repair all fields when only one interval or role is affected"
+    ]
+  },
+  "blind_judge_contract": {
+    "minimum_independent_judges": 2,
+    "dimensions": ["prospective_reasoning", "belief_update", "method_fit", "naturalness"],
+    "score_range": [1, 5],
+    "minimum_dimension_mean": 4.0,
+    "maximum_unadjudicated_range": 1,
+    "judge_cannot_see": ["dataset_name", "case_id", "oracle", "verifier_result", "private_intervention", "other_judge_scores"]
+  },
+  "episode_acceptance": {
+    "all_hard_gates_required": true,
+    "total_score_minimum": 90,
+    "all_critical_criteria_minimum": 0.85,
+    "any_criterion_minimum": 0.75,
+    "blind_judging_required": true
+  },
+  "supervision_policy": {
+    "semantic_decision_weight": 1.0,
+    "evidence_interpretation_weight": 1.0,
+    "uncertainty_or_repair_detection_weight": 1.2,
+    "control_only_weight": 0.1,
+    "tool_semantic_subtype_weights": {
+      "evidence_measurement": 1.0,
+      "branch_enabling_evidence_measurement": 1.2,
+      "evidence_synthesis": 1.0,
+      "evidence_assessment_or_adjudication": 1.1,
+      "belief_repair": 1.2,
+      "evidence_attribution": 0.7,
+      "belief_commitment": 0.6,
+      "context_inspection": 0.4,
+      "terminal_verification": 0.2,
+      "ordinary_control": 0.1
+    },
+    "learning_value_tiers": {
+      "core_reasoning": "weight >= 0.9",
+      "supporting": "0.5 <= weight < 0.9",
+      "minimal_control": "weight < 0.5"
+    },
+    "admission_and_loss_weight_are_separate": true,
+    "indispensable_low_value_steps_are_retained_but_downweighted": true,
+    "dataset_or_action_balancing_must_not_raise_minimal_control_to_core_weight": true,
+    "maximum_control_only_fraction_per_batch": 0.2,
+    "rejected_or_nonexecuted_positive_weight": 0.0
+  },
+  "batch_readiness": {
+    "required_datasets": ["VideoSham", "VCSL", "VidDiffBench"],
+    "minimum_entity_disjoint_cases_per_dataset": 30,
+    "minimum_unconditioned_safe_coverage_per_dataset": 0.80,
+    "minimum_packet_acceptance_rate_per_dataset": 0.90,
+    "minimum_score_p10_per_dataset": 90,
+    "minimum_pass_at_2_per_dataset": 0.85,
+    "minimum_each_probe_family_pass_rate": 0.85,
+    "minimum_unannounced_repair_cases_per_dataset": 10,
+    "maximum_control_only_fraction": 0.20,
+    "requires_no_oracle_bounded_case_admission": true,
+    "requires_complete_challenge_recovery_suffix": true,
+    "requires_student_free_run_gain_on_new_entity_disjoint_cases": true
+  }
+}

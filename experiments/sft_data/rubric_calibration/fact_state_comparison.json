@@ -1,0 +1,50 @@
+{
+  "simple_diagnostics": {
+    "r5": {
+      "total": 10,
+      "positive": 5,
+      "negative": 5,
+      "false_accept_ids": [],
+      "false_reject_ids": [],
+      "critical_unknown_ids": [],
+      "suite": "fact_state",
+      "scope": "development_diagnostics_not_generalization_evidence"
+    },
+    "r6": {
+      "total": 10,
+      "positive": 5,
+      "negative": 5,
+      "false_accept_ids": [],
+      "false_reject_ids": [],
+      "critical_unknown_ids": [],
+      "suite": "fact_state",
+      "scope": "development_diagnostics_not_generalization_evidence"
+    }
+  },
+  "actual_actor": {
+    "source_run": "averitec_2694_budget_plan_execution_r1",
+    "actor": "W3-2",
+    "targets": 12,
+    "changed_targets": [
+      {
+        "request": "request_0081",
+        "r5": {
+          "request_id": "request_0081",
+          "disposition": "accept_candidate",
+          "target_rating": 3,
+          "critical_unknown": false,
+          "reason": "终轮必须报告，INCOMPLETE 与局部缺口一致。两校 KPMG 加总及三项差额均可由已读数据复算；未假设共同费用比例，未把转拨加作支出，也未断言原始附录没有依据。小缺陷是把“批准直接拨付 R183,000,000”简写成直接拨付，且费用范围可更明确注明部分后续项目前期服务。核心结论仍有依据，不能因案件金额未解决而机械排除此部分报告，也不能将其作为自主停止样本。"
+        },
+        "r6": {
+          "request_id": "request_0081",
+          "disposition": "repair_reexecute",
+          "target_rating": 2,
+          "critical_unknown": false,
+          "reason": "按校加总、分类差额和不擅自分摊的结论有依据，零剩余轮次使用INCOMPLETE也正确。但最后一项将原文批准直接拨款R183,000,000写成直接拨付，改变事件状态，不能以其余内容可靠接受整条报告。应从该终端输入重新生成准确保留批准限定的报告；缺失分摊依据本身不构成评审关键未知。"
+        }
+      }
+    ],
+    "r6_accept_count": 11
+  },
+  "scope": "One actual actor reviewed once per rubric. Simple diagnostic variants contain five valid and five inadmissible examples from two existing source families. No isolated causal effect or held-out generalization established."
+}

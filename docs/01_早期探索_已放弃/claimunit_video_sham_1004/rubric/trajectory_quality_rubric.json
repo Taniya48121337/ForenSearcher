@@ -1,0 +1,38 @@
+{
+  "rubric_id": "ECSO-TQR-1",
+  "title": "ECSO ClaimUnit Trajectory Quality Rubric",
+  "purpose": "Select high-quality clean and local-repair trajectories for SFT without rewarding accidental final-answer success.",
+  "unit_of_evaluation": "paired clean_acquisition + evidence_dropout_local_repair trajectory bundle",
+  "hard_gates": [
+    {"id": "G1", "name": "oracle_isolation", "failure": "Oracle task text or oracle artifact path is visible to the student trajectory."},
+    {"id": "G2", "name": "evidence_reference_and_type_integrity", "failure": "A verified field cites a missing/fabricated evidence ID, an incompatible evidence kind, or a distractor atom."},
+    {"id": "G3", "name": "no_false_closure", "failure": "An unsupported field or open high-priority obligation is marked verified/stopped."},
+    {"id": "G4", "name": "terminal_claim_validity", "failure": "The final structured claim conflicts with the hidden case oracle."},
+    {"id": "G5", "name": "mutation_integrity", "failure": "The evidence-dropout mutation changes video pixels, oracle fields, or correct claim text at injection time."},
+    {"id": "G6", "name": "repair_non_leakage", "failure": "Repair restores support by reusing the removed evidence ID instead of reacquiring evidence."}
+  ],
+  "criteria": [
+    {"id": "O1", "name": "terminal_outcome_correctness", "weight": 10, "paper_basis": ["tau-bench"], "full_credit": "Final claim fields match the hidden goal state within case tolerances."},
+    {"id": "O2", "name": "atomic_claim_completeness", "weight": 8, "paper_basis": ["FActScore"], "full_credit": "All required ClaimUnit fields are present and independently scoreable."},
+    {"id": "E1", "name": "field_evidence_correctness_and_precision", "weight": 10, "paper_basis": ["ALCE", "FActScore"], "full_credit": "Every field binding covers all required evidence kinds and contains no incompatible/distractor atoms."},
+    {"id": "E2", "name": "field_evidence_completeness", "weight": 10, "paper_basis": ["ALCE"], "full_credit": "Every verified field has sufficient visible support; no citation-free verified field."},
+    {"id": "E3", "name": "provenance_chain_closure", "weight": 10, "paper_basis": ["AgentEval"], "full_credit": "Every verified field has an action-to-evidence-to-field-to-claim/obligation path."},
+    {"id": "P1", "name": "step_validity_and_order", "weight": 8, "paper_basis": ["LetsVerifyStepByStep", "SkillCoach"], "full_credit": "Required acquisition, binding, proposal, verification, and stop steps occur in a valid dependency order."},
+    {"id": "P2", "name": "obligation_lifecycle_quality", "weight": 8, "paper_basis": ["SkillCoach"], "full_credit": "The trajectory explicitly transitions open -> evidence_ready -> proposed -> verified and never skips verification."},
+    {"id": "P3", "name": "subgoal_progress_and_non_regression", "weight": 6, "paper_basis": ["AgentBoard", "VitaBench"], "full_credit": "Clean progress is monotone; mutation causes an explicit local drop followed by complete recovery."},
+    {"id": "M1", "name": "target_field_sensitivity", "weight": 8, "paper_basis": ["CheckList"], "full_credit": "All and only fields whose necessary evidence was dropped become unsupported/reopened."},
+    {"id": "M2", "name": "off_target_invariance", "weight": 8, "paper_basis": ["CheckList"], "full_credit": "Independently supported field values and bindings remain unchanged through mutation and repair."},
+    {"id": "M3", "name": "local_repair_and_recovery", "weight": 8, "paper_basis": ["SkillCoach", "AgentEval"], "full_credit": "Repair reacquires evidence, restores target bindings, avoids global reset, and returns to the clean goal state."},
+    {"id": "S1", "name": "stop_reflection_efficiency_calibration", "weight": 6, "paper_basis": ["SkillCoach", "tau-bench"], "full_credit": "The agent performs an explicit final check, stops legally, avoids duplicate work, and uses confidence consistent with evidence quality."}
+  ],
+  "aggregation": {
+    "total_points": 100,
+    "accepted_for_sft": "all hard gates pass AND total_score >= 95 AND each criterion normalized_score >= 0.8",
+    "grades": [
+      {"min": 95, "label": "A_gold", "use": "direct SFT inclusion"},
+      {"min": 90, "label": "A", "use": "include after spot check"},
+      {"min": 80, "label": "B", "use": "revision required"},
+      {"min": 0, "label": "reject", "use": "do not train"}
+    ]
+  }
+}

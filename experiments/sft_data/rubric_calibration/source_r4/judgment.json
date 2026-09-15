@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "p07",
+      "admissible": false,
+      "score": 33,
+      "critical_unknown": false,
+      "reason": "请求打开任务明确排除的原事实核查文章同页归档，不能推进符合来源限制的预算取证；当前已有允许读取的预算PDF链接。无需假定打开结果即可判定选源错误。target_rating=1；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p05",
+      "admissible": false,
+      "score": 35,
+      "critical_unknown": false,
+      "reason": "E4第3行记载报道发表于2023年6月20日，第20行没有说明清单何时上线，不能据此证明5月25日的官网状态。核心时间推断错误。target_rating=0；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p04",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "准确转述E4第20行，并结合第3行发布日期说明材料不能证明截止日的网页状态；没有把无法证明解释为当时不存在。当前只要求报告，无须评价继续调查。target_rating=4；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p03",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "转述与E4第3、20行一致，明确指出报道晚于截止日，不能作为符合任务时间限制的依据，并准确标记INCOMPLETE。引用用于说明现有材料及局限，没有冒充已完成历史核查。target_rating=4；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "三种油及其来源归属均由E4第20行支持。任务只要求概括当前AFP报道，且明确不限制发表时间，因此COMPLETED成立，不需要追加官网原件核查。target_rating=4；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p08",
+      "admissible": false,
+      "score": 75,
+      "critical_unknown": true,
+      "reason": "回答覆盖两所大学及开放年份，但2014年仅见于待复核标注，缺少实际来源正文，不能认证关键事实；回答也未表达证据局限。required_reannotation本身不能证明答案正确或错误。target_rating=unknown；适用维度评分覆盖率52.9%，分数仅反映可评部分，不代表事实通过，应暂作context_only。"
+    },
+    {
+      "id": "p06",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "请求使用已知且明确允许读取的原始预算PDF链接，符合SEARCH参数及首次打开状态。无需已有证据ID，也没有声称已读取成功；同属事实核查网站不构成排除理由。target_rating=4；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "p02",
+      "admissible": false,
+      "score": 51,
+      "critical_unknown": false,
+      "reason": "AFP清单转述本身有E4支持，但报道发表于6月20日，不满足仅使用5月25日或此前已公开资料的要求。区分AFP正文与官网正文不能弥补时间条件缺口；COMPLETED及空局限列表不成立。target_rating=2；适用维度评分覆盖率100%。"
+    }
+  ]
+}

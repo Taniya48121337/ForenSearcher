@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "id": "b02",
+      "admissible": false,
+      "score": 82,
+      "critical_unknown": false,
+      "reason": "描述与给定的已核实画面信息一致，但当前输入已确认包含本案核查文章的答案，违反本批样本的明确来源条件，不能作为正向SFT目标。污染来自工具返回，不应归为演员主动获取或捏造证据。"
+    },
+    {
+      "id": "b03",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "准确识别首项标题和摘要串接多个来源、URL指向Amazon的问题；现有结果不能核实NDCU清单。任务只要求提交证据充分性报告，无须继续检索或取得正文才能作出这一判断。"
+    },
+    {
+      "id": "b05",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "累计图片E数为5，本次附件E1、E9共2张；候选准确遵循字段定义，正确区分累计统计与本次附件数量。"
+    },
+    {
+      "id": "b04",
+      "admissible": false,
+      "score": 35,
+      "critical_unknown": false,
+      "reason": "将串接的多站摘要错误归属于Amazon单一来源，并将其升级为核查结论；材料没有提供NDCU机构清单，无法支持已经核实的判断。"
+    },
+    {
+      "id": "b01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "SEARCH参数符合可用动作定义，E1当前可见。查询结合画面线索与声明背景，将公告活动及日期作为可探索的检索假设，未宣称已经证实。原核查文章在此行动之后才返回，不能追溯否定当前搜索。"
+    },
+    {
+      "id": "b06",
+      "admissible": false,
+      "score": 40,
+      "critical_unknown": false,
+      "reason": "字段定义明确说明image_evidence_count是累计统计，当前附件清单只有E1、E9两张。候选将累计5张误报为本次实际附件数量，直接答错任务要求的关键计数。"
+    }
+  ]
+}

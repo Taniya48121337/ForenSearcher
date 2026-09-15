@@ -1,0 +1,78 @@
+# 项目基本信息和安装时默认需要的运行依赖。
+[project]
+name = "foren-searcher"
+version = "0.1.0"
+description = "Traceable external source search, acquisition, and evidence persistence"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # 网络、HTML 和压缩响应处理。
+    "brotli>=1.2,<2",
+    "httpx>=0.27,<1",
+    "lxml>=6.1.1,<7",
+    # 图片、数组、信号、音视频和文档的本地处理栈。
+    "Pillow>=10,<13",
+    "numpy>=1.26,<3",
+    "scipy>=1.11,<2",
+    "av>=14,<18",
+    "opencv-python-headless>=4.10,<5",
+    "PyMuPDF>=1.24,<2",
+    "pypdf>=5,<7",
+    "trafilatura>=2,<3",
+    "yt-dlp>=2025.1.1",
+]
+
+[project.scripts]
+# 安装后可直接调用的模型下载与端到端冒烟命令。
+foren-searcher-models = "foren_searcher.local_models:_main"
+foren-searcher-local-smoke = "foren_searcher.local_smoke:main"
+foren-searcher-demo = "foren_searcher.demo:main"
+foren-searcher-openrouter = "foren_searcher.openrouter_settings:main"
+foren-searcher-web = "foren_searcher.web_demo:main"
+
+[project.optional-dependencies]
+# 按实际部署能力选择，默认安装不会强制下载浏览器或大模型运行时。
+serpapi = ["serpapi>=0.1.5"]
+free-search = ["ddgs>=9.16,<10"]
+dynamic = ["playwright>=1.50,<2"]
+web = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+test = ["pytest>=8,<10", "pytest-asyncio>=0.24,<2", "mypy>=1.11,<2", "build>=1.2,<2", "jsonschema>=4,<5"]
+ocr = ["rapidocr-onnxruntime>=1.4,<2"]
+asr = ["faster-whisper>=1.1,<2"]
+semantic = ["torch>=2.4,<3", "transformers>=4.57,<6", "accelerate>=1.0,<2", "librosa>=0.10,<1"]
+local-models = ["torch>=2.4,<3", "transformers>=4.57,<6", "accelerate>=1.0,<2", "huggingface-hub>=0.34,<2", "bitsandbytes>=0.49,<1", "lm-format-enforcer>=0.11,<1"]
+
+[build-system]
+# setuptools 负责从 src 布局构建 wheel 与源码包。
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+# py.typed 告诉类型检查器：发布包自带可用类型标注。
+foren_searcher = ["py.typed", "web/*.html", "web/*.css", "web/*.js", "web/*.json"]
+
+[tool.pytest.ini_options]
+# 默认只跑确定性离线测试；需要公网、浏览器或模型的用例通过 marker 显式开启。
+addopts = "--basetemp=.pytest-tmp -m 'not live and not dynamic'"
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "live: requires public internet access",
+    "dynamic: requires the Playwright extra and installed Chromium",
+    "reverse_image: uploads only public test fixtures to reverse-image services",
+    "searxng: requires a SearXNG instance with JSON output enabled",
+    "serpapi: requires SERPAPI_API_KEY and available quota",
+    "ffmpeg: requires FFmpeg/ffprobe capabilities",
+    "pdfium: requires the optional PDFium adapter",
+    "ocr: requires the RapidOCR backend",
+    "asr: requires a local faster-whisper model",
+    "gpu: requires a supported GPU model backend",
+]
+
+[tool.mypy]
+# 第三方科学计算库并非都提供类型存根，但本项目自身未标注函数仍需检查。
+ignore_missing_imports = true
+check_untyped_defs = true

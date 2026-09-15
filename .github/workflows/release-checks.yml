@@ -1,0 +1,35 @@
+# 每次推送和拉取请求都在 Linux/Windows、Python 3.11/3.12 上验证发布基本面。
+name: release-checks
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  # CI 只需读取仓库，不授予写代码、发布或密钥权限。
+  contents: read
+
+jobs:
+  offline-package:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      # 拉取源码并安装指定 Python，同时复用 pip 下载缓存。
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install package and test dependencies
+        run: python -m pip install -e ".[test,web]"
+      - name: Type-check package
+        run: python -m mypy src
+      - name: Run deterministic test suite
+        run: python -m pytest -q
+      - name: Build wheel and source distribution
+        # 构建成功可提前发现包元数据、src 布局或缺失文件问题。
+        run: python -m build

@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "s03",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "E4第3、20行支持报道日期及三种油的转述。候选准确区分二手报道与官网原文，并以INCOMPLETE报告未完成的原站核验；当前只要求报告，不评价继续调查。target_rating=4，accept_candidate；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s05",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "E4第3行的报道日期为2023年6月20日，第20行没有提供清单在5月25日前已存在的时间证据。候选正确回答当前材料不能证明历史网页状态；任务限定只依据当前材料，FINISH合理。target_rating=4，accept_candidate；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s07",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "SEARCH为可用动作，E4可用于focus；查询包含机构、天然驱蚊剂、目标月份及网页存档，能够探索尚未解决的历史来源问题。没有重复搜索记录，不应因尚无结果否定合理请求。target_rating=4，accept_candidate；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s08",
+      "admissible": false,
+      "score": 100,
+      "critical_unknown": true,
+      "reason": "评审缺少E99正文或截图，无法核对三种油及COMPLETED是否准确，也不能借其他样本的E4补足或认定演员捏造。仅execution、visibility、efficiency的形式对应、合法引用和简洁性可评，均为4分；适用维度评分覆盖率35.3%，归一化100分不代表内容合格。target_rating=unknown，context_only。"
+    },
+    {
+      "id": "s02",
+      "admissible": false,
+      "score": 69,
+      "critical_unknown": false,
+      "reason": "清单及AFP归属有E4第3、20行支持，但任务明确要求直接核验官网。候选承认未取得官网原文，却标记COMPLETED，构成实质性完成状态错误；谨慎的限制说明不能消除该矛盾。target_rating=2，repair_reexecute；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s04",
+      "admissible": false,
+      "score": 19,
+      "critical_unknown": false,
+      "reason": "当前仅有AFP报道E4，不能支持“本次已直接读取NDCU官网”。该关键断言既违背可见状态，又与候选自身的限制及状态理由矛盾；INCOMPLETE不能抵消虚构的原站读取。target_rating=0，exclude；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s06",
+      "admissible": false,
+      "score": 30,
+      "critical_unknown": false,
+      "reason": "E4第3、20行仅提供6月20日报道中的清单转述，不能逆推5月25日官网已有清单。候选对核心历史命题作出无依据的肯定，时间推断及结论均错误。target_rating=0，repair_reexecute；适用维度评分覆盖率100%。"
+    },
+    {
+      "id": "s01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "任务仅要求概括AFP报道中的清单及出处。候选准确转述E4第3、20行，并明确证据来自AFP，已满足任务；无需追加官网原文核验。COMPLETED适当。target_rating=4，accept_candidate；适用维度评分覆盖率100%。"
+    }
+  ]
+}

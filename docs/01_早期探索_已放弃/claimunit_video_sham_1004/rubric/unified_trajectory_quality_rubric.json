@@ -1,0 +1,50 @@
+{
+  "rubric_id": "UTQR-5",
+  "title": "Unified Human-Like Tool-Trajectory Quality Rubric",
+  "unit_of_evaluation": "one clean acquisition episode plus one typed local-repair episode",
+  "design_principle": "A correct final answer is necessary but insufficient: the trajectory must be executable, evidence-bound, causally useful, state-aware, minimally repaired, uncertainty-calibrated, interface-consistent, and pedagogically suitable for native per-action tool SFT.",
+  "hard_gates": [
+    {"id": "H1", "name": "task_outcome_fidelity", "failure": "The final claim fails the dataset-specific hidden-label or localization-quality requirement."},
+    {"id": "H2", "name": "executable_terminal_trace", "failure": "Clean or repair does not terminate legally, or an exported target was rejected/non-executed."},
+    {"id": "H3", "name": "evidence_value_and_provenance_integrity", "failure": "A committed field lacks an active compatible EvidenceAtom, cites a missing atom, or its value is unsupported. When multiple active atoms compete for the same open fields, every competitor must first receive exactly one candidate-specific assessment, the explicit adjudication must match that completed ledger and partition every competitor exactly once, and the following binding must use only the selected evidence."},
+    {"id": "H4", "name": "oracle_and_target_isolation", "failure": "Hidden labels, oracle boxes, annotated retrieval frames, or repair target hints appear in student-visible data."},
+    {"id": "H5", "name": "causal_step_necessity", "failure": "An exported positive action is not grounded, downstream-consumed, executable, or necessary under fixed-suffix counterfactual replay."},
+    {"id": "H6", "name": "typed_local_repair_integrity", "failure": "Repair changes independent fields, reuses dropped evidence, or performs an operator-inappropriate expensive action."},
+    {"id": "H7", "name": "decision_sufficient_native_tool_contract", "failure": "The SFT view changes the authoritative pre-action state, reasoning, or tool choice; drops action order; exposes private locators; collides history with the target envelope; omits an eligible tool schema; exposes an ineligible schema; or uses target arguments that fail the same model-visible schema used at inference."}
+  ],
+  "criteria": [
+    {"id": "Q1", "name": "outcome_and_localization_quality", "weight": 17, "minimum": 0.85, "full_credit": "Exact categorical correctness, and for localization tasks both precision and recall are high rather than recall being inflated by oversized boxes."},
+    {"id": "Q2", "name": "field_level_evidence_grounding", "weight": 16, "minimum": 0.90, "full_credit": "Every committed field is supported by an active, provenance-closed atom whose declared field support and observation agree with the claim value."},
+    {"id": "Q3", "name": "state_aware_planning_and_order", "weight": 11, "minimum": 0.85, "full_credit": "Every action is legal in the pre-action state and respects inspect/measure/create/assess-each-competitor/adjudicate/bind/commit/stop dependencies without premature closure. Progressive assessment and adjudication are required only when multiple active atoms genuinely compete for the same open fields."},
+    {"id": "Q4", "name": "information_gain_and_causal_utility", "weight": 12, "minimum": 0.90, "full_credit": "Every exported step is indispensable or branch-enabling, observation-sensitive when external, and consumed by later state or terminal progress."},
+    {"id": "Q5", "name": "grounded_rationale_quality", "weight": 13, "minimum": 0.80, "full_credit": "Reasoning names concrete visible evidence, the unresolved gap, and why this action closes it; it is concise, non-repetitive, and contains no unsupported certainty. It must preserve the visible eligible-tool cardinality: when multiple actions are eligible, it may justify one as the best next choice but must not falsely call it the only eligible tool, action, method, or route. For a derived/meta action, the rationale cites every required source atom, accurately says that it aggregates prior observations rather than inspecting new pixels, preserves the derived observation's declared facts such as role-invariant order consistency, and never overclaims the fields supported by that atom. Later summaries must name every atom needed to cover the fields they describe. Each candidate assessment must identify exactly one atom by ID or unique method, state its preferred_video and its exact order_consistent value (including explicitly unobserved/null), record retain or reject, and name a visible defect for rejection; a retained atom's unobserved property is calibrated uncertainty, not a defect. The final adjudication must unambiguously identify every selected and rejected atom, justify the selected support, agree with those assessments, and frame the remaining gap as an unresolved partition or ledger rather than premature binding."},
+    {"id": "Q6", "name": "repair_diagnosis_minimality_and_recovery", "weight": 11, "minimum": 0.90, "full_credit": "The repair distinguishes dropout, binding invalidation, and decision reopen; changes only affected fields; avoids unnecessary remeasurement; and returns to the clean claim values."},
+    {"id": "Q7", "name": "uncertainty_and_conflict_calibration", "weight": 6, "minimum": 0.80, "full_credit": "Conflicting or low-confidence measurements trigger further evidence, justified abstention, or a complete visible-evidence assessment ledger followed by adjudication; no competitor may be silently omitted, null must not be rewritten as false or true, and no newest/majority/confidence-only shortcut is used. The adjudication and following binding must agree with the recorded per-candidate dispositions."},
+    {"id": "Q8", "name": "sft_pedagogy_and_target_hygiene", "weight": 7, "minimum": 0.90, "full_credit": "Each datum trains only one accepted assistant action, preserves tool feedback as context, carries step-credit metadata, and covers external, state-edit, and terminal decisions."},
+    {"id": "Q9", "name": "decision_context_and_tool_contract_fidelity", "weight": 7, "minimum": 0.95, "full_credit": "Every row contains one authoritative pre-action state, role-separated ordered history, exactly the currently eligible executable function schemas, and a schema-valid external target preserving the teacher reasoning and tool choice; duplicate states and private media locators are absent."}
+  ],
+  "aggregation": {
+    "total_points": 100,
+    "accepted_for_sft": "all hard gates pass AND total_score >= 92 AND Q1/Q2/Q4/Q6/Q8/Q9 meet their minima AND every other criterion is >= 0.80",
+    "grades": [
+      {"min": 96, "label": "A_plus_gold", "use": "direct SFT and preference-winner pool"},
+      {"min": 92, "label": "A_gold", "use": "direct SFT"},
+      {"min": 86, "label": "B_repair", "use": "critic-guided repair then re-score"},
+      {"min": 0, "label": "reject", "use": "negative/diagnostic pool only"}
+    ]
+  },
+  "batch_readiness": {
+    "status": "advisory_until_calibrated",
+    "requirements": [
+      "at least 30 held-out cases per dataset and capability family",
+      "gold acceptance rate >= 0.90 per dataset",
+      "10th-percentile score >= 92 per dataset",
+      "zero hard-gate failures among exported rows",
+      "all three repair operators represented with >= 0.85 gold rate",
+      "minimal-edit hard-negative detection >= 0.90 overall and >= 0.80 per perturbation family",
+      "multi-rollout pass^k reliability measured before declaring mass-production readiness",
+      "held-out conflict cases report adjudication-trigger recall, exact competitor-partition rate, reasoning coverage, and bind-consistency rate",
+      "held-out native generation reports parse rate, schema validity, pre-state eligibility, semantic argument equivalence, token-limit hits, and closed-loop execution before release"
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "s03",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate；target_rating=4；适用维度评分覆盖率100%。E4第3、20行支持报道日期和清单转述；准确标记INCOMPLETE并说明原站核验未完成。当前仅评价局部报告，不能因尚未完成调查而否定诚实报告。"
+    },
+    {
+      "id": "s05",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate；target_rating=4；适用维度评分覆盖率100%。E4第3行日期晚于目标日期，第20行未给出清单此前已存在的记录。正确回答当前材料不能证明历史网页状态；任务限定现有材料，FINISH合理。"
+    },
+    {
+      "id": "s07",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate；target_rating=4；适用维度评分覆盖率100%。SEARCH是可用动作，E4可用于focus；查询包含机构、清单主题、月份及历史存档，能够推进尚未解决的日期核查。没有重复搜索记录，不能因尚无结果而扣分。"
+    },
+    {
+      "id": "s08",
+      "admissible": false,
+      "score": 100,
+      "critical_unknown": true,
+      "reason": "context_only；target_rating=unknown；适用维度评分覆盖率35.3%（30/85）。分数仅反映报告形式、引用可见性和简洁性，不代表事实核实。评审缺少E99正文，无法判断清单、完整性及COMPLETED是否正确；也不能据此认定演员捏造或偷看。"
+    },
+    {
+      "id": "s02",
+      "admissible": false,
+      "score": 68,
+      "critical_unknown": false,
+      "reason": "repair_reexecute；target_rating=2；适用维度评分覆盖率100%。E4支持AFP转述，但任务明确要求直接核验官网。COMPLETED与报告承认未取得官网原文相冲突，属于实质完成状态错误，限制说明不能抵消。"
+    },
+    {
+      "id": "s04",
+      "admissible": false,
+      "score": 26,
+      "critical_unknown": false,
+      "reason": "exclude；target_rating=0；适用维度评分覆盖率100%。唯一可见正文E4是AFP报道，不能支持“本次已直接读取NDCU官网”。该断言还与自身limitations及status_reason矛盾；INCOMPLETE标签不能补救虚构的读取经历。"
+    },
+    {
+      "id": "s06",
+      "admissible": false,
+      "score": 45,
+      "critical_unknown": false,
+      "reason": "repair_reexecute；target_rating=0；适用维度评分覆盖率100%。在限定材料下结束作答本身合理，但E4第3、20行只能支持较晚报道中的转述，不能证明5月25日官网已有清单。核心结论存在明确的时间外推错误。"
+    },
+    {
+      "id": "s01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate；target_rating=4；适用维度评分覆盖率100%。任务仅要求概括AFP报道及出处；E4第3、20行直接支持日期、三种油和来源归属。报告满足该范围，COMPLETED恰当，无须额外取得官网正文。"
+    }
+  ]
+}

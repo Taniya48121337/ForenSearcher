@@ -1,0 +1,9 @@
+[
+  {"dataset":"qvhighlights","case":"0","run":"qvhighlights_0_r1","request":"request_0012","interval_s":[45,51],"excerpt":"定位范围约45–51秒","interpretation":"approximate_report_interval"},
+  {"dataset":"qvhighlights","case":"0","run":"qvhighlights_0_r2","request":"request_0012","interval_s":[38,51.5],"interpretation":"reported_envelope_with_uncertain_start","endpoint_bounds":{"start":[38,41],"end":[51,51.48]}},
+  {"dataset":"qvhighlights","case":"1","run":"qvhighlights_1_r1","request":"request_0012","interval_s":[72,100],"excerpt":"匹配片段约为72–100秒","interpretation":"approximate_report_interval"},
+  {"dataset":"qvhighlights","case":"9167","run":"qvhighlights_9167_r1","request":"request_0012","interval_s":[115,118],"excerpt":"定位到约115–118秒的匹配片段","interpretation":"verified_sample_span_with_unresolved_event_boundaries"},
+  {"dataset":"qvhighlights","case":"9167","run":"qvhighlights_9167_r2","request":"request_0012","interval_s":[84,118],"excerpt":"匹配场景约在84–118秒","interpretation":"approximate_scene_span_including_closeups; exact_event_boundaries_unresolved"},
+  {"dataset":"qvhighlights","case":"2","run":"qvhighlights_2_validation","request":"request_0009","interval_s":[0,150],"excerpt":"符合描述的候选片段约为0–150秒","interpretation":"candidate_span_at_video_boundaries_not_verified_continuous_coverage"},
+  {"dataset":"vcsl","case":"pair_1","run":"vcsl_pair_1_retry1","request":"request_0012","segment_xyxy":[4.02,27.58,4.88,28.46],"excerpt":"A约4.02–4.88秒 ↔ B约27.58–28.46秒","interpretation":"only_the_explicit_candidate_interval; additional_anchor_spans_are_not_continuous_predictions"}
+]

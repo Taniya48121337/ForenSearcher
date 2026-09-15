@@ -1,0 +1,386 @@
+[
+  {
+    "id": "d08",
+    "role": "GIA",
+    "task": "判断两个视频是否完全相同，说明能够确认的不同。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "verified_local_report": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]",
+      "can_create_round": true
+    },
+    "candidate": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "必须先查出原作者的姓名及精确拍摄地址，才能回答两个视频是否完全相同。",
+          "materials": [
+            "E5",
+            "E7"
+          ]
+        }
+      ]
+    },
+    "expected_admissible": false,
+    "reference_reason": "已确认的标题差异已经回答相同性；追加作者地址既非必要也不能由所给局部帧保证执行。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d03",
+    "role": "HI",
+    "task": "根据已提供帧报告能够确认的视频差异及检查范围。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。"
+    },
+    "candidate": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]这一判断仅限0秒；未检查的时刻和声音保持未知。",
+    "expected_admissible": true,
+    "reference_reason": "准确局部结论与完整性限制相容。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d10",
+    "role": "GIA",
+    "task": "判断两个视频的言语内容是否被替换。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "verified_local_report": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]",
+      "can_create_round": true
+    },
+    "candidate": {
+      "decision": "FINISH",
+      "answer": "已确认言语被替换：A说lorem ipsum，B说A conversation about CRPS。[E5][E7]"
+    },
+    "expected_admissible": false,
+    "reference_reason": "把画面文字当作实际言语。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d09",
+    "role": "GIA",
+    "task": "判断两个视频的言语内容是否被替换。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E1",
+        "E2",
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "verified_local_report": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]",
+      "can_create_round": true,
+      "original_materials": [
+        "E1:视频A",
+        "E2:视频B"
+      ]
+    },
+    "candidate": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核对两份视频实际言语内容是否不同；没有可辨认声音时说明限制，不能用画面标题代替言语证据。",
+          "materials": [
+            "E1",
+            "E2"
+          ]
+        }
+      ]
+    },
+    "expected_admissible": true,
+    "reference_reason": "针对仍缺少的声音信息补查是合理分工。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d06",
+    "role": "HI",
+    "task": "在尚未同时附图时核对两侧0秒帧的标题差异。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "available_actions": [
+        {
+          "name": "READ_RECORD",
+          "arguments": {
+            "record_id": "visible E id"
+          }
+        }
+      ],
+      "current_focus_candidates": [
+        "E5",
+        "E7"
+      ],
+      "history": [],
+      "images_not_currently_attached": true
+    },
+    "candidate": {
+      "action": "READ_RECORD",
+      "arguments": {
+        "record_id": "E5"
+      },
+      "focus_evidence_ids": [
+        "E5",
+        "E200"
+      ]
+    },
+    "expected_admissible": false,
+    "reference_reason": "E200既不存在于当前证据也不在焦点可选集合。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d05",
+    "role": "HI",
+    "task": "在尚未同时附图时核对两侧0秒帧的标题差异。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "available_actions": [
+        {
+          "name": "READ_RECORD",
+          "arguments": {
+            "record_id": "visible E id"
+          }
+        }
+      ],
+      "current_focus_candidates": [
+        "E5",
+        "E7"
+      ],
+      "history": [],
+      "images_not_currently_attached": true
+    },
+    "candidate": {
+      "action": "READ_RECORD",
+      "arguments": {
+        "record_id": "E5"
+      },
+      "focus_evidence_ids": [
+        "E5",
+        "E7"
+      ]
+    },
+    "expected_admissible": true,
+    "reference_reason": "首次安排同时看两侧已有帧是合理动作，不应按重复读取一律拒绝。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d12",
+    "role": "HI",
+    "task": "找出一个符合描述的时刻：Blonde woman holds up food in her car. 不要求完整区间。",
+    "state": {
+      "source_case": "QVHighlights/0",
+      "observed_times_s": [
+        49.0
+      ],
+      "duration_s": 150,
+      "images": {
+        "E24": "视频49秒帧，附件3"
+      },
+      "visible_evidence_ids": [
+        "E24"
+      ],
+      "inspection_scope": "只核对49秒帧；它显示女子在车内举起打开的食品盒。"
+    },
+    "candidate": "49秒是女子在餐馆厨房制作食物的画面，没有车内场景或举起食品盒。[E24]",
+    "expected_admissible": false,
+    "reference_reason": "场景与动作描述同所给像素直接矛盾。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d02",
+    "role": "HI",
+    "task": "比较给定0秒帧的标题文字和主题提示。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。"
+    },
+    "candidate": "A写着A conversation about CRPS，B写着lorem ipsum，因此A的文字明确提供CRPS主题。[E5][E7]",
+    "expected_admissible": false,
+    "reference_reason": "将两个视频的标题对应关系颠倒。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d04",
+    "role": "HI",
+    "task": "根据已提供帧报告能够确认的视频差异及检查范围。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。"
+    },
+    "candidate": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]已逐帧核验整个4.84秒视频，除标题外所有像素和音轨完全一致。",
+    "expected_admissible": false,
+    "reference_reason": "单组成对帧不能支持全片逐帧或音频结论。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d07",
+    "role": "GIA",
+    "task": "判断两个视频是否完全相同，说明能够确认的不同。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。",
+      "verified_local_report": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]",
+      "can_create_round": true
+    },
+    "candidate": {
+      "decision": "FINISH",
+      "answer": "两者并非完全相同：0秒标题文字不同。A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]未据此判断其他时刻、音频或制作先后。"
+    },
+    "expected_admissible": true,
+    "reference_reason": "一个已核实的真实差异足以否定完全相同，不必穷尽所有差异。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d11",
+    "role": "HI",
+    "task": "找出一个符合描述的时刻：Blonde woman holds up food in her car. 不要求完整区间。",
+    "state": {
+      "source_case": "QVHighlights/0",
+      "observed_times_s": [
+        49.0
+      ],
+      "duration_s": 150,
+      "images": {
+        "E24": "视频49秒帧，附件3"
+      },
+      "visible_evidence_ids": [
+        "E24"
+      ],
+      "inspection_scope": "只核对49秒帧；它显示女子在车内举起打开的食品盒。"
+    },
+    "candidate": "49秒可以看到女子在车内举起打开的食品盒；盒内能看见带绿色配料的食物。[E24] 这不是完整事件起止时间。",
+    "expected_admissible": true,
+    "reference_reason": "该任务只要求一个时刻，不能以未输出完整标准区间为由拒绝。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "d01",
+    "role": "HI",
+    "task": "比较给定0秒帧的标题文字和主题提示。",
+    "state": {
+      "source_case": "VideoSham/1028",
+      "observed_times_s": [
+        0.0
+      ],
+      "duration_s": 4.84,
+      "images": {
+        "E5": "视频A的0秒帧，附件1",
+        "E7": "视频B的0秒帧，附件2"
+      },
+      "visible_evidence_ids": [
+        "E5",
+        "E7"
+      ],
+      "inspection_scope": "只提供这组成对帧，没有其他画面或声音检查。"
+    },
+    "candidate": "A左下角蓝框写着lorem ipsum；B相应位置写着A conversation about CRPS。B提供关于CRPS谈话的主题提示，A没有这项文字提示。[E5][E7]",
+    "expected_admissible": true,
+    "reference_reason": "两个标题可由实际像素直接核对；只回答所接局部问题。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  }
+]

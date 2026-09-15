@@ -1,0 +1,29 @@
+[
+  {
+    "run": "averitec_392_q0_validation",
+    "request": "request_0006",
+    "reason": "局部任务中的“查找直接证据”未明确是直接支持答案，还是必须取得原始发布页。原报告与同状态重新生成报告的评审对此采用不同完成标准；在任务含义未消除歧义前，COMPLETED 报告不进入最终候选语料。此前真实取证动作不受此处置影响。",
+    "review_records": [
+      "runs/averitec_392_q0_validation/assessment_r2/judgment.json",
+      "hi_terminal_repairs/averitec_392_report_only_validation/assessment_r2/judgment.json"
+    ]
+  },
+  {
+    "run": "averitec_2694_budget_plan_execution_r1",
+    "request": "request_0081",
+    "reason": "报告将KPMG背景中的DHET批准向两校直接拨付R183,000,000表述为直接拨付，未保留批准状态。r5评分指出这一缺陷但仍以3分接受；实际原页只能确认批准，不能据此认证款项已经拨出或到账。因此该报告不进入正向候选，其他目标仍按其自身输入与输出判断。",
+    "review_records": [
+      "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/W3-2/judgment.json",
+      "runs/averitec_2694_budget_plan_execution_r1/reference_review/kpmg_page_04.png"
+    ]
+  },
+  {
+    "run": "averitec_2694_budget_plan_execution_12k_r1",
+    "request": "request_0024",
+    "reason": "报告把按路径规律试探的普通chapter4.pdf称为另一已提供地址。实际E1的Chapter 4普通链接指向chapter5.pdf；chapter4.pdf是演员尝试的推导地址。r5评分指出来源表述不准确却以3分接受。该报告须准确区分已见链接与推导地址后再作正向监督；404结果及合理试探动作本身不因此改写或排除。",
+    "review_records": [
+      "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/W1-2/judgment.json",
+      "runs/averitec_2694_budget_plan_execution_12k_r1/requests/request_0004/request.json"
+    ]
+  }
+]

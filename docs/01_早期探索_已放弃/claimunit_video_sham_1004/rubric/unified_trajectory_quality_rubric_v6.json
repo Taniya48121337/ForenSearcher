@@ -1,0 +1,118 @@
+{
+  "rubric_id": "UTQR-6",
+  "title": "Unified Human-Calibrated Rubric for Executable Tool Trajectories",
+  "evaluation_unit": "one complete clean or typed-repair episode",
+  "purpose": "Select trajectories that are not merely executable and correct, but teach a student to observe, decide, use tools, resolve uncertainty, and stop like a careful human analyst.",
+  "separation_of_evidence": {
+    "machine_layer": "Execution, provenance, state legality, privacy, schema validity, duplicate detection, and known process-artifact checks.",
+    "blind_judge_layer": "Necessity, reasoning quality, method fit, uncertainty handling, repair locality, naturalness, and pedagogical value, judged without dataset identity or hidden outcomes.",
+    "batch_layer": "Coverage, tail quality, reliability, diversity, repair balance, and student free-run benefit."
+  },
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "tool_step_necessity",
+      "weight": 0.16,
+      "critical": true,
+      "score_1": "Several calls are redundant, ceremonial, or do not change any later decision.",
+      "score_3": "Most calls are useful, but at least one could be removed or replaced without loss.",
+      "score_5": "Every call closes a named information/state gap and is consumed downstream; removing it changes a later legal decision or justified confidence."
+    },
+    {
+      "id": "D2",
+      "name": "visible_fact_grounding",
+      "weight": 0.16,
+      "critical": true,
+      "score_1": "Reasoning invents facts, misattributes EvidenceAtoms, or commits unsupported fields.",
+      "score_3": "Core facts are grounded, but some claims are vague, weakly attributed, or incompletely tied to visible evidence.",
+      "score_5": "Each material statement is traceable to the current visible state or a named active EvidenceAtom, with values, scope, and provenance preserved exactly."
+    },
+    {
+      "id": "D3",
+      "name": "method_task_fit",
+      "weight": 0.14,
+      "critical": true,
+      "score_1": "The chosen tool measures a proxy unrelated to the task or uses an inapplicable route.",
+      "score_3": "The route is plausible but its limitations or alternatives are not seriously considered.",
+      "score_5": "The selected method directly targets the unresolved predicate/localization/edit question, and the reasoning explains why it dominates the visible alternatives for this state."
+    },
+    {
+      "id": "D4",
+      "name": "state_aware_causal_reasoning",
+      "weight": 0.14,
+      "critical": true,
+      "score_1": "The rationale is generic, retrospective, or inconsistent with the pre-action state.",
+      "score_3": "The next action is legal and broadly justified, but the causal link from latest observation to remaining gap is incomplete.",
+      "score_5": "Every turn accurately summarizes the latest material state change, identifies one blocking gap, and prospectively explains how the chosen action can close it without promising its result."
+    },
+    {
+      "id": "D5",
+      "name": "conflict_uncertainty_calibration",
+      "weight": 0.12,
+      "critical": true,
+      "score_1": "The trajectory hides disagreement, equates confidence with truth, or forces a direction from insufficient evidence.",
+      "score_3": "Uncertainty is acknowledged, but alternatives, null observations, or rejection reasons are incomplete.",
+      "score_5": "Competing evidence is completely assessed and partitioned, null remains unobserved, abstention is used when warranted, and the final choice depends on task fit and visible defects rather than recency, majority, or confidence alone."
+    },
+    {
+      "id": "D6",
+      "name": "repair_locality_and_recovery",
+      "weight": 0.10,
+      "critical": true,
+      "score_1": "Repair changes unaffected fields, reuses invalid evidence, or restarts the task unnecessarily.",
+      "score_3": "The repair succeeds but includes avoidable reopening, rebinding, or remeasurement.",
+      "score_5": "The mutation is diagnosed correctly, exactly the affected slice is reopened/rebuilt/recommitted, independent state is preserved, and the repaired claim returns to a fully supported terminal state."
+    },
+    {
+      "id": "D7",
+      "name": "natural_human_reasoning",
+      "weight": 0.10,
+      "critical": true,
+      "score_1": "The text exposes prompt/rubric/checker language, parrots a template, or reads like a validator explanation.",
+      "score_3": "Understandable but repetitive, over-formal, or mechanically restates state fields.",
+      "score_5": "Concise expert reasoning: concrete, varied, easy to follow, free of process scaffolding, and no longer than needed to justify the action."
+    },
+    {
+      "id": "D8",
+      "name": "sft_pedagogical_value",
+      "weight": 0.08,
+      "critical": false,
+      "score_1": "The episode teaches shortcuts, formatting artifacts, or behavior that will not transfer to a real tool environment.",
+      "score_3": "Technically usable, but offers limited reusable decision structure or contains avoidable noise.",
+      "score_5": "Each row provides a clean pre-state→reasoning→native-call target, covers a meaningful decision boundary, and teaches a transferable observe/measure/adjudicate/act/stop pattern."
+    }
+  ],
+  "episode_acceptance": {
+    "machine_layer_required": true,
+    "minimum_independent_blind_judges": 2,
+    "weighted_mean_minimum": 4.25,
+    "each_critical_dimension_minimum": 4.0,
+    "any_dimension_minimum": 3.5,
+    "maximum_unadjudicated_judge_range": 1,
+    "hard_fail_allowed": false,
+    "keep_votes_required": "strict_majority"
+  },
+  "batch_readiness": {
+    "minimum_independent_cases_per_dataset": 30,
+    "minimum_clean_and_repair_episodes_per_dataset": 10,
+    "minimum_episode_acceptance_rate_per_dataset": 0.90,
+    "minimum_episode_score_p10_per_dataset": 4.0,
+    "minimum_pass_at_2_per_dataset": 0.85,
+    "minimum_hard_negative_detection_rate": 0.90,
+    "minimum_hard_negative_family_rate": 0.80,
+    "requires_all_repair_operators": true,
+    "requires_student_free_run_gain": true
+  },
+  "known_process_artifacts": [
+    "required compact grounding clause",
+    "required minimal grounding clause",
+    "to satisfy the prompt",
+    "the prompt requires",
+    "the rubric requires",
+    "the checker requires",
+    "teacher target",
+    "hidden label",
+    "oracle",
+    "verifier"
+  ]
+}

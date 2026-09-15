@@ -1,0 +1,585 @@
+{
+  "scope": "known_URL_and_explicit_alias_comparison; model_input_source_fields; acquisition_not_proof_of_citation",
+  "time_policy": "unrestricted_retrospective_web; claim_date_filter_not_enforced",
+  "limitations": "no_match_does_not_rule_out_mirrors_or_post_claim_sources; dates_not_verified; text_only_URL_mentions_not_exhaustively_matched; known_alias_equivalence_basis_in_source_article_aliases.json",
+  "runs_checked": 23,
+  "runs_with_matches": 5,
+  "results": [
+    {
+      "run": "averimatec_423_q0_validation_r3",
+      "dataset": "averimatec",
+      "case": "423",
+      "original_fact_check_article": "https://web.archive.org/web/20231204001254/https://www.aap.com.au/factcheck/post-deeply-wrong-about-rate-of-rising-sea-level/",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://aap.com.au/factcheck/post-deeply-wrong-about-rate-of-rising-sea-level"
+      ]
+    },
+    {
+      "run": "averimatec_441_q0_r1",
+      "dataset": "averimatec",
+      "case": "441",
+      "original_fact_check_article": "https://web.archive.org/web/20241010064046/https://www.boomlive.in/fact-check/pakistan-grave-necrophilia-rape-locked-cage-hyderabad-21833",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://boomlive.in/fact-check/pakistan-grave-necrophilia-rape-locked-cage-hyderabad-21833"
+      ]
+    },
+    {
+      "run": "averimatec_63_q0_archived_source_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "original_fact_check_article": "https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v3",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+      ]
+    },
+    {
+      "run": "averimatec_63_q0_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "original_fact_check_article": "https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X",
+      "matching_acquired_evidence": [
+        {
+          "evidence_id": "E4",
+          "source_ref": "R1",
+          "source_url": "https://factcheck.afp.com/doc.afp.com.33JQ83X",
+          "final_url": "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+        }
+      ],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0002",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0005",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0006",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0007",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0008",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0009",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0010",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        },
+        {
+          "request": "request_0011",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+          ]
+        }
+      ],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+      ]
+    },
+    {
+      "run": "averimatec_63_q0_source_bound_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "original_fact_check_article": "https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "one_source_per_result_block",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+      ]
+    },
+    {
+      "run": "averimatec_63_q0_source_bound_r2",
+      "dataset": "averimatec",
+      "case": "63",
+      "original_fact_check_article": "https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v3",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+      ]
+    },
+    {
+      "run": "averimatec_63_q0_source_policy_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "original_fact_check_article": "https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.33JQ83X"
+      ]
+    },
+    {
+      "run": "averimatec_652_q1_visibility_validation",
+      "dataset": "averimatec",
+      "case": "652",
+      "original_fact_check_article": "https://web.archive.org/web/20240625175125/https://leadstories.com/hoax-alert/2023/03/fact-check-stray-dog-was-not-found-by-police-and-up-for-adoption-post-is-a-real-estate-scam.html",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v3",
+      "known_article_keys": [
+        "https://leadstories.com/hoax-alert/2023/03/fact-check-stray-dog-was-not-found-by-police-and-up-for-adoption-post-is-a-real-estate-scam.html"
+      ]
+    },
+    {
+      "run": "averimatec_660_q0_source_bound_r1",
+      "dataset": "averimatec",
+      "case": "660",
+      "original_fact_check_article": "https://web.archive.org/web/20240310014434/https://factcheck.afp.com/doc.afp.com.32JR6NT-1",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v2",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+        "https://factcheck.afp.com/doc.afp.com.32JR6NT-1"
+      ]
+    },
+    {
+      "run": "averimatec_660_q0_source_validation",
+      "dataset": "averimatec",
+      "case": "660",
+      "original_fact_check_article": "https://web.archive.org/web/20240310014434/https://factcheck.afp.com/doc.afp.com.32JR6NT-1",
+      "matching_acquired_evidence": [
+        {
+          "evidence_id": "E2",
+          "source_ref": "R5",
+          "source_url": "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+          "final_url": "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+        }
+      ],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+          ]
+        },
+        {
+          "request": "request_0005",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+          ]
+        },
+        {
+          "request": "request_0006",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+          ]
+        },
+        {
+          "request": "request_0007",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.32JR6NT"
+          ]
+        }
+      ],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+        "https://factcheck.afp.com/doc.afp.com.32JR6NT-1"
+      ]
+    },
+    {
+      "run": "averimatec_699_q0_r1",
+      "dataset": "averimatec",
+      "case": "699",
+      "original_fact_check_article": "https://web.archive.org/web/20240520114444/https://en.youturn.in/factcheck/inscription-on-the-iron-pillar-in-qutub-minar.html",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://en.youturn.in/factcheck/inscription-on-the-iron-pillar-in-qutub-minar.html"
+      ]
+    },
+    {
+      "run": "averimatec_98_q0_validation",
+      "dataset": "averimatec",
+      "case": "98",
+      "original_fact_check_article": "https://web.archive.org/web/20230320060950/https://factcheck.afp.com/doc.afp.com.339D4FH",
+      "matching_acquired_evidence": [
+        {
+          "evidence_id": "E2",
+          "source_ref": "R1",
+          "source_url": "https://factcheck.afp.com/doc.afp.com.339D4FH",
+          "final_url": "https://factcheck.afp.com/doc.afp.com.339D4FH"
+        }
+      ],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0005",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0006",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0007",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0008",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0009",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0010",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0011",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        },
+        {
+          "request": "request_0012",
+          "matching_source_urls": [
+            "https://factcheck.afp.com/doc.afp.com.339D4FH"
+          ]
+        }
+      ],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://factcheck.afp.com/doc.afp.com.339D4FH"
+      ]
+    },
+    {
+      "run": "averitec_1707_q0_repair_r5",
+      "dataset": "averitec",
+      "case": "1707",
+      "original_fact_check_article": "https://web.archive.org/web/20210127230319/https://africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem"
+      ]
+    },
+    {
+      "run": "averitec_1707_q0_validation_r3",
+      "dataset": "averitec",
+      "case": "1707",
+      "original_fact_check_article": "https://web.archive.org/web/20210127230319/https://africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem"
+      ]
+    },
+    {
+      "run": "averitec_1766_q0_r1",
+      "dataset": "averitec",
+      "case": "1766",
+      "original_fact_check_article": "https://web.archive.org/web/20191107183836/https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11",
+      "matching_acquired_evidence": [
+        {
+          "evidence_id": "E1",
+          "source_ref": "R2",
+          "source_url": "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11",
+          "final_url": "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+        }
+      ],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0002",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        },
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        },
+        {
+          "request": "request_0005",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        },
+        {
+          "request": "request_0006",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        },
+        {
+          "request": "request_0007",
+          "matching_source_urls": [
+            "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+          ]
+        }
+      ],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+      ]
+    },
+    {
+      "run": "averitec_254_q1_r1",
+      "dataset": "averitec",
+      "case": "254",
+      "original_fact_check_article": "https://web.archive.org/web/20210226130032/https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress"
+      ]
+    },
+    {
+      "run": "averitec_254_q1_retry1",
+      "dataset": "averitec",
+      "case": "254",
+      "original_fact_check_article": "https://web.archive.org/web/20210226130032/https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_12k_r1",
+      "dataset": "averitec",
+      "case": "2694",
+      "original_fact_check_article": "https://web.archive.org/web/20210226001653/https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v3",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_r1",
+      "dataset": "averitec",
+      "case": "2694",
+      "original_fact_check_article": "https://web.archive.org/web/20210226001653/https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v3",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims"
+      ]
+    },
+    {
+      "run": "averitec_2694_q8_source_validation",
+      "dataset": "averitec",
+      "case": "2694",
+      "original_fact_check_article": "https://web.archive.org/web/20210226001653/https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims"
+      ]
+    },
+    {
+      "run": "averitec_2799_q0_r1",
+      "dataset": "averitec",
+      "case": "2799",
+      "original_fact_check_article": "https://web.archive.org/web/20210129204017/https://www.politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden/",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0002",
+          "matching_source_urls": [
+            "https://www.politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden/"
+          ]
+        },
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://www.politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden/"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://www.politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden/"
+          ]
+        }
+      ],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden"
+      ]
+    },
+    {
+      "run": "averitec_2872_q0_binding_validation",
+      "dataset": "averitec",
+      "case": "2872",
+      "original_fact_check_article": "https://web.archive.org/web/20210418213507/https://leadstories.com/hoax-alert/2020/07/fact-check-mel-gibson-did-not-say-hollywood-is-controlled-by-parasites-who-are-involved-in-child-sacrifice-pedophilia.html",
+      "matching_acquired_evidence": [],
+      "matching_source_fields_in_model_inputs": [],
+      "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+      "text_search_parser": "source_bound_v2",
+      "known_article_keys": [
+        "https://leadstories.com/hoax-alert/2020/07/fact-check-mel-gibson-did-not-say-hollywood-is-controlled-by-parasites-who-are-involved-in-child-sacrifice-pedophilia.html"
+      ]
+    },
+    {
+      "run": "averitec_392_q0_validation",
+      "dataset": "averitec",
+      "case": "392",
+      "original_fact_check_article": "https://web.archive.org/web/20200811004202/https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/",
+      "matching_acquired_evidence": [
+        {
+          "evidence_id": "E4",
+          "source_ref": "R5",
+          "source_url": "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/",
+          "final_url": "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+        }
+      ],
+      "matching_source_fields_in_model_inputs": [
+        {
+          "request": "request_0002",
+          "matching_source_urls": [
+            "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+          ]
+        },
+        {
+          "request": "request_0003",
+          "matching_source_urls": [
+            "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+          ]
+        },
+        {
+          "request": "request_0004",
+          "matching_source_urls": [
+            "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+          ]
+        },
+        {
+          "request": "request_0005",
+          "matching_source_urls": [
+            "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+          ]
+        },
+        {
+          "request": "request_0006",
+          "matching_source_urls": [
+            "https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/"
+          ]
+        }
+      ],
+      "evidence_source_policy": "unrestricted_retrospective_web",
+      "text_search_parser": "installed_ddgs",
+      "known_article_keys": [
+        "https://vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral"
+      ]
+    }
+  ]
+}

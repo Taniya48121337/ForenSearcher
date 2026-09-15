@@ -1,0 +1,26 @@
+[
+  {
+    "dataset": "true",
+    "case": "20361105",
+    "mode": "bridge",
+    "run_name": "true_20361105_visibility_validation",
+    "instruction_file": "actor_generation_r5.txt",
+    "usage": "construction_validation",
+    "selection_record": "data/true/visibility_validation_samples.json",
+    "source_bound_search": true
+  },
+  {
+    "dataset": "averimatec",
+    "case": "652",
+    "mode": "hi",
+    "question_index": 1,
+    "question_images": true,
+    "run_name": "averimatec_652_q1_visibility_validation",
+    "instruction_file": "actor_generation_r5.txt",
+    "usage": "construction_validation",
+    "selection_record": "data/averimatec/visibility_validation_samples.json",
+    "question_selection": "Named-organization factual question with its official input image; selected before trajectory generation, not based on a model result.",
+    "source_bound_search": true,
+    "exclude_original_article": true
+  }
+]

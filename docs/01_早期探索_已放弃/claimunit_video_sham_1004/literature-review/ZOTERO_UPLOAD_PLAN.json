@@ -1,0 +1,129 @@
+{
+  "created_at": "2026-08-21T20:25:00+08:00",
+  "source_brief": "targeted review for symmetry-aware video trajectory evidence acquisition",
+  "target_root_collection": "V9JVZXPA",
+  "items": [
+    {
+      "title": "Better Aggregation in Test-Time Augmentation",
+      "authors": [
+        "Divya Shanmugam",
+        "Davis Blalock",
+        "Guha Balakrishnan",
+        "John Guttag"
+      ],
+      "year": "2021",
+      "venue": "Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)",
+      "doi": "",
+      "arxiv_id": "",
+      "url": "https://openaccess.thecvf.com/content/ICCV2021/html/Shanmugam_Better_Aggregation_in_Test-Time_Augmentation_ICCV_2021_paper.html",
+      "pdf_url": "https://openaccess.thecvf.com/content/ICCV2021/papers/Shanmugam_Better_Aggregation_in_Test-Time_Augmentation_ICCV_2021_paper.pdf",
+      "recommended_collection_key": "",
+      "recommended_collection_name": "05_Method Sources",
+      "reason": "Supports treating transformed-view predictions as structured evidence whose aggregation can help or harm, rather than blindly averaging them.",
+      "tags": [
+        "test-time-augmentation",
+        "equivariance",
+        "evidence-aggregation",
+        "video-agent-trajectories"
+      ],
+      "status": "needs-user-confirmation"
+    },
+    {
+      "title": "Conformal Risk Control",
+      "authors": [
+        "Anastasios N. Angelopoulos",
+        "Stephen Bates",
+        "Adam Fisch",
+        "Lihua Lei",
+        "Tal Schuster"
+      ],
+      "year": "2022",
+      "venue": "arXiv",
+      "doi": "",
+      "arxiv_id": "2208.02814",
+      "url": "https://arxiv.org/abs/2208.02814",
+      "pdf_url": "https://arxiv.org/pdf/2208.02814",
+      "recommended_collection_key": "",
+      "recommended_collection_name": "05_Method Sources",
+      "reason": "Provides the risk-control framing needed to calibrate abstention or acquisition decisions rather than interpreting confidence scores as guarantees.",
+      "tags": [
+        "conformal-risk-control",
+        "selective-prediction",
+        "calibration",
+        "video-agent-trajectories"
+      ],
+      "status": "needs-user-confirmation"
+    },
+    {
+      "title": "How to Fix a Broken Confidence Estimator: Evaluating Post-hoc Methods for Selective Classification with Deep Neural Networks",
+      "authors": [
+        "Luis Felipe Cattelan",
+        "Danilo Silva"
+      ],
+      "year": "2024",
+      "venue": "Proceedings of the Fortieth Conference on Uncertainty in Artificial Intelligence",
+      "doi": "",
+      "arxiv_id": "",
+      "url": "https://proceedings.mlr.press/v244/cattelan24a.html",
+      "pdf_url": "https://raw.githubusercontent.com/mlresearch/v244/main/assets/cattelan24a/cattelan24a.pdf",
+      "recommended_collection_key": "",
+      "recommended_collection_name": "05_Method Sources",
+      "reason": "Motivates evaluating confidence estimators by selective risk and coverage, not accepting model-reported confidence at face value.",
+      "tags": [
+        "confidence-estimation",
+        "selective-classification",
+        "risk-coverage",
+        "video-agent-trajectories"
+      ],
+      "status": "needs-user-confirmation"
+    },
+    {
+      "title": "Look Again Before You Abstain: Budgeted Conformal Evidence Acquisition for Reliable Vision-Language Model",
+      "authors": [
+        "Jian Xu",
+        "Delu Zeng",
+        "John Paisley",
+        "Qibin Zhao"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "doi": "",
+      "arxiv_id": "2606.16667",
+      "url": "https://arxiv.org/abs/2606.16667",
+      "pdf_url": "https://arxiv.org/pdf/2606.16667",
+      "recommended_collection_key": "",
+      "recommended_collection_name": "05_Method Sources",
+      "reason": "Directly supports bounded, task-conditioned evidence acquisition before abstention and warns that calibration must include the complete acquisition policy.",
+      "tags": [
+        "evidence-acquisition",
+        "conformal-abstention",
+        "vision-language-models",
+        "video-agent-trajectories"
+      ],
+      "status": "needs-user-confirmation"
+    },
+    {
+      "title": "SelectiveNet: A Deep Neural Network with an Integrated Reject Option",
+      "authors": [
+        "Yonatan Geifman",
+        "Ran El-Yaniv"
+      ],
+      "year": "2019",
+      "venue": "Proceedings of the 36th International Conference on Machine Learning",
+      "doi": "",
+      "arxiv_id": "",
+      "url": "https://proceedings.mlr.press/v97/geifman19a.html",
+      "pdf_url": "https://proceedings.mlr.press/v97/geifman19a/geifman19a.pdf",
+      "recommended_collection_key": "",
+      "recommended_collection_name": "03_Related Work",
+      "reason": "Establishes the reject-option and risk-coverage viewpoint used to separate reliable answerable cases from principled abstention cases.",
+      "tags": [
+        "reject-option",
+        "selective-prediction",
+        "risk-coverage",
+        "video-agent-trajectories"
+      ],
+      "status": "needs-user-confirmation"
+    }
+  ]
+}

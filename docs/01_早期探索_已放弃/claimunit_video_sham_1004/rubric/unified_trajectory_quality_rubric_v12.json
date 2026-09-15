@@ -1,0 +1,375 @@
+{
+  "rubric_id": "UTQR-12",
+  "title": "Unified Evidence-First, Step-Useful, and Contrast-Identifiable Rubric for Human-Like Tool SFT",
+  "evaluation_unit": "one fully executed trajectory, its transcript-level step-value dataflow audit, any student-visible multi-candidate evidence adjudication, its private label-blind intervention sidecar, three causal counterfactual replays, the batch-level reasoning-diversity audit, and a policy-invisible structure-matched semantic-neighborhood ledger",
+  "research_lineage": [
+    {
+      "source": "Harness-1",
+      "borrowed_principle": "externalize policy state and train on actions that actually execute in the same Harness used at inference time",
+      "adaptation": "candidate claims, field obligations, EvidenceAtoms, challenges, assessments, bindings, commitments, and terminal state are explicit and replayable"
+    },
+    {
+      "source": "VideoSearcher",
+      "borrowed_principle": "video deep research should be a multi-tool, multi-turn evidence acquisition process rather than one-shot answering",
+      "adaptation": "dataset-specific measurements live behind one dependency-ordered action grammar"
+    },
+    {
+      "source": "process supervision and step-level verification",
+      "borrowed_principle": "a correct final answer does not certify intermediate reasoning",
+      "adaptation": "every positive SFT target must execute, create or consume visible state, and state its downstream consequence"
+    },
+    {
+      "source": "causal scrubbing, program slicing, and dataflow liveness analysis",
+      "borrowed_principle": "a state-changing operation is useful only when its output lies on a later decision path; successful execution alone does not establish necessity",
+      "adaptation": "follow every created EvidenceAtom and every opened, revised, bound, or committed field to a later assessment, adjudication, binding, commitment, challenge resolution, or terminal decision"
+    },
+    {
+      "source": "counterfactual evaluation and causal data attribution",
+      "borrowed_principle": "use interventions to distinguish causal steps from plausible narration",
+      "adaptation": "clean-control, moved-defect, and fresh-evidence-removal probes accompany every recovery episode"
+    },
+    {
+      "source": "dataset aggregation and recovery-state training",
+      "borrowed_principle": "training data must cover states induced by earlier mistakes, not only clean expert prefixes",
+      "adaptation": "unannounced evidence corruption creates complete challenge-to-recovery suffixes without revealing a repair recipe"
+    },
+    {
+      "source": "ensemble diversity, selective prediction, and process supervision",
+      "borrowed_principle": "correlated repetitions are not independent votes, abstention is preferable to unsupported certainty, and a correct final answer does not validate a biased selection process",
+      "adaptation": "adjudication gives one vote per measurement method, resolves direction without consulting the current claim, preserves an explicit abstention candidate, and is recomputed from raw student-visible EvidenceAtoms"
+    },
+    {
+      "source": "contrast sets, counterfactual data augmentation, and hard-negative curriculum",
+      "borrowed_principle": "examples that share superficial structure but require different labels reveal shortcuts and create more informative supervision than unmatched examples",
+      "adaptation": "form an n-ary SFT neighborhood only when dataset, stage, eligible-tool set, and visible tool schemas match while at least two abstract teacher actions differ; keep neighborhood metadata outside the student transcript and preserve every original trajectory"
+    }
+  ],
+  "hard_gates": [
+    {
+      "id": "H1",
+      "name": "executed_safe_outcome",
+      "failure": "Any positive target was not executed; a tool call was rejected; the final state is nonterminal; a required field is unsupported, conflicted, or uncommitted; or provenance remains open."
+    },
+    {
+      "id": "H2",
+      "name": "identity_scope_and_role_integrity",
+      "failure": "Evidence belongs to another task/entity/role/scope, source and suspect coordinate frames are conflated, or logical IDs, media roles, and intervals are not supported by student-visible evidence."
+    },
+    {
+      "id": "H3",
+      "name": "control_plane_autonomy",
+      "failure": "The student sees oracle values, verifier results, intervention names, restoration values, compiled target actions, materialized next-tool answers, or a categorical router answer."
+    },
+    {
+      "id": "H4",
+      "name": "complete_unannounced_recovery",
+      "failure": "The policy misses a visible defect, challenges the wrong atom or fields, requests an unrelated check, fails to obtain fresh evidence, omits a required multi-candidate adjudication, chooses evidence by compatibility with the current claim, reuses rejected or superseded evidence, repairs unrelated fields, or stops before local recovery or principled abstention."
+    },
+    {
+      "id": "H5",
+      "name": "explicit_claim_value_revision",
+      "failure": "Fresh evidence or a completed evidence-first adjudication directly supports a different claim value but the trajectory silently preserves the stale value, changes a committed field without reopening it, revises a field without one unambiguous selected active visible support, lets rejected evidence re-enter revision or binding, or combines revision, binding, and commitment into one unverifiable action."
+    },
+    {
+      "id": "H6",
+      "name": "causal_counterfactual_response",
+      "failure": "A clean control still challenges; moving the defect does not move the challenge target; deleting all fresh evidence still permits the same repair; or an irrelevant change alters independent fields."
+    },
+    {
+      "id": "H7",
+      "name": "reasoning_target_integrity",
+      "failure": "Any assistant target has empty reasoning, truncation/placeholder artifacts, no student-visible grounding, no explanation of the action's state consequence, an implausible length, or the batch exceeds the declared duplication/concentration limits.",
+      "why_ordinary_tests_are_insufficient": "The v2 compiler executed and passed structural counterfactual checks while every fresh_binding target serialized content=null. Type/schema checks validate tool arguments, not the pedagogical content of assistant text; therefore an explicit reasoning-content audit is required."
+    },
+    {
+      "id": "H8",
+      "name": "independent_blind_review",
+      "failure": "Fewer than two blind judges review the student-visible trajectories, a dimension mean is below 4/5, or a score disagreement above one point remains unadjudicated."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "C1",
+      "name": "outcome_binding_and_terminal_correctness",
+      "weight": 12,
+      "minimum": 0.95,
+      "critical": true
+    },
+    {
+      "id": "C2",
+      "name": "identity_provenance_role_and_scope",
+      "weight": 10,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C3",
+      "name": "causal_evidence_sensitivity",
+      "weight": 10,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C4",
+      "name": "off_target_invariance",
+      "weight": 8,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C5",
+      "name": "tool_method_fit_and_information_gain",
+      "weight": 9,
+      "minimum": 0.85,
+      "critical": true
+    },
+    {
+      "id": "C6",
+      "name": "unannounced_defect_diagnosis",
+      "weight": 10,
+      "minimum": 0.85,
+      "critical": true
+    },
+    {
+      "id": "C7",
+      "name": "fresh_evidence_uptake_and_local_repair",
+      "weight": 12,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C8",
+      "name": "explicit_value_revision_when_needed",
+      "weight": 7,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C9",
+      "name": "human_like_grounded_reasoning",
+      "weight": 8,
+      "minimum": 0.85,
+      "critical": true
+    },
+    {
+      "id": "C10",
+      "name": "sft_target_hygiene_and_learning_value",
+      "weight": 6,
+      "minimum": 0.9,
+      "critical": true
+    },
+    {
+      "id": "C11",
+      "name": "evidence_first_ensemble_adjudication_integrity",
+      "weight": 8,
+      "minimum": 0.9,
+      "critical": true
+    }
+  ],
+  "criterion_scoring_contracts": {
+    "C5": {
+      "full_credit_requires": [
+        "every target tool is eligible and actually executed or accepted",
+        "every target produces a material state delta",
+        "no exact duplicate action exists",
+        "every created EvidenceAtom is later assessed, adjudicated, bound, used to resolve the challenge, or retained as a visible adaptive-routing prerequisite",
+        "reopen, revision, binding, and commitment operate only on the dependent target-field slice and are consumed by a later state transition",
+        "repeating the same external method requires changed arguments and a visible inconclusive routing state"
+      ],
+      "aggregation": "conjunctive episode-level credit: any executed-but-unused or scope-drifting positive target makes C5=0; partial averaging cannot hide one busywork step",
+      "concrete_failure_scenario": "An eligible extra media tool executes successfully, adds a fresh EvidenceAtom, and leaves the final answer valid, but no later assessment, adjudication, binding, challenge resolution, or terminal support references the atom. UTQR-11 awarded full C5 because eligibility, material state delta, and non-duplication all remained true.",
+      "why_ordinary_checks_are_insufficient": "Schema validation proves the call is well formed; execution proves it ran; state-delta checks prove it changed the transcript; terminal and binding checks prove the episode eventually succeeds. None establishes that the new observation influenced a decision. Git, version numbers, types, uniqueness constraints, and ordinary unit tests likewise cannot infer downstream evidence use."
+    }
+  },
+  "required_action_grammar": [
+    "detect a concrete student-visible integrity defect",
+    "challenge named active EvidenceAtoms with the minimal affected field subset",
+    "execute the requested real context or measurement tool",
+    "name the resulting fresh EvidenceAtoms and explain what they change or preserve",
+    "reopen only dependent committed fields",
+    "when active evidence competes, assess every candidate before selecting a winner",
+    "adjudicate without consulting the current claim: count at most one vote per measurement method, prefer unopposed cross-method directional agreement, and retain explicit abstention when directional evidence conflicts",
+    "when the selected atom uniquely supports a different value, explicitly revise only the reopened field after adjudication",
+    "bind only fresh active evidence selected by adjudication; when adjudication is not applicable, bind only evidence semantically compatible with the claim",
+    "never allow rejected or superseded evidence to re-enter revision, binding, commitment, or stop",
+    "commit only the repaired subset",
+    "request stop only after all high-priority obligations close"
+  ],
+  "step_value_contract": {
+    "unit": "every executed positive SFT target in one complete recovery episode",
+    "required_dataflow_roles": {
+      "challenge": "opens exactly the affected field slice and requests a real follow-up measurement",
+      "fresh_measurement": "creates fresh evidence for the open question and every created atom reaches assessment, adjudication, binding, or challenge resolution",
+      "local_reopen": "opens exactly the fields that will be rebound and recommitted",
+      "evidence_assessment": "its candidate appears in the later complete adjudication partition",
+      "evidence_adjudication": "its selected evidence is consumed by the later binding",
+      "claim_revision": "changes only affected fields and is followed by binding and commitment",
+      "fresh_binding": "binds exactly the affected fields using fresh selected evidence and is followed by commitment",
+      "recommit": "commits exactly the repaired fields and is followed by terminal verification",
+      "terminal_verification": "starts with no open high-priority obligation and changes the episode to terminal"
+    },
+    "prohibited": [
+      "executed observations that are never referenced by a downstream decision",
+      "extra measurements justified only because their tool is eligible",
+      "repeated methods without changed arguments and a visible inconclusive routing state",
+      "opening, revising, binding, or committing fields outside the affected dependency slice"
+    ],
+    "scope_limit": "Transcript dataflow proves that a step participates in the recorded decision path; only deletion replay or a matched student intervention can prove stronger causal necessity under adaptive replanning."
+  },
+  "claim_revision_contract": {
+    "allowed_only_when": [
+      "an evidence challenge has resolved through a real fresh observation",
+      "the target field is already open",
+      "one unambiguous active non-superseded EvidenceAtom directly states and supports the proposed new value, either as the sole compatible candidate or as the winner of completed evidence-first adjudication",
+      "no unresolved multi-atom conflict remains"
+    ],
+    "must_not": [
+      "change independent fields",
+      "infer a value from private intervention metadata",
+      "consult the stale current claim to choose among competing EvidenceAtoms",
+      "reuse challenged, rejected, or superseded evidence-field pairs",
+      "bind evidence or commit the decision in the same action"
+    ]
+  },
+  "evidence_first_adjudication_contract": {
+    "trigger": "Two or more active student-visible EvidenceAtoms expose different values for any dependent field, or the harness marks evidence_adjudication.required=true.",
+    "applicability": "Episodes with no visible competing candidate and no required adjudication are recorded as not_applicable and are not penalized merely for omitting adjudication tools.",
+    "independent_vote_unit": "measurement_method, not EvidenceAtom count or repeated execution count",
+    "selection_rule": [
+      "discard incomplete, inactive, role-invalid, or out-of-contract candidates before voting",
+      "choose A or B when at least two independent methods support it and the opposite direction has zero independent votes",
+      "otherwise choose an explicit C/abstention candidate when present",
+      "otherwise choose the unique directional plurality; a tie without abstention remains unresolved",
+      "choose the representative atom only after the winning value is fixed, using order consistency and then visible confidence"
+    ],
+    "prohibited_shortcuts": [
+      "current claim value, prior answer, oracle, verifier, dataset label, case identity, candidate count, or repeated runs of one method may not select the winner",
+      "a declaration that selection was evidence-first is insufficient; the scorer recomputes the winner from raw student-visible EvidenceAtoms"
+    ],
+    "post_selection_obligations": [
+      "assess and partition exactly the visible competitor set",
+      "revise every affected stale claim value to the selected observation before binding",
+      "bind the adjudicated fields only to selected EvidenceAtoms",
+      "rejected EvidenceAtoms must not re-enter later revision, binding, commitment, or terminal support"
+    ],
+    "why_ordinary_checks_are_insufficient": "UTQR-9 assigned 92/92 automated points to claim-first adjudications because execution, terminality, freshness, and binding structure can all remain valid when the wrong candidate is selected. Schema tests, ordinary replay, and final-state checks do not recompute an evidence-independent winner."
+  },
+  "automated_reasoning_audit": {
+    "unit": "every executed assistant target",
+    "required": [
+      "nonempty reasoning",
+      "no replacement-character, ellipsis-truncation, TODO, TBD, or placeholder artifact",
+      "student-visible EvidenceAtom, field value, obligation, or binding grounding appropriate to the stage",
+      "an explicit explanation of why the chosen action changes the next executable state",
+      "2 to 5 sentences",
+      "18 to 180 lexical words"
+    ],
+    "batch_limits": {
+      "exact_duplicate_fraction_max": 0.05,
+      "evidence_id_and_number_normalized_template_duplicate_fraction_max": 0.35,
+      "maximum_shared_ten_token_opening_fraction": 0.2
+    },
+    "scope_limit": "This audit detects missing, ungrounded, truncated, and heavily templated text; it does not replace blind human judgment of factual adequacy or naturalness."
+  },
+  "causal_neighborhood": {
+    "clean_control": "Removing the visible defect must suppress challenge_evidence.",
+    "moved_defect": "Moving the same defect to another active atom must move the challenge target and preserve unrelated dependencies.",
+    "fresh_evidence_removal": "Deleting all newly produced evidence must make the same repaired binding impossible."
+  },
+  "blind_judge_contract": {
+    "minimum_independent_judges": 2,
+    "dimensions": [
+      "prospective_reasoning",
+      "visible_evidence_grounding",
+      "belief_update",
+      "method_fit",
+      "locality",
+      "naturalness"
+    ],
+    "score_range": [
+      1,
+      5
+    ],
+    "minimum_dimension_mean": 4,
+    "maximum_unadjudicated_range": 1,
+    "judge_cannot_see": [
+      "dataset_name",
+      "case_id",
+      "oracle",
+      "verifier_result",
+      "private_intervention",
+      "other_judge_scores"
+    ]
+  },
+  "episode_acceptance": {
+    "all_hard_gates_required": true,
+    "total_score_minimum": 90,
+    "all_critical_criteria_minimum": 0.85,
+    "blind_judging_required": true,
+    "downstream_student_gain_required_for_training_qualification": true
+  },
+  "supervision_policy": {
+    "challenge": 1.2,
+    "fresh_measurement": 1,
+    "local_reopen": 1.2,
+    "claim_revision": 1.3,
+    "evidence_assessment_or_adjudication": 1.1,
+    "fresh_binding": 0.7,
+    "recommit": 0.6,
+    "terminal_verification": 0.2,
+    "admission_and_loss_weight_are_separate": true,
+    "rejected_or_nonexecuted_positive_weight": 0,
+    "optional_batch_group": "metadata.semantic_contrast_groups[*].group_id",
+    "contrast_grouping_is_advisory": true,
+    "drop_unpaired_rows": false
+  },
+  "batch_contrastive_identifiability_contract": {
+    "unit": "one complete multi-dataset SFT batch and its contrast-group ledger",
+    "concrete_failure_scenario": "The evidence-first v31 batch passed every episode-level pre-contrast check, yet the original contrast view covered only 153/418 turns. Execution, schema, terminal, and ordinary text tests cannot show that the remaining targets are distinguishable from stage or control-surface shortcuts.",
+    "construction_rule": [
+      "retain all original rows, messages, tools, target calls, sampling weights, and full episode order",
+      "within a group, require identical dataset, causal stage, eligible-tool set, and visible eligible-tool schemas",
+      "remove case-local opaque IDs from the grouping signature, then require at least two different abstract teacher decisions and retain every member of that exact-signature cluster",
+      "abstract decisions may include measurement tool, challenged defect/field scope, open or commit field subset, revised field subset, bound field subset, or adjudicated visible value",
+      "teacher targets may mine semantic neighborhoods offline, but group identity, target signature, oracle, verifier, and private intervention must remain outside messages and tool schemas",
+      "grouping is advisory for batching; never drop unpaired rows or change per-row loss weights merely to meet coverage"
+    ],
+    "required_audit": [
+      "every declared group points to existing rows and every row-side group link has exactly one ledger entry",
+      "control signatures are recomputed from the actual student-visible pre-action state",
+      "abstract targets, target distributions, and implied cross-target pair counts are recomputed from executed teacher calls and at least two targets differ within every neighborhood",
+      "group IDs and neighborhood targets are absent from the student-visible transcript",
+      "no oracle, verifier, or private-intervention term occurs in the ledger",
+      "canonical and portable serializations pass the same group-integrity audit"
+    ],
+    "minimum_covered_row_fraction": 0.75,
+    "required_covered_stages": [
+      "challenge",
+      "fresh_measurement",
+      "local_reopen",
+      "fresh_binding",
+      "recommit"
+    ],
+    "conditional_covered_stages": [
+      "claim_revision when present",
+      "evidence_adjudication when present"
+    ],
+    "scope_limit": "Contrast coverage makes shortcut learning harder and falsifiable; it does not prove a trained student uses evidence. Matched student free-run ablation remains mandatory."
+  },
+  "batch_readiness": {
+    "required_datasets": [
+      "VideoSham",
+      "VCSL",
+      "VidDiffBench"
+    ],
+    "minimum_entity_disjoint_cases_per_dataset": 30,
+    "minimum_unannounced_recovery_cases_per_dataset": 10,
+    "minimum_packet_acceptance_rate_per_dataset": 0.9,
+    "minimum_score_p10_per_dataset": 90,
+    "requires_sealed_entity_disjoint_holdout": true,
+    "requires_student_free_run_gain": true,
+    "requires_step_value_dataflow_audit": true,
+    "minimum_structure_matched_contrast_covered_row_fraction": 0.75,
+    "requires_contrast_integrity_audit": true
+  }
+}

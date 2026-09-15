@@ -1,0 +1,4935 @@
+{
+  "generated_at": "2026-09-13T01:04:47.374913+08:00",
+  "runs": [
+    {
+      "run": "averimatec_423_q0_validation_r3",
+      "dataset": "averimatec",
+      "case": "423",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 118577
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 5,
+      "cli_calls_returned_success": 5,
+      "recorded_cli_usage": {
+        "input_tokens": 162359,
+        "cached_input_tokens": 84736,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1372,
+        "reasoning_output_tokens": 910
+      },
+      "execution": {
+        "raw_proposals": 5,
+        "statuses": {
+          "executed": 4,
+          "report_committed": 1
+        },
+        "cli_requests": 5,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r3_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "E1 的发布日期未证实；报告已准确披露，此未知不影响当前局部问题的合格判定。",
+            "E5 从 offset=12000 起的正文未读取；本次评分只核对已提供段落，不认定完成了全文核验。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 5,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_441_q0_r1",
+      "dataset": "averimatec",
+      "case": "441",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 142530
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 6,
+      "cli_calls_returned_success": 6,
+      "recorded_cli_usage": {
+        "input_tokens": 197470,
+        "cached_input_tokens": 79232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1358,
+        "reasoning_output_tokens": 935
+      },
+      "execution": {
+        "raw_proposals": 6,
+        "statuses": {
+          "executed": 5,
+          "report_committed": 1
+        },
+        "cli_requests": 6,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "原报道街景、现场照片与E1的实际像素对应未提供，不能独立确认其视觉比对过程；本报告已披露这一范围，未将其冒充为已完成的操作。",
+            "评审未独立复现实地调查或采访；地点结论的外部事实依据仍是包内两篇调查报道，而非官方答案或独立人工复核。"
+          ]
+        },
+        {
+          "actor": "GIA（scripted_dispatcher）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": []
+        }
+      ],
+      "candidate_counts": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_63_q0_archived_source_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 84405
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 3,
+      "cli_calls_returned_success": 3,
+      "recorded_cli_usage": {
+        "input_tokens": 88088,
+        "cached_input_tokens": 43136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 851,
+        "reasoning_output_tokens": 570
+      },
+      "execution": {
+        "raw_proposals": 3,
+        "statuses": {
+          "executed": 2,
+          "report_committed": 1
+        },
+        "cli_requests": 3,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r5_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "该页面首次公开时间及声明日期当天的具体内容未获确认；报告已披露相应时间限制，不影响当前局部任务合格判定。",
+            "丁香插青柠的实际驱蚊效果不由本轨迹确认；这是背景声明仍未解决的部分，不是该 HI 清单任务的遗漏。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 3,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_63_q0_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 388858
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 11,
+      "cli_calls_returned_success": 11,
+      "recorded_cli_usage": {
+        "input_tokens": 361254,
+        "cached_input_tokens": 163968,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3774,
+        "reasoning_output_tokens": 3076
+      },
+      "execution": {
+        "raw_proposals": 11,
+        "statuses": {
+          "executed": 10,
+          "report_committed": 1
+        },
+        "cli_requests": 11,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 85.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0011：仅取得AFP的明确转述，且承认NDCU正文未直接核验，仍将要求直接取证的局部任务标为COMPLETED。缺陷在完成状态和任务履行，不是三种油清单的捏造。"
+          ],
+          "unknowns": [
+            "NDCU清单原始正文及完整限定条件未取得；搜索摘要与评审参考摘录不能替代演员已读的一手正文。",
+            "无法确认2023年5月25日官网清单的具体状态。E4记载的帖文日期为5月27日、报道日期为6月20日，packet未解释其与任务日期的差异。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher（非模型GIA）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包无法评价真实GIA的任务分解、报告整合或全局结论质量；不得以HI结果或脚本FINISH代替。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 10,
+        "GIA": 0
+      },
+      "excluded_targets": 1
+    },
+    {
+      "run": "averimatec_63_q0_source_bound_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 305187
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 11,
+      "cli_calls_returned_success": 11,
+      "recorded_cli_usage": {
+        "input_tokens": 360959,
+        "cached_input_tokens": 193024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3595,
+        "reasoning_output_tokens": 3058
+      },
+      "execution": {
+        "raw_proposals": 11,
+        "statuses": {
+          "executed": 10,
+          "report_committed": 1
+        },
+        "cli_requests": 11,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r4_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未提供 NDCU 相关正文，无法独立认证实际清单、措辞或适用范围；演员也没有声称认证成功。",
+            "多次查询返回 Instagram、微软股票、地图、Gmail 等明显离题结果，足以确认检索失效现象，但无法确定其根因是查询传递、缓存、解析还是搜索提供方。",
+            "source_exclusion_aliases 指向 32JR6NT 并提及 AVerImaTeC 660，本案参考文章却是 33JQ83X。完整排除实现未提供，不能确认本案限制正确生效，也不能据此认定演员已接触被排除文章。",
+            "现有记录不能证明相关来源在整个环境中绝对不可取得；它只证明这些实际尝试没有取得所需资料。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 10,
+        "GIA": 0
+      },
+      "excluded_targets": 1
+    },
+    {
+      "run": "averimatec_63_q0_source_bound_r2",
+      "dataset": "averimatec",
+      "case": "63",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 390641
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 473316,
+        "cached_input_tokens": 204928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5060,
+        "reasoning_output_tokens": 4384
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r5_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 83.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "所问NDCU名单及其适用范围仍未核实；参考答案没有附对应how-to-prevent正文，不能作为已独立验证的机构清单。",
+            "E14、E16、E17、E18等未读正文未提供，无法认定其中必有答案；这些记录至多构成可继续调查的方向。",
+            "现有运行证明目标资料未被找回，不能证明在给定环境与预算下必然可完成，也不能证明任务不可完成。",
+            "已知地址排除机制不能认证所有潜在镜像或转述的独立性；本包未显示具体污染来源，不能据此指控演员泄漏。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 12,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_63_q0_source_policy_r1",
+      "dataset": "averimatec",
+      "case": "63",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 372609
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 415570,
+        "cached_input_tokens": 197504,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4420,
+        "reasoning_output_tokens": 3777
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r4_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 86.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未提供或读到 NDCU 正文，不能认证机构清单及短效限定的完整上下文；参考答案与搜索摘要相符也不能替代原文核查。",
+            "已见失效页面是否存在可访问存档或迁移地址尚未测试，不能把替代路线描述为确定可成功。",
+            "已知地址过滤不保证所有未知镜像均被排除；本轨迹没有将此类材料用于结论，不能据配置认证更广泛的来源独立性。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 11,
+        "GIA": 0
+      },
+      "excluded_targets": 1
+    },
+    {
+      "run": "averimatec_652_q1_visibility_validation",
+      "dataset": "averimatec",
+      "case": "652",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 321532
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 11,
+      "cli_calls_returned_success": 11,
+      "recorded_cli_usage": {
+        "input_tokens": 407869,
+        "cached_input_tokens": 193024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3648,
+        "reasoning_output_tokens": 2926
+      },
+      "execution": {
+        "raw_proposals": 11,
+        "statuses": {
+          "executed": 10,
+          "report_committed": 1
+        },
+        "cli_requests": 11,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 95.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "Southlake DPS Facebook 帖文正文未取得；WFAA 所链接帖文与官方参考中的另一帖文地址之间的关系未核实。当前任务不要求证明两者相同。",
+            "WFAA 没有明确说明是否曾提出领养或犬只后续去向。这是调查对象仍有未知，不是缺少评审材料；末次报告已披露该边界，不能将其解释为完整去向核查。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 11,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_660_q0_source_bound_r1",
+      "dataset": "averimatec",
+      "case": "660",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 275594
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 11,
+      "cli_calls_returned_success": 11,
+      "recorded_cli_usage": {
+        "input_tokens": 400754,
+        "cached_input_tokens": 192384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3781,
+        "reasoning_output_tokens": 3077
+      },
+      "execution": {
+        "raw_proposals": 11,
+        "statuses": {
+          "executed": 10,
+          "report_committed": 1
+        },
+        "cli_requests": 11,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r4_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 93.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "文字搜索持续返回明显无关结果的原因未确定；缺少供应商实际请求及原始响应，不能断言是检索、传参、缓存或解析错误，更不能归为演员捏造。",
+            "原图对应的精确视频帧、拍摄日期、完整视频内容及图外事件未经核验。报告已披露相关边界，这些未知不阻碍当前局部答案的判定。",
+            "已知地址排除不能证明所有潜在镜像或转述均被排除；本包没有显示最终采用的 Independent 材料来自被禁止的 AFP 文章，也不足以认证整个搜索环境完全无污染。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 9,
+        "GIA": 0
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "averimatec_660_q0_source_validation",
+      "dataset": "averimatec",
+      "case": "660",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 180641
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 7,
+      "cli_calls_returned_success": 7,
+      "recorded_cli_usage": {
+        "input_tokens": 235810,
+        "cached_input_tokens": 125696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2467,
+        "reasoning_output_tokens": 1912
+      },
+      "execution": {
+        "raw_proposals": 7,
+        "statuses": {
+          "executed": 6,
+          "report_committed": 1
+        },
+        "cli_requests": 7,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r4_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 86.76470588235294,
+          "coverage": 0.85,
+          "critical_errors": [],
+          "unknowns": [
+            "R5/E2是否为被排除AFP文章的同篇地址变体，缺少正文或地址对应证据；已有共同文档标识及结论摘要足以阻止直接认证来源隔离通过。",
+            "无法判断暴露的AFP摘要对后续决策产生了多少影响；没有证据证明演员主动读取其全文。",
+            "未取得输入图片与R9视频具体帧的对应关系，也没有全视频观察；这些缺口不自动否定当前局部图片说明。",
+            "E3未提供首次发布日期；报告中的9月11日是其记载的活动日期。任务未限定只能使用声明日期以前公开的材料。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "excluded_targets": 5
+    },
+    {
+      "run": "averimatec_699_q0_r1",
+      "dataset": "averimatec",
+      "case": "699",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 262891
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 11,
+      "cli_calls_returned_success": 11,
+      "recorded_cli_usage": {
+        "input_tokens": 369666,
+        "cached_input_tokens": 184320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3228,
+        "reasoning_output_tokens": 2534
+      },
+      "execution": {
+        "raw_proposals": 11,
+        "statuses": {
+          "executed": 10,
+          "report_committed": 1
+        },
+        "cli_requests": 11,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未取得ASI正文、Alamy原图或Flickr原图及图注，原始照片与E1的具体像素对应及一手地点标注未独立验证。",
+            "两篇报道是否具有彼此独立的一手调查依据未知；不同网站本身不能证明来源独立。",
+            "E2第10段关于未找到Qutub铁柱铭文的说法不能作为已核实事实；它与参考材料中的铭文记载存在冲突，但HI没有把该句写入最终结论。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher（非模型GIA）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包不能确定真实GIA会如何处理该局部报告，也不能评定整条背景声明的全局核查质量。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 11,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averimatec_98_q0_validation",
+      "dataset": "averimatec",
+      "case": "98",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 314328
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 430630,
+        "cached_input_tokens": 198144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3710,
+        "reasoning_output_tokens": 2944
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 92.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "AFP档案中的具体原图、记录编号和首次上线时间未直接核实。",
+            "BBC页面是否包含与E1相同的图片，以及2019年10月30日是否为其原始刊登日期，仍依赖HaqCheck转述。",
+            "E11仅读取offset=0，next_offset=6000之后的正文未提供；不能推断后续页是否包含有用日期或图片信息。",
+            "本次证据不能独立确定最早发布网站，也不能证明该任务在其他可用路径下不可完成。",
+            "武器查询返回魔方壁纸，以及部分搜索标题混入多个结果的原因未知，不能直接归因为模型捏造或已确认的后端故障。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher（非模型GIA）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": []
+        }
+      ],
+      "candidate_counts": {
+        "HI": 12,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_1707_q0_repair_r5",
+      "dataset": "averitec",
+      "case": "1707",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 315937
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 454054,
+        "cached_input_tokens": 203648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3276,
+        "reasoning_output_tokens": 2620
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r3_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "医院 2018 年预算总额及其组成仍未由轨迹取得的证据确认。",
+            "E6 中超过 1.34 亿奈拉究竟对应 overhead 还是其他预算范围，正文没有明确说明。",
+            "包内没有 R27 的正文或官方参考 PDF 的对应预算表，不能独立确认其是否支持 33 亿奈拉及具体组成。",
+            "最后报告由零剩余轮次约束触发，不能评价在仍可调查时演员会如何自主停止。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 12,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_1707_q0_validation_r3",
+      "dataset": "averitec",
+      "case": "1707",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 63031
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 3,
+      "cli_calls_returned_success": 3,
+      "recorded_cli_usage": {
+        "input_tokens": 91820,
+        "cached_input_tokens": 54144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 643,
+        "reasoning_output_tokens": 454
+      },
+      "execution": {
+        "raw_proposals": 3,
+        "statuses": {
+          "executed": 2,
+          "report_committed": 1
+        },
+        "cli_requests": 3,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r3_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 77.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0003：尚未把报道数额与所问年度医院预算的口径对应起来，就宣布 COMPLETED，并在存在具体可行补查的情况下结束调查。"
+          ],
+          "unknowns": [
+            "E1所称超过1.34亿奈拉究竟对应全院预算还是某一支出类别，当前正文没有明确说明。",
+            "参考答案给出33亿奈拉，但所指预算PDF及相关页面未提供，不能将该数额当作本次已独立核实的真值。",
+            "后续定向检索能否取得充分预算材料未经执行；可行的补查不等于保证成功。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "excluded_targets": 1
+    },
+    {
+      "run": "averitec_1766_q0_r1",
+      "dataset": "averitec",
+      "case": "1766",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 184500
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 7,
+      "cli_calls_returned_success": 7,
+      "recorded_cli_usage": {
+        "input_tokens": 230057,
+        "cached_input_tokens": 104320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2292,
+        "reasoning_output_tokens": 1733
+      },
+      "execution": {
+        "raw_proposals": 7,
+        "statuses": {
+          "executed": 6,
+          "report_committed": 1
+        },
+        "cli_requests": 7,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 90.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "没有直接取得Zaira Wasim截至2019年9月9日是否恢复演艺工作的当事人确认；旧作品的存在不能解决所有可能的复出情形。",
+            "原始合照、Instagram帖文及制片方推文内容没有得到直接核验；E6仅包含登录和注册等页面文字。",
+            "E1搜索摘要显示2022年日期，而URL指向2019年9月11日；正文提取未保留完整发表、更新及版本信息，无法确认当前正文与2019年原版完全一致。",
+            "参考答案带有required_reannotation标记，其摘录与推文来源的对应关系尚未核实；参考标签不能作为独立事实真值。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包不能支持对真实GIA分工、综合判断或最终回答能力的评价。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 7,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_254_q1_r1",
+      "dataset": "averitec",
+      "case": "254",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": false,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "cancelled",
+          "elapsed_ms": 265202,
+          "error": {
+            "type": "cancelled",
+            "message": "Workspace runtime was cancelled"
+          }
+        }
+      ],
+      "committed_reports": 0,
+      "reported_statuses": {},
+      "cli_requests_started": 9,
+      "cli_calls_returned_success": 9,
+      "recorded_cli_usage": {
+        "input_tokens": 303955,
+        "cached_input_tokens": 134912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1944,
+        "reasoning_output_tokens": 1569
+      },
+      "execution": {
+        "raw_proposals": 9,
+        "statuses": {
+          "executed": 8,
+          "accepted_without_observation": 1
+        },
+        "normalized_outputs": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": null,
+      "candidate_counts": null,
+      "excluded_targets": null
+    },
+    {
+      "run": "averitec_254_q1_retry1",
+      "dataset": "averitec",
+      "case": "254",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 563906
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 402020,
+        "cached_input_tokens": 215936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3656,
+        "reasoning_output_tokens": 2975
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 78.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "核心局部数值任务未完成，且不能认定调查已无可执行路径：request_0008、request_0011 决策前，官方索引 E8 已可读取但未被检查。最终报告没有伪造完成状态，但整条轨迹不能作为成功回答该问题的示范。"
+          ],
+          "unknowns": [
+            "未提供农业分配表正文，无法独立验证官方参考的 6.9%，也无法确认采用县占比的算术平均还是汇总金额之比。",
+            "E8、E12 的正文未提供且 HI 未读取；它们是否包含可用的 FY2019/20 报告入口，以及后续获取能否成功，均未知。",
+            "E6 是转载页面摘要，并非已核验的完整原始报告；其年度和县数描述不能证明所称 7.3% 使用相同范围。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "真实 GIA 如何处理此份 INCOMPLETE 报告、是否补查及如何形成全局结论，本包无法判断。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 10,
+        "GIA": 0
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_12k_r1",
+      "dataset": "averitec",
+      "case": "2694",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 501484
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 626733
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 442530
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 791921
+        },
+        {
+          "actor": "W3-2",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 828406
+        },
+        {
+          "actor": "W3-1",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 1058453
+        }
+      ],
+      "committed_reports": 6,
+      "reported_statuses": {
+        "INCOMPLETE": 6
+      },
+      "cli_requests_started": 85,
+      "cli_calls_returned_success": 85,
+      "recorded_cli_usage": {
+        "input_tokens": 4182483,
+        "cached_input_tokens": 1448064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 50603,
+        "reasoning_output_tokens": 38949
+      },
+      "execution": {
+        "raw_proposals": 85,
+        "statuses": {
+          "executed": 66,
+          "report_committed": 6,
+          "gia_decision_accepted": 13
+        },
+        "cli_requests": 85,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r5_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "两校各自同阶段、同费用及税务口径的最终批准总预算，以及共同费用的单校分摊依据仍未核定；这是调查未决事实，不是无法评判当前有限答复的关键未知。",
+            "SPU约R1.4 billion校方口径与Wits直接支出的逐项目衔接仍未知；不能按年份或金额差额推定归属。",
+            "所供图片仅证明相应页面内容。图2、图4的PwC财务报表审计意见及责任说明不认证首期项目预算一致性，图6、图8的建设页面也不是完整项目决算。",
+            "未证明所缺最终预算资料能够通过当时公开检索取得，也未证明其不存在；不能据调查未命中追溯认定分工不可执行。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 91.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "与HETN001全部直接实际支出同阶段、同范围的批准预算及调整明细未取得；R804 million不能直接填补这一缺口。",
+            "共同项目费用应分摊给SPU的金额，以及校方2013—2018年约R1.4 billion与Wits结项支出的明细对应仍未知。",
+            "第4章表4.4、相关增补协议、第15章及E5在offset=60000之后的正文未在本演员已读内容中出现；不能据此断言这些来源没有所需信息。",
+            "未提供PDF页面像素，但关键表头、行值、注释及正文已提供，足以评估本报告的文字与计算；没有据此认证页面视觉布局或底层财务记录的独立审计。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 86.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "UMP包含共同费用分摊后的全口径最终总支出，以及其与同阶段批准预算的对应关系仍未取得；这是已披露的任务缺口。",
+            "第4章表4.4正文未取得，不能认证其预算构成、税务口径或与HETM001的关系，也不能断言全部替代来源均不可取得。",
+            "表14.15的UMP行值与提取文本小计不一致；没有原页像素，无法判定是原表问题还是文本提取问题。报告未采用该小计，因此该未知不阻断当前报告的核心事实判断。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 83.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0049遗漏已取得且直接回应本地任务的合计预算批准、调整和费用条款，导致预算核查成果实质不完整。应修复报告，不能仅凭准确的INCOMPLETE状态直接导出为正向目标。"
+          ],
+          "unknowns": [
+            "表4.4及其与各校直接成本中心的对应尚未取得，不能确定各校同口径批准预算、是否在预算内或金额是否相等。",
+            "共同费用的单校归属或分摊依据仍未知，因此不能确认包含共同费用后的单校最终总支出。这是调查缺口，并非本次评审缺少核对最终报告所需材料。",
+            "未提供完整PDF全部页面及后续GIA决策，不能证明其他页面不存在对应依据，也不能判断全局任务最终是否解决。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "校方2013—2018年首期计划与Wits成本中心的完整项目对应关系、精确最终支出和同范围批准预算尚未取得；这是调查对象的未知，不是当前报告无法评审。",
+            "未提供演员未读的E5偏移48000以后、表4.4及相关项目明细，不能断言这些补查一定能解决问题。",
+            "本包没有下游GIA决定及全局最终报告，不能评价全局完成或停止质量。"
+          ]
+        },
+        {
+          "actor": "W3-1",
+          "score_on_assessed": 86.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "尚未核实第五次增补协议、表4.4及两校同范围最终批准预算的完整对应关系，不能认证任一校累计直接支出是否在该预算内或与之相等。",
+            "共同费用是否存在另行编制的单校归属或分摊记录仍未知；已读材料未提供依据不等于不存在。",
+            "附录版和合订本的超时不证明来源长期不可取得；替代访问是否能成功也未执行验证。",
+            "上述事项属于调查对象尚未解决的未知，不构成评审最终INCOMPLETE报告所需关键材料的缺失。"
+          ]
+        },
+        {
+          "actor": "W3-2",
+          "score_on_assessed": 86.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "调查仍未解决校方2013—2018年计划的精确决算、同口径批准预算、VAT及费用范围和Wits移交对账关系；这些未知不等于预算不存在或项目超支。",
+            "包内没有提供尚未读取的完整财务报表、附注及项目批准文件，无法判断继续沿这些线索取证最终能否完整解题。",
+            "E95与E30/E31关于2018年度资本支出的R175 million和R333 million存在可见冲突，原因未核实；最终报告没有采用这些数字作累计金额推算。",
+            "没有针对本HI最终报告存在的关键评审材料缺失；上述未知主要属于调查对象，而非无法判断当前输出是否诚实合格。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 70,
+        "GIA": 13
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_r1",
+      "dataset": "averitec",
+      "case": "2694",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 482172
+        },
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 548157
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 534812
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 593733
+        },
+        {
+          "actor": "W3-1",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 420266
+        },
+        {
+          "actor": "W3-2",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 513234
+        }
+      ],
+      "committed_reports": 6,
+      "reported_statuses": {
+        "INCOMPLETE": 6
+      },
+      "cli_requests_started": 89,
+      "cli_calls_returned_success": 89,
+      "recorded_cli_usage": {
+        "input_tokens": 3526698,
+        "cached_input_tokens": 1535488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 32536,
+        "reasoning_output_tokens": 22191
+      },
+      "execution": {
+        "raw_proposals": 89,
+        "statuses": {
+          "executed": 66,
+          "report_committed": 6,
+          "gia_decision_accepted": 17
+        },
+        "cli_requests": 89,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r5_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "两校共同费用的正式归属规则，以及PMIS与KPMG逐校分类差额对应哪些交易，仍未确定；这是调查对象的未知，不自动使当前有限答复的critical_unknown为true。",
+            "同阶段、同费用范围及同税额口径的逐校完整批准和修订预算仍未取得，不能认证原任务已解决。",
+            "没有提供PDF原页像素，不能声称核对了表格版面或判定所有提取差异的成因；最终采用的主要文本金额和KPMG逐校加总仍可核对。",
+            "HI的具体行动不属于本次steps，不能据其INCOMPLETE状态或无关检索结果推断其全部执行质量，也不能将其局部不足直接算作GIA事实错误。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 92.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "SPU同阶段、同费用范围的批准预算及调整情况未取得；实际支出是否与预算金额相等仍未知。",
+            "共同费用如何归属SPU，以及Wits结项口径与校方2013—2018年约R1.4 billion之间的逐项对应关系未知。",
+            "所给表14.6类别金额相加为R942,827,947，年度金额相加为R942,827,945，分别与列示总额相差R1。缺少原始账目及页面像素，无法判断是取整、原表还是提取造成；这限制独立精确核算，不否定报告对列示数字的准确转述。",
+            "E10在已读偏移24000之后仍有next_offset=30000；后文是否含可用预算表未知，不能认定原报告没有相关资料。",
+            "提供来源的上游完整调查过程及后续GIA使用情况不在本次评估范围，不能认证从零独立取证或全局问题已解决。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "UMP 同阶段、同费用范围及含税口径的批准预算、调整版本和实际支出差额尚未取得。",
+            "两校共同费用的分摊关系未取得，不能据现有金额计算包含分摊费用的 UMP 总成本。",
+            "第14章未读部分及其他材料是否提供所缺预算仍未知；不能据当前摘录判断资料不存在。",
+            "这些是调查尚未解决的问题，不是判定本次有限范围 INCOMPLETE 报告是否正确所缺的关键评审证据。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0047和request_0051存在实质取证优先级缺陷，尤其最后一个取证回合仍继续土地章节分页。诚实的终端INCOMPLETE报告不能使这些行动自动成为合格的正向监督目标。"
+          ],
+          "unknowns": [
+            "两校同阶段、同费用及税额口径的批准预算和修订金额，以及“within budget”的实际适用范围，仍未确定；这些是调查对象的未知，不是报告合格性无法判断。",
+            "表6.1所附文本没有明确金额数量级及税额口径，且没有页面像素；不能确认原页是否另有单位说明，也不能补出换算结果。",
+            "任务给定的两项直接支出数值未附表14.5、14.6原文供本次独立复核。本演员没有新增断言这些精确数值，不能据此认证上游结论，也不必因此阻止当前有限报告成为候选。",
+            "具体批准材料是否公开可取得尚未经过充分尝试；已知链接和可用搜索动作支持继续定向调查，但不保证最终能取得答案。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "两校共同费用的归属金额或规则，以及Wits与KPMG分类差异的调节依据仍未知。这是调查对象的未决事实，不是无法评价本次诚实部分报告的关键材料缺失。",
+            "SPU约R1.4 billion是否含VAT、其完整费用明细及与Wits金额的衔接仍未知。",
+            "E10、E12、E13均有未读取尾部，不能认证其完整文本及全部相关财务资料不存在进一步依据。",
+            "没有本轮之后的GIA决策或全局最终结果；不判断原全局任务是否最终完成。"
+          ]
+        },
+        {
+          "actor": "W3-1",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0076存在影响局部任务完成的取证优先级缺陷：预算原件链接已可见且仍能安排打开与读取，却把剩余调查用于支出明细。该行动不宜直接作为正向模仿目标；未发现最终报告捏造金额或虚报完成。"
+          ],
+          "unknowns": [
+            "两校与PMIS全部直接支出同阶段、同费用及税额口径的批准预算、修订预算和差额仍未知；这是调查对象的未知，不是无法判断最终部分报告质量。",
+            "第五份增补原件、其他预算附件是否能通过未尝试路线取得并解决对应关系，现有执行记录不能证明。",
+            "评审包未提供PDF页面像素；本次核对依据所附提取文本，未认证原始页面版式或视觉列对齐。",
+            "未验证该演员的自主停止能力：最终报告在remaining_turns为0时提交。"
+          ]
+        },
+        {
+          "actor": "W3-2",
+          "score_on_assessed": 85.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "HETP001 是否存在正式的按校归属金额或分配规则，以及应如何与两套分类调节，仍未知。",
+            "未提供或检查 KPMG 原始附录页像素，不能确认实际附表是否为图像、另附材料或确实缺失；报告没有把这些未知写成不存在。",
+            "两校包含共同费用的最终实际总支出，以及相关转拨在收款学校端的实际使用情况，未获核实。",
+            "上述是调查对象的未决问题，不妨碍判断当前报告是否诚实、计算是否准确，因此不自动构成目标的 critical_unknown。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 69,
+        "GIA": 17
+      },
+      "excluded_targets": 3
+    },
+    {
+      "run": "averitec_2694_q8_source_validation",
+      "dataset": "averitec",
+      "case": "2694",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 221780
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 8,
+      "cli_calls_returned_success": 8,
+      "recorded_cli_usage": {
+        "input_tokens": 250620,
+        "cached_input_tokens": 142464,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2431,
+        "reasoning_output_tokens": 1761
+      },
+      "execution": {
+        "raw_proposals": 8,
+        "statuses": {
+          "executed": 7,
+          "report_committed": 1
+        },
+        "cli_requests": 8,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r4_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 90.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "E2在offset=6000之后的内容及链接PDF未读取；只能认可已提供概览支持的事实，不能认证完整报告内容。",
+            "项目最早决策的完整归属及拉马福萨后续贡献未被核实；后者已在报告中明确保留，不影响本局部问题的完成。",
+            "参考答案所引财政部PDF对应页面未提供，无法认证该参考引用是否匹配；本次报告的支持依据来自实际读取的其他来源。",
+            "没有材料证明不同网站的叙述彼此完全独立；当前可确认的是所见取证链未引用被排除文章，不能扩展为已完成全面来源独立性审计。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 8,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_2799_q0_r1",
+      "dataset": "averitec",
+      "case": "2799",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 71219
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 4,
+      "cli_calls_returned_success": 4,
+      "recorded_cli_usage": {
+        "input_tokens": 121248,
+        "cached_input_tokens": 66688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 833,
+        "reasoning_output_tokens": 561
+      },
+      "execution": {
+        "raw_proposals": 4,
+        "statuses": {
+          "executed": 3,
+          "report_committed": 1
+        },
+        "cli_requests": 4,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "E6 的精确发布日期未核实，不能据此声称回应发表于某个已确认日期。",
+            "首次查询中人名的具体来源未记录；包内不足以确认其来自一般先验还是其他来源，也不足以认定发生标注泄露。",
+            "原始因果声明的全局真伪及具体火灾成因未由本次局部调查独立确立。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "真实 GIA 的全局判断质量未知；本包没有相应模型样本，不能记为通过。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_2872_q0_binding_validation",
+      "dataset": "averitec",
+      "case": "2872",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 116890
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 6,
+      "cli_calls_returned_success": 6,
+      "recorded_cli_usage": {
+        "input_tokens": 188513,
+        "cached_input_tokens": 102144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1737,
+        "reasoning_output_tokens": 1383
+      },
+      "execution": {
+        "raw_proposals": 6,
+        "statuses": {
+          "executed": 5,
+          "report_committed": 1
+        },
+        "cli_requests": 6,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r5_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "原言论是否真实仍未核实。参考答案以 Metadata 支撑绝对化否认，且 required_reannotation 为 true，不能据此认证事实结论。",
+            "E1–E5 的正文未提供给评审，也没有被演员 READ_RECORD 读取；不能认证正文内容。当前报告只依据可见返回及未取得相关证据这一状态，此缺失不构成该报告的关键未知。",
+            "重复返回的具体原因及其他允许的检索形式是否有效未测明；现有记录只能确认这些文本检索尝试没有提供相关材料。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "averitec_392_q0_validation",
+      "dataset": "averitec",
+      "case": "392",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 151467
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 6,
+      "cli_calls_returned_success": 6,
+      "recorded_cli_usage": {
+        "input_tokens": 182817,
+        "cached_input_tokens": 107648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1242,
+        "reasoning_output_tokens": 931
+      },
+      "execution": {
+        "raw_proposals": 6,
+        "statuses": {
+          "executed": 5,
+          "report_committed": 1
+        },
+        "cli_requests": 6,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "Foolish Humor 与 The Hans India 原始页面未直接取得，其原始内容和发布时间未独立核验；这是已披露的证据限制，不计为已通过的一手核查。",
+            "E4 与 E2 的信息来源是否独立未知，不能将两篇报道直接计作两次独立验证。",
+            "本包不足以独立确定最早来源及完整传播链；最终报告的来源归属表述没有承诺完成这些证明。"
+          ]
+        },
+        {
+          "actor": "GIA",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "真实 GIA 的全局判断、任务完成度和停止质量均未得到评估；不适用不表示通过。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "qvhighlights_0_r1",
+      "dataset": "qvhighlights",
+      "case": "0",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 247421
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 431798,
+        "cached_input_tokens": 156672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3770,
+        "reasoning_output_tokens": 2966
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "normalized_outputs": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 71.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0012不能作为完整时间定位的合格正向目标：真实的局部展示证据未解决事件范围，给定参考下tIoU仅0.4286。",
+            "request_0007至request_0011持续重复图片组，未将剩余轮次用于尚未解决的定位问题，构成明显的决策与效率缺陷。"
+          ],
+          "unknowns": [
+            "E27–E32对应45.24、45.48、45.76、51.24、51.48、51.76秒；演员附件清单记录已提供，但评审没有这些像素，无法核实其是否已经解决开盒或收盒边界。",
+            "没有38、39秒等早段关键空档的图片，无法仅凭官方[38,52]确认实际语义起点。",
+            "30个离散帧按各0.04秒计只有1.20秒标称帧区间；coverage_span_s=[0,150]不是连续观看150秒的证明，不能排除未采样处还有相关动作。",
+            "vid后缀的60–210秒跨度与150秒片段相容，但缺少独立的截取映射证据；区间比较采用包内局部时间轴约定。",
+            "开头路径为“-”的读图错误没有明确E编号关联，不能据此认定某次演员附件加载失败。"
+          ]
+        },
+        {
+          "actor": "GIA（scripted_dispatcher）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": []
+        }
+      ],
+      "candidate_counts": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "excluded_targets": 6
+    },
+    {
+      "run": "qvhighlights_0_r2",
+      "dataset": "qvhighlights",
+      "case": "0",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 366187
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 431139,
+        "cached_input_tokens": 199424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5305,
+        "reasoning_output_tokens": 4503
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 75.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "E23（46秒）、E24（49秒）、E27（38.48秒）、E29（47秒）未附评审像素，不能核实这些帧的内容或其对部分复看决定的影响。",
+            "没有连续视频像素，无法确定精确镜头切换、采样间动作连续性及食物展示的逐帧起止。",
+            "包内执行链接可以核对输出对应，但不是本次评审独立运行后的验证。"
+          ]
+        },
+        {
+          "actor": "GIA（scripted_dispatcher）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包不能据以判断GIA模型能力或端到端全局综合质量。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 8,
+        "GIA": 0
+      },
+      "excluded_targets": 4
+    },
+    {
+      "run": "qvhighlights_1_r1",
+      "dataset": "qvhighlights",
+      "case": "1",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 282171
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 439914,
+        "cached_input_tokens": 174592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3788,
+        "reasoning_output_tokens": 2963
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI行动）",
+          "score_on_assessed": 75.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0009至request_0011出现无新增材料、无加载失败反馈的反复切换；这些动作不宜作为高质量正向决策示范。"
+          ],
+          "unknowns": [
+            "评分员未获得E24、E25、E26、E30、E31的像素，不能确认这些帧的实际场景或细节；演员的image_inputs记录显示它们曾被提供，二者不能混淆。",
+            "孤立的路径“-”加载错误没有对应E编号或请求编号，无法归因于某次演员输入。",
+            "未提供连续视频像素，不能确认采样间隔内是否存在短暂切换或其他匹配片段。"
+          ]
+        },
+        {
+          "actor": "W1-1（HI报告）",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "准确进入目标场景的时刻、结尾转场中最后仍满足描述的时刻，以及区间内连续行走的完整性均未逐帧确认。",
+            "官方区间与实际媒体按片段内秒数比较，150秒参考时长与150.017秒媒体时长相近；尚无独立连续媒体证据确认与原始长视频的逐帧时间映射。",
+            "本例单区间tIoU不能替代数据集级mAP、显著性评价或独立人工真值。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher（非模型GIA）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "该pilot没有提供真实模型GIA轨迹，其能力与SFT质量均不可由本例确定。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 7,
+        "GIA": 0
+      },
+      "excluded_targets": 5
+    },
+    {
+      "run": "qvhighlights_2_validation",
+      "dataset": "qvhighlights",
+      "case": "2",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 356608
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 9,
+      "cli_calls_returned_success": 9,
+      "recorded_cli_usage": {
+        "input_tokens": 310745,
+        "cached_input_tokens": 143104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5809,
+        "reasoning_output_tokens": 5226
+      },
+      "execution": {
+        "raw_proposals": 9,
+        "statuses": {
+          "executed": 8,
+          "report_committed": 1
+        },
+        "cli_requests": 9,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 90.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "23张不同帧的直接呈现时长合计约0.767秒；采样涉及全片两端，不等于连续观看150秒。未采样区间是否存在短暂变化、事件的精确起止及车辆运动状态仍未核实。",
+            "包内素材时长与参考区间长度均为150秒，但没有独立验证E1与原视频360–510秒的实际映射；tIoU=1.0是按包内局部时间轴计算的区间结果。",
+            "动作输出没有记录具体复看问题，无法确定演员每次重附图的内部意图；重复动作的评价依据可见图片组合和信息增益，不以猜测动机为依据。"
+          ]
+        },
+        {
+          "actor": "GIA/scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本试验没有测量真实GIA的全局判断能力，不能从脚本成功结束推断其合格。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 7,
+        "GIA": 0
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "qvhighlights_9167_r1",
+      "dataset": "qvhighlights",
+      "case": "9167",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 224469
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 433244,
+        "cached_input_tokens": 191744,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3080,
+        "reasoning_output_tokens": 2292
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0012存在实质定位遗漏：唯一提交范围115–118秒未整合此前已确认的多个较早阳性时刻。其视觉陈述真实，但COMPLETED报告不足以代表完整定位结果。",
+            "request_0005–request_0011持续进行缺乏明确新增信息价值的往返读取，挤占了仍可用于实际取帧和测量的决策轮次。"
+          ],
+          "unknowns": [
+            "24个离散帧无法确定目标完整起止、所有匹配区间及帧间连续性；这些未知对完整定位仍然关键。",
+            "官方区间可能按整段场景包含单人近景和转场：84.384秒E7、93.994秒E14、100秒E15主要呈现单人近景；118.986秒E18为建筑入口远景，无法明确核实目标两人并排且戴口罩。不能把官方区间解释为逐帧成立，也不能据这些帧自行修改金标准。",
+            "实际建筑用途无法仅凭所附图片确认；报告已正确保留这一限制。"
+          ]
+        },
+        {
+          "actor": "GIA/scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": []
+        }
+      ],
+      "candidate_counts": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "excluded_targets": 8
+    },
+    {
+      "run": "qvhighlights_9167_r2",
+      "dataset": "qvhighlights",
+      "case": "9167",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 291405
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 441671,
+        "cached_input_tokens": 171776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4077,
+        "reasoning_output_tokens": 3233
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 80.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "82.015秒车辆帧与83.016秒人物近景之间，以及117.985秒双人帧与118.986秒大厅远景之间的实际切点未被连续核验。",
+            "约119–121秒大厅远景是否应计入该事件尾部仍有语义边界歧义；参考区间终点120秒不能单独证明其中每帧的具体内容。",
+            "采样间隔中的镜头变化及其他未采样位置是否还有短暂匹配无法排除；coverage_span_s覆盖视频时间域不等于实际观察覆盖全片。",
+            "建筑的实际用途无法仅凭所附画面确认。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 7,
+        "GIA": 0
+      },
+      "excluded_targets": 5
+    },
+    {
+      "run": "true_17838107_r1",
+      "dataset": "true",
+      "case": "17838107",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 379780
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 307765
+        }
+      ],
+      "committed_reports": 2,
+      "reported_statuses": {
+        "COMPLETED": 2
+      },
+      "cli_requests_started": 27,
+      "cli_calls_returned_success": 27,
+      "recorded_cli_usage": {
+        "input_tokens": 1065694,
+        "cached_input_tokens": 462720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9719,
+        "reasoning_output_tokens": 7239
+      },
+      "execution": {
+        "raw_proposals": 27,
+        "statuses": {
+          "gia_decision_accepted": 4,
+          "executed": 21,
+          "report_committed": 2
+        },
+        "cli_requests": 27,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "面包测试的完整方法、原始测量、校准资料及配对血液检测未取得，不能独立确认个案机制、发生概率或普遍效应。",
+            "视频连续性、精确吞咽时刻、实际等待时长及声音内容未核验；最终答案没有声称完成这些检查。",
+            "E33提供的是特定制度的指南正文，本包未另行验证其版本日期及现行效力；不能由此推出各地当前执法规则。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0013以COMPLETED提交，却未报告实际看见的咬面包及再次吹气、分析过程。这是与局部目标直接相关的实质遗漏，不是无关视觉细节，也不是读数转录错误。"
+          ],
+          "unknowns": [
+            "只核验了24个采样帧，无法确认全部操作连续性、进食与检测的精确边界或实际等待时间。",
+            "当前目录没有可调用的ASR操作；一条音轨的媒体属性不足以验证讲话内容，但局部视觉核查本身仍然可行且有用。",
+            "仪器单位与换算、校准、参与者此前饮食饮酒、面包配方及真实血液浓度未核实。",
+            "参考材料所称吞咽后约一秒不能替代本地时间测量；28秒咬面包与44秒吹气两个采样点也不能给出吞咽后的等待时长。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "候选研究全文及可用的完整摘要未取得；E32只是JavaScript提示，不能视为已完成原始研究复核。",
+            "E29没有完整实验设计、样本量、校准及原始数据，另行实验的质量与独立性未获原始记录验证。",
+            "西澳警方说法尚属转述，不能据此确认所有地区、所有阈值及当前执法要求。",
+            "食用前后真实血液酒精变化、效应概率、幅度及不同配方的消退时间仍未测定。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 18,
+        "GIA": 4
+      },
+      "excluded_targets": 5
+    },
+    {
+      "run": "true_20205316753904_validation",
+      "dataset": "true",
+      "case": "20205316753904",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 103250
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 5,
+      "cli_calls_returned_success": 5,
+      "recorded_cli_usage": {
+        "input_tokens": 156002,
+        "cached_input_tokens": 84096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2452,
+        "reasoning_output_tokens": 1948
+      },
+      "execution": {
+        "raw_proposals": 5,
+        "statuses": {
+          "gia_decision_accepted": 2,
+          "executed": 2,
+          "report_committed": 1
+        },
+        "cli_requests": 5,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0005 在仅完成外观核对、核心真实性仍未解决且存在合理补查路径时 FINISH；这是调查充分性缺陷，不是捏造画面或错误宣判 True。"
+          ],
+          "unknowns": [
+            "现有证据未确定该女子实际如何通过头发与上方装置连接、承重。",
+            "未取得关于同一视频真实性的外部来源；不能预先保证检索会成功。",
+            "所供静帧不能证明采样之间的连续动作或全片未经修改；本任务也不要求逐帧排除一切修改。",
+            "参考视频与导入媒体的时长略有不同，其精确对应未经本轨迹核查。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0004 将完整声明核查标为 COMPLETED，但实际提交的是可靠的外观观察及尚未解决的关键限制。不能因后续 GIA 接受报告而提高该状态判断的质量。"
+          ],
+          "unknowns": [
+            "头顶深色束状部分与吊环的实际固定关系被遮挡，不能由裁剪补出。",
+            "衣物遮挡下是否存在其他承重方式未获证实；图片同样没有证明存在隐藏支架。",
+            "没有外部检索执行结果，未知合理搜索能取得何种证据。",
+            "八个离散采样时刻之间的画面未检查，不能视为连续覆盖。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "true_20361105_visibility_validation",
+      "dataset": "true",
+      "case": "20361105",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 406171
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 300233
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 265437
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 353921
+        }
+      ],
+      "committed_reports": 4,
+      "reported_statuses": {
+        "INCOMPLETE": 4
+      },
+      "cli_requests_started": 50,
+      "cli_calls_returned_success": 50,
+      "recorded_cli_usage": {
+        "input_tokens": 1904298,
+        "cached_input_tokens": 801152,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 24388,
+        "reasoning_output_tokens": 18214
+      },
+      "execution": {
+        "raw_proposals": 50,
+        "statuses": {
+          "gia_decision_accepted": 6,
+          "executed": 37,
+          "proposal_not_accepted": 3,
+          "report_committed": 4
+        },
+        "cli_requests": 50,
+        "normalized_outputs": [
+          "request_0025"
+        ],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 95.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未提供可听音轨，不能独立确认材料A的实际原声、frighten/threaten精确用词及记者完整问话；这些调查未知已被最终答案保留。",
+            "较长来源仅有封面和自动字幕可核对，其与材料A的音视频对应及时间映射仍未证明；场景相近不能补足这一关系。",
+            "包内没有HI完整的决策前工具目录及全部局部操作，无法独立认证所有声音能力限制和失败原因；不能因此认定较早的GIA已知道这些限制。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 88.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "材料A原声及其与外部字幕的对应尚未核实；参考中的转录不能替代实际听音。",
+            "画面人物姓名与具体发言内容的独立对应尚未建立。",
+            "完整问答语境及群组背景未由该HI独立核实。这些是调查缺口，不是无法评判当前有限报告的关键未知。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 93.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "原录像的实际声音、记者问题的逐字内容及完整问答没有提供或成功取得，不能认证已完成原始音视频核验。",
+            "Facebook录像页面的身份、素材完整性和上传信息尚未直接核验；报告提供的是 Free Beacon 所指的来源线索。",
+            "参考文章与 E16 是同一来源，不能借二者相互一致建立独立事实认证；上述调查未知不妨碍核对报告是否忠实转述现有文字。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 85.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0033 未通过引用接口校验，不能作为成功提交的正向目标。其 E1 提及是在说明未核验对象，未发现捏造 E1 内容；应区分接口适配问题与事实失据。"
+          ],
+          "unknowns": [
+            "给定视频的实际声音、frighten/threaten 用词、相邻记者提问及短视频内部时间位置仍未知。这些调查缺口已被准确披露，不自动构成报告目标的 critical_unknown。",
+            "其他来源是否能取得与给定视频建立对应关系的材料，轨迹未证明；也不能假定额外检索必然补齐声音核验。",
+            "所附唯一图片是封面，没有提供视频采样帧或音频，无法据此认证连续视频覆盖或参考转写的声音准确性。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 85.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0045 的行动没有为新来源正文读取保留轮次；来源地址虽合理，但在当时预算和接口下无法转化为本 HI 可核验的新结论。",
+            "request_0046 未通过引用校验，不能作为成功提交的正向目标。触发报错的 E1 出现在未执行比较的限制说明中，不能据此认定演员伪造了 E1 的内容。"
+          ],
+          "unknowns": [
+            "记者实际问话的完整原语及原声未提供；现有材料只能确认报道如何描述该问题。",
+            "争议位置的真实声音、精确用词及完整回答是否另有明确限定，未被直接核实。",
+            "材料 A 与较长录像的音视频对应、连续覆盖和编辑情况未验证；封面没有建立任何采样时刻或连续区间的对应。",
+            "E25只有取得成功的卡片，没有进入演员输入的正文，不能判断该页是否提供了新的问答证据。",
+            "request_0047.previous_invalid_output 的首条 finding 比 request_0046 原始输出多列了 E24；无法确定校验器实际处理的完整对象版本。两版本都含触发报错的 E1，故不影响已知的拒绝状态及此次处置。",
+            "终端报告是在轮次耗尽后生成，不能证明预算充足时的自主停止质量。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 39,
+        "GIA": 5
+      },
+      "excluded_targets": 6
+    },
+    {
+      "run": "true_24171541709824_r1",
+      "dataset": "true",
+      "case": "24171541709824",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 350578
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 207500
+        }
+      ],
+      "committed_reports": 2,
+      "reported_statuses": {
+        "COMPLETED": 2
+      },
+      "cli_requests_started": 22,
+      "cli_calls_returned_success": 22,
+      "recorded_cli_usage": {
+        "input_tokens": 741121,
+        "cached_input_tokens": 362752,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7510,
+        "reasoning_output_tokens": 4949
+      },
+      "execution": {
+        "raw_proposals": 22,
+        "statuses": {
+          "gia_decision_accepted": 2,
+          "executed": 18,
+          "report_committed": 2
+        },
+        "cli_requests": 22,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "2000年决议最终表决结果、正式交涉形式及正式州际请求总数仍未知；答案没有将这些未知写成已证实。",
+            "2003年请求及回应未取得同期原件；当前具体支持来自E9的事后报道。",
+            "未核实材料A的画面、声音及其与馆藏实物的对应关系；这些不是本次有限文字结论的必要前提。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 91.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "1960与1961年的记载是否对应同一事件尚未完全确定，不能当作两个已确认事件计数。",
+            "未取得正式请求及答复函件、2000年最终表决记录。",
+            "首次检索种子的具体来源未记录；没有足够证据认定其来自标注泄漏。",
+            "E6[17]与E2[2]对返明州时间的叙述存在差异；本报告没有采纳有争议的1903年流转说法。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 98.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未查验旗帜实物或原始缴获登记。",
+            "未取得截至本次核查日期的实时保管确认。",
+            "材料A与馆藏对象的视觉对应未核实；报告明确保留该未知。",
+            "E18返回异题正文的原因未确定，不能将该页面的取得视为目标档案取证成功。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 20,
+        "GIA": 2
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "true_39132300_validation_r3",
+      "dataset": "true",
+      "case": "39132300",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 110969
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 8,
+      "cli_calls_returned_success": 8,
+      "recorded_cli_usage": {
+        "input_tokens": 251667,
+        "cached_input_tokens": 119552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2161,
+        "reasoning_output_tokens": 1511
+      },
+      "execution": {
+        "raw_proposals": 8,
+        "statuses": {
+          "gia_decision_accepted": 2,
+          "executed": 5,
+          "report_committed": 1
+        },
+        "cli_requests": 8,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r3_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未提供完整 HI 逐步取证输入和输出，不能据其局部报告评价整个 HI 调查过程。",
+            "未提供原始视频像素或音频，无法核实媒体内容；两个 GIA 目标没有依赖这类核验结果。",
+            "同期销售原件、首次开售的精确日期及 E2、E5 的来源独立性仍未核实；最终回答未将这些事项写成已知事实，不影响当前有限结论的可判定性。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 95.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "当年销售原件和首次开售精确日期未核验；报告已披露，且不是本局部任务的强制交付项。",
+            "来源之间的独立性未建立。E7链接E5，不能仅按网站数量计算独立佐证数量。",
+            "E1没有内容观察记录，包中也没有实际图像或可听音频；其内容、真实性和覆盖范围均不可判定，但报告没有依赖这些未知作结论。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 6,
+        "GIA": 2
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "true_4124903_r1",
+      "dataset": "true",
+      "case": "4124903",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 388796
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 210546
+        }
+      ],
+      "committed_reports": 2,
+      "reported_statuses": {
+        "COMPLETED": 2
+      },
+      "cli_requests_started": 22,
+      "cli_calls_returned_success": 22,
+      "recorded_cli_usage": {
+        "input_tokens": 843259,
+        "cached_input_tokens": 331520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8832,
+        "reasoning_output_tokens": 6449
+      },
+      "execution": {
+        "raw_proposals": 22,
+        "statuses": {
+          "gia_decision_accepted": 2,
+          "executed": 18,
+          "report_committed": 2
+        },
+        "cli_requests": 22,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 95.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "给定E1与Rutnet公开视频的确切对应、拍摄日期及直接来源仍未确认；最终答案明确保留了这一限制。",
+            "离散帧以外的视频内容和音轨内容未核查，不能据此评价全片连续性或声音；这些不是当前限定结论的必要条件。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0013：局部任务所需的材料来源及确切事件对应仍未核实，却提交COMPLETED。错误在完成状态与局部任务覆盖，不是已报告烟火画面或警方通报的事实捏造。"
+          ],
+          "unknowns": [
+            "E1是否就是cv_F3UkbdbI对应的具体片段，尚无连续画面或其他充分对应证据。",
+            "公开视频的video_material为not_requested；包内没有第二个可供对齐的视频E，也没有展示可明确取得它的下载参数。",
+            "W1-1实际观察了1.567、4.700、7.833、10.967、14.133、17.267、20.400、23.533秒附近的8帧，不能据coverage_span_s推定完整检查0至25.1秒。",
+            "E1虽被探测出一条音轨，但没有提供声音内容；这不是幻听证据，也不是此任务必须新增的核验项目。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 98.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "给定视频的原始来源、拍摄日期和确切事件对应未确认；报告没有据此宣称完成来源鉴定。",
+            "技术事故的具体物理机制未在两条警方短通报中说明，不能进一步补写为已证实的爆炸过程。",
+            "只观察了1.567、7.833、14.133和23.533秒附近的四帧，没有连续视频或声音覆盖。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 18,
+        "GIA": 2
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "true_4124903_r2",
+      "dataset": "true",
+      "case": "4124903",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 330312
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 143515
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 469469
+        }
+      ],
+      "committed_reports": 3,
+      "reported_statuses": {
+        "COMPLETED": 2,
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 37,
+      "cli_calls_returned_success": 37,
+      "recorded_cli_usage": {
+        "input_tokens": 1449462,
+        "cached_input_tokens": 607744,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19887,
+        "reasoning_output_tokens": 15275
+      },
+      "execution": {
+        "raw_proposals": 37,
+        "statuses": {
+          "gia_decision_accepted": 8,
+          "executed": 25,
+          "report_committed": 3,
+          "proposal_not_accepted": 1
+        },
+        "cli_requests": 37,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 93.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "材料A与两个公开视频的确切片段对应、真实拍摄日期和原始来源仍未确认；最终答复保留了这些限制。",
+            "没有全片连续观察或音轨内容证据；原任务并未要求声音一致性检查，不能因此认定幻觉。",
+            "警方原帖只确认意外卡车火灾，不独立证明烟花运输、落下点燃或爆炸的具体机制。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 83.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0013将尚未完成的关键素材对应与来源核查标记为COMPLETED，须修正完成状态或继续取证后重新执行。"
+          ],
+          "unknowns": [
+            "仅有候选公开视频的封面与元数据，未确认材料A来自该视频。",
+            "材料A的确切拍摄时间和来源未确认；已有画面只能支持埃菲尔铁塔附近的场景判断。",
+            "未听取音轨，但报告如实声明，未捏造声音内容。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "警方简短原帖未提供完整事故调查及具体点火机制；报告已准确保留。",
+            "材料A的确切事件归属仍未知，但没有被该工作区冒称为已完成的素材鉴定。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 78.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "候选公开视频未取得可比较的视频内容，无法确认完整片段对应；所示接口没有明确的候选视频下载入库动作。",
+            "材料A仍有大量未观察区间，包括2.133秒至6.267秒附近的过渡；这些位置可能提供新比较信息，但不能预言其中必有封面对应画面。",
+            "两个候选封面相同不能确认原创者、最早发布者或材料A的真实拍摄日期。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 24,
+        "GIA": 6
+      },
+      "excluded_targets": 7
+    },
+    {
+      "run": "vcsl_pair_1_r1",
+      "dataset": "vcsl",
+      "case": "pair_1",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "runtime_error",
+          "elapsed_ms": 75703,
+          "error": {
+            "type": "RuntimeError",
+            "message": "Policy transport failed or used out-of-environment tools: C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\experiments\\sft_data\\runs\\vcsl_pair_1_r1\\requests\\request_0003"
+          }
+        }
+      ],
+      "committed_reports": 0,
+      "reported_statuses": {},
+      "cli_requests_started": 3,
+      "cli_calls_returned_success": 2,
+      "recorded_cli_usage": {
+        "input_tokens": 62809,
+        "cached_input_tokens": 25088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 498,
+        "reasoning_output_tokens": 386
+      },
+      "execution": {
+        "raw_proposals": 2,
+        "statuses": {
+          "executed": 2
+        },
+        "normalized_outputs": [],
+        "incomplete_requests": [
+          {
+            "request_id": "request_0003",
+            "reason": "no_valid_actor_completion",
+            "transport": {
+              "returncode": 1,
+              "elapsed_s": 7.907000000006519,
+              "usage": {},
+              "external_tool_items": [],
+              "transport": "codex_cli_chatgpt",
+              "images": 4
+            }
+          }
+        ],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": null,
+      "candidate_counts": null,
+      "excluded_targets": null
+    },
+    {
+      "run": "vcsl_pair_1_retry1",
+      "dataset": "vcsl",
+      "case": "pair_1",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 540077
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 564970,
+        "cached_input_tokens": 186112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8891,
+        "reasoning_output_tokens": 7626
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 86.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "E29在演员附件清单中出现，但评审包没有其像素；不能独立确认E27/E29的具体匹配细节或细微歧义。",
+            "未提供原标注时间轴与实际下载片段之间的映射记录；时长接近参考值不能证明时间原点完全一致。",
+            "未采样区间的连续对应、真实起止边界、完整播放速度及B前半段的对应范围仍未确定。",
+            "没有官方评测实现和匹配阈值，不能给出官方最终精确率、召回率或F1；可以检查原坐标下的区间交集。"
+          ]
+        },
+        {
+          "actor": "scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包不能说明真实GIA的规划、综合推断或停止能力。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 9,
+        "GIA": 0
+      },
+      "excluded_targets": 3
+    },
+    {
+      "run": "vcsl_pair_4_r1",
+      "dataset": "vcsl",
+      "case": "pair_4",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 451233
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 596800,
+        "cached_input_tokens": 181376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7241,
+        "reasoning_output_tokens": 5911
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 83.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "评审未获得E25、E30、E31、E32像素，不能核验这些帧内容；演员输入记录显示其实际获得过这些图片。",
+            "A演播室画面与标志画面的精确切换时刻，以及B尾部与A的唯一时间对应尚未确定。",
+            "算法处理263帧和248帧不等于模型逐帧复核；演员累计附图记录为A侧16帧、B侧12帧，大量时段未直接观察。",
+            "参考时间轴与下载片段时间轴之间的关系未提供，不能自行按时长比例重映射标注。",
+            "未提供正式指标实现、预测区间提取方式及匹配阈值，不能给出官方精确率、召回率或F1，也不能认定完整定位通过。"
+          ]
+        },
+        {
+          "actor": "GIA/scripted_dispatcher",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "真实GIA如何综合报告及判断完整定位，未被本次运行测量；其评分覆盖率不适用，不计算归一化总分。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 8,
+        "GIA": 0
+      },
+      "excluded_targets": 4
+    },
+    {
+      "run": "vcsl_pair_5_validation",
+      "dataset": "vcsl",
+      "case": "pair_5",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 532750
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 616464,
+        "cached_input_tokens": 185600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10117,
+        "reasoning_output_tokens": 8705
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0012存在关键结果交付遗漏：另外四组候选已有可报告的成对视觉锚点，却只作为算法范围列出。修复时应补齐这些锚点结论及图片引用，同时保留连续性和边界限制；不能直接作为充分完成的定位报告导出。"
+          ],
+          "unknowns": [
+            "评审未附E25及E32—E39。演员附件清单显示曾收到这些图片，但评审不能据清单推断其内容；开头帧缺失尤其影响request_0008、request_0009的具体决策评价。",
+            "没有完整视频像素，不能核实候选区间内部连续性、全部对应片段及真实剪辑边界。最终17个A帧和16个B帧的分散观察不等于全视频观看。",
+            "未提供官方指标实现、正式预测提取规则，以及标注时间轴与本地解码时间轴的核对结果，因此正式VCSL指标未知。",
+            "若参考四元组按A起、B起、A止、B止理解，A38.209—40.536秒候选位于两个A标注区间之外，但E7/E11、E8/E12仍有明显视觉对应。重复内容、标注范围和时间轴之间的关系尚未解决，不能单凭标注否定这些像素对应。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 9,
+        "GIA": 0
+      },
+      "excluded_targets": 3
+    },
+    {
+      "run": "vcsl_pair_6_r1",
+      "dataset": "vcsl",
+      "case": "pair_6",
+      "mode": "hi",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 398203
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 563229,
+        "cached_input_tokens": 193920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6165,
+        "reasoning_output_tokens": 4883
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "W1-1（HI）",
+          "score_on_assessed": 78.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0008–request_0011持续重复已见图片比较，未推进可执行的边界或空档核查，却耗尽后续调查轮次；这些动作不能因执行成功而作为正向模仿目标。"
+          ],
+          "unknowns": [
+            "官方四元组字段顺序、官方计分实现及原始标注时间轴到导入片段时间轴的明确映射缺失，不能宣布官方定位通过。",
+            "演员实际直接看到每侧12张独立帧；其间是否始终连续对应、是否存在短暂编辑以及精确对应边界仍未验证。",
+            "B在首个已见帧5.1秒之前及最后已见帧结束24.201秒之后的画面未提供；算法处理这些范围不等于演员视觉核验。",
+            "材料制作先后和原创归属未验证，报告也未据此作结论。"
+          ]
+        },
+        {
+          "actor": "GIA（scripted_dispatcher）",
+          "score_on_assessed": null,
+          "coverage": null,
+          "critical_errors": [],
+          "unknowns": [
+            "本包不能确定GIA能力、全局结论质量或全局停止是否充分。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 7,
+        "GIA": 0
+      },
+      "excluded_targets": 5
+    },
+    {
+      "run": "videosham_0069_r1",
+      "dataset": "videosham",
+      "case": "0069",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 479921
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 101687
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 511625
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 448812
+        },
+        {
+          "actor": "W3-1",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 518671
+        }
+      ],
+      "committed_reports": 5,
+      "reported_statuses": {
+        "INCOMPLETE": 5
+      },
+      "cli_requests_started": 60,
+      "cli_calls_returned_success": 60,
+      "recorded_cli_usage": {
+        "input_tokens": 2171548,
+        "cached_input_tokens": 946944,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 45994,
+        "reasoning_output_tokens": 38699
+      },
+      "execution": {
+        "raw_proposals": 59,
+        "statuses": {
+          "gia_decision_accepted": 6,
+          "executed": 48,
+          "report_committed": 5
+        },
+        "cli_requests": 60,
+        "normalized_outputs": [],
+        "incomplete_requests": [
+          {
+            "request_id": "request_0001",
+            "reason": "unparsed_actor_output",
+            "transport": {
+              "returncode": 0,
+              "elapsed_s": 31.04700000002049,
+              "usage": {
+                "input_tokens": 23006,
+                "cached_input_tokens": 18048,
+                "cache_write_input_tokens": 0,
+                "output_tokens": 646,
+                "reasoning_output_tokens": 408
+              },
+              "external_tool_items": [],
+              "transport": "codex_cli_chatgpt",
+              "images": 0,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "returncode": 0
+                }
+              ],
+              "configured_model": {
+                "model": "gpt-6-astra",
+                "model_provider": null,
+                "model_reasoning_effort": "xhigh",
+                "profile": null
+              }
+            }
+          }
+        ],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 92.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0001因JSON语法错误未形成可接受的完整决策；该失败不能被request_0002的成功覆盖，也不能被补写成已执行行动。"
+          ],
+          "unknowns": [
+            "request_0001的原始输出缺失，只能确认解析失败，无法评价其事实内容、引用和具体修正幅度。",
+            "官方标注为6–10秒，最终确认的局部对应集中在A的2.76–3.20秒；官方视频与本地材料的时间轴关系未提供。不能擅自平移标注或认定已覆盖官方区间。",
+            "最终没有提交完整编辑区间，不能直接计算正式区间指标。若仅将2.76–3.20秒的采样跨度作为诊断窗口，它与6–10秒无交集；这不构成对真实局部像素对应的反证。",
+            "A、B全段连续时间映射、重复画面的实际起止、其他编辑以及A是否包含相应抬头动作仍未确定。历史采样跨度和算法处理全段均不等于连续视觉核验。",
+            "B的可听内容、音轨能否正常解码及其语义影响未知；当前音轨数量不能确定缺失原因。两份材料的制作方向、最早来源和原创身份也未核实。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0010—request_0013在主要时序问题未解决时持续重复查看已知帧组，消耗剩余取证轮次，是导致局部调查未充分完成的关键决策缺陷；这属于行动质量问题，不是最终报告捏造事实。"
+          ],
+          "unknowns": [
+            "除0秒起始帧外，可靠的跨视频时间映射、具体重复机制、连续播放速度及编辑边界未建立。",
+            "视觉高度一致的A内采样帧是否逐像素相同、其间是否持续保持同一画面，无法仅凭当前附件确定。",
+            "官方6—10秒标注与当前片段时间轴的关系及该区间连续画面尚未核验；没有可用于完整定位评价的预测区间。",
+            "B的来源身份、最早发布关系及两份材料的实际派生方向未确认。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0017 在已知必要音频输入缺失时仍尝试双输入音频对齐，不宜作为正向动作目标；其执行链接不能证明获得了有效对齐结果。"
+          ],
+          "unknowns": [
+            "B 音轨是否可解码、是否包含可辨听声音，以及具体内容和时间位置。",
+            "声音内容是否影响对应画面的理解；当前没有听觉证据或转写。",
+            "A 音轨缺失的原因、原始拍摄是否有声，以及两份文件的来源关系。",
+            "官方复制帧区间未由本角色材料核实；完整时序定位不属于该 HI 的局部音频任务。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 77.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0026至request_0031的重复切换未解决持续存在的时间对应缺口，并耗尽可用于进一步核验的行动轮次，属于主要决策缺陷。",
+            "request_0032未纳入已可见的E27/E13重复画面线索，且未完成局部核心时间对应任务；不能作为充分完成任务的正向报告目标。"
+          ],
+          "unknowns": [
+            "每侧仅提供9个采样帧，按各帧0.04秒计，各覆盖0.36秒：约占A的3.53%、B的8.91%。E5处理255帧和101帧不等于演员逐帧看过，也未产生可靠匹配。",
+            "E27与E13视觉上一致支持两个采样时刻复现同一画面的线索，不能证明10.00至10.16秒连续定格、重复起止边界或完整编辑机制。",
+            "该演员没有输出编辑区间，包中也没有足以确认官方标注时轴映射的连续媒体证据，无法计算有依据的区间IoU或完整定位指标。不能因样本靠近官方6–10秒区间而视为定位通过。",
+            "完整跨视频时间映射、截取或重排方式、来源身份和制作先后仍未确定；其他角色后续结论不能补作该演员当时的证据。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "A未采样区间是否包含目标抬头动作，以及该动作与B的可靠时间对应，仍未知。",
+            "B抬头动作的精确起止、连续性和持续时间，不能由现有离散帧确定。",
+            "E5全帧处理但无候选，不能据此确定完整编辑方式、动作省略或连续变速关系。",
+            "官方00:06—00:10与所提供短片时间轴的关系未核验；该标注不能替代姿态像素证据。本地任务也未要求提交完整编辑区间，不能据此虚构区间指标。",
+            "本地任务不要求声音核查，报告也未提出声音断言；不因其他角色的音频缺口扣除此角色分数。"
+          ]
+        },
+        {
+          "actor": "W3-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0057遗漏局部任务明确要求核查、且已由实际成对像素支持的A 2.92、4.00、6.68秒对应关系，并把它们统一列为未确认。这是主要任务信息遗漏，足以阻止该报告直接进入正向SFT候选。"
+          ],
+          "unknowns": [
+            "最终实际观察为A、B各14个取样时刻。按每帧0.04秒计算，分别约占文件时间的5.5%和13.9%；coverage_span_s覆盖文件起止不等于全片已看。E5处理过255/101帧但没有匹配候选，也不构成全段对应确认。",
+            "A重复画面的连续保持时长、完整重复区间、是否存在其他顺序变化，以及A未查看区间是否出现抬头动作，仍未确定。",
+            "官方6–10秒标注与当前文件时间轴的适用关系没有核实。报告没有提交完整编辑区间，不能据此计算完整定位指标或判为定位通过；也不能因局部证据位于标注外就否定像素支持的重复。",
+            "声音内容没有提供，但不属于本HI的局部任务，且本HI未声称完成试听、转写或声音语义核查。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 35,
+        "GIA": 6
+      },
+      "excluded_targets": 19
+    },
+    {
+      "run": "videosham_1007_validation",
+      "dataset": "videosham",
+      "case": "1007",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 495796
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 162827
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 513421
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 409016
+        },
+        {
+          "actor": "W3-1",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 270234
+        },
+        {
+          "actor": "W3-2",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 362907
+        }
+      ],
+      "committed_reports": 6,
+      "reported_statuses": {
+        "INCOMPLETE": 4,
+        "COMPLETED": 2
+      },
+      "cli_requests_started": 72,
+      "cli_calls_returned_success": 72,
+      "recorded_cli_usage": {
+        "input_tokens": 2767072,
+        "cached_input_tokens": 1148544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49246,
+        "reasoning_output_tokens": 40794
+      },
+      "execution": {
+        "raw_proposals": 72,
+        "statuses": {
+          "gia_decision_accepted": 11,
+          "executed": 55,
+          "report_committed": 6
+        },
+        "cli_requests": 72,
+        "normalized_outputs": [
+          "request_0031"
+        ],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 80.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "官方描述要求将0—15秒抽帧为10秒，而包内媒体属性为A约8秒、B约20.053秒；缺少官方素材到实际输入的时间轴映射，无法确认差异原因或评定完整官方区间一致性。",
+            "没有提供连续视频或可试听音频，无法独立核验全部编辑位置、完整动作连续性、宣传卡在A全片的分布及声音含义。",
+            "E21等部分HI报告引用图片未附给评分员，其视觉断言只能作为GIA当时接收的上下文，不能当作本次独立像素核验结果。",
+            "候选B的来源身份、制作先后和具体编辑机制仍未由材料确认；这些未知不妨碍有明确范围的局部比较。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 67.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0013漏用已观察的E24/E5相邻帧突变及多组成对锚点，将能够确认的局部时序差异主要保留为候选，实质削弱了局部任务答案。",
+            "request_0010—0012的重复读取消耗轮次，随后以缺乏充分成对核验解释INCOMPLETE；该缺口描述没有准确反映已有证据。未发现捏造人物、船桨或声音内容。"
+          ],
+          "unknowns": [
+            "官方说明要求将0—15秒素材通过丢帧制作成10秒视频，而已提供媒体属性为A长8.000秒、B长20.053秒；缺少官方时间轴与实际文件的映射，不能直接计算完整定位指标或认定标注已被证实。",
+            "完整编辑操作、全部边界、制作先后及B的原始来源身份仍未知；这些未知不否定已核实的局部对应和相邻帧突变。",
+            "两侧大量采样空档及B的后段未由该角色直接查看，不能据此评价全片差异是否穷尽；其他角色后来取得的宣传卡不属于本角色已见证据。",
+            "音轨内容及听感差异未知。该角色诚实声明未检查，且局部任务聚焦画面与时序，不据此判定声音幻觉或强制增加听觉任务。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 98.75,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "实际对白、音乐、环境声、音量、听感和声音编辑差异没有得到直接核验；这些是任务事实未知，不是报告捏造。",
+            "FFT 候选是否对应真实相同的声音内容、偏移误差及全程音画同步仍未知。",
+            "声音与画面结合是否改变事件含义或观看感受仍未知。",
+            "离散图像不能证明完整视频的连续对应、完整编辑范围或来源身份。",
+            "官方说明中的 0–15 秒及目标 10 秒，与实际记录的 A 8 秒、B 20.053 秒之间缺少时间轴映射；本局部任务没有可评分的完整编辑区间预测。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 67.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0031 遗漏已观察到的 E24→E5 相邻帧突变及 E20 的中间桨入画状态，未充分回答具体过渡差异。这是任务核心遗漏，不是要求穷尽次要像素差异。",
+            "request_0025—0029 持续重复已见材料，未推进关键缺口；不能因动作全部执行成功或最终措辞保守，将这些行动作为高质量正向目标。"
+          ],
+          "unknowns": [
+            "E13 中 B 4.070737秒的 E9 像素没有提供给本演员或本次评审；邻近的 E29（4.104104秒）不能替代精确候选核验。",
+            "离散帧不能证明两侧未观察区间的连续对应，也不足以确定完整删减范围、编辑机制或真实运动速度。",
+            "官方记录描述0—15秒处理成10秒，但本次媒体时长为A 8秒、B约20.053秒，二者的版本与时间轴关系未核实，不能据此计算可靠的官方区间定位成绩。",
+            "上述未知是证据支持范围的限制，不使已经发现的局部遗漏通过，也不意味着所有诚实的有限报告都存在关键评审缺件。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 67.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0043遗漏了可完成的B开头核查，并把最后一轮未附像素作为状态理由。request_0034已提供B的E34、E35；request_0039和request_0042又将E34、E35、E18与A的E14、E15共同提供。图片直接支持采样开头均为相近山湖景观的有限回答。",
+            "request_0043未利用已反复共同提供的E8/E12完成末端候选的可见内容比较。图片#5与#9中的桨、红色舟体、山体和云倒影构图高度一致。不能替演员发明此前已经写出的核验结论，但末轮缺少E12不能成为没有可用配对材料的理由。"
+          ],
+          "unknowns": [
+            "A未观察区间是否包含同类宣传卡，以及B额外景观在A中的完整对应仍未知；少数A采样帧不能证明全片缺失。",
+            "B景观转宣传卡、宣传卡转黑屏的准确边界及区间内部连续性尚未核实。E42、E43表明15.516和16.517秒已经出现宣传卡，不能把17.484秒当成已确认的起点。",
+            "E13的处理范围与锚点不等于完整人工视觉覆盖，也不证明所有未匹配区间被删除。",
+            "未提供听取证据；E33的数值音频相关候选不能证明听感、语义或说话人一致。本局部任务不要求完成这些声音判断。",
+            "官方说明中的0—15秒与10秒目标如何对应实际A的8秒、B的20.053秒，材料没有解释；本演员也未输出可用于完整编辑定位评分的区间。",
+            "没有W2-2针对A全段宣传卡对应的专项核查结果，不能借用result中后续出现的E49替其完成。"
+          ]
+        },
+        {
+          "actor": "W3-1",
+          "score_on_assessed": 90.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "B采样点之间的完整运动、精确编辑机制及相关状态在A其他位置是否出现，仍未证实；报告没有将这些未知作为已完成事实。",
+            "官方描述要求将0—15秒素材处理成10秒，而包内媒体信息为A约8秒、B约20.053秒，二者的时间轴关系未解释。完整官方区间指标无法据此核定，但这不是本次局部HI任务的完成条件。"
+          ]
+        },
+        {
+          "actor": "W3-2",
+          "score_on_assessed": 90.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "A未直接观察的帧中是否出现宣传卡仍未知；E49的全范围算法处理和无匹配结果不足以证明全段不存在。",
+            "B开头三个采样点之间是否存在其他内容，以及语音前文内容未知。报告没有声称完成这些核查。",
+            "B宣传卡的精确起止及其是否持续到文件结束未知，局部任务明确不要求精确切换边界。",
+            "官方描述为0—15秒丢帧形成10秒视频，而工具记录显示A为8秒、B约20.053秒，两套时间范围的对应关系未提供，不能据标注推定具体编辑区间或过程。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 39,
+        "GIA": 9
+      },
+      "excluded_targets": 24
+    },
+    {
+      "run": "videosham_1028_r1",
+      "dataset": "videosham",
+      "case": "1028",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 396483
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 232562
+        }
+      ],
+      "committed_reports": 2,
+      "reported_statuses": {
+        "COMPLETED": 1,
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 23,
+      "cli_calls_returned_success": 23,
+      "recorded_cli_usage": {
+        "input_tokens": 840042,
+        "cached_input_tokens": 268928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10771,
+        "reasoning_output_tokens": 7909
+      },
+      "execution": {
+        "raw_proposals": 23,
+        "statuses": {
+          "gia_decision_accepted": 2,
+          "executed": 17,
+          "report_committed": 2,
+          "proposal_not_accepted": 2
+        },
+        "normalized_outputs": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "标题差异在未查看帧间是否连续、其准确起止及全部其他视觉差异尚未确定。",
+            "官方0—6秒标注与实际4.84秒材料的时间轴关系未提供；完整官方区间定位成绩不能确认。",
+            "对白、配乐、环境声、听感及声画语义关系未核验。",
+            "B的来源身份、版本先后、直接派生关系和修改者未核实。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 85.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0009至request_0012持续重复复看并消耗剩余轮次，不能因最终报告事实正确而作为正向行动序列整体导出。"
+          ],
+          "unknowns": [
+            "每侧7帧按容器帧时长合计覆盖0.28秒，不能据此确认其余4.56秒的视觉状态。",
+            "0秒蓝框透明表现差异的形成原因、过渡过程与持续时间未知。",
+            "未输出连续编辑区间，官方完整定位不能评分为通过。",
+            "实际编辑方向、来源身份及音频内容未核验。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 75.0,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0016、request_0018使用当时Workspace View中不可focus的E5、E6、E7、E8，完整请求明确未被接受。"
+          ],
+          "unknowns": [
+            "未直接提供声音像素对应的音频内容或可靠转写，具体听感、对白、配乐和环境声未知。",
+            "FFT相关候选不能确定逐采样一致、局部音量变化或全部声画同步关系。",
+            "是否存在可通过其他未开放能力完成的声音核验，本包不能确定；不能假设HI可以调用目录之外的工具。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 14,
+        "GIA": 2
+      },
+      "excluded_targets": 7
+    },
+    {
+      "run": "videosham_1028_r2",
+      "dataset": "videosham",
+      "case": "1028",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 230796
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 158140
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 161219
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 104234
+        }
+      ],
+      "committed_reports": 4,
+      "reported_statuses": {
+        "COMPLETED": 3,
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 21,
+      "cli_calls_returned_success": 21,
+      "recorded_cli_usage": {
+        "input_tokens": 733946,
+        "cached_input_tokens": 344704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13765,
+        "reasoning_output_tokens": 9993
+      },
+      "execution": {
+        "raw_proposals": 20,
+        "statuses": {
+          "gia_decision_accepted": 3,
+          "executed": 13,
+          "report_committed": 4
+        },
+        "cli_requests": 21,
+        "normalized_outputs": [],
+        "incomplete_requests": [
+          {
+            "request_id": "request_0005",
+            "reason": "unparsed_actor_output",
+            "transport": {
+              "returncode": 0,
+              "elapsed_s": 52.546000000002095,
+              "usage": {
+                "input_tokens": 35675,
+                "cached_input_tokens": 18048,
+                "cache_write_input_tokens": 0,
+                "output_tokens": 1095,
+                "reasoning_output_tokens": 725
+              },
+              "external_tool_items": [],
+              "transport": "codex_cli_chatgpt",
+              "images": 4
+            }
+          }
+        ],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "官方0–6秒与当前4.84秒片段的时间轴关系未提供，完整官方区间指标不可判定。",
+            "声音和言语的具体内容及差异未经直接核验。",
+            "候选来源身份、制作顺序及未观察区间的其他修改仍未知。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 93.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0005存在明确的解析拒绝，未产生可用结构化决策；不能将其计为成功执行。"
+          ],
+          "unknowns": [
+            "request_0005缺少原始输出及完整决策前材料，无法判断其事实内容、具体动作或错误成因。",
+            "标题差异的完整起止时间及未观察区间表现未确定。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 95.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "四组锚点之间是否存在短暂编辑或差异仍未知。",
+            "同一镜头对应不证明候选的原始来源身份或完整制作关系。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "真实透明度数值、渐变参数及造成外观变化的具体机制未知。",
+            "A在0.04–0.12秒没有成对补查，不能据B侧变化确定两版本差异的精确消失边界。",
+            "未观察区间仍不能视为无差异。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 92.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "是否存在可辨认言语、具体言语内容及其与CRPS标题的关系未知。",
+            "声音的音量、音色、背景声差异及其时间位置未知。",
+            "数值对齐不能解决这些未知，因此本地任务完成度不能按高grounding分数认定通过。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 16,
+        "GIA": 3
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "videosham_2010_r1",
+      "dataset": "videosham",
+      "case": "2010",
+      "mode": "bridge",
+      "usage_split": "development",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 211687
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 166437
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 195171
+        }
+      ],
+      "committed_reports": 3,
+      "reported_statuses": {
+        "COMPLETED": 3
+      },
+      "cli_requests_started": 19,
+      "cli_calls_returned_success": 19,
+      "recorded_cli_usage": {
+        "input_tokens": 668631,
+        "cached_input_tokens": 335488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13813,
+        "reasoning_output_tokens": 10187
+      },
+      "execution": {
+        "raw_proposals": 19,
+        "statuses": {
+          "gia_decision_accepted": 3,
+          "executed": 13,
+          "report_committed": 3
+        },
+        "cli_requests": 19,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r2",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "B是否为A的具体制作来源、原始来源身份及严格来源帧对应未确认。",
+            "官方38–41秒与本地约3秒片段的时间映射及完整编辑边界未提供。",
+            "声音内容、音画同步及采样间隙中的其他差异未知；最终答案没有将这些未知当作通过。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "离散帧之间是否存在其他局部变化或瞬时编辑未知。",
+            "时长相差一帧的原因及发生位置未知。",
+            "声音内容不属于该HI的主要局部任务；报告已说明未核查，不能据此扣作声音幻觉。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 83.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0011将缺少关键声音内容及同步证据的局部调查标记为COMPLETED。需要修正完成状态；问题是完成性声明，不是音频幻觉。"
+          ],
+          "unknowns": [
+            "对白、音乐、环境声、听感和语义是否相同均未知。",
+            "声音是否与动作同步、是否发生声音移植及其含义影响未知。",
+            "现有目录支持音频对齐，但没有可直接听辨或转写的操作，无法在该环境中充分完成局部主目标。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 100.0,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "A与B所比较帧是否来自同一拍摄瞬间未知。",
+            "视角、姿态和遮挡是否足以完全解释差异，还是存在局部编辑，仍未知。",
+            "这些未知属于局部任务明确允许保留的解释边界，不使已观察到的可见性差异失效。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 15,
+        "GIA": 3
+      },
+      "excluded_targets": 1
+    },
+    {
+      "run": "videosham_4126_full_intervals_r7",
+      "dataset": "videosham",
+      "case": "4126",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 581516
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 488710,
+        "cached_input_tokens": 206208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13489,
+        "reasoning_output_tokens": 12248
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0011存在实质性的终轮证据保留缺陷：当前有多组A/B对照可供保留，实际安排却使下一独立会话仅剩5.333333秒一组对照，且没有后续取证机会。该问题属于行动规划和信息保留，不是最终报告捏造或错误标记完成。"
+          ],
+          "unknowns": [
+            "全部差异事件的数量、连续范围及精确起止边界未由给定采样像素核实；算法处理全片不消除这些未知。",
+            "官方原视频编辑描述为1—7秒，但未提供其与给定6秒片段的裁切时间映射，也未提供可计算的区间金标准及指标细节，无法认证官方区间指标。",
+            "E12、E15虽已生成，却未出现在任何目标的实际附图中，评审包也没有其像素；不能把它们算作已经完成的视觉核验。",
+            "E45所示局部下肢的黑衣人物身份及该时刻A侧对应画面尚未充分核验；终轮已准确披露相关限制。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 10,
+        "GIA": 0
+      },
+      "excluded_targets": 2
+    },
+    {
+      "run": "videosham_4126_full_intervals_r8",
+      "dataset": "videosham",
+      "case": "4126",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 616671
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "INCOMPLETE": 1
+      },
+      "cli_requests_started": 12,
+      "cli_calls_returned_success": 12,
+      "recorded_cli_usage": {
+        "input_tokens": 488929,
+        "cached_input_tokens": 211072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12577,
+        "reasoning_output_tokens": 11311
+      },
+      "execution": {
+        "raw_proposals": 12,
+        "statuses": {
+          "executed": 11,
+          "report_committed": 1
+        },
+        "cli_requests": 12,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0006将当次唯一仍可见的早期阳性配对E20/E24（1.0秒）换出。历史E10/E16（0.5秒）和E20/E24的像素确实支持早期差异，但后续输入没有恢复这些配对或保存其具体视觉判断，造成与全部区间任务直接相关的信息损失。此错误归于前序保留决策，不转嫁为终轮对不可见历史的漏报。",
+            "request_0008看到E28中1.967秒的B没有目标人物，却未保留这一阴性约束。所取三张A与E28、E29、E30、E31合计仅7张图片，本可同时保留阴性帧和三组新配对；保留另一组阳性配对挤掉了边界依据。",
+            "request_0011在提交前最后一次行动中丢弃了当次可见的E36（B在2.2秒无人）和E31/E34（5.933秒差异配对），终轮因此没有阴性边界约束，且所保留的最晚命中退至5.8秒。这是可在既有工具和容量内改善的选择。"
+          ],
+          "unknowns": [
+            "全部满足条件的连续区间、区间数量及真实起止边界仍未知。提供的离散像素不足以穷尽未观察空档。",
+            "官方00:01–00:07编辑描述与给定0–6秒片段的时间轴映射未提供；也没有可直接计算完整定位指标的逐帧可见性真值和具体指标定义，不能给出时间IoU、完整召回率或边界误差。",
+            "现有12轮、每轮8图且没有全量人物可见性判定后端的能力，不能保证穷尽任意逐帧变化。构造限制与已能确定的保留决策缺陷应分别记录；这些案件层面的未知不构成终轮报告评审的关键资料缺失。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 9,
+        "GIA": 0
+      },
+      "excluded_targets": 3
+    },
+    {
+      "run": "videosham_4126_report_validation_r7",
+      "dataset": "videosham",
+      "case": "4126",
+      "mode": "hi",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 149312
+        }
+      ],
+      "committed_reports": 1,
+      "reported_statuses": {
+        "COMPLETED": 1
+      },
+      "cli_requests_started": 4,
+      "cli_calls_returned_success": 4,
+      "recorded_cli_usage": {
+        "input_tokens": 135459,
+        "cached_input_tokens": 61184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2387,
+        "reasoning_output_tokens": 1562
+      },
+      "execution": {
+        "raw_proposals": 4,
+        "statuses": {
+          "executed": 3,
+          "report_committed": 1
+        },
+        "cli_requests": 4,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_by_actor",
+      "scores": [
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 96.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "官方编辑描述为00:01–00:07，而给定两份材料均长6秒；包内没有提供原始时间轴到片段时间轴的映射，不能认证官方区间指标。",
+            "离散帧之间的变化、完整差异区间及精确起止点未确定；1.967秒人物不在两侧画面中，也不能单独证明编辑事件在此中断。",
+            "未提供声音内容或音频比较结果。动作目录中的 audio 对齐选项不等于已经取得听感、语义或说话人一致性证据。",
+            "实际编辑方向、发布来源、作者、拍摄时间地点及制作先后未由当前材料确认。上述未知不妨碍判断本次有限局部报告是否合格。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "excluded_targets": 0
+    },
+    {
+      "run": "videosham_4126_split_intervals_r7",
+      "dataset": "videosham",
+      "case": "4126",
+      "mode": "bridge",
+      "usage_split": "construction_validation",
+      "runtime_returned_result": true,
+      "trajectory_exported": true,
+      "outcomes": [
+        {
+          "actor": "W1-1",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 1020125
+        },
+        {
+          "actor": "W1-2",
+          "round_index": 1,
+          "run_status": "reported",
+          "elapsed_ms": 1131577
+        },
+        {
+          "actor": "W2-1",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 957641
+        },
+        {
+          "actor": "W2-2",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 1051500
+        },
+        {
+          "actor": "W2-3",
+          "round_index": 2,
+          "run_status": "reported",
+          "elapsed_ms": 499890
+        },
+        {
+          "actor": "W3-1",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 793187
+        },
+        {
+          "actor": "W3-2",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 860485
+        },
+        {
+          "actor": "W3-3",
+          "round_index": 3,
+          "run_status": "runtime_error",
+          "elapsed_ms": 169155,
+          "error": {
+            "type": "OSError",
+            "message": "[Errno 28] No space left on device"
+          }
+        },
+        {
+          "actor": "W3-3",
+          "round_index": 3,
+          "run_status": "reported",
+          "elapsed_ms": 348750
+        }
+      ],
+      "committed_reports": 8,
+      "reported_statuses": {
+        "INCOMPLETE": 8
+      },
+      "cli_requests_started": 106,
+      "cli_calls_returned_success": 106,
+      "recorded_cli_usage": {
+        "input_tokens": 4694952,
+        "cached_input_tokens": 1642496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 89880,
+        "reasoning_output_tokens": 75852
+      },
+      "execution": {
+        "raw_proposals": 106,
+        "statuses": {
+          "executed": 88,
+          "report_committed": 8,
+          "gia_decision_accepted": 10
+        },
+        "cli_requests": 106,
+        "normalized_outputs": [],
+        "incomplete_requests": [],
+        "scope": "execution linkage only; does not establish factual or decision quality"
+      },
+      "assessment": "assessment_r6_sources_by_actor",
+      "scores": [
+        {
+          "actor": "GIA",
+          "score_on_assessed": 91.25,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "全部差异事件的数量、完整起止及未观察空档中的状态仍未确定；本次不能认证完整定位成功。",
+            "官方说明的00:01–00:07与给定6秒片段之间缺少已核实的时间原点映射，且编辑操作范围不等于人物实际可见范围，因此无法计算可信的官方区间匹配指标。",
+            "累计观察记录不能证明每张历史图片的判断已传入后续独立会话。HI此前具体保留、读取和报告选择不在本次监督目标中，不能据此另行给HI评分。",
+            "未提供独立人工真值复核，不能把本次模型评估描述为人工认证。"
+          ]
+        },
+        {
+          "actor": "W1-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0021的最后一次取证选择未保留当前可见的关键退出边界。E62右缘仍有极窄的人物衣袖或手臂残余，E70对应位置没有；E63/E71则均未见该人物。将这些图片全部换出，又没有可传递的语义记录，使最终独立会话无法据此报告边界。",
+            "轨迹未完成全部区间定位，不能作为完整定位成功样本整体导出。最终报告已诚实披露这一点；该缺陷不构成request_0023的虚假完成或幻觉。"
+          ],
+          "unknowns": [
+            "未成对检查的中间空档是否存在额外状态变化，现有采样不能穷尽判定。",
+            "E51在0.200秒画面下缘出现细小暗色入画部分，E79对应位置没有；结合随后更明显的人物画面形成起点候选，但精确的首次可辨认帧仍适合局部放大核查。",
+            "官方原视频编辑描述为1–7秒，未提供其与当前6秒素材的截取时间映射，也没有本局部任务的逐帧可见性真值。因此不能计算可信的官方区间IoU或完整边界误差。",
+            "未提供后段工作区的最终结果或下游GIA决策，不能判断全局任务最终是否完成。"
+          ]
+        },
+        {
+          "actor": "W1-2",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0022的最终附图选择丢失当时已经可见、且直接关系任务起点与结尾的E33/E26和E8/E6帧对。此缺陷应在该行动及后续输入上修复，不能通过要求request_0024复述其当前不可见的历史像素来弥补。"
+          ],
+          "unknowns": [
+            "所供采样不足以确定全部事件区间、区间之间是否中断以及准确转变边界；尚未检查的帧仍可能改变完整定位结果。",
+            "官方编辑说明的1–7秒与两段6秒素材之间的时间转换、适用于本局部可见性任务的完整区间真值及具体官方计算指标未提供，无法计算可靠的官方区间得分。这不妨碍判断当前行动与部分报告是否合格。"
+          ]
+        },
+        {
+          "actor": "W2-1",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0046的终态证据选择存在实质缺陷：当前E5/E7可核实首帧，E51/E79显示0.200秒下缘局部差异，E62/E70显示1.333333秒右缘仍有差异；输出将这些帧全部移出下一输入。其后报告的信息缺口应追溯到该选择及框架的观察保留机制，不能归为最终报告捏造或偷看。"
+          ],
+          "unknowns": [
+            "未提供空档的全部像素，不能确定局部全部连续差异区间、排除其他短暂差异或计算完整召回。",
+            "任务文字引述0.033333–0.166667秒已有无人物记录，但本包没有该范围所有帧，不能独立认证每一帧。",
+            "官方原视频编辑描述为00:01–00:07，未提供它与给定6秒素材的明确时间轴映射，也没有当前局部逐帧金标准，因此不能计算可信的官方区间IoU或据此认证边界。",
+            "没有本评估角色之后的新GIA决定或全局最终结果，不能推断报告被如何采用。"
+          ]
+        },
+        {
+          "actor": "W2-2",
+          "score_on_assessed": 73.75,
+          "coverage": 1.0,
+          "critical_errors": [
+            "调查阶段持续用整批复看替代边界取证，关键空档没有得到足够检查，局部完整定位目标未完成。",
+            "焦点选择反复使刚观察的内容退出下一独立会话，而历史只保留元数据，没有保存视觉判读。这是此前的证据保留和行动选择问题，不能转嫁为最终报告必须凭空恢复历史像素的义务。"
+          ],
+          "unknowns": [
+            "完整差异段数量、精确起止边界以及采样间是否中断仍未知；这些是报告已准确披露的调查未知，不构成最终目标的关键评审未知。",
+            "官方“00:01–00:07”编辑描述与给定6秒材料的时间映射及可见性区间金标准未提供，不能据此计算可信的完整区间指标。历史阴性帧还表明，编辑操作区间不能直接等同于目标人物始终可见的区间。",
+            "包内没有后续GIA决策或全局最终答案，本评估不推定其内容或质量。"
+          ]
+        },
+        {
+          "actor": "W2-3",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "未采样帧中是否存在短暂中断、重新出现及其他差异段仍未知。所有所附对应帧均显示目标差异，不足以排除帧间空档中的变化。",
+            "官方编辑描述为原视频00:01–00:07，但未提供该时间轴与两段6秒材料的转换关系，也未提供当前局部任务的完整像素区间参考。因此不能认证正式区间IoU、召回率或完整边界误差；不能直接把官方描述截成当前金标准。",
+            "未提供后续GIA决策或最终全局结果，不评价该HI报告是否被正确用于全局停止。这些调查或下游未知不构成当前准确INCOMPLETE报告的关键评审材料缺失。"
+          ]
+        },
+        {
+          "actor": "W3-1",
+          "score_on_assessed": 87.5,
+          "coverage": 1.0,
+          "critical_errors": [],
+          "unknowns": [
+            "官方说明的原视频00:01–00:07与给定6秒素材缺少明确时间轴映射，不能计算可信的官方区间IoU或边界误差，也不能将该说明直接当作本局部任务的金标准。",
+            "当前包不支持判断0–6秒全局定位是否完成；result为null，其他工作区状态不替代其报告或后续GIA决策。",
+            "起点处极小的边缘露出与残留影像需要明确一致的可见性判定口径；这一问题不妨碍核验终局实际声称的尾段。"
+          ]
+        },
+        {
+          "actor": "W3-2",
+          "score_on_assessed": 81.25,
+          "coverage": 1.0,
+          "critical_errors": [
+            "调查阶段在存在具体可行补查方向时反复切换旧帧，未解决局部任务的边界和连续性要求；不能把最终诚实报告当作完整定位成功。",
+            "request_0084没有把当前可见的E90/E98阳性对照保留到强制报告输入，却保留两组相近阴性对照，造成关键出现边界证据流失。这是前序材料选择缺陷，不是request_0086凭空遗漏仍可见事实。",
+            "未发现终次报告存在可确认的事实捏造、非法引用或错误完成状态。"
+          ],
+          "unknowns": [
+            "离散附件不足以确定本局部范围内全部真实差异区间及命中之间是否有短暂中断。",
+            "1.566667秒B右缘及其裁剪可见细小黑块，但仅凭这些像素不能可靠确定它属于目标人物；这条线索尚需邻帧核查。",
+            "官方“00:01–00:07移除黑衣人物”描述没有提供本地6秒视频的明确时间换算和逐帧可见性金标准，不能据此计算完整区间IoU或真实边界误差。",
+            "没有所评演员以外的全局完成结果可供评价；其他工作区的磁盘错误不能归为W3-2的执行失败。"
+          ]
+        },
+        {
+          "actor": "W3-3",
+          "score_on_assessed": 82.5,
+          "coverage": 1.0,
+          "critical_errors": [
+            "request_0093–request_0095反复重新附上相同两组帧，没有推进尚未观察的连续性空档，不宜作为正向行动监督。"
+          ],
+          "unknowns": [
+            "3.366667–5.9秒内未观察帧中的人物可见性、真实差异段数及内部中断边界仍未知；所有提供的采样帧均命中不能排除采样间中断。",
+            "官方编辑说明的01–07秒与给定视频0–6秒时间轴缺少明确转换依据，不能据此计算可信的官方区间IoU或边界误差。",
+            "完整原视频及5.9–6秒的相邻帧未作为本次评审像素提供，不能独立认证该范围的逐帧状态；终轮没有新增宣称已验证这一范围。",
+            "没有提供该报告之后的GIA决策或全局结果，不能判断全局任务最终是否完成。"
+          ]
+        }
+      ],
+      "candidate_counts": {
+        "HI": 76,
+        "GIA": 10
+      },
+      "excluded_targets": 20
+    }
+  ],
+  "gia_offline": [
+    {
+      "construction": "averimatec_423_gia_read_r3",
+      "states": 3,
+      "summary": {
+        "GIA_offline_candidates": 3,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "AVerImaTeC",
+          "423"
+        ]
+      ]
+    },
+    {
+      "construction": "averimatec_423_gia_validation_r3",
+      "states": 4,
+      "summary": {
+        "GIA_offline_candidates": 4,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "AVerImaTeC",
+          "423"
+        ]
+      ]
+    },
+    {
+      "construction": "averimatec_63_gia_r1",
+      "states": 3,
+      "summary": {
+        "GIA_offline_candidates": 3,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "AVerImaTeC",
+          "63"
+        ]
+      ]
+    },
+    {
+      "construction": "averitec_2694_scope_validation_r1",
+      "states": 3,
+      "summary": {
+        "GIA_offline_candidates": 3,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "AVeriTeC",
+          "2694"
+        ]
+      ]
+    },
+    {
+      "construction": "averitec_2799_gia_r1",
+      "states": 3,
+      "summary": {
+        "GIA_offline_candidates": 3,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "AVeriTeC",
+          "2799"
+        ]
+      ]
+    },
+    {
+      "construction": "videosham_1028_gia_r2",
+      "states": 1,
+      "summary": {
+        "GIA_offline_candidates": 1,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "VideoSham",
+          "1028"
+        ]
+      ]
+    },
+    {
+      "construction": "videosham_1028_r1",
+      "states": 3,
+      "summary": {
+        "GIA_offline_candidates": 2,
+        "excluded_states": 1,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "VideoSham",
+          "1028"
+        ]
+      ]
+    },
+    {
+      "construction": "videosham_4126_task_states_r1",
+      "states": 4,
+      "summary": {
+        "GIA_offline_candidates": 4,
+        "excluded_states": 0,
+        "source_cases": 1,
+        "executed_tool_trajectories": 0
+      },
+      "source_cases": [
+        [
+          "videosham",
+          "4126"
+        ]
+      ]
+    }
+  ],
+  "corpus_files": [
+    {
+      "file": "gia_construction_validation.jsonl",
+      "role": "GIA",
+      "usage_split": "construction_validation",
+      "rows": 71,
+      "case_families": 7,
+      "origins": {
+        "bridge": 57,
+        "gia_offline": 14
+      },
+      "target_ratings": {
+        "4": 61,
+        "3": 10
+      }
+    },
+    {
+      "file": "hi_construction_validation.jsonl",
+      "role": "HI",
+      "usage_split": "construction_validation",
+      "rows": 415,
+      "case_families": 15,
+      "origins": {
+        "hi_independent": 111,
+        "bridge": 299,
+        "hi_terminal_replay": 5
+      },
+      "target_ratings": {
+        "4": 319,
+        "3": 96
+      }
+    },
+    {
+      "file": "gia_development.jsonl",
+      "role": "GIA",
+      "usage_split": "development",
+      "rows": 37,
+      "case_families": 8,
+      "origins": {
+        "bridge": 28,
+        "gia_offline": 9
+      },
+      "target_ratings": {
+        "4": 29,
+        "3": 8
+      }
+    },
+    {
+      "file": "hi_development.jsonl",
+      "role": "HI",
+      "usage_split": "development",
+      "rows": 303,
+      "case_families": 18,
+      "origins": {
+        "hi_independent": 140,
+        "bridge": 160,
+        "hi_terminal_replay": 3
+      },
+      "target_ratings": {
+        "4": 209,
+        "3": 94
+      }
+    }
+  ],
+  "corpus_exclusions": [
+    {
+      "run": "averitec_392_q0_validation",
+      "request": "request_0006",
+      "reason": "局部任务中的“查找直接证据”未明确是直接支持答案，还是必须取得原始发布页。原报告与同状态重新生成报告的评审对此采用不同完成标准；在任务含义未消除歧义前，COMPLETED 报告不进入最终候选语料。此前真实取证动作不受此处置影响。",
+      "review_records": [
+        "runs/averitec_392_q0_validation/assessment_r2/judgment.json",
+        "hi_terminal_repairs/averitec_392_report_only_validation/assessment_r2/judgment.json"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_r1",
+      "request": "request_0081",
+      "reason": "报告将KPMG背景中的DHET批准向两校直接拨付R183,000,000表述为直接拨付，未保留批准状态。r5评分指出这一缺陷但仍以3分接受；实际原页只能确认批准，不能据此认证款项已经拨出或到账。因此该报告不进入正向候选，其他目标仍按其自身输入与输出判断。",
+      "review_records": [
+        "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/W3-2/judgment.json",
+        "runs/averitec_2694_budget_plan_execution_r1/reference_review/kpmg_page_04.png"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_12k_r1",
+      "request": "request_0024",
+      "reason": "报告把按路径规律试探的普通chapter4.pdf称为另一已提供地址。实际E1的Chapter 4普通链接指向chapter5.pdf；chapter4.pdf是演员尝试的推导地址。r5评分指出来源表述不准确却以3分接受。该报告须准确区分已见链接与推导地址后再作正向监督；404结果及合理试探动作本身不因此改写或排除。",
+      "review_records": [
+        "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/W1-2/judgment.json",
+        "runs/averitec_2694_budget_plan_execution_12k_r1/requests/request_0004/request.json"
+      ]
+    }
+  ],
+  "rubric_diagnostics": [
+    {
+      "name": "binding_r4",
+      "metrics": {
+        "total": 6,
+        "positive": 3,
+        "negative": 3,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "binding",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": []
+      }
+    },
+    {
+      "name": "binding_r5",
+      "metrics": {
+        "total": 6,
+        "positive": 3,
+        "negative": 3,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "binding",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": []
+      }
+    },
+    {
+      "name": "development_r1",
+      "metrics": {
+        "total": 12,
+        "positive": 6,
+        "negative": 6,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [
+          "d10",
+          "d04"
+        ],
+        "scope": "development_diagnostics_two_source_cases_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "development_r2",
+      "metrics": {
+        "total": 12,
+        "positive": 6,
+        "negative": 6,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "scope": "development_diagnostics_two_source_cases_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "fact_state_r5",
+      "metrics": {
+        "total": 10,
+        "positive": 5,
+        "negative": 5,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "fact_state",
+        "scope": "development_diagnostics_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "fact_state_r6",
+      "metrics": {
+        "total": 10,
+        "positive": 5,
+        "negative": 5,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "fact_state",
+        "scope": "development_diagnostics_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "scope_r2",
+      "metrics": {
+        "total": 8,
+        "positive": 4,
+        "negative": 4,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [
+          "s08"
+        ],
+        "suite": "scope",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": [
+          "s08"
+        ]
+      }
+    },
+    {
+      "name": "scope_r3",
+      "metrics": {
+        "total": 8,
+        "positive": 4,
+        "negative": 4,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [
+          "s08"
+        ],
+        "suite": "scope",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": [
+          "s08"
+        ]
+      }
+    },
+    {
+      "name": "source_r3",
+      "metrics": {
+        "total": 8,
+        "positive": 4,
+        "negative": 4,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [
+          "p08"
+        ],
+        "suite": "source",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": [
+          "p08"
+        ]
+      }
+    },
+    {
+      "name": "source_r4",
+      "metrics": {
+        "total": 8,
+        "positive": 4,
+        "negative": 4,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [
+          "p08"
+        ],
+        "suite": "source",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": [
+          "p08"
+        ]
+      }
+    },
+    {
+      "name": "text_r1",
+      "metrics": {
+        "total": 12,
+        "positive": 6,
+        "negative": 6,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "text",
+        "scope": "development_diagnostics_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "text_r2",
+      "metrics": {
+        "total": 12,
+        "positive": 6,
+        "negative": 6,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "text",
+        "scope": "development_diagnostics_not_generalization_evidence"
+      }
+    },
+    {
+      "name": "visual_task_r6",
+      "metrics": {
+        "total": 10,
+        "positive": 5,
+        "negative": 5,
+        "false_accept_ids": [],
+        "false_reject_ids": [],
+        "critical_unknown_ids": [],
+        "suite": "visual_task",
+        "scope": "development_diagnostics_not_generalization_evidence",
+        "critical_unknown_mismatch_ids": [],
+        "reference_unjudgeable_ids": []
+      }
+    }
+  ],
+  "hi_terminal_repairs": [
+    {
+      "name": "averimatec_98_report_validation",
+      "provenance": {
+        "dataset": "averimatec",
+        "case": "98",
+        "source_run": "averimatec_98_q0_validation",
+        "source_request": "request_0012",
+        "usage_split": "construction_validation",
+        "construction": "averimatec_98_report_validation",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 3,
+          "critical_unknown": false,
+          "reason": "可作为如实提交 INCOMPLETE 报告的候选监督目标。已陈述的核心来源转述可由 E2、E3 核对，状态符合缺证据及零剩余轮次的实际状态；存在访问失败范围表述的小缺陷。官方答案 AFP photo archives 与第二条来源线索一致，但不能单独证明档案最早上线；第一条也明确没有把 BBC 候选认定为最早网站。critical_unknown=false 仅表示本报告的限定性事实与状态具有足够评审依据，不表示最早来源这个未决问题通过核查。候选用途应限定为部分调查报告，不作为已完成来源确认或真实新执行轨迹导出。"
+        }
+      }
+    },
+    {
+      "name": "averitec_2694_budget_12k_approval_report_r6",
+      "provenance": {
+        "dataset": "averitec",
+        "case": "2694",
+        "source_run": "averitec_2694_budget_plan_execution_12k_r1",
+        "source_request": "request_0049",
+        "usage_split": "construction_validation",
+        "construction": "averitec_2694_budget_12k_approval_report_r6",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 4,
+          "critical_unknown": false,
+          "reason": "可作为有明确证据边界的INCOMPLETE报告候选。重要金额、计算、费用分类和延期请求均可由当前正文或实际附件核对。对高分的具体反例检查包括：历史E44–E45含R1,951,506,053的合并资金安排，E48、E55含签署／批准内容，但这些像素没有进入本轮，当前文字也没有保留该金额，不能据此指控终端报告漏报当前已知批准额。E5当前文字虽说明第四增补协议于2014年9月签署，却不能单独确认E63特定现金流金额的批准及调整状态。报告也没有声称全部档案不存在批准，或将延期申请写成延期已实施。此候选仅用于报告监督，不作为成功完成预算核查的轨迹样本。"
+        }
+      }
+    },
+    {
+      "name": "averitec_2694_budget_12k_ump_report_r6",
+      "provenance": {
+        "dataset": "averitec",
+        "case": "2694",
+        "source_run": "averitec_2694_budget_plan_execution_12k_r1",
+        "source_request": "request_0024",
+        "usage_split": "construction_validation",
+        "construction": "averitec_2694_budget_12k_ump_report_r6",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 4,
+          "critical_unknown": false,
+          "reason": "可保留为强制终端INCOMPLETE报告监督。高分经过具体反例检查：没有将R493.1 million与R539,825,172直接相减判定超支，没有将两校合计或三个施工合同金额当作UMP项目总支出，也没有忽略表14.15的分项合计冲突。关键断言有当前输入正文支持，未完成要求被准确披露。该候选不提供新工具执行、自主停止或全局问题已解决的监督证据。"
+        }
+      }
+    },
+    {
+      "name": "averitec_2694_budget_report_r5",
+      "provenance": {
+        "dataset": "averitec",
+        "case": "2694",
+        "source_run": "averitec_2694_budget_plan_execution_r1",
+        "source_request": "request_0081",
+        "usage_split": "construction_validation",
+        "construction": "averitec_2694_budget_report_r5",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 4,
+          "critical_unknown": false,
+          "reason": "可作为准确表达证据与缺口的HI终端报告候选。主要数字、分类比较、来源限制和INCOMPLETE状态均可由所供正文核对。具体反例检查包括总额相同但学校小计不同、管理费比例不等于分摊比例、转拨不等于实际支出，报告均处理正确。E13当期金额正文与表格另有R0.30差异，但报告未引用该当期数字，遗漏它不影响本次共同费用归属判断。缺失附件是已披露的调查缺口，不是无法判断当前报告质量的关键未知。"
+        }
+      }
+    },
+    {
+      "name": "averitec_2799_report_control",
+      "provenance": {
+        "dataset": "averitec",
+        "case": "2799",
+        "source_run": "averitec_2799_q0_r1",
+        "source_request": "request_0004",
+        "usage_split": "development",
+        "construction": "averitec_2799_report_control",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 4,
+          "critical_unknown": false,
+          "reason": "报告的重要事实、直接引语和引用编号均有决策前已读 E6 支持，局部完成状态正确。高分经日期缺失、消防代表身份与正式火因认定的区别、未覆盖全部参考答案等反例检查后仍成立：这些因素均未造成当前任务的关键缺口。可作为终端报告候选，不应标成新增工具执行轨迹或 GIA 全局裁决。"
+        }
+      }
+    },
+    {
+      "name": "averitec_392_report_only_validation",
+      "provenance": {
+        "dataset": "averitec",
+        "case": "392",
+        "source_run": "averitec_392_q0_validation",
+        "source_request": "request_0006",
+        "usage_split": "construction_validation",
+        "construction": "averitec_392_report_only_validation",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 0,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "repair_reexecute",
+          "target_rating": 2,
+          "critical_unknown": true,
+          "reason": "网站归属、幽默性质及转载标题均有已读报道支持，官方参考也与网站名称一致，因此不应作为捏造目标排除。然而任务明确要求直接证据，现有输出只能提供二手归属，COMPLETED 超出了已完成范围。应保留有依据的 findings，使用 INCOMPLETE 并指出直接发布证据缺失，再从同一记录终态重新生成报告。"
+        }
+      }
+    },
+    {
+      "name": "averitec_392_report_validation",
+      "provenance": null,
+      "has_report": false,
+      "summary": null
+    },
+    {
+      "name": "true_20361105_citation_report_r6",
+      "provenance": {
+        "dataset": "true",
+        "case": "20361105",
+        "source_run": "true_20361105_visibility_validation",
+        "source_request": "request_0012",
+        "usage_split": "construction_validation",
+        "construction": "true_20361105_citation_report_r6",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "terminal_request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 4,
+          "critical_unknown": false,
+          "reason": "可作为准确INCOMPLETE报告的候选监督。当前E4、E6及实际保留的E11、E14、E15正文足以核对其重要断言，没有发现实质事实或引用错误。反例检查包括：CBS的关闭设施言论不能支持关闭网络群组；评论视频字幕不能支持材料A原声；两帧不能证明全片发言或连续语境；报告均未越过这些边界。原声音和完整语境仍未知，但输出如实承认，故不构成本目标的critical_unknown。候选资格只覆盖离线报告，不覆盖重新执行的调查轨迹或原声明已获解决。"
+        }
+      }
+    },
+    {
+      "name": "true_4124903_report_r4",
+      "provenance": {
+        "dataset": "true",
+        "case": "4124903",
+        "source_run": "true_4124903_r2",
+        "source_request": "request_0013",
+        "usage_split": "development",
+        "construction": "true_4124903_report_r4",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 3,
+          "critical_unknown": false,
+          "reason": "可作为准确提交部分调查结果的终端报告候选：重要视觉事实、元数据和警方通报转引均有依据，INCOMPLETE 与实际缺口一致。未突出 E20 第3段的直接视频链接，使来源线索整理有所遗漏，因此不评4。该遗漏没有使报告声称的素材身份变成错误确认。执行维度不适用；本地校验通过不证明任何新调查已经执行。"
+        }
+      }
+    },
+    {
+      "name": "videosham_2010_report_r4",
+      "provenance": {
+        "dataset": "videosham",
+        "case": "2010",
+        "source_run": "videosham_2010_r1",
+        "source_request": "request_0011",
+        "usage_split": "development",
+        "construction": "videosham_2010_report_r4",
+        "request": "request_0001",
+        "role": "HI",
+        "input_source": "recorded_terminal_state_with_generic_report_instruction",
+        "target_source": "actual_cli_output",
+        "is_executed_tool_trajectory": false,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "local_output_validation": "passed"
+      },
+      "has_report": true,
+      "summary": {
+        "HI_terminal_candidates": 1,
+        "source_cases": 1,
+        "new_tool_actions": 0,
+        "reused_downstream_decisions": 0,
+        "target_assessment": {
+          "request_id": "request_0001",
+          "disposition": "accept_candidate",
+          "target_rating": 3,
+          "critical_unknown": false,
+          "reason": "可作为有依据的INCOMPLETE报告候选：音轨属性、零匹配结果和采样画面描述均有支持，状态与声音核查缺口一致。其用途限于部分结果及能力限制报告，不能作为完整声音比较或完整定位成功样本。官方描述与可见合成场景方向相符，但不能证明全片、来源对应或编辑边界。未知声音内容已被明确保留，不构成判断这些有限断言所需的关键未知。该输出仅为离线终端回放，execution为not_applicable。"
+        }
+      }
+    }
+  ],
+  "scope": "data_construction_pilot; automated candidate selection; no student weight training or independent human certification"
+}

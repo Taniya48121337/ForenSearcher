@@ -1,0 +1,15 @@
+[
+  {
+    "dataset": "averitec", "case": "2694", "mode": "hi", "question_index": 8,
+    "run_name": "averitec_2694_q8_source_validation",
+    "instruction_file": "actor_generation_r5.txt", "usage": "construction_validation",
+    "exclude_original_article": true,
+    "selection_reason": "The university question matches the claim. Other questions address unrelated parts of the speech; required_reannotation is retained in the reference."
+  },
+  {
+    "dataset": "averimatec", "case": "660", "mode": "hi", "question_index": 0,
+    "question_images": true, "run_name": "averimatec_660_q0_source_validation",
+    "instruction_file": "actor_generation_r5.txt", "usage": "construction_validation",
+    "exclude_original_article": true
+  }
+]

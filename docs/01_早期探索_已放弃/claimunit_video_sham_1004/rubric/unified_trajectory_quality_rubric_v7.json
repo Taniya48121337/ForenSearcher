@@ -1,0 +1,115 @@
+{
+  "rubric_id": "UTQR-7",
+  "title": "Unified Causal-Neighborhood Rubric for Human-Like Tool Trajectories",
+  "evaluation_unit": "one executed base trajectory plus a fixed causal neighborhood of label-blind counterfactual replays",
+  "design_principle": "A trajectory is suitable for SFT only when its correct action sequence is grounded in the task's evidence, remains stable under irrelevant changes, changes appropriately under relevant evidence interventions, survives removal of answer-like control affordances, and detects unannounced inconsistencies. A fluent successful trace alone is insufficient.",
+  "required_machine_probes": [
+    "semantic_mask",
+    "schema_compatible_swap",
+    "identity_mismatch",
+    "ab_role_swap",
+    "reduced_control",
+    "structure_only",
+    "unannounced_repair",
+    "step_intervention"
+  ],
+  "hard_gates": [
+    {
+      "id": "H1",
+      "name": "safe_executed_outcome",
+      "failure": "The base episode is nonterminal, hidden-outcome incorrect, incompletely bound, rejected, or provenance-open. This addresses the observed VidDiff cases that stopped legally with the wrong direction."
+    },
+    {
+      "id": "H2",
+      "name": "evidence_task_identity_integrity",
+      "failure": "A claim field is unsupported, evidence belongs to a different task/entity/scope, or donor identity leaks into the claim. Ordinary schema/provenance tests cannot detect semantically compatible cross-case swaps."
+    },
+    {
+      "id": "H3",
+      "name": "causal_probe_completeness_and_response",
+      "failure": "A required counterfactual probe is missing, evidence masking leaves the same unsupported claim, relevant evidence changes do not affect dependent fields, or A/B exchange fails the expected equivariance. A single successful trace cannot establish these properties."
+    },
+    {
+      "id": "H4",
+      "name": "control_plane_autonomy",
+      "failure": "Compiled semantic actions, singleton target values, restoration recipes, materializable target calls, or categorical router answers are visible; a semantic measurement turn exposes fewer than two real executable choices; branch proposals collapse onto one tool; the selected pre-action note does not explicitly connect a distinctive capability of that tool to a named student-visible diagnostic and contrast a plausible alternative; the selected rationale remains equally valid after counterfactually swapping the chosen tool with a visible alternative, including keyword-stuffed rationales that mention every mechanism without directional support/rejection; a preview outcome, target-field coverage, favorable future observation, or failed-preview result is allowed to reroute or guide a same-checkpoint retry; the frozen choice cannot produce an admissible executed EvidenceAtom; isolated preview and committed execution disagree; or the policy loses semantic correctness when answer-like hints are removed. This directly addresses the 226/272 target-value pre-exposure and 165/272 singleton-eligible-tool findings, the equal-utility localizer failure in which generic prose mechanically breaks a tie, and hindsight selection that teaches a policy to anticipate evidence it could not know before acting."
+    },
+    {
+      "id": "H5",
+      "name": "unannounced_error_detection_and_locality",
+      "failure": "Active-but-wrong, stale, conflicting, partial, empty, or identity-mismatched evidence is not detected before stop, or repair changes an independent field. Explicit dropped-evidence hints are not accepted as evidence of diagnosis."
+    },
+    {
+      "id": "H6",
+      "name": "causal_and_transferable_sft_target",
+      "failure": "A positive target was not executed, is removable without changing a later decision, exposes oracle/private state, teaches a fully materialized bookkeeping action as if it were semantic reasoning, or the first policy note after a new EvidenceAtom fails to name that atom and state a concrete semantic consequence."
+    }
+  ],
+  "criteria": [
+    {"id": "C1", "name": "safe_outcome_and_binding", "weight": 14, "minimum": 0.95, "critical": true},
+    {"id": "C2", "name": "evidence_task_provenance_and_scope", "weight": 14, "minimum": 0.90, "critical": true},
+    {"id": "C3", "name": "causal_evidence_sensitivity", "weight": 14, "minimum": 0.85, "critical": true},
+    {"id": "C4", "name": "off_target_invariance_and_role_equivariance", "weight": 12, "minimum": 0.85, "critical": true},
+    {"id": "C5", "name": "choice_surface_and_reduced_control_autonomy", "weight": 12, "minimum": 0.85, "critical": true},
+    {"id": "C6", "name": "tool_information_gain_and_economy", "weight": 10, "minimum": 0.85, "critical": true},
+    {"id": "C7", "name": "uncertainty_and_unannounced_repair", "weight": 10, "minimum": 0.85, "critical": true},
+    {"id": "C8", "name": "natural_human_decision_process", "weight": 8, "minimum": 0.80, "critical": false},
+    {"id": "C9", "name": "sft_transfer_and_target_hygiene", "weight": 6, "minimum": 0.90, "critical": true}
+  ],
+  "blind_judge_contract": {
+    "minimum_independent_judges": 2,
+    "dimensions": ["prospective_reasoning", "belief_update", "method_fit", "naturalness"],
+    "score_range": [1, 5],
+    "minimum_dimension_mean": 4.0,
+    "maximum_unadjudicated_range": 1,
+    "judge_cannot_see": ["dataset_name", "case_id", "oracle", "verifier_result", "other_judge_scores"]
+  },
+  "episode_acceptance": {
+    "all_hard_gates_required": true,
+    "total_score_minimum": 90,
+    "all_critical_criteria_minimum": 0.85,
+    "any_criterion_minimum": 0.75,
+    "blind_judging_required": true
+  },
+  "supervision_policy": {
+    "semantic_decision_weight": 1.0,
+    "evidence_interpretation_weight": 1.0,
+    "uncertainty_or_repair_detection_weight": 1.2,
+    "control_only_weight": 0.1,
+    "tool_semantic_subtype_weights": {
+      "evidence_measurement": 1.0,
+      "branch_enabling_evidence_measurement": 1.2,
+      "evidence_synthesis": 1.0,
+      "evidence_assessment_or_adjudication": 1.1,
+      "belief_repair": 1.2,
+      "evidence_attribution": 0.7,
+      "belief_commitment": 0.6,
+      "context_inspection": 0.4,
+      "terminal_verification": 0.2,
+      "ordinary_control": 0.1
+    },
+    "learning_value_tiers": {
+      "core_reasoning": "weight >= 0.9",
+      "supporting": "0.5 <= weight < 0.9",
+      "minimal_control": "weight < 0.5"
+    },
+    "admission_and_loss_weight_are_separate": true,
+    "indispensable_low_value_steps_are_retained_but_downweighted": true,
+    "dataset_or_action_balancing_must_not_raise_minimal_control_to_core_weight": true,
+    "maximum_control_only_fraction_per_batch": 0.2,
+    "rejected_or_nonexecuted_positive_weight": 0.0
+  },
+  "batch_readiness": {
+    "required_datasets": ["VideoSham", "VCSL", "VidDiffBench"],
+    "minimum_entity_disjoint_cases_per_dataset": 30,
+    "minimum_unconditioned_safe_coverage_per_dataset": 0.80,
+    "minimum_packet_acceptance_rate_per_dataset": 0.90,
+    "minimum_score_p10_per_dataset": 90,
+    "minimum_pass_at_2_per_dataset": 0.85,
+    "minimum_each_probe_family_pass_rate": 0.85,
+    "minimum_unannounced_repair_cases_per_dataset": 10,
+    "maximum_control_only_fraction": 0.20,
+    "requires_no_oracle_bounded_case_admission": true,
+    "requires_student_free_run_gain_on_new_entity_disjoint_cases": true
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "addendum_id": "UTQR-12-H8-CAL-1",
+  "title": "Independent Blind Reviewer Discrimination Calibration",
+  "scope": "Reviewer reliability at the H8 human-review boundary; this addendum does not change UTQR-12 episode scores.",
+  "concrete_failure_scenario": "Two reviewers assign 5/5 to every trajectory, mark every item acceptable, and provide minimally valid turn notes. The original aggregation schema can regard all 105 primary items as passing even though neither reviewer distinguishes a result-presuming rationale, a wrong EvidenceAtom citation, or a menu-only router from a grounded trajectory.",
+  "why_schema_types_and_ordinary_tests_are_insufficient": "CSV completeness, numeric ranges, note length, turn references, and inter-reviewer agreement prove only that forms were filled consistently. They cannot show that a reviewer is sensitive to evidence-semantic defects; perfect agreement can be two correlated rubber stamps.",
+  "design_lineage": [
+    "behavioral attention checks: embed known-response items without exposing their identities",
+    "contrast-set evaluation: use minimal edits that preserve most surface form while changing validity",
+    "process supervision: calibrate sensitivity to intermediate reasoning defects rather than final stop alone",
+    "signal detection: require both negative sensitivity and clean-control specificity"
+  ],
+  "packet_composition": {
+    "primary_quality_items": 105,
+    "calibration_clean_items": 8,
+    "calibration_negative_items": 16,
+    "negative_mutation_families": 8,
+    "negative_repeats_per_family": 2,
+    "reviewers_are_told_calibration_exists": true,
+    "sentinel_identity_visible_to_reviewers": false
+  },
+  "single_defect_families": [
+    {
+      "id": "result_presumption_before_measurement",
+      "expected_dimension": "prospective_reasoning",
+      "defect": "The rationale states a tool result as fact before executing the tool."
+    },
+    {
+      "id": "wrong_visible_atom_citation",
+      "expected_dimension": "visible_evidence_grounding",
+      "defect": "The post-measurement rationale cites a different visible EvidenceAtom while leaving the action sequence intact."
+    },
+    {
+      "id": "fresh_result_ignored",
+      "expected_dimension": "belief_update",
+      "defect": "The next rationale explicitly preserves the pre-measurement belief independently of the fresh observation."
+    },
+    {
+      "id": "menu_only_method_router",
+      "expected_dimension": "method_fit",
+      "defect": "The tool is selected from eligibility or workflow position without naming a discriminating evidence question."
+    },
+    {
+      "id": "off_target_invariant_field",
+      "expected_dimension": "locality",
+      "defect": "A challenge is broadened to an independent invariant field."
+    },
+    {
+      "id": "trajectory_wide_stock_template",
+      "expected_dimension": "naturalness",
+      "defect": "Situation-specific reasoning is replaced by one repeated legal-step template."
+    },
+    {
+      "id": "semantic_clue_replaced_by_menu_position",
+      "expected_dimension": "anti_shortcut_semantic_identifiability",
+      "defect": "The semantic clue is removed and the same action is justified only by the control surface."
+    },
+    {
+      "id": "step_without_stated_state_consequence",
+      "expected_dimension": "per_step_sft_pedagogical_value",
+      "defect": "A turn records an observation but does not connect it to a field, belief, or downstream decision."
+    }
+  ],
+  "per_item_detection": {
+    "clean_control": "visible_hard_failure=false, accept_for_sft=true, and all eight dimensions >=4",
+    "negative_sentinel": "visible_hard_failure=true or accept_for_sft=false, and the expected dimension <=3"
+  },
+  "per_reviewer_acceptance": {
+    "minimum_negative_detection": 15,
+    "negative_total": 16,
+    "minimum_clean_acceptance": 7,
+    "clean_total": 8,
+    "both_sensitivity_and_specificity_required": true
+  },
+  "aggregation_contract": [
+    "Reviewer A and Reviewer B are calibrated independently before their primary quality estimates are trusted.",
+    "Adjudication cannot repair a reviewer's calibration result; reliability is measured from the original independent scores.",
+    "Calibration items are excluded from per-dataset acceptance, Wilson intervals, P10, UTQR C9, and SFT export.",
+    "If either reviewer fails calibration, primary scores may be retained diagnostically but H8 does not pass."
+  ],
+  "claim_boundary": "Passing calibration shows that the reviewers discriminate these known visible defects. It does not prove that primary trajectories are good, that the rubric generalizes to every defect, or that a trained student gains evidence reasoning."
+}
+

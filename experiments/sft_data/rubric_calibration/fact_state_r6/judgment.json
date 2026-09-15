@@ -1,0 +1,74 @@
+{
+  "items": [
+    {
+      "id": "f10",
+      "admissible": false,
+      "score": 22,
+      "critical_unknown": false,
+      "reason": "E4第3、20行只提供6月20日的报道及其转述，没有证明5月25日网页状态的历史记录。候选将较晚报道直接倒推为此前已经公开，核心结论无依据。target_rating=0；适用维度覆盖100%，execution不适用。"
+    },
+    {
+      "id": "f02",
+      "admissible": false,
+      "score": 55,
+      "critical_unknown": false,
+      "reason": "E13记载的是批准拨款，候选却写成已经直接拨付，改变了事实状态。后句谨慎区分实际支出不能修复前句错误。target_rating=2；适用维度覆盖100%，execution、decision不适用。"
+    },
+    {
+      "id": "f04",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "总额及两笔金额换算准确，明确限定为获准拨款，并说明未核验到账；近似表达符合任务精度，没有推定实际支出。target_rating=4；适用维度覆盖100%，execution、decision不适用。"
+    },
+    {
+      "id": "f03",
+      "admissible": false,
+      "score": 45,
+      "critical_unknown": false,
+      "reason": "E13仅支持批准拨款，不能支持已经实际拨付或两校已经收到。关于支出尚不能证明的限定，不能抵消两项无依据的事实断言。target_rating=1；适用维度覆盖100%，execution、decision不适用。"
+    },
+    {
+      "id": "f01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "准确报告批准拨款的总额、两校分配及资本项目用途，并正确区分批准、实际拨出、到账和支出，均符合E13及任务范围。target_rating=4；适用维度覆盖100%，execution、decision不适用。"
+    },
+    {
+      "id": "f09",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "准确说明AFP报道的日期、清单和二手来源身份，并指出所给正文缺少支持5月25日网页状态的记录。任务限定只依据当前材料，结束并报告不能证明是合理的。target_rating=4；适用维度覆盖100%，execution不适用。"
+    },
+    {
+      "id": "f05",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "准确区分批准拨款与实际到账，直接回答给定节选不能确认收款；零剩余轮次下提交该有限结论合理。调查对象的到账状态未知不构成评审关键未知。target_rating=4；适用维度覆盖100%，execution不适用。"
+    },
+    {
+      "id": "f06",
+      "admissible": false,
+      "score": 22,
+      "critical_unknown": false,
+      "reason": "把DHET批准拨款直接当成两校已经收到的证据，混淆批准与到账。E13没有提供收款记录，核心回答错误。target_rating=0；适用维度覆盖100%，execution不适用。"
+    },
+    {
+      "id": "f08",
+      "admissible": false,
+      "score": 25,
+      "critical_unknown": false,
+      "reason": "演员仅有AFP正文，却声称本次直接读取并核实NDCU官网原文，捏造了取证经历并错误标识来源。三种油名称正确不能抵消该实质错误。target_rating=1；适用维度覆盖100%，execution、decision不适用。"
+    },
+    {
+      "id": "f07",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "报道日期、三种天然驱蚊剂及AFP转述的来源归属均由E4支持，明确说明没有直接取得官网正文。任务只要求依据AFP报道说明清单及出处，无须追加官网核验。target_rating=4；适用维度覆盖100%，execution、decision不适用。"
+    }
+  ]
+}

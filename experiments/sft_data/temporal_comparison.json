@@ -1,0 +1,51 @@
+{
+  "dataset": "QVHighlights",
+  "qid": 0,
+  "gold_intervals_s": [
+    [
+      38,
+      52
+    ]
+  ],
+  "predictions": [
+    {
+      "run": "qvhighlights_0_r1",
+      "request": "request_0012",
+      "reported_interval_s": [
+        45,
+        51
+      ],
+      "interpretation": "literal_approximate_interval_from_report",
+      "endpoint_bounds": null,
+      "report_text": "{\"task_id\":\"W1-1\",\"status\":\"COMPLETED\",\"findings\":[{\"statement\":\"定位范围约45–51秒，其中49–50秒最明确符合描述：一名金发女子坐在汽车内，举起打开的纸餐盒，向镜头展示两片铺有绿色食物的面包。45秒她举着闭合的餐盒；51秒餐盒及部分食物仍在画面左下方可见。\",\"evidence_ids\":[\"E21\",\"E24\",\"E25\",\"E26\"],\"limitations\":[\"该范围是近似定位窗口，并非精确动作起止。45秒食物尚被盒盖遮住，49秒已清晰展示，具体开盒时刻未确定。\",\"51秒仍可见部分食物，不能将其认定为准确结束点；离散帧不能证明采样间整个区间都持续符合描述。\"]}],\"selected_evidence_ids\":[\"E21\",\"E24\",\"E25\",\"E26\"]}",
+      "best_temporal_iou": 0.42857142857142855
+    },
+    {
+      "run": "qvhighlights_0_r2",
+      "request": "request_0012",
+      "reported_interval_s": [
+        38,
+        51.5
+      ],
+      "interpretation": "reported_envelope_includes_uncertain_start",
+      "endpoint_bounds": {
+        "start": [
+          38,
+          41
+        ],
+        "end": [
+          51,
+          51.48
+        ]
+      },
+      "report_text": "{\"task_id\":\"W1-1\",\"status\":\"COMPLETED\",\"findings\":[{\"statement\":\"目标片段约在38–51.5秒，包含食物近景和人物举盒展示。41秒可见车内打开的餐盒及吐司；48秒、50秒清楚显示金发女子坐在车内，举起餐盒向镜头展示食物。51秒餐盒位于画面下沿，51.48秒食物已不可见。\",\"evidence_ids\":[\"E20\",\"E28\",\"E15\",\"E25\",\"E26\",\"E30\"],\"limitations\":[\"38秒仍是店外镜头，因此实际起点只能限定在38–41秒之间；所报范围包含起点的不确定区间。\",\"结束边界约在51–51.48秒之间。以上依据离散帧，未逐帧确认切换时刻及区间内动作连续性。\"]}],\"selected_evidence_ids\":[\"E20\",\"E28\",\"E15\",\"E25\",\"E26\",\"E30\"]}",
+      "best_temporal_iou": 0.9642857142857143,
+      "iou_range_from_reported_endpoint_bounds": [
+        0.7142857142857143,
+        0.9628571428571431
+      ]
+    }
+  ],
+  "scope": "same_development_case_descriptive_comparison; not aggregate mAP or proof of semantic correctness",
+  "prediction_extraction": "curator_literal_transcription_of_report; no hidden annotation entered actor input"
+}

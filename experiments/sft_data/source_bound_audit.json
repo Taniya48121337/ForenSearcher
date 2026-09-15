@@ -1,0 +1,60 @@
+{
+  "scope": "saved_parser_block_links; no_claim_of_source_truth_or_relevance",
+  "runs": [
+    {
+      "run": "averimatec_63_q0_source_bound_r1",
+      "calls": 19,
+      "parsed_source_rows": 81,
+      "calls_without_usable_records": 10
+    },
+    {
+      "run": "averimatec_63_q0_source_bound_r2",
+      "calls": 15,
+      "parsed_source_rows": 106,
+      "calls_without_usable_records": 0
+    },
+    {
+      "run": "averimatec_660_q0_source_bound_r1",
+      "calls": 12,
+      "parsed_source_rows": 90,
+      "calls_without_usable_records": 0
+    },
+    {
+      "run": "averitec_2872_q0_binding_validation",
+      "calls": 4,
+      "parsed_source_rows": 32,
+      "calls_without_usable_records": 0
+    }
+  ],
+  "association_errors": [],
+  "known_article_replay": {
+    "scope": "replay_of_actual_candidates; no_new_search_or_actor_execution",
+    "source_run": "averimatec_660_q0_source_validation",
+    "execution_id": 2,
+    "before_urls": [
+      "https://uk.news.yahoo.com/band-led-goat-marches-cardiff-120212251.html?chat=1",
+      "https://www.gettyimages.com/detail/news-photo/the-marching-band-of-the-3rd-battalion-royal-welsh-and-news-photo/1243131530",
+      "https://www.reuters.com/article/fact-check/goat-pictured-with-british-marching-band-is-the-mascot-of-a-welsh-military-unit-idUSL1N30Y1P3/",
+      "https://blackheritageradio.com/uk-goat-leads-welsh-military-parade-king-charles-iii-proclamation-ceremony-in-cardiff/",
+      "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+      "https://www.moneycontrol.com/news/trends/goat-seen-at-king-charles-iiis-proclamation-draws-a-salary-has-a-regimental-rank-9192391.html",
+      "https://www.grunge.com/1009294/the-truth-about-the-royal-welsh-goat/"
+    ],
+    "after_urls": [
+      "https://uk.news.yahoo.com/band-led-goat-marches-cardiff-120212251.html?chat=1",
+      "https://www.gettyimages.com/detail/news-photo/the-marching-band-of-the-3rd-battalion-royal-welsh-and-news-photo/1243131530",
+      "https://www.reuters.com/article/fact-check/goat-pictured-with-british-marching-band-is-the-mascot-of-a-welsh-military-unit-idUSL1N30Y1P3/",
+      "https://blackheritageradio.com/uk-goat-leads-welsh-military-parade-king-charles-iii-proclamation-ceremony-in-cardiff/",
+      "https://www.moneycontrol.com/news/trends/goat-seen-at-king-charles-iiis-proclamation-draws-a-salary-has-a-regimental-rank-9192391.html",
+      "https://www.grunge.com/1009294/the-truth-about-the-royal-welsh-goat/"
+    ],
+    "excluded": [
+      {
+        "stage": "provider_candidate",
+        "source_url": "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+        "final_url": null,
+        "reason": "dataset_original_fact_check_article"
+      }
+    ]
+  }
+}

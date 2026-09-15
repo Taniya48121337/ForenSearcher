@@ -1,0 +1,70 @@
+# ===== ForenSearcher .gitignore =====
+# 规则：黑名单模式。默认所有文件都进 git，只把下面这些"不该进"的排除掉。
+# （之前是白名单模式，导致所有文档和实验脚本都没进 git。）
+
+# --- Python 运行产物 ---
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+dist-final/
+.mypy_cache/
+.pytest_cache/
+.pytest-*
+.pytest-*/
+*.sqlite3
+*.sqlite3-journal
+.venv/
+venv/
+
+# --- 密钥与本地配置（.local 里有 OpenRouter 的 API Key，绝对不能进 git）---
+.local/
+*.key
+.env
+.env.*
+
+# --- 大文件：模型权重、外部数据集、依赖缓存 ---
+.models/
+.pnpm-store/
+external/
+node_modules/
+
+# --- 运行输出与临时文件 ---
+outputs/
+tmp/
+refine-logs/
+debug.log
+*.log
+
+# --- 整理时移走的历史垃圾（确认无用后可整个删除）---
+_trash_20260915/
+
+# --- SFT 数据构造试验：脚本和文档进 git，大体积的运行记录和语料不进 ---
+experiments/sft_data/corpus/
+experiments/sft_data/runs/
+experiments/sft_data/batch_logs/
+experiments/sft_data/examples/
+experiments/sft_data/data/
+experiments/sft_data/gia_decisions/
+experiments/sft_data/hi_terminal_repairs/
+experiments/sft_data/_diagnostics_archive/
+experiments/sft_data/test_tmp_*/
+
+# --- 组会网站是独立 Node 项目（自带 .git 和 node_modules），整体不进本仓库 ---
+docs/03_框架实现/组会网站/
+
+# --- 早期已放弃子项目里的运行产物 ---
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/outputs/
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/refine-logs/
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/data/
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/datasets/
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/vendor/
+docs/01_早期探索_已放弃/claimunit_video_sham_1004/o/
+
+# --- 编辑器 / 系统 ---
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

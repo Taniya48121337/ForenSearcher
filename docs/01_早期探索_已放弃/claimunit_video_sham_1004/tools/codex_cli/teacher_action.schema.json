@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "reasoning": {
+      "type": "string",
+      "minLength": 48
+    },
+    "tool_name": {
+      "type": "string",
+      "enum": [
+        "inspect_media",
+        "align_videos_dense",
+        "create_candidate_claim",
+        "bind_evidence",
+        "set_field_decision",
+        "stop"
+      ]
+    },
+    "arguments_json": {
+      "type": "string",
+      "minLength": 2
+    }
+  },
+  "required": [
+    "reasoning",
+    "tool_name",
+    "arguments_json"
+  ],
+  "additionalProperties": false
+}

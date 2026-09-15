@@ -1,0 +1,170 @@
+{
+  "results": [
+    {
+      "dataset": "qvhighlights",
+      "case": "0",
+      "run": "qvhighlights_0_r1",
+      "request": "request_0012",
+      "interval_s": [
+        45,
+        51
+      ],
+      "excerpt": "定位范围约45–51秒",
+      "interpretation": "approximate_report_interval",
+      "report_path": "runs\\qvhighlights_0_r1\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          38,
+          52
+        ]
+      ],
+      "best_temporal_iou": 0.42857142857142855
+    },
+    {
+      "dataset": "qvhighlights",
+      "case": "0",
+      "run": "qvhighlights_0_r2",
+      "request": "request_0012",
+      "interval_s": [
+        38,
+        51.5
+      ],
+      "interpretation": "reported_envelope_with_uncertain_start",
+      "endpoint_bounds": {
+        "start": [
+          38,
+          41
+        ],
+        "end": [
+          51,
+          51.48
+        ]
+      },
+      "report_path": "runs\\qvhighlights_0_r2\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          38,
+          52
+        ]
+      ],
+      "best_temporal_iou": 0.9642857142857143
+    },
+    {
+      "dataset": "qvhighlights",
+      "case": "1",
+      "run": "qvhighlights_1_r1",
+      "request": "request_0012",
+      "interval_s": [
+        72,
+        100
+      ],
+      "excerpt": "匹配片段约为72–100秒",
+      "interpretation": "approximate_report_interval",
+      "report_path": "runs\\qvhighlights_1_r1\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          72,
+          102
+        ]
+      ],
+      "best_temporal_iou": 0.9333333333333333
+    },
+    {
+      "dataset": "qvhighlights",
+      "case": "9167",
+      "run": "qvhighlights_9167_r1",
+      "request": "request_0012",
+      "interval_s": [
+        115,
+        118
+      ],
+      "excerpt": "定位到约115–118秒的匹配片段",
+      "interpretation": "verified_sample_span_with_unresolved_event_boundaries",
+      "report_path": "runs\\qvhighlights_9167_r1\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          84,
+          120
+        ]
+      ],
+      "best_temporal_iou": 0.08333333333333333
+    },
+    {
+      "dataset": "qvhighlights",
+      "case": "9167",
+      "run": "qvhighlights_9167_r2",
+      "request": "request_0012",
+      "interval_s": [
+        84,
+        118
+      ],
+      "excerpt": "匹配场景约在84–118秒",
+      "interpretation": "approximate_scene_span_including_closeups; exact_event_boundaries_unresolved",
+      "report_path": "runs\\qvhighlights_9167_r2\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          84,
+          120
+        ]
+      ],
+      "best_temporal_iou": 0.9444444444444444
+    },
+    {
+      "dataset": "qvhighlights",
+      "case": "2",
+      "run": "qvhighlights_2_validation",
+      "request": "request_0009",
+      "interval_s": [
+        0,
+        150
+      ],
+      "excerpt": "符合描述的候选片段约为0–150秒",
+      "interpretation": "candidate_span_at_video_boundaries_not_verified_continuous_coverage",
+      "report_path": "runs\\qvhighlights_2_validation\\requests\\request_0009\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_intervals_s": [
+        [
+          0,
+          150
+        ]
+      ],
+      "best_temporal_iou": 1.0
+    },
+    {
+      "dataset": "vcsl",
+      "case": "pair_1",
+      "run": "vcsl_pair_1_retry1",
+      "request": "request_0012",
+      "segment_xyxy": [
+        4.02,
+        27.58,
+        4.88,
+        28.46
+      ],
+      "excerpt": "A约4.02–4.88秒 ↔ B约27.58–28.46秒",
+      "interpretation": "only_the_explicit_candidate_interval; additional_anchor_spans_are_not_continuous_predictions",
+      "report_path": "runs\\vcsl_pair_1_retry1\\requests\\request_0012\\response.json",
+      "prediction_source": "curator_transcription_of_actual_teacher_report",
+      "reference_segments": [
+        [
+          1,
+          1,
+          24,
+          24
+        ]
+      ],
+      "raw_coordinate_precision_recall": {
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "metric_source": "external/VCSL/vcsl/metric.py:precision_recall",
+      "interpretation_limit": "Official metric function on original annotation coordinates; no independent original-to-downloaded timeline calibration. This is not a full-benchmark result."
+    }
+  ],
+  "scope": "descriptive_case_metrics; numerical_overlap_does_not_prove_every_semantic_claim_or_continuity"
+}

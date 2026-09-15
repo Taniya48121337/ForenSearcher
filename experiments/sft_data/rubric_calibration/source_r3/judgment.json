@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "p07",
+      "admissible": false,
+      "score": 42,
+      "critical_unknown": false,
+      "reason": "repair_reexecute，target_rating=1；适用维度评分覆盖率100%。请求格式可执行，但选择了任务明确排除的同页归档；当前已有允许读取的原始预算PDF链接，应直接检查该文件。不以尚未知晓的打开结果评价此动作。"
+    },
+    {
+      "id": "p05",
+      "admissible": false,
+      "score": 35,
+      "critical_unknown": false,
+      "reason": "repair_reexecute，target_rating=0；适用维度评分覆盖率100%。E4第3行日期为2023年6月20日，第20行没有说明清单何时上网，不能据此证明5月25日的官网状态。核心时间推断明确不成立。"
+    },
+    {
+      "id": "p04",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate，target_rating=4；适用维度评分覆盖率100%。准确依据E4第3、20行区分报道转述与官网历史记录，正确回答当前材料不能证明5月25日的网页状态。任务仅要求提交报告，无须另行调查。"
+    },
+    {
+      "id": "p03",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate，target_rating=4；适用维度评分覆盖率100%。清单转述符合E4第20行，并明确说明6月20日报道不符合截止日要求、尚未取得合格历史记录。INCOMPLETE准确；引用E4说明现有材料及其局限，没有将其冒充符合时限的核查依据。"
+    },
+    {
+      "id": "p01",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate，target_rating=4；适用维度评分覆盖率100%。准确概括E4第20行的三种油并明确归属于AFP转述。本题不限制资料发表时间，也未要求直接核验官网，因此COMPLETED成立。"
+    },
+    {
+      "id": "p08",
+      "admissible": false,
+      "score": 50,
+      "critical_unknown": true,
+      "reason": "context_only，target_rating=unknown；适用维度评分覆盖率35.3%。仅有待复核标注，缺少核对年份的实际来源，不能判定2014年说法正确或错误，也不能把标注视为演员已核实的证据。候选未说明核实局限；分数仅计执行对应、简洁性与不确定性表达，关键事实维度仍未知。"
+    },
+    {
+      "id": "p06",
+      "admissible": true,
+      "score": 100,
+      "critical_unknown": false,
+      "reason": "accept_candidate，target_rating=4；适用维度评分覆盖率100%。首次打开已知且明确允许读取的原始预算PDF，参数符合可用SEARCH接口，不需要已有证据ID。动作合理，不必预先知道读取是否成功或文件中的预算数值。"
+    },
+    {
+      "id": "p02",
+      "admissible": false,
+      "score": 69,
+      "critical_unknown": false,
+      "reason": "repair_reexecute，target_rating=2；适用维度评分覆盖率100%。AFP清单转述本身符合E4，但报道发表于6月20日，不符合仅用5月25日及以前公开资料的要求。COMPLETED及空limitations错误；准确注明转述来源不能弥补关键时限要求未满足。"
+    }
+  ]
+}

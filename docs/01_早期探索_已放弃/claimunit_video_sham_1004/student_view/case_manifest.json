@@ -1,0 +1,36 @@
+{
+  "case_id": "videosham-1004",
+  "dataset": "VideoSham",
+  "source_id": "vimeo-26432864",
+  "comparison_scope_s": [
+    1.0,
+    12.0
+  ],
+  "scope_provenance": "dataset-provided edit window used only as a neutral locator",
+  "source_media": {
+    "path": "data/source/1004_unedited.mp4",
+    "duration_s": 125.692,
+    "fps": 29.97003,
+    "frame_count": 3765,
+    "width": 640,
+    "height": 472
+  },
+  "edited_media": {
+    "path": "data/edited/1004_processed.mp4",
+    "duration_s": 8.0,
+    "fps": 24.0,
+    "frame_count": 192,
+    "width": 640,
+    "height": 360
+  },
+  "allowed_inputs": [
+    "the two media files",
+    "their neutral identifiers",
+    "the comparison scope"
+  ],
+  "forbidden_inputs": [
+    "editor task text",
+    "manipulation label",
+    "oracle fields"
+  ]
+}

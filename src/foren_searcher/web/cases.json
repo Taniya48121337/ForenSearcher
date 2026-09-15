@@ -1,0 +1,60 @@
+[
+  {
+    "id": "videosham", "dataset": "VideoSham", "sample": "1004", "kind": "video",
+    "title": "两段视频，是否省略了内容？",
+    "description": "对比真实视频，定位对应片段，区分连续截取与中间省略。",
+    "tags": ["视频对比", "时间定位"],
+    "task": "附件第一段视频为A，第二段为B。仅依据两段视频，核查B能否由A的一个连续区间得到，还是省略了中间内容。请查看真实画面，给出可确认的内容对应、时间范围与仍不确定的边界；区分开头结尾截取和中间内容省略。不得联网，不根据文件名或数据集编辑标签下结论。用中文回答并给出E引用。",
+    "media": ["outputs/web-demo/catalog/videosham/A.mp4", "outputs/web-demo/catalog/videosham/B.mp4"],
+    "thumbnail": "outputs/web-demo/catalog/videosham/preview.jpg",
+    "record": "outputs/reliability-20260909/visual-summary/videosham",
+    "source_url": "https://github.com/adobe-research/VideoSham-dataset",
+    "license": "Adobe Research License · 非商业研究"
+  },
+  {
+    "id": "viddiff", "dataset": "VidDiffBench", "sample": "surgery_1 · JIGSAWS", "kind": "video",
+    "title": "同一个动作，操作有何不同？",
+    "description": "比较两段台架打结动作，寻找有画面支持的操作差异。",
+    "tags": ["动作理解", "局部差异"],
+    "task": "两段附件视频A和B均展示台架模型上的缝线打结动作。请仅根据真实画面比较两段操作中最多三项能够确认的具体差异，给出A/B各自的时间位置和E引用；区分画面事实与推断。看不清或抽样不足的内容请说明，不推断操作者水平或临床效果，不预设视频存在篡改。用中文回答，不联网。",
+    "media": ["outputs/web-demo/catalog/viddiff/A.mp4", "outputs/web-demo/catalog/viddiff/B.mp4"],
+    "thumbnail": "outputs/web-demo/catalog/viddiff/preview.jpg",
+    "record": "outputs/reliability-20260909/visual-summary/viddiff",
+    "source_url": "https://jmhb0.github.io/viddiff/",
+    "license": "VidDiffBench / JIGSAWS · 研究样本，按官方帧区间截取"
+  },
+  {
+    "id": "chartqa", "dataset": "ChartQA", "sample": "val · multi_col_1229", "kind": "image",
+    "title": "图中的数字，支持什么结论？",
+    "description": "直接阅读统计图，对照年龄组与两个社交平台的数值。",
+    "tags": ["图表问答", "数值核查"],
+    "task": "仅根据附件图表回答两个问题：1.which age group has the highest number of people using Facebook messanger? 2.What is the total percentage of both people using Facebook and WhatsApp at 60+? 请用中文列出读到的数值、计算和E引用，保留图表的单位，说明两个百分比相加是否等于去重后的用户占比。不得联网或用文件名推断。",
+    "media": ["outputs/web-demo/catalog/chartqa/chart.png"],
+    "thumbnail": "outputs/web-demo/catalog/chartqa/chart.png",
+    "record": "outputs/trial-readiness-20260909/verified-context/chartqa",
+    "source_url": "https://github.com/vis-nlp/ChartQA",
+    "license": "ChartQA 官方验证集 · 原始图像"
+  },
+  {
+    "id": "nasa", "dataset": "NASA 公开资料", "sample": "Ingenuity 首飞", "kind": "web",
+    "title": "火星首飞，计划与实际一致吗？",
+    "description": "上网寻找原始资料，核对日期、飞行时长、悬停时长与高度。",
+    "tags": ["开放搜索", "来源核查"],
+    "task": "查找 NASA 官方原始来源，核实 Ingenuity 在火星第一次动力飞行的日期、总飞行时长、悬停时长与最大高度。逐项给出准确数值、对应 E 引用及英文原文短摘和来源链接，区分目标计划与实际完成结果。请用中文作答。",
+    "media": [],
+    "record": "outputs/trial-readiness-20260909/verified-context/nasa",
+    "source_url": "https://www.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+    "license": "公开网页核查案例 · 非数据集评分"
+  },
+  {
+    "id": "parallel", "dataset": "多任务验证样例", "sample": "PDF + NASA", "kind": "mixed",
+    "title": "两条独立线索，如何并行调查？",
+    "description": "一边读取设备清单，一边核对阿波罗时间，观察独立 HI 如何协作。",
+    "tags": ["并行工作区", "PDF + 搜索"],
+    "task": "请并行完成两项相互独立的调查，并分开给出结果与E引用：一、仅依据附件PDF，核查“正式验证共22台设备，而且能确定每台设备的通道数”，说明统计口径与未知信息，不得联网补写附件事实；二、查找NASA原始资料，按UTC核对阿波罗11号登月舱着陆与阿姆斯特朗首次踏上月面的日期和时间，判断它们是否发生在同一天，给出来源链接。",
+    "media": ["outputs/validation-media/sensor-inventory.pdf"],
+    "record": "outputs/trial-readiness-20260909/verified-context/parallel",
+    "source_url": "https://www.nasa.gov/history/",
+    "license": "自建PDF与公开网页 · 非数据集评分"
+  }
+]

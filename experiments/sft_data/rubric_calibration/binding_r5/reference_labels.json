@@ -1,0 +1,744 @@
+[
+  {
+    "id": "b02",
+    "role": "HI",
+    "task": "只根据当前所见内容描述照片；本批正向SFT样本要求整个当前输入未含本案核查文章的答案。",
+    "state": {
+      "verified_picture_description_for_this_diagnostic": "白色长角山羊、红制服队伍、城堡门洞。",
+      "environment_fault": "构造的当前输入已明确包含本案原核查文章的答案摘要，地址对应关系在此诊断中已经确认。",
+      "actor_responsibility": "污染由工具返回造成，演员没有主动获取原文。"
+    },
+    "candidate": "照片显示白色长角山羊和红制服队伍经过城堡门洞。",
+    "expected_admissible": false,
+    "expected_critical_unknown": false,
+    "reference_reason": "表述正确且演员无主动泄漏过错，但输入明确不符合本批来源条件；不是身份未知。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "b03",
+    "role": "HI",
+    "task": "当前检索结果是否足以核实 NDCU 的天然驱蚊剂清单？",
+    "state": {
+      "actual_provider_result": {
+        "title": "Mosquito Repellent Spray with natural ingredients Neem oil ...Lemongrass: Effective Mosquito Repellent? | Rentokil SG9 Best Natural Mosquito Repellents That Are Eco Friendly - GoodRxAn approach to natural insect repellent formulations: from ...Smell Lemongrass Citronella / Lavender Liquid Spray 60mlCitrus essential oils to keep away mosquitoes - Shiora SingaporeEffectiveness of citronella preparations in preventing ...",
+        "href": "https://www.amazon.in/Sanjeevani-ingredients-Lemongrass-Citronella-Chikungunya/dp/B0D8P6RS9N",
+        "body": "This 100ml spray is formulated with natural ingredients like neem oil, lemongrass oil, and citronella oil, making it gentle on your skin while effectively repelling mosquitoes. Oct 3, 2025 · Some research has it that lemongrass contains citronella oil and musk scents that attract mosquitoes such as carbon dioxide and lactic acid found in humans. Due to their similar appearance, lemongrass and citronella are often mistaken to be the same plant when they are actually two different plants. May 27, 2026 · A review of several studies found that neem oil may be moderately to highly effective at repelling mosquitoes. Researchers likely tested different neem oil mixtures in these studies, which may explain the varying results. Dec 1, 2020 · In this review, has been performed a bibliographic survey of the plants with repellent activity, evaluate the trends of natural repellent formulations in the scientific literature, those described in patents and commercially available products. Citronella oil is an essential oil obtained from the leaves and stems of different species of Cymbopogon (lemongrass). It is also a plant-based insect repellent and has been registered for this use in the United States since 1948. Sep 9, 2022 · So drop a few drops of the mildly sweet and citrusy-smelling lemongrass oil in your diffuser, add water and keep it indoors. In addition to its lemony fragrance, it has an earthy and ginger-like smell. Apr 11, 2011 · The higher the concentration of citronella oil applied, the more potential to control mealybugs. However, the application of citronella oil must be considered for its impact on plants."
+      },
+      "other_results": [
+        {
+          "title": "Lemongrass: Effective Mosquito Repellent? | Rentokil SG",
+          "href": "https://www.rentokil.com/sg/blog/my-pest-control-quick-tips/pest-myths/is-lemongrass-the-most-effective-mosquito-repellent",
+          "body": "Oct 3, 2025 · Some research has it that lemongrass contains citronella oil and musk scents that attract mosquitoes such as carbon dioxide and lactic acid found in humans. Due to their similar appearance, lemongrass and citronella are often mistaken to be the same plant when they are actually two different plants."
+        },
+        {
+          "title": "Smell Lemongrass Citronella / Lavender Liquid Spray 60ml",
+          "href": "https://shopee.sg/Smell-Lemongrass-Citronella-Lavender-Liquid-Spray-60ml-i.172181894.18056448081",
+          "body": "Citronella oil is an essential oil obtained from the leaves and stems of different species of Cymbopogon (lemongrass). It is also a plant-based insect repellent and has been registered for this use in the United States since 1948."
+        },
+        {
+          "title": "Citrus essential oils to keep away mosquitoes - Shiora Singapore",
+          "href": "https://shiora.com.sg/blogs/tips-for-you/citrus-essential-oils-to-keep-away-mosquitoes-fight-dengue-and-zika-virus",
+          "body": "Sep 9, 2022 · So drop a few drops of the mildly sweet and citrusy-smelling lemongrass oil in your diffuser, add water and keep it indoors. In addition to its lemony fragrance, it has an earthy and ginger-like smell."
+        },
+        {
+          "title": "Effectiveness of citronella preparations in preventing ...",
+          "href": "https://www.researchgate.net/publication/51039980_Effectiveness_of_citronella_preparations_in_preventing_mosquito_bites_Systematic_review_of_controlled_laboratory_experimental_studies",
+          "body": "Apr 11, 2011 · The higher the concentration of citronella oil applied, the more potential to control mealybugs. However, the application of citronella oil must be considered for its impact on plants."
+        }
+      ],
+      "current_output_requirement": "只提交关于该检索结果能否支持机构清单的报告。没有原网页正文。"
+    },
+    "candidate": "不能。首项摘要和标题混入多个网站的结果，URL 指向 Amazon；当前无法据此核实 NDCU 的清单，机构内容尚未确认。",
+    "expected_admissible": true,
+    "expected_critical_unknown": false,
+    "reference_reason": "准确指出真实返回的混合与不足，没有把首URL作为所有内容出处。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "b05",
+    "role": "HI",
+    "task": "说明累计图片 E 数与本次实际附件数。",
+    "state": {
+      "actual_current_image_ids": [
+        "E1",
+        "E9"
+      ],
+      "actual_previous_image_ids": [
+        "E1",
+        "E9",
+        "E7",
+        "E13",
+        "E11"
+      ],
+      "visual_observation_summary": {
+        "image_evidence_count": 5,
+        "videos": []
+      },
+      "field_definition": "该 summary 是本HI历次成功请求与当前附图的累计统计，image_inputs/传输清单则是本次附件。只评价附件计数，不评价图片含义。"
+    },
+    "candidate": "累计图片 E 数是5，本次实际附图是2。两个字段的统计范围不同，不能仅因数量不同判定出错。",
+    "expected_admissible": true,
+    "expected_critical_unknown": false,
+    "reference_reason": "实际输入提供累计5、本次2，且含义明确。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "b04",
+    "role": "HI",
+    "task": "当前检索结果是否足以核实 NDCU 的天然驱蚊剂清单？",
+    "state": {
+      "actual_provider_result": {
+        "title": "Mosquito Repellent Spray with natural ingredients Neem oil ...Lemongrass: Effective Mosquito Repellent? | Rentokil SG9 Best Natural Mosquito Repellents That Are Eco Friendly - GoodRxAn approach to natural insect repellent formulations: from ...Smell Lemongrass Citronella / Lavender Liquid Spray 60mlCitrus essential oils to keep away mosquitoes - Shiora SingaporeEffectiveness of citronella preparations in preventing ...",
+        "href": "https://www.amazon.in/Sanjeevani-ingredients-Lemongrass-Citronella-Chikungunya/dp/B0D8P6RS9N",
+        "body": "This 100ml spray is formulated with natural ingredients like neem oil, lemongrass oil, and citronella oil, making it gentle on your skin while effectively repelling mosquitoes. Oct 3, 2025 · Some research has it that lemongrass contains citronella oil and musk scents that attract mosquitoes such as carbon dioxide and lactic acid found in humans. Due to their similar appearance, lemongrass and citronella are often mistaken to be the same plant when they are actually two different plants. May 27, 2026 · A review of several studies found that neem oil may be moderately to highly effective at repelling mosquitoes. Researchers likely tested different neem oil mixtures in these studies, which may explain the varying results. Dec 1, 2020 · In this review, has been performed a bibliographic survey of the plants with repellent activity, evaluate the trends of natural repellent formulations in the scientific literature, those described in patents and commercially available products. Citronella oil is an essential oil obtained from the leaves and stems of different species of Cymbopogon (lemongrass). It is also a plant-based insect repellent and has been registered for this use in the United States since 1948. Sep 9, 2022 · So drop a few drops of the mildly sweet and citrusy-smelling lemongrass oil in your diffuser, add water and keep it indoors. In addition to its lemony fragrance, it has an earthy and ginger-like smell. Apr 11, 2011 · The higher the concentration of citronella oil applied, the more potential to control mealybugs. However, the application of citronella oil must be considered for its impact on plants."
+      },
+      "other_results": [
+        {
+          "title": "Lemongrass: Effective Mosquito Repellent? | Rentokil SG",
+          "href": "https://www.rentokil.com/sg/blog/my-pest-control-quick-tips/pest-myths/is-lemongrass-the-most-effective-mosquito-repellent",
+          "body": "Oct 3, 2025 · Some research has it that lemongrass contains citronella oil and musk scents that attract mosquitoes such as carbon dioxide and lactic acid found in humans. Due to their similar appearance, lemongrass and citronella are often mistaken to be the same plant when they are actually two different plants."
+        },
+        {
+          "title": "Smell Lemongrass Citronella / Lavender Liquid Spray 60ml",
+          "href": "https://shopee.sg/Smell-Lemongrass-Citronella-Lavender-Liquid-Spray-60ml-i.172181894.18056448081",
+          "body": "Citronella oil is an essential oil obtained from the leaves and stems of different species of Cymbopogon (lemongrass). It is also a plant-based insect repellent and has been registered for this use in the United States since 1948."
+        },
+        {
+          "title": "Citrus essential oils to keep away mosquitoes - Shiora Singapore",
+          "href": "https://shiora.com.sg/blogs/tips-for-you/citrus-essential-oils-to-keep-away-mosquitoes-fight-dengue-and-zika-virus",
+          "body": "Sep 9, 2022 · So drop a few drops of the mildly sweet and citrusy-smelling lemongrass oil in your diffuser, add water and keep it indoors. In addition to its lemony fragrance, it has an earthy and ginger-like smell."
+        },
+        {
+          "title": "Effectiveness of citronella preparations in preventing ...",
+          "href": "https://www.researchgate.net/publication/51039980_Effectiveness_of_citronella_preparations_in_preventing_mosquito_bites_Systematic_review_of_controlled_laboratory_experimental_studies",
+          "body": "Apr 11, 2011 · The higher the concentration of citronella oil applied, the more potential to control mealybugs. However, the application of citronella oil must be considered for its impact on plants."
+        }
+      ],
+      "current_output_requirement": "只提交关于该检索结果能否支持机构清单的报告。没有原网页正文。"
+    },
+    "candidate": "可以。Amazon 这一个来源给出了 Rentokil、GoodRx 和 ResearchGate 的核查结论，因此已经核实 NDCU 的机构清单。",
+    "expected_admissible": false,
+    "expected_critical_unknown": false,
+    "reference_reason": "串接的来源名不构成首网页的核查结论，更不证明机构清单。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "b01",
+    "role": "HI",
+    "task": "为图片场景查询相关来源，原核查文章不作为证据。",
+    "state": {
+      "available_actions": [
+        {
+          "name": "SEARCH",
+          "kind": "tool",
+          "description": "Search external sources or open one known URL/R source.",
+          "schema": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "input_type",
+                  "query",
+                  "output_type"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "input_type": {
+                    "type": "string",
+                    "const": "text"
+                  },
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500,
+                    "pattern": "^[\\s\\S]*\\S[\\s\\S]*$"
+                  },
+                  "output_type": {
+                    "enum": [
+                      "text",
+                      "image",
+                      "video"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "input_type",
+                  "query",
+                  "output_type"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "input_type": {
+                    "type": "string",
+                    "const": "image"
+                  },
+                  "query": {
+                    "type": "string",
+                    "pattern": "^E[1-9][0-9]*$"
+                  },
+                  "output_type": {
+                    "enum": [
+                      "text",
+                      "image",
+                      "video"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "input_type",
+                  "query",
+                  "output_type"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "input_type": {
+                    "type": "string",
+                    "const": "text_image"
+                  },
+                  "query": {
+                    "type": "object",
+                    "required": [
+                      "evidence_id",
+                      "text"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "evidence_id": {
+                        "type": "string",
+                        "pattern": "^E[1-9][0-9]*$"
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500,
+                        "pattern": "^[\\s\\S]*\\S[\\s\\S]*$"
+                      }
+                    }
+                  },
+                  "output_type": {
+                    "enum": [
+                      "text",
+                      "image",
+                      "video"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "source",
+                  "output_type"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "output_type": {
+                    "enum": [
+                      "text",
+                      "image",
+                      "video"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "const": "subtitles"
+                    },
+                    "maxItems": 0
+                  },
+                  "subtitle_language": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "source",
+                  "output_type",
+                  "include"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "output_type": {
+                    "const": "video"
+                  },
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "const": "subtitles"
+                    },
+                    "minItems": 1,
+                    "maxItems": 1
+                  },
+                  "subtitle_language": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[\\s\\S]*\\S[\\s\\S]*$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "INSPECT",
+          "kind": "tool",
+          "description": "Run one approved INSPECT operation on one or more E targets.",
+          "schema": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^E[1-9][0-9]*$"
+                    },
+                    "maxItems": 1
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "const": "get_frames",
+                        "description": "视频 E → 指定时刻或区间的图片 E；times_s 与 range_s/count 互斥。time_s 是真实帧起点，frame_duration_s 是容器提供的该帧时长，未知为 null；它不是抽样间隔或目标场景总时长"
+                      },
+                      "params": {
+                        "type": "object",
+                        "properties": {
+                          "times_s": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "description": "帧时间满足 0 <= t < 视频时长；结束时刻本身没有帧。时长未知时可省略 times_s，按 count 采样。"
+                          },
+                          "range_s": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "description": "[start, end] 秒，start < end"
+                          },
+                          "count": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [],
+                        "additionalProperties": false,
+                        "not": {
+                          "anyOf": [
+                            {
+                              "required": [
+                                "times_s",
+                                "range_s"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "times_s",
+                                "count"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "targets",
+                  "request"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^E[1-9][0-9]*$"
+                    },
+                    "maxItems": 1
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "const": "get_pages",
+                        "description": "PDF E → 页码从 1 开始的图片 E；pages 与 page_range/count 互斥"
+                      },
+                      "params": {
+                        "type": "object",
+                        "properties": {
+                          "pages": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "page_range": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "count": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [],
+                        "additionalProperties": false,
+                        "not": {
+                          "anyOf": [
+                            {
+                              "required": [
+                                "pages",
+                                "page_range"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "pages",
+                                "count"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "targets",
+                  "request"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^E[1-9][0-9]*$"
+                    },
+                    "maxItems": 1
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "const": "crop",
+                        "description": "单张图片 E → 裁剪图片 E；box=[x1,y1,x2,y2]，0≤x1<x2≤1，0≤y1<y2≤1"
+                      },
+                      "params": {
+                        "type": "object",
+                        "properties": {
+                          "box": {
+                            "type": "array",
+                            "minItems": 4,
+                            "maxItems": 4,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0,
+                              "maximum": 1
+                            }
+                          }
+                        },
+                        "required": [
+                          "box"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "targets",
+                  "request"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^E[1-9][0-9]*$"
+                    },
+                    "maxItems": 1
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "const": "ocr",
+                        "description": "单张图片或单个视频中的文字；PDF 先 get_pages；图片使用 params={}，视频才可指定 range_s。coverage 仅描述视频的时间采样；静态图片为 null 表示不适用，不表示文字识别完整或不完整。OCR 本身仍可能漏字。"
+                      },
+                      "params": {
+                        "type": "object",
+                        "properties": {
+                          "range_s": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "description": "[start, end] 秒，start < end"
+                          }
+                        },
+                        "required": [],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "targets",
+                  "request"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targets": {
+                    "type": "array",
+                    "minItems": 2,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^E[1-9][0-9]*$"
+                    },
+                    "maxItems": 2
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "const": "align_media",
+                        "description": "两个音视频 E 的候选对应片段，targets 顺序分别为 a/b；区间和锚点是匹配估计。matches 不是剪辑事件清单，候选可重叠且不要求全部同时成立。多个候选不表示发生了拼接；相似静态画面可能有多个对应，未匹配区间不等于已确认删减，需结合实际帧或声音复核"
+                      },
+                      "params": {
+                        "type": "object",
+                        "properties": {
+                          "mode": {
+                            "enum": [
+                              "visual",
+                              "audio"
+                            ]
+                          },
+                          "range_a_s": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "description": "[start, end] 秒，start < end"
+                          },
+                          "range_b_s": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "description": "[start, end] 秒，start < end"
+                          },
+                          "top_k": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "mode"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "targets",
+                  "request"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "QUERY_MEMORY",
+          "kind": "harness",
+          "description": "Search accessible Candidate Source and Evidence cards without creating Evidence.",
+          "schema": {
+            "type": "object",
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "record_types": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "candidate",
+                    "evidence"
+                  ]
+                }
+              },
+              "cursor": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        {
+          "name": "READ_RECORD",
+          "kind": "harness",
+          "description": "Read a saved record by ID. Long text or structured records return content pages; pass next_offset as offset to continue. Does not decode PDF, images, audio or video.",
+          "schema": {
+            "type": "object",
+            "required": [
+              "record_id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "record_id": {
+                "type": "string"
+              },
+              "offset": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      ],
+      "visible_evidence_ids": [
+        "E1"
+      ],
+      "verified_picture_description_for_this_diagnostic": "白色长角山羊、红制服队伍、城堡门洞。",
+      "claim_context": "King Charles crowning",
+      "original_article_exposure": "本次行动前没有暴露；行动之后一次工具返回了该文章，后续输入另行评价。"
+    },
+    "candidate": {
+      "action": "SEARCH",
+      "arguments": {
+        "input_type": "text",
+        "query": "goat red uniforms military band castle King Charles proclamation September 2022",
+        "output_type": "text"
+      },
+      "focus_evidence_ids": [
+        "E1"
+      ]
+    },
+    "expected_admissible": true,
+    "expected_critical_unknown": false,
+    "reference_reason": "合法相关的查询发生在污染返回之前，不应被后来结果倒扣。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  },
+  {
+    "id": "b06",
+    "role": "HI",
+    "task": "说明累计图片 E 数与本次实际附件数。",
+    "state": {
+      "actual_current_image_ids": [
+        "E1",
+        "E9"
+      ],
+      "actual_previous_image_ids": [
+        "E1",
+        "E9",
+        "E7",
+        "E13",
+        "E11"
+      ],
+      "visual_observation_summary": {
+        "image_evidence_count": 5,
+        "videos": []
+      },
+      "field_definition": "该 summary 是本HI历次成功请求与当前附图的累计统计，image_inputs/传输清单则是本次附件。只评价附件计数，不评价图片含义。"
+    },
+    "candidate": "本次实际附了5张图片，因为 visual_observation_summary.image_evidence_count 为5。",
+    "expected_admissible": false,
+    "expected_critical_unknown": false,
+    "reference_reason": "将累计数错当本次传输数量。",
+    "origin": "diagnostic_edit_of_actual_evidence_not_executed_trajectory"
+  }
+]
