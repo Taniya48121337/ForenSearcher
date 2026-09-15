@@ -1,0 +1,180 @@
+{
+  "files": [
+    {
+      "file": "gia_construction_validation.jsonl",
+      "rows": 71,
+      "decisions": [
+        {
+          "kind": "FINISH",
+          "rows": 12,
+          "case_families": 6
+        },
+        {
+          "kind": "INVESTIGATE",
+          "rows": 17,
+          "case_families": 7
+        },
+        {
+          "kind": "QUERY_MEMORY",
+          "rows": 1,
+          "case_families": 1
+        },
+        {
+          "kind": "READ_RECORD",
+          "rows": 41,
+          "case_families": 5
+        }
+      ],
+      "hi_report_conditions": []
+    },
+    {
+      "file": "hi_construction_validation.jsonl",
+      "rows": 415,
+      "decisions": [
+        {
+          "kind": "INSPECT",
+          "rows": 90,
+          "case_families": 7
+        },
+        {
+          "kind": "QUERY_MEMORY",
+          "rows": 9,
+          "case_families": 5
+        },
+        {
+          "kind": "READ_RECORD",
+          "rows": 187,
+          "case_families": 13
+        },
+        {
+          "kind": "REPORT",
+          "rows": 40,
+          "case_families": 12
+        },
+        {
+          "kind": "SEARCH",
+          "rows": 89,
+          "case_families": 10
+        }
+      ],
+      "hi_report_conditions": [
+        {
+          "status": "COMPLETED",
+          "condition": "last_available_turn",
+          "rows": 1
+        },
+        {
+          "status": "COMPLETED",
+          "condition": "turns_remaining",
+          "rows": 8
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "last_available_turn",
+          "rows": 22
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "report_regenerated_from_terminal_input",
+          "rows": 5
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "turns_remaining",
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "file": "gia_development.jsonl",
+      "rows": 37,
+      "decisions": [
+        {
+          "kind": "FINISH",
+          "rows": 13,
+          "case_families": 8
+        },
+        {
+          "kind": "INVESTIGATE",
+          "rows": 17,
+          "case_families": 8
+        },
+        {
+          "kind": "READ_RECORD",
+          "rows": 7,
+          "case_families": 3
+        }
+      ],
+      "hi_report_conditions": []
+    },
+    {
+      "file": "hi_development.jsonl",
+      "rows": 303,
+      "decisions": [
+        {
+          "kind": "INSPECT",
+          "rows": 82,
+          "case_families": 11
+        },
+        {
+          "kind": "QUERY_MEMORY",
+          "rows": 7,
+          "case_families": 4
+        },
+        {
+          "kind": "READ_RECORD",
+          "rows": 97,
+          "case_families": 18
+        },
+        {
+          "kind": "REPORT",
+          "rows": 35,
+          "case_families": 18
+        },
+        {
+          "kind": "SEARCH",
+          "rows": 82,
+          "case_families": 9
+        }
+      ],
+      "hi_report_conditions": [
+        {
+          "status": "COMPLETED",
+          "condition": "last_available_turn",
+          "rows": 8
+        },
+        {
+          "status": "COMPLETED",
+          "condition": "report_regenerated_from_terminal_input",
+          "rows": 1
+        },
+        {
+          "status": "COMPLETED",
+          "condition": "turns_remaining",
+          "rows": 14
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "last_available_turn",
+          "rows": 6
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "report_regenerated_from_terminal_input",
+          "rows": 2
+        },
+        {
+          "status": "INCOMPLETE",
+          "condition": "turns_remaining",
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "interpretation": [
+    "A row is one supervised decision, not one independent task.",
+    "A report at the last available turn trains report quality and completion status; it does not by itself demonstrate autonomous stopping.",
+    "Remaining turns do not guarantee unlimited time or prove that stopping was discretionary; inspect the actual input and deadline.",
+    "The distribution describes retained candidates, not task success or trained-student performance."
+  ]
+}

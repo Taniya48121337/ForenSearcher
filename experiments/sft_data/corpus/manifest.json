@@ -1,0 +1,885 @@
+{
+  "files": [
+    {
+      "file": "gia_construction_validation.jsonl",
+      "role": "GIA",
+      "usage_split": "construction_validation",
+      "rows": 71,
+      "case_families": 7,
+      "origins": {
+        "bridge": 57,
+        "gia_offline": 14
+      },
+      "target_ratings": {
+        "4": 61,
+        "3": 10
+      }
+    },
+    {
+      "file": "hi_construction_validation.jsonl",
+      "role": "HI",
+      "usage_split": "construction_validation",
+      "rows": 415,
+      "case_families": 15,
+      "origins": {
+        "hi_independent": 111,
+        "bridge": 299,
+        "hi_terminal_replay": 5
+      },
+      "target_ratings": {
+        "4": 319,
+        "3": 96
+      }
+    },
+    {
+      "file": "gia_development.jsonl",
+      "role": "GIA",
+      "usage_split": "development",
+      "rows": 37,
+      "case_families": 8,
+      "origins": {
+        "bridge": 28,
+        "gia_offline": 9
+      },
+      "target_ratings": {
+        "4": 29,
+        "3": 8
+      }
+    },
+    {
+      "file": "hi_development.jsonl",
+      "role": "HI",
+      "usage_split": "development",
+      "rows": 303,
+      "case_families": 18,
+      "origins": {
+        "hi_independent": 140,
+        "bridge": 160,
+        "hi_terminal_replay": 3
+      },
+      "target_ratings": {
+        "4": 209,
+        "3": 94
+      }
+    }
+  ],
+  "images_used": 2926,
+  "sources": [
+    {
+      "file": "runs/averimatec_423_q0_validation_r3/assessment_r3_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_423_q0_validation_r3/assessment_r3_by_actor/sft_candidates/hi.jsonl",
+      "rows": 5,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_441_q0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_441_q0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 6,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_archived_source_r1/assessment_r5_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_archived_source_r1/assessment_r5_by_actor/sft_candidates/hi.jsonl",
+      "rows": 3,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 10,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_bound_r1/assessment_r4_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_bound_r1/assessment_r4_by_actor/sft_candidates/hi.jsonl",
+      "rows": 10,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_bound_r2/assessment_r5_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_bound_r2/assessment_r5_by_actor/sft_candidates/hi.jsonl",
+      "rows": 12,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_policy_r1/assessment_r4_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_63_q0_source_policy_r1/assessment_r4_by_actor/sft_candidates/hi.jsonl",
+      "rows": 11,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_652_q1_visibility_validation/assessment_r6_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_652_q1_visibility_validation/assessment_r6_by_actor/sft_candidates/hi.jsonl",
+      "rows": 11,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_660_q0_source_bound_r1/assessment_r4_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_660_q0_source_bound_r1/assessment_r4_by_actor/sft_candidates/hi.jsonl",
+      "rows": 9,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_660_q0_source_validation/assessment_r4_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_660_q0_source_validation/assessment_r4_by_actor/sft_candidates/hi.jsonl",
+      "rows": 2,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_699_q0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_699_q0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 11,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_98_q0_validation/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averimatec_98_q0_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 12,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1707_q0_repair_r5/assessment_r3_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1707_q0_repair_r5/assessment_r3_by_actor/sft_candidates/hi.jsonl",
+      "rows": 12,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1707_q0_validation_r3/assessment_r3_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1707_q0_validation_r3/assessment_r3_by_actor/sft_candidates/hi.jsonl",
+      "rows": 2,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1766_q0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_1766_q0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 7,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_254_q1_retry1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_254_q1_retry1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 10,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/sft_candidates/gia.jsonl",
+      "rows": 13,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/sft_candidates/hi.jsonl",
+      "rows": 69,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/sft_candidates/gia.jsonl",
+      "rows": 17,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/sft_candidates/hi.jsonl",
+      "rows": 68,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/averitec_2694_q8_source_validation/assessment_r4_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2694_q8_source_validation/assessment_r4_by_actor/sft_candidates/hi.jsonl",
+      "rows": 8,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2799_q0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2799_q0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 4,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2872_q0_binding_validation/assessment_r5_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_2872_q0_binding_validation/assessment_r5_by_actor/sft_candidates/hi.jsonl",
+      "rows": 6,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_392_q0_validation/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/averitec_392_q0_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 5,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_0_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_0_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 6,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_0_r2/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_0_r2/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 8,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_1_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_1_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 7,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_2_validation/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_2_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 7,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_9167_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_9167_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 4,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_9167_r2/assessment_r2_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/qvhighlights_9167_r2/assessment_r2_by_actor/sft_candidates/hi.jsonl",
+      "rows": 7,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/true_17838107_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 4,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_17838107_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 18,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_20205316753904_validation/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_20205316753904_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 2,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_20361105_visibility_validation/assessment_r6_by_actor/sft_candidates/gia.jsonl",
+      "rows": 5,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_20361105_visibility_validation/assessment_r6_by_actor/sft_candidates/hi.jsonl",
+      "rows": 39,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_24171541709824_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 2,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_24171541709824_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 20,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_39132300_validation_r3/assessment_r3_by_actor/sft_candidates/gia.jsonl",
+      "rows": 2,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_39132300_validation_r3/assessment_r3_by_actor/sft_candidates/hi.jsonl",
+      "rows": 6,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_4124903_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 2,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_4124903_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 18,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_4124903_r2/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 6,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/true_4124903_r2/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 24,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/vcsl_pair_1_retry1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_1_retry1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 9,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_4_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_4_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 8,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_5_validation/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_5_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 9,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_6_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/vcsl_pair_6_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 7,
+      "usage_split": "development",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_0069_r1/assessment_r2_by_actor/sft_candidates/gia.jsonl",
+      "rows": 6,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_0069_r1/assessment_r2_by_actor/sft_candidates/hi.jsonl",
+      "rows": 35,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1007_validation/assessment_r2_by_actor/sft_candidates/gia.jsonl",
+      "rows": 9,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1007_validation/assessment_r2_by_actor/sft_candidates/hi.jsonl",
+      "rows": 39,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1028_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 2,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1028_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 14,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1028_r2/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_1028_r2/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 16,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_2010_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_2010_r1/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 15,
+      "usage_split": "development",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_4126_full_intervals_r7/assessment_r6_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_full_intervals_r7/assessment_r6_by_actor/sft_candidates/hi.jsonl",
+      "rows": 10,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_full_intervals_r8/assessment_r6_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_full_intervals_r8/assessment_r6_by_actor/sft_candidates/hi.jsonl",
+      "rows": 9,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_report_validation_r7/assessment_r6_by_actor/sft_candidates/gia.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_report_validation_r7/assessment_r6_by_actor/sft_candidates/hi.jsonl",
+      "rows": 4,
+      "usage_split": "construction_validation",
+      "origin": "hi_independent"
+    },
+    {
+      "file": "runs/videosham_4126_split_intervals_r7/assessment_r6_sources_by_actor/sft_candidates/gia.jsonl",
+      "rows": 10,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "runs/videosham_4126_split_intervals_r7/assessment_r6_sources_by_actor/sft_candidates/hi.jsonl",
+      "rows": 76,
+      "usage_split": "construction_validation",
+      "origin": "bridge"
+    },
+    {
+      "file": "gia_decisions/averimatec_423_gia_read_r3/assessment_r3/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "construction_validation",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/averimatec_423_gia_validation_r3/assessment_r3/sft_candidates/gia.jsonl",
+      "rows": 4,
+      "usage_split": "construction_validation",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/averimatec_63_gia_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "development",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/averitec_2694_scope_validation_r1/assessment_r5/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "construction_validation",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/averitec_2799_gia_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 3,
+      "usage_split": "development",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/videosham_1028_gia_r2/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 1,
+      "usage_split": "development",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/videosham_1028_r1/assessment_r2/sft_candidates/gia.jsonl",
+      "rows": 2,
+      "usage_split": "development",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "gia_decisions/videosham_4126_task_states_r1/assessment_r6/sft_candidates/gia.jsonl",
+      "rows": 4,
+      "usage_split": "construction_validation",
+      "origin": "gia_offline"
+    },
+    {
+      "file": "hi_terminal_repairs/averimatec_98_report_validation/assessment_r2_distinct_ids/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/averitec_2694_budget_12k_approval_report_r6/assessment_r6_current_input/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/averitec_2694_budget_12k_ump_report_r6/assessment_r6/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/averitec_2694_budget_report_r5/assessment_r5/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/averitec_2799_report_control/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "development",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/averitec_392_report_only_validation/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 0,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/true_20361105_citation_report_r6/assessment_r6/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "construction_validation",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/true_4124903_report_r4/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "development",
+      "origin": "hi_terminal_replay"
+    },
+    {
+      "file": "hi_terminal_repairs/videosham_2010_report_r4/assessment_r2/sft_candidates/hi.jsonl",
+      "rows": 1,
+      "usage_split": "development",
+      "origin": "hi_terminal_replay"
+    }
+  ],
+  "curation_exclusions": [
+    {
+      "run": "averitec_392_q0_validation",
+      "request": "request_0006",
+      "reason": "局部任务中的“查找直接证据”未明确是直接支持答案，还是必须取得原始发布页。原报告与同状态重新生成报告的评审对此采用不同完成标准；在任务含义未消除歧义前，COMPLETED 报告不进入最终候选语料。此前真实取证动作不受此处置影响。",
+      "review_records": [
+        "runs/averitec_392_q0_validation/assessment_r2/judgment.json",
+        "hi_terminal_repairs/averitec_392_report_only_validation/assessment_r2/judgment.json"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_r1",
+      "request": "request_0081",
+      "reason": "报告将KPMG背景中的DHET批准向两校直接拨付R183,000,000表述为直接拨付，未保留批准状态。r5评分指出这一缺陷但仍以3分接受；实际原页只能确认批准，不能据此认证款项已经拨出或到账。因此该报告不进入正向候选，其他目标仍按其自身输入与输出判断。",
+      "review_records": [
+        "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/W3-2/judgment.json",
+        "runs/averitec_2694_budget_plan_execution_r1/reference_review/kpmg_page_04.png"
+      ]
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_12k_r1",
+      "request": "request_0024",
+      "reason": "报告把按路径规律试探的普通chapter4.pdf称为另一已提供地址。实际E1的Chapter 4普通链接指向chapter5.pdf；chapter4.pdf是演员尝试的推导地址。r5评分指出来源表述不准确却以3分接受。该报告须准确区分已见链接与推导地址后再作正向监督；404结果及合理试探动作本身不因此改写或排除。",
+      "review_records": [
+        "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/W1-2/judgment.json",
+        "runs/averitec_2694_budget_plan_execution_12k_r1/requests/request_0004/request.json"
+      ]
+    }
+  ],
+  "applied_exclusions": [
+    {
+      "run": "averitec_2694_budget_plan_execution_12k_r1",
+      "request": "request_0024",
+      "candidate_file": "runs/averitec_2694_budget_plan_execution_12k_r1/assessment_r5_by_actor/sft_candidates/hi.jsonl"
+    },
+    {
+      "run": "averitec_2694_budget_plan_execution_r1",
+      "request": "request_0081",
+      "candidate_file": "runs/averitec_2694_budget_plan_execution_r1/assessment_r5_by_actor/sft_candidates/hi.jsonl"
+    },
+    {
+      "run": "averitec_392_q0_validation",
+      "request": "request_0006",
+      "candidate_file": "runs/averitec_392_q0_validation/assessment_r2/sft_candidates/hi.jsonl"
+    }
+  ],
+  "split_check": "no_overlap_in_case_ids_or_known_source_keys; event-level_semantic_deduplication_not_established",
+  "quality_scope": "automated_candidates; not_independent_human_certification",
+  "training_status": "student_weight_training_not_run",
+  "processing_checks": [
+    {
+      "file": "student_inputs_qwen35_9b_averimatec_652_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 11
+    },
+    {
+      "file": "student_inputs_qwen35_9b_budget_12k_approval_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 1
+    },
+    {
+      "file": "student_inputs_qwen35_9b_budget_12k_r1/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 82
+    },
+    {
+      "file": "student_inputs_qwen35_9b_budget_12k_ump_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 1
+    },
+    {
+      "file": "student_inputs_qwen35_9b_budget_r1/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 86
+    },
+    {
+      "file": "student_inputs_qwen35_9b_budget_report_r5/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 1
+    },
+    {
+      "file": "student_inputs_qwen35_9b_r1/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 389
+    },
+    {
+      "file": "student_inputs_qwen35_9b_r2/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 423
+    },
+    {
+      "file": "student_inputs_qwen35_9b_r3/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 469
+    },
+    {
+      "file": "student_inputs_qwen35_9b_r4/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 487
+    },
+    {
+      "file": "student_inputs_qwen35_9b_true_20361105_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 44
+    },
+    {
+      "file": "student_inputs_qwen35_9b_true_20361105_report_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 1
+    },
+    {
+      "file": "student_inputs_qwen35_9b_videosham_4126_full_intervals_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 10
+    },
+    {
+      "file": "student_inputs_qwen35_9b_videosham_4126_full_intervals_r8_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 9
+    },
+    {
+      "file": "student_inputs_qwen35_9b_videosham_4126_gia_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 4
+    },
+    {
+      "file": "student_inputs_qwen35_9b_videosham_4126_r7/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 4
+    },
+    {
+      "file": "student_inputs_qwen35_9b_videosham_4126_split_intervals_r6/summary.json",
+      "model": "C:\\Users\\Zya\\Documents\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+      "rows": 86
+    }
+  ],
+  "evidence_source_audit": "../evidence_source_audit.json",
+  "image_paths_relative_to": "corpus"
+}
