@@ -2888,12 +2888,13 @@ class LocalPolicyBundle:
             raise BaseExceptionGroup("could not unload all local models", errors)
 
 
-def create_demo_policies(model_root: str | Path, *, max_input_tokens: int = 24_000,
+def create_demo_policies(model_root: str | Path, *, model_name: str = "Qwen3-14B-bnb-4bit",
+                         max_input_tokens: int = 24_000,
                          max_new_tokens: int = 4_096, store: GlobalStore | None = None,
                          image_policy: InspectPolicy | None = None) -> LocalPolicyBundle:
-    """以同一指令模型权重提供 GIA 和 HI 的独立角色策略。"""
+    """以同一指令模型权重提供 GIA 和 HI 的独立角色策略。``model_name`` 由配置文件决定。"""
 
-    config = LocalModelConfig(Path(model_root) / "Qwen3-14B-bnb-4bit",
+    config = LocalModelConfig(Path(model_root) / model_name,
         max_input_tokens=max_input_tokens, max_new_tokens=max_new_tokens,
         constrain_json=True, enable_thinking=True, use_model_sampling=True)
     return LocalPolicyBundle(gia=config, hi=config, store=store, image_policy=image_policy)

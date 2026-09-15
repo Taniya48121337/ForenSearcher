@@ -14,7 +14,7 @@ from dataclasses import replace
 from typing import Any, Literal, cast
 
 from ..contracts import Evidence, EvidenceCard
-from ..evidence_resolver import EvidenceResolutionError, EvidenceResolver, ResolvedEvidence
+from ..store.resolver import EvidenceResolutionError, EvidenceResolver, ResolvedEvidence
 from ..store import ArtifactMetadata, GlobalStore
 from .backends.base import BackendFailure, BackendOutcome, MediaProfileData, PendingArtifact, PreparedMedia
 from .contracts import (

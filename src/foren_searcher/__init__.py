@@ -39,9 +39,10 @@ from .inspect import (
 )
 # Store 保存数据库记录和 Artifact；Memory 生成受限的模型可见视图。
 from .store import ArtifactIntegrityError, GlobalStore, StoreHealth
-from .memory import GlobalView, MemoryPolicy, RecordAccess
+from .store.records import MemoryPolicy, RecordAccess
+from .gia.global_view import GlobalView
 # orchestration 是顶层控制流：GIA 规划轮次，RoundCoordinator 运行 Workspace。
-from .orchestration import (
+from .gia import (
     GiaRunner,
     GiaPolicyTimeout,
     GiaTurnLimit,
@@ -75,7 +76,7 @@ from .local_models import (
     extract_json_object,
 )
 # workspace 包含单个 HI 的 Working Memory、Harness 和多轮执行循环。
-from .workspace import (
+from .hi.workspace import (
     ToolObservation,
     WorkspaceHarness,
     WorkspaceHistoryEntry,

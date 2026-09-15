@@ -74,7 +74,8 @@ def test_demo_capability_report_never_exposes_search_secret(
     monkeypatch.setenv("SERPAPI_API_KEY", "top-secret-demo-key")
     monkeypatch.delenv("SEARXNG_BASE_URL", raising=False)
 
-    report = capability_report(model_root=tmp_path, search="serpapi", harness_root=tmp_path, model_backend="local")
+    report = capability_report(model_root=tmp_path, search="serpapi", harness_root=tmp_path, model_backend="local",
+                               student_model="Qwen3-14B-bnb-4bit")
 
     assert report["configured_for_text_demo"] is True
     assert report["search"]["provider"] == "serpapi"

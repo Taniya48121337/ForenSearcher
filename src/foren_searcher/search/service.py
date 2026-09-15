@@ -20,7 +20,7 @@ from urllib.parse import urlsplit
 
 from PIL import Image
 
-from ..evidence_resolver import EvidenceResolutionError, EvidenceResolver
+from ..store.resolver import EvidenceResolutionError, EvidenceResolver
 from ..store import GlobalStore
 from .contracts import (
     CandidateBatch, CandidateSource, MaterialResult, OpenSourceRequest,

@@ -106,8 +106,6 @@ class DemoWebsite:
             raise HTTPException(429, f"每人24小时内最多开始{self.daily_runs}次调查，继续调查也计入次数，请稍后再试")
         if not key_configured(self.config):
             raise HTTPException(409, "请先在 OpenRouter 设置窗口填写密钥")
-        if not self.harness_root or not (self.harness_root / "harness/runtime/tool_executor.py").is_file():
-            raise HTTPException(409, "请在启动网站时指定 Harness-1 目录")
 
     def launch(self, job: dict[str, Any], media: tuple[str, ...], *, resume: bool = False) -> None:
         identifier = job["id"]

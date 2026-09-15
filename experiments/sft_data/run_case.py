@@ -1,4 +1,7 @@
-"""Run a sampled case through the current two-role Harness-1 runtime."""
+"""Run a sampled case through the two-role investigation runtime.
+
+路径、运行限制来自 configs/*.toml（FOREN_CONFIG 选择）；不再依赖 Harness-1（DESIGN.md 第 7 节）。
+"""
 from __future__ import annotations
 
 import argparse
@@ -18,15 +21,32 @@ from cli_generator import CliGenerator
 from source_policy import article_key, exclude_original_article
 from source_bound_search import PARSER_VERSION, SourceBoundTextProvider
 from foren_searcher import GlobalStore
-from foren_searcher.harness1 import harness1_workspace_type
+from foren_searcher.config import load_config
+from foren_searcher.hi.workspace import WorkspaceHarness
 from foren_searcher.inspect.factory import create_inspect_service
 from foren_searcher.local_models import TransformersGiaPolicy, TransformersHiPolicy
-from foren_searcher.orchestration import InitialMedia, InvestigationRuntime
+from foren_searcher.gia import InitialMedia, InvestigationRuntime
 from foren_searcher.search.factory import create_free_search_service
 
 
+CONFIG = load_config()
+
+
+def _videosham_root() -> Path:
+    """VideoSham 原始数据目录：优先 configs 里的 datasets 目录，其次旧的归档位置。"""
+
+    candidates = [CONFIG.resolve(CONFIG.paths.datasets) / "videosham",
+                  PROJECT / "docs" / "01_早期探索_已放弃" / "claimunit_video_sham_1004" / "datasets" / "videosham",
+                  PROJECT / "claimunit_video_sham_1004" / "datasets" / "videosham"]
+    for candidate in candidates:
+        if (candidate / "VideoSourceandEdits.csv").is_file():
+            return candidate
+    raise FileNotFoundError("VideoSham 数据未找到；请把它放到 configs 里 [paths].datasets 指向的目录下的 videosham/，候选位置: "
+                            + "; ".join(str(c) for c in candidates))
+
+
 def prepare_videosham(case_id: str, usage: str = "development") -> tuple[Path, dict]:
-    source_root = PROJECT / "claimunit_video_sham_1004" / "datasets" / "videosham"
+    source_root = _videosham_root()
     rows = list(csv.DictReader((source_root / "VideoSourceandEdits.csv").open(encoding="utf-8-sig")))
     row = next(row for row in rows if row["Video-Name"] == case_id + ".mp4")
     case_dir = ROOT / "data" / "cases" / ("videosham_" + case_id)
@@ -103,7 +123,12 @@ async def run(args: argparse.Namespace) -> None:
                            event_type="raw_model_output", payload=value)
     generator.generation_observer = record_generation
     inspect = create_inspect_service(store=store, enabled_operations=frozenset({"get_frames", "get_pages", "crop", "ocr", "align_media"}))
-    harness_root = Path("C:/Users/Zya/Documents/Codex/2026-07-23/plan-harness-1/work/harness-1")
+    harness_root = CONFIG.harness_root  # 默认 None：直接用本项目的 WorkspaceHarness
+    if harness_root is not None:
+        from foren_searcher.harness1 import harness1_workspace_type
+        workspace_type = harness1_workspace_type(harness_root)
+    else:
+        workspace_type = WorkspaceHarness
     search = create_free_search_service(store=store, reverse_engine="none") if args.dataset in {"true", "averitec", "averimatec"} else None
     source_policy = "unrestricted_retrospective_web" if search else "provided_media"
     applied_source_keys, applied_aliases = [], []
@@ -128,10 +153,12 @@ async def run(args: argparse.Namespace) -> None:
                  "\n该地址由任务提供，尚未成为已核实证据。实际打开并核对相关正文、出处及时间范围；存档请求日期与最终取得的存档日期可能不同。")
     runtime = InvestigationRuntime(store=store, gia_policy=LocalTaskDispatcher() if args.mode == "hi" else TransformersGiaPolicy(generator),
         hi_policy=TransformersHiPolicy(generator), inspect_service=inspect, search_service=search,
-        max_rounds=3, max_gia_turns=8, gia_turn_timeout_s=660,
-        max_workspace_turns=12, workspace_timeout_s=3600, max_concurrency=1,
-        max_workspaces_per_round=3, report_review_delay_s=None,
-        workspace_harness_type=harness1_workspace_type(harness_root))
+        max_rounds=CONFIG.runtime.max_rounds, max_gia_turns=CONFIG.runtime.max_gia_turns,
+        gia_turn_timeout_s=CONFIG.runtime.gia_turn_timeout_s,
+        max_workspace_turns=CONFIG.runtime.max_workspace_turns, workspace_timeout_s=CONFIG.runtime.workspace_timeout_s,
+        max_concurrency=1,  # 教师是单个 CLI 会话，串行执行
+        max_workspaces_per_round=CONFIG.runtime.max_workspaces_per_round, report_review_delay_s=None,
+        workspace_harness_type=workspace_type)
     inputs_dir = case_dir / "inputs"
     image_binding = "claim_materials"
     if args.question_images:
@@ -162,7 +189,9 @@ async def run(args: argparse.Namespace) -> None:
         "configured_model": generator.model_config,
         "instruction": instruction, "search": "ddgs_text" if search else None,
         "inspect_operations": ["get_frames", "get_pages", "crop", "ocr", "align_media"],
-        "harness_root": str(harness_root)}, ensure_ascii=False, indent=2), encoding="utf-8")
+        "harness_root": str(harness_root) if harness_root else None,
+        "config_profile": CONFIG.profile, "config_source": str(CONFIG.source) if CONFIG.source else None,
+        "runtime_limits": asdict(CONFIG.runtime)}, ensure_ascii=False, indent=2), encoding="utf-8")
     try:
         async with runtime:
             result = await runtime.run_new(task=task, claim_materials={"C0": {"task": task}}, media=media)

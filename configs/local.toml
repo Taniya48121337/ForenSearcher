@@ -1,0 +1,37 @@
+# 本地调试配置（Windows + RTX 5090 32GB）。目标只有一个：把整条链路跑通，不出数字。
+# 切换方式：默认就是这份；或 set FOREN_CONFIG=configs\server.toml
+profile = "local"
+
+[models]
+model_root = ".models"          # 权重目录，相对项目根目录
+student = "Qwen3.5-4B"          # 与服务器同系列、同样带视觉，只是更小；正式训练用 9B
+teacher = "api"                 # 本地调试期教师走 API / Codex CLI；服务器上换成本地 122B
+teacher_endpoint = ""
+max_input_tokens = 8000         # 本地显存有限，截短输入
+max_new_tokens = 1024
+
+[paths]
+outputs = "outputs"
+sft_data = "experiments/sft_data"
+datasets = "external"
+harness_root = ""               # 留空 = 不用 Harness-1（已剥离）
+
+[runtime]
+max_rounds = 2
+max_gia_turns = 6
+gia_turn_timeout_s = 300
+max_workspace_turns = 8
+workspace_timeout_s = 1800
+max_concurrency = 1
+max_workspaces_per_round = 2
+
+[training]
+lora_rank = 8
+lora_alpha = 16
+batch_size = 1
+gradient_accumulation = 2
+max_seq_len = 4096              # 本地只截到 4K，验证反向传播能跑
+learning_rate = 1e-4
+max_steps = 5                   # 跑几步就停，只看链路
+device_map = "auto"
+bf16 = true

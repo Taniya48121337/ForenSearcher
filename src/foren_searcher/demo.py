@@ -17,9 +17,11 @@ from typing import Any, Iterator, Literal
 from .inspect.factory import create_inspect_service
 from .inspect.contracts import inspect_action_schema
 from .harness1 import harness1_workspace_type
+from .hi.workspace import WorkspaceHarness
 from .local_models import TransformersJsonGenerator, create_demo_policies
-from .memory import MemoryPolicy
-from .orchestration import InitialMedia, InvestigationRuntime
+from .store.records import MemoryPolicy
+from .gia import InitialMedia, InvestigationRuntime
+from .config import load_config
 from .openrouter_settings import DEFAULT_CONFIG, DEFAULT_MODEL, key_configured, read_settings
 from .search.factory import (
     create_free_search_service,
@@ -242,10 +244,12 @@ def capability_report(
     harness_root: str | Path | None = None,
     model_backend: Literal["local", "openrouter"] = "openrouter",
     openrouter_config: str | Path = DEFAULT_CONFIG,
+    student_model: str | None = None,
 ) -> dict[str, Any]:
-    """返回不含密钥的可运行能力报告。"""
+    """返回不含密钥的可运行能力报告。``student_model`` 缺省取 configs/*.toml 里的 [models].student。"""
 
     root = Path(model_root).resolve()
+    student_model = student_model or load_config().models.student
     _configure_local_inspect_models(root)
     search_ready = True
     search_provider: str | None = None
@@ -262,26 +266,29 @@ def capability_report(
         "visual_qa": os.environ.get("FOREN_VLM_MODEL"),
         "audio_qa": os.environ.get("FOREN_AUDIO_MODEL"),
     }
-    model_directory = root / "Qwen3-14B-bnb-4bit"
+    model_directory = root / student_model
     model_ready = _model_files_ready(model_directory)
     if model_backend == "openrouter":
         model_ready = key_configured(openrouter_config)
         settings = read_settings(openrouter_config)
         inspect_models.pop("visual_qa")
         inspect_models.pop("audio_qa")
+    # Harness-1 已于 2026-09-15 从运行时剥离：不再是运行前提，只在显式指定时作为可选的兼容适配层。
     runtime_root = harness_root or os.environ.get("FOREN_HARNESS_ROOT")
     harness_ready = bool(runtime_root and (Path(runtime_root) / "harness/runtime/tool_executor.py").is_file())
-    text_ready = model_ready and search_ready and harness_ready
+    text_ready = model_ready and search_ready
     semantic_ready = all(bool(value) for value in inspect_models.values())
     return {
         "configured_for_text_demo": text_ready,
         "configured_for_paper_demo": text_ready and semantic_ready,
         "validation": "configuration_only",
         "model_backend": model_backend,
-        "harness1": {"configured": harness_ready, "source_root": str(runtime_root) if runtime_root else None},
+        "harness1": {"configured": harness_ready, "required": False, "deprecated": True,
+                     "source_root": str(runtime_root) if runtime_root else None},
         "models": {
             "gia": model_ready,
             "hi": model_ready,
+            "student": student_model,
             **({"model": settings.get("model", DEFAULT_MODEL), "hi_direct_images": True} if model_backend == "openrouter" else {}),
         },
         "search": {
@@ -474,10 +481,9 @@ async def _run_demo(*, task: str, claims: tuple[str, ...], media_paths: tuple[st
                 "semantic INSPECT models are required for this media input: "
                 + ", ".join(missing)
             )
+    # 默认直接用本项目的 WorkspaceHarness；只有显式给了 Harness-1 目录才走已弃用的兼容适配层。
     runtime_root = harness_root or os.environ.get("FOREN_HARNESS_ROOT")
-    if not runtime_root:
-        raise DemoConfigurationError("set FOREN_HARNESS_ROOT or --harness-root to your Harness-1 source directory")
-    workspace_type = harness1_workspace_type(runtime_root)
+    workspace_type: type[WorkspaceHarness] = harness1_workspace_type(runtime_root) if runtime_root else WorkspaceHarness
     if not resume:
         store = GlobalStore(paths.database, paths.artifacts)
     search_service = None
@@ -514,7 +520,7 @@ async def _run_demo(*, task: str, claims: tuple[str, ...], media_paths: tuple[st
             policies = OpenRouterPolicyBundle(remote_client, store=store, image_policy=inspect_service.policy)
         else:
             inspect_service = create_inspect_service(store=store)
-            policies = create_demo_policies(model_root, store=store, image_policy=inspect_service.policy)
+            policies = create_demo_policies(model_root, model_name=load_config().models.student, store=store, image_policy=inspect_service.policy)
         policies.gia_model.generation_observer = record_generation
         policies.hi_model.generation_observer = record_generation
         await policies.preload()
@@ -616,7 +622,8 @@ async def _run_demo(*, task: str, claims: tuple[str, ...], media_paths: tuple[st
         **investigation_value,
         "cited_evidence": cited_evidence,
         "task": task.strip(),
-        "runtime": {"base": "Harness-1", "source_root": str(Path(runtime_root).resolve())},
+        "runtime": ({"base": "Harness-1 (deprecated adapter)", "source_root": str(Path(runtime_root).resolve())}
+                    if runtime_root else {"base": "WorkspaceHarness", "source_root": None}),
         "output_dir": str(paths.root),
         "workspace_reports": reports,
         "candidate_sources": candidates,

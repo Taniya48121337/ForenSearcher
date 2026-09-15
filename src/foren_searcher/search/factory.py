@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from ..evidence_resolver import EvidenceResolver
+from ..store.resolver import EvidenceResolver
 from ..store import GlobalStore
 from .openers.browser import PlaywrightRenderer
 from .openers.dispatcher import SourceDispatcher

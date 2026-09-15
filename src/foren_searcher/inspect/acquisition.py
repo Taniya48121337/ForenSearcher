@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from ..evidence_resolver import sniff_media_kind
+from ..store.resolver import sniff_media_kind
 from ..search.contracts import SearchFailure
 from ..search.openers.http import SafeHttpClient
 from ..search.policy import SearchPolicy

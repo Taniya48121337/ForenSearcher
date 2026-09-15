@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw
 
 from .inspect.factory import create_inspect_service
 from .local_models import LocalPolicyBundle, create_qwen_local_policies
-from .orchestration import InitialMedia, InvestigationRuntime
+from .gia import InitialMedia, InvestigationRuntime
 from .search.contracts import (
     CandidateBatch,
     CandidateSource,

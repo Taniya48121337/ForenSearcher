@@ -1,0 +1,37 @@
+# 服务器训练配置（Linux + 8×A100 80GB）。真正的数字全部在这里出。
+# 切换方式：export FOREN_CONFIG=configs/server.toml
+profile = "server"
+
+[models]
+model_root = "/data/models"                 # 按服务器实际路径改
+student = "Qwen3.5-9B"                      # GIA 与 HI 共用底座，各挂一套 LoRA
+teacher = "Qwen3.5-122B-A10B"               # 多模态教师；BF16 占 8 张卡，FP8 只需 4 张
+teacher_endpoint = "http://127.0.0.1:8000/v1"   # vLLM 起好后的 OpenAI 兼容地址
+max_input_tokens = 24000
+max_new_tokens = 4096
+
+[paths]
+outputs = "outputs"
+sft_data = "experiments/sft_data"
+datasets = "/data/datasets"
+harness_root = ""
+
+[runtime]
+max_rounds = 3
+max_gia_turns = 8
+gia_turn_timeout_s = 660
+max_workspace_turns = 12
+workspace_timeout_s = 3600
+max_concurrency = 4
+max_workspaces_per_round = 3
+
+[training]
+lora_rank = 32
+lora_alpha = 64
+batch_size = 1
+gradient_accumulation = 8
+max_seq_len = 32768
+learning_rate = 1e-4
+max_steps = 2000
+device_map = "auto"
+bf16 = true

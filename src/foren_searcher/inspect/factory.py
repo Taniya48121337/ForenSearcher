@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..evidence_resolver import EvidenceResolver
+from ..store.resolver import EvidenceResolver
 from ..store import GlobalStore
 from .backends.local import LocalInspectBackend
 from .acquisition import DirectMediaAcquirer

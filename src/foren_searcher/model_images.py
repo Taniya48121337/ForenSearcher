@@ -11,9 +11,9 @@ from typing import Any
 
 from PIL import Image, ImageOps
 
-from .evidence_resolver import EvidenceResolver, EvidenceResolutionError
+from .store.resolver import EvidenceResolver, EvidenceResolutionError
 from .inspect.policy import InspectPolicy
-from .memory import investigation_visual_observations, workspace_visual_observations
+from .store.records import investigation_visual_observations, workspace_visual_observations
 from .store import ArtifactIntegrityError, GlobalStore
 
 

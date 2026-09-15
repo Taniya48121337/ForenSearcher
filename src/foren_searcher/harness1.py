@@ -1,16 +1,23 @@
-"""把现有 Harness-1 工具执行器接入调查工作区。"""
+"""【已弃用，2026-09-15】把私有分叉的 Harness-1 episode 壳接到调查工作区上。
+
+这层只做透传：真正的工具执行、证据登记、报告校验全在 ``hi/workspace.py`` 的
+``WorkspaceHarness`` 里。它导入的 ``EpisodeEnv`` / ``ToolCatalog`` 等类来自本机私有分叉，
+公开的 Harness-1 仓库里并不存在。设计决定（DESIGN.md 第 7 节）是从运行时剥离；
+本模块仅为兼容旧命令行参数保留，调用时会发出 DeprecationWarning，之后归档删除。
+"""
 
 from __future__ import annotations
 
 import asyncio
 import importlib.util
 import sys
+import warnings
 from pathlib import Path
 from types import ModuleType
 from typing import Any
 
 from .contracts import HiActionDecision, WorkspaceReport, WorkspaceReportDraft
-from .workspace import ToolObservation, WorkspaceHarness
+from .hi.workspace import ToolObservation, WorkspaceHarness
 
 
 def load_harness1_runtime(root: str | Path) -> ModuleType:
@@ -44,6 +51,8 @@ def load_harness1_runtime(root: str | Path) -> ModuleType:
 def harness1_workspace_type(root: str | Path) -> type[WorkspaceHarness]:
     """每个工作区使用独立 EpisodeEnv、工具执行器和任务状态。"""
 
+    warnings.warn("harness1_workspace_type is deprecated; WorkspaceHarness runs without Harness-1 (DESIGN.md §7)",
+                  DeprecationWarning, stacklevel=2)
     runtime: Any = load_harness1_runtime(root)
 
     class Harness1Workspace(WorkspaceHarness):
