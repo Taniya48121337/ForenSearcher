@@ -22,7 +22,9 @@ def _norm_number(token: str) -> str | None:
         return None
     if abs(number) < 10 and "." not in value:
         return None            # 个位整数噪音太大（序号、"两次"里的 2），不查
-    return format(number, "g")
+    if number == int(number) and "e" not in value.lower():
+        return str(int(number))          # 整数保留全部位数（format 'g' 只留 6 位有效数字会把 3735245 变成 3735240）
+    return format(number, ".6f").rstrip("0").rstrip(".")
 
 
 def numbers_in(text: str) -> set[str]:
@@ -32,6 +34,30 @@ def numbers_in(text: str) -> set[str]:
         if norm is not None:
             out.add(norm)
     return out
+
+
+def _close(a: str, b: str) -> bool:
+    """1.033333 与 1.033 算同一个数：绝对误差 ≤ 0.01 或相对误差 ≤ 0.1%。"""
+
+    x, y = float(a), float(b)
+    return abs(x - y) <= max(0.01, 1e-3 * max(abs(x), abs(y)))
+
+
+def numbers_missing(statement: str, pool: str) -> list[str]:
+    """结论里的数字在原文里找不到的那些。两条匹配途径：数值近似相等；或（≥4 位的）数字串出现在去掉分隔符的原文里
+    （对付 PDF 表格里 "3 735 245" / "3,735,245" 这类分组写法）。"""
+
+    have = numbers_in(pool)
+    digits_only = re.sub(r"[^0-9]", "", pool)
+    missing = []
+    for n in sorted(numbers_in(statement)):
+        if any(_close(n, h) for h in have):
+            continue
+        run = n.replace(".", "").lstrip("-")
+        if len(run) >= 4 and run in digits_only:
+            continue
+        missing.append(n)
+    return missing
 
 
 def dates_in(text: str) -> list[str]:
@@ -102,7 +128,7 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
             continue
         text_pool = "\n".join(t.content for t in texts if t.is_text)
         has_pixels = any(t.is_image for t in texts)
-        missing = sorted(numbers_in(row["statement"]) - numbers_in(text_pool))
+        missing = numbers_missing(row["statement"], text_pool)
         if missing:
             detail = f"数字 {', '.join(missing)} 未在所引 E 的文本中出现" + ("；所引含图片，可能来自像素" if has_pixels else "")
             flag(ErrorType.UNSUPPORTED_ASSERTION, detail, severity=Severity.MAJOR, span=row["statement"],
@@ -187,4 +213,4 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
     return errors
 
 
-__all__ = ["dates_in", "exec_checks", "numbers_in"]
+__all__ = ["dates_in", "exec_checks", "numbers_in", "numbers_missing"]

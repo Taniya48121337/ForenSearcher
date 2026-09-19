@@ -264,5 +264,20 @@ def test_reverify_pilot_run_exec_only(tmp_path: Path):
     assert verdicts[0].layers_run == ["exec"] and verdicts[0].disposition == "uncertain"
     summary = reverify.summarize(verdicts)
     assert summary["reports"] == 1 and summary["pending"] == {"no_judge": 1}
-    assert reverify.main(["--runs", str(RUN.parent), "--out", str(tmp_path / "v.jsonl")]) == 0
-    assert (tmp_path / "v.jsonl.summary.json").is_file() and len(read_verdicts(tmp_path / "v.jsonl")) == 1
+    assert reverify.main(["--runs", str(RUN.parent), "--out", str(tmp_path / "v.jsonl"), "--limit", "1"]) == 0
+    assert (tmp_path / "v.jsonl.summary.json").is_file() and len(read_verdicts(tmp_path / "v.jsonl")) >= 1
+
+
+def test_numbers_missing_tolerates_formatting():
+    from foren_searcher.datagen.verify.exec_checks import numbers_missing
+    assert numbers_missing("支出 R942,827,946，帧时刻 1.033333 秒", "total 942 827 946 ... 视频E1在1.033秒的帧") == []
+    assert numbers_missing("合计 3,735,245", "row 2 179 767 635 223 735 245 Total") == []      # 分组数字串匹配
+    assert numbers_missing("约 493,100,000 兰特", "R493.1 million") == ["493100000"]           # 换算值留给模型层
+
+
+@pytest.mark.skipif(not (RUN.parent / "videosham_4126_split_intervals_r7" / "trajectory.jsonl").is_file(), reason="需要试点 run")
+def test_visible_ids_is_union_over_all_turns():
+    from foren_searcher.datagen.verify.reverify import _visible_ids
+    ids = _visible_ids(RUN.parent / "videosham_4126_split_intervals_r7", "W3-3")
+    assert ids is not None and "E165" in ids      # 只看最后一次输入会漏掉它（卡片区只留 12 张）
+    assert _visible_ids(RUN.parent / "videosham_4126_split_intervals_r7", "W9-9") is None

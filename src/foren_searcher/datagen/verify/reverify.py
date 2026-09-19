@@ -17,6 +17,9 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import re
+import shutil
+import tempfile
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -32,39 +35,43 @@ def _run_dirs(root: Path) -> list[Path]:
     return sorted(p for p in root.iterdir() if p.is_dir() and (p / "store.sqlite3").is_file())
 
 
+_EVIDENCE_TOKEN = re.compile(r'"(E\d+)"')
+
+
 def _visible_ids(run_dir: Path, task_id: str) -> set[str] | None:
-    """从 trajectory.jsonl 的最后一次 model_input 事件取该工作区提交报告时可见的 E。取不到返回 None（不查可见性）。"""
+    """该工作区在整个回合里被展示过的 E：trajectory.jsonl 中所有 model_input 事件的 model_view 出现过的编号并集。
+
+    evidence_view 只保留最近 12 张卡，只看最后一次输入会把早先读过、后来被挤出卡片区的 E 误判为不可见，
+    所以取并集；取不到事件返回 None（不查可见性）。
+    """
 
     path = run_dir / "trajectory.jsonl"
     if not path.is_file():
         return None
-    last: dict[str, Any] | None = None
-    for line in path.read_text(encoding="utf-8").splitlines():
-        try:
-            event = json.loads(line)
-        except ValueError:
-            continue
-        if event.get("event_type") == "model_input" and event.get("actor_id") == task_id:
-            last = event
-    if last is None:
-        return None
-    view = (last.get("payload") or {}).get("model_view") or {}
     ids: set[str] = set()
-    for card in view.get("evidence_view") or []:
-        if isinstance(card, dict) and isinstance(card.get("evidence_id"), str):
-            ids.add(card["evidence_id"])
-    materials = view.get("materials") or {}
-    for key in (materials if isinstance(materials, dict) else {}):
-        if isinstance(key, str) and key.startswith("E"):
-            ids.add(key)
-    for eid in view.get("content_observed_evidence_ids") or []:
-        if isinstance(eid, str):
-            ids.add(eid)
-    return ids or None
+    found = False
+    with path.open(encoding="utf-8") as handle:
+        for line in handle:
+            if '"model_input"' not in line:
+                continue
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            if event.get("event_type") != "model_input" or event.get("actor_id") != task_id:
+                continue
+            found = True
+            view = (event.get("payload") or {}).get("model_view")
+            if isinstance(view, dict):
+                ids.update(_EVIDENCE_TOKEN.findall(json.dumps(view, ensure_ascii=False)))
+    return ids if found else None
 
 
 async def reverify_run(run_dir: Path, judge: Any, judge_name: str | None, *, check_visibility: bool) -> list[Verdict]:
-    store = GlobalStore(run_dir / "store.sqlite3", run_dir / "artifacts")
+    # GlobalStore 打开时会执行建表脚本并切 WAL，会动原文件；核验只读，所以先复制一份再开（artifacts 仍指向原目录）。
+    scratch = Path(tempfile.mkdtemp(prefix="reverify_"))
+    shutil.copy2(run_dir / "store.sqlite3", scratch / "store.sqlite3")
+    store = GlobalStore(scratch / "store.sqlite3", run_dir / "artifacts")
     lookup = StoreLookup(store)
     config = {}
     if (run_dir / "run_config.json").is_file():
