@@ -239,15 +239,19 @@ def test_callable_and_openrouter_judges_parse_json():
 
     class FakeClient:
         model = "teacher-model"
-        def __init__(self): self.calls = []
+        def __init__(self): self.calls, self.preloads = [], 0
+        async def preload(self): self.preloads += 1
         async def complete(self, messages, *, role, json_output=False, **kw):
+            if not self.preloads:
+                raise RuntimeError("OpenRouter client must be preloaded")
             self.calls.append((messages, role, json_output))
             return {"text": '{"verdict":"not_found","quote":""}'}
     client = FakeClient()
     judge = OpenRouterJudge(client, model="verifier-model")
     assert judge.name == "openrouter:verifier-model" and client.model == "verifier-model"
     out = run(judge.judge(system_prompt="s", payload={"statement": "x"}, images=[]))
-    assert out["verdict"] == "not_found"
+    run(judge.judge(system_prompt="s", payload={"statement": "y"}, images=[]))
+    assert out["verdict"] == "not_found" and client.preloads == 1        # preload 只做一次
     messages, role, json_output = client.calls[0]
     assert role == "VERIFIER" and json_output and messages[0]["role"] == "system" and "statement" in messages[1]["content"]
     assert build_judge("none") is None
