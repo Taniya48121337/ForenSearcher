@@ -43,6 +43,8 @@ PAIR_SYSTEM_PROMPT = """你是证据核对员。只依据给出的"来源"（全
   来源“没提到”不是反驳。来源是视频某一帧时，只能反驳关于这一帧/这个时刻的说法。
 - 图片来源：只报告能直接看到的内容；看不清的细小文字不要猜，不放进 supported。
 - 数字口径/单位不一致填 hint=sloppy_numeric；图片细字读错填 misread_fine_text。
+- 把这条来源能支持的**每一个**部分都列出来（时间、数字、地点、人物、谁说了什么、画面内容各算一部分），不要只列最明显的一个；
+  漏列的部分后面会被当成"没有支持"。
 - 两个列表都可以为空。"""
 
 COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（待核句）和它引用的各条来源已经核实的支持片段。
@@ -58,10 +60,30 @@ COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（�
 - 拿不准的部分列出来，但 grounded 只在确实缺少支持时才为 false。"""
 
 
-class JsonJudge(Protocol):
-    """核验模型接口：给 system + payload（+ 可选图片），返回 JSON 对象。与教师模型分离。"""
+def _obj(properties: dict[str, Any]) -> dict[str, Any]:
+    """OpenRouter strict json_schema：所有字段必填、不允许多余键。"""
 
-    async def judge(self, *, system_prompt: str, payload: dict[str, Any], images: list[Path]) -> dict[str, Any]: ...
+    return {"type": "object", "properties": properties, "required": list(properties), "additionalProperties": False}
+
+
+_PART = _obj({"part": {"type": "string"}, "quote": {"type": "string"}})
+_CPART = _obj({"part": {"type": "string"}, "quote": {"type": "string"},
+               "hint": {"type": ["string", "null"], "enum": ["misread_fine_text", "sloppy_numeric", None]}})
+PAIR_SCHEMA = _obj({
+    "supported_parts": {"type": "array", "items": _PART},
+    "contradicted_parts": {"type": "array", "items": _CPART},
+    "source_reports_claim": {"type": "boolean"}, "statement_asserts_fact": {"type": "boolean"},
+    "scope_overreach": {"type": "boolean"}, "notes": {"type": "string"},
+})
+COVERAGE_SCHEMA = _obj({"unsupported_parts": {"type": "array", "items": {"type": "string"}},
+                        "grounded": {"type": "boolean"}, "notes": {"type": "string"}})
+
+
+class JsonJudge(Protocol):
+    """核验模型接口：给 system + payload（+ 可选图片、+ 可选输出 schema），返回 JSON 对象。与教师模型分离。"""
+
+    async def judge(self, *, system_prompt: str, payload: dict[str, Any], images: list[Path],
+                    schema: dict[str, Any] | None = None) -> dict[str, Any]: ...
 
 
 @dataclass
@@ -89,10 +111,11 @@ class Judgment:
     scope_overreach: bool = False
     is_image: bool = False
     notes: str = ""
+    source_label: str = ""            # 来源标签 + URL，汇总时让模型知道"E14 就是 WFAA 那篇报道"
     raw: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        return {"finding_id": self.finding_id, "evidence_id": self.evidence_id, "verdict": self.verdict,
+        return {"finding_id": self.finding_id, "evidence_id": self.evidence_id, "verdict": self.verdict, "source": self.source_label,
                 "supported": [p.to_dict() for p in self.supported], "contradicted": [p.to_dict() for p in self.contradicted],
                 "source_reports_claim": self.source_reports_claim, "statement_asserts_fact": self.statement_asserts_fact,
                 "scope_overreach": self.scope_overreach, "is_image": self.is_image, "notes": self.notes}
@@ -132,12 +155,13 @@ def _source_payload(text: EvidenceText) -> dict[str, Any]:
             "content": content if text.is_text else "（图片来源：请看附图）", "content_truncated": truncated}
 
 
-async def _call(judge: JsonJudge, system_prompt: str, payload: dict[str, Any], images: list[Path]) -> dict[str, Any] | None:
+async def _call(judge: JsonJudge, system_prompt: str, payload: dict[str, Any], images: list[Path],
+                schema: dict[str, Any] | None = None) -> dict[str, Any] | None:
     """调核验模型；坏 JSON 重试一次；仍失败返回 None（由调用方记 pending）。"""
 
     for _attempt in range(2):
         try:
-            raw = await judge.judge(system_prompt=system_prompt, payload=payload, images=images)
+            raw = await judge.judge(system_prompt=system_prompt, payload=payload, images=images, schema=schema)
         except Exception:  # noqa: BLE001 —— 模型输出坏掉不应让整个 run 报废
             continue
         if isinstance(raw, dict):
@@ -165,13 +189,14 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     if text.is_image and not images:
         return Judgment(finding_id, text.evidence_id, "needs_pixels", is_image=True)
     payload = {"statement": statement, "source": _source_payload(text), "image_attached": bool(images)}
-    raw = await _call(judge, PAIR_SYSTEM_PROMPT, payload, images)
+    raw = await _call(judge, PAIR_SYSTEM_PROMPT, payload, images, PAIR_SCHEMA)
     if raw is None:
         return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image)
     supported = [p for p in _parts(raw.get("supported_parts"), text) if p.verified is not False]   # 文本来源引语对不上：不采信
     contradicted = [p for p in _parts(raw.get("contradicted_parts"), text) if p.verified is not False]
     verdict = "contradicted" if contradicted else "supported" if supported else "not_found"
-    return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted,
+    label = " ".join(x for x in (text.label, text.source_url) if x)
+    return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted, source_label=label,
                     source_reports_claim=bool(raw.get("source_reports_claim")),
                     statement_asserts_fact=bool(raw.get("statement_asserts_fact", True)),
                     scope_overreach=bool(raw.get("scope_overreach")), is_image=text.is_image,
@@ -179,17 +204,22 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
 
 
 async def judge_coverage(judge: JsonJudge, finding_id: str, statement: str, judgments: list[Judgment]) -> dict[str, Any] | None:
-    support = [{"evidence_id": j.evidence_id, "part": p.part, "quote": p.quote} for j in judgments for p in j.supported]
+    support = [{"evidence_id": j.evidence_id, "source": j.source_label, "part": p.part, "quote": p.quote}
+               for j in judgments for p in j.supported]
     payload = {"statement": statement, "supported_parts": support}
-    raw = await _call(judge, COVERAGE_SYSTEM_PROMPT, payload, [])
+    raw = await _call(judge, COVERAGE_SYSTEM_PROMPT, payload, [], COVERAGE_SCHEMA)
     if raw is None:
         return None
     parts = [str(p).strip() for p in (raw.get("unsupported_parts") or []) if isinstance(p, (str, int, float)) and str(p).strip()]
+    # 程序兜底：模型列出的"无支持部分"若已逐字出现在某个已核实的支持片段（或其引语）里，不算
+    covered_text = _squash(" ".join(f"{p.part} {p.quote}" for j in judgments for p in j.supported))
+    parts = [p for p in parts if _squash(p) not in covered_text]
     return {"finding_id": finding_id, "grounded": bool(raw.get("grounded", not parts)) and not parts,
             "unsupported_parts": parts, "notes": str(raw.get("notes") or "")}
 
 
-def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None) -> list[ErrorRecord]:
+def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None,
+                        *, allow_unsupported: bool = True) -> list[ErrorRecord]:
     out: list[ErrorRecord] = []
     base_extra = {"finding": finding_id}
 
@@ -206,11 +236,13 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
         for part in coverage["unsupported_parts"]:
             out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "所引 E 均未支持这一部分", span=part, evidence_ids=cited, method="model",
                              extra={**base_extra, "notes": coverage.get("notes", "")}))
-    elif coverage is None and judgments and not any(j.supported for j in judgments) and all(j.verdict in ("not_found", "contradicted") for j in judgments):
+    elif (allow_unsupported and coverage is None and judgments and not any(j.supported for j in judgments)
+          and all(j.verdict in ("not_found", "contradicted") for j in judgments)):
         out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "所引 E 均未支持该句", span=statement,
                          evidence_ids=[j.evidence_id for j in judgments], method="model", extra=base_extra))
     supporting = [j for j in judgments if j.supported]
-    if any(j.source_reports_claim and j.statement_asserts_fact for j in supporting):
+    hedged = re.search(r"据|称|报道|引述|表示|声称|According to|reported|said|claims?", statement) is not None
+    if not hedged and any(j.source_reports_claim and j.statement_asserts_fact for j in supporting):
         out.append(error(ErrorType.ATTRIBUTION_DRIFT, "来源只是转述说法，该句却写成了事实", span=statement,
                          evidence_ids=[j.evidence_id for j in supporting if j.source_reports_claim], method="model", extra=base_extra))
     if any(j.scope_overreach for j in supporting):
@@ -247,6 +279,10 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
         usable = [j for j in judgments if j.verdict in ("supported", "contradicted", "not_found")]
         if not usable:
             continue
+        if any(j.verdict == "failed" for j in judgments):
+            # 有一条 E 没判成，就说不清"没被支持的部分"是真没支持还是那条 E 没看；只报反驳，不报无据
+            result.errors.extend(_errors_for_finding(finding_id, statement, usable, None, allow_unsupported=False))
+            continue
         coverage = await judge_coverage(judge, finding_id, statement, usable)
         if coverage is None:
             result.pending.append({"finding": finding_id, "reason": "coverage_output_invalid"})
@@ -256,5 +292,5 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
     return result
 
 
-__all__ = ["COVERAGE_SYSTEM_PROMPT", "PAIR_SYSTEM_PROMPT", "AnchoredResult", "JsonJudge", "Judgment", "Part", "judge_coverage",
+__all__ = ["COVERAGE_SCHEMA", "COVERAGE_SYSTEM_PROMPT", "PAIR_SCHEMA", "PAIR_SYSTEM_PROMPT", "AnchoredResult", "JsonJudge", "Judgment", "Part", "judge_coverage",
            "judge_pair", "quote_in_source", "verify_anchored"]

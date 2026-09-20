@@ -11,7 +11,15 @@ from typing import Any
 
 from ..cases import Case
 from ..errors import ErrorRecord, ErrorType, error
-from .anchored import JsonJudge
+from .anchored import JsonJudge, _obj
+
+SUFFICIENCY_SCHEMA = _obj({
+    "requirements": {"type": "array", "items": _obj({"key": {"type": "string"}, "covered": {"type": "boolean"},
+                                                     "by": {"type": ["string", "null"]}, "note": {"type": "string"}})},
+    "answerable_from_report": {"type": "boolean"},
+    "status_should_be": {"type": "string", "enum": ["COMPLETED", "INCOMPLETE"]},
+    "missing": {"type": "array", "items": {"type": "string"}},
+})
 
 SUFFICIENCY_SYSTEM_PROMPT = """你是报告审核员。给你一个局部调查任务、任务要求取得的证据清单（可能为空）和调查员提交的报告。
 只依据报告里写出来的内容判断，不补充外部知识，也不评价文笔。输出 JSON：
@@ -48,7 +56,10 @@ def _report_payload(report: dict[str, Any]) -> dict[str, Any]:
 async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: JsonJudge, *, case: Case | None = None) -> SufficiencyResult:
     required = [{"key": r.key, "description": r.description, "must_cite": r.must_cite} for r in (case.required_evidence if case else ())]
     payload = {"task": task_text, "required_evidence": required, "report": _report_payload(report)}
-    raw = await judge.judge(system_prompt=SUFFICIENCY_SYSTEM_PROMPT, payload=payload, images=[])
+    try:
+        raw = await judge.judge(system_prompt=SUFFICIENCY_SYSTEM_PROMPT, payload=payload, images=[], schema=SUFFICIENCY_SCHEMA)
+    except Exception:  # noqa: BLE001 —— 坏输出：这一层记空，不影响前两层
+        raw = {"_failed": True}
     result = SufficiencyResult(raw=dict(raw))
     status = report.get("status")
     requirements = [r for r in (raw.get("requirements") or []) if isinstance(r, dict)]

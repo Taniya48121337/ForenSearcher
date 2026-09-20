@@ -121,7 +121,7 @@ class FakeJudge:
         self.table, self.sufficiency, self.coverage, self.calls = table, sufficiency or {}, coverage or {}, []
         self.fail_times = fail_times
 
-    async def judge(self, *, system_prompt, payload, images):
+    async def judge(self, *, system_prompt, payload, images, schema=None):
         self.calls.append(payload)
         if self.fail_times:
             self.fail_times -= 1
@@ -294,7 +294,8 @@ def test_callable_and_openrouter_judges_parse_json():
         model = "teacher-model"
         def __init__(self): self.calls, self.preloads = [], 0
         async def preload(self): self.preloads += 1
-        async def complete(self, messages, *, role, json_output=False, **kw):
+        async def complete(self, messages, *, role, json_output=False, output_schema=None, **kw):
+            self.schemas = getattr(self, "schemas", []) + [output_schema]
             if not self.preloads:
                 raise RuntimeError("OpenRouter client must be preloaded")
             self.calls.append((messages, role, json_output))
@@ -350,3 +351,32 @@ def test_cached_judge_reuses_answers(tmp_path: Path):
     reloaded = CachedJudge(inner, tmp_path / "cache.jsonl")
     run(verify_anchored(report(), lookup(), reloaded))
     assert reloaded.hits == 2 and len(inner.calls) == 2                            # 缓存文件能读回
+
+
+def test_failed_pair_blocks_unsupported_but_keeps_contradiction():
+    findings = [{"finding_id": "F1", "statement": "坟墓在巴基斯坦；AFP 到访。", "evidence_ids": ["E3", "E6"]}]
+    fake = FakeJudge({("巴基斯坦", "E3"): con("坟墓在巴基斯坦", "is in Hyderabad, India")}, fail_times=0)
+    # 让 E6 那一对连坏两次：第一对正常（1 次调用），随后 2 次失败
+    calls = {"n": 0}
+    real = fake.judge
+    async def flaky(**kw):
+        calls["n"] += 1
+        if kw["payload"].get("source", {}).get("evidence_id") == "E6":
+            raise ValueError("bad json")
+        return await real(**kw)
+    fake.judge = flaky
+    result = run(verify_anchored(report(findings=findings), lookup(), fake))
+    assert [j.verdict for j in result.judgments] == ["contradicted", "failed"]
+    assert kinds(result.errors) == [ErrorType.WRONG_CITATION] and result.coverage == []     # 不跑汇总、不报无据
+    assert result.pending[0]["reason"] == "judge_output_invalid"
+
+
+def test_coverage_substring_precheck_and_hedged_attribution():
+    findings = [{"finding_id": "F1", "statement": "据 AFP 报道，狗名叫 Wrigley，11 个月大。", "evidence_ids": ["E3"]}]
+    fake = FakeJudge({("Wrigley", "E3"): sup("狗名叫 Wrigley，11 个月大", "Fact check: the grave in the viral photo",
+                                            source_reports_claim=True, statement_asserts_fact=True)},
+                     coverage={"Wrigley": {"unsupported_parts": ["11 个月大", "狗的品种"], "grounded": False}})
+    result = run(verify_anchored(report(findings=findings), lookup(), fake))
+    spans = [e.span for e in result.errors]
+    assert "11 个月大" not in spans and "狗的品种" in spans          # 已在支持片段里的部分被程序兜底剔除
+    assert ErrorType.ATTRIBUTION_DRIFT not in kinds(result.errors)   # 句子本身写了"据……报道"，不算转述当事实
