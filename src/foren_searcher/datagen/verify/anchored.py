@@ -17,6 +17,7 @@
 
 from __future__ import annotations
 
+import difflib
 import json
 import re
 from dataclasses import dataclass, field
@@ -106,6 +107,7 @@ class Judgment:
     verdict: str
     supported: list[Part] = field(default_factory=list)
     contradicted: list[Part] = field(default_factory=list)
+    rejected: list[Part] = field(default_factory=list)      # 模型给了但引语对不上原文、没采信的部分（排查用）
     source_reports_claim: bool = False
     statement_asserts_fact: bool = True
     scope_overreach: bool = False
@@ -117,7 +119,7 @@ class Judgment:
     def to_dict(self) -> dict[str, Any]:
         return {"finding_id": self.finding_id, "evidence_id": self.evidence_id, "verdict": self.verdict, "source": self.source_label,
                 "supported": [p.to_dict() for p in self.supported], "contradicted": [p.to_dict() for p in self.contradicted],
-                "source_reports_claim": self.source_reports_claim, "statement_asserts_fact": self.statement_asserts_fact,
+                "rejected": [p.to_dict() for p in self.rejected], "source_reports_claim": self.source_reports_claim, "statement_asserts_fact": self.statement_asserts_fact,
                 "scope_overreach": self.scope_overreach, "is_image": self.is_image, "notes": self.notes}
 
 
@@ -138,10 +140,19 @@ def _squash(text: str) -> str:
 
 
 def quote_in_source(quote: str, content: str) -> bool:
-    """引语回查：去掉所有空白、统一引号后做子串匹配（引语长度 ≥ 6 个字符才算数）。"""
+    """引语回查：去掉所有空白、统一引号后做子串匹配（引语 ≥ 6 字符）；不是子串时允许按顺序的公共片段合计 ≥ 85%（容忍省略号、标点小改）。"""
 
     q = _squash(quote)
-    return len(q) >= 6 and q in _squash(content)
+    if len(q) < 6:
+        return False
+    c = _squash(content)
+    if q in c:
+        return True
+    if len(q) > 400:
+        q = q[:400]
+    matcher = difflib.SequenceMatcher(None, c, q, autojunk=False)
+    matched = sum(block.size for block in matcher.get_matching_blocks() if block.size >= 4)   # 只算 ≥4 字符的连续片段，防碎片凑数
+    return matched >= 0.85 * len(q)
 
 
 def _source_payload(text: EvidenceText) -> dict[str, Any]:
@@ -192,11 +203,15 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     raw = await _call(judge, PAIR_SYSTEM_PROMPT, payload, images, PAIR_SCHEMA)
     if raw is None:
         return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image)
-    supported = [p for p in _parts(raw.get("supported_parts"), text) if p.verified is not False]   # 文本来源引语对不上：不采信
-    contradicted = [p for p in _parts(raw.get("contradicted_parts"), text) if p.verified is not False]
+    all_supported = _parts(raw.get("supported_parts"), text)
+    all_contradicted = _parts(raw.get("contradicted_parts"), text)
+    supported = [p for p in all_supported if p.verified is not False]        # 文本来源引语对不上：不采信
+    contradicted = [p for p in all_contradicted if p.verified is not False]
+    rejected = [p for p in all_supported + all_contradicted if p.verified is False]
     verdict = "contradicted" if contradicted else "supported" if supported else "not_found"
     label = " ".join(x for x in (text.label, text.source_url) if x)
-    return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted, source_label=label,
+    return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted, rejected=rejected,
+                    source_label=label,
                     source_reports_claim=bool(raw.get("source_reports_claim")),
                     statement_asserts_fact=bool(raw.get("statement_asserts_fact", True)),
                     scope_overreach=bool(raw.get("scope_overreach")), is_image=text.is_image,

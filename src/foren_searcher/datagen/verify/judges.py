@@ -20,10 +20,68 @@ def _render(payload: dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=1)
 
 
-def _parse_json(text: str) -> dict[str, Any]:
-    from ...local_models import extract_json_object
+def repair_json_quotes(text: str) -> str:
+    """把字符串内部没转义的双引号补上反斜杠：模型常在引语里原样放英文引号，整段 JSON 就坏了。
 
-    return extract_json_object(text)
+    状态机：进入字符串后遇到 "，往后看第一个非空白字符——是 , : } ] 或结尾就当作字符串结束，否则当作内容。
+    """
+
+    out: list[str] = []
+    in_string = False
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        if not in_string:
+            if ch == '"':
+                in_string = True
+            out.append(ch)
+        elif ch == "\\":
+            out.append(text[i:i + 2])
+            i += 2
+            continue
+        elif ch == '"':
+            j = i + 1
+            while j < n and text[j] in " \t\r\n":
+                j += 1
+            if j >= n or text[j] in ",:}]":
+                in_string = False
+                out.append(ch)
+            else:
+                out.append('\\"')
+        else:
+            out.append(ch)
+        i += 1
+    return "".join(out)
+
+
+def _parse_json(text: str) -> dict[str, Any]:
+    from ...local_models import LocalModelOutputError, extract_json_object
+
+    try:
+        return extract_json_object(text)
+    except LocalModelOutputError as first:
+        start, end = text.find("{"), text.rfind("}")
+        if start >= 0 and end > start:
+            try:
+                value = json.loads(repair_json_quotes(text[start:end + 1]))
+                if isinstance(value, dict):
+                    return value
+            except ValueError:
+                pass
+        _record_failure(text, str(first))
+        raise
+
+
+FAILURE_LOG: Path | None = None     # reverify 会设成 experiments/sft_data/verify_failures.jsonl
+
+
+def _record_failure(text: str, message: str) -> None:
+    if FAILURE_LOG is None:
+        return
+    FAILURE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with FAILURE_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps({"error": message, "text": text[:4000]}, ensure_ascii=False) + "\n")
 
 
 class CallableJudge:
@@ -132,4 +190,4 @@ def build_judge(kind: str, *, model: str | None = None, config_path: str | Path 
     raise ValueError(f"未知的核验模型类型: {kind!r}（可选 none / openrouter）")
 
 
-__all__ = ["CachedJudge", "CallableJudge", "OpenRouterJudge", "build_judge"]
+__all__ = ["CachedJudge", "CallableJudge", "OpenRouterJudge", "build_judge", "repair_json_quotes"]

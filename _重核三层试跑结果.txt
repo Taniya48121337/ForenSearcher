@@ -1,41 +1,36 @@
-[1/8] averimatec_423_q0_validation_r3: 1 份报告，W1-1=negative
+[1/8] averimatec_423_q0_validation_r3: 1 份报告，W1-1=uncertain
 [2/8] averimatec_441_q0_r1: 1 份报告，W1-1=negative
 [3/8] averimatec_63_q0_archived_source_r1: 1 份报告，W1-1=positive
 [4/8] averimatec_63_q0_r1: 1 份报告，W1-1=negative
 [5/8] averimatec_63_q0_source_bound_r1: 1 份报告，W1-1=positive
 [6/8] averimatec_63_q0_source_bound_r2: 1 份报告，W1-1=uncertain
 [7/8] averimatec_63_q0_source_policy_r1: 1 份报告，W1-1=positive
-[8/8] averimatec_652_q1_visibility_validation: 1 份报告，W1-1=negative
+[8/8] averimatec_652_q1_visibility_validation: 1 份报告，W1-1=positive
 {
   "reports": 8,
   "disposition": {
-    "negative": 4,
-    "positive": 3,
-    "uncertain": 1
+    "uncertain": 2,
+    "negative": 2,
+    "positive": 4
   },
   "layers": {
     "exec,anchored,sufficiency": 8
   },
   "errors_total": {
-    "unsupported_assertion": 8,
-    "attribution_drift": 1,
-    "scope_overreach": 1,
+    "unsupported_assertion": 2,
     "completed_without_finishing": 1
   },
   "errors_firm": {
-    "unsupported_assertion": 8,
-    "attribution_drift": 1,
-    "scope_overreach": 1,
+    "unsupported_assertion": 2,
     "completed_without_finishing": 1
   },
-  "reports_with_firm_error": 4,
-  "tainted_findings": 4,
+  "reports_with_firm_error": 2,
+  "tainted_findings": 2,
   "pending": {
-    "coverage_output_invalid": 1,
-    "judge_output_invalid": 2
+    "judge_output_invalid": 3
   },
   "judge_cache": {
-    "hits": 0,
-    "misses": 24
+    "hits": 8,
+    "misses": 14
   }
 }

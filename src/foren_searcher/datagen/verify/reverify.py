@@ -27,6 +27,7 @@ from typing import Any
 from ...store import GlobalStore
 from ..errors import tally
 from .context import StoreLookup
+from . import judges as judges_module
 from .judges import CachedJudge, build_judge
 from .verdict import Verdict, verify_report, write_verdicts
 
@@ -121,6 +122,7 @@ async def main_async(args: argparse.Namespace) -> int:
     root = Path(args.runs)
     if args.log:
         Path(args.log).write_text("", encoding="utf-8")
+    judges_module.FAILURE_LOG = Path(args.out).with_name("verify_failures.jsonl")   # 模型坏输出原文留档，便于排查
     judge = build_judge(args.judge, model=args.model, config_path=args.openrouter_config,
                         reasoning_effort=args.reasoning, cache_path=args.cache)
     judge_name = getattr(judge, "name", None) if judge else None

@@ -380,3 +380,12 @@ def test_coverage_substring_precheck_and_hedged_attribution():
     spans = [e.span for e in result.errors]
     assert "11 个月大" not in spans and "狗的品种" in spans          # 已在支持片段里的部分被程序兜底剔除
     assert ErrorType.ATTRIBUTION_DRIFT not in kinds(result.errors)   # 句子本身写了"据……报道"，不算转述当事实
+
+
+def test_repair_json_quotes_and_fuzzy_quote_match():
+    from foren_searcher.datagen.verify.judges import repair_json_quotes
+    broken = '{"supported_parts":[{"part":"he said "no" twice","quote":"said "no" to them"}],"notes":"ok"}'
+    fixed = json.loads(repair_json_quotes(broken))
+    assert fixed["supported_parts"][0]["part"] == 'he said "no" twice' and fixed["notes"] == "ok"
+    assert quote_in_source("AFP reporters visited the cemetery on May 2 2023 and photographed", PAGE)   # 少了逗号也算
+    assert not quote_in_source("AFP reporters visited the zoo on May 2, 2023 and photographed the elephant", PAGE)
