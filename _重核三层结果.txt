@@ -1,60 +1,81 @@
-跳过 averimatec_423_q0_validation_r3: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_441_q0_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_63_q0_archived_source_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_63_q0_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_63_q0_source_bound_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_63_q0_source_bound_r2: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_63_q0_source_policy_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_652_q1_visibility_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_660_q0_source_bound_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_660_q0_source_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_699_q0_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averimatec_98_q0_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_1707_q0_repair_r5: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_1707_q0_validation_r3: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_1766_q0_r1: OpenRouterError: OpenRouter client must be preloaded
+averimatec_423_q0_validation_r3: 1 份报告，W1-1=negative
+averimatec_441_q0_r1: 1 份报告，W1-1=negative
+averimatec_63_q0_archived_source_r1: 1 份报告，W1-1=negative
+averimatec_63_q0_r1: 1 份报告，W1-1=negative
+averimatec_63_q0_source_bound_r1: 1 份报告，W1-1=negative
+averimatec_63_q0_source_bound_r2: 1 份报告，W1-1=negative
+averimatec_63_q0_source_policy_r1: 1 份报告，W1-1=negative
+averimatec_652_q1_visibility_validation: 1 份报告，W1-1=negative
+averimatec_660_q0_source_bound_r1: 1 份报告，W1-1=negative
+averimatec_660_q0_source_validation: 1 份报告，W1-1=negative
+averimatec_699_q0_r1: 1 份报告，W1-1=positive
+averimatec_98_q0_validation: 1 份报告，W1-1=negative
+averitec_1707_q0_repair_r5: 1 份报告，W1-1=negative
+averitec_1707_q0_validation_r3: 1 份报告，W1-1=negative
+averitec_1766_q0_r1: 1 份报告，W1-1=negative
 averitec_254_q1_r1: 0 份报告，
-跳过 averitec_254_q1_retry1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_2694_budget_plan_execution_12k_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_2694_budget_plan_execution_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_2694_q8_source_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_2799_q0_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_2872_q0_binding_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 averitec_392_q0_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_0_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_0_r2: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_1_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_2_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_9167_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 qvhighlights_9167_r2: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_17838107_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_20205316753904_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_20361105_visibility_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_24171541709824_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_39132300_validation_r3: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_4124903_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 true_4124903_r2: OpenRouterError: OpenRouter client must be preloaded
+averitec_254_q1_retry1: 1 份报告，W1-1=negative
+averitec_2694_budget_plan_execution_12k_r1: 6 份报告，W1-1=negative, W1-2=negative, W2-2=negative, W2-1=negative, W3-2=negative, W3-1=negative
+averitec_2694_budget_plan_execution_r1: 6 份报告，W1-2=negative, W1-1=negative, W2-2=negative, W2-1=negative, W3-1=negative, W3-2=negative
+averitec_2694_q8_source_validation: 1 份报告，W1-1=negative
+averitec_2799_q0_r1: 1 份报告，W1-1=negative
+averitec_2872_q0_binding_validation: 1 份报告，W1-1=negative
+averitec_392_q0_validation: 1 份报告，W1-1=negative
+qvhighlights_0_r1: 1 份报告，W1-1=positive
+qvhighlights_0_r2: 1 份报告，W1-1=negative
+跳过 qvhighlights_1_r1: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 3, column 1 (offset 176 in the JSON after removing outer whitespace, thinking tags and fences)
+qvhighlights_2_validation: 1 份报告，W1-1=negative
+qvhighlights_9167_r1: 1 份报告，W1-1=positive
+qvhighlights_9167_r2: 1 份报告，W1-1=positive
+true_17838107_r1: 2 份报告，W1-1=negative, W1-2=negative
+跳过 true_20205316753904_validation: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting ',' delimiter at line 1, column 96 (offset 95 in the JSON after removing outer whitespace, thinking tags and fences)
+true_20361105_visibility_validation: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative
+true_24171541709824_r1: 2 份报告，W1-1=negative, W1-2=negative
+true_39132300_validation_r3: 1 份报告，W1-1=positive
+true_4124903_r1: 2 份报告，W1-1=negative, W1-2=negative
+true_4124903_r2: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
 vcsl_pair_1_r1: 0 份报告，
-跳过 vcsl_pair_1_retry1: OpenRouterError: OpenRouter client must be preloaded
-跳过 vcsl_pair_4_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 vcsl_pair_5_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 vcsl_pair_6_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_0069_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_1007_validation: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_1028_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_1028_r2: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_2010_r1: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_4126_full_intervals_r7: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_4126_full_intervals_r8: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_4126_report_validation_r7: OpenRouterError: OpenRouter client must be preloaded
-跳过 videosham_4126_split_intervals_r7: OpenRouterError: OpenRouter client must be preloaded
+vcsl_pair_1_retry1: 1 份报告，W1-1=negative
+vcsl_pair_4_r1: 1 份报告，W1-1=negative
+vcsl_pair_5_validation: 1 份报告，W1-1=negative
+vcsl_pair_6_r1: 1 份报告，W1-1=negative
+videosham_0069_r1: 5 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative, W3-1=negative
+跳过 videosham_1007_validation: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting ',' delimiter at line 1, column 239 (offset 238 in the JSON after removing outer whitespace, thinking tags and fences)
+跳过 videosham_1028_r1: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 3, column 1 (offset 190 in the JSON after removing outer whitespace, thinking tags and fences)
+跳过 videosham_1028_r2: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 7, column 1 (offset 132 in the JSON after removing outer whitespace, thinking tags and fences)
+videosham_2010_r1: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+videosham_4126_full_intervals_r7: 1 份报告，W1-1=negative
+videosham_4126_full_intervals_r8: 1 份报告，W1-1=negative
+跳过 videosham_4126_report_validation_r7: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting ',' delimiter at line 1, column 398 (offset 397 in the JSON after removing outer whitespace, thinking tags and fences)
+跳过 videosham_4126_split_intervals_r7: LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting ',' delimiter at line 1, column 1456 (offset 1455 in the JSON after removing outer whitespace, thinking tags and fences)
 {
-  "reports": 0,
-  "disposition": {},
-  "layers": {},
-  "errors_total": {},
-  "errors_firm": {},
-  "reports_with_firm_error": 0,
-  "tainted_findings": 0,
+  "reports": 65,
+  "disposition": {
+    "negative": 60,
+    "positive": 5
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 65
+  },
+  "errors_total": {
+    "unsupported_assertion": 113,
+    "wrong_citation": 41,
+    "attribution_drift": 2,
+    "misread_fine_text": 1,
+    "sloppy_numeric": 1,
+    "omitted_required_fact": 107,
+    "completed_without_finishing": 3
+  },
+  "errors_firm": {
+    "unsupported_assertion": 113,
+    "wrong_citation": 41,
+    "attribution_drift": 2,
+    "misread_fine_text": 1,
+    "sloppy_numeric": 1,
+    "omitted_required_fact": 107,
+    "completed_without_finishing": 3
+  },
+  "reports_with_firm_error": 65,
+  "tainted_findings": 155,
   "pending": {}
 }

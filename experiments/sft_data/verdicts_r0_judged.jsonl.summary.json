@@ -1,10 +1,31 @@
 {
-  "reports": 0,
-  "disposition": {},
-  "layers": {},
-  "errors_total": {},
-  "errors_firm": {},
-  "reports_with_firm_error": 0,
-  "tainted_findings": 0,
+  "reports": 65,
+  "disposition": {
+    "negative": 60,
+    "positive": 5
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 65
+  },
+  "errors_total": {
+    "unsupported_assertion": 113,
+    "wrong_citation": 41,
+    "attribution_drift": 2,
+    "misread_fine_text": 1,
+    "sloppy_numeric": 1,
+    "omitted_required_fact": 107,
+    "completed_without_finishing": 3
+  },
+  "errors_firm": {
+    "unsupported_assertion": 113,
+    "wrong_citation": 41,
+    "attribution_drift": 2,
+    "misread_fine_text": 1,
+    "sloppy_numeric": 1,
+    "omitted_required_fact": 107,
+    "completed_without_finishing": 3
+  },
+  "reports_with_firm_error": 65,
+  "tainted_findings": 155,
   "pending": {}
 }

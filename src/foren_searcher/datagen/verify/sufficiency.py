@@ -54,10 +54,13 @@ async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: Json
     requirements = [r for r in (raw.get("requirements") or []) if isinstance(r, dict)]
     must_keys = {r["key"] for r in required if r["must_cite"]}
     uncovered = [r for r in requirements if not r.get("covered")]
+    case_keys = {r["key"] for r in required}
     for item in uncovered:
         key = str(item.get("key") or "?")
+        if key not in case_keys:
+            continue      # 模型自己从任务文字归纳的要求只留在 raw 里作参考；试点上它把“说明来源与适用范围”这类套话也算成缺项，噪音太大
         result.errors.append(error(ErrorType.OMITTED_REQUIRED_FACT, f"任务要求 {key!r} 未被回答：{item.get('note') or ''}".strip("："),
-                                   method="model", extra={"requirement": key, "from_case": key in {r['key'] for r in required}}))
+                                   method="model", extra={"requirement": key, "from_case": True}))
     missing_must = [r for r in uncovered if str(r.get("key")) in must_keys]
     should = raw.get("status_should_be")
     if status == "COMPLETED" and (missing_must or should == "INCOMPLETE"):

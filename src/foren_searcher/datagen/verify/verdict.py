@@ -27,6 +27,7 @@ class Verdict:
     pending: list[dict[str, Any]] = field(default_factory=list)  # 未能判定的项（缺模型、缺像素）
     layers_run: list[str] = field(default_factory=list)
     judgments: list[dict[str, Any]] = field(default_factory=list)
+    coverage: list[dict[str, Any]] = field(default_factory=list)
     sufficiency: dict[str, Any] = field(default_factory=dict)
     verifier: str = VERIFIER_VERSION
     judge_model: str | None = None
@@ -41,7 +42,7 @@ class Verdict:
         return {
             "subject": self.subject, "disposition": self.disposition, "errors": [e.to_dict() for e in self.errors],
             "tally": {k: v for k, v in self.counts.items() if v}, "tainted_findings": self.tainted_findings,
-            "pending": self.pending, "layers_run": self.layers_run, "judgments": self.judgments,
+            "pending": self.pending, "layers_run": self.layers_run, "judgments": self.judgments, "coverage": self.coverage,
             "sufficiency": self.sufficiency, "verifier": self.verifier, "judge_model": self.judge_model,
             "spec_hash": self.spec_hash, "state_renderer": self.state_renderer,
         }
@@ -51,7 +52,8 @@ class Verdict:
         return cls(subject=dict(value["subject"]), errors=[ErrorRecord.from_dict(e) for e in value.get("errors", [])],
                    disposition=value.get("disposition", "uncertain"), tainted_findings=list(value.get("tainted_findings", [])),
                    pending=list(value.get("pending", [])), layers_run=list(value.get("layers_run", [])),
-                   judgments=list(value.get("judgments", [])), sufficiency=dict(value.get("sufficiency", {})),
+                   judgments=list(value.get("judgments", [])), coverage=list(value.get("coverage", [])),
+                   sufficiency=dict(value.get("sufficiency", {})),
                    verifier=value.get("verifier", VERIFIER_VERSION), judge_model=value.get("judge_model"),
                    spec_hash=value.get("spec_hash"), state_renderer=value.get("state_renderer"))
 
@@ -99,6 +101,7 @@ async def verify_report(report: dict[str, Any], lookup: EvidenceLookup, *, subje
         errors.extend(anchored.errors)
         verdict.pending.extend(anchored.pending)
         verdict.judgments = [j.to_dict() for j in anchored.judgments]
+        verdict.coverage = anchored.coverage
         text = task_text if task_text is not None else (case.task_text if case else None)
         if text:
             sufficiency = await verify_sufficiency(report, text, judge, case=case)

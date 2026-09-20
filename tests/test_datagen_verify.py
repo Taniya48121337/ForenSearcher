@@ -115,20 +115,37 @@ def test_exec_interval_and_label_checks():
 # ------------------------------------------------------------------ 第二层（假模型）
 
 class FakeJudge:
-    """按 (statement 片段, evidence_id) 查表返回；未命中给 not_found。记录调用。"""
+    """按 (statement 片段, evidence_id) 查表返回逐对判定；覆盖汇总按 coverage 表；充分性按 sufficiency。记录调用。"""
 
-    def __init__(self, table: dict, sufficiency: dict | None = None):
-        self.table, self.sufficiency, self.calls = table, sufficiency or {}, []
+    def __init__(self, table: dict, sufficiency: dict | None = None, coverage: dict | None = None, fail_times: int = 0):
+        self.table, self.sufficiency, self.coverage, self.calls = table, sufficiency or {}, coverage or {}, []
+        self.fail_times = fail_times
 
     async def judge(self, *, system_prompt, payload, images):
         self.calls.append(payload)
+        if self.fail_times:
+            self.fail_times -= 1
+            raise ValueError("bad json")
         if "report" in payload:
             return self.sufficiency
+        if "supported_parts" in payload:                       # 覆盖汇总
+            for needle, answer in self.coverage.items():
+                if needle in payload["statement"]:
+                    return answer
+            return {"unsupported_parts": [], "grounded": True}
         eid = payload["source"]["evidence_id"]
         for (needle, wanted), answer in self.table.items():
             if needle in payload["statement"] and wanted == eid:
                 return answer
-        return {"verdict": "not_found", "quote": ""}
+        return {"supported_parts": [], "contradicted_parts": []}
+
+
+def sup(part, quote, **extra):
+    return {"supported_parts": [{"part": part, "quote": quote}], "contradicted_parts": [], **extra}
+
+
+def con(part, quote, hint=None):
+    return {"supported_parts": [], "contradicted_parts": [{"part": part, "quote": quote, "hint": hint}]}
 
 
 def run(coro):
@@ -136,31 +153,55 @@ def run(coro):
 
 
 def test_anchored_quote_is_checked_against_source():
-    fake = FakeJudge({("海得拉巴", "E3"): {"verdict": "supported", "quote": "the grave in the viral photo is in Hyderabad, India"}})
+    fake = FakeJudge({("海得拉巴", "E3"): sup("坟墓位于印度海得拉巴", "the grave in the viral photo is in Hyderabad, India")})
     result = run(verify_anchored(report(), lookup(), fake))
-    assert result.errors == [] and result.judgments[0].quote_verified is True
-    liar = FakeJudge({("海得拉巴", "E3"): {"verdict": "supported", "quote": "这段话原文里根本没有"}})
+    assert result.errors == [] and result.judgments[0].supported[0].verified is True and result.coverage[0]["grounded"]
+    liar = FakeJudge({("海得拉巴", "E3"): sup("坟墓位于印度海得拉巴", "这段话原文里根本没有")},
+                     coverage={"海得拉巴": {"unsupported_parts": ["坟墓位于印度海得拉巴"], "grounded": False}})
     result = run(verify_anchored(report(), lookup(), liar))
-    assert result.judgments[0].verdict == "not_found" and result.judgments[0].quote_verified is False
-    assert kinds(result.errors) == [ErrorType.UNSUPPORTED_ASSERTION]
+    assert result.judgments[0].verdict == "not_found" and result.judgments[0].supported == []     # 引语对不上，整条不采信
+    [err] = result.errors
+    assert err.type is ErrorType.UNSUPPORTED_ASSERTION and err.span == "坟墓位于印度海得拉巴"
+
+
+def test_anchored_partial_support_is_not_an_error():
+    """复合句：每条 E 只支持一部分，合起来全覆盖 → 不报错（v1 会把每对都判 not_found）。"""
+
+    findings = [{"finding_id": "F1", "statement": "坟墓在海得拉巴；Alt News 于 2023-05-01 实地核查。", "evidence_ids": ["E3", "E6"]}]
+    fake = FakeJudge({("海得拉巴", "E3"): sup("坟墓在海得拉巴", "is in Hyderabad, India"),
+                      ("海得拉巴", "E6"): sup("Alt News 于 2023-05-01 实地核查", "Alt News visited Darab Jung Colony, Madannapet, Hyderabad on 2023-05-01")})
+    result = run(verify_anchored(report(findings=findings), lookup(), fake))
+    assert result.errors == [] and [j.verdict for j in result.judgments] == ["supported", "supported"]
+    assert len(fake.calls) == 3      # 两对 + 一次覆盖汇总
 
 
 def test_anchored_error_mapping():
     findings = [{"finding_id": "F1", "statement": "坟墓在巴基斯坦。", "evidence_ids": ["E3"]},
-                {"finding_id": "F2", "statement": "坟墓在海得拉巴。", "evidence_ids": ["E3", "E9"]},
-                {"finding_id": "F3", "statement": "栅栏是为了防野狗。", "evidence_ids": ["E3"]}]
+                {"finding_id": "F2", "statement": "坟墓在海得拉巴，共 350 人围观。", "evidence_ids": ["E3", "E9"]},
+                {"finding_id": "F3", "statement": "栅栏是为了防野狗。", "evidence_ids": ["E3"]},
+                {"finding_id": "F4", "statement": "记者 2023-05-03 到访。", "evidence_ids": ["E3"]}]
     fake = FakeJudge({
-        ("巴基斯坦", "E3"): {"verdict": "contradicted", "quote": "is in Hyderabad, India"},
-        ("海得拉巴", "E3"): {"verdict": "supported", "quote": "is in Hyderabad, India"},
-        ("防野狗", "E3"): {"verdict": "supported", "quote": "Locals told AFP the grille was installed to stop stray dogs",
-                          "source_reports_claim": True, "statement_asserts_fact": True},
-    })
+        ("巴基斯坦", "E3"): con("坟墓在巴基斯坦", "is in Hyderabad, India"),
+        ("海得拉巴", "E3"): sup("坟墓在海得拉巴", "is in Hyderabad, India"),
+        ("防野狗", "E3"): sup("栅栏是为了防野狗", "Locals told AFP the grille was installed to stop stray dogs",
+                             source_reports_claim=True, statement_asserts_fact=True),
+        ("2023-05-03", "E3"): con("2023-05-03", "May 2, 2023", hint="sloppy_numeric"),
+    }, coverage={"350": {"unsupported_parts": ["共 350 人围观"], "grounded": False}})
     result = run(verify_anchored(report(findings=findings), lookup(), fake))
-    by_finding = {e.extra["finding"]: e for e in result.errors}
-    assert by_finding["F1"].type is ErrorType.WRONG_CITATION and by_finding["F1"].severity is Severity.CRITICAL
-    assert by_finding["F2"].type is ErrorType.WRONG_CITATION and by_finding["F2"].severity is Severity.MINOR
-    assert by_finding["F3"].type is ErrorType.ATTRIBUTION_DRIFT
-    assert len(fake.calls) == 4
+    by = {}
+    for e in result.errors:
+        by.setdefault(e.extra["finding"], []).append(e)
+    assert by["F1"][0].type is ErrorType.WRONG_CITATION and by["F1"][0].severity is Severity.CRITICAL and by["F1"][0].span == "坟墓在巴基斯坦"
+    assert by["F2"][0].type is ErrorType.UNSUPPORTED_ASSERTION and by["F2"][0].span == "共 350 人围观"
+    assert by["F3"][0].type is ErrorType.ATTRIBUTION_DRIFT
+    assert by["F4"][0].type is ErrorType.SLOPPY_NUMERIC
+
+
+def test_anchored_bad_judge_output_becomes_pending_not_crash():
+    fake = FakeJudge({}, fail_times=2)      # 第一对连坏两次 → failed → pending；后续正常
+    result = run(verify_anchored(report(), lookup(), fake))
+    assert result.judgments[0].verdict == "failed" and result.pending[0]["reason"] == "judge_output_invalid"
+    assert result.errors == []
 
 
 def test_anchored_image_without_pixels_is_pending():
@@ -176,9 +217,21 @@ def test_verify_report_without_judge_is_uncertain_and_keeps_flags():
     assert verdict.pending[0]["reason"] == "no_judge" and verdict.errors[0].extra["confidence"] == "flag"
 
 
+def test_sufficiency_only_reports_case_requirements():
+    from foren_searcher.datagen.verify.sufficiency import verify_sufficiency
+    fake = FakeJudge({}, sufficiency={"requirements": [{"key": "说明来源与适用范围", "covered": False, "note": "套话"},
+                                                       {"key": "location_report", "covered": False, "note": "未引用"}],
+                                      "answerable_from_report": False, "status_should_be": "INCOMPLETE"})
+    result = run(verify_sufficiency(report(), "任务", fake, case=make_case()))
+    assert [e.extra.get("requirement") for e in result.errors if e.type is ErrorType.OMITTED_REQUIRED_FACT] == ["location_report"]
+    assert ErrorType.COMPLETED_WITHOUT_FINISHING in kinds(result.errors)
+    no_case = run(verify_sufficiency(report(), "任务", fake))
+    assert kinds(no_case.errors) == [ErrorType.COMPLETED_WITHOUT_FINISHING]     # 模型归纳的要求只留 raw
+
+
 def test_verify_report_full_pipeline_and_dedup(tmp_path: Path):
     findings = [{"finding_id": "F1", "statement": "坟墓位于 Hyderabad，AFP 于 2023-05-02 到访。", "evidence_ids": ["E3"]}]
-    fake = FakeJudge({("Hyderabad", "E3"): {"verdict": "supported", "quote": "AFP reporters visited the cemetery on May 2, 2023"}},
+    fake = FakeJudge({("Hyderabad", "E3"): sup("AFP 于 2023-05-02 到访", "AFP reporters visited the cemetery on May 2, 2023")},
                      sufficiency={"requirements": [{"key": "location_report", "covered": False, "by": None, "note": "未引用 Alt News"}],
                                   "answerable_from_report": True, "status_should_be": "INCOMPLETE", "missing": ["location_report"]})
     verdict = run(verify_report(report(findings=findings), lookup(), subject={"case_id": "averimatec:441", "workspace_id": "W1-1"},
@@ -206,8 +259,8 @@ def test_decide_rules():
 def test_tainted_findings_follow_propagation():
     findings = [{"finding_id": "F1", "statement": "在巴基斯坦。", "evidence_ids": ["E3"]},
                 {"finding_id": "F2", "statement": "记者 2023-05-02 到访。", "evidence_ids": ["E3"]}]
-    fake = FakeJudge({("巴基斯坦", "E3"): {"verdict": "contradicted", "quote": "is in Hyderabad, India"},
-                      ("到访", "E3"): {"verdict": "supported", "quote": "visited the cemetery on May 2, 2023"}},
+    fake = FakeJudge({("巴基斯坦", "E3"): con("在巴基斯坦", "is in Hyderabad, India"),
+                      ("到访", "E3"): sup("记者 2023-05-02 到访", "visited the cemetery on May 2, 2023")},
                      sufficiency={"requirements": [], "answerable_from_report": True, "status_should_be": "COMPLETED"})
     verdict = run(verify_report(report(findings=findings), lookup(), subject={}, task_text="核查地点", judge=fake))
     assert verdict.tainted_findings == ["F1"] and verdict.disposition == "negative"
@@ -285,3 +338,15 @@ def test_visible_ids_is_union_over_all_turns():
     ids = _visible_ids(RUN.parent / "videosham_4126_split_intervals_r7", "W3-3")
     assert ids is not None and "E165" in ids      # 只看最后一次输入会漏掉它（卡片区只留 12 张）
     assert _visible_ids(RUN.parent / "videosham_4126_split_intervals_r7", "W9-9") is None
+
+
+def test_cached_judge_reuses_answers(tmp_path: Path):
+    from foren_searcher.datagen.verify.judges import CachedJudge
+    inner = FakeJudge({("海得拉巴", "E3"): sup("坟墓位于印度海得拉巴", "the grave in the viral photo is in Hyderabad, India")})
+    cached = CachedJudge(inner, tmp_path / "cache.jsonl")
+    run(verify_anchored(report(), lookup(), cached))
+    run(verify_anchored(report(), lookup(), cached))
+    assert cached.misses == 2 and cached.hits == 2 and len(inner.calls) == 2      # 第二遍全部命中缓存
+    reloaded = CachedJudge(inner, tmp_path / "cache.jsonl")
+    run(verify_anchored(report(), lookup(), reloaded))
+    assert reloaded.hits == 2 and len(inner.calls) == 2                            # 缓存文件能读回

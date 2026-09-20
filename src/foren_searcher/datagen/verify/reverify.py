@@ -27,7 +27,7 @@ from typing import Any
 from ...store import GlobalStore
 from ..errors import tally
 from .context import StoreLookup
-from .judges import build_judge
+from .judges import CachedJudge, build_judge
 from .verdict import Verdict, verify_report, write_verdicts
 
 
@@ -110,20 +110,25 @@ def summarize(verdicts: list[Verdict]) -> dict[str, Any]:
 
 async def main_async(args: argparse.Namespace) -> int:
     root = Path(args.runs)
-    judge = build_judge(args.judge, model=args.model, config_path=args.openrouter_config)
+    judge = build_judge(args.judge, model=args.model, config_path=args.openrouter_config,
+                        reasoning_effort=args.reasoning, cache_path=args.cache)
     judge_name = getattr(judge, "name", None) if judge else None
     verdicts: list[Verdict] = []
     dirs = _run_dirs(root)[: args.limit] if args.limit else _run_dirs(root)
-    for run_dir in dirs:
+    for index, run_dir in enumerate(dirs, 1):
         try:
             batch = await reverify_run(run_dir, judge, judge_name, check_visibility=not args.no_visibility)
         except Exception as exc:  # noqa: BLE001 —— 单个 run 坏了不应中断全部
-            print(f"跳过 {run_dir.name}: {type(exc).__name__}: {exc}")
+            print(f"[{index}/{len(dirs)}] 跳过 {run_dir.name}: {type(exc).__name__}: {exc}", flush=True)
             continue
         verdicts.extend(batch)
-        print(f"{run_dir.name}: {len(batch)} 份报告，" + ", ".join(f"{v.subject['workspace_id']}={v.disposition}" for v in batch))
+        print(f"[{index}/{len(dirs)}] {run_dir.name}: {len(batch)} 份报告，"
+              + ", ".join(f"{v.subject['workspace_id']}={v.disposition}" for v in batch), flush=True)
+        write_verdicts(args.out, verdicts)      # 每个 run 完成就落盘，跑到一半也能看进度
     out = write_verdicts(args.out, verdicts)
     summary = summarize(verdicts)
+    if isinstance(judge, CachedJudge):
+        summary["judge_cache"] = {"hits": judge.hits, "misses": judge.misses}
     Path(str(out) + ".summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
@@ -136,7 +141,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--judge", default="none", choices=["none", "openrouter"])
     parser.add_argument("--model", default=None, help="核验模型名（必须与教师不同）")
     parser.add_argument("--openrouter-config", default=None)
-    parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--reasoning", default="low", choices=["none", "minimal", "low", "medium", "high"],
+                        help="核验模型的推理力度；核验是对照题，low 足够，输出 token 少八成")
+    parser.add_argument("--cache", default="experiments/sft_data/verify_cache.jsonl",
+                        help="核验模型回答的缓存文件；同样的问题不再重复付费（空字符串关闭）")
+    parser.add_argument("--limit", type=int, default=0, help="只跑前 N 个 run（先小规模试）")
     parser.add_argument("--no-visibility", action="store_true", help="不从 trajectory 检查引用是否可见")
     return asyncio.run(main_async(parser.parse_args(argv)))
 
