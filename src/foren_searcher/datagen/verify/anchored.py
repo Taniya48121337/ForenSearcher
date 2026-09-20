@@ -27,7 +27,7 @@ from typing import Any, Protocol
 from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText
 
-MAX_SOURCE_CHARS = 20_000
+MAX_SOURCE_CHARS = 120_000   # 第一次全量 20K 把 85K 字符的 PDF 章节截掉了大半，表格数字全判成无支持；27b 有 262K 上下文，放宽
 
 PAIR_SYSTEM_PROMPT = """你是证据核对员。只依据给出的"来源"（全文或图片）核对"待核句"，不使用任何外部知识。
 待核句通常是复合句，这条来源可能只覆盖其中一部分；你的任务是说清楚它覆盖了哪些部分、怎么覆盖的。
@@ -166,17 +166,23 @@ def _source_payload(text: EvidenceText) -> dict[str, Any]:
             "content": content if text.is_text else "（图片来源：请看附图）", "content_truncated": truncated}
 
 
+LAST_CALL_ERROR: dict[str, str] = {}      # 最近一次失败的异常（类型: 消息），写进 pending 便于排查
+
+
 async def _call(judge: JsonJudge, system_prompt: str, payload: dict[str, Any], images: list[Path],
                 schema: dict[str, Any] | None = None) -> dict[str, Any] | None:
     """调核验模型；坏 JSON 重试一次；仍失败返回 None（由调用方记 pending）。"""
 
+    LAST_CALL_ERROR.clear()
     for _attempt in range(2):
         try:
             raw = await judge.judge(system_prompt=system_prompt, payload=payload, images=images, schema=schema)
-        except Exception:  # noqa: BLE001 —— 模型输出坏掉不应让整个 run 报废
+        except Exception as exc:  # noqa: BLE001 —— 模型输出坏掉不应让整个 run 报废
+            LAST_CALL_ERROR[type(exc).__name__] = str(exc)[:300]
             continue
         if isinstance(raw, dict):
             return raw
+        LAST_CALL_ERROR["not_a_dict"] = str(raw)[:300]
     return None
 
 
@@ -261,7 +267,8 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
         out.append(error(ErrorType.ATTRIBUTION_DRIFT, "来源只是转述说法，该句却写成了事实", span=statement,
                          evidence_ids=[j.evidence_id for j in supporting if j.source_reports_claim], method="model", extra=base_extra))
     if any(j.scope_overreach for j in supporting):
-        out.append(error(ErrorType.SCOPE_OVERREACH, "核验模型提示：由局部/少数样本推断了整体", span=statement,
+        # 单条来源上的"以偏概全"提示只是线索（视频帧类报告几乎条条被提示），记 minor，不单独把报告推成 negative
+        out.append(error(ErrorType.SCOPE_OVERREACH, "核验模型提示：由局部/少数样本推断了整体", span=statement, severity=Severity.MINOR,
                          evidence_ids=[j.evidence_id for j in supporting if j.scope_overreach], method="model", extra=base_extra))
     return out
 
@@ -289,7 +296,8 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
             if judgment.verdict == "needs_pixels":
                 result.pending.append({"finding": finding_id, "evidence_id": eid, "reason": "image_without_pixels"})
             elif judgment.verdict == "failed":
-                result.pending.append({"finding": finding_id, "evidence_id": eid, "reason": "judge_output_invalid"})
+                result.pending.append({"finding": finding_id, "evidence_id": eid, "reason": "judge_output_invalid",
+                                       "error": dict(LAST_CALL_ERROR)})
         result.judgments.extend(judgments)
         usable = [j for j in judgments if j.verdict in ("supported", "contradicted", "not_found")]
         if not usable:
@@ -300,7 +308,7 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
             continue
         coverage = await judge_coverage(judge, finding_id, statement, usable)
         if coverage is None:
-            result.pending.append({"finding": finding_id, "reason": "coverage_output_invalid"})
+            result.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", "error": dict(LAST_CALL_ERROR)})
         else:
             result.coverage.append(coverage)
         result.errors.extend(_errors_for_finding(finding_id, statement, usable, coverage))

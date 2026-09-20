@@ -1,28 +1,25 @@
 {
   "reports": 8,
   "disposition": {
-    "uncertain": 2,
-    "negative": 2,
-    "positive": 4
+    "positive": 7,
+    "negative": 1
   },
   "layers": {
     "exec,anchored,sufficiency": 8
   },
   "errors_total": {
-    "unsupported_assertion": 2,
+    "unsupported_assertion": 1,
     "completed_without_finishing": 1
   },
   "errors_firm": {
-    "unsupported_assertion": 2,
+    "unsupported_assertion": 1,
     "completed_without_finishing": 1
   },
-  "reports_with_firm_error": 2,
-  "tainted_findings": 2,
-  "pending": {
-    "judge_output_invalid": 3
-  },
+  "reports_with_firm_error": 1,
+  "tainted_findings": 1,
+  "pending": {},
   "judge_cache": {
-    "hits": 8,
-    "misses": 14
+    "hits": 22,
+    "misses": 6
   }
 }
