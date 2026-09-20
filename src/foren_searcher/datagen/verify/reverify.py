@@ -108,8 +108,19 @@ def summarize(verdicts: list[Verdict]) -> dict[str, Any]:
     }
 
 
+def _say(args: argparse.Namespace, line: str) -> None:
+    """同时打到屏幕和日志文件（Windows 下不用管道，双击 .cmd 也能看到实时进度）。"""
+
+    print(line, flush=True)
+    if args.log:
+        with Path(args.log).open("a", encoding="utf-8") as handle:
+            handle.write(line + "\n")
+
+
 async def main_async(args: argparse.Namespace) -> int:
     root = Path(args.runs)
+    if args.log:
+        Path(args.log).write_text("", encoding="utf-8")
     judge = build_judge(args.judge, model=args.model, config_path=args.openrouter_config,
                         reasoning_effort=args.reasoning, cache_path=args.cache)
     judge_name = getattr(judge, "name", None) if judge else None
@@ -119,18 +130,18 @@ async def main_async(args: argparse.Namespace) -> int:
         try:
             batch = await reverify_run(run_dir, judge, judge_name, check_visibility=not args.no_visibility)
         except Exception as exc:  # noqa: BLE001 —— 单个 run 坏了不应中断全部
-            print(f"[{index}/{len(dirs)}] 跳过 {run_dir.name}: {type(exc).__name__}: {exc}", flush=True)
+            _say(args, f"[{index}/{len(dirs)}] 跳过 {run_dir.name}: {type(exc).__name__}: {exc}")
             continue
         verdicts.extend(batch)
-        print(f"[{index}/{len(dirs)}] {run_dir.name}: {len(batch)} 份报告，"
-              + ", ".join(f"{v.subject['workspace_id']}={v.disposition}" for v in batch), flush=True)
+        _say(args, f"[{index}/{len(dirs)}] {run_dir.name}: {len(batch)} 份报告，"
+             + ", ".join(f"{v.subject['workspace_id']}={v.disposition}" for v in batch))
         write_verdicts(args.out, verdicts)      # 每个 run 完成就落盘，跑到一半也能看进度
     out = write_verdicts(args.out, verdicts)
     summary = summarize(verdicts)
     if isinstance(judge, CachedJudge):
         summary["judge_cache"] = {"hits": judge.hits, "misses": judge.misses}
     Path(str(out) + ".summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    _say(args, json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
 
@@ -147,6 +158,7 @@ def main(argv: list[str] | None = None) -> int:
                         help="核验模型回答的缓存文件；同样的问题不再重复付费（空字符串关闭）")
     parser.add_argument("--limit", type=int, default=0, help="只跑前 N 个 run（先小规模试）")
     parser.add_argument("--no-visibility", action="store_true", help="不从 trajectory 检查引用是否可见")
+    parser.add_argument("--log", default=None, help="进度与汇总同时写到这个文件")
     return asyncio.run(main_async(parser.parse_args(argv)))
 
 
