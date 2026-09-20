@@ -1,39 +1,35 @@
 {
   "reports": 88,
   "disposition": {
-    "positive": 30,
-    "negative": 45,
-    "uncertain": 13
+    "positive": 37,
+    "negative": 51
   },
   "layers": {
     "exec,anchored,sufficiency": 88
   },
   "errors_total": {
-    "unsupported_assertion": 110,
-    "wrong_citation": 19,
+    "unsupported_assertion": 101,
+    "wrong_citation": 41,
     "attribution_drift": 1,
-    "scope_overreach": 51,
-    "misread_fine_text": 1,
-    "sloppy_numeric": 1,
+    "scope_overreach": 76,
+    "misread_fine_text": 2,
+    "sloppy_numeric": 4,
     "completed_without_finishing": 5
   },
   "errors_firm": {
-    "unsupported_assertion": 110,
-    "wrong_citation": 19,
+    "unsupported_assertion": 101,
+    "wrong_citation": 41,
     "attribution_drift": 1,
-    "scope_overreach": 51,
-    "misread_fine_text": 1,
-    "sloppy_numeric": 1,
+    "scope_overreach": 76,
+    "misread_fine_text": 2,
+    "sloppy_numeric": 4,
     "completed_without_finishing": 5
   },
-  "reports_with_firm_error": 53,
-  "tainted_findings": 90,
-  "pending": {
-    "coverage_output_invalid": 1,
-    "judge_output_invalid": 202
-  },
+  "reports_with_firm_error": 65,
+  "tainted_findings": 115,
+  "pending": {},
   "judge_cache": {
-    "hits": 28,
-    "misses": 804
+    "hits": 716,
+    "misses": 369
   }
 }

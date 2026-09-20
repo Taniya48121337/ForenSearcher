@@ -70,7 +70,20 @@ class ModelImageInputs:
             record = step.get("observation", {}).get("record")
             if isinstance(record, dict) and isinstance(record.get("evidence_id"), str):
                 requested.append(record["evidence_id"])
-        groups = [images(requested)]
+        # 原始材料是任务本身交给调查的材料，GIA 默认就应当看见（DESIGN 2.3）。
+        # 视频、PDF 这类原件自身没有像素，用已经派生出的帧或页面代替；
+        # media_profile 之类的文字派生记录不含 image 模态，会被 images() 直接滤掉。
+        original_ids = [item["evidence_id"] for item in view.get("original_materials", [])
+                        if isinstance(item, dict) and item.get("record_type") == "evidence"
+                        and isinstance(item.get("evidence_id"), str)]
+        original_set = set(original_ids)
+        derived_ids = [item["evidence_id"] for item in view.get("current_materials", [])
+                       if isinstance(item, dict) and item.get("record_type") == "evidence"
+                       and isinstance(item.get("evidence_id"), str)
+                       and original_set.intersection(item.get("derived_from") or ())]
+        material_images = images(list(dict.fromkeys(original_ids + derived_ids)))
+        # 顺序即优先级：GIA 自己点名读取的记录最高，其次是原件，再往后才是报告引用。
+        groups = [images(requested), material_images]
         unfinished: list[list[str]] = []
         review: list[list[str]] = []
         for item in view.get("latest_reports", []):
@@ -97,7 +110,8 @@ class ModelImageInputs:
         focus = interleave(groups)
         if (unfinished or review) and len(focus) > self.image_policy.maximum_visual_qa_images:
             # 完成状态不等于判断无疑点；先保留点选、未完成调查及带限制的报告所需证据。
-            focus = list(dict.fromkeys(images(requested) + interleave(unfinished) + interleave(review) + focus))
+            focus = list(dict.fromkeys(images(requested) + material_images
+                                       + interleave(unfinished) + interleave(review) + focus))
         visual: dict[str, Any] = {"focus_evidence_ids": focus}
         self.prepare_model_view(visual)
         for key in ("direct_visual_input", "image_input_limit", "image_inputs", "image_inputs_omitted", "image_input_errors"):

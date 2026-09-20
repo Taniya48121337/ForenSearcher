@@ -15,7 +15,7 @@
 [15/50] averitec_1766_q0_r1: 1 份报告，W1-1=positive
 [16/50] averitec_254_q1_r1: 0 份报告，
 [17/50] averitec_254_q1_retry1: 1 份报告，W1-1=positive
-[18/50] averitec_2694_budget_plan_execution_12k_r1: 6 份报告，W1-1=negative, W1-2=negative, W2-2=negative, W2-1=negative, W3-2=negative, W3-1=negative
+[18/50] averitec_2694_budget_plan_execution_12k_r1: 6 份报告，W1-1=negative, W1-2=positive, W2-2=negative, W2-1=negative, W3-2=negative, W3-1=negative
 [19/50] averitec_2694_budget_plan_execution_r1: 6 份报告，W1-2=negative, W1-1=negative, W2-2=negative, W2-1=negative, W3-1=negative, W3-2=negative
 [20/50] averitec_2694_q8_source_validation: 1 份报告，W1-1=positive
 [21/50] averitec_2799_q0_r1: 1 份报告，W1-1=positive
@@ -33,57 +33,53 @@
 [33/50] true_24171541709824_r1: 2 份报告，W1-1=negative, W1-2=positive
 [34/50] true_39132300_validation_r3: 1 份报告，W1-1=positive
 [35/50] true_4124903_r1: 2 份报告，W1-1=negative, W1-2=negative
-[36/50] true_4124903_r2: 3 份报告，W1-1=positive, W1-2=negative, W2-1=negative
+[36/50] true_4124903_r2: 3 份报告，W1-1=positive, W1-2=negative, W2-1=positive
 [37/50] vcsl_pair_1_r1: 0 份报告，
 [38/50] vcsl_pair_1_retry1: 1 份报告，W1-1=negative
 [39/50] vcsl_pair_4_r1: 1 份报告，W1-1=positive
-[40/50] vcsl_pair_5_validation: 1 份报告，W1-1=negative
+[40/50] vcsl_pair_5_validation: 1 份报告，W1-1=positive
 [41/50] vcsl_pair_6_r1: 1 份报告，W1-1=negative
-[42/50] videosham_0069_r1: 5 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative, W3-1=negative
-[43/50] videosham_1007_validation: 6 份报告，W1-1=negative, W1-2=positive, W2-1=negative, W2-2=positive, W3-1=negative, W3-2=negative
+[42/50] videosham_0069_r1: 5 份报告，W1-1=positive, W1-2=negative, W2-1=negative, W2-2=negative, W3-1=negative
+[43/50] videosham_1007_validation: 6 份报告，W1-1=positive, W1-2=positive, W2-1=positive, W2-2=positive, W3-1=negative, W3-2=negative
 [44/50] videosham_1028_r1: 2 份报告，W1-1=negative, W1-2=negative
 [45/50] videosham_1028_r2: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=positive
-[46/50] videosham_2010_r1: 3 份报告，W1-1=negative, W1-2=uncertain, W2-1=uncertain
-[47/50] videosham_4126_full_intervals_r7: 1 份报告，W1-1=uncertain
-[48/50] videosham_4126_full_intervals_r8: 1 份报告，W1-1=uncertain
-[49/50] videosham_4126_report_validation_r7: 1 份报告，W1-1=uncertain
-[50/50] videosham_4126_split_intervals_r7: 8 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=uncertain, W2-3=uncertain, W3-1=uncertain, W3-2=uncertain, W3-3=uncertain
+[46/50] videosham_2010_r1: 3 份报告，W1-1=negative, W1-2=positive, W2-1=negative
+[47/50] videosham_4126_full_intervals_r7: 1 份报告，W1-1=negative
+[48/50] videosham_4126_full_intervals_r8: 1 份报告，W1-1=negative
+[49/50] videosham_4126_report_validation_r7: 1 份报告，W1-1=negative
+[50/50] videosham_4126_split_intervals_r7: 8 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative, W2-3=negative, W3-1=negative, W3-2=negative, W3-3=negative
 {
   "reports": 88,
   "disposition": {
-    "positive": 30,
-    "negative": 45,
-    "uncertain": 13
+    "positive": 37,
+    "negative": 51
   },
   "layers": {
     "exec,anchored,sufficiency": 88
   },
   "errors_total": {
-    "unsupported_assertion": 110,
-    "wrong_citation": 19,
+    "unsupported_assertion": 101,
+    "wrong_citation": 41,
     "attribution_drift": 1,
-    "scope_overreach": 51,
-    "misread_fine_text": 1,
-    "sloppy_numeric": 1,
+    "scope_overreach": 76,
+    "misread_fine_text": 2,
+    "sloppy_numeric": 4,
     "completed_without_finishing": 5
   },
   "errors_firm": {
-    "unsupported_assertion": 110,
-    "wrong_citation": 19,
+    "unsupported_assertion": 101,
+    "wrong_citation": 41,
     "attribution_drift": 1,
-    "scope_overreach": 51,
-    "misread_fine_text": 1,
-    "sloppy_numeric": 1,
+    "scope_overreach": 76,
+    "misread_fine_text": 2,
+    "sloppy_numeric": 4,
     "completed_without_finishing": 5
   },
-  "reports_with_firm_error": 53,
-  "tainted_findings": 90,
-  "pending": {
-    "coverage_output_invalid": 1,
-    "judge_output_invalid": 202
-  },
+  "reports_with_firm_error": 65,
+  "tainted_findings": 115,
+  "pending": {},
   "judge_cache": {
-    "hits": 28,
-    "misses": 804
+    "hits": 716,
+    "misses": 369
   }
 }

@@ -1976,7 +1976,13 @@ async def test_demo_remote_path_preserves_evidence_and_accounts_all_roles(tmp_pa
     assert search.closed and client._closed
     bodies = [json.loads(request.content) for request in calls]
     assert all(body["model"] == DEFAULT_MODEL for body in bodies)
-    assert "image_url" not in json.dumps(bodies[0])
+    # 第 1 轮还没有任何报告，GIA 依旧要看到用户给的原件像素（DESIGN 2.3）。
+    gia_first = [part for message in bodies[0]["messages"] if isinstance(message["content"], list)
+                 for part in message["content"] if part["type"] == "image_url"]
+    assert len(gia_first) == 1
+    with Image.open(io.BytesIO(base64.b64decode(gia_first[0]["image_url"]["url"].split(",", 1)[1]))) as original:
+        red, green, blue = original.getpixel((16, 16))
+        assert red > 240 and green < 15 and blue < 15
     hi_body = bodies[1]
     image_parts = [part for message in hi_body["messages"] if isinstance(message["content"], list)
                    for part in message["content"] if part["type"] == "image_url"]

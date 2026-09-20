@@ -49,9 +49,10 @@ async def test_real_alignment_scope_and_actual_images_reach_gia_separately(tmp_p
     raw = json.loads(store.evidence(result_id).content)
     supplied = json.loads(report["supporting_records"][0]["content"])
     assert supplied == raw
-    assert supplied["coverage"]["a"]["processed"]["value"] > len(report["image_inputs"])
-    assert [r["evidence_id"] for r in report["image_inputs"]] == frame_ids[:1]
-    assert report["image_inputs"][0]["locator"] == store.evidence(frame_ids[0]).locator
+    # 已提交报告的工作区不再夹带 HI 的过程图：GIA 沿证据链看图，统计式的观察摘要保留。
+    assert "image_inputs" not in report
+    assert supplied["coverage"]["a"]["processed"]["value"] > 0
+    assert report["visual_observation_summary"]["image_evidence_count"] >= 1
     assert "PRIVATE_ANALYSIS" not in json.dumps(view)
     sibling = WorkspaceHarness(store=reopened, task=WorkspaceTask("W1-2", "Other task", ()))
     assert "image_inputs" not in json.dumps(sibling.model_view())
@@ -100,7 +101,7 @@ def test_report_source_pages_keep_pagination_and_budget():
     supplied = view["latest_reports"][0]["supporting_records"][0]
     assert supplied["content"] == source.content[:100]
     assert supplied["next_offset"] == 100
-    assert view["latest_reports"][0]["image_inputs"] == []
+    assert "image_inputs" not in view["latest_reports"][0]
     access = RecordAccess(store=store, role="GIA", actor_id="GIA", round_index=1, policy=policy)
     text = supplied["content"]
     while supplied["next_offset"] is not None:

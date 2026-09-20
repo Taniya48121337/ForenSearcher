@@ -157,8 +157,12 @@ class GlobalViewBuilder:
             value["supporting_records_truncated"] = True
         return {**value, **visual}
 
-    def _visual_context(self, task_id: str) -> dict[str, Any]:
+    def _visual_context(self, task_id: str, *, include_images: bool = True) -> dict[str, Any]:
         images, summary = workspace_visual_observations(self.store, task_id)
+        if not include_images:
+            # 已提交报告的工作区：GIA 沿证据链看图，不接收 HI 的全部过程图（DESIGN 2.3）。
+            # 统计式的观察摘要不带判断，保留它才能看出 HI 有没有把材料看全。
+            return {"visual_observation_summary": summary}
         return {"image_inputs": images[-self.policy.max_evidence_cards:],
                 **({"image_inputs_truncated": True} if len(images) > self.policy.max_evidence_cards else {}),
                 "visual_observation_summary": summary}
@@ -182,7 +186,7 @@ class GlobalViewBuilder:
         return {
             "supporting_records": records,
             **({"supporting_records_truncated": True} if len(evidence) > len(records) else {}),
-            **self._visual_context(report.task_id),
+            **self._visual_context(report.task_id, include_images=False),
         }
 
     def build(

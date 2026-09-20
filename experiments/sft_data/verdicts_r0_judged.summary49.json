@@ -1,0 +1,64 @@
+{
+  "runs": 49,
+  "reports": 80,
+  "disposition": {
+    "positive": 37,
+    "negative": 43
+  },
+  "errors": {
+    "unsupported_assertion": 63,
+    "completed_without_finishing": 5,
+    "scope_overreach": 59,
+    "attribution_drift": 1,
+    "wrong_citation": 24,
+    "sloppy_numeric": 4,
+    "misread_fine_text": 1
+  },
+  "pairs": 641,
+  "pair_verdicts": {
+    "supported": 589,
+    "not_found": 29,
+    "contradicted": 23
+  },
+  "findings": 203,
+  "tainted_findings": 94,
+  "by_dataset": {
+    "averimatec": {
+      "positive": 10,
+      "n": 12,
+      "negative": 2
+    },
+    "averitec": {
+      "positive": 7,
+      "n": 20,
+      "negative": 13
+    },
+    "qvhighlights": {
+      "positive": 3,
+      "n": 6,
+      "negative": 3
+    },
+    "true": {
+      "negative": 7,
+      "n": 15,
+      "positive": 8
+    },
+    "vcsl": {
+      "negative": 2,
+      "n": 4,
+      "positive": 2
+    },
+    "videosham": {
+      "positive": 7,
+      "n": 21,
+      "negative": 14
+    },
+    "unknown": {
+      "negative": 2,
+      "n": 2
+    }
+  },
+  "judge_model": "openrouter:qwen/qwen3.8-27b",
+  "verifier": "verifier@0.1.0",
+  "note": "videosham_4126_split_intervals_r7 未跑完，未计入"
+}

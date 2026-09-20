@@ -19,7 +19,9 @@ async def test_gia_receives_cited_pixels_across_findings_without_hi_private_hist
     sources = [ingest(store, image_bytes(color=color, red_box=False), source=f'I{i}',
                filename=f'{i}.png', media_type='image/png', modality='image')
                for i, color in enumerate(['red'] * 10 + ['blue', 'green'])]
-    task = WorkspaceTask('W1-1', 'Compare supplied colors.', tuple(s.evidence_id for s in sources))
+    # 兄弟工作区私下看过的 sources[11] 不进任务材料：原件可见与私图不外泄是两条独立规则，
+    # 同一个编号兼任两种角色会让断言分不清是哪一条在起作用。
+    task = WorkspaceTask('W1-1', 'Compare supplied colors.', tuple(s.evidence_id for s in sources[:11]))
     store.create_round(1, gia_input={}, gia_decision={})
     store.add_workspace_tasks(1, (task,))
     WorkspaceHarness(store=store, task=task, round_index=1).finish(WorkspaceReportDraft(
@@ -295,17 +297,18 @@ async def test_gia_video_handoff_preserves_frames_needed_for_review_beside_compl
         original_material_ids=(pdf.evidence_id, video.evidence_id), latest_round_index=1).to_dict()
     def respond(messages):
         pixels = attached(messages)
-        assert [label['evidence_id'] for label, _ in pixels] == frames
-        assert pixels[-1][0]['locator']['time_s'] == 3.5
+        # 原件派生的图片优先于报告引用：PDF 页面进入视野，预算把最后一帧挤出。
+        assert [label['evidence_id'] for label, _ in pixels] == [page] + frames[:7]
+        assert pixels[-1][0]['locator']['time_s'] == 3.
         assert pixels[-1][0]['frame_presentation_interval_s'] == {
-            'start': 3.5, 'end': 4., 'start_inclusive': True, 'end_inclusive': False}
+            'start': 3., 'end': 3.5, 'start_inclusive': True, 'end_inclusive': False}
         assert 'ForenSearcher page one' in json.dumps(messages)
-        return {'decision': 'FINISH', 'answer': f'Title: ForenSearcher page one ({page}). Last frame: 3.5s ({frames[-1]}).'}
+        return {'decision': 'FINISH', 'answer': f'Title: ForenSearcher page one ({page}). Last observed frame: 3.0s ({frames[6]}).'}
     generator = OpenRouterJsonGenerator(RecordingClient(respond), store=store)
     result = await TransformersGiaPolicy(generator).decide(model_view=view, history=(), actions=())
     assert result['decision'] == 'FINISH'
-    assert view['model_observed_image_ids'] == frames
-    assert view['image_inputs_omitted'] == [page]
+    assert view['model_observed_image_ids'] == [page] + frames[:7]
+    assert view['image_inputs_omitted'] == [frames[-1]]
 
 
 def test_observation_count_deduplicates_timestamps_and_excludes_crops_and_siblings(tmp_path):
@@ -349,3 +352,31 @@ def test_unknown_frame_duration_does_not_fill_unobserved_interval(tmp_path, dura
     assert summary['videos'][0] == {'evidence_id': video.evidence_id, 'observed_frame_count': 3,
         'coverage_span_s': [0, 2], 'observed_ranges_s': [[1, 1.1]],
         'unconfirmed_ranges_s': [[0, 1], [1.1, 2]], 'unknown_duration_frame_times_s': [.3, 2]}
+
+
+@pytest.mark.asyncio
+async def test_gia_sees_original_materials_before_any_workspace_reports(tmp_path):
+    """第 1 轮既没有报告也没有读取历史，原始材料本身必须带像素送到 GIA。"""
+
+    store = GlobalStore(tmp_path / 'state.sqlite3', tmp_path / 'artifacts')
+    picture = ingest(store, image_bytes(color='blue', red_box=False), source='I0',
+                     filename='scene.png', media_type='image/png', modality='image')
+    document = ingest(store, pdf_bytes(), source='I1', filename='document.pdf',
+                      media_type='application/pdf', modality='text')
+    view = GlobalViewBuilder(store, MemoryPolicy()).build(
+        task='Judge whether the picture supports the claim.',
+        original_material_ids=(picture.evidence_id, document.evidence_id),
+        latest_round_index=None).to_dict()
+    assert view['latest_reports'] == [] and view['history_index'] == []
+    def respond(messages):
+        pixels = attached(messages)
+        # 只有图片模态的原件带像素；PDF 在第 1 轮还没有渲染页面，仍然只是文字卡片。
+        assert [label['evidence_id'] for label, _ in pixels] == [picture.evidence_id]
+        assert pixels[0][1].getpixel((0, 0)) == (0, 0, 255)
+        return {'decision': 'INVESTIGATE', 'tasks': [
+            {'task': 'Identify where the blue scene was first published.', 'materials': [picture.evidence_id]}]}
+    generator = OpenRouterJsonGenerator(RecordingClient(respond), store=store)
+    result = await TransformersGiaPolicy(generator).decide(model_view=view, history=(), actions=())
+    assert result['decision'] == 'INVESTIGATE'
+    assert view['model_observed_image_ids'] == [picture.evidence_id]
+    assert view['image_inputs_omitted'] == []
