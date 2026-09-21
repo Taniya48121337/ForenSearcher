@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   const page = document.querySelector('#training-page');
-  const T = {data:null, section:'flow', stage:2, role:'HI', dimension:'grounding', filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
+  const T = {data:null, section:'flow', stage:2, role:'HI', dimension:'grounding', filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archView:'overview', archNode:'gia', cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
   const labels = {SEARCH:'搜索与打开来源',INSPECT:'检查原始材料',READ_RECORD:'读取已有证据',QUERY_MEMORY:'查找调查记忆',SEARCH_MEMORY:'查找调查记忆',INVESTIGATE:'安排下一轮调查',FINISH:'结束并回答',REPORT:'提交局部报告'};
   const operations = {get_frames:'提取视频帧',align_media:'对齐视频片段',get_pages:'读取文档页面',crop:'裁剪局部画面',ocr:'读取图中文字',locate_frames:'定位视频片段'};
   const dispositions = {accept_candidate:'可作为候选',repair_reexecute:'需要重新执行',context_only:'仅保留为历史',exclude:'排除目标',unknown:'尚未判定'};
@@ -34,7 +34,7 @@
   window.stopTrainingPlayback = stop;
   async function get(path){if(T.cache.has(path))return T.cache.get(path);const value=await api(path);T.cache.set(path,value);return value;}
   function loading(){page.innerHTML='<div class="tr-loading" role="status"><span class="tr-loader"></span>正在读取实际训练记录…</div>';}
-  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">TRAINING DATA</div><h1>训练数据</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['flow','生成流程'],['rubric','质量核验'],['samples','样本库']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,`${label}${id==='samples'?`<span>${T.data.samples.length}</span>`:''}`,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')?'':statusStrip(section)}`;}
+  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','样本库']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,`${label}${id==='samples'?`<span>${T.data.samples.length}</span>`:''}`,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')?'':statusStrip(section)}`;}
   function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">阶段 3 / 5 已完成</span><span>调查框架、数据流水线与质量核验体系均已就位</span><span>候选决策 <b>${format(T.data.stats.total)}</b> 条 · 数据来源 <b>${T.data.stats.datasets}</b> 个</span><span>正在进入首次模型训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
   function renderFlow(){
     const s=T.data.stats,d=stageData[T.stage];
@@ -75,12 +75,250 @@
       {state:'todo',name:'消融与迁移',text:'依据六次训练的比较计划，逐项验证架构中各项设计的实际收益，以及能力向新任务的迁移情况。'}]}
   ];
   function planCount(state){return roadmap.reduce((n,b)=>n+b.items.filter(i=>i.state===state).length,0);}
+  const archViews = [
+    {id:'overview', name:'一次调查怎么跑', width:1180, height:614,
+     caption:'轮内并行、轮间串行。GIA 决定查什么，HI 在各自独立的工作区里查，Harness 负责真实执行并登记证据。',
+     nodes:[
+      {id:'input', x:20, y:214, w:150, h:104, kind:'input', title:'任务与原始材料',
+       lines:['问题 + 视频 / 图片 / PDF'], badge:'2026-09 更新',
+       detail:['用户提交的每一份材料都会登记成一条证据 E，带上模态、来源与处理链，后续所有引用都指回它。',
+               '2026-09 起，图片原件以及视频、PDF 已经取得的画面会随全局视图一起送进 GIA——在此之前调度方只拿得到文字卡片。']},
+      {id:'gv', x:212, y:36, w:236, h:168, kind:'view', title:'全局视图',
+       lines:['总任务','原始材料','本轮读到的证据','最新一轮报告','更早结果索引'],
+       detail:['固定五块，由 Harness 构造，GIA 不需要自己维护状态，也不输出"待办清单"。',
+               '看不到的历史可以用 QUERY_MEMORY 检索、用 READ_RECORD 按编号读全文或调取图片。',
+               '超出预算时按"可恢复优先"裁剪，并置 context_truncated 标记。']},
+      {id:'render', x:212, y:232, w:236, h:78, kind:'render', title:'状态渲染器', badge:'2026-09 新增',
+       lines:['legacy / compact_8k / compact_16k'],
+       detail:['模型调用前把历史与报告正文压到预算之内，证据编号一个不丢，装不下的正文标注已截断并保留读取全文的入口。',
+               '在 340 行试点语料实测：HI 侧字符中位从 23.1K 降到 11.3K（16K 档），GIA 侧从 24.9K 降到 18.5K。',
+               '本地与服务器各一份配置，同一份代码两个档位。']},
+      {id:'gia', x:212, y:338, w:236, h:118, kind:'gia', title:'GIA 全局调度', badge:'2026-09 更新',
+       lines:['决定：INVESTIGATE / FINISH','动作：QUERY_MEMORY · READ_RECORD'],
+       detail:['只做两件事：判断现有证据够不够回答总问题，以及把总问题拆成若干条互不依赖的局部任务。',
+               '它不直接调用检索或检查工具——那是工作区的事。',
+               '现在能直接看到原始材料的画面：视频类任务的文字里没有线索，不看画面只能派出模板化的任务。']},
+      {id:'finish', x:212, y:492, w:236, h:96, kind:'final', title:'最终回答',
+       lines:['每句结论后跟支持它的 E 编号'],
+       detail:['Harness 只机械检查这些编号是否存在、能否解析回来源，不替 GIA 判断答案对不对。',
+               '"结论是否真的被证据支持"由离线的三层核验器回答，不在运行时这条链路上。']},
+      {id:'round', x:496, y:36, w:346, h:396, kind:'group', title:'第 t 轮',
+       lines:['轮内并行 · 轮间串行'],
+       detail:['同一轮里的工作区并行执行，轮与轮之间串行。工作区不能再派生子工作区。',
+               '任务编号由 Harness 统一分配（W1-1、W1-2 …），GIA 只给任务文本和材料。']},
+      {id:'ws1', x:516, y:108, w:306, h:78, kind:'ws', title:'工作区 W t,1',
+       lines:['HI θ · 独立局部状态'],
+       detail:['每个工作区拿到自己的任务、材料和一份按本任务排序的证据视图。',
+               '所有工作区共享同一套 HI 参数 θ，但不共享上下文与判断。']},
+      {id:'ws2', x:516, y:198, w:306, h:78, kind:'ws', title:'工作区 W t,2',
+       lines:['HI θ · 独立局部状态'],
+       detail:['兄弟工作区之间看不到彼此的实时状态、工具历史与 Finding。',
+               '它们能共享的只有已经保存完整的证据。']},
+      {id:'wsm', x:516, y:310, w:306, h:78, kind:'ws', title:'工作区 W t,m',
+       lines:['HI θ · 独立局部状态'],
+       detail:['一轮里派出几个工作区由 GIA 决定，受每轮上限约束。',
+               '某个工作区超时或出错不会取消其他工作区，它的错误本身会成为下一轮的输入。']},
+      {id:'report', x:888, y:196, w:174, h:150, kind:'report', title:'工作区报告',
+       lines:['status: COMPLETED / INCOMPLETE','findings: 陈述 + 证据编号','selected_evidence_ids','status_reason'],
+       detail:['HI 自审：所派的这项任务完成了没有。这是第一层审核。',
+               '如实声明"尚未查完"同样是合格报告——它准确描述了边界。']},
+      {id:'agg', x:888, y:36, w:262, h:96, kind:'harness', title:'Harness 轮聚合',
+       lines:['收齐 · 落库 · 构造下一轮视图'],
+       detail:['等这一轮全部工作区到达终态，把报告与本轮实际用到的证据打包成 GIA 的新视图。',
+               'GIA 随后做第二层审核：这些结果能否成为总任务的有效信息，继续还是结束。']},
+      {id:'store', x:888, y:392, w:262, h:158, kind:'store', title:'持久化全局库',
+       lines:['证据 E：跨工作区共享','发现 F：只交给 GIA','报告 · 轮次 · 读取审计'],
+       detail:['SQLite 持久化，支持断点恢复。已完成轮次的证据全局可见，当前轮的证据在聚合前只有产出它的工作区能看到。',
+               '共享的是保存完整的证据，不是判断——兄弟工作区不接收也检索不到别人的 Finding。']}],
+     links:[
+      {from:'input', to:'gv', dir:'h'}, {from:'gv', to:'render', dir:'v'}, {from:'render', to:'gia', dir:'v'},
+      {from:'gia', to:'round', dir:'h', label:'INVESTIGATE'}, {from:'gia', to:'finish', dir:'v', label:'FINISH'},
+      {from:'ws2', to:'report', dir:'h'}, {from:'report', to:'agg', dir:'vup'},
+      {from:'agg', to:'gv', dir:'over', label:'下一轮'},
+      {from:'store', to:'wsm', dir:'hback', dash:true, label:'读取 · 复用编号'},
+      {from:'report', to:'store', dir:'v', dash:true, label:'归档'}]},
+
+    {id:'workspace', name:'工作区内部', width:1180, height:600,
+     caption:'HI 每一步只做一个决定：选一个动作，或者提交报告。工具由 Harness 真实执行，返回的观察再进入下一步。',
+     nodes:[
+      {id:'state', x:20, y:150, w:196, h:210, kind:'view', title:'局部工作记忆',
+       lines:['当前任务与材料','候选来源 R','按本任务排序的证据视图','自己保留的重点证据','自己的历史 · 最新一次返回'],
+       detail:['明确看不到：兄弟工作区的实时状态、整个证据库的完整内容、其他工作区的工具历史、数据集标签、GIA 的推理。',
+               '证据只保存一份，每个工作区各自决定排序与展示，完整内容按需展开。']},
+      {id:'pixels', x:20, y:392, w:196, h:96, kind:'render', title:'画面直接进入 HI', badge:'已转正',
+       lines:['每次最多 8 张图片像素'],
+       detail:['原图、抽出的视频帧、渲染的 PDF 页面以像素形式随决策请求送进模型，长边缩放并受总像素上限约束。',
+               '正因为 HI 自己看得见画面，早期设计里把"看图"外包给工具的 visual_qa / audio_qa 才被取消。']},
+      {id:'hi', x:266, y:236, w:190, h:124, kind:'gia', title:'HI 局部调查员',
+       lines:['选择一个动作','或提交局部报告'],
+       detail:['一次请求只产出一个决定：SEARCH、INSPECT、QUERY_MEMORY、READ_RECORD 之一，或者一份报告。',
+               '输出是结构化 JSON，解析或角色校验不通过会进入有限次数的修复，仍不通过则记为失败。']},
+      {id:'search', x:512, y:40, w:250, h:104, kind:'tool', title:'SEARCH',
+       lines:['检索 · 打开来源 · 登记材料','网页 / 图片 / 视频 / 以图搜图'],
+       detail:['两种互斥调用：用文字或图片去搜，或者直接打开一个已知 URL / 已有的 R 编号。',
+               '候选来源 R 不会原地升级成证据 E——看到搜索摘要不等于读过正文。',
+               '视频类结果默认只拿到来源页信息，下载是 INSPECT 内部的事。']},
+      {id:'inspect', x:512, y:164, w:250, h:158, kind:'tool', title:'INSPECT', badge:'2026-09 更新',
+       lines:['抽帧 · 读文档页 · 裁剪','定位区域 · 图中文字 · 语音转写','定位片段 · 片段对齐'],
+       detail:['当前实际注册了这 8 个处理器，全部作用于已经登记的证据编号。',
+               'visual_qa 与 audio_qa 已从主线移除：HI 直接看画面，不需要把"看图"当成一次工具调用。']},
+      {id:'detect', x:512, y:342, w:250, h:74, kind:'reserved', title:'DETECT', badge:'位置保留',
+       lines:['待接入'],
+       detail:['设计里保留给第三个工具的位置，方向是生成与伪造检测。',
+               '当前还没有接入任何检测器，HI 的动作表里也还没有它——接入之后这一格才会有内容。']},
+      {id:'mem', x:512, y:436, w:250, h:104, kind:'tool', title:'QUERY_MEMORY · READ_RECORD',
+       lines:['检索已有记录','按编号读全文或调取图片'],
+       detail:['查已保存的证据、发现、候选来源、报告与工作区任务卡片。',
+               'READ_RECORD 分页读长文本，也能把某条证据的图片重新调出来看。',
+               '新的抽帧、裁剪、转写不走这里，那是 INSPECT 的事。']},
+      {id:'exec', x:816, y:200, w:170, h:166, kind:'harness', title:'Harness 执行与登记',
+       lines:['真实执行','登记新的证据 E','写入执行审计'],
+       detail:['工具调用全部真实执行，失败也按实际结果记录，不伪造返回。',
+               '每条新证据带上来源、处理链和取得方式，这是后面能回溯的前提。']},
+      {id:'obs', x:816, y:400, w:170, h:112, kind:'report', title:'观察 Observation',
+       lines:['编号 · 来源 · 范围'],
+       detail:['一次工具执行后返回给 HI 看的紧凑文字，本身不是一种证据类型，只是"这次工具说了什么"。',
+               '它里面带的编号指向真正的 R 或 E。']},
+      {id:'submit', x:266, y:40, w:190, h:112, kind:'report', title:'提交局部报告',
+       lines:['COMPLETED / INCOMPLETE','格式与引用检查'],
+       detail:['HI 自审这项任务完成了没有，Harness 只检查格式与引用编号是否存在。',
+               '报告交给 GIA，兄弟工作区读不到。']}],
+     links:[
+      {from:'state', to:'hi', dir:'h'}, {from:'pixels', to:'hi', dir:'h'},
+      {from:'hi', to:'search', dir:'h'}, {from:'hi', to:'inspect', dir:'h'},
+      {from:'hi', to:'detect', dir:'h', dash:true}, {from:'hi', to:'mem', dir:'h'},
+      {from:'search', to:'exec', dir:'h'}, {from:'inspect', to:'exec', dir:'h'},
+      {from:'detect', to:'exec', dir:'h', dash:true}, {from:'mem', to:'exec', dir:'h', dash:true},
+      {from:'exec', to:'obs', dir:'v'},
+      {from:'obs', to:'state', dir:'under', label:'进入下一步'},
+      {from:'hi', to:'submit', dir:'v-up'}]},
+
+    {id:'records', width:1180, height:374, name:'记录与证据链',
+     caption:'四层记录的边界是整套设计里最容易混淆、也最要紧的一处：读到了什么，和由此判断了什么，必须分开。',
+     nodes:[
+      {id:'source', x:40, y:56, w:214, h:128, kind:'input', title:'来源 R',
+       lines:['搜索结果里的候选','标题 · 摘要 · 链接'],
+       detail:['只是线索。候选来源不会原地升级成证据——没读正文就不能当成读过。']},
+      {id:'evidence', x:326, y:56, w:214, h:128, kind:'view', title:'证据 E',
+       lines:['实际读到的材料','或工具对它的可追溯结果'],
+       detail:['六字段卡片：编号、实际模态、简短标签、来源引用、派生自哪条、用什么行动取得。',
+               '登记为证据只表示能追到来源和处理过程，不表示结果已被证实。证据之间可以互相矛盾。']},
+      {id:'finding', x:612, y:56, w:214, h:128, kind:'gia', title:'发现 F',
+       lines:['HI 结合证据对局部任务','得出的判断'],
+       detail:['发现不是证据，也不能自动转成证据。它属于产生它的工作区，随报告交给 GIA。',
+               '例：证据是"页面显示上传日期为 2022-04-18"，发现是"该视频至少在那天已经公开出现"。',
+               '不能从上传日期直接生成"视频拍摄于那天"这样的证据——那已经是推断。']},
+      {id:'answer', x:898, y:56, w:214, h:128, kind:'final', title:'最终回答',
+       lines:['GIA 综合全部报告','证据编号跟在它支持的句子后'],
+       detail:['GIA 用 Finding 时必须能沿它的证据引用回到原始来源。',
+               '证据链的形状是固定的：最终回答 → 发现 → 证据 → 来源。']},
+      {id:'share', x:40, y:240, w:500, h:104, kind:'store', title:'共享与隔离',
+       lines:['证据 E 跨工作区共享 · 发现 F 只交给 GIA'],
+       detail:['共享的是保存完整的证据，不是判断。兄弟工作区不接收、也检索不到别人的 Finding。',
+               '每个工作区应当根据任务、原始材料和证据自己形成判断。']},
+      {id:'verify', x:612, y:240, w:500, h:104, kind:'render', title:'离线三层核验', badge:'2026-09 新增',
+       lines:['程序检查 → 逐条证据锚定 → 任务充分性'],
+       detail:['"这条结论是否真的被它引用的证据支持"，运行时的两层自审都不管，由离线核验器回答。',
+               '第二层把每条结论与它引用的每一份证据配对，单独判定并要求给出引语，引语须能由程序在原文中回查到。',
+               '核验所用模型与生成数据的模型相互独立，避免自评。']}],
+     links:[
+      {from:'answer', to:'finding', dir:'hback', label:'支持'},
+      {from:'finding', to:'evidence', dir:'hback', label:'引用'},
+      {from:'evidence', to:'source', dir:'hback', label:'取自'}]}
+  ];
+  const archKinds = {input:'原始输入', view:'上下文', render:'新增机制', gia:'角色决策', group:'轮次', ws:'工作区',
+                     tool:'工具', reserved:'位置保留', harness:'Harness 执行', report:'产出记录', final:'最终产物', store:'持久化'};
+  function archBox(view, id) { return view.nodes.find(n => n.id === id); }
+  function archPath(view, link) {
+    const a = archBox(view, link.from), b = archBox(view, link.to);
+    if (!a || !b) return null;
+    const ac = {x:a.x + a.w / 2, y:a.y + a.h / 2}, bc = {x:b.x + b.w / 2, y:b.y + b.h / 2};
+    switch (link.dir) {
+      case 'v': return {d:`M ${ac.x} ${a.y + a.h} C ${ac.x} ${a.y + a.h + 26}, ${bc.x} ${b.y - 26}, ${bc.x} ${b.y}`,
+                        at:{x:(ac.x + bc.x) / 2, y:(a.y + a.h + b.y) / 2}};
+      case 'v-up': return {d:`M ${ac.x} ${a.y} C ${ac.x} ${a.y - 26}, ${bc.x} ${b.y + b.h + 26}, ${bc.x} ${b.y + b.h}`,
+                           at:{x:(ac.x + bc.x) / 2, y:(a.y + b.y + b.h) / 2}};
+      case 'vup': return {d:`M ${ac.x} ${a.y} C ${ac.x} ${a.y - 30}, ${bc.x} ${b.y + b.h + 30}, ${bc.x} ${b.y + b.h}`,
+                          at:{x:(ac.x + bc.x) / 2, y:(a.y + b.y + b.h) / 2}};
+      case 'hback': return {d:`M ${a.x} ${ac.y} C ${a.x - 30} ${ac.y}, ${b.x + b.w + 30} ${bc.y}, ${b.x + b.w} ${bc.y}`,
+                            at:{x:(a.x + b.x + b.w) / 2, y:(ac.y + bc.y) / 2 - 12}};
+      case 'over': {
+        const top = Math.min(a.y, b.y) - 26;
+        return {d:`M ${ac.x} ${a.y} C ${ac.x} ${top}, ${bc.x} ${top}, ${bc.x} ${b.y}`, at:{x:(ac.x + bc.x) / 2, y:top + 15}};
+      }
+      case 'under': {
+        const bottom = Math.max(a.y + a.h, b.y + b.h) + 30;
+        return {d:`M ${ac.x} ${a.y + a.h} C ${ac.x} ${bottom}, ${bc.x} ${bottom}, ${bc.x} ${b.y + b.h}`,
+                at:{x:(ac.x + bc.x) / 2, y:bottom + 4}};
+      }
+      default: return {d:`M ${a.x + a.w} ${ac.y} C ${a.x + a.w + 34} ${ac.y}, ${b.x - 34} ${bc.y}, ${b.x} ${bc.y}`,
+                       at:{x:(a.x + a.w + b.x) / 2, y:(ac.y + bc.y) / 2 - 11}};
+    }
+  }
+  function archDetail(view) {
+    const node = archBox(view, T.archNode) || view.nodes[0];
+    return `<div class="tr-panel-kicker">${esc(archKinds[node.kind] || '节点')}</div><h3>${esc(node.title)}</h3>
+      ${node.badge ? `<span class="tr-arch-badge">${esc(node.badge)}</span>` : ''}
+      <ul class="tr-arch-facts">${node.lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+      ${node.detail.map(d => `<p>${esc(d)}</p>`).join('')}`;
+  }
+  function renderArchStage() {
+    const view = archViews.find(v => v.id === T.archView) || archViews[0];
+    const stage = page.querySelector('#tr-arch-stage'), detail = page.querySelector('#tr-arch-detail');
+    if (!stage) return;
+    const paths = view.links.map(link => ({link, path:archPath(view, link)})).filter(row => row.path);
+    stage.style.setProperty('--arch-w', view.width);
+    stage.style.setProperty('--arch-h', view.height);
+    stage.innerHTML = `<svg class="tr-arch-links" viewBox="0 0 ${view.width} ${view.height}" aria-hidden="true">
+        <defs><marker id="arch-tip" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0 0 L7 3.5 L0 7 Z" fill="#9db387"></path></marker></defs>
+        ${paths.map(({link, path}) => `<path d="${path.d}" class="${link.dash ? 'dashed' : ''}" marker-end="url(#arch-tip)"></path>`).join('')}
+      </svg>
+      <div class="tr-arch-nodes">${view.nodes.map(n => `<button class="tr-arch-node ${n.kind} ${n.id === T.archNode ? 'selected' : ''}"
+        style="left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px" data-arch-node="${esc(n.id)}"
+        aria-pressed="${n.id === T.archNode}"><strong>${esc(n.title)}</strong>
+        ${n.badge ? `<i class="tr-arch-flag">${esc(n.badge)}</i>` : ''}
+        <span>${n.lines.map(l => esc(l)).join('<br>')}</span></button>`).join('')}</div>
+      <svg class="tr-arch-labels" viewBox="0 0 ${view.width} ${view.height}" aria-hidden="true">${paths.filter(row => row.link.label)
+        .map(({link, path}) => `<text x="${path.at.x}" y="${path.at.y}" class="tr-arch-edge-label">${esc(link.label)}</text>`).join('')}</svg>`;
+    if (detail) detail.innerHTML = archDetail(view);
+    archFit();
+  }
+  function archFit() {
+    const frame = page.querySelector('#tr-arch-frame'), stage = page.querySelector('#tr-arch-stage'),
+          sizer = page.querySelector('#tr-arch-sizer'), hint = page.querySelector('#tr-arch-hint');
+    if (!frame || !stage || !sizer) return;
+    const view = archViews.find(v => v.id === T.archView) || archViews[0];
+    // 窄屏不再无限缩小：保底比例之下改为横向滚动，宁可拖动也不要缩成看不清的一团。
+    const scale = Math.max(Math.min(1, (frame.clientWidth - 2) / view.width), .68);
+    stage.style.transform = `scale(${scale})`;
+    sizer.style.width = `${Math.ceil(view.width * scale)}px`;
+    sizer.style.height = `${Math.ceil(view.height * scale)}px`;
+    if (hint) hint.hidden = Math.ceil(view.width * scale) <= frame.clientWidth;
+  }
+  window.addEventListener('resize', () => { if (T.section === 'architecture') archFit(); });
+  function renderArchitecture() {
+    const view = archViews.find(v => v.id === T.archView) || archViews[0];
+    if (!archBox(view, T.archNode)) T.archNode = view.nodes[0].id;
+    page.innerHTML = top('architecture') + `<div class="tr-section-title tr-arch-title"><div><div class="eyebrow muted">SYSTEM ARCHITECTURE</div>
+        <h2>调查是怎样被组织起来的</h2><p>三张图分别看：一次调查的整体运行结构、单个工作区内部的一步，以及四层记录之间的关系。点击任意方块查看它的职责与边界。</p></div></div>
+      <div class="tr-arch-switch" role="tablist" aria-label="架构视图">${archViews.map(v =>
+        `<button role="tab" aria-selected="${v.id === T.archView}" data-arch-view="${esc(v.id)}" class="${v.id === T.archView ? 'active' : ''}">${esc(v.name)}</button>`).join('')}</div>
+      <p class="tr-arch-caption">${esc(view.caption)}</p>
+      <div class="tr-arch-frame" id="tr-arch-frame"><div class="tr-arch-sizer" id="tr-arch-sizer"><div class="tr-arch-stage" id="tr-arch-stage"></div></div></div>
+      <p class="tr-arch-hint" id="tr-arch-hint" hidden>横向拖动可以看到完整结构</p>
+      <aside class="tr-arch-detail" id="tr-arch-detail" aria-live="polite"></aside>
+      <div class="tr-arch-legend">${[['input','原始输入'],['view','上下文'],['gia','角色决策'],['tool','工具'],['harness','Harness 执行'],['report','产出记录'],['store','持久化'],['reserved','位置保留'],['render','2026-09 新增或更新']]
+        .map(([k, n]) => `<span class="lg-${k}">${n}</span>`).join('')}</div>
+      <div class="tr-footnote">图中标注的能力均以当前代码为准：HI 的动作表为 SEARCH / INSPECT / QUERY_MEMORY / READ_RECORD，INSPECT 实际注册 8 个处理器；visual_qa / audio_qa 已从主线移除。DETECT 作为第三个工具的位置保留，尚未接入检测器，动作表里还没有它。</div>`;
+    renderArchStage();
+  }
   function renderRoadmap(){
     page.innerHTML=top('roadmap')+`<div class="tr-section-title tr-plan-title"><div><div class="eyebrow muted">PROJECT PROGRESS</div><h2>阶段进展与交付内容</h2><p>项目划分为五个阶段：前三个阶段已完成，第四阶段进行中。展开任一阶段可查看该阶段的具体交付内容。</p></div></div>
       <div class="tr-plan"><div class="tr-plan-root"><div class="tr-panel-kicker">PROJECT GOAL</div><strong>面向异构核查任务的<br>自主调查 Agent</strong><p>覆盖视频、图像与网页混合的核查场景：模型自主拆解问题、决定检索方向并完成取证，最终给出的每一条结论均可沿证据链回溯至原始来源。</p><div class="tr-plan-tally">${[['done','已完成'],['doing','进行中'],['todo','下一阶段']].map(([k,l])=>`<span class="${k}"><b>${planCount(k)}</b>${l}</span>`).join('')}</div></div>
       <div class="tr-plan-branches">${roadmap.map(b=>`<details class="tr-plan-branch" ${b.id==='quality'||b.id==='training'?'open':''}><summary class="tr-plan-head"><span class="tr-panel-kicker">${esc(b.kicker)}</span><strong>${esc(b.title)}</strong><small>${esc(b.hint)}</small><i class="tr-plan-chevron" aria-hidden="true"></i></summary><ul class="tr-plan-leaves">${b.items.map(i=>`<li class="${planStates[i.state][1]}"><div class="tr-plan-leaf-top"><b>${esc(i.name)}</b><span class="tr-plan-tag ${planStates[i.state][1]}">${planStates[i.state][0]}</span></div><p>${esc(i.text)}</p></li>`).join('')}</ul></details>`).join('')}</div></div>
       <div class="tr-return"><span>⟲</span> 每完成一轮，核验结果将指出下一轮的改进方向，流程本身随之迭代。</div>
-      <div class="tr-plan-links">${routeButton('#training/flow','数据生成流程 →')}${routeButton('#training/rubric','质量核验体系 →')}${routeButton('#training/samples','真实样例库 →')}</div>
+      <div class="tr-plan-links">${routeButton('#training/architecture','系统架构 →')}${routeButton('#training/flow','数据生成流程 →')}${routeButton('#training/rubric','质量核验体系 →')}${routeButton('#training/samples','真实样例库 →')}</div>
       <div class="tr-footnote">本页反映 2026 年 9 月的项目状态，随各阶段进展更新。</div>`;
   }
   function docLink(name,label){return `<a href="/api/training/documents/${name}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;}
@@ -187,8 +425,9 @@
       }catch(e){page.innerHTML=top('samples')+`<div class="tr-empty"><strong>无法打开这个样例</strong><p>${esc(e.message)}</p>${routeButton('#training/samples','返回样本库')}</div>`;}
       return;
     }
-    T.section=['rubric','samples','flow'].includes(parts[1])?parts[1]:'roadmap';
-    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderSamples();else if(T.section==='flow')renderFlow();else renderRoadmap();window.scrollTo({top:0});
+    T.section=['rubric','samples','flow','architecture'].includes(parts[1])?parts[1]:'roadmap';
+    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderSamples();else if(T.section==='flow')renderFlow();
+    else if(T.section==='architecture')renderArchitecture();else renderRoadmap();window.scrollTo({top:0});
   }
   window.openTraining=open;
   function showImage(index){const images=T.step?.images||[],im=images[index];if(!im)return;stop();let dialog=document.querySelector('#tr-image-dialog');if(!dialog){dialog=document.createElement('dialog');dialog.id='tr-image-dialog';dialog.className='tr-image-dialog';document.body.append(dialog);}dialog.innerHTML=`<div class="tr-image-modal-heading"><span>${esc(im.evidence_id)} · 本轮实际输入图片 · ${index+1} / ${images.length}</span><button data-tr="close-image" aria-label="关闭图片">×</button></div><div class="tr-image-canvas"><img src="${im.url}" alt="${esc(im.evidence_id)} 原始输入图片"></div><div class="tr-image-modal-footer"><button class="tr-control" data-tr-image="${index-1}" ${index===0?'disabled':''}>← 上一张</button><span>${esc((im.note.derived_from||[]).join(' / '))}${im.note.locator?.time_s!=null?' · '+Number(im.note.locator.time_s).toFixed(6)+' 秒':''}</span><button class="tr-control" data-tr-image="${index+1}" ${index===images.length-1?'disabled':''}>下一张 →</button></div>`;dialog.dataset.index=String(index);if(!dialog.open)dialog.showModal();}
@@ -197,6 +436,8 @@
   document.addEventListener('click',async e=>{
     const b=e.target.closest('button,a');if(!b)return;
     if(b.dataset.trainingRoute){e.preventDefault();await open(b.dataset.trainingRoute);return;}
+    if(b.dataset.archView){T.archView=b.dataset.archView;T.archNode=null;renderArchitecture();page.querySelector(`[data-arch-view="${T.archView}"]`)?.focus({preventScroll:true});return;}
+    if(b.dataset.archNode){T.archNode=b.dataset.archNode;renderArchStage();page.querySelector(`[data-arch-node="${T.archNode}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.trStage!==undefined){T.stage=Number(b.dataset.trStage);renderFlow();page.querySelector(`[data-tr-stage="${T.stage}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.trRole){T.role=b.dataset.trRole;renderRubric();page.querySelector(`[data-tr-role="${T.role}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.trDimension){T.dimension=b.dataset.trDimension;renderRubric();page.querySelector(`[data-tr-dimension="${T.dimension}"]`)?.focus({preventScroll:true});return;}
