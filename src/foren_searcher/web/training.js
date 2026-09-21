@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   const page = document.querySelector('#training-page');
-  const T = {data:null, section:'flow', stage:2, role:'HI', dimension:'grounding', filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archNode:'gia', archZoom:1, archX:0, archY:0, cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
+  const T = {data:null, section:'flow', stage:2, filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archNode:'gia', archZoom:1, archX:0, archY:0, cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
   const labels = {SEARCH:'搜索与打开来源',INSPECT:'检查原始材料',READ_RECORD:'读取已有证据',QUERY_MEMORY:'查找调查记忆',SEARCH_MEMORY:'查找调查记忆',INVESTIGATE:'安排下一轮调查',FINISH:'结束并回答',REPORT:'提交局部报告'};
   const operations = {get_frames:'提取视频帧',align_media:'对齐视频片段',get_pages:'读取文档页面',crop:'裁剪局部画面',ocr:'读取图中文字',locate_frames:'定位视频片段'};
   const dispositions = {accept_candidate:'可作为候选',repair_reexecute:'需要重新执行',context_only:'仅保留为历史',exclude:'排除目标',unknown:'尚未判定'};
@@ -10,18 +10,9 @@
     {title:'案例选取与依据准备',short:'案例与依据',subtitle:'先界定问题边界，再准备核验材料。',input:'真实问题、原始媒体、来源记录与数据集标注',actor:'数据构造',output:'明确的任务 + 训练侧参考材料',points:['按原始案例、事件或视频来源划分开发与保留检查数据，同一案例的变体放在同一侧。','核对原始材料、时间轴和来源条件。给定候选视频、给定网页与自主搜索分别记录。','参考标注辅助核验；不把缺失证据补写成已经观察过的事实。'],example:'video-correspondence',exampleLabel:'查看双视频对应任务',note:'对应片段可证明内容匹配，但不足以单独判定原创归属。',upgrade:'案例按数据集标注统一入库，每个案例附带来源政策与必需证据；开发集与保留检查集按案例家族划分，并由程序自动核查两侧是否重叠。'},
     {title:'决策输入构造',short:'决策输入构造',subtitle:'每次决策均有明确的信息边界。',input:'当前任务、已取得证据、已有报告与历史',actor:'上下文组织',output:'本轮角色输入 + 实际图片附件',points:['HI 获得自己的局部任务和可见材料；GIA 获得总任务、报告及当前可用证据。','标准答案、评分记录和未来调查结果留在核验侧，不能提前进入决策输入。','独立 GIA 样本可用已核实的真实报告构造状态。报告可信，仍可能没有查完整。'],example:'gia-evidence-states',exampleLabel:'对比同一证据下的四个问题',note:'问题改变时，“已有证据是否足够”的答案也可能改变。',upgrade:'新增状态渲染器：长上下文分两档压缩，实测将调查员一侧的输入字符中位数降至原先的一半以下，证据编号无缺失；超出预算时明确标注已截断，并保留读取全文的入口。'},
     {title:'教师生成与工具真实执行',short:'生成与执行',subtitle:'完整记录调查过程，支持逐步回放。',input:'当轮可见状态',actor:'GIA / HI 教师',output:'一个决定 → 实际返回 → 下一轮状态',points:['一次教师请求只生成一个角色的输出。工具调用由现有 Harness 实际执行。','保存原始输入、图片、模型输出、工具观察和执行对应关系。失败也按实际结果记录。','GIA 可以独立生成下一步决定；只有接入 HI 并真实执行，才计为协作轨迹。'],example:'video-intervals',exampleLabel:'展开 106 次真实模型输出',note:'检索、抽帧、转写等工具由 Harness 真实执行，非模拟返回。',upgrade:'新增版本化规格：面向学生的角色提示与面向教师的生成指令分开管理，各自带版本号，四项内容统一计算哈希并写入每一行数据，任一样本均可追溯到其规格版本。'},
-    {title:'逐步评分与问题定位',short:'逐步评分',subtitle:'同时评估调查完成度与该步输出的示范价值。',input:'真实输入、输出、执行记录 + 核验依据',actor:'独立评审会话',output:'0–4 分 + 理由 + 每步处置',points:['按七个维度检查执行、可见性、事实依据、任务、决策、不确定性与效率。','行动按当时可知信息评价；报告按实际取得的证据核验。合理搜索未命中，不自动算错误。','用明确错误与合法替代样本检验评分标准。评审缺少关键原文或图片时，保留未知。'],example:'video-local-intervals',exampleLabel:'查看逐步评分依据',note:'评分针对每一步单独进行，不以整条调查的平均分替代单步判定。',upgrade:'新增三层核验器：程序检查、逐条证据锚定与任务充分性依次执行。核验模型与生成模型相互独立，核验时回到证据原文与像素，引语须可由程序在原文中回查到。'},
+    {title:'逐单元核验与问题定位',short:'逐单元核验',subtitle:'每一步动作、每份报告、每次派工与最终回答，分别判定。',input:'真实输入、输出、执行记录 + 案卷要求',actor:'三道工序 · 核验模型独立于生成模型',output:'问题类型 + 严重度 + 每行处置与权重',points:['四种判定单元分开走：HI 的每一步动作、HI 的局部报告、GIA 的派工、GIA 的最终回答。','三道工序依次执行——程序检查、逐条证据锚定、任务充分性；前一道已判定的不再重复判定。','判定不给分数，只贴统一定义的问题类型；类型自带严重度与是否污染后续结论。'],example:'video-local-intervals',exampleLabel:'查看真实案例的逐步判定',note:'判定针对每一个单元单独进行，不以整份报告的结论替代单步判定。',upgrade:'核验器升到 0.2.0：判定单元由「报告」扩到动作、派工与最终回答；新增两条校准规则，修掉第 0 轮抽样发现的两类误报。'},
     {title:'筛选、修复与处置',short:'筛选与修复',subtitle:'逐目标判定，不以整体平均分替代单步结论。',input:'逐目标评分 + 实际执行核对',actor:'筛选与重新执行',output:'候选目标 / 重新执行 / 仅作历史 / 排除',points:['逐目标判为可收录、评分 3 或 4、无关键评审未知，并通过执行及输入对应检查，才进入候选。','有实质错误的动作，从对应状态重新执行并复评，不把改写答案接到不相容的旧后续。','错误前缀可以作为之后的真实上下文；它本身不因此成为正向学习目标。'],example:'video-intervals',exampleLabel:'查看 86 条收录与 20 条未收录',note:'如实声明「尚未查完」的报告同样具备示范价值，但不代表该项调查已经完成。',upgrade:'处置结果与统一的问题类型枚举绑定：每一条被退回的输出均归入具体类型，使改进方向可按类型统计，而非仅留一段自由文本说明。'},
     {title:'按角色导出与输入核对',short:'导出与核对',subtitle:'模型仅学习当前角色的合格输出。',input:'通过核验的 GIA 与 HI 决策',actor:'分角色 SFT 数据',output:'当前上下文 → 下一次正确输出',points:['GIA 与 HI 分开导出；开发数据和构造方法的保留检查数据分开保存。','系统提示、用户输入、工具观察及其他角色内容作为上下文；只有最后一条目标输出计算训练损失。','用 Qwen3.5-9B 的实际模板、分词和图片处理检查输入、附件与监督位置，核对是否截断。'],example:'dog-source',exampleLabel:'打开一条实际 SFT 样本',note:'导出后逐条核对监督位置与截断情况，确认模型实际接收的输入与设计一致。',upgrade:'每一行数据均附带规格版本、核验器版本、问题类型与长度估算，训练、评估与后续改进可直接依这些字段切分，无需回溯运行目录。'}
-  ];
-  const dimensions = [
-    {id:'execution',name:'执行对应',weight:10,hi:'原始请求、接受输出、工具观察或提交报告能够对应。',gia:'下发任务、报告与决定能够对应；脚本安排不当作模型输出。',question:'该步骤是否确实执行',detail:'调用成功与内容正确分别检查。离线 GIA 决定尚未执行，执行维度可以不适用。',example:'video-correspondence'},
-    {id:'visibility',name:'信息可见性',weight:15,hi:'只使用当时可见的材料和合法引用，不借用标注、未来结果或其他工作区的报告。',gia:'只依据当前证据和报告，不能提前知道后续调查结果。',question:'当时是否可见这些信息',detail:'曾经取得的图片、当前附带的图片、报告保留的事实，是不同的信息状态。',example:'dog-source'},
-    {id:'grounding',name:'事实与证据',weight:25,hi:'重要断言有直接依据，引文、来源与位置准确，表达没有扩大事实。',gia:'从局部事实到全局结论的推断成立，不扩大时间、对象和适用范围。',question:'所引证据是否支持该结论',detail:'“来源声称某事”不等于某事已被独立证实；批准预算也不等于实际花费。',example:'university-budget'},
-    {id:'task',name:'任务完成',weight:15,hi:'按接到的局部问题检查必要部分，并准确报告哪些部分尚未完成。',gia:'按总问题检查必要信息，不能因为局部报告标为完成就直接结束。',question:'任务要求是否全部覆盖',detail:'看到一些差异时刻，可能足以回答“有没有差异”，还不足以回答“全部区间在哪里”。',example:'gia-evidence-states'},
-    {id:'decision',name:'决策合理性',weight:15,hi:'行动针对合理的未决问题，工具与参数合适，失败后能够调整。',gia:'分工目标清楚、粒度可执行、依赖合理，补查和停止符合当前证据。',question:'该步骤是否推进当前问题',detail:'允许存在多条合理路径，不要求每一步直接得到最终答案，也不与唯一参考计划逐字比对。',example:'gia-evidence-states'},
-    {id:'uncertainty',name:'不确定性',weight:15,hi:'区分采样观察、工具处理范围、连续区间与没有检查的内容。',gia:'理解可靠报告仍可能不完整，考虑来源范围与实际执行能力。',question:'已确定与未确定的边界是否清晰',detail:'如实说明未完成部分同样是合格报告；预算耗尽后提交的报告不能用于证明自主停止能力。',example:'video-local-intervals'},
-    {id:'efficiency',name:'调查效率',weight:5,hi:'避免没有信息价值的重复，允许必要复看与没有结果的合理探索。',gia:'不重复分工，不继续与原问题无关的调查。',question:'是否在填补具体缺口',detail:'重复查看同一材料不必然是错误，关键在于该次复查是否针对一个具体的未决问题。',example:'video-intervals'}
   ];
   const format = n => Number(n||0).toLocaleString('zh-CN');
   const text = value => esc(value).replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
@@ -34,7 +25,7 @@
   window.stopTrainingPlayback = stop;
   async function get(path){if(T.cache.has(path))return T.cache.get(path);const value=await api(path);T.cache.set(path,value);return value;}
   function loading(){page.innerHTML='<div class="tr-loading" role="status"><span class="tr-loader"></span>正在读取实际训练记录…</div>';}
-  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','样本库']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,`${label}${id==='samples'?`<span>${T.data.samples.length}</span>`:''}`,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')?'':statusStrip(section)}`;}
+  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','轨迹示例']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,label,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')?'':statusStrip(section)}`;}
   function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">阶段 3 / 5 已完成</span><span>调查框架、数据流水线与质量核验体系均已就位</span><span>候选决策 <b>${format(T.data.stats.total)}</b> 条 · 数据来源 <b>${T.data.stats.datasets}</b> 个</span><span>正在进入首次模型训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
   function renderFlow(){
     const s=T.data.stats,d=stageData[T.stage];
@@ -372,129 +363,400 @@
     {name:'充分性',tag:'对着任务本身查',text:'以任务全文与案卷中的必需证据对照整份报告，判定要求是否已覆盖、当前是否已可作答，以及状态应为「完成」还是「未完成」。',errors:['omitted_required_fact','completed_without_finishing','incomplete_though_answerable']}
   ];
   const errorGroups=[
-    {layer:'结论级',items:['unsupported_assertion','wrong_citation','fabricated_evidence_id','source_restriction_miss','attribution_drift','scope_overreach','misread_fine_text','sloppy_numeric','omitted_required_fact'],note:'结论与其所引证据之间的问题。典型表现为将「来源声称某事」写作「某事成立」，或将「批准拨付」写作「直接拨付」这类阶段互换，也是人工最难逐条查出的一类。'},
+    {layer:'结论级',items:['unsupported_assertion','wrong_citation','fabricated_evidence_id','source_restriction_miss','attribution_drift','scope_overreach','misread_fine_text','sloppy_numeric','omitted_required_fact','incomplete_citation_set'],note:'结论与其所引证据之间的问题。典型表现为将「来源声称某事」写作「某事成立」，或将「批准拨付」写作「直接拨付」这类阶段互换，也是人工最难逐条查出的一类。校准后新增「引用集合不全」，用于区分「漏引」与「无据」。'},
     {layer:'状态级',items:['completed_without_finishing','incomplete_though_answerable','empty_report'],note:'报告整体层面的问题：尚未查完即报完成、已可作答却报未完成、提交空报告。该类由程序层直接拦截，不依赖模型判断。'},
     {layer:'动作级',items:['illegal_action','redundant_action','evidence_dropped','wrong_tool','ignored_feedback'],note:'行动本身的问题。重复查看同一材料不必然是错误，关键在于该次复查是否针对一个具体的未决问题。'},
-    {layer:'调度规划级',items:['task_not_gap_driven','premature_finish','unnecessary_round','dependent_sibling_tasks'],note:'分工与终止判断的问题。同一轮内相互依赖的任务不应并行派发；局部报告标注「完成」，亦不代表总问题已可结束。'},
+    {layer:'调度规划级',items:['task_not_gap_driven','premature_finish','unnecessary_round','dependent_sibling_tasks','overlapping_sibling_tasks'],note:'分工与终止判断的问题。同一轮内相互依赖的任务不应并行派发；局部报告标注「完成」，亦不代表总问题已可结束。同轮任务范围重叠单列一类，只计数、不影响收录。'},
     {layer:'环境级',items:['env_contamination','env_tool_failure'],note:'不计入模型问题，但须单独记录，否则易将网络或工具故障误判为模型能力不足。'}
   ];
+  const verifyUnits=[
+    ['step','HI 的每一步动作','HI','动作合法吗、目标当时可见吗、是不是原样重复了上一步、工具报错后有没有调整。再算这一步带来了几条新线索——这一行的权重由它决定。'],
+    ['report','HI 的局部报告','HI','每一条结论逐句对着它所引的每一份证据核；再看所派的任务是不是真的做完了，还是没查完就报了完成。'],
+    ['plan','GIA 的派工','GIA','任务可解析吗、材料存在吗、同一轮的任务互相依赖吗、有没有把尚未核实的说法当成前提写进任务里。'],
+    ['answer','GIA 的最终回答','GIA','引用的证据当时都在视图里吗、结论逐句有依据吗、该停的时候停了吗、有没有照抄上游被判有问题的结论。']
+  ];
+  const severityRows=[
+    ['critical','一票否决','结论不可信，整个单元判为未通过。','unsupported_assertion · completed_without_finishing · premature_finish'],
+    ['major','实质缺陷','结论可能仍然成立，但过程有实质问题，计入统计。','attribution_drift · scope_overreach · incomplete_citation_set'],
+    ['minor','表述或效率','记录并计数，不影响这一行的去留。','redundant_action · unnecessary_round · overlapping_sibling_tasks']
+  ];
+  const calibrationRules=[
+    ['R1 · 多证据范围豁免','一条结论引了多份证据、且每一份都被判为支持时，不再按单份证据的覆盖范围判它「过度外推」。'],
+    ['R2 · 漏引降级','「与……相容」这类关系性断言，若支持其实就在本工作区已经引用过的材料里，从「没有支持」降为「引用集合不全」，并且不再污染后续结论。']
+  ];
+  const dispositionRows=[
+    ['accepted','进入候选','判定通过，且没有被上游污染。权重按这一步带来的新线索定，1 到 3。'],
+    ['held','暂缓','这一步本身没有问题，但所在工作区未通过、而且它没有带来新线索。先留着，等核验器进一步校准后再定。'],
+    ['rejected','暂不使用','报告级判定未通过。不进正例；在召回率校准完成之前，也不当反例训练。']
+  ];
+  const verifySteps=[
+    ['01','这一步的输出','HI 的一次动作或一份报告，GIA 的一次派工或最终回答'],
+    ['02','三道工序','程序检查 → 逐条证据锚定 → 任务充分性，前一道判过的不再重复判'],
+    ['03','贴问题类型','从统一定义的类型表里选，每个类型自带严重度与是否污染后续结论'],
+    ['04','定去留','进入候选 / 暂缓 / 暂不使用，并给出这一行的权重']
+  ];
   function renderRubric(){
-    const d=dimensions.find(d=>d.id===T.dimension);
-    page.innerHTML=top('rubric')+`<div class="tr-section-title tr-rubric-title"><div><div class="eyebrow muted">QUALITY AT EVERY DECISION</div><h2>每一步输出的质量判定</h2><p>每次输出单独判定，报告准确性、任务完成度与行动有效性分别核查。</p></div>${pill('评分标准 r6')}</div><p class="tr-upgrade"><b>两道关口</b>先按下列七个维度对每一步单独评分，定位问题所在环节；再由页面下半部分的三层核验器回到证据原文逐条核对。两道均通过，该步输出方可成为模型的学习对象。</p><div class="tr-role-switch" aria-label="评分角色">${['HI','GIA'].map(r=>`<button data-tr-role="${r}" class="${T.role===r?'active':''}" aria-pressed="${T.role===r}"><b>${r}</b><span>${r==='HI'?'局部调查员':'全局调查组长'}</span></button>`).join('')}<p>${T.role==='HI'?'取得证据 → 读懂材料 → 准确报告':'发现缺口 → 安排分工 → 综合与停止'}</p></div><div class="tr-rubric-layout"><div class="tr-dimension-list" aria-label="评分维度">${dimensions.map(v=>`<button class="tr-dimension ${d.id===v.id?'active':''}" data-tr-dimension="${v.id}" aria-pressed="${d.id===v.id}"><span>${v.name}<small>${v.id}</small></span><b>${v.weight}<small>%</small></b><i style="--weight:${v.weight*4}%"></i></button>`).join('')}</div><article class="tr-rubric-detail" aria-live="polite"><div class="tr-panel-kicker">${T.role} · ${d.name} · 权重 ${d.weight}%</div><h3>${d.question}</h3><p class="tr-rubric-definition">${d[T.role.toLowerCase()]}</p><div class="tr-callout">${d.detail}</div><div class="tr-score-scale">${[['0','明确错误'],['1','主要要求未满足'],['2','存在实质缺陷'],['3','仅有小缺陷'],['4','充分满足']].map(([n,l])=>`<div class="score-${n}"><b>${n}</b><span>${l}</span></div>`).join('')}</div><div class="tr-unknowns"><div><strong>未知 unknown</strong><p>缺少评审依据，不能按通过处理。</p></div><div><strong>不适用 N/A</strong><p>该维度不适合本次输出，不强行打分。</p></div></div>${routeButton(`#training/samples/${d.example}`,'查看对应的真实样例 →')}</article></div><section class="tr-admission"><div class="tr-section-title"><div><h2>四类处置结果</h2><p>总分用于概括，收录依据为每个目标的具体判定与检查结果。</p></div></div><div class="tr-dispositions">${[['accept_candidate','候选收录','当前状态下合理，重要事实有依据。'],['repair_reexecute','重新执行','有实质缺陷，从对应状态修复并复评。'],['context_only','仅作历史','真实发生，但不作为正向模仿目标。'],['exclude','排除目标','存在明确不可执行、捏造或信息越界。']].map(([id,n,p])=>`<div class="tr-disposition ${id}"><span class="tr-disposition-dot"></span><h3>${n}</h3><code>${id}</code><p>${p}</p></div>`).join('')}</div><div class="tr-admission-rule"><strong>进入 SFT 候选</strong><span>判为可收录</span><i>＋</i><span>3 或 4 分</span><i>＋</i><span>无关键评审未知</span><i>＋</i><span>执行、输入与附件对应检查通过</span></div></section><section class="tr-verify"><div class="tr-section-title"><div><div class="eyebrow muted">EVIDENCE-ANCHORED VERIFICATION</div><h2>每一条结论，<br>均回溯至证据原文逐条核对。</h2><p>三层依次执行，前一层已判定的不再重复判定。核验结果归入统一的问题类型，质量因此可按类型统计与跟踪。</p></div></div><div class="tr-verify-layers">${verifyLayers.map((v,i)=>`<article><div class="tr-verify-head"><span class="tr-verify-index">${String(i+1).padStart(2,'0')}</span><div><strong>${esc(v.name)}</strong><small>${esc(v.tag)}</small></div></div><p>${esc(v.text)}</p><div class="tr-verify-errors">${v.errors.map(e=>`<code>${esc(e)}</code>`).join('')}</div></article>`).join('')}</div><div class="tr-callout">第二层要求核验模型给出引语，再由程序回到证据原文核查该引语是否存在，未查到即降级为「找不到依据」。核验所用模型与生成数据的模型相互独立，这是「结论经过实际核验」与「模型自评」之间的分界。</div></section>
-      <section class="tr-errors"><div class="tr-section-title"><div><h2>核验覆盖的问题类型</h2><p>类型统一定义于一处，每一次流程改进均须说明其拟消除的类型，使改进可归因。</p></div><span>带角色 · 严重度 · 是否影响后续结论</span></div><div class="tr-error-groups">${errorGroups.map(g=>`<div><h3>${esc(g.layer)}<span>${g.items.length}</span></h3><div>${g.items.map(e=>`<code>${esc(e)}</code>`).join('')}</div><p>${esc(g.note)}</p></div>`).join('')}</div></section><div class="tr-footnote">加权总分按已评分的适用维度归一化并报告覆盖率。历史样本保留它当时实际使用的评分版本；新一轮起统一由三层核验器重核，以核验结果为准。</div><div class="tr-doc-links">${docLink('rubric','阅读完整 r6 标准')}</div>`;
+    page.innerHTML=top('rubric')+`
+      <div class="tr-section-title tr-rubric-title"><div><div class="eyebrow muted">VERIFICATION AT EVERY DECISION</div>
+        <h2>每一步输出，单独判定能否进入训练</h2>
+        <p>判定不给分数，只贴统一定义的问题类型。类型自带严重度与是否影响后续结论，一行数据的去留由此得出。</p></div>${pill('核验器 0.2.0')}</div>
+      <p class="tr-upgrade"><b>为什么逐步判定</b>训练数据的最小单位是一次决策，不是一整条调查。以第 0 轮实际跑通的案例为例：两份局部报告都被判未通过，按「整条收或整条不收」这 20 个决策一行都留不下；按逐步判定，其中 17 行是干净可学的。</p>
+      <div class="tr-pipeline">${verifySteps.map(([n,t,d],i)=>
+        `<div><span>${n}</span><strong>${esc(t)}</strong><p>${esc(d)}</p></div>${i<3?'<i>→</i>':''}`).join('')}</div>
+
+      <section class="tr-units-section"><div class="tr-section-title"><div><h2>四种判定单元</h2>
+        <p>一次调查会产生四类输出，各自单独判定，互不替代。某一份报告未通过，不代表它里面每一步动作都不能学。</p></div></div>
+        <div class="tr-units">${verifyUnits.map(([id,name,role,text])=>
+          `<article class="tr-unit"><div class="tr-unit-head"><strong>${esc(name)}</strong>${pill(role,role.toLowerCase())}</div>
+            <code>${esc(id)}</code><p>${esc(text)}</p></article>`).join('')}</div></section>
+
+      <section class="tr-verify"><div class="tr-section-title"><div><div class="eyebrow muted">EVIDENCE-ANCHORED VERIFICATION</div>
+        <h2>三道工序：谁来判</h2>
+        <p>不是三套标准，是同一条流水线上的三道工序。能用程序判的先用程序判，判不了的才调核验模型，最后再对着任务本身查一遍覆盖。前一道已判定的，后一道不再重复判定。</p></div></div>
+        <div class="tr-verify-layers">${verifyLayers.map((v,i)=>`<article><div class="tr-verify-head"><span class="tr-verify-index">${String(i+1).padStart(2,'0')}</span><div><strong>${esc(v.name)}</strong><small>${esc(v.tag)}</small></div></div><p>${esc(v.text)}</p><div class="tr-verify-errors">${v.errors.map(e=>`<code>${esc(e)}</code>`).join('')}</div></article>`).join('')}</div>
+        <div class="tr-callout">第二道要求核验模型给出引语，再由程序回到证据原文核查该引语是否存在，未查到即降级为「找不到依据」。核验所用模型与生成数据的模型相互独立，这是「结论经过实际核验」与「模型自评」之间的分界。</div></section>
+
+      <section class="tr-errors"><div class="tr-section-title"><div><h2>问题类型：判成什么</h2>
+        <p>判定不许写「这里不太对」，必须从下面的类型表里选一个名字。类型统一定义于一处，每一次流程改进均须说明其拟消除的类型，改进因此可归因、可统计。</p></div><span>按发生层级分组</span></div>
+        <div class="tr-error-groups">${errorGroups.map(g=>`<div><h3>${esc(g.layer)}<span>${g.items.length}</span></h3><div>${g.items.map(e=>`<code>${esc(e)}</code>`).join('')}</div><p>${esc(g.note)}</p></div>`).join('')}</div>
+        <div class="tr-severity"><h3>每个类型自带两个属性，后果由它们算出</h3>
+          <ul>${severityRows.map(([id,name,text,examples])=>
+            `<li class="${id}"><b>${esc(name)}</b><code>${esc(id)}</code><p>${esc(text)}</p><small>${esc(examples)}</small></li>`).join('')}</ul>
+          <p class="tr-callout">第二个属性是「是否污染后续结论」：引证类问题会连带影响所有依赖它的步骤，效率类问题不会。经校准后，轻微问题一律不再向下传播。</p></div></section>
+
+      <section class="tr-calib"><div class="tr-section-title"><div><h2>核验器本身也要被核验</h2>
+        <p>第 0 轮抽样复核发现两类误报——把本来正确的判成了错的。核验器随之升到 0.2.0，新增两条校准规则。</p></div></div>
+        <ul class="tr-traj-req">${calibrationRules.map(([name,text])=>`<li><b>${esc(name)}</b><p>${esc(text)}</p></li>`).join('')}</ul>
+        <p class="tr-callout">这两条修的是「误判为错」。反方向——注入已知错误，检查核验器抓不抓得到——正在进行中；在它完成之前，被判未通过的报告只做「不进正例」，不作为反例训练。</p></section>
+
+      <section class="tr-admission"><div class="tr-section-title"><div><h2>三种处置</h2>
+        <p>判定结果直接决定这一行数据的去向，不经过任何总分。</p></div></div>
+        <div class="tr-dispositions tr-dispositions-3">${dispositionRows.map(([id,name,text])=>
+          `<div class="tr-disposition ${id}"><span class="tr-disposition-dot"></span><h3>${esc(name)}</h3><code>${esc(id)}</code><p>${esc(text)}</p></div>`).join('')}</div>
+        <div class="tr-admission-rule"><strong>进入 SFT 候选</strong><span>单元判定通过</span><i>＋</i><span>无致命问题且未被污染</span><i>＋</i><span>学生模型处理器逐行核对通过</span></div></section>
+
+      <div class="tr-footnote">问题类型的唯一定义处是代码中的类型表，页面与核验器共用同一份。历史运行保留它当时实际使用的评审版本；新一轮起统一由三道工序重核，以核验结果为准。</div>
+      <div class="tr-doc-links">${docLink('method','完整构造方法')}</div>`;
   }
-  function sampleCard(s){return `<article class="tr-sample-card"><a class="tr-sample-visual ${s.kind}" href="#training/samples/${s.id}" data-training-route="#training/samples/${s.id}" aria-label="打开 ${esc(s.title)}">${s.thumbnail?`<img src="${s.thumbnail}" alt="${esc(s.dataset)} ${esc(s.case)} 实际输入图片" loading="lazy">`:`<div class="tr-document-art"><span>原始来源</span><b>${s.kind==='web'?'SOURCE':'EVIDENCE'}</b><i></i><i></i><i></i></div>`}<span class="tr-dataset">${esc(s.dataset)} · ${esc(s.case)}</span>${s.kind==='contrast'?'<span class="tr-contrast-mark">同证据 × 4 个问题</span>':''}</a><div class="tr-sample-body"><div class="tr-card-mode">${esc(modes[s.mode])}</div><h3>${routeButton(`#training/samples/${s.id}`,esc(s.title))}</h3><p>${esc(s.description)}</p><div class="tr-tags">${s.tags.map(t=>pill(t)).join('')}</div><div class="tr-card-count"><span><b>${s.step_count}</b> ${s.mode==='gia_offline'?'次决定':'次输出'}</span><span><i class="tr-accept-dot"></i><b>${s.included_count}</b> 条已收录</span>${s.excluded_count?`<span class="tr-amber">${s.excluded_count} 条未收录</span>`:''}</div><div class="tr-card-footer"><small>${s.usage_split==='development'?'开发与训练准备':'构造方法保留检查'} · ${esc(s.rubric_version)}</small>${routeButton(`#training/samples/${s.id}`,'查看步骤 ↗')}</div></div></article>`;}
-  function filteredSamples(){return T.data.samples.filter(s=>(T.filter==='all'||(T.filter==='GIA'||T.filter==='HI'?s.roles.includes(T.filter):s.mode===T.filter))&&(T.dataset==='all'||s.dataset===T.dataset)&&`${s.title} ${s.description} ${s.dataset} ${s.case} ${s.tags.join(' ')}`.toLowerCase().includes(T.query.toLowerCase()));}
-  function renderSampleGrid(){const samples=filteredSamples();page.querySelector('#tr-sample-count').textContent=`${samples.length} 组样例`;page.querySelector('#tr-sample-grid').innerHTML=samples.map(sampleCard).join('')||'<div class="tr-empty"><strong>没有匹配的样例</strong><p>试试其他问题关键词，或清除筛选。</p><button class="secondary" data-tr="clear">清除筛选</button></div>';}
-  function renderSamples(){page.innerHTML=top('samples')+`<div class="tr-section-title tr-samples-title"><div><div class="eyebrow muted">REAL EXAMPLES</div><h2>真实记录中的完整样例</h2><p>覆盖多类任务与两个角色，每一步均可回到当时的输入、输出与评分依据。</p></div></div><div class="tr-library-note"><strong>${format(T.data.stats.total)} 条</strong>全量候选决策<span>精选 ${T.data.samples.length} 组实际样例 · 保留未收录的真实步骤</span></div><div class="tr-search-row"><label class="tr-search"><span aria-hidden="true">⌕</span><input id="tr-search" type="search" placeholder="搜索问题、数据集或案例编号…" value="${esc(T.query)}" aria-label="搜索训练样例"></label><select id="tr-dataset" aria-label="按数据集筛选"><option value="all">全部数据来源</option>${[...new Set(T.data.samples.map(s=>s.dataset))].map(d=>`<option ${T.dataset===d?'selected':''}>${esc(d)}</option>`).join('')}</select></div><div class="tr-filter-row"><div class="tr-filters">${[['all','全部'],['GIA','包含 GIA'],['HI','包含 HI'],['bridge','真实协作'],['gia_offline','离线决策']].map(([id,n])=>`<button data-tr-filter="${id}" class="${T.filter===id?'active':''}" aria-pressed="${T.filter===id}">${n}</button>`).join('')}</div><span id="tr-sample-count" aria-live="polite"></span></div><div class="tr-sample-grid" id="tr-sample-grid"></div><p class="tr-footnote">「已收录」表示该输出通过逐步评分与核验，进入训练候选；同一案例的多次运行按一个案例计。</p>`;renderSampleGrid();}
-  function visibleSteps(){return T.sample.steps.filter(s=>T.stepFilter==='all'||T.stepFilter==='excluded'&&!s.included||s.role===T.stepFilter);}
-  function stepDot(s){return s.included?'accepted':s.disposition==='repair_reexecute'?'repair':'excluded';}
-  function condition(sample){const c=sample.source_condition;if(sample.mode==='gia_offline')return '离线决策状态：依据真实调查报告构造问题，本组补查提议未在这些状态中执行。';if(c==='provided_source_url')return '任务已提供来源地址；实际执行打开与阅读，不计为自主发现来源。';if(c==='recorded_plan_execution_with_provided_evidence')return '从已有计划和已取得材料启动真实协作；首项记录计划不重复计为新模型输出。';if(sample.kind==='video')return '给定视频材料下的调查；片段对应不自动证明最早来源或原创归属。';return '依据实际提供的网页与媒体条件取证；具体来源限制以本次任务输入为准。';}
-  function renderSampleShell(){
-    const s=T.sample;
-    T.map?.destroy();
-    page.classList.add('tr-detail-page');
-    page.innerHTML=top('samples')+`<div class="tr-sample-heading">${routeButton('#training/samples','← 返回样本库','tr-back')}<div class="tr-sample-title"><div><div class="tr-tags">${pill(s.dataset)}${pill(s.mode==='gia_offline'?'离线决策':'真实执行')}${pill('Rubric '+s.rubric_version)}</div><h2>${esc(s.title)}</h2><p>${esc(s.description)}</p></div><div class="tr-sample-totals"><strong>${s.included_count}<span> / ${s.step_count}</span></strong><small>条输出进入候选</small></div></div><div class="tr-condition">${condition(s)}</div></div>
-      <div class="tr-reader-tabs" aria-label="样例阅读视图"><button data-tr-pane="map" aria-pressed="true" class="active">调查脑图</button><button data-tr-pane="detail" aria-pressed="false">节点详情</button></div>
-      <div class="tr-record-layout" data-pane="map"><section class="tr-map-panel" id="tr-map-panel" aria-label="真实样例脑图"></section><section class="tr-step-main" id="tr-step-main" aria-live="polite"></section></div>`;
-    T.map=new TrainingMindMap(s,{titleForStep:actionTitle,onStep:id=>selectStep(id),onGroup:node=>selectGroup(node),onFilter:setStepFilter});
-    T.map.filter=T.stepFilter;
-    T.map.mount(page.querySelector('#tr-map-panel'));
-    setPane(T.mobilePane);
+  const trajectory = {
+    case_id:'true:4124903', dataset:'true', run:'true_4124903_r1', mode:'bridge',
+    task:'核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.',
+    description:'给一段 25 秒视频，核查"埃菲尔铁塔附近的火焰与浓烟是巴黎国庆日遭遇恐袭的证据"这一声明。实际事件是 2016 年 7 月 14 日耶拿桥上一辆烟花卡车意外起火。',
+    facts:[['1 轮','GIA 派出两个并行工作区'],['22 次','角色决策（HI 20 · GIA 2）'],['24 条','登记的证据'],['19 行','进入训练候选']],
+    steps:[
+      {id:'step_1', role:'GIA', actor:'GIA', action:'INVESTIGATE', round_index:1, execution:'gia_decision_accepted',
+       task:'核查声明：埃菲尔铁塔附近的火焰与浓烟是否是巴黎国庆日恐袭的证据。', task_count:2,
+       included:true, weight:1, image_count:0, state:'accepted',
+       produced:'两个互不依赖的局部任务',
+       user:'[总任务] 核查以下声明……Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.\n[原始材料] C0 任务卡 | E1 video "材料 A" src=I0\n[本轮新证据] 无   [最新报告] 无   [历史索引] 无\n[约束] 第 1 轮 · turn 1/8 · 可开新轮 · 附图 0\n[可用动作] INVESTIGATE(tasks[{task, materials[]}]) · FINISH(answer) · QUERY_MEMORY · READ_RECORD',
+       output:'{"decision": "INVESTIGATE",\n "tasks": [\n  {"task": "核查材料 A 视频的来源与事件语境……", "materials": ["C0", "E1"]},\n  {"task": "核查声明……重点查证外部可靠来源对相关火情原因及是否涉及恐怖袭击的记载。", "materials": ["C0", "E1"]}\n ]}',
+       meta:'"verdict": "positive",\n"errors": [{"type": "overlapping_sibling_tasks", "severity": "minor"}],\n"gap": {"task_targets": {"T1": ["REQ1","REQ2","REQ3"], "T2": ["REQ1","REQ2"]}, "must_cite_untargeted": []},\n"round_yield": {"REQ1": "covered", "REQ2": "covered", "REQ3": "covered"},\n"premises": "pending_judge", "sample_weight": 1.0',
+       note:'核验：两个任务都可解析、材料存在、没有"等 W1-1 确认后"这类依赖；声明被放在引号里当核查对象，不是当事实，没有未核实前提走私。缺口评判上 REQ1、REQ2 都有任务对准。\n但两个任务都写了"视频本身能否支持恐袭说法"，于是两个工作区各写了一条帧 Finding、各读了一遍 Snopes 和警方推文——这不是任何一方 HI 的重复动作，是派工层的重叠。这一类已经作为 overlapping_sibling_tasks（轻微）补进错误枚举，只计数、不影响收录。\n另外要说明：任务对准了哪几项要求，是用该工作区最终经核实的结论反推出来的，不是读任务文字判的，所以它只进元信息，不作为筛选门槛。'},
+
+      {id:'step_2', role:'HI', actor:'W1-1', action:'INSPECT', operation:'get_frames', round_index:1,
+       task:'核查材料 A 视频的来源与事件语境，判断其是否对应"法国国庆日期间埃菲尔铁塔附近出现火焰和浓烟"的场景。',
+       preview:'均匀抽 8 帧看清场景 → E3–E10', included:true, weight:3, image_count:0, state:'accepted',
+       produced:'E3 E4 E5 E6 E7 E8 E9 E10（8 帧）', gain:{a:8, o:0, q:0, t:8},
+       stills:['e3','e4','e5','e6','e7','e8','e9','e10'],
+       user:'[任务 W1-1] 核查材料 A 视频的来源与事件语境……\n[材料] C0 任务卡 | E1 video "材料 A" src=I0 by=HARNESS/ingest\n[候选来源] 无\n[证据视图] E1 | E2 text "媒体属性：video，25.100秒，1280×720，30fps，1条音轨" by=INSPECT/media_profile\n[焦点] 无   [已看正文] 无   [历史] 无   [最新观察] 无\n[约束] turn 1/12 · 直接视觉输入 · 图片上限 8 · 附图 0',
+       output:'{"rationale": "材料只有一段 25 秒视频，还没有任何画面；先均匀抽 8 帧看清场景（铁塔、烟、火的位置），再决定搜什么。",\n "action": "INSPECT",\n "arguments": {"targets": ["E1"], "request": {"operation": "get_frames", "params": {"count": 8}}},\n "focus_evidence_ids": []}',
+       meta:'"clue_gain": {"acquired": 8, "acquired_ids": ["E3","E4","E5","E6","E7","E8","E9","E10"], "observed": 0, "quote_page": 0, "total": 8},\n"sample_weight": 3.0, "images": [], "loss_scope": "last_assistant"',
+       note:'"第一步先抽 8 帧"是最容易被当成套路的动作。这一步不删，但它的权重来自回溯：案卷把视频帧列为必需证据，这 8 帧全部落进有用证据集合，所以算高收益步，权重按上限封到 3。换一个帧根本没用上的案子，同样的动作权重就是 1。'},
+      {id:'step_3', role:'HI', actor:'W1-1', action:'SEARCH', round_index:1, preview:'英文关键词检索 → 10 个候选，读到 5 个页面',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'R1–R10；E11 Snopes、E12–E15 报道', gain:{a:1, o:0, q:0, t:1}},
+      {id:'step_4', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读 Snopes 全文',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E11 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_5', role:'HI', actor:'W1-1', action:'SEARCH', round_index:1, preview:'顺着 Snopes 的链接打开 YouTube 来源',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E16 页面、E17 封面', gain:{a:2, o:0, q:0, t:2},
+       stills:['e17'],
+       user:'[候选来源] R1–R10 一行卡\n[证据视图] E1–E15 一行卡\n[焦点] E6 E10   [已看正文] E11\n[历史] t1 INSPECT→E3–E10；t2 SEARCH→10 候选 5 页；t3 READ E11\n[最新观察] E11 Snopes 全文摘要：…"seized upon photos and video of the event"…"No fire at the #TourEiffel. An accidental truck fire took place at Jena Bridge"…\n[约束] 附图 8',
+       output:'{"rationale": "Snopes 在解释当日火情时直接链接了一个 YouTube 视频，这是目前唯一指向材料 A 来源的线索；用 source 模式打开它拿上传日期、频道和封面。",\n "action": "SEARCH",\n "arguments": {"source": "https://www.youtube.com/watch?v=cv_F3UkbdbI", "output_type": "video"},\n "focus_evidence_ids": ["E6", "E10"]}',
+       meta:'"turn": 4, "clue_gain": {"acquired": 2, "acquired_ids": ["E16","E17"], "total": 2},\n"sample_weight": 3.0, "images": ["E3","E4","E5","E6","E7","E8","E9","E10"]'},
+      {id:'step_6', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读 YouTube 元数据：上传日期 2016-07-14',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E16 元数据', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_7', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读 Mirror 报道',
+       included:false, held:true, image_count:8, state:'held', produced:'E12 正文', gain:{a:0, o:0, q:0, t:0},
+       stateNote:'线索收益为 0，且所在工作区被判 negative，暂缓入库。'},
+      {id:'step_8', role:'HI', actor:'W1-1', action:'SEARCH', round_index:1, preview:'换法语关键词检索 → 三家法媒',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'E18 E19 E20', gain:{a:1, o:0, q:0, t:1}},
+      {id:'step_9', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读 franceinfo 全文',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E19 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_10', role:'HI', actor:'W1-1', action:'SEARCH', round_index:1, preview:'打开巴黎警方推文 ②',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'E21', gain:{a:1, o:0, q:0, t:1}},
+      {id:'step_11', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读警方推文 ②：铁塔没着火，耶拿桥卡车意外起火',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E21 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_12', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'再看一帧像素',
+       included:false, held:true, image_count:8, state:'held', produced:'E3 像素（t2 起已随请求附图）', gain:{a:0, o:0, q:0, t:0},
+       stateNote:'线索收益为 0，且所在工作区被判 negative，暂缓入库。'},
+      {id:'step_13', role:'HI', actor:'W1-1', action:'REPORT', report_status:'COMPLETED', round_index:1,
+       preview:'提交报告：F1 F2 F3 F4', included:false, image_count:8, state:'rejected',
+       produced:'四条 Finding', stateNote:'仍判未通过；召回率尚未校准，这一行暂不作为反例训练。',
+       meta:'"verdict": "negative",\n"errors": [{"type": "completed_without_finishing", "severity": "critical", "status_should_be": "INCOMPLETE"}],\n"tainted_findings": []（校准后 F3 的过度外推按 R1 豁免）,\n"bucket_reason": "negative_report_until_recall_calibrated", "sample_weight": null',
+       note:'GIA 派的任务第一句就是"核查材料 A 视频的来源"；F2 自己写着"不能确认它就是 A 的直接来源"，报告却报了 COMPLETED。这是 HI 相对它自己收到的任务的错，不是 GIA 的错。\nF3 那条"用一帧推整段"的过度外推，校准后判定豁免——它实际引了 7 条证据且全部支持。所以这份报告现在没有被污染的 Finding，但"该报未完成却报了完成"这一条保留。\n下一步是配上同状态重生成的正例（同一桌面、状态改成 INCOMPLETE、其余 Finding 不动），凑成一对对照样本。'},
+
+      {id:'step_14', role:'HI', actor:'W1-2', action:'READ_RECORD', round_index:1, preview:'读警方推文 ②（本工作区首次）',
+       task:'核查声明"埃菲尔铁塔附近升腾的火焰和浓烟是巴黎在法国国庆日遭遇恐怖袭击的证据"，重点查证外部可靠来源对火情原因及是否涉及恐袭的记载。',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E21 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_15', role:'HI', actor:'W1-2', action:'READ_RECORD', round_index:1, preview:'读 Var-Matin',
+       included:true, weight:1, image_count:8, state:'accepted', produced:'E20 正文', gain:{a:0, o:0, q:0, t:0},
+       stateNote:'线索收益为 0，但所在工作区经校准后判为通过，按规则以权重 1 收录——没有收益不等于不该走这一步。'},
+      {id:'step_16', role:'HI', actor:'W1-2', action:'SEARCH', round_index:1, preview:'英文关键词检索 → NYDN、Express',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'E22 E23', gain:{a:1, o:0, q:0, t:1}},
+      {id:'step_17', role:'HI', actor:'W1-2', action:'READ_RECORD', round_index:1, preview:'读 NYDN 全文',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E22 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_18', role:'HI', actor:'W1-2', action:'READ_RECORD', round_index:1, preview:'读 Snopes（本工作区首次）',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E11 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_19', role:'HI', actor:'W1-2', action:'SEARCH', round_index:1, preview:'打开巴黎警方推文 ①',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'E24', gain:{a:1, o:0, q:0, t:1}},
+      {id:'step_20', role:'HI', actor:'W1-2', action:'READ_RECORD', round_index:1, preview:'读警方推文 ①：烟花卡车技术事故起火',
+       included:true, weight:3, image_count:8, state:'accepted', produced:'E24 正文', gain:{a:0, o:1, q:1, t:2}},
+      {id:'step_21', role:'HI', actor:'W1-2', action:'REPORT', report_status:'COMPLETED', round_index:1,
+       preview:'提交报告：F5 F6 F7', included:true, image_count:8, state:'accepted',
+       produced:'三条 Finding', stateNote:'第 0 轮原判未通过；核验器校准后转为通过，整份报告进入候选。',
+       meta:'"verdict": "positive"（校准前为 negative）,\n"errors": [{"type": "incomplete_citation_set", "severity": "major", "propagates": false},\n           {"type": "scope_overreach", "severity": "minor"}],\n"tainted_findings": [],\n"extra": {"calibration": {"before": "unsupported_assertion / critical", "applied": "R2"}}',
+       note:'F7 写了"这与报道描述相容"，却只引了四帧画面、没引任何报道。按逐条证据锚定的隔离规则判"无支持"没错，但把它定成致命错会让整个工作区翻成未通过——支持其实就在本工作区可见、而且已经被 F5、F6 引用过的报道里，只是这条 Finding 没带上。\n校准规则把这一类"关系句引用不全"单独降级为 incomplete_citation_set（重要，但不向后传播污染），于是这份报告转为通过。这正是要先校准核验器、再用它筛数据的理由：核验器偏严，会把本来干净的一整批数据扔掉。'},
+
+      {id:'step_22', role:'GIA', actor:'GIA', action:'FINISH', round_index:2,
+       task:'综合两份报告，给出最终回答。', preview:'声明不实；视频来源仍未独立核实',
+       included:true, weight:2, image_count:8, state:'accepted', produced:'最终答案，引用 E24 E21 E11 E22 E3 E7 E16',
+       user:'[本轮新证据] E3–E10 帧 | E11 Snopes | E12–E15 报道 | E16 YouTube 页 | E17 封面 | E18–E20 法媒 | E21 警方推文② | E22 NYDN | E23 Express | E24 警方推文①\n[最新报告]\n  W1-1 COMPLETED · F1 帧显示铁塔附近大量烟雾、低处明火 ←[E3 E4 E5 E7 E8 E9] · F2 YouTube 上传 2016-07-14 ←[E16 E17 E11]，限制：未确认是 A 的直接来源 · F3 与 2016-07-14 火情相符 ←[…] · F4 画面不足以定性恐袭 ←[…]\n  W1-2 COMPLETED · F5 声明不实；警方通报耶拿桥烟花卡车技术事故起火 ←[E24 E21] · F6 NYDN 与 Snopes 均将巴黎火灾与尼斯袭击区分 ←[E22 E11] · F7 帧显示烟雾火光，与报道相容但不能证明恐袭 ←[E3 E5 E7 E10]\n[约束] 第 2 轮 · 附图 8：E3 E17 E5 E4 E7 E10 E8 E9',
+       output:'{"decision": "FINISH",\n "answer": "结论：针对2016年7月14日埃菲尔铁塔附近的已报道火情，该声明不实。巴黎警方当日通报，耶拿桥上一辆装载烟花的卡车因技术事故起火；随后明确确认这是意外火灾，已经扑灭，埃菲尔铁塔本身没有着火。（E24、E21）同期发生在尼斯的恐怖袭击与巴黎这起火灾应予区分。（E11、E22）\\n\\n给定视频画面确实显示铁塔附近有烟雾、低处有明火，但画面本身不能确定起火原因或证明恐怖袭击。（E3、E7）目前找到相关公开视频的上传日期为2016年7月14日，但尚未确认它与给定视频的完整画面对应，因此给定视频的拍摄日期及确切来源仍未独立核实。（E16）"}',
+       meta:'"verdict": "positive", "error_types": [],\n"tainted_input": false, "recovered_from_tainted": true,\n"exec": {"all_visible": true, "label_expected": "false", "label_match": true, "date_check": "2016-07-14 in_range"},\n"anchored": {"sentences": 4, "supported": 4, "anchored_method": "proxy_report_judgments", "status": "pending_judge"},\n"sufficiency": {"REQ1": "covered", "REQ2": "covered", "REQ3": "declared_unverified", "premature_finish": false},\n"sample_weight": 2.0',
+       note:'结论与数据集标签一致，四句话逐句都有依据（见下方"最终答案逐句核对"）。最见功力的是第四句：W1-1 已经把"核查视频来源"报成完成，答案却写"仍未独立核实"——整个调查确实没做过帧对齐，GIA 没有跟着抄，反而把结论收窄了。\n上游被判未通过、下游把它纠正回来，这是最有价值的一类正例，权重给到 2。'}],
+    checks:[
+      ['label_expected', '答案判定应为"不实"'],
+      ['entity_in_evidence', '所引证据中须出现 Iéna 或 artifices'],
+      ['date_in_range', '事件日期 2016-07-14（±1 天）']],
+    requirements:[
+      ['REQ1', '必须引用', '官方或可靠来源对铁塔附近火情原因的记载，以及是否涉及恐怖袭击'],
+      ['REQ2', '必须引用', '给定视频画面实际显示了什么，画面本身能否支持恐袭说法'],
+      ['REQ3', '可不引用', '给定视频的公开来源与日期（可确认则给出，不能确认则说明）']],
+    verdicts:[
+      ['W1-1 工作区', 'negative', '原判：报了完成，但任务要求的"核查视频来源"并没有做完（致命）；另有 F3 用一帧推整段（轻微）。校准后过度外推获豁免——它实际引了 7 条证据且全部支持——"该报未完成却报完成"这一条保留，工作区仍判未通过。'],
+      ['W1-2 工作区', 'positive', '原判未通过：F7 的"这与报道描述相容"只引了四帧画面、没引任何报道，被判无支持（致命）。校准后降级为"引用集合不全"（重要，不传播污染）——支持其实就在本工作区已经引用过的报道里。工作区转为通过。'],
+      ['GIA 派工', 'positive', '两个任务可解析、材料存在、无兄弟依赖、无未核实前提；三项案卷要求都有任务对准。唯一问题是两个任务范围重叠，记为轻微。'],
+      ['GIA 回答', 'positive', '引用的 7 条证据都在视图里，案卷标签与日期都命中；四句逐句有依据；并且纠正了上游过早声明完成的问题。']],
+    timeline:[
+      ['当晚', '巴黎国庆烟花放完后，耶拿桥上一辆装烟花的卡车起火，铁塔周围冒出大量烟。'],
+      ['21:51 · E24', '巴黎警察局：因技术事故，一辆装烟花的卡车在耶拿桥起火，请避开该区域。'],
+      ['22:33 · E21', '巴黎警察局：不要传播假消息，铁塔没有起火，是一起意外卡车火灾，已扑灭。'],
+      ['同一晚', '尼斯发生卡车冲撞袭击，于是"巴黎也遭袭、铁塔被点燃"的说法在社交媒体和一些媒体上传开。'],
+      ['事后', 'Snopes、纽约每日新闻、franceinfo 的核查都指向同一结论：这条声明不实。']],
+    sentences:[
+      ['第一句', '火情原因、意外定性、已扑灭、铁塔未起火', '两条警方推文原文里逐字可查（E24、E21）'],
+      ['第二句', '与尼斯袭击区分，相关影像被误传', 'Snopes 与纽约每日新闻原文支持（E11、E22）'],
+      ['第三句', '画面显示烟和火，但不能确定起火原因', '帧像素支持，而且没有多说（E3、E7）', ['e3','e7']],
+      ['第四句', '找到的公开视频上传于 2016-07-14，但与给定视频的对应关系仍未独立核实', '元数据支持上传日期（E16）；"尚未确认"是如实限定', ['e17']]],
+    sentenceNote:'唯一可以挑的地方在第一句的限定语"针对 2016 年 7 月 14 日埃菲尔铁塔附近的已报道火情"——它证明了那天的火是意外，却没有证明给定视频拍的就是那天那场火。答案把这个缺口放在第四句如实交代了，所以整体是诚实的；更严格的写法会把结论再收一档："若给定视频确为该次火情，则声明不实；视频与该事件的对应关系本次未独立确认。"这不影响它进正例，属于可以在规格里提醒的写法问题。',
+    tokens:[
+      ['进入候选 · HI', '17 行', '输入 2.6K – 13.6K，中位 10.1K', '监督中位 35'],
+      ['进入候选 · GIA', '2 行', '输入 1.7K 与 16.7K', '监督 161 / 196'],
+      ['暂缓', '2 行', '输入 9.2K – 10.0K', '监督 39 / 43'],
+      ['待校准', '1 行', '输入 14.5K', '监督 593']],
+    tokenNote:'用学生模型的真实处理器逐行核对：零失败、零超长（上限 32 768）。一张 1280×720 的图折合 880 token，最长的一行是带 8 张图的最终回答。监督 token 仍然很薄——这一批数据没有留下教师的推理过程，补不上。',
+    boundaries:[
+      ['逐句锚定目前是代理', '本轮没有可调用的核验模型，答案逐句对证据的核验，用"报告级判定里该证据是否有支持片段"代替。接上核验模型后需要重跑覆盖。'],
+      ['缺口评判是事后反推', '任务对准了哪几项要求，是用该工作区最终经核实的结论反推的，不是读任务文字判的。所以它只记录，不作为筛选门槛。'],
+      ['校准只做了精确率', '两条规则只覆盖本轮抽样发现的两类误报；召回率校准——注入已知错误看抓不抓得到——还没做，所以未通过的报告暂不作为反例训练。'],
+      ['一个案例不是数据集', '19 行训不出任何东西。这是流水线跑通的验证，接下来要把同模式的其余运行逐个写案卷，用同一条命令导出。']],
+    stills:[
+      ['e3','E3','1.57 秒','镜头对着铁塔：塔身亮灯、结构完好，右侧已经有烟飘过。'],
+      ['e4','E4','4.70 秒','镜头下移到河岸，浓烟成团升起，岸边出现一处橙色火光。'],
+      ['e5','E5','7.83 秒','火点在岸边的建筑与树木之间，不在塔上。'],
+      ['e6','E6','10.97 秒','铁塔基座与浓烟同框，塔身结构完整、照明未断。'],
+      ['e7','E7','14.13 秒','火光贴近岸边地面，浓烟向上扩散，塔身只露在画面左缘。'],
+      ['e8','E8','17.27 秒','岸边游船与路灯清晰可辨，火点始终在岸上。'],
+      ['e9','E9','20.40 秒','水面出现蓝色闪光反射，与应急车辆一致。'],
+      ['e10','E10','23.53 秒','镜头拉远，铁塔完整，火点在塔外的岸边。']],
+    stillNote:'这八帧不是插图，是模型当时真正看进去的画面——抽帧那一步产出它们，之后每一步都带着它们做决定，最终回答里"画面显示烟和火、但看不出起火原因"这一句，核验时就是回到这些像素上逐条比对的。',
+    sourceStill:['e17','E17','来源封面','Snopes 正文里链接的 YouTube 视频「Smoke rises around Eiffel Tower」的封面，元数据上传日期 2016-07-14。它的取景与材料 A 的八帧不同（更靠近塔身），本次没有做逐帧比对，所以最终回答第四句如实写了来源"仍未独立核实"。'],
+    yieldNote:'第 0 轮原判两份报告都未通过。按旧的"整条轨迹要么全收要么全不收"的办法，这 20 个决策一行都留不下；按逐步判定加上核验器校准，其中 17 行是干净可学的。'
+  };
+  const trajStates = {accepted:['进入候选','accepted'], held:['暂缓','held'], rejected:['待校准后入负例','rejected']};
+  const TRAJ_STILL_DIR = '/assets/traj/';
+  function trajStillMap(){
+    if (!trajectory._stills) {
+      const map = new Map();
+      trajectory.stills.forEach(([k, id, time, caption]) => map.set(k, {id, time, caption}));
+      const [k, id, time, caption] = trajectory.sourceStill;
+      map.set(k, {id, time, caption});
+      trajectory._stills = map;
+    }
+    return trajectory._stills;
+  }
+  function trajStill(key){
+    const s = trajStillMap().get(key); if (!s) return '';
+    return `<button type="button" class="tr-still" data-still="${esc(key)}" title="${esc(s.caption)}">
+      <img src="${TRAJ_STILL_DIR}${esc(key)}-t.jpg" width="320" height="180" loading="lazy" decoding="async"
+        alt="${esc(s.id + ' ' + s.time + '：' + s.caption)}">
+      <span><b>${esc(s.id)}</b><i>${esc(s.time)}</i></span></button>`;
+  }
+  function trajStillStrip(keys, kind){
+    return `<div class="tr-stills${kind ? ' ' + kind : ''}">${keys.map(trajStill).join('')}</div>`;
+  }
+  function openStill(key){
+    const s = trajStillMap().get(key); if (!s) return;
+    const order = trajectory.stills.map(r => r[0]).concat([trajectory.sourceStill[0]]);
+    const at = order.indexOf(key);
+    let box = document.getElementById('tr-lightbox');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'tr-lightbox'; box.className = 'tr-lightbox';
+      box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true');
+      document.body.appendChild(box);
+    }
+    box.dataset.at = String(at);
+    box.innerHTML = `<div class="tr-lightbox-inner" role="document">
+      <img src="${TRAJ_STILL_DIR}${esc(key)}.jpg" alt="${esc(s.id + ' ' + s.time + '：' + s.caption)}">
+      <figcaption><b>${esc(s.id)} · ${esc(s.time)}</b><p>${esc(s.caption)}</p></figcaption>
+      <nav><button type="button" data-still-step="-1" aria-label="上一张">←</button>
+        <span>${at + 1} / ${order.length}</span>
+        <button type="button" data-still-step="1" aria-label="下一张">→</button></nav>
+      <button type="button" class="tr-lightbox-close" data-still-close aria-label="关闭">✕</button></div>`;
+    box.onclick = e => { if (e.target === box) closeStill(); };
+    box.classList.add('open');
+    box.querySelector('.tr-lightbox-close')?.focus({preventScroll:true});
+  }
+  function stepStill(delta){
+    const box = document.getElementById('tr-lightbox'); if (!box) return;
+    const order = trajectory.stills.map(r => r[0]).concat([trajectory.sourceStill[0]]);
+    const at = (Number(box.dataset.at || 0) + delta + order.length) % order.length;
+    openStill(order[at]);
+  }
+  function closeStill(){
+    const box = document.getElementById('tr-lightbox');
+    if (box) { box.classList.remove('open'); box.innerHTML = ''; }
+  }
+  document.addEventListener('keydown', e => {
+    const box = document.getElementById('tr-lightbox');
+    if (!box || !box.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeStill(); }
+    else if (e.key === 'ArrowLeft') { stepStill(-1); }
+    else if (e.key === 'ArrowRight') { stepStill(1); }
+  });
+
+  function trajCounts(){
+    const hi = trajectory.steps.filter(s => s.role === 'HI');
+    return {hi:hi.length, gia:trajectory.steps.length - hi.length,
+            accepted:hi.filter(s => s.state === 'accepted').length,
+            held:hi.filter(s => s.state === 'held').length,
+            rejected:hi.filter(s => s.state === 'rejected').length};
+  }
+  function trajBlock(title, body){ return `<section class="tr-detail-section"><h3>${title}</h3>${body}</section>`; }
+  function trajStepDetail(step){
+    const [stateLabel, stateClass] = trajStates[step.state] || ['—',''];
+    const gain = step.gain ? `<ul class="tr-arch-facts"><li>新取得证据 ${step.gain.a} 条</li><li>首次读到正文 ${step.gain.o} 条</li><li>可引用的页面 ${step.gain.q} 条</li><li>合计 ${step.gain.t}</li></ul>` : '';
+    return `<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(step.actor)} · ${step.role === 'GIA' ? '第 ' + step.round_index + ' 轮' : '第 ' + trajTurn(step) + ' 步'}</span>
+        <h3>${esc(actionTitle(step))}</h3></div>${pill(step.role, step.role.toLowerCase())}</div>
+      <div class="tr-traj-verdict ${stateClass}"><b>${esc(stateLabel)}</b>${step.weight == null ? '' : `<span>权重 ${step.weight}</span>`}
+        ${step.stateNote ? `<p>${esc(step.stateNote)}</p>` : ''}</div>
+      ${step.preview ? trajBlock('这一步做了什么', `<p class="tr-prose">${esc(step.preview)}</p>`) : ''}
+      ${step.produced ? trajBlock('产出 / 读取', `<p class="tr-prose">${esc(step.produced)}</p>`) : ''}
+      ${step.stills ? trajBlock('这一步得到的画面', trajStillStrip(step.stills) + '<p class="tr-footnote">点开任意一张查看大图。</p>') : ''}
+      ${gain ? trajBlock('线索收益', gain) : ''}
+      ${step.user ? trajBlock('当时看到的状态（compact_8k 示意）', `<pre class="tr-code">${esc(step.user)}</pre>`) : ''}
+      ${step.output ? trajBlock('模型这一步的输出', `<pre class="tr-code">${esc(step.output)}</pre>`) : ''}
+      ${step.meta ? trajBlock('数据行元信息', `<pre class="tr-code">${esc(step.meta)}</pre>`) : ''}
+      ${step.note ? trajBlock('为什么这样判', step.note.split('\n').map(p => `<p class="tr-prose">${esc(p)}</p>`).join('')) : ''}`;
+  }
+  function trajTurn(step){
+    return trajectory.steps.filter(s => s.actor === step.actor && s.role === 'HI').indexOf(step) + 1;
+  }
+  function trajGroupDetail(node){
+    const steps = (node.steps || []).filter(s => s);
+    const counted = steps.reduce((acc, s) => { acc[s.state] = (acc[s.state] || 0) + 1; return acc; }, {});
+    const rows = Object.entries(counted).map(([k, v]) => `<li>${esc((trajStates[k] || [k])[0])} ${v} 条</li>`).join('');
+    return `<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(node.badge || '分组')}</span><h3>${esc(node.label)}</h3></div></div>
+      <p class="tr-prose">${esc(node.subtitle || '')}</p>
+      ${rows ? trajBlock('这一组的处置', `<ul class="tr-arch-facts">${rows}</ul>`) : ''}
+      <p class="tr-footnote">点击脑图里的任意一步，查看它当时看到什么、输出了什么、为什么这样判。</p>`;
   }
   function setPane(pane){
     T.mobilePane=pane;
     const layout=page.querySelector('.tr-record-layout');if(!layout)return;
     layout.dataset.pane=pane;
-    page.querySelectorAll('[data-tr-pane]').forEach(b=>{const active=b.dataset.trPane===pane;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
-    if(pane==='map')requestAnimationFrame(()=>{if(T.map?.selected==='root')T.map.fit();else T.map?.focus(T.map.selected,false);});
+    page.querySelectorAll('[data-tr-pane]').forEach(b=>{const active=b.dataset.trPane===pane;
+      b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
   }
-  function breadcrumbs(id){
-    const nodes=[];let node=T.map?.nodes.get(id);
-    while(node){nodes.unshift(node);node=T.map.nodes.get(node.parent);}
-    return `<nav class="tr-map-breadcrumbs" aria-label="当前节点位置">${nodes.map((n,i)=>`${i?'<span>›</span>':''}<button data-tr-node="${esc(n.id)}" ${n.id===id?'aria-current="location"':''}>${esc(n.id==='root'?'调查问题':n.kind==='round'?n.label.split(' · ')[0]:n.kind==='hi'?n.label:n.step?`${n.step.actor} #${Number(n.step.id.split('_')[1])}`:n.label)}</button>`).join('')}</nav>`;
+  function selectTrajNode(id){
+    const node = T.map?.nodes.get(id); if (!node) return;
+    const main = page.querySelector('#tr-step-main'); if (!main) return;
+    main.innerHTML = node.step ? trajStepDetail(node.step) : trajGroupDetail(node);
+    setPane('detail');
   }
-  function selectGroup(node,{push=true}={}){
-    stop();++T.serial;T.step=null;
-    if(push)navigate(`#training/samples/${T.sample.id}`);
-    renderGroup(node);
+  function renderTrajectory(){
+    const c = trajCounts();
+    trajectory.step_count = trajectory.steps.length;
+    T.map?.destroy();
+    page.classList.add('tr-detail-page');
+    page.innerHTML = top('samples') + `<div class="tr-section-title tr-samples-title"><div><div class="eyebrow muted">ONE CASE, END TO END</div>
+        <h2>一个案例，从调查到训练数据</h2><p>${esc(trajectory.description)}</p></div></div>
+      <div class="tr-traj-facts">${trajectory.facts.map(([n, t]) => `<div><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join('')}</div>
+      <div class="tr-condition">${esc(trajectory.task)}</div>
+      <div class="tr-reader-tabs" aria-label="阅读视图"><button data-tr-pane="map" aria-pressed="true" class="active">调查脑图</button><button data-tr-pane="detail" aria-pressed="false">节点详情</button></div>
+      <div class="tr-record-layout" data-pane="map"><section class="tr-map-panel" id="tr-map-panel" aria-label="调查脑图"></section>
+        <section class="tr-step-main" id="tr-step-main" aria-live="polite"></section></div>
+      <section class="tr-traj-stills"><h3>模型看到的画面</h3>
+        <p class="tr-prose">${esc(trajectory.stillNote)}</p>
+        ${trajStillStrip(trajectory.stills.map(r => r[0]))}
+        <div class="tr-still-source">${trajStill(trajectory.sourceStill[0])}
+          <p class="tr-prose">${esc(trajectory.sourceStill[3])}</p></div></section>
+      <section class="tr-traj-chain"><h3>最终答案逐句核对</h3>
+        <ol class="tr-traj-sentences">${trajectory.sentences.map(([n, what, basis, keys]) =>
+          `<li><b>${esc(n)}</b><p>${esc(what)}</p><small>${esc(basis)}</small>${keys ? trajStillStrip(keys, 'mini') : ''}</li>`).join('')}</ol>
+        <p class="tr-callout">${esc(trajectory.sentenceNote)}</p></section>
+      <section class="tr-traj-extra">
+        <div><h3>案卷要求</h3><ul class="tr-traj-req">${trajectory.requirements.map(([id, must, txt]) =>
+          `<li><b>${esc(id)}</b><span class="tr-pill ${must === '必须引用' ? '' : 'amber'}">${esc(must)}</span><p>${esc(txt)}</p></li>`).join('')}</ul>
+          <ul class="tr-arch-facts">${trajectory.checks.map(([k, txt]) => `<li><code>${esc(k)}</code> ${esc(txt)}</li>`).join('')}</ul></div>
+        <div><h3>核验结果</h3><ul class="tr-traj-verdicts">${trajectory.verdicts.map(([who, v, why]) =>
+          `<li class="${v}"><b>${esc(who)}</b><span>${v === 'positive' ? '通过' : '未通过'}</span><p>${esc(why)}</p></li>`).join('')}</ul></div>
+        <div><h3>这一个案例产出了什么</h3><ul class="tr-arch-facts"><li>HI 决策 ${c.hi} 次：${c.accepted} 行进入候选、${c.held} 行暂缓、${c.rejected} 行待校准</li>
+          <li>GIA 决策 ${c.gia} 次：派工与最终回答各 1 条，都进入候选</li>
+          <li>合计 ${c.accepted + c.gia} 行可训练数据，全部通过学生模型处理器的逐行核对</li>
+          <li>GIA 的数据天然比 HI 少一个数量级，所以离线换题是 GIA 的主要扩样手段</li></ul>
+          <p class="tr-prose">${esc(trajectory.yieldNote)}</p></div>
+      </section>
+      <section class="tr-traj-extra">
+        <div><h3>事件本身</h3><ul class="tr-traj-timeline">${trajectory.timeline.map(([when, what]) =>
+          `<li><b>${esc(when)}</b><p>${esc(what)}</p></li>`).join('')}</ul></div>
+        <div><h3>这批数据能不能训</h3><ul class="tr-traj-tokens">${trajectory.tokens.map(([name, rows, inp, sup]) =>
+          `<li><b>${esc(name)}</b><span>${esc(rows)}</span><p>${esc(inp)} · ${esc(sup)}</p></li>`).join('')}</ul>
+          <p class="tr-prose">${esc(trajectory.tokenNote)}</p></div>
+        <div><h3>本例的适用边界</h3><ul class="tr-traj-req">${trajectory.boundaries.map(([t, d]) =>
+          `<li><b>${esc(t)}</b><p>${esc(d)}</p></li>`).join('')}</ul></div>
+      </section>
+      <div class="tr-footnote">本例取自真实运行 ${esc(trajectory.run)}，GIA 与 HI 均由教师模型实际决策；核验结论取自第 0 轮实际核验记录。状态示意按 compact_8k 档手写，未保留教师推理的步骤不补写推理。</div>`;
+    T.map = new TrainingMindMap(trajectory, {titleForStep:actionTitle, onStep:selectTrajNode,
+      onGroup:node => selectTrajNode(node.id), onFilter:value => { T.map.setFilter(value); }});
+    T.map.filter = 'all';
+    // 默认把整条轨迹摊开：这一页的重点就是"一个案例产出哪些数据行"，收起来反而要点好几下才看得到。
+    T.map.expanded = new Set(['root', 'round-1', 'round-2']);
+    T.map.mount(page.querySelector('#tr-map-panel'));
+    selectTrajNode('root');
+    setPane('map');
   }
-  function renderGroup(node){
-    const matching=node.steps.filter(s=>T.map.matches(s));
-    const children=node.children.map(id=>T.map.nodes.get(id)).filter(n=>n.steps.some(s=>T.map.matches(s)));
-    const main=page.querySelector('#tr-step-main');if(!main)return;
-    main.innerHTML=breadcrumbs(node.id)+`<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(node.badge)}</span><h3>${esc(node.label)}</h3></div>${pill(node.steps.length+' 次输出')}</div><div class="tr-step-content tr-group-content"><div class="tr-task-box"><span>${node.id==='root'?(T.sample.mode==='gia_offline'?'共同证据':'总问题'):node.kind==='hi'?'局部任务':'本轮调查'}</span><p>${text(node.subtitle)}</p></div>
-      <div class="tr-branch-stats"><div><b>${matching.length}</b><span>当前输出</span></div><div><b>${matching.filter(s=>s.included).length}</b><span>已收录</span></div><div><b>${matching.filter(s=>!s.included).length}</b><span>未收录</span></div></div>
-      ${node.status?`<div class="tr-callout">${esc(node.status)} · ${node.steps.filter(s=>s.action!=='REPORT').length} 次行动</div>`:''}
-      <div class="tr-branch-heading"><h3>${node.id==='root'?(T.sample.mode==='gia_offline'?'四个独立问题':T.sample.mode==='hi_independent'?'局部调查':'调查轮次'):node.kind==='hi'?'行动与报告':'分工与决策'}</h3><span>点击展开查看</span></div>
-      <div class="tr-branch-list">${children.map(n=>`<button data-tr-node="${esc(n.id)}"><div><span class="tr-branch-kind ${n.kind}">${esc(n.step?n.step.role:n.kind==='hi'?'HI':n.kind==='round'?'轮次':'调查')}</span><strong>${esc(n.label)}</strong><i>↗</i></div><p>${esc(n.subtitle)}</p><small>${n.step?`${n.step.included?'✓ 已收录':'○ 未收录'}${n.step.rating==null?'':' · '+n.step.rating+' / 4 分'}`:`${n.steps.filter(s=>T.map.matches(s)).length} 次输出${n.status?' · '+n.status:''}`}</small></button>`).join('')||'<div class="tr-empty"><strong>当前分类没有输出</strong><p>切换筛选，查看其他角色或全部记录。</p></div>'}</div></div>`;
-  }
-  function setStepFilter(value){
-    stop();T.stepFilter=value;T.map.setFilter(value);
-    if(T.step&&T.map.matches(T.step)){
-      T.map.selectStep(T.step.id);if(T.step.output)renderStep();
-    }else selectGroup(T.map.nodes.get(T.map.selected));
-  }
-  function recordList(value,title){const records=Array.isArray(value)?value:Object.values(value||{});if(!records.length)return '';return `<section class="tr-detail-section"><h3>${title}<span>${records.length}</span></h3>${records.map(r=>typeof r==='object'&&r!==null?`<details class="tr-record"><summary>${pill(r.evidence_id||r.task_id||r.report_id||r.record_id||'记录')}<span>${esc(r.label||r.task||r.statement||r.record_type||'展开记录')}</span></summary><div class="tr-record-content">${r.content?`<div class="tr-prose">${text(r.content)}</div>`:''}${r.source_ref&&urlSafe(r.source_ref)?sourceLink(r.source_ref,'打开来源 ↗'):''}${raw('完整记录',r)}</div></details>`:`<div class="tr-prose">${text(r)}</div>`).join('')}</section>`;}
-  function imagesBlock(images){if(!images.length)return '<p class="tr-no-images">本轮没有图片附件，依据文字与已有报告作出决定。</p>';return `<div class="tr-detail-section"><h3>本次实际图片<span>${images.length} 张</span></h3><div class="tr-image-grid">${images.map((im,i)=>{const loc=im.note.locator||{},time=loc.time_s;return `<button class="tr-image" data-tr-image="${i}" aria-label="放大 ${esc(im.evidence_id)} 原始输入图片"><div><img src="${im.url}" alt="${esc(im.evidence_id)} · ${time==null?'实际输入材料':Number(time).toFixed(3)+' 秒'}" loading="lazy"></div><span><b>${esc(im.evidence_id)}</b><small>${time==null?(im.note.derived_from||[]).join(' · '):`${Number(time).toFixed(3)} 秒 · ${(im.note.derived_from||[]).join(' / ')}`}</small><i>⤢</i></span></button>`;}).join('')}</div></div>`;}
-  function outputBlock(o){if(o.answer)return `<div class="tr-output-answer tr-prose">${text(o.answer)}</div>`;if(o.tasks)return `<div class="tr-task-list">${o.tasks.map((v,i)=>`<article><span class="tr-task-index">${String(i+1).padStart(2,'0')}</span><div><h4>局部调查 ${i+1}</h4><p class="tr-prose">${text(v.task)}</p><div class="tr-tags">${(v.materials||[]).map(x=>pill(x)).join('')}</div></div></article>`).join('')}</div>`;if(o.findings)return `${o.status?`<div class="tr-report-status">${pill(o.status==='COMPLETED'?'局部任务完成':'局部任务未完成',o.status==='COMPLETED'?'good':'amber')}<p>${text(o.status_reason||'')}</p></div>`:''}${o.findings.map(f=>`<article class="tr-finding"><div class="tr-prose">${text(f.statement)}</div><div class="tr-tags">${(f.evidence_ids||[]).map(id=>pill(id)).join('')}</div>${f.limitations?.length?`<ul>${f.limitations.map(l=>`<li>${text(l)}</li>`).join('')}</ul>`:''}</article>`).join('')}`;const a=o.arguments||{};return `<div class="tr-action-card"><div>${pill(o.action,T.step.role==='GIA'?'gia':'hi')}<strong>${esc(actionTitle(T.step))}</strong></div>${Object.entries(a).map(([k,v])=>`<div class="tr-action-param"><span>${({query:'搜索内容',source:'来源地址',targets:'目标材料',record_id:'读取记录',request:'操作与参数',offset:'读取起点',record_types:'记录类型'})[k]||esc(k)}</span><div>${typeof v==='string'?(urlSafe(v)?sourceLink(v):`<p class="tr-prose">${text(v)}</p>`):json(v)}</div></div>`).join('')}${o.focus_evidence_ids?.length?`<div class="tr-focus-evidence"><span>保留到后续输入</span>${o.focus_evidence_ids.map(id=>pill(id)).join('')}</div>`:''}</div>`;}
-  function ratingBlock(s){return `<div class="tr-verdict ${s.included?'accepted':'not-included'}"><div><span>${s.included?'✓ 候选已收录':'○ 未作为正向目标收录'}</span><b>${s.rating==null?'—':s.rating}<small> / 4</small></b></div><p>${text(s.reason)}</p><small>${esc(dispositions[s.disposition]||s.disposition)}${s.critical_unknown?' · 存在关键评审未知':''}${s.disposition==='accept_candidate'&&!s.included?' · 以最终候选包收录状态为准':''}</small></div>`;}
-  function workspaceLinks(){
-    const node=T.map.nodes.get(T.step.id),children=(node?.children||[]).map(id=>T.map.nodes.get(id));
-    if(!children.length)return '';
-    return `<section class="tr-detail-section"><h3>接到分工的 HI</h3><div class="tr-branch-list">${children.map(n=>`<button data-tr-node="${esc(n.id)}"><div><span class="tr-branch-kind hi">HI</span><strong>${esc(n.label)}</strong><i>↗</i></div><p>${esc(n.subtitle)}</p><small>${n.steps.length} 次真实输出 · ${esc(n.status)}</small></button>`).join('')}</div></section>`;
-  }
-  function overviewContent(){const s=T.step;return `<div class="tr-task-box"><span>${s.role==='GIA'?'当前总问题':'当前局部任务'}</span><p>${text(s.task)}</p></div><section class="tr-detail-section"><h3>模型这一步输出了什么</h3>${outputBlock(s.output)}</section>${workspaceLinks()}${ratingBlock(s)}${imagesBlock(s.images)}${raw('查看完整原始输出',s.output)}`;}
-  function inputContent(){const s=T.step,v=s.payload.model_view||s.payload.global_view||{};return `<div class="tr-context-label">决策发生前的实际输入 · ${s.images.length} 张图片附件</div><div class="tr-task-box"><span>当前任务</span><p>${text(s.task)}</p></div>${imagesBlock(s.images)}${recordList(v.latest_reports||v.reports,'已有局部报告')}${recordList(v.materials,'任务材料')}${recordList(v.evidence_view||v.supporting_records,'当前证据记录')}${v.latest_observation?raw('上一步工具观察',v.latest_observation):''}${raw('完整决策前状态',s.payload)}<details class="tr-raw"><summary>角色提示与图片说明</summary><pre class="tr-code">${esc(s.system_prompt)}\n\n${esc(s.image_notes.join('\n'))}</pre></details>`;}
-  function observationContent(){const o=T.step.observation;if(!o)return `<div class="tr-empty"><strong>${T.sample.mode==='gia_offline'?'本条是离线决定，尚无实际工具返回':T.step.action==='REPORT'?'本步提交了局部报告':T.step.action==='FINISH'?'本步提交了最终回答':'本步没有独立工具观察'}</strong><p>${T.sample.mode==='gia_offline'?'拟议调查任务保留在模型输出中，不把计划视为已经执行。':'可在本步概览查看提交内容与质量判断。'}</p><button class="secondary" data-tr-tab="overview">查看模型输出</button></div>`;return `<div class="tr-context-label">行动发生后的实际返回 · 不属于本步决策前输入</div>${o.status?pill(o.status==='failed'?'执行失败':o.status,o.status==='failed'?'amber':'good'):''}<div class="tr-observation-items">${(o.items||[]).map(i=>`<p class="tr-prose">${text(i)}</p>`).join('')}</div>${o.details?.content?`<div class="tr-task-box"><span>${esc(o.details.label||'工具返回正文')}</span><div class="tr-prose">${text(o.details.content)}</div></div>`:''}${raw('完整工具返回',o)}`;}
-  function reviewContent(){const s=T.step;return `${ratingBlock(s)}<div class="tr-review-heading"><h3>${s.assessment_scope==='state'?'本条决策的维度评分':'该角色 / 工作区的整体维度评分'}</h3><span>Rubric ${esc(s.rubric_version)}</span></div><p class="tr-footnote">${s.assessment_scope==='state'?'这组离线决定分别评审；未执行的工具效果不计为已验证。':'以下评分概括该工作区的完整过程；本条输出的收录以顶部逐目标判断为准。'}</p><div class="tr-review-dimensions">${s.dimensions.map(d=>`<details><summary><span>${esc(dimensions.find(v=>v.id===d.id)?.name||d.id)}</span><div class="tr-rating-dots">${[0,1,2,3].map(n=>`<i class="${Number.isInteger(d.rating)&&n<d.rating?'filled':''}"></i>`).join('')}</div><b>${d.rating==null?(d.status==='not_applicable'?'N/A':'未知'):d.rating+' / 4'}</b></summary><p>${text(d.reason)}</p>${d.request_ids?`<small>关联 ${d.request_ids.map(id=>'#'+Number(id.split('_')[1])).join('、')}</small>`:''}</details>`).join('')}</div>${raw('完整逐目标评审',s.assessment)}<div class="tr-doc-links">${docLink('rubric','当前完整 r6 标准')}</div>`;}
-  function sftContent(){const s=T.step;return `<div class="tr-context-label">${s.included?'当前候选包中的监督目标':'本输出未进入当前候选包'}</div><div class="tr-sft-stack"><div><div><b>system</b><span>角色提示 · 作为上下文</span></div><details><summary>展开实际角色提示</summary><pre class="tr-code">${esc(s.system_prompt)}</pre></details></div><div><div><b>user</b><span>当时状态 + ${s.images.length} 张实际图片 · 作为上下文</span></div>${raw('展开实际输入', {payload:s.payload,image_notes:s.image_notes})}</div><div class="${s.included?'tr-supervised':'tr-unsupervised'}"><div><b>assistant</b><span>${s.included?'仅此输出计算监督损失':'不作为正向监督目标'}</span></div>${json(s.output)}</div></div><div class="tr-callout">${s.included?'只学习当前角色的这一次输出。另一角色的报告、工具原文和此前历史帮助模型理解当前状态。':'这一步仍是实际发生的历史，可以成为后续决策的上下文；当前输出本身不作为正确示范。'}</div>${s.candidate?raw('候选元数据',s.candidate):''}`;}
-  function renderStep(){const s=T.step;if(!s)return;const index=T.sample.steps.findIndex(v=>v.id===s.id),sequence=visibleSteps(),position=sequence.findIndex(v=>v.id===s.id);const main=page.querySelector('#tr-step-main');if(!main)return;main.innerHTML=breadcrumbs(s.id)+`<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(s.actor)} · ${s.id.startsWith('state')?'问题':'请求'} ${Number(s.id.split('_')[1])}</span><h3>${esc(actionTitle(s))}</h3></div>${pill(s.role,s.role.toLowerCase())}</div><div class="tr-step-controls"><span>${index+1} / ${T.sample.steps.length}</span><div><button class="tr-control" data-tr="previous" ${position<=0?'disabled':''} aria-label="上一个决策">← 上一步</button><button class="tr-control" data-tr="play" aria-pressed="${T.playing}">${T.playing?'Ⅱ 暂停回放':'▷ 自动回放'}</button><button class="tr-control" data-tr="next" ${position===sequence.length-1?'disabled':''}>下一步 →</button></div></div><div class="tr-detail-tabs" role="tablist" aria-label="本步详细记录">${[['overview','本步概览'],['input','当时输入'],['observation','工具返回'],['review','质量评分'],['sft','SFT 样本']].map(([id,n])=>`<button role="tab" id="tr-tab-${id}" aria-controls="tr-step-content" aria-selected="${T.tab===id}" tabindex="${T.tab===id?0:-1}" data-tr-tab="${id}" class="${T.tab===id?'active':''}">${n}</button>`).join('')}</div><div class="tr-step-content" id="tr-step-content" role="tabpanel" aria-labelledby="tr-tab-${T.tab}">${T.tab==='input'?inputContent():T.tab==='observation'?observationContent():T.tab==='review'?reviewContent():T.tab==='sft'?sftContent():overviewContent()}</div>`;}
-  async function selectStep(id,{push=true,keepPlaying=false}={}){if(!keepPlaying)stop();const serial=++T.serial,sampleId=T.sample.id;const summary=T.sample.steps.find(v=>v.id===id);if(!summary)return;T.step={...summary};T.map?.selectStep(id);setPane('detail');const main=page.querySelector('#tr-step-main');if(main)main.innerHTML='<div class="tr-loading" role="status"><span class="tr-loader"></span>正在读取本步输入与评分…</div>';if(push)navigate(`#training/samples/${sampleId}/${id}`);try{const detail=await get(`/api/training/samples/${sampleId}/steps/${id}`);if(T.serial!==serial||T.sample?.id!==sampleId)return;T.step=detail;renderStep();}catch(e){if(serial===T.serial&&main)main.innerHTML=`<div class="tr-empty"><strong>暂时无法读取这一步</strong><p>${esc(e.message)}</p><button class="secondary" data-tr-step="${id}">重试</button></div>`;stop();}}
   async function open(hash='#training'){
-    stop();T.map?.destroy();page.classList.remove('tr-detail-page');clearTimeout(S.poll);stopPlayback();const serial=++T.serial;showPage('training-page');navigate(hash);
+    stop();T.map?.destroy();closeStill();page.classList.remove('tr-detail-page');clearTimeout(S.poll);stopPlayback();const serial=++T.serial;showPage('training-page');navigate(hash);
     if(!T.data){loading();try{T.data=await get('/api/training');}catch(e){if(serial===T.serial)page.innerHTML=`<div class="tr-empty"><strong>训练记录暂时不可用</strong><p>${esc(e.message)}</p><button class="secondary" data-tr="retry">重新读取</button></div>`;return;}}
     if(serial!==T.serial)return;
     const parts=hash.split('/');
-    if(parts[1]==='samples'&&parts[2]){
-      try{
-        const same=T.sample?.id===parts[2];if(!same){T.stepFilter='all';T.tab='overview';loading();}
-        const sample=await get(`/api/training/samples/${encodeURIComponent(parts[2])}`);if(serial!==T.serial)return;
-        T.sample=sample;T.section='detail';T.step=null;T.mobilePane=parts[3]?'detail':'map';
-        const target=sample.steps.find(s=>s.id===parts[3]);
-        if(target&&!visibleSteps().some(s=>s.id===target.id))T.stepFilter='all';
-        renderSampleShell();
-        if(target)await selectStep(target.id,{push:false});else selectGroup(T.map.nodes.get('root'),{push:false});
-        if(!same)window.scrollTo({top:0});
-      }catch(e){page.innerHTML=top('samples')+`<div class="tr-empty"><strong>无法打开这个样例</strong><p>${esc(e.message)}</p>${routeButton('#training/samples','返回样本库')}</div>`;}
-      return;
-    }
     T.section=['rubric','samples','flow','architecture'].includes(parts[1])?parts[1]:'roadmap';
-    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderSamples();else if(T.section==='flow')renderFlow();
+    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderTrajectory();else if(T.section==='flow')renderFlow();
     else if(T.section==='architecture')renderArchitecture();else renderRoadmap();window.scrollTo({top:0});
   }
   window.openTraining=open;
-  function showImage(index){const images=T.step?.images||[],im=images[index];if(!im)return;stop();let dialog=document.querySelector('#tr-image-dialog');if(!dialog){dialog=document.createElement('dialog');dialog.id='tr-image-dialog';dialog.className='tr-image-dialog';document.body.append(dialog);}dialog.innerHTML=`<div class="tr-image-modal-heading"><span>${esc(im.evidence_id)} · 本轮实际输入图片 · ${index+1} / ${images.length}</span><button data-tr="close-image" aria-label="关闭图片">×</button></div><div class="tr-image-canvas"><img src="${im.url}" alt="${esc(im.evidence_id)} 原始输入图片"></div><div class="tr-image-modal-footer"><button class="tr-control" data-tr-image="${index-1}" ${index===0?'disabled':''}>← 上一张</button><span>${esc((im.note.derived_from||[]).join(' / '))}${im.note.locator?.time_s!=null?' · '+Number(im.note.locator.time_s).toFixed(6)+' 秒':''}</span><button class="tr-control" data-tr-image="${index+1}" ${index===images.length-1?'disabled':''}>下一张 →</button></div>`;dialog.dataset.index=String(index);if(!dialog.open)dialog.showModal();}
-  async function advance(direction,playing=false){const sequence=visibleSteps(),index=sequence.findIndex(s=>s.id===T.step?.id),step=sequence[index+direction];if(!step){stop();return;}await selectStep(step.id,{keepPlaying:playing});}
-  function play(){T.playing=true;const b=page.querySelector('[data-tr="play"]');if(b){b.textContent='Ⅱ 暂停回放';b.setAttribute('aria-pressed','true');}async function tick(){if(!T.playing)return;await advance(1,true);if(T.playing)T.timer=setTimeout(tick,2600);}T.timer=setTimeout(tick,2600);}
   document.addEventListener('click',async e=>{
     const b=e.target.closest('button,a');if(!b)return;
     if(b.dataset.trainingRoute){e.preventDefault();await open(b.dataset.trainingRoute);return;}
     if(b.dataset.archZoom){const m=b.dataset.archZoom;if(m==='fit')archFit();else archZoomAt(T.archZoom*(m==='in'?1.2:1/1.2));return;}
     if(b.dataset.archNode){T.archNode=b.dataset.archNode;renderArchStage();archFocus(T.archNode);page.querySelector(`[data-arch-node="${T.archNode}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.trStage!==undefined){T.stage=Number(b.dataset.trStage);renderFlow();page.querySelector(`[data-tr-stage="${T.stage}"]`)?.focus({preventScroll:true});return;}
-    if(b.dataset.trRole){T.role=b.dataset.trRole;renderRubric();page.querySelector(`[data-tr-role="${T.role}"]`)?.focus({preventScroll:true});return;}
-    if(b.dataset.trDimension){T.dimension=b.dataset.trDimension;renderRubric();page.querySelector(`[data-tr-dimension="${T.dimension}"]`)?.focus({preventScroll:true});return;}
-    if(b.dataset.trFilter){T.filter=b.dataset.trFilter;page.querySelectorAll('[data-tr-filter]').forEach(v=>{v.classList.toggle('active',v===b);v.setAttribute('aria-pressed',String(v===b));});renderSampleGrid();return;}
+    if(b.dataset.still){openStill(b.dataset.still);return;}
+    if(b.dataset.stillStep){stepStill(Number(b.dataset.stillStep));return;}
+    if(b.dataset.stillClose!==undefined){closeStill();return;}
     if(b.dataset.trPane){setPane(b.dataset.trPane);return;}
-    if(b.dataset.trNode){T.map.select(b.dataset.trNode);return;}
-    if(b.dataset.trStep){await selectStep(b.dataset.trStep);return;}
-    if(b.dataset.trTab){stop();T.tab=b.dataset.trTab;renderStep();page.querySelector(`#tr-tab-${T.tab}`)?.focus({preventScroll:true});return;}
-    if(b.dataset.trImage!==undefined){showImage(Number(b.dataset.trImage));return;}
-    switch(b.dataset.tr){case 'retry':T.data=null;T.cache.delete('/api/training');open(location.hash);break;case 'clear':T.filter='all';T.query='';T.dataset='all';renderSamples();break;case 'previous':await advance(-1);break;case 'next':await advance(1);break;case 'play':if(T.playing)stop();else play();break;case 'close-image':document.querySelector('#tr-image-dialog')?.close();break;}
+    if(b.dataset.tr==='retry'){T.data=null;T.cache.delete('/api/training');open(location.hash);}
   });
-  document.addEventListener('input',e=>{if(e.target.id==='tr-search'){T.query=e.target.value;renderSampleGrid();}});
-  document.addEventListener('change',e=>{if(e.target.id==='tr-dataset'){T.dataset=e.target.value;renderSampleGrid();}});
-  document.addEventListener('keydown',e=>{const tab=e.target.closest('.tr-detail-tabs [data-tr-tab]');if(tab&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const tabs=[...page.querySelectorAll('.tr-detail-tabs [data-tr-tab]')];let index=tabs.indexOf(tab);index=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[index].click();}const dialog=document.querySelector('#tr-image-dialog');if(dialog?.open&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();showImage(Number(dialog.dataset.index)+(e.key==='ArrowRight'?1:-1));}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
 })();
