@@ -1,6 +1,9 @@
 @echo off
-rem Æô¶¯ÑÝÊ¾ÍøÕ¾¡£·ÅÔÚ scripts/ ÏÂ£¬ËùÒÔÏÈ»Øµ½ÏîÄ¿¸ùÄ¿Â¼¡£
+chcp 65001 >nul
+rem æ¼”ç¤ºç«™è„šæœ¬æ”¾åœ¨ scripts/ ä¸‹ï¼Œå…ˆå›žåˆ°é¡¹ç›®æ ¹ç›®å½•ï¼Œå¹¶å¼ºåˆ¶ä»Žæœ¬ä»“åº“çš„ src åŠ è½½ã€‚
 cd /d "%~dp0.."
-set "FOREN_HARNESS_ROOT=C:\Users\Zya\Documents\Codex\2026-07-23\plan-harness-1\work\harness-1"
+set "PYTHONPATH=%CD%\src"
+set "PYTHONUTF8=1"
+"%USERPROFILE%\anaconda3\python.exe" -c "import foren_searcher,sys;print('foren_searcher åŠ è½½è‡ª:',foren_searcher.__file__)"
 "%USERPROFILE%\anaconda3\python.exe" -m foren_searcher.web_demo --open
 if errorlevel 1 pause
