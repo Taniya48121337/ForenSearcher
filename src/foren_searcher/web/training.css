@@ -166,8 +166,14 @@
 .tr-arch-node.report{--arch-accent:#72a395;background:#f7faf6}
 .tr-arch-node.final{--arch-accent:#5c8f4a;background:#eff6e7}
 .tr-arch-node.store{--arch-accent:#8a9a7c;background:#f8faf4}
+.tr-arch-node.note{--arch-accent:transparent;border:0;background:transparent;box-shadow:none;align-items:center;
+  justify-content:center;gap:2px;padding:2px}
+.tr-arch-node.note strong{font-size:15px;color:#a6b399;line-height:1}
+.tr-arch-node.note span{font-size:10.5px;color:#9aa78d;text-align:center}
+.tr-arch-node.note:hover{box-shadow:none;border:0}
+.tr-arch-legend .lg-note:before{background:#c1cfaf}
 .tr-arch-node.panel{--arch-accent:transparent;border:1px dashed #cfdac0;border-left-width:1px;background:#f6f9f180;
-  justify-content:flex-start;box-shadow:none;padding:11px 16px}
+  flex-direction:row;align-items:baseline;justify-content:flex-start;gap:12px;box-shadow:none;padding:10px 16px}
 .tr-arch-node.panel strong{font-size:12px;font-weight:600;letter-spacing:.6px;color:#8a9a7c}
 .tr-arch-node.panel span{font-size:10.5px;color:#9aa78d}
 .tr-arch-node.panel:hover{border-color:#b3c4a0;box-shadow:none}
