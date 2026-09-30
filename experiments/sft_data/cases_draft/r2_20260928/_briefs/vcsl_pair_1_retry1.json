@@ -1,0 +1,477 @@
+{
+ "run": "vcsl_pair_1_retry1",
+ "config": {
+  "dataset": "vcsl",
+  "case": "pair_1",
+  "question_index": null,
+  "search": null,
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "在给定视频 A 与 B 中查找相同或经变换的对应片段，给出两侧时间范围及证据。不要把内容对应推断成原创归属。输入仅包含视频轨，不评估音频。",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "找到一段对应动画：A约4.02–4.88秒 ↔ B约27.58–28.46秒。对齐结果给出该候选区间；实际对照A的4.167秒与B的27.720秒，门店建筑、成列雪人及冰淇淋权杖的排列相符，B中的动画主体经过放大并受到装饰遮挡。",
+     "evidence_ids": [
+      "E9",
+      "E5",
+      "E7"
+     ],
+     "limitations": [
+      "区间端点是对齐估计，不是已确定的剪辑边界；实际帧核验支持其中锚点，未逐帧验证整个区间。"
+     ]
+    },
+    {
+     "statement": "另有三组成对画面支持更长范围的内容对应：A 2.000秒 ↔ B 25.560秒为蓝色幕布前的雪人权杖队列；A 6.000秒 ↔ B 29.560秒为柠檬背景前眨眼、双手靠近嘴部的雪人；A 14.000秒 ↔ B 37.560秒为水果和冰淇淋背景前的双雪人及弧形光效。这些对应锚点覆盖A 2.00–14.00秒、B 25.56–37.56秒，与B时间约等于A时间加23.56秒的关系相容。",
+     "evidence_ids": [
+      "E11",
+      "E18",
+      "E12",
+      "E31",
+      "E14",
+      "E20"
+     ],
+     "limitations": [
+      "所列范围是已核对锚点的跨度，不能直接视为连续匹配区间。",
+      "锚点之间及跨度之外的完整对应范围、精确起止位置和播放速度尚未确定；不能据此断言存在删减或重排。"
+     ]
+    },
+    {
+     "statement": "两侧存在明显的画面包装差异：B的对应动画外围可见“吉祥如意”、灯笼、花纹边框，左侧有持吉他的平面雪人，底部有柱状装饰；动画主体部分被这些元素遮挡。A的对应帧可见蚊子图案，部分帧带歌词字幕。因此对应的是动画内容，整幅画面并不相同。",
+     "evidence_ids": [
+      "E11",
+      "E18",
+      "E12",
+      "E31",
+      "E14",
+      "E20",
+      "E5",
+      "E7"
+     ],
+     "limitations": [
+      "画面对应不证明原创归属、素材传递方向或具体制作过程。",
+      "本次仅比较视频画面，未评估音频。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 A",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "video"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"A.mp4\",\"media_type\":\"video/mp4\",\"byte_size\":5279903}"
+  },
+  {
+   "id": "E2",
+   "label": "材料 B",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "video"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"B.mp4\",\"media_type\":\"video/mp4\",\"byte_size\":6862130}"
+  },
+  {
+   "id": "E3",
+   "label": "媒体属性：video，26.601秒，1920×1080，30.000fps，0条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"audio_tracks\":0,\"backend\":\"PyAV\",\"duration_s\":26.601,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":30.0,\"height\":1080,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1920}"
+  },
+  {
+   "id": "E4",
+   "label": "媒体属性：video，46.680秒，1920×1080，25.000fps，0条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"audio_tracks\":0,\"backend\":\"PyAV\",\"duration_s\":46.68,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":25.0,\"height\":1080,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1920}"
+  },
+  {
+   "id": "E5",
+   "label": "视频E1在4.167秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":4.167,\"time_s\":4.167}"
+  },
+  {
+   "id": "E6",
+   "label": "视频E1在4.733秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.034,\"requested_time_s\":4.733,\"time_s\":4.733}"
+  },
+  {
+   "id": "E7",
+   "label": "视频E2在27.720秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":27.72,\"time_s\":27.72}"
+  },
+  {
+   "id": "E8",
+   "label": "视频E2在28.320秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":28.32,\"time_s\":28.32}"
+  },
+  {
+   "id": "E9",
+   "label": "INSPECT align_media 结果",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E1",
+    "E2"
+   ],
+   "content": "{\"backend\":\"SIFT/FLANN + RANSAC + local temporal alignment\",\"boundary_uncertainty_s\":null,\"candidate_relationships\":[],\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":186},\"range_s\":[0.0,26.601]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":325},\"range_s\":[0.0,46.68]}},\"limitations\":[\"coverage 是各输入的处理范围和采样量，failed_ranges 仅指处理失败的区间；它们不表示内容匹配或删减。对应关系见 matches，score 只表示本次调用当前模式内的候选排序，而非结论正确的概率。matches 列出候选对应关系，不是剪辑事件清单或两侧视频的唯一分段。候选可以重叠，不要求全部同时成立；候选数量或重叠本身不能证明发生了删减、重复插入或拼接。range_a_s/range_b_s 是包含采样边界误差的区间，端点之差不是精确时间偏移。每对锚点的 time_b_minus_a_s 是 time_b_s 减去 ti…（共 2031 字）"
+  },
+  {
+   "id": "E10",
+   "label": "视频E1在0.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":0.0,\"time_s\":0.0}"
+  },
+  {
+   "id": "E11",
+   "label": "视频E1在2.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.034,\"requested_time_s\":2.0,\"time_s\":2.0}"
+  },
+  {
+   "id": "E12",
+   "label": "视频E1在6.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":6.0,\"time_s\":6.0}"
+  },
+  {
+   "id": "E13",
+   "label": "视频E1在10.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":10.0,\"time_s\":10.0}"
+  },
+  {
+   "id": "E14",
+   "label": "视频E1在14.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":14.0,\"time_s\":14.0}"
+  },
+  {
+   "id": "E15",
+   "label": "视频E1在18.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":18.0,\"time_s\":18.0}"
+  },
+  {
+   "id": "E16",
+   "label": "视频E1在22.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.034,\"requested_time_s\":22.0,\"time_s\":22.0}"
+  },
+  {
+   "id": "E17",
+   "label": "视频E1在26.500秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":26.5,\"time_s\":26.5}"
+  },
+  {
+   "id": "E18",
+   "label": "视频E2在25.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":25.56,\"time_s\":25.56}"
+  },
+  {
+   "id": "E19",
+   "label": "视频E2在33.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":33.56,\"time_s\":33.56}"
+  },
+  {
+   "id": "E20",
+   "label": "视频E2在37.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":37.56,\"time_s\":37.56}"
+  },
+  {
+   "id": "E21",
+   "label": "视频E2在45.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":45.56,\"time_s\":45.56}"
+  },
+  {
+   "id": "E22",
+   "label": "视频E2在0.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":0.0,\"time_s\":0.0}"
+  },
+  {
+   "id": "E23",
+   "label": "视频E2在12.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":12.0,\"time_s\":12.0}"
+  },
+  {
+   "id": "E24",
+   "label": "视频E2在23.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":23.56,\"time_s\":23.56}"
+  },
+  {
+   "id": "E25",
+   "label": "视频E2在41.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":41.56,\"time_s\":41.56}"
+  },
+  {
+   "id": "E26",
+   "label": "视频E1在4.367秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.033,\"requested_time_s\":4.367,\"time_s\":4.367}"
+  },
+  {
+   "id": "E27",
+   "label": "视频E1在4.700秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.034,\"requested_time_s\":4.7,\"time_s\":4.7}"
+  },
+  {
+   "id": "E28",
+   "label": "视频E2在27.920秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":27.92,\"time_s\":27.92}"
+  },
+  {
+   "id": "E29",
+   "label": "视频E2在28.280秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":28.28,\"time_s\":28.28}"
+  },
+  {
+   "id": "E30",
+   "label": "INSPECT align_media 结果",
+   "source_url": null,
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E1",
+    "E2"
+   ],
+   "content": "{\"backend\":\"SIFT/FLANN + RANSAC + local temporal alignment\",\"boundary_uncertainty_s\":null,\"candidate_relationships\":[],\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":255},\"range_s\":[0.0,23.12]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":255},\"range_s\":[23.56,46.68]}},\"limitations\":[\"coverage 是各输入的处理范围和采样量，failed_ranges 仅指处理失败的区间；它们不表示内容匹配或删减。对应关系见 matches，score 只表示本次调用当前模式内的候选排序，而非结论正确的概率。matches 列出候选对应关系，不是剪辑事件清单或两侧视频的唯一分段。候选可以重叠，不要求全部同时成立；候选数量或重叠本身不能证明发生了删减、重复插入或拼接。range_a_s/range_b_s 是包含采样边界误差的区间，端点之差不是精确时间偏移。每对锚点的 time_b_minus_a_s 是 time_b_s 减去 t…（共 2036 字）"
+  },
+  {
+   "id": "E31",
+   "label": "视频E2在29.560秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E2"
+   ],
+   "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":29.56,\"time_s\":29.56}"
+  }
+ ]
+}

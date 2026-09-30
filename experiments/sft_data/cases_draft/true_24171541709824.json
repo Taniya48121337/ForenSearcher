@@ -1,0 +1,92 @@
+{
+  "case_id": "true:24171541709824",
+  "dataset": "true",
+  "source_id": "24171541709824",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The state of Minnesota has refused multiple requests from the state of Virginia to return a Confederate battle flag captured during the U.S. Civil War.",
+  "family_key": "true:24171541709824",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_24171541709824_r1/artifacts/1d82b421da4348c08b5594d098e9f61e.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "The state of Minnesota has refused multiple requests from the state of Virginia to return a Confederate battle flag captured during the U.S. Civil War."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "gitlab",
+      "description": "28th Virginia battle flag | Minnesota Historical Society（E2）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "mnhs.gitlab.io/archive/education-resources/www.mnhs.org/education/resources/28th-virginia-battle-flag.html*",
+      "acquired_by": null
+    },
+    {
+      "key": "latimes",
+      "description": "Virginia Mounts New Charge to Get Back Flag - Los Angeles Times（E6）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "latimes.com/archives/la-xpm-2000-feb-10-mn-62964-story.html*",
+      "acquired_by": null
+    },
+    {
+      "key": "mnhs",
+      "description": "Twenty-eighth Virginia Infantry Regimental Battle Flag | MNopedia（E3）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "mnhs.org/mnopedia/search/index/thing/twenty-eighth-virginia-infantry-regimental-battle-flag*",
+      "acquired_by": null
+    },
+    {
+      "key": "twincities",
+      "description": "Minnesota has a Confederate symbol — and it is going to keep it – Twin Cities（E9）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "twincities.com/2017/08/20/minnesota-has-a-confederate-symbol-and-it-is-going-to-keep-it*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "核查明尼苏达州是否曾多次拒绝弗吉尼亚州要求归还一面美国内战期间缴获的邦联战旗的请求；哪些请求及拒绝有证据支持；是否确由两州官方提出和作出；而非其他组织或个人",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "核查“明尼苏达州多次拒绝弗吉尼亚州要求归还一面美国内战期间缴获的邦联战旗”所涉及旗帜的身份与来源；它是否确为美国内战期间缴获的邦联战旗；现有保管归属是否支持该声明中的对象对应关系（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:gitlab,latimes,mnhs,twincities",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_24171541709824_r1 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

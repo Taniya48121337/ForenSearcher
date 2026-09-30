@@ -1,0 +1,57 @@
+[
+  {
+    "request_id": "request_0003",
+    "assessment": {
+      "request_id": "request_0003",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "E3已就绪，其他直接相关页面有明确获取失败记录，优先读取E3合理且可执行。动作本身质量充分；但其输入已包含与被排除AFP文章高度关联的标题和摘要，当前材料不足以认证独立来源条件。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0004",
+    "assessment": {
+      "request_id": "request_0004",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "查询标题来自先前可见的R1，日期与E3活动描述及任务背景相容；寻找视频来源有助于补充图片与报道之间的联系。不能因结果夹杂无关视频判查询错误。来源隔离问题仍未解决。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0005",
+    "assessment": {
+      "request_id": "request_0005",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "实际附图中E9与E1共享山羊、红制服队列和城堡场景，读取对应E8并保留两图比较合理。E7是街道游行封面，E13是音乐专辑，E11是峰会宣传图；演员没有把这些无关或较弱材料混作已验证来源。暂不能认证其输入符合原文章隔离条件。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0006",
+    "assessment": {
+      "request_id": "request_0006",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "R9和参数均合法。此前页面、封面已取得，再次请求的新增目标不够明确，最终也未取得视频本体；但这是首次按该来源请求，且目录未明确下载机制，最多构成有限效率缺陷，不能判作明确不可执行。来源隔离仍阻止候选导出。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "报告已真实提交。其可见场景、来源归属和静态图片限制基本有据，局部COMPLETED合理；没有宣称山羊后来未被献祭，也未声称完成全视频核验。事件关联仍依赖封面与说明的综合判断。独立来源条件未获认证，因此不能仅凭内容正确直接导出。"
+    },
+    "execution_status": "report_committed"
+  }
+]

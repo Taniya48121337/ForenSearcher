@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "true_4124903_r2",
+  "source_request": "request_0037",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "关于2016年7月14日埃菲尔铁塔附近的火光和浓烟，巴黎警方和新闻报道认定它是什么事件？它与同日尼斯的袭击有没有关联？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2（COMPLETED）F4（干净）引 E23：巴黎警察局当晚通报，铁塔没有起火，耶拿桥（pont d’Iéna）发生意外卡车火灾，已扑灭。W1-1（COMPLETED）F2（干净）引 E20（Snopes）、E21（Infobae）：两篇报道转载同一警方声明，Infobae 另明确报道该火灾与尼斯袭击无关。W2-1 F10（干净，E23、E20、E28、E4）作同样说明。限制：F4 写明通报没有说明起火机制；F2 写明两篇报道引用的是同一声明，不是两项独立调查，警方原帖经 E23 才直接读取。W1-2 F5（“烟花意外爆炸”）被 r0 判 wrong_citation，不作依据。现有干净 Finding 足以回答，不需要再查。",
+      "review": "通过"
+    },
+    {
+      "id": "v2",
+      "task": "YouTube 视频 YmDMziYntEs 的上传日期和标题标注是什么？能否据此确定给定视频 A 的拍摄日期？",
+      "expected_decision": "FINISH",
+      "rationale": "W2-1 F9（干净）引 E24、E26：YmDMziYntEs 与 cv_F3UkbdbI 的平台元数据上传日期均为 20160714，YmDMziYntEs 的标题和描述标为“ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016”。限制取 F9：上传日期不等于拍摄日期，A 与候选视频的素材对应尚未确认（W2-1 status_reason 同）。第一问由 E24 直接回答；第二问的否定由证据性质决定，补查也改变不了“上传日期不能确定拍摄日期”。与 v4（查首发来源）同话题，形成 FINISH↔INVESTIGATE 对照。",
+      "review": "通过"
+    },
+    {
+      "id": "v3",
+      "task": "给定视频 A 里有没有与 YouTube 视频 YmDMziYntEs 的封面图对应的画面？如有，给出 A 中的时刻和能区分的对应细节，并说明据此能把 A 与该视频的关系确认到什么程度。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W2-1（INCOMPLETE）专门对照过 A 与该候选，status_reason 只写“候选公开视频仅取得封面和元数据，尚未建立与材料 A 的视频帧及片段时序对应”。F8（r0 判 minor 越界，recalibrate 后 clean）只把封面 E19、E27 与 A 的 0 秒（E28）和 2.1 秒（E3）两帧比较，结论是“相容，但不足以确认同一视频片段”。visual_observation_summary 显示 A 只看了 0、0.5、1.0、1.5、2.1、6.27、10.47、14.63、18.83、23.0 秒 10 个时刻，其余区间未确认。烟雾轮廓随时间变化；如果 A 的某一帧与封面在烟雾形态、灯光和构图上逐处对应，就能确认 A 至少包含封面所用的画面，这会改变现有“相容但不足以确认”的结论。HI 可用 get_frames 在 A 全段加密取帧，再用 crop 与 E19（同图 E25）比对。限制：系统不下载 YouTube 视频文件，封面对应也不能证明整段相同。can_create_round=true，remaining_turns=2。",
+      "review": "修改"
+    },
+    {
+      "id": "v4",
+      "task": "查找给定视频 A 的原始拍摄者，以及它最早公开发布的时间与平台。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "状态中没有任何 Finding 确定 A 的原始拍摄者或首发来源。W1-1 F3 的限制写明原始拍摄者、首次发布来源尚未确定（F3 被 r0 判 minor 越界，recalibrate 后 clean，这里只用它的限制）；W2-1 F9（干净，E24、E26）只给出两个 YouTube 候选的上传日期，并写明它们与 A 的对应未确认。已有的来源线索很薄：Dailymotion 页面 E12、E13、E16 只抽到导航文字，E14 只有一行标题；E24 的 channel 字段是播放量“5,555,554 vues”，不是上传者；E26 的频道为 Rutnet。本 run 有 ddgs 搜索，HI 可以按视频标题和当日社交媒体转发（如 E21 中嵌入的 2016-07-14 推文）检索更早的发布，并用封面 E19、E27 与 A 的帧比对。缺口真实，能取得新证据；结果可能仍只是候选。can_create_round=true，remaining_turns=2 仍允许开新轮。",
+      "review": "修改"
+    }
+  ]
+}

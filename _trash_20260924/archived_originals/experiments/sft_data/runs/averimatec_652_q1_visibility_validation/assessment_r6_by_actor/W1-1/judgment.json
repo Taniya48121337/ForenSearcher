@@ -1,0 +1,213 @@
+{
+  "assessment_scope": "仅评估 W1-1 的 11 个 HI 输出，按每次独立会话实际收到的文字、图片和此前反馈判断。已按对象表递归解读引用。request_0001—request_0010 实际仅附 E1；request_0011 附 E1、E17、E18、E15、E16、E19、E21、E24。官方参考仅用于交叉检查；脚本化 dispatcher 的 FINISH 不作为 GIA 目标。以下角色维度加权为 3.80/4，即 95/100，已评分维度及适用权重覆盖率均为 100%；汇总分不替代逐项候选判定。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11 次原始输出均与接受输出一致，10 次动作有对应观察，末次报告有提交记录。request_0002 的图片上传限制和 request_0009 的图片格式失败均有真实反馈；executed 只证明请求得到处理，不代表取证成功。本例不是 terminal_replay。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "各动作使用当时可选择的 E1、E7、E14 或已出现的来源 URL。Wrigley、火灾和月份线索均在相应后续查询前进入输入。末次 E1 与 E15 的像素同时可见，E14 正文也通过历史记录实际保留，并非依赖累计观察计数恢复内容。未见使用官方参考链接、未来结果或未附图片的断言。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "实际像素支持 E1 与 E15 为同一照片的不同裁切：人物姿态、绿色剪刀、扶犬的手、犬只姿态及车门隔栏细节对应。E14 第 1、5—7 段支持 Southlake 火灾救援、住户饲养的 11 月龄 Wrigley 及被放入警车。反例也已区分：E17/E18 是警车侧面另一视角；E19/E21 是消防员与另外两只犬；E24 是深色犬接受救助，均不能代替目标照片对应。报告只引用匹配照片和相关正文，没有采用这些无关图片，也没有把参考标注中的所有背景事实补进结论。",
+          "request_ids": [
+            "request_0006",
+            "request_0007",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部问题核查照片中的犬是否属于“发现其无家可归后寻求领养”的事件。匹配照片与独立新闻正文共同支持该照片记录的是住户犬只的火灾救援，足以否定题述事件叙述。任务没有要求核验最早发布日、必须取得 Facebook 原文或查清犬只此后一切去向，因此末次 COMPLETED 合理。不能据此扩展为整个背景声明及传播链均已完成核验。",
+          "request_ids": [
+            "request_0007",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "主要路线合理：读取候选正文、尝试其中真实链接、补齐照片对应，并在足以回答局部问题后停止。两次工具失败后均有效换路。小缺陷是首轮查询堆叠较多叙事词，以及 request_0009 通过文章 URL 直接请求图片，获取路径较弱；不能用后来的命中结果倒推此前合理探索错误。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "末次明确说明依据是 WFAA 报道和匹配照片，Facebook 原帖未能读取，报道没有明确讨论领养或后续去向。其结论限定为 documented circumstances，没有声称亲自核验原帖、主人拒收、最终团聚或此后从未发生领养。该限制与当前局部回答相容，不应机械判为 INCOMPLETE。",
+          "request_ids": [
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "首轮查询较拥挤，request_0005 再以 adoption 为中心的查询区分力有限，request_0009 的网页取图路径增加了一次失败尝试。其余动作有明确增量：E7 用于辨别候选事件，E14 提供相关正文，最后的图片检索解决素材对应缺口。持续保留 E1 有比较用途，不是反复读取同图；证据充分后也没有继续调查无关消防图片。",
+          "request_ids": [
+            "request_0001",
+            "request_0004",
+            "request_0005",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "Southlake DPS Facebook 帖文正文未取得；WFAA 所链接帖文与官方参考中的另一帖文地址之间的关系未核实。当前任务不要求证明两者相同。",
+        "WFAA 没有明确说明是否曾提出领养或犬只后续去向。这是调查对象仍有未知，不是缺少评审材料；末次报告已披露该边界，不能将其解释为完整去向核查。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "查询中的 Southlake、Chloe 和领养叙述来自任务，E1 当前可见；reunited 可作为待检索假说，并未被断言为事实。叙事词堆叠使查询区分力偏弱，但请求合理、合法，不能因返回无关结果而判错。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "使用当前 E1 做图文搜索，直接针对照片来源缺口。决策前 SEARCH schema 明确提供 text_image，尚未披露禁止上传的部署限制。此次收到真实 ACCESS_RESTRICTED 反馈，应作为合理失败尝试保留，不能记为图搜成功，也不能追溯判定演员明知不可执行。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "获知图片上传受限后改用文本搜索，缩减查询并聚焦机构与犬只重聚线索。没有重复被拒绝的上传请求，属于有针对性的恢复行动。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E7 已取得且可选择，候选涉及 Southlake 警员与犬只，读取正文有助于确认或排除对应。候选的 2022 年及寒冷天气线索降低匹配可能性，但旧照片可能被再次使用，不能据此认为读取无价值。后续也未将这个两犬逃逸事件用于最终结论。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "读取 E7 后仍未建立目标照片对应，以机构和 adoption 检验题述事件有合理目的。与首轮相比有缩减和精确短语变化，但仍容易匹配一般领养信息，属于查询质量的小缺陷，而非无价值原样重复。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E1 可见浅色蓬松卷毛犬，以 goldendoodle 作为候选描述缩小搜索范围合理；查询词不是犬种已经核实的事实断言。请求没有提前使用尚未返回的 Wrigley 或火灾答案。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前 WFAA 候选摘要描述警员、屋内吠叫及 Goldendoodle，E14 正文已保存。选择 READ_RECORD 获取具体事件依据，满足从摘要线索到可引用正文的必要步骤。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "请求 URL 逐字来自已读 E14 第 2 段链接，属于沿真实线索核查相关机构原帖。此前 Facebook 主页提取失败不证明具体帖文也不可读。此次失败被如实保留；该链接不同于官方参考地址，不构成编造或泄漏。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "获取 WFAA 配图可解决当时尚缺的素材对应，且保留 E1 便于比较。将已知文章 URL 请求为图片是较弱的获取路径，但当时接口没有说明不能提取网页内图片，因此不能以后来的 UNSUPPORTED_FORMAT 反推其为明确不可执行请求。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在网页取图失败后改用文本检索图片，Wrigley、救火情节来自 E14，2023 年 2 月来自此前可见的同源候选摘要。继续保留 E1，明确解决照片匹配缺口，没有原样重试或提前使用检索结果。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际附图包含 E1、E15，二者细节支持同照不同裁切；E14 全文也在当前历史输入内。报告准确结合照片关联和 WFAA 对住户犬 Wrigley 的火灾救援报道，回答题述事件，并明确披露原帖未读及领养后续缺证。它没有将无关消防图片作为证据，也没有把救出推断为已团聚。当前任务不要求原始发布日期或穷尽后续去向，COMPLETED 与自主停止均合理，尚余一轮不构成必须追加调查的理由。"
+    }
+  ],
+  "construction_revisions": [
+    "在决策前的 SEARCH 能力说明中明确当前部署禁止上传调查图片，保留已有上传限制；避免 schema 展示可用输入方式却到执行时才披露部署禁用。",
+    "明确 source 加 output_type=image 对网页 URL 的实际行为：是否提取内嵌图片，还是仅接受直接图片资源。保留 request_0009 的真实失败和 request_0010 的恢复链。",
+    "导出时分别保存请求已处理、材料取得成功及报告已提交的状态，避免将本例 10 次 executed 误读为 10 次成功取证。",
+    "保持逐次实际附件清单和正文展开内容；本例末次成立依赖 E1、E15 的同时可见及 E14 正文留存，不能在压缩导出时仅保留 E 编号或累计观察数。",
+    "将本例作为来源条件校准样例：使用独立新闻正文与匹配照片回答事件问题，原帖获取失败据实披露；不追加最早发布日期或完整后续去向要求。"
+  ],
+  "rubric_revisions": [
+    "增加复合事件问题的校准例：证据足以否定“发现无家可归犬后送养”这一叙述时，可以完成该局部问题；这不等于证明犬只此后从未被送养。必须核对输出自身是否已限定范围。",
+    "增加能力未披露导致失败的校准例：schema 允许而部署首次拒绝的合理请求，与收到限制后仍重复请求分别处理；执行失败本身不自动决定 exclude。",
+    "增加图片对应的正反例校准：E1/E15 的共同细节支持同照不同裁切；E17 的另一视角及 E19/E24 的其他救犬场景不能单凭主题相似证明同一素材。",
+    "保留报告与停止分别评分的规则：仍有预算时，应指出具体且影响答案的必要缺口才拒绝停止；本例未取得原帖及后续去向不自动构成这种缺口。"
+  ]
+}

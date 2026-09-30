@@ -1,0 +1,24 @@
+[
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E18/E10、E19/E11、E20/E14、E21/E16。动作再次切换至E7、E22、E23、E25、E26、E27、E29、E8这一组全B侧旧图，未增加时点或A侧对应依据，并将刚恢复的差异帧对全部移出下一输入。旧像素重附本身合法，但此处可以用混合焦点保留命中对与候选边界，避免反复丢失比较结果；该输出适合作为真实历史保留。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E31/E38、E23/E39、E34/E40、E36/E41。新增B侧1.267、1.300、1.333、2.467、5.700秒具有局部边界调查价值；问题是已知下一轮必须报告，却只保留E36/E41这一组同刻对照，另占一格保留单侧E37。新B帧没有同刻A帧，其他当前对照也随之丢失。可缩减单侧密集批次并保留更多当前帧对，使终轮同时报告不同位置的差异或排除点；应从该状态修复并重新生成后续报告。"
+    },
+    "execution_status": "executed"
+  }
+]

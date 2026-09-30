@@ -1,0 +1,122 @@
+{
+  "assessment_scope": "仅依据所供材料并递归解析对象引用，评估steps中W1-1（HI）的request_0002至request_0007共六个输出。result中的GIA决定及参考答案不作为监督目标或独立真值。未调用工具、检查文件或进行外部核验；包中没有实际附图，不能作像素、音频或视频覆盖判断。七个维度评分覆盖率为100%，按给定权重计算为3.80/4（95/100）；该分数不代替逐目标判定。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "五个工具动作均有原始输出、接受输出及执行观察对应，报告有提交记录，raw_equals_accepted均为true。后续输入提供了相应搜索结果和读取正文。这确认执行对应，不证明事实或决策正确。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取E2、E5、E7时，相应证据均已进入当前可见集合；报告仅引用已读E2和E5。E5实际只读了第一页，但报告使用的第3段就在该页，未借用result中的完整正文。首轮查询中的厂家、系列和年份属于待验证检索线索，不能仅凭其具体程度认定标注泄漏。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的量产商品说法对应E2第1、4、6段，1995年发现时可在杂货商店购买对应已读E5第3段。并非只用设计年份或选景时发现面具推导可购买性。E2与E5对设计者的描述不同，但报告未声称设计者身份；也未把E7当成已证实独立的佐证。",
+          "request_ids": ["request_0007"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部任务要求核查上映前是否可购买，并说明范围与不确定性，没有强制要求销售原件、首次开售日期或视频核验。报告回答核心命题，区分商品与名称，并披露回顾性来源的限制，COMPLETED合理。",
+          "request_ids": ["request_0007"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "首次搜索及读取E2、E5能够解决核心问题，最终停止也有足够依据。中间补搜与读取E7仍相关且可执行，但在E2、E5已有量产及零售记载后，进一步补查的具体必要性较弱，不宜给满分。不能用后来E7内容有限倒推读取新来源本身错误。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确依据为回顾性报道和专题介绍，未声称核验销售目录、交易记录或精确开售日期。可见材料中1991年设计、1992年零售准备等线索不能直接等同；最终报告没有作这种等同，也没有宣称检查过视频或声音。",
+          "request_ids": ["request_0007"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "两次搜索关键词高度重合，第二次搜索及E7读取对已有答案的新增价值有限，构成满分的具体反例。但补搜增加了零售和RJ Torbert线索，读取的是新记录，没有反复读取相同正文或原样重试被拒请求，因此不是明显无价值循环。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "当年销售原件和首次开售精确日期未核验；报告已披露，且不是本局部任务的强制交付项。",
+        "来源之间的独立性未建立。E7链接E5，不能仅按网站数量计算独立佐证数量。",
+        "E1没有内容观察记录，包中也没有实际图像或可听音频；其内容、真实性和覆盖范围均不可判定，但报告没有依赖这些未知作结论。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在只有声明及视频卡片的状态下，搜索面具的生产与销售历史能直接推进核查，参数符合可用接口。具体年份作为查询线索不等于提前断言其正确，亦不能因随后命中参考文章认定偷用答案。执行记录与后续观察对应。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E2在当前证据集合中，搜索摘要直接涉及电影前量产。读取正文可核对摘要及其依据；Snopes同时是评审参考来源，并不使搜索合法取得的正文成为禁止材料。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已读E2后，读取可见的面具历史专题E5有助于补充商品流通依据。动作选择应按当时相关标题和摘要判断，不能以后来第3段正好包含零售记载作为唯一合理性依据。返回第一页确实包含报告后来引用的内容。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "加入sold stores和已读E5介绍的RJ Torbert，仍可合理寻找更直接的销售历史说明，且动作实际执行。缺点是与首轮查询大幅重合，而E2、E5已支持核心命题，补证目标不够集中；属于增益有限的合理探索。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "E7是新搜索得到且当前可读取的相关记录，其摘要涉及Fun World授权人员，有潜在补证价值。已有证据较充分使本次读取的必要性有限，但不能因最终未引用E7，或读后发现它链接E5，就判定读取前的选择无效。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "报告引用的关键内容都在实际已读范围内，准确回答上映前可购买性，并限定为回顾性材料支持的结论。设计年份不等于销售年份、发现现成面具不等于证明零售这两个潜在反例，由E2的量产记载及E5第3段明确零售表述共同补足。没有冒称原件核验、来源独立或视频检查。虽仍余六轮，但不存在必须继续完成的具体证据要求，COMPLETED及提交决定均合理。"
+    }
+  ],
+  "construction_revisions": [
+    "导出目标限定为steps中的六个W1-1输出；result中的GIA决定、参考结论及执行汇总仅保留为评审上下文。",
+    "保持E5实际读取页、content_offset和next_offset=6000与该次输入绑定，不能用result中的完整E5正文替换演员当时可见内容。",
+    "若构造效率更高的替代轨迹，可从已读E2、E5的状态重新生成直接报告分支，或明确补查所要解决的零售出处问题；改写动作后应重新执行对应分支。",
+    "若另行测试独立于现成事实核查文章的取证能力，应预先写明来源使用要求，不能因本次合法检索到Snopes而事后判为泄漏。"
+  ],
+  "rubric_revisions": [
+    "增加检索假设与事实断言的对照例：查询中出现尚未证实的厂家、年份或系列名，不自动构成幻觉或未来信息使用。",
+    "用本例校准历史商品核查：设计、量产、零售可得性及名称启用是不同命题；回顾性来源可以支持有限结论，但不能据此宣称已核验同期销售原件。",
+    "效率评分应区分必要补查、有限增益的新来源读取和无信息增益的重复；未被最终引用不等于当时选择错误。",
+    "明确来源数量不等于独立证据数量，同时按任务相关性处理外围分歧，不将未报告设计者争议自动升级为核心核查失败。",
+    "对于仅在必要时检查媒体的任务，不因媒体未检查机械判INCOMPLETE；媒体相关能力也不能由此记为已经验证。"
+  ]
+}

@@ -1,0 +1,323 @@
+来源 D 离线换题：Ollama qwen3-vl 教师 + gemma3 核验 开始 周一 2026/09/28 21:30:56.36 
+变体 15 个（FINISH 9 / INVESTIGATE 6），来自 4 个源 run
+  stale      true_24171541709824_r1__D_v1                       期望 FINISH
+  stale      true_24171541709824_r1__D_v2                       期望 FINISH
+  done       true_24171541709824_r1__D_v3                       期望 INVESTIGATE
+  done       true_24171541709824_r1__D_v4                       期望 INVESTIGATE
+  stale      true_4124903_r1__D_v1                              期望 FINISH
+  stale      true_4124903_r1__D_v2                              期望 FINISH
+  stale      true_4124903_r1__D_v3                              期望 INVESTIGATE
+  done       true_4124903_r1__D_v4                              期望 INVESTIGATE
+  stale      videosham_1028_r2__D_v1                            期望 FINISH
+  stale      videosham_1028_r2__D_v2                            期望 FINISH
+  stale      videosham_1028_r2__D_v3                            期望 FINISH
+  todo       videosham_1028_r2__D_v4                            期望 INVESTIGATE
+  stale      videosham_2010_r1__D_v1                            期望 FINISH
+  stale      videosham_2010_r1__D_v2                            期望 FINISH
+  stale      videosham_2010_r1__D_v3                            期望 INVESTIGATE
+true_24171541709824_r1__D_v1: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\true_24171541709824_r1__D_v1-20260928-213058，重跑
+{"request": 1, "role": "GIA", "images": 0, "output": {"decision": "FINISH", "answer": "2003年，弗吉尼亚州时任州长Mark Warner要求明尼苏达州归还第28步兵团战旗。明尼苏达州州长Tim Pawlenty回应拒绝，并表示战旗属于明尼苏达。这一回应有明确证据支持：《Twin Cities》（R12）在2017年报道中记载，2003年Virginia官员包括Mark Warner要求归还，Pawlenty明确拒绝并称其为明尼苏达所有。该事件虽未取得原始函件或同期官方记录，但作为双方州长参与的正式交涉实例，在现有材料中最明确支持此结论。"}}
+{"request": 2, "role": "GIA", "images": 0, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核查2003年明尼苏达州州长Tim Pawlenty对弗吉尼亚州州长Mark Warner要求归还第28步兵团战旗的回应是否属实：明确说明该回应在现有材料中的具体表述、出处及证据支持范围。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。", "materials": ["C0", "E9"]}, {"task": "核查是否存在其他2003年明尼苏达州官方拒绝弗吉尼亚州归还战旗的记录或声明：检查是否有多方媒体、档案或政府文件支持该事件，包括但不限于州政府函件、新闻发布会、立法提案等。必要时搜索外部证据并交叉比对。依据实际证据回答，说明结论范围与不确定性。", "materials": ["C0", "E6"]}]}}
+true_24171541709824_r1__D_v1: 期望 FINISH，教师给 INVESTIGATE — ✗ 与期望不一致
+true_24171541709824_r1__D_v2: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\true_24171541709824_r1__D_v2-20260928-213113，重跑
+{"request": 1, "role": "GIA", "images": 0, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核查这面邦联战旗目前的保管机构：根据现有材料，它是否确由明尼苏达历史学会保管？是否有证据支持其馆藏状态及归属关系。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。", "materials": ["C0", "E2", "E3", "E5"]}, {"task": "核查这面邦联战旗从战场缴获到进入明尼苏达历史学会馆藏的路径：根据现有材料，它是否确由明尼苏达第1志愿步兵团士兵Marshall Sherman在葛底斯堡战役中缴获，并经由战争部登记后于19世纪末返回明尼苏达？是否有证据支持该路径中的关键节点和机构流转关系。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。", "materials": ["C0", "E2", "E3", "E5"]}]}}
+true_24171541709824_r1__D_v2: 期望 FINISH，教师给 INVESTIGATE — ✗ 与期望不一致
+true_4124903_r1__D_v1: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\true_4124903_r1__D_v1-20260928-213118，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "巴黎警方在2016年7月14日明确说明，埃菲尔铁塔附近并无恐怖袭击。火情发生在耶拿桥上一辆装载烟花的卡车因技术事故起火，随后被扑灭。相关官方通报（E21、E24）及主流媒体如Snopes（E11）、《纽约每日新闻》（E22）均确认此为意外事故，并指出当时流传的恐怖袭击说法是误传。视频材料（E3、E5、E7、E10等帧）显示铁塔附近有烟雾和火光，但画面本身无法证明恐怖袭击性质；结合官方通报与媒体核查，可确定火情系技术故障所致，而非恐怖事件。"}}
+true_4124903_r1__D_v1: 期望 FINISH，教师给 FINISH — ✓ 与期望一致
+true_4124903_r1__D_v2: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\true_4124903_r1__D_v2-20260928-213126，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "给定视频 A 的画面本身不能证明巴黎发生了恐怖袭击。画面显示夜间亮灯的埃菲尔铁塔附近有大量烟雾和明火，但这些视觉元素不足以确定事件性质为恐怖袭击。综合外部可靠来源记载，2016年7月14日法国国庆日期间，埃菲尔铁塔附近的火情被官方定性为意外事故：一辆装载烟花的卡车在耶拿桥发生技术故障起火，随后被扑灭。巴黎警察局和多个权威媒体（如 Snopes、纽约每日新闻）均明确指出，该事件与尼斯发生的袭击无关，并澄清了网络上流传的恐怖袭击谣言。因此，画面支持‘埃菲尔铁塔附近出现火焰和浓烟’这一事实，但不能支持‘巴黎发生恐怖袭击’的说法。"}}
+true_4124903_r1__D_v2: 期望 FINISH，教师给 None — 失败：LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 3, column 1 (offset 204 in the JSON after removing outer whitespace, thinking tags and fences)
+true_4124903_r1__D_v3: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\true_4124903_r1__D_v3-20260928-213216，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "给定视频 A 的原始拍摄者与最早发布时间无法核实。视频内容显示的是2016年7月14日法国国庆日期间埃菲尔铁塔附近发生的意外卡车火灾，而非恐怖袭击。该事件的官方通报来自巴黎警察局，明确指出火情是技术事故所致，并非恐怖袭击。视频 A 与 YouTube 视频 cv_F3UkbdbI 在画面内容和时间上高度吻合，但无法确认前者是否为后者的直接来源或原始拍摄者。因此，无法核实该视频的原始拍摄者及最早发布时间。"}}
+{"request": 2, "role": "GIA", "images": 8, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核实给定视频 A 的原始拍摄者与最早发布时间，并确认其是否为 YouTube 视频 cv_F3UkbdbI 的直接来源。若无法确认，说明原因。", "materials": ["C0", "E1", "E16"]}, {"task": "核查材料 A 与 YouTube 视频 cv_F3UkbdbI 在画面内容和时间上的对应关系，并判断是否为同一段视频。必要时对比帧级细节。", "materials": ["C0", "E1", "E17"]}]}}
+true_4124903_r1__D_v3: 期望 INVESTIGATE，教师给 INVESTIGATE — ✓ 与期望一致
+videosham_1028_r2__D_v1: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_1028_r2__D_v1-20260928-213233，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "视频 A 与 B 的标题文字不同。在视频 A 中，左下角蓝色标题区显示单行白色无衬线文字“lorem ipsum”（见 E5、E10）。在视频 B 中，同一区域显示两行白色手写体文字“A conversation about CRPS”（见 E7、E12、E13）。这种差异直接影响观众对画面主题的理解：B 的标题明确提示了“关于 CRPS 的谈话”，而 A 的占位文字未提供该主题信息。"}}
+videosham_1028_r2__D_v1: 期望 FINISH，教师给 FINISH — ✓ 与期望一致
+videosham_1028_r2__D_v2: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_1028_r2__D_v2-20260928-213241，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核验视频 A 与 B 的主体画面是否来自同一镜头。具体任务：对照 E5、E7、E10、E12、E13、E17、E18、E16 等帧，检查人物姿态、拐杖位置、背景建筑及树木道路的对应关系；结合 F2 和 F3 的结论，判断是否存在可确认的视觉差异或编辑痕迹。引用具体证据和时间点，说明判断范围和限制。", "materials": ["E5", "E7", "E10", "E12", "E13", "E17", "E18", "E16"]}, {"task": "核验音频内容是否影响画面含义的理解。具体任务：确认现有材料中是否存在可直接听取的音频或语音转写；若无，说明无法核验声音差异及其语义影响，并引用 F7 和 F8 的限制性结论。", "materials": ["E20", "E12", "E13"]}]}}
+videosham_1028_r2__D_v2: 期望 FINISH，教师给 INVESTIGATE — ✗ 与期望不一致
+videosham_1028_r2__D_v3: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_1028_r2__D_v3-20260928-213250，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核验视频 A 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“lorem ipsum”相对应。", "materials": ["E1"]}, {"task": "核验视频 B 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“A conversation about CRPS”相对应。", "materials": ["E2"]}]}}
+videosham_1028_r2__D_v3: 期望 FINISH，教师给 INVESTIGATE — ✗ 与期望不一致
+videosham_1028_r2__D_v4: 期望 INVESTIGATE，教师给 None — 失败：LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 3, column 1 (offset 371 in the JSON after removing outer whitespace, thinking tags and fences)
+videosham_2010_r1__D_v1: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_2010_r1__D_v1-20260928-213307，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "视频A与B中的车辆所处场景环境不一致。在视频A中，背景是卡通风格的山脉、云朵和栅栏，呈现的是插画道路中的汽车行驶场景；而在视频B中，背景是真实的户外环境，包含围观人群、其他汽车、树木和建筑物，表达的是汽车经过人群及停放车辆的现场语境。这种差异影响了画面所传达的场合：A更偏向于虚构或动画情境，而B则保留了真实世界中的社交与交通场景。"}}
+videosham_2010_r1__D_v1: 期望 FINISH，教师给 None — 失败：LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Extra data at line 3, column 1 (offset 227 in the JSON after removing outer whitespace, thinking tags and fences)
+videosham_2010_r1__D_v2: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_2010_r1__D_v2-20260928-213322，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "现有的视觉和音频对齐结果无法建立视频 A 与 B 之间可靠的时间对应关系。原因在于，视觉对齐工具（SIFT/FLANN + RANSAC）和音频对齐工具（局部频谱序列对齐）均未返回任何候选对应关系。这表明在当前采样范围内，没有找到足以确认时间映射的匹配点或音画同步证据。该结论的边界是：1) 未发现对应不等于两段视频不存在来源关联；2) 无法排除经过较大改动后的对应内容，例如剪辑、变速或重排；3) 工具精度限制（如 boundary_uncertainty_s=null）和采样间隔（0.04秒）不能换算为精确时间偏移或可排除的最短编辑长度。现有证据仅确认了两段视频在特定采样时刻的画面差异，但无法建立连续的时间映射。"}}
+{"request": 2, "role": "GIA", "images": 8, "output": {"decision": "INVESTIGATE", "tasks": [{"task": "核查视频A与B在时间上是否存在可靠对应关系，需确认对齐工具的输出是否足以建立映射。具体检查：1) 视觉对齐结果E5和E18是否包含候选对应；2) 若无候选，评估其未返回的原因（如采样间隔、纹理或编辑）；3) 依据现有证据判断时间偏移范围及不确定性边界。", "materials": ["E5", "E18", "E14", "E15", "E16", "E17", "E13"]}, {"task": "确认视频A与B在画面内容上的差异是否足以支持或反驳其来源关系，需验证：1) 两段视频中车辆及乘员的外观一致性（如E13与E23、E17与E19）；2) 背景环境差异（如写实场景与卡通背景）对画面含义的影响；3) 检查是否存在可解释差异的非编辑性因素（如视角变化、遮挡或局部重绘）。", "materials": ["E14", "E15", "E16", "E17", "E23", "E19", "E13"]}, {"task": "评估现有对齐工具的局限性，包括：1) 未返回候选对应的原因（如低纹理、镜像或大幅编辑）；2) boundary_uncertainty_s=null 是否允许推断精确时间偏移；3) 采样间隔0.04秒是否足以覆盖可能的剪辑边界的误差上限。", "materials": ["E5", "E18"]}]}}
+videosham_2010_r1__D_v2: 期望 FINISH，教师给 INVESTIGATE — ✗ 与期望不一致
+videosham_2010_r1__D_v3: 题面已修订，旧 run 挪到 experiments\sft_data\runs_offline\_stale\videosham_2010_r1__D_v3-20260928-213339，重跑
+{"request": 1, "role": "GIA", "images": 8, "output": {"decision": "FINISH", "answer": "A 中红色敞篷车的画面与 B 中车辆画面在时间上无法精确对应，因为视觉对齐工具未返回任何候选对应关系（E5、E18）。虽然两段视频中均出现相同型号的红色敞篷车及车内乘员（如戴红帽男子和儿童），但 A 的背景为卡通化道路与山脉，B 的背景则为真实汽车聚会现场。这种环境差异表明两者并非同一来源或未发生直接编辑关联。已排除 B 中 2.96 秒帧的对应可能性，因其车内乘员在 A 中其他时间点（如 E14、E15、E17）均无法在相同构图下匹配。现有证据不足以确认任何具体时间映射或剪辑关系。"}}
+videosham_2010_r1__D_v3: 期望 INVESTIGATE，教师给 FINISH — ✗ 与期望不一致
+
+本批 12 个：完成 9，与期望一致 3/9
+
+接着核验与导出：python scripts\complete_verify_local.py --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --endpoint http://127.0.0.1:11434/v1 --model gemma3-12b-16k:latest
+核验模型：local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1（本地，不花钱）；产物标签 .local-gemma3-12b-16k-latest
+run：12 个（集合 12runs-73623276）；步骤 1–6
+
+[1/6] 三层核验工作区报告 → experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/12] true_24171541709824_r1__D_v1: 2 份报告，W1-1=negative, W1-2=negative
+[2/12] true_24171541709824_r1__D_v2: 2 份报告，W1-1=negative, W1-2=negative
+[3/12] true_24171541709824_r1__D_v3: 2 份报告，W1-1=negative, W1-2=negative
+[4/12] true_24171541709824_r1__D_v4: 2 份报告，W1-1=negative, W1-2=negative
+[5/12] true_4124903_r1__D_v1: 2 份报告，W1-1=negative, W1-2=negative
+[6/12] true_4124903_r1__D_v3: 2 份报告，W1-1=negative, W1-2=negative
+[7/12] true_4124903_r1__D_v4: 2 份报告，W1-1=negative, W1-2=negative
+[8/12] videosham_1028_r2__D_v1: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[9/12] videosham_1028_r2__D_v2: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[10/12] videosham_1028_r2__D_v3: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[11/12] videosham_2010_r1__D_v2: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[12/12] videosham_2010_r1__D_v3: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+{
+  "reports": 32,
+  "disposition": {
+    "negative": 23,
+    "uncertain": 9
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 32
+  },
+  "errors_total": {
+    "unsupported_assertion": 43,
+    "wrong_citation": 6,
+    "omitted_required_fact": 34,
+    "completed_without_finishing": 14
+  },
+  "errors_firm": {
+    "unsupported_assertion": 43,
+    "wrong_citation": 6,
+    "omitted_required_fact": 34,
+    "completed_without_finishing": 14
+  },
+  "reports_with_firm_error": 29,
+  "tainted_findings": 32,
+  "pending": {
+    "image_without_pixels": 229
+  },
+  "judge_cache": {
+    "hits": 218,
+    "misses": 0
+  }
+}
+[judge] 218 calls (218 cached) | total 1.5s
+
+[2/6] answer 逐句锚定 + plan 模型评判 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  > python -m foren_searcher.datagen.verify.complete_units --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  核验并发 4；预计核验调用：约 32 次（含会命中缓存的）
+  true_24171541709824_r1__D_v1: ~1 次（answer 0，plan 1）
+  true_24171541709824_r1__D_v2: ~1 次（answer 0，plan 1）
+  true_24171541709824_r1__D_v3: ~1 次（answer 0，plan 1）
+  true_24171541709824_r1__D_v4: ~1 次（answer 0，plan 1）
+  true_4124903_r1__D_v1: ~15 次（answer 15，plan 0）
+  true_4124903_r1__D_v3: ~1 次（answer 0，plan 1）
+  true_4124903_r1__D_v4: ~6 次（answer 6，plan 0）
+  videosham_1028_r2__D_v1: ~0 次（answer 0，plan 0）
+  videosham_1028_r2__D_v2: ~1 次（answer 0，plan 1）
+  videosham_1028_r2__D_v3: ~1 次（answer 0，plan 1）
+  videosham_2010_r1__D_v2: ~1 次（answer 0，plan 1）
+  videosham_2010_r1__D_v3: ~3 次（answer 3，plan 0）
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[true_24171541709824_r1__D_v1] answer request_0001: {"method": "judge_sentences", "disposition": "negative", "sentences": 4, "uncited": 4, "unsupported": [], "contradicted": [], "errors": ["unsupported_assertion"], "severities": ["critical"]}
+[judge] 1 calls (0 cached) | last 10.4s | avg 10.4s | total 10.4s
+[true_24171541709824_r1__D_v1] plan request_0002: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"], "T2": []}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": true}, "premises": {"T1": [{"phrase": "2003年明尼苏达州州长Tim Pawlenty对弗吉尼亚州州长Mark Warner要求归还第28步兵团战旗的回应", "status": "verified_earlier", "why": "Finding F5 提到“2017年《先锋报》明确报道，要求返旗的弗州官员包括时任州长Mark Warner，明州州长Tim Pawlenty回应拒绝，并表示战旗属于明尼苏达。”"}, {"phrase": "现有材料", "status": "given_in_case", "why": "任务文字中提到“该回应在现有材料中的具体表述”"}], "T2": [{"phrase": "是否存在其他2003年明尼苏达州官方拒绝弗吉尼亚州归还战旗的记录或声明", "status": "given_in_case", "why": "任务文字中直接提出问题"}, {"phrase": "多方媒体、档案或政府文件", "status": "given_in_case", "why": "任务文字中列举了可能的证据类型"}]}, "errors": []}
+[true_24171541709824_r1__D_v2] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "这面邦联战旗目前的保管机构", "status": "given_in_case", "why": "任务文字直接提及"}, {"phrase": "它是否确由明尼苏达历史学会保管？", "status": "given_in_case", "why": "任务文字提出问题"}, {"phrase": "是否有证据支持其馆藏状态及归属关系", "status": "given_in_case", "why": "任务文字提出要求"}], "T2": [{"phrase": "这面邦联战旗从战场缴获到进入明尼苏达历史学会馆藏的路径", "status": "given_in_case", "why": "任务文字直接提及"}, {"phrase": "它是否确由明尼苏达第1志愿步兵团士兵Marshall Sherman在葛底斯堡战役中缴获", "status": "verified_earlier", "why": "F7 Finding 提到 Marshall Sherman 缴获了旗帜"}, {"phrase": "并经由战争部登记后于19世纪末返回明尼苏达？", "status": "verified_earlier", "why": "F8 Finding 提到旗帜曾交给美国战争部登记，19世纪末已回到明尼苏达"}, {"phrase": "是否有证据支持该路径中的关键节点和机构流转关系", "status": "given_in_case", "why": "任务文字提出要求"}]}, "errors": []}
+[true_24171541709824_r1__D_v3] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"], "T2": []}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": true}, "premises": {"T1": [{"phrase": "2000年弗吉尼亚州参议院决议", "status": "given_in_case", "why": "任务文字中提及了该决议"}, {"phrase": "提案在弗吉尼亚州议会的正式表决记录或官方文本", "status": "given_in_case", "why": "任务文字要求核查决议是否在议会记录或官方文本中有记载"}, {"phrase": "最终状态", "status": "given_in_case", "why": "任务文字要求验证决议的最终状态"}], "T2": [{"phrase": "2003年弗吉尼亚州官员请求归还旗帜", "status": "verified_earlier", "why": "Finding F4 提及了2003年的返旗要求"}, {"phrase": "明尼苏达州的正式回应", "status": "given_in_case", "why": "任务文字中提及了明尼苏达州的正式回应"}, {"phrase": "双方州长在该事件中的官方函件或同期议会记录", "status": "given_in_case", "why": "任务文字要求核查官方函件或议会记录"}, {"phrase": "内容与形式", "status": "given_in_case", "why": "任务文字要求验证内容与形式"}]}, "errors": []}
+[true_24171541709824_r1__D_v4] plan request_0001: {"disposition": "negative", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "2023年之后，弗吉尼亚州官方", "status": "verified_earlier", "why": "F4, F5报告提及了弗吉尼亚州官员的请求"}, {"phrase": "这面战旗", "status": "verified_earlier", "why": "F7, F8报告明确指出是弗吉尼亚第28步兵团的邦联战旗"}, {"phrase": "明尼苏达方面如何回应", "status": "unverified", "why": ""}], "T2": [{"phrase": "2023年之后是否存在弗吉尼亚州官方正式请求归还战旗的记录", "status": "unverified", "why": ""}, {"phrase": "如函件、决议或公开声明", "status": "unverified", "why": ""}, {"phrase": "明尼苏达方面是否有对应正式回应", "status": "unverified", "why": ""}]}, "errors": ["premise_smuggling", "premise_smuggling"]}
+[judge] 5 calls (2 cached) | last 1.9s | avg 5.5s | total 16.9s | 3 in flight
+[judge] 8 calls (2 cached) | last 9.1s | avg 6.1s | total 24.1s | 3 in flight
+[judge] 12 calls (2 cached) | last 6.6s | avg 6.7s | total 30.7s | 3 in flight
+[judge] 15 calls (2 cached) | last 8.4s | avg 6.8s | total 37.0s | 3 in flight
+[judge] 19 calls (2 cached) | last 2.2s | avg 6.8s | total 42.2s
+[true_4124903_r1__D_v1] answer request_0001: {"method": "judge_sentences", "disposition": "positive", "sentences": 5, "uncited": 2, "unsupported": [], "contradicted": [], "errors": ["attribution_drift"], "severities": ["major"]}
+[true_4124903_r1__D_v3] answer request_0001: {"method": "judge_sentences", "disposition": "negative", "sentences": 5, "uncited": 5, "unsupported": [], "contradicted": [], "errors": ["unsupported_assertion"], "severities": ["critical"]}
+[true_4124903_r1__D_v3] plan request_0002: {"disposition": "negative", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "给定视频 A 的原始拍摄者", "status": "unverified", "why": "案卷中未提及，既有报告中未提及"}, {"phrase": "最早发布时间", "status": "unverified", "why": "案卷中未提及，既有报告中未提及"}, {"phrase": "YouTube 视频 cv_F3UkbdbI 的直接来源", "status": "unverified", "why": "案卷中未提及，既有报告中未提及"}], "T2": [{"phrase": "材料 A 与 YouTube 视频 cv_F3UkbdbI 在画面内容和时间上的对应关系", "status": "unverified", "why": "案卷中未提及，既有报告中未提及"}, {"phrase": "同一段视频", "status": "unverified", "why": "案卷中未提及，既有报告中未提及"}]}, "errors": ["premise_smuggling", "premise_smuggling"]}
+[true_4124903_r1__D_v4] answer request_0001: {"method": "judge_sentences", "disposition": "positive", "sentences": 7, "uncited": 4, "unsupported": [], "contradicted": [], "errors": [], "severities": []}
+[videosham_1028_r2__D_v1] answer request_0001: {"method": "judge_sentences", "disposition": "positive", "sentences": 4, "uncited": 4, "unsupported": [], "contradicted": [], "errors": [], "severities": []}
+[judge] 27 calls (8 cached) | last 4.2s | avg 6.5s | total 49.8s
+[videosham_1028_r2__D_v2] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"], "T2": []}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": true}, "premises": {"T1": [{"phrase": "对照 E5、E7、E10、E12、E13、E17、E18、E16 等帧", "status": "verified_earlier", "why": "F2 和 F3 已经提及了这些证据，并对画面对应关系进行了描述。"}, {"phrase": "结合 F2 和 F3 的结论", "status": "verified_earlier", "why": "任务明确要求结合 F2 和 F3 的结论进行判断，表明这两个 Finding 是已知的依据。"}], "T2": [{"phrase": "确认现有材料中是否存在可直接听取的音频或语音转写", "status": "unverified", "why": "任务要求确认是否“存在”，但既有报告没有提供这个信息，只是说音频对应关系返回了候选。"}, {"phrase": "引用 F7 和 F8 的限制性结论", "status": "verified_earlier", "why": "任务明确要求引用 F7 和 F8 的结论，表明这两个 Finding 是已知的依据。"}]}, "errors": ["premise_smuggling"]}
+[judge] 28 calls (8 cached) | last 5.3s | avg 6.4s | total 55.2s
+[videosham_1028_r2__D_v3] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "视频 A 的音轨中是否存在可辨认的言语", "status": "verified_earlier", "why": "W2-2 Finding F7 提到音频对齐返回一组覆盖全段的候选对应，虽然没有明确说明是否包含可辨认的言语，但暗示了存在声音的可能性。"}, {"phrase": "标题“lorem ipsum”", "status": "given_in_case", "why": "任务原文"}, {"phrase": "言语内容是否与标题“lorem ipsum”相对应", "status": "unverified", "why": "既有报告中没有提及视频 A 音轨的言语内容，更没有提及言语内容是否与标题对应。"}], "T2": [{"phrase": "视频 B 的音轨中是否存在可辨认的言语", "status": "verified_earlier", "why": "W2-2 Finding F7 提到音频对齐返回一组覆盖全段的候选对应，虽然没有明确说明是否包含可辨认的言语，但暗示了存在声音的可能性。"}, {"phrase": "标题“A conversation about CRPS”", "status": "given_in_case", "why": "任务原文"}, {"phrase": "言语内容是否与标题“A conversation about CRPS”相对应", "status": "verified_earlier", "why": "W2-2 Finding F8 提到视频 B 在1.60秒和3.20秒的画面显示标题“A conversation about CRPS”，但强调了这些画面文字不能证明音轨包含与CRPS有关的谈话，因此该对应关系仍未核实。"}]}, "errors": ["premise_smuggling"]}
+[videosham_2010_r1__D_v2] answer request_0001: {"method": "judge_sentences", "disposition": "negative", "sentences": 7, "uncited": 7, "unsupported": [], "contradicted": [], "errors": ["unsupported_assertion"], "severities": ["critical"]}
+[videosham_2010_r1__D_v2] plan request_0002: {"disposition": "negative", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"], "T3": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": [], "T3": []}, "agreement": {"T1": false, "T2": false, "T3": false}, "premises": {"T1": [{"phrase": "视觉对齐结果E5和E18是否包含候选对应", "status": "verified_earlier", "why": "F3、F4中提及了视觉和音频对齐工具未返回对应候选"}, {"phrase": "采样间隔0.04秒是否足以覆盖可能的剪辑边界的误差上限", "status": "unverified", "why": "任务文字中提到，但既有报告没有说明"}], "T2": [{"phrase": "车辆及乘员的外观一致性（如E13与E23、E17与E19）", "status": "verified_earlier", "why": "F7、F8中提及了车内前排乘员的呈现差异"}, {"phrase": "背景环境差异（如写实场景与卡通背景）对画面含义的影响", "status": "verified_earlier", "why": "F5中提及了背景差异改变了场景表达"}], "T3": [{"phrase": "未返回候选对应的原因（如低纹理、镜像或大幅编辑）", "status": "unverified", "why": "任务文字中提到，但既有报告没有说明"}, {"phrase": "boundary_uncertainty_s=null 是否允许推断精确时间偏移", "status": "unverified", "why": "任务文字中提到，但既有报告没有说明"}]}, "errors": ["premise_smuggling", "premise_smuggling"]}
+[judge] 30 calls (8 cached) | last 2.1s | avg 6.1s | total 1m02s | 1 in flight
+[videosham_2010_r1__D_v3] answer request_0001: {"method": "judge_sentences", "disposition": "positive", "sentences": 5, "uncited": 4, "unsupported": [], "contradicted": [], "errors": [], "severities": []}
+7 个单元 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+[judge] 32 calls (8 cached) | last 0.9s | avg 5.8s | total 1m04s
+
+[3/6] 三层核验按 plan 评判重定范围（没变的问题命中缓存）→ experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/12] true_24171541709824_r1__D_v1: 2 份报告，W1-1=negative, W1-2=negative
+[2/12] true_24171541709824_r1__D_v2: 2 份报告，W1-1=negative, W1-2=negative
+[3/12] true_24171541709824_r1__D_v3: 2 份报告，W1-1=negative, W1-2=negative
+[4/12] true_24171541709824_r1__D_v4: 2 份报告，W1-1=negative, W1-2=negative
+[5/12] true_4124903_r1__D_v1: 2 份报告，W1-1=negative, W1-2=negative
+[6/12] true_4124903_r1__D_v3: 2 份报告，W1-1=negative, W1-2=negative
+[7/12] true_4124903_r1__D_v4: 2 份报告，W1-1=negative, W1-2=negative
+[8/12] videosham_1028_r2__D_v1: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[9/12] videosham_1028_r2__D_v2: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[10/12] videosham_1028_r2__D_v3: 4 份报告，W1-1=uncertain, W1-2=uncertain, W2-1=uncertain, W2-2=negative
+[11/12] videosham_2010_r1__D_v2: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[12/12] videosham_2010_r1__D_v3: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+{
+  "reports": 32,
+  "disposition": {
+    "negative": 23,
+    "uncertain": 9
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 32
+  },
+  "errors_total": {
+    "unsupported_assertion": 43,
+    "wrong_citation": 6,
+    "omitted_required_fact": 34,
+    "completed_without_finishing": 14
+  },
+  "errors_firm": {
+    "unsupported_assertion": 43,
+    "wrong_citation": 6,
+    "omitted_required_fact": 34,
+    "completed_without_finishing": 14
+  },
+  "reports_with_firm_error": 29,
+  "tainted_findings": 32,
+  "pending": {
+    "image_without_pixels": 229
+  },
+  "judge_cache": {
+    "hits": 218,
+    "misses": 0
+  }
+}
+[judge] 218 calls (218 cached) | total 1.5s
+
+[4/6] 核验器召回率校准（注入已知错误再核验）→ experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.12runs-73623276.json
+  > python -m foren_searcher.datagen.verify.calibrate_recall --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --per-kind 2 --out experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.12runs-73623276.json
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[true_24171541709824_r1__D_v1] 离线换题（来源 D），跳过召回注入
+[true_24171541709824_r1__D_v2] 离线换题（来源 D），跳过召回注入
+[true_24171541709824_r1__D_v3] 离线换题（来源 D），跳过召回注入
+[true_24171541709824_r1__D_v4] 离线换题（来源 D），跳过召回注入
+[true_4124903_r1__D_v1] 离线换题（来源 D），跳过召回注入
+[true_4124903_r1__D_v3] 离线换题（来源 D），跳过召回注入
+[true_4124903_r1__D_v4] 离线换题（来源 D），跳过召回注入
+[videosham_1028_r2__D_v1] 离线换题（来源 D），跳过召回注入
+[videosham_1028_r2__D_v2] 离线换题（来源 D），跳过召回注入
+[videosham_1028_r2__D_v3] 离线换题（来源 D），跳过召回注入
+[videosham_2010_r1__D_v2] 离线换题（来源 D），跳过召回注入
+[videosham_2010_r1__D_v3] 离线换题（来源 D），跳过召回注入
+召回 None（0 处注入）；inconclusive 0，conclusive 召回 None → experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.12runs-73623276.json
+  swap_citation          0/0  inconclusive 0  conclusive None
+  fabricate_id           0/0  inconclusive 0  conclusive None
+  append_clause          0/0  inconclusive 0  conclusive None
+  alter_number           0/0  inconclusive 0  conclusive None
+  drop_attribution       0/0  inconclusive 0  conclusive None
+  drop_required_finding  0/0  inconclusive 0  conclusive None
+[judge] 0 calls (0 cached) | total 0.0s
+  召回 None（0 处注入）；inconclusive 0；conclusive 召回 None
+
+[5/6] 用 hi@0.2.0 + gia@0.3.0 规格 + 判定导出 → experiments\sft_data\export\r0_12runs-73623276_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest
+  > python -m foren_searcher.datagen.export --runs experiments\sft_data\runs_offline\true_24171541709824_r1__D_v1 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v2 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v3 experiments\sft_data\runs_offline\true_24171541709824_r1__D_v4 experiments\sft_data\runs_offline\true_4124903_r1__D_v1 experiments\sft_data\runs_offline\true_4124903_r1__D_v3 experiments\sft_data\runs_offline\true_4124903_r1__D_v4 experiments\sft_data\runs_offline\videosham_1028_r2__D_v1 experiments\sft_data\runs_offline\videosham_1028_r2__D_v2 experiments\sft_data\runs_offline\videosham_1028_r2__D_v3 experiments\sft_data\runs_offline\videosham_2010_r1__D_v2 experiments\sft_data\runs_offline\videosham_2010_r1__D_v3 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl --hi-spec hi@0.2.0 --gia-spec gia@0.3.0 --renderer compact_16k --out experiments\sft_data\export\r0_12runs-73623276_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest
+true_24171541709824_r1__D_v1: 2 行（case=无，report verdicts=2）
+true_24171541709824_r1__D_v2: 1 行（case=无，report verdicts=2）
+true_24171541709824_r1__D_v3: 1 行（case=无，report verdicts=2）
+true_24171541709824_r1__D_v4: 1 行（case=无，report verdicts=2）
+true_4124903_r1__D_v1: 1 行（case=无，report verdicts=2）
+true_4124903_r1__D_v3: 2 行（case=无，report verdicts=2）
+true_4124903_r1__D_v4: 1 行（case=无，report verdicts=2）
+videosham_1028_r2__D_v1: 1 行（case=无，report verdicts=4）
+videosham_1028_r2__D_v2: 1 行（case=无，report verdicts=4）
+videosham_1028_r2__D_v3: 1 行（case=无，report verdicts=4）
+videosham_2010_r1__D_v2: 2 行（case=无，report verdicts=3）
+videosham_2010_r1__D_v3: 1 行（case=无，report verdicts=3）
+{
+  "counts": {
+    "hi_accepted": 0,
+    "hi_held": 0,
+    "hi_rejected": 0,
+    "gia_accepted": 5,
+    "gia_held": 1,
+    "gia_rejected": 9
+  },
+  "by_unit": {
+    "hi": {},
+    "gia": {
+      "plan": 3,
+      "answer": 2
+    }
+  },
+  "by_action": {
+    "hi": {},
+    "gia": {
+      "INVESTIGATE": 3,
+      "FINISH": 2
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 0,
+    "gia": 5.0
+  },
+  "input_tokens_est": {
+    "max": 27278,
+    "p50": 22507
+  }
+}
+
+[6/6] Qwen3.5-9B processor 核对
+  > python -m foren_searcher.datagen.check_inputs --export experiments\sft_data\export\r0_12runs-73623276_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest --model .models\Qwen3.5-9B --files hi_accepted.jsonl gia_accepted.jsonl hi_held.jsonl hi_rejected.jsonl
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "gia_accepted.jsonl": {
+      "rows": 5,
+      "input_tokens": {
+        "min": 9319,
+        "p50": 19096,
+        "p90": 21164,
+        "max": 21164
+      },
+      "supervised_tokens": {
+        "min": 118,
+        "p50": 158,
+        "p90": 167,
+        "max": 167
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 7040,
+        "p90": 7040,
+        "max": 7040
+      },
+      "above": {
+        "8192": 5,
+        "16384": 3,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}
+
+完成。产物：
+  experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.12runs-73623276.jsonl
+  experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.12runs-73623276.json
+  experiments\sft_data\export\r0_12runs-73623276_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest\manifest.json
+EXIT 0 周一 2026/09/28 21:35:26.23 
+=== pytest 来源 D 
+..........                                                               [100%]
+10 passed in 2.36s
+PYTEST_EXIT 0 

@@ -1,0 +1,169 @@
+{
+  "assessment_scope": "仅依据所供包及7张图片，递归解析对象引用，评估 W1-1 的 request_0001 终端重放报告，以及 request_0002 至 request_0012 的真实历史动作。provenance 中的 request_0013 仅为来源记录，不是另一个已提供的输出目标。不评估 GIA，不假定存在新工具执行、下游决策或独立人工复核。角色 execution 对新报告记为 not_applicable，历史执行对应关系逐项说明。其余维度加权为3.44/4，原始权重评分覆盖率90%，适用维度覆盖率100%；该分数不表示来源核查已经完成。critical_unknown 表示是否缺少判断该输出能否作为训练目标的关键材料；报告已明确保留的调查未知，不自动等同于评审关键未知。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 是从历史终端输入生成的新报告，仅有本地输出校验通过记录，新增工具动作和复用下游决策均为0。历史 request_0002 至 request_0012 有原始输出、接受输出及观察事件对应，但不能据此把新报告视为已执行的新轨迹。",
+          "request_ids": ["request_0001"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现使用隐藏标注或未来材料。2016年线索在早期搜索结果中已经出现；E17 在读取前的证据视图中可选；重新聚焦 E3、E19 也有可见卡片依据。终端引用的 E3、E5、E8、E19 像素及 E18、E20、E21 正文均已提供。Snopes 正文是历史行动合法取得的 E20，不能因为它也出现在参考答案中就认定泄漏。",
+          "request_ids": ["request_0001", "request_0003", "request_0005", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "实际像素支持报告中的有限观察：E3 显示夜间亮灯铁塔及烟雾；E5、E8 显示附近烟雾与右侧较低位置的橙色火焰，E8 可见河面和船只。起火对象受遮挡，不能辨认卡车或袭击原因。E19 仅显示相似的铁塔、灯光和烟雾，不能证明视频相同。报告正确把上传日期、25秒时长归于 E18 元数据，把事故性质归于 E20、E21 转引的警方通报，没有把这些材料直接套为 E1 的身份结论。",
+          "request_ids": ["request_0001"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "画面事实与其不能证明恐怖袭击的边界已得到回答，INCOMPLETE 状态也准确。但局部任务明确要求核实给定视频的来源、时间和地点，素材对应、实际拍摄日期及具体位置仍未解决。E20 第3段已经提供直接关联该历史事件的视频链接 cv_F3UkbdbI，报告却只展开了较早的 YmDMziYntEs 候选，来源线索整理不充分。诚实报告缺口具有训练价值，但不能将调查任务评为充分完成。",
+          "request_ids": ["request_0001", "request_0007", "request_0012"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "初次取帧、先读相关报道、据已知年份改用法语搜索、读取候选元数据及追索警方引文均对应合理缺口。R12 的文本提取失败后改用 video 输出属于有效调整。最后一次取证仍读取重复背景较多的 E21，优先级低于当时已可见的 E20 直接视频链接。终端剩余轮次为0，提交如实的 INCOMPLETE 报告是正确决定。",
+          "request_ids": ["request_0002", "request_0004", "request_0005", "request_0007", "request_0008", "request_0010", "request_0012", "request_0001"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告区分了抽帧观察、来源元数据、报道转引与尚未确认的素材对应，也明确没有连续核验或检查声音。历史仅观察了2.100、6.267、10.467、14.633、18.833、23.000秒的六帧，不能把覆盖跨度0至25.1秒当作全片观察。报告没有把未见塔身火焰解释为全面排除塔身起火，也没有把存在一条音轨写成已知声音内容。未检查音频是诚实限制，不是幻觉。",
+          "request_ids": ["request_0001", "request_0002", "request_0007", "request_0008"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "只执行一次取帧，没有重复读取同一正文页。保留既有图片的 focus 不等于反复执行无价值取帧；E18、E17 的读取分别新增元数据和警方直接引文。主要效率问题集中在 request_0012：有限轮次继续用于已多次支持的历史事故性质，没有推进当前最重要的素材来源缺口。",
+          "request_ids": ["request_0002", "request_0008", "request_0009", "request_0011", "request_0012"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E1 与 YmDMziYntEs、E20 所链接的 cv_F3UkbdbI 是否存在实际画面及时间对应，尚未核验；参考资料中的视频编号不能替代这项证明。",
+        "E1 的原始作者、最早发布来源、实际拍摄日期、摄影机位置，以及可见火点是否位于耶拿桥，仍未独立确认。",
+        "警方原帖未被直接打开核验；E21 提供了具体帖子链接，但终端没有剩余行动。",
+        "六个采样时刻之间及视频首尾未观察区间的内容未知，音轨内容也未知。",
+        "候选视频返回 formats_found 和 video_material.not_requested，不能据此确认下载失败、无法下载或已经取得视频。当前动作目录未明确提供独立的视频下载操作。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "可作为准确提交部分调查结果的终端报告候选：重要视觉事实、元数据和警方通报转引均有依据，INCOMPLETE 与实际缺口一致。未突出 E20 第3段的直接视频链接，使来源线索整理有所遗漏，因此不评4。该遗漏没有使报告声称的素材身份变成错误确认。执行维度不适用；本地校验通过不证明任何新调查已经执行。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前只有 E1，按 count=6 初步取帧合法且适合8张图片容量，能先辨认核查对象。原始与接受输出一致，观察记录确认生成六帧。该动作不承诺完整视频覆盖。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "看到铁塔、烟雾和邻近火焰后，围绕声明进行首次外部搜索合理；当时没有已确认年份，不应以后续2016年结果反向要求首轮必须限定年份。选择 E3、E5、E8 保留代表画面合法。执行对应明确，混入其他年份结果不使该请求本身错误。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E11 在当时视图中存在，其标题和摘要直接涉及巴士底日铁塔火情被误称为恐袭。读取正文能核对搜索摘要及警方解释，具有明确增益；读取与观察对应完整。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已有2016年报道线索后，改用法语、具体日期和警方关键词搜索，是合理收窄并追索本地来源。没有证据表明日期来自隐藏参考。请求合法且实际执行。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取已保存的 E15 能补充桥梁位置及事故解释，正文确实提供相关信息。R11 搜索摘要存在2026年日期线索，但此动作只是读取核查，并未据此断言拍摄年份；不能把摘要日期异常算作该动作的事实错误。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "R12 是当时已知、标题直接相关的视频候选。先前失败的是文本提取，改以 video 输出打开同一来源并非原样重复失败请求。执行取得元数据和封面；没有取得视频本体属于结果边界，不能倒推此次选择不合理。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E18 是新取得且尚未读取的元数据记录，读取能核对上传日期、时长和来源链接；同时保留 E19 与 E1 帧适合有限视觉比较。执行记录和正文对应，没有把封面当作视频内容。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E17 在决策前证据视图中可选。相比 E15 的间接事故描述，该记录提供完整法语警方引文，能推进官方说法的核查，不能机械视为重复读取。原始与接受输出及观察对应明确。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据刚读取的警方原语句及已取得的2016年线索进行精确搜索，可追索通报出处和日期。查询不是预先知道 Snopes 答案后的伪搜索；应按当时尚未解决的来源问题评价。请求合法且实际执行。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E20 是新取得且与原声明直接相关的正文，读取有助于核对历史事件、警方通报日期及所引视频。实际返回还包含具体视频链接。选择已有 E3、E19 聚焦合法，不构成不可见引用。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "动作合法且确已执行，但决策前 E20 已提供完整警方引文、日期和事故解释，E21 的可见摘要主要重复相同通报。此时只剩最后一次取证机会，E20 第3段已有直接关联事件的视频链接，更对应尚未完成的来源核查。返回正文后来出现具体警方帖子链接，说明并非毫无收获，但不能用这一事后结果掩盖当时的优先级缺陷。作为真实历史保留，不优先用作正向模仿目标。"
+    }
+  ],
+  "construction_revisions": [
+    "将 request_0001 标为离线终端报告样本，将 request_0002 至 request_0012 保留为历史动作；不得把本地输出校验通过表述为新轨迹执行成功，也不得补写下游 GIA 决策。",
+    "终端报告可补充 E20 第3段的 cv_F3UkbdbI 视频链接及 E21 的警方具体帖子链接，均明确标为尚未核验的线索；保留 INCOMPLETE，不把链接存在改写为素材对应已经证实。",
+    "若构造 request_0012 的替代行动，应从其原始状态尝试跟进已见的视频链接，并保存真实返回。只有实际取得第二个视频 E 后，才具备调用 align_media 的材料条件；不能将改写行动接到旧的 E21 观察后。",
+    "保留 formats_found、video_material.not_requested 与实际下载失败之间的区别。若试验要求完成视频对应，应明确展示可用的素材获取能力，不能让教师自行发明下载参数。",
+    "保留每张图片的 E 编号、真实采样时间和来源派生关系；覆盖跨度字段不得替代六个离散帧的观察范围。历史网页中的相关正文与动态新闻栏也应区分。",
+    "维持参考答案与演员输入的来源隔离，同时保留演员真实搜索取得 E20 的证据链；多个媒体转引同一警方通报不能构造成多个独立现场证据。"
+  ],
+  "rubric_revisions": [
+    "明确区分报告是否如实、状态是否正确和调查目标是否达成。诚实且有用的 INCOMPLETE 报告可以成为候选，但不能因此给来源、时间或素材对应的完成度满分。",
+    "明确 critical_unknown 针对目标可用性所需的关键评审证据。对于已被准确标注为未知的调查事项，不应机械排除；对于未经证明却被肯定陈述的重要事实，也不能因为措辞谨慎而放行。",
+    "将行动优先级按决策前材料评价：首次读取警方原语、核对日期和合理失败恢复具有增益；已有相同通报后继续补读背景，应结合剩余轮次及更直接的新线索评估。",
+    "工具成功、参数合法、材料取得和结论正确分别评分。视频搜索返回封面或可下载格式，不等于取得视频；未取得第二段视频时，不要求调用需要两个视频 E 的对齐动作。",
+    "本案没有完整事件区间定位要求，也未提供适用的官方时间区间指标，不应额外要求逐帧定位。但任何全片无火、全片无修改或连续对应主张，仍须有超出六帧采样的证据。",
+    "参考答案的 False 结论不能替代 E1 与历史事件的对应核验；没有伤亡本身也不能排除恐怖袭击。报告没有采用这些越界推断，应与其尚未完成来源核查的问题分别评价。"
+  ]
+}

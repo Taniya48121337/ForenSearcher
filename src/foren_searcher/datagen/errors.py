@@ -38,7 +38,7 @@ class Severity(str, Enum):
 
 
 class ErrorType(str, Enum):
-    """22 种错误。值是写进 verdicts.jsonl 的字符串，改名等于改数据格式，谨慎。"""
+    """26 种错误（23 + 2026-09-21 从 true:4124903 示例补的 incomplete_citation_set、overlapping_sibling_tasks，+ 接核验模型判 plan 单元时补的 premise_smuggling；早期文档写 22 是漏数了 empty_report）。值是写进 verdicts.jsonl 的字符串，改名等于改数据格式，谨慎。"""
 
     # ---- Finding 级：说了什么、引了什么 ----
     UNSUPPORTED_ASSERTION = "unsupported_assertion"      # 断言没有任何所引 E 支持
@@ -50,6 +50,7 @@ class ErrorType(str, Enum):
     MISREAD_FINE_TEXT = "misread_fine_text"              # 图/页面里的文字、数字、日期读错
     SLOPPY_NUMERIC = "sloppy_numeric"                    # 口径/单位/分母/年份不一致却直接比较
     OMITTED_REQUIRED_FACT = "omitted_required_fact"      # 任务要求、材料里有，却没写进报告
+    INCOMPLETE_CITATION_SET = "incomplete_citation_set"  # 断言的支持存在于本工作区可见且已被引用的其它 E 里，只是这条 Finding 没引它
     # ---- 状态级 ----
     COMPLETED_WITHOUT_FINISHING = "completed_without_finishing"  # 没查完却报 COMPLETED
     INCOMPLETE_THOUGH_ANSWERABLE = "incomplete_though_answerable"  # 材料够却报 INCOMPLETE
@@ -65,6 +66,8 @@ class ErrorType(str, Enum):
     PREMATURE_FINISH = "premature_finish"                # 证据不够就结束
     UNNECESSARY_ROUND = "unnecessary_round"              # 证据已够还开新一轮
     DEPENDENT_SIBLING_TASKS = "dependent_sibling_tasks"  # 同轮任务互相依赖，违反 DIR 规则
+    OVERLAPPING_SIBLING_TASKS = "overlapping_sibling_tasks"  # 同轮任务目标重叠，导致重复取证（不是 HI 的 redundant_action）
+    PREMISE_SMUGGLING = "premise_smuggling"              # 派任务的文字把尚未核实的说法当成既定事实写给 HI（前提走私）
     # ---- 环境级 ----
     ENV_CONTAMINATION = "env_contamination"              # 搜索返回了本应排除的来源
     ENV_TOOL_FAILURE = "env_tool_failure"                # 工具本身失败（超时、解码错误）
@@ -101,6 +104,8 @@ SPECS: dict[ErrorType, ErrorSpec] = {
         "比较的数值口径、单位、分母或时间范围不一致"),
     ErrorType.OMITTED_REQUIRED_FACT: ErrorSpec(Level.FINDING, (Role.HI,), Severity.MAJOR, False, False,
         "任务明确要求且材料中可得的事实没有出现在报告里"),
+    ErrorType.INCOMPLETE_CITATION_SET: ErrorSpec(Level.FINDING, (Role.HI, Role.GIA), Severity.MAJOR, False, False,
+        "比较句/关系句只引了一边：支持它的 E 在本工作区可见且被同报告其它 Finding 引用，本条未引（校准规则 v0.2.0 从 unsupported_assertion 降级而来）"),
     ErrorType.COMPLETED_WITHOUT_FINISHING: ErrorSpec(Level.STATUS, (Role.HI,), Severity.CRITICAL, False, True,
         "任务要求项未全部覆盖却报 COMPLETED"),
     ErrorType.INCOMPLETE_THOUGH_ANSWERABLE: ErrorSpec(Level.STATUS, (Role.HI,), Severity.MINOR, False, False,
@@ -125,6 +130,10 @@ SPECS: dict[ErrorType, ErrorSpec] = {
         "必需证据已齐却继续 INVESTIGATE"),
     ErrorType.DEPENDENT_SIBLING_TASKS: ErrorSpec(Level.PLANNING, (Role.GIA,), Severity.MAJOR, False, False,
         "同一轮的任务之间存在依赖，违反轮内并行规则"),
+    ErrorType.OVERLAPPING_SIBLING_TASKS: ErrorSpec(Level.PLANNING, (Role.GIA,), Severity.MINOR, False, True,
+        "同轮两个任务对准同一要求，各自的工作区用同一批必需证据写了同类 Finding（派工效率问题，按 hindsight 程序判）"),
+    ErrorType.PREMISE_SMUGGLING: ErrorSpec(Level.PLANNING, (Role.GIA,), Severity.MAJOR, True, False,
+        "任务文字把案卷没给、此前也没核实的说法当成既定事实（会把 HI 的取证方向带偏，按传播处理；需核验模型读任务文字判）"),
     ErrorType.ENV_CONTAMINATION: ErrorSpec(Level.ENVIRONMENT, (Role.ENV,), Severity.MAJOR, True, True,
         "搜索结果含应被排除的来源（不算演员错，但会污染其后的步骤）"),
     ErrorType.ENV_TOOL_FAILURE: ErrorSpec(Level.ENVIRONMENT, (Role.ENV,), Severity.MINOR, False, True,
@@ -200,7 +209,7 @@ def types_for(role: Role, *, level: Level | None = None, exec_checkable: bool | 
 
 
 def tally(errors: list[ErrorRecord] | tuple[ErrorRecord, ...]) -> dict[str, int]:
-    """按类型计数，键固定为全部 22 种（没出现的为 0），方便跨迭代画曲线。"""
+    """按类型计数，键固定为全部类型（没出现的为 0），方便跨迭代画曲线。"""
 
     counts = {kind.value: 0 for kind in ErrorType}
     for item in errors:

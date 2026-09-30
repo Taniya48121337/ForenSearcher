@@ -1,0 +1,59 @@
+{
+  "case_id": "videosham:4126",
+  "dataset": "videosham",
+  "source_id": "4126",
+  "split": "dev_train",
+  "task_kind": "temporal_locate",
+  "task_text": "确定给定两段6秒视频中，黑衣人物在 B 可见而在 A 对应位置不可见的全部时间区间。核查每段区间的起止边界，并说明定位精度及仍不确定的范围。",
+  "family_key": "videosham:4126",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_4126_split_intervals_r7/artifacts/fcc76c4a59fe45d3abba373be8ea440f.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_4126_split_intervals_r7/artifacts/92c513797f7842a48b77a58ea7246527.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1、E2 经 INSPECT/get_frames 取得的派生证据（E40、E66、E33、E26、E72、E80、E34、E27、E47、E57、E73、E81、E165、E176、E167、E177、E168、E178、E170、E179、E75、E83）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "确定给定两段6秒视频中，黑衣人物在 B 可见而在 A 对应位置不可见的全部时间区间；核查每段区间的起止边界；报告本范围内实际支持的区间、边界不确定范围与定位精度",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "说明定位精度及仍不确定的范围；给出仍不确定的范围；说明定位精度和未确定范围",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 videosham_4126_split_intervals_r7 起草，needs_review；requirements 取自总任务与首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

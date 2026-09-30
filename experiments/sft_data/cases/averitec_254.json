@@ -1,0 +1,55 @@
+{
+  "case_id": "averitec:254",
+  "dataset": "averitec",
+  "source_id": "254",
+  "split": "dev_select",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Kenyan counties allocated an average of 7.3% of budgets to agriculture.（声明日期：2020-07-23）",
+  "family_key": "averitec:254",
+  "media": [],
+  "claims": [
+    "Kenyan counties allocated an average of 7.3% of budgets to agriculture."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "肯尼亚各郡在声明所指财年（2019/20）预算中分配给农业的平均比例，及数据的出处与统计口径",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "该比例与声明中 7.3% 的比较是否基于同一财年、同一口径",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "ag_allocations",
+      "description": "2019/20 各郡农业拨款统计表",
+      "url_pattern": "africacheck.org/sites/default/files/agriculture-allocations-2019-20.pdf*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": "../data/averitec/254/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2020-07-23，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210226130032/https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress。数据集标签 Refuted（6.9% vs 7.3%），审稿后不写 label_expected：试点取不到拨款表，差距小，正确答案可能是“无法核实”。（已按 2026-09-28 独立审稿修改 2 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

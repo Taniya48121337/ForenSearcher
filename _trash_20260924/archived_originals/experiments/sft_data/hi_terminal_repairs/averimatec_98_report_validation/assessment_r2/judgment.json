@@ -1,0 +1,168 @@
+{
+  "assessment_scope": "仅评估 W1-1（HI），依据所给引用表、文本和实际图片，不调用工具。steps/request_0001 指本次终端重放报告；recorded_prefix/request_* 指历史请求，逐项评估其当时合理性，但在本次重放包中作为上下文，不自动导出为新增监督目标。原运行 request_0012 仅提供终端输入来源，未提供其原报告，不补造该输出。角色维度评分针对新报告；不评价脚本调度器或不存在的下游 GIA 决策。加权评分为84.7/100，已评分权重占原总权重90%，适用维度评分覆盖率100%；该分数不表示最早来源调查已完成。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "新报告来自 recorded_terminal_state，execution_link 明示 offline_terminal_replay、new_tool_actions=0。格式验证通过不能证明新取证或下游决策已经执行；历史调用记录只证明历史执行。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "引用的 E2、E3 均在历史中实际读取，终端输入保留其正文。AFP 图库链接来自 E2 第19段，BBC 链接及日期来自 E3 第11段，没有必要假定使用了评审参考答案。报告未引用遗漏图片或把搜索候选当成已读正文。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "两条主要发现准确归属于来源：E3 支持 HaqCheck 所述 BBC 于2019年10月30日刊图，E2 支持 AFP 所述图库出处及2019年6月法国波城拍摄背景。小缺陷是 status_reason 将一次 Perma 存档链接的403概括为 AFP 图库不可访问；记录没有直接访问图库站点的结果。实际像素中 E1 为桌上武器，其他七张为魔方图片，不能提供同图或来源佐证，报告没有错误使用它们。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部任务要求查找直接证据确认最早版本所在网站。现有结果提供了有用的 AFP 出处线索和 BBC 刊载候选，但未直接核对原图、网页发布日期及先后关系。官方答案 AFP photo archives 本身不能补齐这些缺口。INCOMPLETE 状态正确，但不能据此把任务完成度记为满分。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "此时 remaining_turns=0，提交保留已知事实、明确关键缺口的 INCOMPLETE 报告是合适决定。没有将无关魔方搜索结果拼成来源证据，也没有为符合参考答案而宣称确认首发。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分来源转述、图片对应、拍摄日期和网上发表日期；将 BBC 限定为已读证据中的带日期候选，并明确不证明其最早发表。E11 只读到 offset=0 的一页，报告使用“所检查的 BBC 文本”而未宣称已读完整网页。",
+          "request_ids": ["steps/request_0001"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告集中保留两个与图片溯源直接有关的发现，没有加入教会冲突背景、其他图片问题或无关搜索结果。终端报告本身没有重复取证行为。",
+          "request_ids": ["steps/request_0001"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "AFP 图库原图及其上线元数据未取得，最早网站及首次上线时间仍未确认。",
+        "BBC 页面对应图片和直接发布日期未观察；2019年10月30日及图片归属目前由 HaqCheck 转述支持。",
+        "E11 的 next_offset=6000，后续正文未提供；不能判定其中是否包含有用的日期或出处信息。",
+        "E22、E23、E24 未附像素，不能据已附魔方图片断言全部返回图片的内容；这些未附图片没有被报告用作证据。",
+        "新报告没有实际下游 GIA 使用记录，无法判断其对后续决策的效果。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "steps/request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "可作为如实报告未完成调查的候选。E2、E3 支持归属于来源的主要发现，INCOMPLETE 与直接溯源证据缺失相符。访问失败范围表述略宽，仅实际证明 Perma 链接返回403。最早网站仍未知是报告明确披露的调查缺口，不是其限定事实是否成立的关键未知；本目标不能作为已确认最早来源的答案导出，也不是新执行轨迹。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0001",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "历史动作本身合理：E1 像素可见，目录允许以 E 编号图搜，行动前未公布禁止上传的部署限制。执行记录证明调用得到 ACCESS_RESTRICTED，不证明反向搜图成功。不能用事后限制倒判该请求错误；本包中保留为历史上下文。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0002",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "收到上传限制后改用背景声明中的地点、事件和时间进行文本搜索，避免重复被拒绝的上传。查询依据在当时任务中可见，是有效恢复动作；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0003",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时 E2 已由搜索保存且可选择，读取相关 AFP 核查正文能查明图片出处线索。没有凭摘要直接提交结论，动作及读取观察对应；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0004",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取另一篇针对同一声明的 E3，可以寻找更早刊载信息及来源链接，具有独立取证目的。其合理性不依赖后来确实发现 BBC 链接；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0005",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "Perma 链接此前已出现在实际读过的 E2 第19段，打开它直接针对 AFP 图库证据缺口。403 是真实访问失败，不是伪造观察，也不能倒推链接来自评审答案；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0006",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "存档访问失败后，使用 E2 已给出的武器名称、地点、年份及摄影者名字搜索替代来源，参数合法且目标相关。无结果不能单独构成质量扣分；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0007",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前精确查询未命中，此次减少限定词并改用通用武器名称，仍保留地点与年份，是有区别的查询调整，不是原样重试；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0008",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "取消引号并使用月份和来源中的姓名词项，继续针对同一图片出处进行合理探索。返回内容混杂不能证明事前查询不合理；其中 R17 的相关图注摘要也不能自动升级为已核实正文。作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0009",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "BBC URL 来自此前已读 E3，打开原始刊载候选直接服务于日期和同图核查。无需因 URL 不在当前候选列表中就否定其可用性，SEARCH 明确支持已知 URL；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0010",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取刚保存的 BBC 正文 E11 是必要的原文检查，执行与观察对应。结果含 next_offset=6000，因此只证明读取了第一页，不能据此声称整篇均无日期；作为历史上下文保留。"
+    },
+    {
+      "request_id": "recorded_prefix/request_0011",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "事前 R17 摘要已给出 Getty、2019年6月13日及 Iroz Gaizka 等检索线索，文本查询并请求图片可以解决尚缺的视觉对应，也不触发已知的图片上传限制。E11 尚有未读后页，但不足以证明这个替代行动不合理。随后返回的实际图片是魔方，说明此次检索未获得所需视觉证据，不能反向判定查询错误。作为历史上下文保留。"
+    }
+  ],
+  "construction_revisions": [
+    "用运行或容器路径区分本次 steps/request_0001 与 recorded_prefix/request_0001，保留 source_request=request_0012 的输入来源关系，避免同名请求误配。",
+    "新报告仅标注为终端重放生成的报告目标。历史动作若另行选入训练，应使用各自原始决策状态及执行观察，不能把它们包装成本次新增执行或补造下游 GIA 决策。",
+    "将报告中的访问失败范围收窄为 AFP 核查所链接的 Perma 存档返回403；保留最早网站未确认的状态。",
+    "保存 E2 第19段、E3 第11段、E11 的分页位置及实际图片附件对应关系。官方答案只用于评审核查，不替代演员取得的原图和发布日期证据。",
+    "若另建完成溯源的样本，应实际尝试取得原图库或 BBC 的对应图片与发表信息，并按需要续读 E11；失败时保留真实失败结果，不能补写成功观察。"
+  ],
+  "rubric_revisions": [
+    "明确分开报告质量与调查完成度：准确的 INCOMPLETE 报告可以成为报告候选，但不能计为已完成最早来源核查。",
+    "critical_unknown 应对应目标关键断言或目标可判定性。报告已明确保留未知、且未作超范围结论时，不应仅因原问题未解决而机械拒绝；同时必须在 task 和 unknowns 中保留未完成事实。",
+    "最早来源核查应分别核对图片对应、摄影出处、拍摄时间及网页发表时间。参考答案指向图库或来源声称找到图库，都不自动证明该网站最早上线。",
+    "按行动前可见能力与反馈评估搜索请求。未公布的上传限制、合理查询无结果及后来返回无关图片，均不能单独作为先前行动错误的依据。",
+    "区分分页阅读、图片附件及实际覆盖范围。E11 首次读取不能代表完整网页；已附魔方图片能排除这些具体候选，不能证明未附图片也相同。",
+    "执行对应、内容正确和格式合法分别判断。终端重放报告的 execution 为 not_applicable，历史执行链接和本地验证通过均不能代替事实核验。"
+  ]
+}

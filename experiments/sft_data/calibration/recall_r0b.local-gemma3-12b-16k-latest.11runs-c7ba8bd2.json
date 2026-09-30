@@ -1,0 +1,5872 @@
+{
+  "judge_model": "local:gemma3-12b-16k:latest",
+  "layers": "exec+anchored+sufficiency",
+  "n_injections": 74,
+  "recall_overall": 0.716,
+  "inconclusive": 4,
+  "recall_conclusive": 0.757,
+  "note_inconclusive": "inconclusive = 未命中且有 pending（核验调用失败等）；recall_conclusive 的分母去掉这些",
+  "by_kind": {
+    "swap_citation": {
+      "n": 10,
+      "detected": 8,
+      "recall": 0.8,
+      "inconclusive": 0,
+      "recall_conclusive": 0.8,
+      "misses": [
+        {
+          "run": "true_24171541709824_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F2",
+          "detail": "引用 ['E3'] → ['E6']",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_4124903_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "引用 ['E3', 'E5', 'E8'] → ['E17', 'E15']",
+          "got": [],
+          "inconclusive": false
+        }
+      ]
+    },
+    "fabricate_id": {
+      "n": 22,
+      "detected": 22,
+      "recall": 1.0,
+      "inconclusive": 0,
+      "recall_conclusive": 1.0,
+      "misses": []
+    },
+    "append_clause": {
+      "n": 22,
+      "detected": 18,
+      "recall": 0.818,
+      "inconclusive": 1,
+      "recall_conclusive": 0.857,
+      "misses": [
+        {
+          "run": "true_39132300_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "追加 “现场共有 37 人受伤”",
+          "got": [],
+          "inconclusive": true
+        },
+        {
+          "run": "true_4124903_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "追加 “现场共有 37 人受伤”",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_4124903_r0b_1",
+          "workspace_id": "W1-2",
+          "finding_id": "F5",
+          "detail": "追加 “事发时间为当地时间凌晨 2 点 40 分”",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "videosham_0069_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F4",
+          "detail": "追加 “现场共有 37 人受伤”",
+          "got": [],
+          "inconclusive": false
+        }
+      ]
+    },
+    "alter_number": {
+      "n": 9,
+      "detected": 5,
+      "recall": 0.556,
+      "inconclusive": 1,
+      "recall_conclusive": 0.625,
+      "misses": [
+        {
+          "run": "true_17838107_r0b_1",
+          "workspace_id": "W1-2",
+          "finding_id": "F4",
+          "detail": "15 → 28",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_24171541709824_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F2",
+          "detail": "28 → 41",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_39132300_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "1992 → 2005",
+          "got": [],
+          "inconclusive": true
+        },
+        {
+          "run": "videosham_2010_r0b_1",
+          "workspace_id": "W1-2",
+          "finding_id": "F4",
+          "detail": "96 → 109",
+          "got": [],
+          "inconclusive": false
+        }
+      ]
+    },
+    "drop_attribution": {
+      "n": 1,
+      "detected": 0,
+      "recall": 0.0,
+      "inconclusive": 1,
+      "recall_conclusive": null,
+      "misses": [
+        {
+          "run": "true_39132300_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "删去 “据支持：后来被称”",
+          "got": [],
+          "inconclusive": true
+        }
+      ]
+    },
+    "drop_required_finding": {
+      "n": 3,
+      "detected": 0,
+      "recall": 0.0,
+      "inconclusive": 0,
+      "recall_conclusive": 0.0,
+      "misses": [
+        {
+          "run": "true_24171541709824_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "删除该 Finding，状态保持 COMPLETED",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_24171541709824_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F2",
+          "detail": "删除该 Finding，状态保持 COMPLETED",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "videosham_0069_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F4",
+          "detail": "删除该 Finding，状态保持 COMPLETED",
+          "got": [],
+          "inconclusive": false
+        }
+      ]
+    },
+    "flip_to_incomplete": {
+      "n": 7,
+      "detected": 0,
+      "recall": 0.0,
+      "inconclusive": 1,
+      "recall_conclusive": 0.0,
+      "misses": [
+        {
+          "run": "true_20205316753904_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_24171541709824_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_39132300_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": true
+        },
+        {
+          "run": "true_4124903_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "true_4124903_r0b_1",
+          "workspace_id": "W1-2",
+          "finding_id": "F4",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "videosham_2010_r0b_1",
+          "workspace_id": "W1-1",
+          "finding_id": "F1",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        },
+        {
+          "run": "videosham_4126_r0b_1",
+          "workspace_id": "W1-2",
+          "finding_id": "F4",
+          "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+          "got": [],
+          "inconclusive": false
+        }
+      ]
+    }
+  },
+  "by_expected_type": {
+    "wrong_citation": {
+      "expected_in": 41,
+      "hit": 1
+    },
+    "unsupported_assertion": {
+      "expected_in": 42,
+      "hit": 31
+    },
+    "fabricated_evidence_id": {
+      "expected_in": 22,
+      "hit": 22
+    },
+    "sloppy_numeric": {
+      "expected_in": 9,
+      "hit": 0
+    },
+    "misread_fine_text": {
+      "expected_in": 9,
+      "hit": 0
+    },
+    "incomplete_though_answerable": {
+      "expected_in": 7,
+      "hit": 0
+    },
+    "completed_without_finishing": {
+      "expected_in": 3,
+      "hit": 0
+    },
+    "omitted_required_fact": {
+      "expected_in": 3,
+      "hit": 0
+    },
+    "attribution_drift": {
+      "expected_in": 1,
+      "hit": 0
+    }
+  },
+  "false_new_errors": [
+    {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W1-1",
+      "kind": "fabricate_id",
+      "types": [
+        "completed_without_finishing",
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ]
+    },
+    {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W1-2",
+      "kind": "swap_citation",
+      "types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ]
+    },
+    {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W1-2",
+      "kind": "append_clause",
+      "types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ]
+    },
+    {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W2-1",
+      "kind": "append_clause",
+      "types": [
+        "attribution_drift",
+        "unsupported_assertion"
+      ]
+    },
+    {
+      "run": "videosham_1028_r0b_1",
+      "workspace_id": "W1-1",
+      "kind": "fabricate_id",
+      "types": [
+        "completed_without_finishing",
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ]
+    },
+    {
+      "run": "videosham_1028_r0b_1",
+      "workspace_id": "W1-1",
+      "kind": "append_clause",
+      "types": [
+        "completed_without_finishing",
+        "unsupported_assertion"
+      ]
+    },
+    {
+      "run": "videosham_1028_r0b_1",
+      "workspace_id": "W1-1",
+      "kind": "alter_number",
+      "types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ]
+    },
+    {
+      "run": "videosham_4126_r0b_1",
+      "workspace_id": "W2-2",
+      "kind": "fabricate_id",
+      "types": [
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ]
+    },
+    {
+      "run": "videosham_4126_r0b_1",
+      "workspace_id": "W2-2",
+      "kind": "append_clause",
+      "types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E23', 'E26'] → ['E32']",
+      "before": [
+        "E23",
+        "E26"
+      ],
+      "after": [
+        "E32"
+      ],
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "供应商页面另转述警方称阳性后20分钟复测，若只吃过热十字面包，第二次读数会为零。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-2",
+      "finding_id": "F3",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E23', 'E26'] → ['E32']",
+      "before": [
+        "E23",
+        "E26"
+      ],
+      "after": [
+        "E32"
+      ],
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "供应商将现象解释为面包中的发酵水果产生口腔酒精",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "ABC采访的营养学专家质疑将其直接归因于酵母或水果",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "仪器差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此，口腔残留干扰是有依据的解释",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "热十字面包中具体成分的致因尚未得到这些材料一致确认",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9596",
+      "fake": "E9596",
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "呼气仪的读数变化不等于已经证实体内或血液酒精水平相应升高。WebMD说明，呼气测试测量呼出气中的酒精并据此估计血液酒精浓度，而口腔中的少量酒精可以使结果失真。结",
+          "detail": "引用的 E9596 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F3",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9059",
+      "fake": "E9059",
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "影响条件主要涉及进食后很快测试、口内仍有食物或酒精残留，以及仪器识别干扰物的能力。供应商将现象解释为面包中的发酵水果产生口腔酒精；但ABC采访的营养学专家质疑将",
+          "detail": "引用的 E9059 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "现场共有 37 人受伤。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F3",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场负责人姓名为 Laurent Mercier”",
+      "clause": "现场负责人姓名为 Laurent Mercier",
+      "run": "true_17838107_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "但ABC采访的营养学专家质疑将其直接归因于酵母或水果，并强调仪器差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "热十字面包中具体成分的致因尚未得到这些材料一致确认",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "现场负责人姓名为 Laurent Mercier",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "15 → 28",
+      "before": "15",
+      "after": "28",
+      "run": "true_17838107_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 fmcsa（FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "但这些是媒体报道与商业机构的测试陈述，并非充分披露方法的受控研究，不能推及所有面包、人员和仪器。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：Snopes 对该说法的核查, FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9404",
+      "fake": "E9404",
+      "run": "true_20205316753904_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.02,
+          "REQ2": 0.05
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "该声明与材料 A 的可见画面基本一致：一名女子在列车车厢内双腿盘起、身体离地，双手操作手机，头顶束起的头发向上延伸至车厢吊环附近，呈现靠头发悬挂的姿态。",
+          "detail": "引用的 E9404 在证据库中不存在"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_20205316753904_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.02,
+          "REQ2": 0.05
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "该声明与材料 A 的可见画面基本一致：",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "true_20205316753904_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.02,
+          "REQ2": 0.05
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9404",
+      "fake": "E9404",
+      "run": "true_20361105_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.56,
+          "REQ2": 0.1,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "Washington Free Beacon 将言论定位于佛罗里达州 Homestead 移民拘留设施外的记者会，并链接 Wilson 官方 Facebook ",
+          "detail": "引用的 E9404 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_full（较长原始录像（CBS Web Extra）的字幕/页面）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "仅保留“取笑”和“追诉”会遗漏影响行为对象判断的后文。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "现有证据同样不足以断言她明确将追诉对象严格限定为实施违法威胁的人",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_20361105_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.56,
+          "REQ2": 0.1,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_full（较长原始录像（CBS Web Extra）的字幕/页面）未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "仅保留“取笑”和“追诉”会遗漏影响行为对象判断的后文。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "现有证据同样不足以断言她明确将追诉对象严格限定为实施违法威胁的人",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E3'] → ['E6']",
+      "before": [
+        "E3"
+      ],
+      "after": [
+        "E6"
+      ],
+      "run": "true_24171541709824_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E6'] → ['E3']",
+      "before": [
+        "E6"
+      ],
+      "after": [
+        "E3"
+      ],
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "2000年，弗吉尼亚州议员提出请求，明尼苏达州州长 Jesse Ventura 拒绝",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "2003年，包括州长 Mark Warner 在内的弗吉尼亚州官员再次要求归还，明尼苏达州州长 Tim Pawlenty 明确拒绝",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9374",
+      "fake": "E9374",
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "该声明属实。已读报道记载至少两次来自弗吉尼亚州官员的归还请求遭明尼苏达州拒绝：2000年，弗吉尼亚州议员提出请求，明尼苏达州州长 Jesse Ventura 拒",
+          "detail": "引用的 E9374 在证据库中不存在"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9596",
+      "fake": "E9596",
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "争议对象是南部邦联弗吉尼亚第28步兵团的战旗。明尼苏达历史学会记载，1863年7月3日，明尼苏达第一志愿步兵团列兵 Marshall Sherman 在葛底斯堡",
+          "detail": "引用的 E9596 在证据库中不存在"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "28 → 41",
+      "before": "28",
+      "after": "41",
+      "run": "true_24171541709824_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "2000 → 2013",
+      "before": "2000",
+      "after": "2013",
+      "run": "true_24171541709824_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "该声明属实",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "drop_required_finding",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "detail": "删除该 Finding，状态保持 COMPLETED",
+      "lost_required": [
+        "twincities"
+      ],
+      "run": "true_24171541709824_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "drop_required_finding",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "detail": "删除该 Finding，状态保持 COMPLETED",
+      "lost_required": [
+        "mnhs_edu",
+        "mnopedia"
+      ],
+      "run": "true_24171541709824_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "true_24171541709824_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      },
+      "disposition": "positive",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [],
+      "errors": []
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9404",
+      "fake": "E9404",
+      "run": "true_39132300_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      },
+      "disposition": "negative",
+      "pending": 1,
+      "pending_reasons": {
+        "judge_output_invalid": 1
+      },
+      "pending_last_error": "LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting property name enclosed in double quotes at line 355, column 4 (offset 13222 in the JSON after removing outer whitespace, thinking tags and fences)",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "该声明得到现有证据支持：后来被称为“Ghostface”的 Fun World 面具，在1996年《Scream》上映前已经作为商品出售。It's Fun Ty",
+          "detail": "引用的 E9404 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes（Snopes 核查：面具早于电影）未被任何 Finding 引用"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes 未取得却报 COMPLETED"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_39132300_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      },
+      "disposition": "negative",
+      "pending": 1,
+      "pending_reasons": {
+        "judge_output_invalid": 1
+      },
+      "pending_last_error": "LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting property name enclosed in double quotes at line 355, column 4 (offset 13222 in the JSON after removing outer whitespace, thinking tags and fences)",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes（Snopes 核查：面具早于电影）未被任何 Finding 引用"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes 未取得却报 COMPLETED"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "1992 → 2005",
+      "before": "1992",
+      "after": "2005",
+      "run": "true_39132300_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      },
+      "disposition": "negative",
+      "pending": 1,
+      "pending_reasons": {
+        "judge_output_invalid": 1
+      },
+      "pending_last_error": "LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting property name enclosed in double quotes at line 355, column 4 (offset 13222 in the JSON after removing outer whitespace, thinking tags and fences)",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes（Snopes 核查：面具早于电影）未被任何 Finding 引用"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes 未取得却报 COMPLETED"
+        }
+      ]
+    },
+    {
+      "kind": "drop_attribution",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "attribution_drift",
+        "unsupported_assertion"
+      ],
+      "detail": "删去 “据支持：后来被称”",
+      "removed": "据支持：后来被称",
+      "run": "true_39132300_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      },
+      "disposition": "negative",
+      "pending": 1,
+      "pending_reasons": {
+        "judge_output_invalid": 1
+      },
+      "pending_last_error": "LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting property name enclosed in double quotes at line 355, column 4 (offset 13222 in the JSON after removing outer whitespace, thinking tags and fences)",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes（Snopes 核查：面具早于电影）未被任何 Finding 引用"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes 未取得却报 COMPLETED"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "true_39132300_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      },
+      "disposition": "uncertain",
+      "pending": 1,
+      "pending_reasons": {
+        "judge_output_invalid": 1
+      },
+      "pending_last_error": "LocalModelOutputError: model output contained no JSON object forming a complete decision; JSON syntax error: Expecting property name enclosed in double quotes at line 355, column 4 (offset 13222 in the JSON after removing outer whitespace, thinking tags and fences)",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 snopes（Snopes 核查：面具早于电影）未被任何 Finding 引用"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E3', 'E5', 'E8'] → ['E17', 'E15']",
+      "before": [
+        "E3",
+        "E5",
+        "E8"
+      ],
+      "after": [
+        "E17",
+        "E15"
+      ],
+      "run": "true_4124903_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9374",
+      "fake": "E9374",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "给定视频不能作为巴黎遭受恐怖袭击的证据。已观察画面显示夜间的埃菲尔铁塔、河面及附近的烟雾，塔身右侧近地面有明亮火焰；这些画面能够支持附近发生燃烧，但不能确定起火",
+          "detail": "引用的 E9374 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9596",
+      "fake": "E9596",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "可核实的同期来源将相关事件记为2016年7月14日法国国庆日夜间、巴黎埃菲尔铁塔附近耶拿桥上的意外车辆火灾。巴黎警察局当日发布的信息明确表示，铁塔没有起火，耶拿",
+          "detail": "引用的 E9596 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_4124903_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-1",
+      "finding_id": "F2",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "2016 → 2029",
+      "before": "2016",
+      "after": "2029",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "结论日期 2029-07-14 不在案卷范围 [2016-07-13, 2016-07-15] 内"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "true_4124903_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 youtube_upload（可能的公开来源视频页（含上传日期））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "目前没有完成给定视频与同期原始上传素材的直接对应",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此不能独立确认这段视频的确切拍摄日期、拍摄者或火源所在的具体车辆",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E17', 'E18'] → ['E15']",
+      "before": [
+        "E17",
+        "E18"
+      ],
+      "after": [
+        "E15"
+      ],
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "同期报道亦引述警方称",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告中没有直接引用或提及巴黎警察局在2016年7月14日当晚发布的推文。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告中未提及Snopes对该说法的核查结果。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9570",
+      "fake": "E9570",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "该说法对应的是2016年7月14日法国国庆烟花表演结束后，巴黎埃菲尔铁塔附近耶拿桥上的卡车火灾。巴黎警察局当时明确表示，铁塔本身没有起火，卡车发生的是意外火灾，",
+          "detail": "引用的 E9570 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告中没有直接引用或提及巴黎警察局 2016-07-14 当晚的推文，虽然提到警方声明，但未明确指出是推文。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告中没有提及 Snopes 对该说法的核查。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9879",
+      "fake": "E9879",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "起火与烟花燃放事故有关。France 24报道，警方此前通报烟花落到一辆卡车上；同期报道亦引述警方称，技术故障导致一辆载有烟花的卡车在耶拿桥起火。现有材料支持烟",
+          "detail": "引用的 E9879 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告中没有直接引用或提及巴黎警察局 2016-07-14 当晚的推文，虽然提到警方声明，但不是直接引用推文。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告中未提及 Snopes 对该说法的核查。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场负责人姓名为 Laurent Mercier”",
+      "clause": "现场负责人姓名为 Laurent Mercier",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "现场负责人姓名为 Laurent Mercier",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告中没有直接引用或提及巴黎警察局的推文，虽然提到警方声明，但未明确指出是推文。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告中没有提及 Snopes 的核查结果。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “事发时间为当地时间凌晨 2 点 40 分”",
+      "clause": "事发时间为当地时间凌晨 2 点 40 分",
+      "run": "true_4124903_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告没有直接引用或提及巴黎警察局的推文（evidence_ids 中未出现）。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告没有提及 Snopes 的核查结果。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "2016 → 2029",
+      "before": "2016",
+      "after": "2029",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "结论日期 2029-07-14 不在案卷范围 [2016-07-13, 2016-07-15] 内"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告没有直接引用巴黎警察局的推文作为证据。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "24 → 37",
+      "before": "24",
+      "after": "37",
+      "run": "true_4124903_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "技术故障导致一辆载有烟花的卡车在耶拿桥起火",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告中没有直接引用或提及巴黎警察局的推文，虽然提到警方声明，但未明确指出是推文。"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'snopes' 未被回答：报告中没有提及 Snopes 的核查结果。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：prefpolice_tweets"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "true_4124903_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "同日尼斯确实发生了卡车袭击，但那是另一城市的独立事件。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'prefpolice_tweets' 未被回答：报告没有直接引用巴黎警察局的推文作为证据。"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F4",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9404",
+      "fake": "E9404",
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "completed_without_finishing",
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.08,
+          "REQ2": 0.18,
+          "REQ3": 0.76,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "视觉对齐没有返回候选匹配，因此当前证据尚不能确定两段材料后续的连续对应关系，不能确认具体删减位置、重排、倒放或播放倍速。已确认的是相同起始画面、不同文件时长，以",
+          "detail": "引用的 E9404 在证据库中不存在"
+        },
+        {
+          "type": "incomplete_citation_set",
+          "severity": "major",
+          "finding": "F1",
+          "span": "这支持两段材料具有相同的起始画面",
+          "detail": "关系句「这支持两段材料具有相同的起始画面」只引了一边：支持它的文本 E 已被同报告其它 Finding 引用并核实（原判 unsupported_assertion）"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "但不能据此确认候选视频的来源身份或后续完整对应关系",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "B 短 6.160 秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此两者的呈现时长不同",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "时长差本身不能区分截取、删减、变速或其他处理，也不能换算为被删除的动作时长",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "不能直接解释为人物或场景被替换，也不能据此断言骑手的意图、疲劳程度或事件性质改变。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：虽然 F1, F3, F4 引用了证据 E6, E10, E18, E11, E19, E12, E20, E13, E5, E3, E4，但未直接呈现抽帧内容。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：frames"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F4",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_0069_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.08,
+          "REQ2": 0.18,
+          "REQ3": 0.76,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "incomplete_citation_set",
+          "severity": "major",
+          "finding": "F1",
+          "span": "这支持两段材料具有相同的起始画面",
+          "detail": "关系句「这支持两段材料具有相同的起始画面」只引了一边：支持它的文本 E 已被同报告其它 Finding 引用并核实（原判 unsupported_assertion）"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "但不能据此确认候选视频的来源身份或后续完整对应关系",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "B 短 6.160 秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此两者的呈现时长不同",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "时长差本身不能区分截取、删减、变速或其他处理，也不能换算为被删除的动作时长",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "不能直接解释为人物或场景被替换，也不能据此断言骑手的意图、疲劳程度或事件性质改变。",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "drop_required_finding",
+      "workspace_id": "W1-1",
+      "finding_id": "F4",
+      "expected": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "detail": "删除该 Finding，状态保持 COMPLETED",
+      "lost_required": [
+        "alignment"
+      ],
+      "run": "videosham_0069_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.08,
+          "REQ2": 0.18,
+          "REQ3": 0.76,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "incomplete_citation_set",
+          "severity": "major",
+          "finding": "F1",
+          "span": "这支持两段材料具有相同的起始画面",
+          "detail": "关系句「这支持两段材料具有相同的起始画面」只引了一边：支持它的文本 E 已被同报告其它 Finding 引用并核实（原判 unsupported_assertion）"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "但不能据此确认候选视频的来源身份或后续完整对应关系",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "B 短 6.160 秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此两者的呈现时长不同",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "时长差本身不能区分截取、删减、变速或其他处理，也不能换算为被删除的动作时长",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "不能直接解释为人物或场景被替换，也不能据此断言骑手的意图、疲劳程度或事件性质改变。",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-2",
+      "finding_id": "F6",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E5'] → ['E3', 'E4']",
+      "before": [
+        "E5"
+      ],
+      "after": [
+        "E3",
+        "E4"
+      ],
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.13,
+          "REQ2": 0.5,
+          "REQ3": 0.72,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 frames（两段视频的抽帧（差异位置两侧的对应帧））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "媒体探测显示",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 时长为10.20秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 音轨数为0",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "这是文件层面的音轨配置差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "不能据此确定材料 B 的音轨包含什么声音",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也不能推断材料 A 所记录的现场没有声音",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "incomplete_citation_set",
+          "severity": "major",
+          "finding": "F6",
+          "span": "现有视觉对齐结果未给出候选对应片段",
+          "detail": "关系句「现有视觉对齐结果未给出候选对应片段」只引了一边：支持它的文本 E 已被同报告其它 Finding 引用并核实（原判 unsupported_assertion）"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "因而尚无可用于核查两份材料声音与画面对应关系的已确认时间映射",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "具体声音差异及其是否改变画面含义均未能确定",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F6",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9071",
+      "fake": "E9071",
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.13,
+          "REQ2": 0.5,
+          "REQ3": 0.72,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "现有视觉对齐结果未给出候选对应片段，因而尚无可用于核查两份材料声音与画面对应关系的已确认时间映射。具体声音差异及其是否改变画面含义均未能确定。",
+          "detail": "引用的 E9071 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 frames（两段视频的抽帧（差异位置两侧的对应帧））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "媒体探测显示",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 时长为10.20秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 音轨数为0",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "这是文件层面的音轨配置差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "不能据此确定材料 B 的音轨包含什么声音",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也不能推断材料 A 所记录的现场没有声音",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F6",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.13,
+          "REQ2": 0.5,
+          "REQ3": 0.72,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 frames（两段视频的抽帧（差异位置两侧的对应帧））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "媒体探测显示",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 时长为10.20秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "材料 A 音轨数为0",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "这是文件层面的音轨配置差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "不能据此确定材料 B 的音轨包含什么声音",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也不能推断材料 A 所记录的现场没有声音",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "incomplete_citation_set",
+          "severity": "major",
+          "finding": "F6",
+          "span": "现有视觉对齐结果未给出候选对应片段",
+          "detail": "关系句「现有视觉对齐结果未给出候选对应片段」只引了一边：支持它的文本 E 已被同报告其它 Finding 引用并核实（原判 unsupported_assertion）"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "因而尚无可用于核查两份材料声音与画面对应关系的已确认时间映射",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "具体声音差异及其是否改变画面含义均未能确定",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W2-1",
+      "finding_id": "F8",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9050",
+      "fake": "E9050",
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.21,
+          "REQ2": 0.27,
+          "REQ3": 0.41,
+          "REQ4": 0.46
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F8",
+          "span": "材料 A 在4.40、5.00、5.80和7.80秒的可见帧均呈现骑手低头伏身的姿态；这些帧尚不能与材料 B 在2.68秒的抬头画面确立对应。两侧虽有相同的骑手",
+          "detail": "引用的 E9050 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 media_profile（两段视频的媒体属性（时长、帧率、音轨数））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F7",
+          "span": "这些采样显示头部姿态变化，但尚不能确定抬头动作的起止时间",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "当前对照尚不足以区分变速、截取、重复或其他时序处理。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "是否改变了踩踏、抬头的节奏或动作顺序，以及是否因此改变画面含义，仍无法确认。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中未提供两段视频的抽帧对比，说明了无法确定抬头动作对应位置。"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W2-1",
+      "finding_id": "F8",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_0069_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "attribution_drift",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.21,
+          "REQ2": 0.27,
+          "REQ3": 0.41,
+          "REQ4": 0.46
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 media_profile（两段视频的媒体属性（时长、帧率、音轨数））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F7",
+          "span": "这些采样显示头部姿态变化，但尚不能确定抬头动作的起止时间",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F8",
+          "span": "这些共同内容不足以唯一定位同一次动作",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F8",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "attribution_drift",
+          "severity": "major",
+          "finding": "F8",
+          "span": "材料 A 在4.40、5.00、5.80和7.80秒的可见帧均呈现骑手低头伏身的姿态；这些帧尚不能与材料 B 在2.68秒的抬头画面确立对应。两侧虽有相同的骑手",
+          "detail": "来源只是转述说法，该句却写成了事实"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "当前对照尚不足以区分变速、截取、重复或其他时序处理。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "是否改变了踩踏、抬头的节奏或动作顺序，以及是否因此改变画面含义，仍无法确认。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中没有提供两段视频的抽帧证据，因此未覆盖。"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W2-1",
+      "finding_id": "F9",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E23', 'E38', 'E41'] → ['E13']",
+      "before": [
+        "E23",
+        "E38",
+        "E41"
+      ],
+      "after": [
+        "E13"
+      ],
+      "run": "videosham_1007_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.28,
+          "REQ4": 0.5
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "乘员",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "湖面尾迹",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "林岸",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "湖水",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "针叶林",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "岩壁",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "舟艇已不在该帧内",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "前景划桨者",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "相似山湖环境",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "因此不能把B后续出现舟艇或林岸本身视为A没有呈现的新事件",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F10",
+          "span": "会影响对山湖划船画面的用途理解",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "但记录明确没有估计真实剪辑边界",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "该对应点不足以认定B从10.677秒起的全部内容均被A省略",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "也不足以证明后续画面在A其他位置没有出现",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中提及了对比A和B的画面，但未提供抽帧证据，因此未覆盖。"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W2-1",
+      "finding_id": "F9",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9666",
+      "fake": "E9666",
+      "run": "videosham_1007_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.28,
+          "REQ4": 0.5
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "材料B在12.012秒显示红色舟艇、乘员、湖面尾迹及林岸；14.014秒显示湖水、针叶林和岩壁，舟艇已不在该帧内。材料A在5.600秒已经呈现前景划桨者、右侧红",
+          "detail": "引用的 E9666 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F10",
+          "span": "会影响对山湖划船画面的用途理解",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "但记录明确没有估计真实剪辑边界",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "该对应点不足以认定B从10.677秒起的全部内容均被A省略",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "也不足以证明后续画面在A其他位置没有出现",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中没有提供两段视频的抽帧对比，因此未覆盖。"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W2-1",
+      "finding_id": "F9",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_1007_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.28,
+          "REQ4": 0.5
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F10",
+          "span": "会影响对山湖划船画面的用途理解",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "但记录明确没有估计真实剪辑边界",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "该对应点不足以认定B从10.677秒起的全部内容均被A省略",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "也不足以证明后续画面在A其他位置没有出现",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中没有提供两段视频的抽帧，因此未覆盖。"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F3",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9404",
+      "fake": "E9404",
+      "run": "videosham_1028_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "completed_without_finishing",
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.06,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "四组同时间画面的木屋、树木、道路以及两名使用前臂拐杖者的位置和姿态均相互对应，人物从远处逐步走近镜头。视觉对齐结果给出覆盖两侧0—4.84秒的候选对应，四个锚点",
+          "detail": "引用的 E9404 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "这使材料B具有明确的CRPS谈话主题提示，而材料A的占位文字不传达该主题",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "人物行走画面本身不能证明谈话内容或人物的诊断",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "材料A同位置呈实色蓝底和清晰白字 (在1.60、3.20和4.80秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "这表明开头采样帧还存在标题叠加透明程度的视觉差异，影响背景遮挡及标题显现效果 (在3.20秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：虽然报告提到了对比画面，但没有提供抽帧的具体图像，因此未满足证据清单的要求。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：frames"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F3",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_1028_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "completed_without_finishing",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.06,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "这使材料B具有明确的CRPS谈话主题提示，而材料A的占位文字不传达该主题",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "人物行走画面本身不能证明谈话内容或人物的诊断",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "材料A同位置呈实色蓝底和清晰白字 (在1.60、3.20和4.80秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "这表明开头采样帧还存在标题叠加透明程度的视觉差异，影响背景遮挡及标题显现效果 (在3.20秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：说明来源, 核验原站"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-1",
+      "finding_id": "F3",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "84 → 97",
+      "before": "84",
+      "after": "97",
+      "run": "videosham_1028_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.06,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "这使材料B具有明确的CRPS谈话主题提示，而材料A的占位文字不传达该主题",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "人物行走画面本身不能证明谈话内容或人物的诊断",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "材料A同位置呈实色蓝底和清晰白字 (在1.60、3.20和4.80秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "这表明开头采样帧还存在标题叠加透明程度的视觉差异，影响背景遮挡及标题显现效果 (在3.20秒)",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "拟合时间比例为1、偏移为0",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：虽然报告中提到了画面，但没有提供抽帧图片作为证据，因此未满足清单要求。"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：frames"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E10', 'E11', 'E12', 'E13', 'E6', 'E7', 'E8', 'E9'] → ['E3', 'E4']",
+      "before": [
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E6",
+        "E7",
+        "E8",
+        "E9"
+      ],
+      "after": [
+        "E3",
+        "E4"
+      ],
+      "run": "videosham_2010_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "材料A的画面上半部及车辆周围是绘制的蓝天、云、山丘、围栏和道路",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "下半部中央是一辆呈摄影外观的红色敞篷车及乘员，形成合成画面",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "这一差异使A呈现车辆在卡通道路上行驶的情境",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "B保留了车辆经过有人群和其他车辆聚集场地的现场语境",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此，B这些采样帧保留了车辆经过镜头时的位置和视角变化，A这些采样帧则主要通过背景位移表达行驶。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "但未返回对应候选",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此没有取得可用的跨视频时间映射；时长差本身不能证明删去了某一帧或发生变速。",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9074",
+      "fake": "E9074",
+      "run": "videosham_2010_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "在双方0.00、0.96、1.96和2.92秒的已查看帧中，材料A的画面上半部及车辆周围是绘制的蓝天、云、山丘、围栏和道路，下半部中央是一辆呈摄影外观的红色敞篷",
+          "detail": "引用的 E9074 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此，B这些采样帧保留了车辆经过镜头时的位置和视角变化，A这些采样帧则主要通过背景位移表达行驶。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "但未返回对应候选",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此没有取得可用的跨视频时间映射；时长差本身不能证明删去了某一帧或发生变速。",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “涉事车辆车牌尾号为 4471”",
+      "clause": "涉事车辆车牌尾号为 4471",
+      "run": "videosham_2010_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "new_error_types": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "wrong_citation",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "在0.96秒的已查看帧中，材料A的画面上半部及车辆周围是绘制的蓝天、云、山丘、围栏和道路",
+          "detail": "E11 与该部分相反：（图片来源：请看附图；来源材料：B（E2 → 视频E2在0.960秒的帧））画面显示红色敞篷车周围有人群，其他车辆，树木，建筑"
+        },
+        {
+          "type": "wrong_citation",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "在1.96秒的已查看帧中，材料A的画面上半部及车辆周围是绘制的蓝天、云、山丘、围栏和道路",
+          "detail": "E12 与该部分相反：（图片来源：请看附图；来源材料：B（E2 → 视频E2在1.960秒的帧））画面显示天空、树木，没有蓝天、云、山丘、围栏和道路"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F1",
+          "span": "涉事车辆车牌尾号为 4471",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此，B这些采样帧保留了车辆经过镜头时的位置和视角变化，A这些采样帧则主要通过背景位移表达行驶。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "但未返回对应候选",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此没有取得可用的跨视频时间映射；时长差本身不能证明删去了某一帧或发生变速。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：两段视频的抽帧, 差异区域的裁剪放大"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-1",
+      "finding_id": "F1",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "videosham_2010_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F2",
+          "span": "因此，B这些采样帧保留了车辆经过镜头时的位置和视角变化，A这些采样帧则主要通过背景位移表达行驶。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "但未返回对应候选",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F3",
+          "span": "因此没有取得可用的跨视频时间映射；时长差本身不能证明删去了某一帧或发生变速。",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9071",
+      "fake": "E9071",
+      "run": "videosham_2010_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.41,
+          "REQ3": 0.62,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "材料 A 和材料 B 均有1条音轨。音频对齐工具实际处理了 A 的0–2.96秒和 B 的0–3.00秒，未报告处理失败，未返回匹配候选。音频可进行算法检查，但",
+          "detail": "引用的 E9071 在证据库中不存在"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也无法判断声音是否与车辆动作或场景同步，也无法判断声音差异是否改变画面含义。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中描述了观察帧，但未提供抽帧证据。"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_2010_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.41,
+          "REQ3": 0.62,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "未报告处理失败",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "未返回匹配候选",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "未匹配不能单独证明音频不同、被替换或被删减，也不能据此定位具体声音差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "现场共有 37 人受伤",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也无法判断声音是否与车辆动作或场景同步，也无法判断声音差异是否改变画面含义。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中描述了观察帧，但未提供抽帧证据。"
+        }
+      ]
+    },
+    {
+      "kind": "alter_number",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "wrong_citation",
+        "sloppy_numeric",
+        "misread_fine_text",
+        "unsupported_assertion"
+      ],
+      "detail": "96 → 109",
+      "before": "96",
+      "after": "109",
+      "run": "videosham_2010_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.41,
+          "REQ3": 0.62,
+          "REQ4": 0.58
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "必需证据 crops（差异区域的裁剪放大（乘员/车辆细节））未被任何 Finding 引用"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "也无法判断声音是否与车辆动作或场景同步，也无法判断声音差异是否改变画面含义。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：报告中描述了观察帧，但未提供抽帧证据。"
+        }
+      ]
+    },
+    {
+      "kind": "swap_citation",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "wrong_citation",
+        "unsupported_assertion"
+      ],
+      "detail": "引用 ['E31', 'E32', 'E36', 'E37', 'E38', 'E39'] → ['E9']",
+      "before": [
+        "E31",
+        "E32",
+        "E36",
+        "E37",
+        "E38",
+        "E39"
+      ],
+      "after": [
+        "E9"
+      ],
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "因此绿衣人物遮挡不能解释这三个时刻的差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：时间错位, 遮挡, 可见性歧义"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9840",
+      "fake": "E9840",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "材料A、B在已核对的1.600、3.000、3.967和4.800秒画面中，绿衣人物的姿态、位置及坡面、围栏等背景相互对应，未发现足以解释黑衣人物可见性差异的时",
+          "detail": "引用的 E9840 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但审核认为应为 INCOMPLETE"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9548",
+      "fake": "E9548",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "在3.000、3.967和4.800秒，材料B右侧均可辨认出穿黑色上衣、灰绿色长裤的滑板人物，材料A对应位置未见可辨认的该人物。两侧绿衣人物均位于更左方，没有遮",
+          "detail": "引用的 E9548 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但审核认为应为 INCOMPLETE"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “该说法此前已被路透社在 2014 年核实”",
+      "clause": "该说法此前已被路透社在 2014 年核实",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F4",
+          "span": "该说法此前已被路透社在 2014 年核实",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但任务要求未全部覆盖：时间错位, 说明来源"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W1-2",
+      "finding_id": "F5",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “现场共有 37 人受伤”",
+      "clause": "现场共有 37 人受伤",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F5",
+          "span": "现场共有 37 人受伤。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        },
+        {
+          "type": "completed_without_finishing",
+          "severity": "critical",
+          "finding": null,
+          "span": "",
+          "detail": "报 COMPLETED 但审核认为应为 INCOMPLETE"
+        }
+      ]
+    },
+    {
+      "kind": "flip_to_incomplete",
+      "workspace_id": "W1-2",
+      "finding_id": "F4",
+      "expected": [
+        "incomplete_though_answerable"
+      ],
+      "detail": "COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛",
+      "run": "videosham_4126_r0b_1",
+      "detected": false,
+      "hits": [],
+      "new_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F6",
+          "span": "说明差异不能概括为全程存在",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "scope_overreach",
+          "severity": "minor",
+          "finding": "F6",
+          "span": "现有证据支持上述三个采样时刻的“B可见、A对应位置不可见”，不足以将其扩展为3.000至4.800秒之间每一帧都成立的连续区间，更不足以覆盖完整6秒。1.600",
+          "detail": "核验模型提示：由局部/少数样本推断了整体"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W2-1",
+      "finding_id": "F8",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9846",
+      "fake": "E9846",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.71,
+          "REQ2": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F8",
+          "span": "任务已确认1.600秒两侧均未见该人物；直接对照1.633333、1.666667和1.700秒的对应画面，两侧也均未见该人物。结合各帧1/30秒的呈现时长，1",
+          "detail": "引用的 E9846 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F7",
+          "span": "至少这两个时刻存在可见性差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "至少发生一次可见性状态变化",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "但不能确定唯一结束帧",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W2-1",
+      "finding_id": "F8",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “事发时间为当地时间凌晨 2 点 40 分”",
+      "clause": "事发时间为当地时间凌晨 2 点 40 分",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.71,
+          "REQ2": 0.28
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F7",
+          "span": "至少这两个时刻存在可见性差异",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F8",
+          "span": "事发时间为当地时间凌晨 2 点 40 分",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "至少发生一次可见性状态变化",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F9",
+          "span": "但不能确定唯一结束帧",
+          "detail": "所引 E 均未支持这一部分"
+        }
+      ]
+    },
+    {
+      "kind": "fabricate_id",
+      "workspace_id": "W2-2",
+      "finding_id": "F10",
+      "expected": [
+        "fabricated_evidence_id"
+      ],
+      "detail": "追加不存在的 E9296",
+      "fake": "E9296",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "fabricated_evidence_id"
+      ],
+      "new_error_types": [
+        "fabricated_evidence_id",
+        "omitted_required_fact"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.74,
+          "REQ2": 0.31
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "fabricated_evidence_id",
+          "severity": "critical",
+          "finding": "F10",
+          "span": "2.400秒，材料B右下边缘可见局部深色区域；放大后仍缺乏足以辨认人体或衣着的细节。2.433秒的材料B也只显示边缘局部，不能据此确定黑衣人物首次入画时间。",
+          "detail": "引用的 E9296 在证据库中不存在"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "材料A对应位置未见该人物",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "最后一帧呈现至6.000秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "因此片尾仍存在人物可见性差异；",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "6.000秒是视频终点，不能认定为人物实际退出画面的时间。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：虽然报告中引用了一些证据ID，但没有提供两段视频在区间边界两侧的成对帧。"
+        }
+      ]
+    },
+    {
+      "kind": "append_clause",
+      "workspace_id": "W2-2",
+      "finding_id": "F10",
+      "expected": [
+        "unsupported_assertion",
+        "wrong_citation"
+      ],
+      "detail": "追加 “事发时间为当地时间凌晨 2 点 40 分”",
+      "clause": "事发时间为当地时间凌晨 2 点 40 分",
+      "run": "videosham_4126_r0b_1",
+      "detected": true,
+      "hits": [
+        "unsupported_assertion"
+      ],
+      "new_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.74,
+          "REQ2": 0.31
+        }
+      },
+      "disposition": "negative",
+      "pending": 0,
+      "pending_reasons": {},
+      "pending_last_error": "",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "errors": [
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F10",
+          "span": "事发时间为当地时间凌晨 2 点 40 分",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F11",
+          "span": "材料A对应位置未见该人物",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "最后一帧呈现至6.000秒",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "因此片尾仍存在人物可见性差异；",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "unsupported_assertion",
+          "severity": "critical",
+          "finding": "F12",
+          "span": "6.000秒是视频终点，不能认定为人物实际退出画面的时间。",
+          "detail": "所引 E 均未支持这一部分"
+        },
+        {
+          "type": "omitted_required_fact",
+          "severity": "major",
+          "finding": null,
+          "span": "",
+          "detail": "任务要求 'frames' 未被回答：虽然报告中引用了证据，但没有提供两段视频在区间边界两侧的成对帧。"
+        }
+      ]
+    }
+  ],
+  "case_mode": "scoped",
+  "baseline": "control: 同 case_mode / requirement_ids / judge 下未改原报告的判定",
+  "controls": {
+    "true_17838107_r0b_1/W1-2": {
+      "run": "true_17838107_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.44,
+          "REQ2": 0.14,
+          "REQ3": 0.28
+        }
+      }
+    },
+    "true_20205316753904_r0b_1/W1-1": {
+      "run": "true_20205316753904_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "positive",
+      "control_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.02,
+          "REQ2": 0.05
+        }
+      }
+    },
+    "true_20361105_r0b_1/W1-2": {
+      "run": "true_20361105_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.56,
+          "REQ2": 0.1,
+          "REQ3": 0.08
+        }
+      }
+    },
+    "true_24171541709824_r0b_1/W1-1": {
+      "run": "true_24171541709824_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "positive",
+      "control_error_types": [],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [],
+        "scores": {
+          "REQ1": 0.0,
+          "REQ2": 0.0,
+          "REQ3": 0.04
+        }
+      }
+    },
+    "true_39132300_r0b_1/W1-1": {
+      "run": "true_39132300_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.29,
+          "REQ2": 0.2
+        }
+      }
+    },
+    "true_4124903_r0b_1/W1-1": {
+      "run": "true_4124903_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2",
+          "REQ3"
+        ],
+        "scores": {
+          "REQ1": 0.32,
+          "REQ2": 0.3,
+          "REQ3": 0.33
+        }
+      }
+    },
+    "true_4124903_r0b_1/W1-2": {
+      "run": "true_4124903_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.25,
+          "REQ2": 0.09,
+          "REQ3": 0.08
+        }
+      }
+    },
+    "videosham_0069_r0b_1/W1-1": {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "incomplete_citation_set",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.08,
+          "REQ2": 0.18,
+          "REQ3": 0.76,
+          "REQ4": 0.54
+        }
+      }
+    },
+    "videosham_0069_r0b_1/W1-2": {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.13,
+          "REQ2": 0.5,
+          "REQ3": 0.72,
+          "REQ4": 0.58
+        }
+      }
+    },
+    "videosham_0069_r0b_1/W2-1": {
+      "run": "videosham_0069_r0b_1",
+      "workspace_id": "W2-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.21,
+          "REQ2": 0.27,
+          "REQ3": 0.41,
+          "REQ4": 0.46
+        }
+      }
+    },
+    "videosham_1007_r0b_1/W2-1": {
+      "run": "videosham_1007_r0b_1",
+      "workspace_id": "W2-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.28,
+          "REQ4": 0.5
+        }
+      }
+    },
+    "videosham_1028_r0b_1/W1-1": {
+      "run": "videosham_1028_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.06,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      }
+    },
+    "videosham_2010_r0b_1/W1-1": {
+      "run": "videosham_2010_r0b_1",
+      "workspace_id": "W1-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "completed_without_finishing",
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.18,
+          "REQ3": 0.79,
+          "REQ4": 0.54
+        }
+      }
+    },
+    "videosham_2010_r0b_1/W1-2": {
+      "run": "videosham_2010_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "omitted_required_fact",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ2",
+          "REQ3",
+          "REQ4"
+        ],
+        "scores": {
+          "REQ1": 0.18,
+          "REQ2": 0.41,
+          "REQ3": 0.62,
+          "REQ4": 0.58
+        }
+      }
+    },
+    "videosham_4126_r0b_1/W1-2": {
+      "run": "videosham_4126_r0b_1",
+      "workspace_id": "W1-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "completed_without_finishing",
+        "scope_overreach",
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1"
+        ],
+        "scores": {
+          "REQ1": 0.65,
+          "REQ2": 0.16
+        }
+      }
+    },
+    "videosham_4126_r0b_1/W2-1": {
+      "run": "videosham_4126_r0b_1",
+      "workspace_id": "W2-1",
+      "disposition": "negative",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.71,
+          "REQ2": 0.28
+        }
+      }
+    },
+    "videosham_4126_r0b_1/W2-2": {
+      "run": "videosham_4126_r0b_1",
+      "workspace_id": "W2-2",
+      "disposition": "negative",
+      "control_error_types": [
+        "unsupported_assertion"
+      ],
+      "scope": {
+        "method": "text_overlap",
+        "requirement_ids": [
+          "REQ1",
+          "REQ2"
+        ],
+        "scores": {
+          "REQ1": 0.74,
+          "REQ2": 0.31
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,266 @@
+=== 1 生成 22 个新案卷 周一 2026/09/28 21:24:24.96 
+22 个新案卷校验通过
+已写入 E:\Codex\workspaces\ChatGPT\ForenSearcher\experiments\sft_data\cases
+BUILD_EXIT 0 
+=== 2 按 family 分配划分 
+seed=forensearcher-splits-20260928
+{"dev_train": {"cases": 21, "families": 19}, "dev_select": {"cases": 5, "families": 5}, "dev_confirm": {"cases": 3, "families": 3}, "dev_eval": {"cases": 4, "families": 4}, "test": {"cases": 0, "families": 0}, "contrast_only": {"cases": 0, "families": 0}}
+  dev_confirm  averimatec    averimatec:63                averimatec:63
+  dev_confirm  averitec      averitec:2872                averitec:2872
+  dev_confirm  qvhighlights  qvhighlights:0               qvhighlights:ocUC_KlLFb4
+  dev_eval     averimatec    averimatec:441               averimatec:441
+  dev_eval     averitec      averitec:2799                averitec:2799
+  dev_eval     qvhighlights  qvhighlights:1               qvhighlights:Q2TqU-Oh7KQ
+  dev_eval     vcsl          vcsl:pair_4                  vcsl:pair_4
+  dev_select   averimatec    averimatec:652               averimatec:652
+  dev_select   averimatec    averimatec:98                averimatec:98
+  dev_select   averitec      averitec:254                 averitec:254
+  dev_select   averitec      averitec:2694                averitec:2694
+  dev_select   qvhighlights  qvhighlights:2               qvhighlights:OG0ZEQamfGs
+  dev_train    averimatec    averimatec:423               averimatec:423
+  dev_train    averimatec    averimatec:660               averimatec:660
+  dev_train    averimatec    averimatec:699               averimatec:699
+  dev_train    averitec      averitec:1707                averitec:1707
+  dev_train    averitec      averitec:1766                averitec:1766
+  dev_train    averitec      averitec:392                 averitec:392
+  dev_train    qvhighlights  qvhighlights:9167            qvhighlights:VLHkdrM2NAg
+  dev_train    true          true:17838107                true:17838107
+  dev_train    true          true:20205316753904          true:20205316753904
+  dev_train    true          true:20361105                true:20361105
+  dev_train    true          true:24171541709824          true:24171541709824
+  dev_train    true          true:39132300                true:39132300
+  dev_train    true          true:4124903                 true:4124903
+  dev_train    vcsl          vcsl:pair_1                  vcsl:snowman_song
+  dev_train    vcsl          vcsl:pair_5                  vcsl:snowman_song
+  dev_train    vcsl          vcsl:pair_6                  vcsl:snowman_song
+  dev_train    videosham     videosham:0069               videosham:0069
+  dev_train    videosham     videosham:1007               videosham:1007
+  dev_train    videosham     videosham:1028               videosham:1028
+  dev_train    videosham     videosham:2010               videosham:2010
+  dev_train    videosham     videosham:4126               videosham:4126
+已写回 33 个案卷与 splits_manifest.json
+SPLIT_EXIT 0 
+=== 3 全部案卷加载与泄漏检查 
+33 个案卷
+无泄漏
+{'dev_train': {'cases': 21, 'families': 19}, 'dev_select': {'cases': 5, 'families': 5}, 'dev_confirm': {'cases': 3, 'families': 3}, 'dev_eval': {'cases': 4, 'families': 4}, 'test': {'cases': 0, 'families': 0}, 'contrast_only': {'cases': 0, 'families': 0}}
+=== 4 金标抽样与标注页 
+{"batch": "v1", "seed": "20260928", "report_verdicts": "verdicts_r0_judged.jsonl", "unit_verdicts": "verdicts_units_judged.jsonl", "counts": {"finding": 60, "answer": 12, "plan": 8}}
+Finding 层：核验器标错 30 / 未标错 30；图片 198 张
+标注页：E:\Codex\workspaces\ChatGPT\ForenSearcher\experiments\sft_data\gold_set\v1\标注.html
+GOLD_EXIT 0 
+=== 5 回归测试 
+...........................F........................F................... [ 38%]
+........................................................................ [ 76%]
+.......FF....................................                            [100%]
+================================== FAILURES ===================================
+____________________ test_all_runs_have_required_evidence _____________________
+
+tmp_path = WindowsPath('E:/Codex/workspaces/ChatGPT/ForenSearcher/.pytest-tmp/test_all_runs_have_required_ev0')
+
+    @pytest.mark.skipif(not ALL_RUNS or not VERDICTS.is_file(), reason="run 未随仓库入库")
+    def test_all_runs_have_required_evidence(tmp_path: Path):
+        """验收：每个 run 的 required_evidence 非空；claim 类有文本来源（run 做过 SEARCH 时）+ 帧（run 抽过帧时）；media 类有派生证据。"""
+    
+        for name in ALL_RUNS:
+            case, draft = _draft_run(name, tmp_path / name)
+            assert case.required_evidence, name
+>           assert "neutral" not in draft["requirement_origin"].values(), name
+E           AssertionError: averimatec_423_q0_validation_r3
+E           assert 'neutral' not in dict_values(['neutral', 'neutral'])
+E            +  where dict_values(['neutral', 'neutral']) = <built-in method values of dict object at 0x000001A2EDE0A8C0>()
+E            +    where <built-in method values of dict object at 0x000001A2EDE0A8C0> = {'REQ1': 'neutral', 'REQ2': 'neutral'}.values
+
+tests\test_datagen_draft_case.py:286: AssertionError
+___________________ test_progress_judge_counts_and_throttle ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A2EDDB7710>
+
+    def test_progress_judge_counts_and_throttle(monkeypatch):
+        monkeypatch.setenv("FOREN_JUDGE_PROGRESS_SECONDS", "0")
+    
+        async def answer(system_prompt, payload, images):
+            await asyncio.sleep(0.005)
+            return {"x": 1}
+    
+        stream = io.StringIO()
+        judge = ProgressJudge(CallableJudge(answer), progress=True, stream=stream)
+    
+        async def main():
+            await asyncio.gather(*(judge.judge(system_prompt="s", payload={"i": i}, images=[]) for i in range(6)))
+    
+        run(main())
+        assert (judge.calls, judge.misses, judge.hits, judge.in_flight) == (6, 6, 0, 0)
+>       assert judge.last_seconds is not None and judge.busy_seconds >= 6 * 0.004
+E       assert (0.0 is not None and 0.0 >= (6 * 0.004))
+E        +  where 0.0 = <foren_searcher.datagen.verify.judges.ProgressJudge object at 0x000001A2EDDB7E90>.last_seconds
+E        +  and   0.0 = <foren_searcher.datagen.verify.judges.ProgressJudge object at 0x000001A2EDDB7E90>.busy_seconds
+
+tests\test_datagen_judge_progress.py:201: AssertionError
+___________________ test_real_case_scopes_from_units_judged ___________________
+
+    @needs_units
+    def test_real_case_scopes_from_units_judged():
+        case = load_cases(CASES)[CASE_ID]
+        units = _read(UNITS)
+        w1, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-1", units=units)
+        w2, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-2", units=units)
+>       assert w1 == {"REQ2", "REQ3"} and w2 == {"REQ1", "REQ2"}
+E       AssertionError: assert ({'REQ2', 'REQ3'} == {'REQ2', 'REQ3'}
+E         
+E         Use -v to get more diff and {'REQ1'} == {'REQ1', 'REQ2'}
+E         
+E         Extra items in the right set:
+E         'REQ2'
+E         Use -v to get more diff)
+
+tests\test_datagen_sufficiency_scope.py:88: AssertionError
+___ test_scoped_calibration_catches_dropped_finding_without_false_omissions ___
+
+    @needs_run
+    @needs_units
+    def test_scoped_calibration_catches_dropped_finding_without_false_omissions():
+        from foren_searcher.datagen.verify.calibrate_recall import MUTATORS, run_calibration
+    
+        base = _read(VERDICTS)
+        units = _read(UNITS)
+        cases = load_cases(CASES)
+        case = cases[CASE_ID]
+        replay, matches = _replay_from_base(base), _matches(case)
+        assert matches["frames"] and matches["youtube_upload"] and matches["prefpolice_tweets"]
+    
+        def calibrate(mode: str) -> tuple[dict[str, Any], ScopeJudge]:
+            judge = ScopeJudge(replay, case, matches)
+            s = asyncio.run(run_calibration([RUN], cases, base, judge, judge_name="fake", kinds=list(MUTATORS), per_kind=1, seed=3,
+                                            case_mode=mode, units=units, say=lambda _: None))
+            return s, judge
+    
+        scoped, sj = calibrate("scoped")
+        whole, wj = calibrate("whole")
+        clean_scoped = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "scoped"))
+        clean_whole = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "whole"))
+    
+        # 充分性层确实只拿到本工作区的清单
+        assert scoped["case_mode"] == "scoped" and whole["case_mode"] == "whole"
+>       assert {tuple(k) for k in sj.sufficiency_keys} == {("frames", "youtube_upload"), ("frames", "prefpolice_tweets", "snopes")}
+E       AssertionError: assert {('frames', '...s', 'snopes')} == {('frames', '...tube_upload')}
+E         
+E         Extra items in the left set:
+E         ('prefpolice_tweets', 'snopes')
+E         Extra items in the right set:
+E         ('frames', 'prefpolice_tweets', 'snopes')
+E         Use -v to get more diff
+
+tests\test_datagen_sufficiency_scope.py:195: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_datagen_draft_case.py::test_all_runs_have_required_evidence
+FAILED tests/test_datagen_judge_progress.py::test_progress_judge_counts_and_throttle
+FAILED tests/test_datagen_sufficiency_scope.py::test_real_case_scopes_from_units_judged
+FAILED tests/test_datagen_sufficiency_scope.py::test_scoped_calibration_catches_dropped_finding_without_false_omissions
+4 failed, 185 passed in 13.26s
+PYTEST_EXIT 1 
+........................................................................ [  4%]
+.F...................................................................... [  8%]
+.....................................................FF................. [ 13%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 26%]
+......................................ssss.............................. [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+......................................................s.s............... [ 99%]
+....                                                                     [100%]
+================================== FAILURES ===================================
+____________________ test_all_runs_have_required_evidence _____________________
+
+tmp_path = WindowsPath('E:/Codex/workspaces/ChatGPT/ForenSearcher/.pytest-tmp/test_all_runs_have_required_ev0')
+
+    @pytest.mark.skipif(not ALL_RUNS or not VERDICTS.is_file(), reason="run 未随仓库入库")
+    def test_all_runs_have_required_evidence(tmp_path: Path):
+        """验收：每个 run 的 required_evidence 非空；claim 类有文本来源（run 做过 SEARCH 时）+ 帧（run 抽过帧时）；media 类有派生证据。"""
+    
+        for name in ALL_RUNS:
+            case, draft = _draft_run(name, tmp_path / name)
+            assert case.required_evidence, name
+>           assert "neutral" not in draft["requirement_origin"].values(), name
+E           AssertionError: averimatec_423_q0_validation_r3
+E           assert 'neutral' not in dict_values(['neutral', 'neutral'])
+E            +  where dict_values(['neutral', 'neutral']) = <built-in method values of dict object at 0x0000021909EAAB80>()
+E            +    where <built-in method values of dict object at 0x0000021909EAAB80> = {'REQ1': 'neutral', 'REQ2': 'neutral'}.values
+
+tests\test_datagen_draft_case.py:286: AssertionError
+___________________ test_real_case_scopes_from_units_judged ___________________
+
+    @needs_units
+    def test_real_case_scopes_from_units_judged():
+        case = load_cases(CASES)[CASE_ID]
+        units = _read(UNITS)
+        w1, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-1", units=units)
+        w2, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-2", units=units)
+>       assert w1 == {"REQ2", "REQ3"} and w2 == {"REQ1", "REQ2"}
+E       AssertionError: assert ({'REQ2', 'REQ3'} == {'REQ2', 'REQ3'}
+E         
+E         Use -v to get more diff and {'REQ1'} == {'REQ1', 'REQ2'}
+E         
+E         Extra items in the right set:
+E         'REQ2'
+E         Use -v to get more diff)
+
+tests\test_datagen_sufficiency_scope.py:88: AssertionError
+___ test_scoped_calibration_catches_dropped_finding_without_false_omissions ___
+
+    @needs_run
+    @needs_units
+    def test_scoped_calibration_catches_dropped_finding_without_false_omissions():
+        from foren_searcher.datagen.verify.calibrate_recall import MUTATORS, run_calibration
+    
+        base = _read(VERDICTS)
+        units = _read(UNITS)
+        cases = load_cases(CASES)
+        case = cases[CASE_ID]
+        replay, matches = _replay_from_base(base), _matches(case)
+        assert matches["frames"] and matches["youtube_upload"] and matches["prefpolice_tweets"]
+    
+        def calibrate(mode: str) -> tuple[dict[str, Any], ScopeJudge]:
+            judge = ScopeJudge(replay, case, matches)
+            s = asyncio.run(run_calibration([RUN], cases, base, judge, judge_name="fake", kinds=list(MUTATORS), per_kind=1, seed=3,
+                                            case_mode=mode, units=units, say=lambda _: None))
+            return s, judge
+    
+        scoped, sj = calibrate("scoped")
+        whole, wj = calibrate("whole")
+        clean_scoped = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "scoped"))
+        clean_whole = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "whole"))
+    
+        # 充分性层确实只拿到本工作区的清单
+        assert scoped["case_mode"] == "scoped" and whole["case_mode"] == "whole"
+>       assert {tuple(k) for k in sj.sufficiency_keys} == {("frames", "youtube_upload"), ("frames", "prefpolice_tweets", "snopes")}
+E       AssertionError: assert {('frames', '...s', 'snopes')} == {('frames', '...tube_upload')}
+E         
+E         Extra items in the left set:
+E         ('prefpolice_tweets', 'snopes')
+E         Extra items in the right set:
+E         ('frames', 'prefpolice_tweets', 'snopes')
+E         Use -v to get more diff
+
+tests\test_datagen_sufficiency_scope.py:195: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_datagen_draft_case.py::test_all_runs_have_required_evidence
+FAILED tests/test_datagen_sufficiency_scope.py::test_real_case_scopes_from_units_judged
+FAILED tests/test_datagen_sufficiency_scope.py::test_scoped_calibration_catches_dropped_finding_without_false_omissions
+3 failed, 1651 passed, 6 skipped, 26 deselected in 296.37s (0:04:56)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+PYTEST_ALL_EXIT 1 周一 2026/09/28 21:29:59.14 

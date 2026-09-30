@@ -1,0 +1,69 @@
+{
+  "case_id": "averitec:2872",
+  "dataset": "averitec",
+  "source_id": "2872",
+  "split": "dev_confirm",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Actor Mel Gibson Said Hollywood Is Controlled By 'Parasites' Who Are Involved In Child Sacrifice and Paedophilia（声明日期：2017-11-30）",
+  "family_key": "averitec:2872",
+  "media": [],
+  "claims": [
+    "Actor Mel Gibson Said Hollywood Is Controlled By 'Parasites' Who Are Involved In Child Sacrifice and Paedophilia"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "leadstories.com/hoax-alert/2020/07/fact-check-mel-gibson-did-not-say-hollywood-is-controlled-by-parasites-who-are-involved-in-child-sacrifice-pedophilia.html"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "是否存在 Mel Gibson 说过这段话的可靠记录（原始采访或节目出处）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "该说法最早的出处，以及它所附的节目（2017 年 The Graham Norton Show）中他实际谈了什么",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "origin_post",
+      "description": "最早传播该说法的文章（存档）",
+      "url_pattern": "*smilecelebs.com/2017/12/01/mel-gibson-hollywood-elites*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averitec/2872/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2017-11-30，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210418213507/https://leadstories.com/hoax-alert/2020/07/fact-check-mel-gibson-did-not-say-hollywood-is-controlled-by-parasites-who-are-involved-in-child-sacrifice-pedophilia.html。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

@@ -1,0 +1,219 @@
+{
+  "assessment_scope": "仅依据所供包及其递归解析后的对象引用，评估 steps 中 W2-2 的12个实际输出；未调用工具或检查文件。历史计划、其他角色材料及原数据集标注仅作为上下文，不作为监督目标或本预算问题的真值。本例不是 terminal_replay，末次报告有实际提交记录；没有可评估的下游 GIA 决策。附件为空，不作像素、音频或视频覆盖判断。七个维度均可评分，评分覆盖率为100%，加权评分为3.85/4（96.25/100）；该分数表示输出质量，不表示调查覆盖完整或全局问题已解决。",
+  "roles": [
+    {
+      "actor": "W2-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11项工具请求均有接受及观察事件，原始输出与接受输出一致；request_0050有实际报告提交事件。参数符合当时动作目录。执行对应关系完整，但这些记录本身不证明内容正确。",
+          "request_ids": [
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048",
+            "request_0050"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "各次读取的E均已在决策前可见；SPU文章链接来自已读E2，E12和E13分别在工具返回后才被读取。最终引用限于实际读过的E10、E2、E12、E13。未见采用未来结果、未读兄弟报告或参考答案的证据。可见来源正文未显示命中被排除的原事实核查文章；不据已知URL过滤进一步认证所有潜在镜像。",
+          "request_ids": [
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048",
+            "request_0050"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告所列两校直接支出、共同费用及分项均对应E10表14.2—14.6，三项相加确为R1,624,500,495。具体反例得到正确处理：E13共同费用R142,142,983.20与E10的R141,847,377不同，报告披露差异而未混用；2.5%行政管理费未被当作分摊比例；R83,000,000拨款未被当作实际支出。SPU约R1.4 billion的阶段、设施内容来自E2和E12，没有被替换为Wits同口径精确金额。",
+          "request_ids": [
+            "request_0050"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "已核对费用组成、Wits含VAT口径、两种阶段范围及SPU原始说明，且准确报告未完成项目。但共同费用按校归属和SPU两种金额的衔接仍未查明，局部调查成果因此不计为充分完成。INCOMPLETE状态合理，不能把这一完成度限制归为虚报。W2-2局部任务不是重新核对全部批准预算，不因其未完成原全局预算比较而额外扣分。",
+          "request_ids": [
+            "request_0050"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "按决策前信息，各次续读均有next_offset和相关未读内容；沿SPU真实链接取得原文、按HETP001检索分摊资料、读取匹配项目代码的KPMG财务文件，均针对局部缺口。最后一次续读前已知费用表被截断，因此具有明确价值。末次报告发生于零剩余轮次，不将其计为自主停止能力的证据。",
+          "request_ids": [
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分直接费用与含共同费用总额、近似资本支出与精确金额、拨款与支出，以及两个不同阶段。对分摊依据的否定结论限定于已读部分，没有宣称完整报告绝无相关规则。保留SPU税务口径和对账关系未知，未把金额差异解释为超支。零轮次下如实提交INCOMPLETE，可作为合格部分报告。",
+          "request_ids": [
+            "request_0050"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "没有重复读取同一记录的同一偏移。E10与E2之间的切换分别服务于费用范围和校方阶段说明；定向搜索后选择相关财务文件，未追读返回的市政及其他无关页面。未读完全部尾部限制了结论范围，但不能据此认定此前读取无效或要求无目的全文普查。",
+          "request_ids": [
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "两校共同费用的归属金额或规则，以及Wits与KPMG分类差异的调节依据仍未知。这是调查对象的未决事实，不是无法评价本次诚实部分报告的关键材料缺失。",
+        "SPU约R1.4 billion是否含VAT、其完整费用明细及与Wits金额的衔接仍未知。",
+        "E10、E12、E13均有未读取尾部，不能认证其完整文本及全部相关财务资料不存在进一步依据。",
+        "没有本轮之后的GIA决策或全局最终结果；不判断原全局任务是否最终完成。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0030",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E10已在初始材料中可见。先读取结项报告可核对任务给定数字及阶段前提；行动不依赖后来读到的答案，执行对应完整。"
+    },
+    {
+      "request_id": "request_0032",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前观察明确给出next_offset=6000，且费用中心说明被截断。按该偏移续读可核查共同费用分类，属于必要的新内容读取。"
+    },
+    {
+      "request_id": "request_0034",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前内容尚未展示两校完整直接费用表，next_offset=12000有效。续读针对费用组成及归属，不能因已有任务摘要列出总额而视为重复。"
+    },
+    {
+      "request_id": "request_0036",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E2为已提供但尚未读取的校方材料，直接对应2013—2018年约R1.4 billion口径这一明确局部要求。"
+    },
+    {
+      "request_id": "request_0037",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E10在offset=12000的正文截于SPU费用解释，已知下一偏移为18000。此次读取补查费用范围，不是重新确认已读同页。"
+    },
+    {
+      "request_id": "request_0038",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "打开链接来自已读E2，目的为取得任务明确要求对照的SPU原始说明。URL打开参数合法，且执行后产生E12。"
+    },
+    {
+      "request_id": "request_0040",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前工具仅确认E12已取得；READ_RECORD进一步读取正文，避免把来源卡片当作已核对原文。"
+    },
+    {
+      "request_id": "request_0042",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时共同费用分摊仍缺依据，以已知项目代码HETP001、allocation及校名定向搜索合理可执行。评价不依赖后来恰好返回KPMG文件，也不因同时返回无关结果而否定请求。"
+    },
+    {
+      "request_id": "request_0044",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E13已由搜索取得，候选标题、摘要和项目代码表明其为相关财务资料。读取正文是核查其范围和分摊信息的合理下一步。"
+    },
+    {
+      "request_id": "request_0046",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E13首段给出约定程序范围及费用明细线索，next_offset=6000。续读可以检查按项目列支和General共同费用，并非无信息增益的复看。"
+    },
+    {
+      "request_id": "request_0048",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前E13表格正截断于SPU项目金额，next_offset=12000。用最后一个取证动作续读可补齐表尾及相关财务说明，且仍有下一轮提交报告。"
+    },
+    {
+      "request_id": "request_0050",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "这是实际提交的、受轮次约束的部分报告。主要数字、阶段、费用类别与引用正文相符，并明确保留共同费用分摊和跨阶段对账缺口；没有把分类差异、拨款或近似金额包装成所求全口径答案。INCOMPLETE状态准确。可作为报告监督，不能据此认定局部金额调查完成或自主停止已经验证。"
+    }
+  ],
+  "construction_revisions": [
+    "导出时保留各次正文分页及next_offset：E10读取至offset=18000页段，E12仅读取首段，E13读取至offset=12000页段；材料已取得与全文已读应保持可区分。",
+    "将request_0050保留为零剩余轮次下的INCOMPLETE报告样本，并保留其实际提交链接；训练用途应明确为部分报告监督。",
+    "完整金额调查的后续执行应继续针对共同费用归属、两种财务分类调节及SPU跨阶段对账取证，使用真实新增观察生成后续输出。",
+    "原AVeriTeC标签及required_reannotation仅保留为参考背景；该预算子问题的核对依据应为实际财务来源，不将原大学建设问答作为金额真值。"
+  ],
+  "rubric_revisions": [
+    "明确分开部分报告的输出质量与调查目标达成度：准确、有依据的INCOMPLETE报告可以获得高目标评分，但不代表未知金额已查明，也不证明自主停止合理。",
+    "对分页阅读，依据决策前的next_offset、截断位置及未决问题判断价值；存在未读尾部既不能自动判为遗漏，也不能支持全文不存在相关依据的结论。",
+    "金额核对加入本例的具体反例：总额相同仍可能存在费用分类差异，行政管理费比例不等于按校分摊比例，批准拨款不等于实际支出。无需增加新评分维度。"
+  ]
+}

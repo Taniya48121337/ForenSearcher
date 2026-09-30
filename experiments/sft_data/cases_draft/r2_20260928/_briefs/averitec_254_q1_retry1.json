@@ -1,0 +1,176 @@
+{
+ "run": "averitec_254_q1_retry1",
+ "config": {
+  "dataset": "averitec",
+  "case": "254",
+  "question_index": 1,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，查找直接证据并说明适用范围：What percentage of their budget did the Kenyan counties allocate to agriculture?\n背景声明：Kenyan counties allocated an average of 7.3% of budgets to agriculture.\n声明日期（任务元数据）：23-7-2020",
+   "status": "INCOMPLETE",
+   "status_reason": "The county agriculture allocation table and full FY 2019/20 report hosted by Africa Check could not be retrieved (HTTP 403). No further investigation turns remain.",
+   "findings": [
+    {
+     "statement": "The available evidence does not establish what percentage Kenyan counties allocated to agriculture. E6 contains only a summary of the FY 2019/20 county budget implementation report, without agriculture allocation figures. E7 discusses the national agriculture budget, which cannot establish a county budget average. The claimed 7.3% remains unverified.",
+     "evidence_ids": [
+      "E6",
+      "E7"
+     ],
+     "limitations": [
+      "The applicable financial year, counties covered, agriculture allocation amounts, and method of calculating the claimed average remain unconfirmed.",
+      "Insufficient evidence does not demonstrate that the 7.3% claim is false."
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "2025 Budget Policy Statement",
+   "source_url": "https://newsite.treasury.go.ke/sites/default/files/Draft-2026-Budget-Policy-Statement.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nREPUBLIC OF KENYA \n \nTHE NATIONAL TREASURY \n \n \n \n \n \n \nMEDIUM TERM \n \nDRAFT 2026 BUDGET POLICY \nSTATEMENT \n \n \n \n \n \n \nACCELERATING GAINS UNDER THE BOTTOM-UP \nECONOMIC TRANSFORMATION AGENDA FOR \nINCLUSIVE AND SUSTAINABLE GROWTH \n \n \n \n \n \n \n \n19TH DECEMBER 2025\n\n[page 2]\nii                                   Draft 2026 Budget Policy Statement \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n© Budget Policy Statement (BPS) 2026 \n \nTo obtain copies of the BPS, please contact: \n \nThe National Treasury and Economic Planning \nTreasury Building \nP. O. Box 30007-00100 \nNAIR…（共 397821 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Counties urged to focus on roads, water, and agriculture in 2026/27 budget | Radio Generation Kenya",
+   "source_url": "https://radiogeneration.co.ke/business/75323/counties-urged-to-focus-on-roads-water-and-agriculture-in-202627-budget",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Counties urged to focus on roads, water, and agriculture in 2026/27 budget\n\n[2] The PBO’s recommendations outline that Sh50 billion should be directed to roads, Sh40 billion to water projects, and Sh40 billion to agriculture.\n\n[3] Counties in Kenya have been urged to focus more on development projects than on staff salaries and administrative costs, with a call to allocate Sh130 billion for roads, water, and agriculture in the 2026/27 financial year.\n\n[4] The Parliamentary Budget Office has advised Parliament and the Commission on Revenue Allocation to ensure that these funds are protected…（共 4034 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Kenya Livestock Sector: Value Chain Analysis, Trade Impacts & Recent Trends | IATP",
+   "source_url": "https://www.iatp.org/kenya-livestock-sector",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Dr. Nehemiah Mihindo, with contributions from Kendi Juster, Anne Maina, Calvin Manduna, and Karen Hansen-Kuhn\n\n[2] This report is published in collaboration with the [Biodiversity and Biosafety Association of Kenya](https://bibakenya.org/) (BIBA-Kenya) and was made possible through a grant from the Tiny Beam Foundation.\n\n[3] [Download a PDF of this report here.](https://www.iatp.org/sites/default/files/2025-08/kenya%20livestock%20paper_8.8.pdf)\n\n[4] Executive Summary\n\n[5] This report provides a value chain analysis of Kenya’s livestock sector with a focus on beef, pork and poultry. It exam…（共 122171 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Agroecological Land Resources Assessment for Agricultural Development Planning. A Case Study of Kenya - Datasets - \"FAO catalog\"",
+   "source_url": "https://data.fao.org/catalog/dataset/e982d560-88fd-11da-a88f-000d939bc5d8",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Agroecological Land Resources Assessment for Agricultural Development Planning. A Case Study of Kenya\n\n[2] Data and Resources\n\n[3] -   [FAO-UN](https://data.fao.org/catalog/dataset/e982d560-88fd-11da-a88f-000d939bc5d8/resource/81eb2b5d-1779-47dd-94ac-a96629780357) pointOfContact: FAO Land and Water Division\n\n[4] Graphic overview\n\n[5] Metadata:\n\n[6] | characterSet |\n\n[7] | utf8 |\n\n[8] | dataIdentification |\n\n[9] |  |\n\n[10] | abstract |\n\n[11] | Include: Generalized land suitability for rainfed production of barley at intermediate level of inputs (Fig. 7.2,p. 77) - Generalized land suitabilit…（共 2795 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Transforming Livelihoods through Climate Resilient, Low Carbon ...",
+   "source_url": "https://openknowledge.fao.org/server/api/core/bitstreams/bbfe77c1-51c2-4046-8256-3654ab07ca9c/content",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nTransforming Livelihoods through Climate Resilient, Low Carbon, \nSustainable Agricultural Value Chains in the Lake Region Economic Bloc, \nKenya \n \nGCP/KEN/116/GCF \n \nAnnex 6 Environmental and Social Management Framework (ESMF) \n \n \n \n \n \n \n \n \n \n \n \n \nThe designations employed and the presentation of material in this document do not imply the \nexpression of any opinion whatsoever on the part of the Food and Agriculture Organization of the \nUnited Nations (FAO) concerning the legal or development status of any country, territory, city or \narea or of its authorities, or concerning the d…（共 698799 字）"
+  },
+  {
+   "id": "E6",
+   "label": "County Governments Budget Implementation Review | PDF | Government Budget | Budget",
+   "source_url": "https://www.scribd.com/document/1023437618/2019-2020",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] County Governments Budget Implementation Review\n\n[2] The County Governments Budget Implementation Review Report for FY 2019/20 provides an analysis of budget implementation across 47 County Governments in Kenya, covering the period from July 2019 to June 2020. It highlights the challenges faced during the COVID-19 pandemic, including issues with revenue collection and expenditure management, and offers recommendations for future budget execution. The report aims to promote transparency and public engagement in the budget process as mandated by the Constitution of Kenya and the Controller o…（共 613 字）"
+  },
+  {
+   "id": "E7",
+   "label": "The 2019/2020 Kenya Budget in relation to agriculture – NPCK",
+   "source_url": "https://npck.org/the-2019-2020-kenya-budget-in-relation-to-agriculture/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Treasury Cabinet Secretary Henry Rotich with the Budget briefcase at the National Treasury on his way to Parliament to present the 2019/2020 Budget on June 13, 2019\n\n[2] The Kenya government unveiled the 2019/2020 fiscal budget KES 3.2 trillion which outlined the government plan to implement its Big 4 Agenda on food security, affordable housing, manufacturing and affordable healthcare. The increase in budget allocation in agriculture from KES 45 billion in 2018/2019 financial year to 52 billion or 2.9 % of this year total budget underrates the contribution (26% direct and 27% indirect) of …（共 2300 字）"
+  },
+  {
+   "id": "E8",
+   "label": "County Reports – Office of the Controller of Budget",
+   "source_url": "https://cob.go.ke/reports/consolidated-county-budget-implementation-review-reports/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] PREVIOUS\n\n[2] NEXT\n\n[3] [ Placeholder content for popup link ] WordPress Download Manager - Best Download Management Plugin"
+  },
+  {
+   "id": "E9",
+   "label": "Steuben County Proposed Budget Year 2007",
+   "source_url": "https://www.steubencountyny.gov/DocumentCenter/View/8186/2026-Budget-Message-PDF",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSteuben County \n2026 Budget Message\nJack K. Wheeler, MPA\nCounty Manager / Budget Officer\nNOVEMBER  14, 2025\n1\n\n[page 2]\nIntroduction    \n• Mandated services, particularly Safety Net and \nPreschool Special Education are the largest cost \ndrivers in this draft budget.\n• Salaries and Fringes continue to rise as we maintain \nmarket wages and top-tier benefits to attract and \nretain employees.\n• Additional sales tax and fund balance allocations to \nbalance the budget.\n• Slight increase in tax levy, well below the NYS Tax \nCap, and a decrease in the average tax rate.\nSteuben County, New Yor…（共 20203 字）"
+  },
+  {
+   "id": "E10",
+   "label": "2025 - 2026 BUDGET DOCUMENTS | The Kenyan Parliament Website",
+   "source_url": "https://parliament.go.ke/2025-2026-budget-documents",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2025 - 2026 BUDGET DOCUMENTS\n\n[2] Attached below are BUDGET DOCUMENTS for the Financial year 2025 - 2026 :\n\n[3] Download the [Budget Statement for FY 2026/2027](https://www.parliament.go.ke/sites/default/files/2026-06/Budget%20Statement%20for%20FY%2020262027.pdf) Here.\n\n[4] Download the [Mwananchi Guide to the Budget Statement for FY 2026/2027](https://www.parliament.go.ke/sites/default/files/2026-06/Mwananchi%20Guide%20to%20the%20Budget%20Statement%20for%20FY%2020262027.pdf) Here.\n\n[5] Download the [Budget](https://parliament.go.ke/sites/default/files/2025-08/Budget_Explainer_Final.pdf) E…（共 3446 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Agriculture Sector Budget FY 2025/26 - IEA Kenya IEA Kenya",
+   "source_url": "https://ieakenya.or.ke/blog/agriculture-sector-budget-fy-2025-26/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The agriculture sector in Kenya is a vital component which continues to play a crucial role in the rural economy directly, and urban economy indirectly. Additionally, the sector is a key source of raw materials as it provides both forward and backward links with other economic sectors such as manufacturing, and wholesale and retail trade. With the devolved system of governance being implemented, it is one of the sectors to fully devolve, with the aim of ensuring enhanced food security, providing employment opportunities, and helping to sustain livelihoods. For the year 2024, the [sector co…（共 9558 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Consolidated County Budget Implementation Review Reports – Office of the Controller of Budget",
+   "source_url": "https://cob.go.ke/publications/consolidated-county-budget-implementation-review-reports/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [tabby title=”All”]\n\n[2] County Governments Budget Implementation Review Report for the first nine months of FY 2025/26\n\n[3] COUNTY GOVERNMENTS BUDGET IMPLEMENTATION REVIEW REPORT FIRST HALF OF FY 2025/26\n\n[4] COUNTY GOVERNMENTS BUDGET IMPLEMENTATION REVIEW REPORT THE FIRST QUARTER OF FY 2025/26\n\n[5] COUNTY GOVERNMENTS BUDGET IMPLEMENTATION REVIEW REPORT FY 2024/25\n\n[6] COUNTY GOVERNMENTS BUDGET IMPLEMENTATION REVIEW REPORT THE FIRST NINE MONTHS OF FY 2024/25\n\n[7] COUNTY GOVERNMENTS BUDGET IMPLEMENTATION REVIEW REPORT THE FIRST HALF OF FY 2024/25\n\n[8] COUNTY GOVERNMENTS BUDGET IMPLEMENTATI…（共 2051 字）"
+  }
+ ]
+}

@@ -1,0 +1,1367 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "GIA",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11个输出均有原始输出与接受输出一致的执行链接；调查任务可对应后续工作区，读取可对应返回记录，最终FINISH已返回。此分仅确认执行对应，不证明事实正确，也不把其他角色或脚本事件纳入GIA目标。",
+          "request_ids": [
+            "request_0001",
+            "request_0019",
+            "request_0044",
+            "request_0045",
+            "request_0066",
+            "request_0067",
+            "request_0068",
+            "request_0069",
+            "request_0070",
+            "request_0071",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "材料引用均已出现在行动前视图中。E24、E20、E48等关键图片在缺少当前像素时通过读取取得，未发现借用官方标注、未来结果或未授权材料。初次分配音频任务时，角色提示明确宣称HI能够处理音频，不能用后来暴露的试听限制倒扣该行动。",
+          "request_ids": [
+            "request_0001",
+            "request_0044",
+            "request_0066",
+            "request_0070",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "实际像素支持主要发现：E24为山湖景色，紧接的E5出现右侧划船者且构图明显改变；E20显示右上方桨叶，E48显示右下方桨叶和右缘橙色衣物；E38确有宣传卡，E8仍为湖面、船和桨。最终答复的“4.104秒才呈现”超出了采样能够证明的首次性，且行动前F14已报告3.971秒具有相近人物构图。后者未附给评分员独立核验，但足以要求GIA避免“才”的措辞。该问题不推翻局部衔接差异。",
+          "request_ids": [
+            "request_0019",
+            "request_0045",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "调查与最终答复覆盖跨视频对应、局部时序差异、宣传语境和声音核验限制，未将局部COMPLETED当成全局充分。最终汇总没有清楚纳入已经取得的总时长差和锚点间时距差，完整性略有不足。未穷尽全部帧不构成本题自动失败，也不能把本题的有限比较当作完成官方全部删帧定位。",
+          "request_ids": [
+            "request_0001",
+            "request_0019",
+            "request_0045",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "前两轮分工分别处理跨材料关系、过渡缺口和首尾语境，目标互补且可独立开始。第三轮针对相邻帧突变及宣传卡对应继续取证具有实际作用。反例是request_0069：行动前已完整提供W2-1任务、F6—F8和限制，仍读取同一报告，没有补到原始证据。最终允许保留无法核验的声音与编辑方式后结束是合理的。",
+          "request_ids": [
+            "request_0001",
+            "request_0019",
+            "request_0045",
+            "request_0069",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "正确区分音频相关匹配与实际听取、算法无匹配与全片不存在、采样观察与连续过程，并保留来源身份及编辑方向未知。诚实的声音限制不是幻觉。“4.104秒才呈现”仍与其余采样限定不完全一致，不能获得满分。",
+          "request_ids": [
+            "request_0068",
+            "request_0072"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "E24和E48的读取补充了关键像素；E29在取得新E20后重新附图，也有跨时间比较价值。但request_0069读取已完整可见的报告，request_0071再次读取此前已与E38共同看清的E8，均没有明确新增核验问题。不能把这些动作与必要复看一并评为高质量取证。",
+          "request_ids": [
+            "request_0044",
+            "request_0067",
+            "request_0069",
+            "request_0070",
+            "request_0071"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "官方描述要求将0—15秒抽帧为10秒，而包内媒体属性为A约8秒、B约20.053秒；缺少官方素材到实际输入的时间轴映射，无法确认差异原因或评定完整官方区间一致性。",
+        "没有提供连续视频或可试听音频，无法独立核验全部编辑位置、完整动作连续性、宣传卡在A全片的分布及声音含义。",
+        "E21等部分HI报告引用图片未附给评分员，其视觉断言只能作为GIA当时接收的上下文，不能当作本次独立像素核验结果。",
+        "候选B的来源身份、制作先后和具体编辑机制仍未由材料确认；这些未知不妨碍有明确范围的局部比较。"
+      ]
+    },
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11个动作均有原始输出、相同的接受输出及观察事件对应；最终报告有提交事件。没有解析拒绝或被改写后冒充原始执行的情况。这只证明动作执行与报告提交，不证明内容正确。",
+          "request_ids": [
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "所用材料均能追溯到该工作区此前实际取得的记录和附图，未发现借用官方标注、未来结果或兄弟报告。最终引用的E16、E19—E24及E13均已观察。不能因某些旧E未列在当轮截短的evidence_view中就认定越权，也不以执行成功单独证明此前可选。",
+          "request_ids": [
+            "request_0002",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "报告主要正向事实有像素依据：E16与E19山湖构图高度相似；E22—E24未见人物或桨；E20右上方确有黑色桨叶；E21右侧确有戴帽、橙衣、蓝色救生衣的人物。偏移数值也准确转述E13。但报告对既有证据的评价不足：E5/E9、E6/E10、E8/E12及E25/E29、E26/E30、E27/E31、E28/E32已提供具体构图与动作对应，不能把后段核验笼统描述为仍缺充分成对画面。",
+          "request_ids": [
+            "request_0003",
+            "request_0008",
+            "request_0012",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "已回答若干局部画面差异及划行情境，但遗漏最直接的时序发现：E24在A的1.320秒仍是山湖，E5在1.360秒已出现右侧人物且构图明显变化；结合0.040秒帧时长，可以确认这两帧的相邻突变。报告却主要并列非对应采样点，并将这一发现降为算法提示。局部任务不要求证明唯一编辑方式、制作先后或完成声音核查，不能将这些未知统一作为无法完成局部回答的理由。",
+          "request_ids": [
+            "request_0006",
+            "request_0008",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "前六个动作从对齐候选推进到早段空档、相邻帧边界及后段锚点，目标明确且可执行。首次集中复看和读取对齐记录仍有整合价值；之后反复切换已见图片，没有解决新的边界或对应歧义，最终将轮次不足归结为证据不足。应依据当时已有材料形成有限结论，或把剩余取证用于明确且影响答案的缺口。",
+          "request_ids": [
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0010",
+            "request_0011",
+            "request_0012",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 2,
+          "reason": "正确区分了对齐候选、编辑方向、未检查音轨和采样空档，没有把相似度当概率或声称全片无差异。不过，谨慎措辞掩盖了可以确定的局部事实：此前已查看的对应帧不能因终轮只附早段图片而变成未核验。实际直接观察为A的15帧和B的12帧，足以支持具体采样对应与A相邻帧突变，仍不足以证明所有中间区间连续、精确删减范围或官方操作的完整定位。",
+          "request_ids": [
+            "request_0008",
+            "request_0012",
+            "request_0013"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "前段取证具有信息增益；后段连续五次READ_RECORD主要重新附上已有图片或已有对齐内容。其中首次整合可以接受，但request_0010—0012继续往返，尤其0012重现0010选择的整组图片，耗尽剩余动作机会而未增加关键证据。问题在具体重复及其后果，不在机械超过某个复看次数。",
+          "request_ids": [
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0013漏用已观察的E24/E5相邻帧突变及多组成对锚点，将能够确认的局部时序差异主要保留为候选，实质削弱了局部任务答案。",
+        "request_0010—0012的重复读取消耗轮次，随后以缺乏充分成对核验解释INCOMPLETE；该缺口描述没有准确反映已有证据。未发现捏造人物、船桨或声音内容。"
+      ],
+      "unknowns": [
+        "官方说明要求将0—15秒素材通过丢帧制作成10秒视频，而已提供媒体属性为A长8.000秒、B长20.053秒；缺少官方时间轴与实际文件的映射，不能直接计算完整定位指标或认定标注已被证实。",
+        "完整编辑操作、全部边界、制作先后及B的原始来源身份仍未知；这些未知不否定已核实的局部对应和相邻帧突变。",
+        "两侧大量采样空档及B的后段未由该角色直接查看，不能据此评价全片差异是否穷尽；其他角色后来取得的宣传卡不属于本角色已见证据。",
+        "音轨内容及听感差异未知。该角色诚实声明未检查，且局部任务聚焦画面与时序，不据此判定声音幻觉或强制增加听觉任务。"
+      ]
+    },
+    {
+      "actor": "W1-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "四个行动均有原始输出、相同的接受输出及对应观察链接，终端报告有 report_committed 链接。相邻输入提供了读取、音频对齐和两次分页查询的实际返回。这里只确认执行对应，不据此证明分析正确。",
+          "request_ids": [
+            "request_0014",
+            "request_0015",
+            "request_0016",
+            "request_0017",
+            "request_0018"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E13 在首次读取前已经可见；E1、E2 是任务材料；E33 在音频对齐后进入可见证据。request_0017 选择的 E27、E31 已在该次实际附图中，终端报告再次获得这两张图。没有使用官方标注、后续 GIA 结论或其他角色报告作为自身观察。",
+          "request_ids": [
+            "request_0014",
+            "request_0015",
+            "request_0016",
+            "request_0017",
+            "request_0018"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E33 确实记录处理范围 A 0–8 秒、B 0–20.053 秒，以及 A 0–8 秒对 B 2.665–10.665 秒的候选匹配。实际查看 E27、E31 对应附件，两帧均呈现背对镜头的橙衣、蓝色救生衣划船者，左侧船桨及山湖倒影构图相符；时间差约 2.693 秒计算正确。报告仅称其与音频候选偏移大致相容，没有捏造听感、对白或环境声。",
+          "request_ids": [
+            "request_0018"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部任务明确允许在声音无法核验时报告限制。现有目录提供音频数值对齐，但没有试听或 ASR 操作，输入也没有可直接听取的音频。代理完成了可执行的候选对应调查，给出两侧位置和画面锚点，并以 INCOMPLETE 明确保留声音差异与含义影响。该评分针对合格的受限报告，不意味着实质声音比较已经完成。",
+          "request_ids": [
+            "request_0014",
+            "request_0015",
+            "request_0016",
+            "request_0017",
+            "request_0018"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "先读取已有对齐记录，再调用目录明确支持的 audio 对齐，随后搜索可能已经保存的声音或转写证据，均对应局部未决问题。第二次查询使用返回的下一页游标，未重复已读页。确认能力限制后提交受限报告是合理停止；无需为了用完剩余轮次继续无法产生声音语义证据的检查。",
+          "request_ids": [
+            "request_0014",
+            "request_0015",
+            "request_0016",
+            "request_0017",
+            "request_0018"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分算法处理范围、候选匹配、单个画面锚点及实际听取，没有把候选外区间判为删减或无差异。作为高分反例检查，E13 的早期视觉候选偏移约为 0.428–0.475 秒，与音频候选的 2.665 秒不同，不能据后段锚点宣称全程同步；终端报告确实没有作出这种推广，也未把匹配分数当正确概率。",
+          "request_ids": [
+            "request_0018"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "没有重复执行对齐或重复取帧，并复用已有跨视频图像。小缺点是 request_0017 在上一页全部标为 recent_fallback、score=0 后继续相同查询的回退分页，缺少新的定向线索，预期信息增益偏低。但这是一次访问未读记录的有限探索，不能因后来仍无声音证据就判为无效重复。",
+          "request_ids": [
+            "request_0014",
+            "request_0015",
+            "request_0016",
+            "request_0017",
+            "request_0018"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "实际对白、音乐、环境声、音量、听感和声音编辑差异没有得到直接核验；这些是任务事实未知，不是报告捏造。",
+        "FFT 候选是否对应真实相同的声音内容、偏移误差及全程音画同步仍未知。",
+        "声音与画面结合是否改变事件含义或观看感受仍未知。",
+        "离散图像不能证明完整视频的连续对应、完整编辑范围或来源身份。",
+        "官方说明中的 0–15 秒及目标 10 秒，与实际记录的 A 8 秒、B 20.053 秒之间缺少时间轴映射；本局部任务没有可评分的完整编辑区间预测。"
+      ]
+    },
+    {
+      "actor": "W2-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次读取均有接受与执行链接，最终报告有提交链接。request_0031 的接受版本为第二条 finding 和 selected_evidence_ids 补入了 E13，原始与接受输出并非完全相同，但差异可核对，未改变陈述或状态。执行对应成立不代表行动有价值或报告完整。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "所选焦点可由当时材料、已有附图及记录支持。request_0023 读取 E5 前，已读 E13 明确提供其编号；该动作没有把仅在正文出现的 E5 直接塞入焦点，而是先读取，再由下一轮实际附图取得像素。未见使用官方标注、未来证据或兄弟报告的迹象。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "最终报告的主要事实有像素支持：E16/E19 为相符山湖构图；E26/E30 的人物服饰、抬手及左上桨叶相符；E27/E31 均有居中划船者和右侧另一条船。E5/E29 仅被描述为近似构图，没有冒充精确整帧匹配。1.320秒、约3.537秒及约2.217秒的计算正确。小缺陷是原始报告对 E13 中4.071秒候选的说明未在该 finding 的引用及所选证据中列入 E13，接受版本才补齐。",
+          "request_ids": [
+            "request_0031"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "完成了具体帧对核对、锚点时距比较及划行情境的有限说明，但遗漏局部任务的核心差异：E24（A 1.320秒）仍是山湖风景，紧接的 E5（1.360秒）已出现右缘人物且山体构图明显左移；E20（B 2.703秒）可见右上桨叶，E21（3.971秒）已有人物入画。这些材料足以报告局部衔接突变及两侧采样状态差异，无需先证明完整编辑方式。报告只强调对应与未确定部分，未充分利用能够回答任务的证据。音频和全片来源核验不属于本局部任务，不据此扣分。",
+          "request_ids": [
+            "request_0023",
+            "request_0024",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 1,
+          "reason": "初读 E13、按新候选重新组织早期比较、读取此前未附的 E5 都能解决具体缺口；随后却持续切换已经显示过的帧组。尤其 request_0025—0029 没有取得新时刻，也没有形成新的关键比较。已知局部突变可以直接报告；若仍需要核验候选对应，目录中的 get_frames 也允许定点补查。最终剩余0轮时提交 INCOMPLETE 合理，主要问题在此前的行动选择。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "正确区分采样对应、锚点时距差、删减量、真实速度及来源身份，也诚实提交 INCOMPLETE。没有把2.217秒称为已证实删减量。但边界未知的表述过宽：A 1.320秒帧时长为0.040秒，下一帧1.360秒的可见突变已经能够局部定位；应将这一已知事实与尚未知的完整编辑起止范围分开。",
+          "request_ids": [
+            "request_0031"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "11次动作全部为 READ_RECORD。必要读取和重新附图之后，多次重复早期、后期两组图片及其已有时间元数据；request_0029 甚至完整重复 request_0023 的读取与焦点。request_0030 的四组配对集中展示有一定整理价值，但没有补齐核心缺口。低分依据是具体重复和信息增益不足，而非固定复看次数。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0031 遗漏已观察到的 E24→E5 相邻帧突变及 E20 的中间桨入画状态，未充分回答具体过渡差异。这是任务核心遗漏，不是要求穷尽次要像素差异。",
+        "request_0025—0029 持续重复已见材料，未推进关键缺口；不能因动作全部执行成功或最终措辞保守，将这些行动作为高质量正向目标。"
+      ],
+      "unknowns": [
+        "E13 中 B 4.070737秒的 E9 像素没有提供给本演员或本次评审；邻近的 E29（4.104104秒）不能替代精确候选核验。",
+        "离散帧不能证明两侧未观察区间的连续对应，也不足以确定完整删减范围、编辑机制或真实运动速度。",
+        "官方记录描述0—15秒处理成10秒，但本次媒体时长为A 8秒、B约20.053秒，二者的版本与时间轴关系未核实，不能据此计算可靠的官方区间定位成绩。",
+        "上述未知是证据支持范围的限制，不使已经发现的局部遗漏通过，也不意味着所有诚实的有限报告都存在关键评审缺件。"
+      ]
+    },
+    {
+      "actor": "W2-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个输出均有对应执行或报告提交链接，原始输出与接受输出一致。最后报告确已提交；执行对应不证明报告内容正确。",
+          "request_ids": [
+            "request_0032",
+            "request_0033",
+            "request_0034",
+            "request_0035",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0039",
+            "request_0040",
+            "request_0041",
+            "request_0042",
+            "request_0043"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现使用官方标注、未来结果或其他角色报告作为自身证据。引用和操作对象能够从材料、当前输入或历史工具观察追溯；没有依据将当前未附图或卡片排序变化认定为越权引用。主要问题是未充分使用已经提供的历史像素。",
+          "request_ids": [
+            "request_0032",
+            "request_0033",
+            "request_0034",
+            "request_0035",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0039",
+            "request_0040",
+            "request_0041",
+            "request_0042",
+            "request_0043"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "报告中的主要正向观察有像素支持：E36显示红色舟体与尾迹，E37显示湖岸林木和岩壁，E38显示红枫叶、KEEP EXPLORING.CA及Canada标识，E39为黑屏；A的E26、E40和E8支持划行场景描述。旅游推广式语境是合理的有限解释。但报告对核查状态的描述过度依赖最后一轮附件，未反映此前已获得的开头和配对材料，因此不能给满分。",
+          "request_ids": [
+            "request_0043"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "完成了结尾景观及宣传卡语境的主要观察，也正确保留了A全片是否存在宣传卡的未知。局部任务明确要求的B开头比较却遗漏：E34、E35、E18与A的E14、E15均已提供，像素显示相近的山壁、林带与湖面倒影，可以报告这些采样点的有限结论。INCOMPLETE避免了虚报完成，但不能代替能够完成的开头核查。未听音不是本局部视觉任务的失败。",
+          "request_ids": [
+            "request_0033",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0043"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "读取已有对齐结果、补取B首尾帧、取得A比较帧及补查结尾转换区间均有合理目标。后期却反复恢复已经齐全的开头和结尾图片组，尤其0041、0042没有增加可辨认的新核查目标，耗尽轮次后仍未综合开头证据。不能用后来发现宣传卡反推早期采样选择必然正确或错误。",
+          "request_ids": [
+            "request_0032",
+            "request_0033",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0041",
+            "request_0042"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 2,
+          "reason": "正确区分了采样观察、算法候选与连续区间，没有宣称宣传卡在A全片不存在，也没有推断来源身份、编辑方向或未听取的声音。但将末轮未附B开头和E12像素作为未完成核查的理由，混淆了当前附件与累计可用证据。末轮缺图属实，不能据此把先前已提供且可直接核查的内容重新归为不可取得。",
+          "request_ids": [
+            "request_0043"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "0038因新增A比较帧而重新附B开头，具有明确比较价值；0039恢复尾部材料也有合理用途。相较之下，0036再次组织已见的大组图片，0041和0042又切回已经共同提供过的两组材料，信息增益不足。轮次被用尽，而开头这个可回答的必答项仍未进入报告。",
+          "request_ids": [
+            "request_0035",
+            "request_0036",
+            "request_0038",
+            "request_0039",
+            "request_0041",
+            "request_0042",
+            "request_0043"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0043遗漏了可完成的B开头核查，并把最后一轮未附像素作为状态理由。request_0034已提供B的E34、E35；request_0039和request_0042又将E34、E35、E18与A的E14、E15共同提供。图片直接支持采样开头均为相近山湖景观的有限回答。",
+        "request_0043未利用已反复共同提供的E8/E12完成末端候选的可见内容比较。图片#5与#9中的桨、红色舟体、山体和云倒影构图高度一致。不能替演员发明此前已经写出的核验结论，但末轮缺少E12不能成为没有可用配对材料的理由。"
+      ],
+      "unknowns": [
+        "A未观察区间是否包含同类宣传卡，以及B额外景观在A中的完整对应仍未知；少数A采样帧不能证明全片缺失。",
+        "B景观转宣传卡、宣传卡转黑屏的准确边界及区间内部连续性尚未核实。E42、E43表明15.516和16.517秒已经出现宣传卡，不能把17.484秒当成已确认的起点。",
+        "E13的处理范围与锚点不等于完整人工视觉覆盖，也不证明所有未匹配区间被删除。",
+        "未提供听取证据；E33的数值音频相关候选不能证明听感、语义或说话人一致。本局部任务不要求完成这些声音判断。",
+        "官方说明中的0—15秒与10秒目标如何对应实际A的8秒、B的20.053秒，材料没有解释；本演员也未输出可用于完整编辑定位评分的区间。",
+        "没有W2-2针对A全段宣传卡对应的专项核查结果，不能借用result中后续出现的E49替其完成。"
+      ]
+    },
+    {
+      "actor": "W3-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "七次行动均有一致的原始输出、接受输出及后续观察，最终报告有提交记录。执行对应关系完整；这不证明行动有价值或报告正确。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "引用和焦点均能追溯至当时的材料、实际附图或此前工具观察。E45—E48在读取前已由取帧结果提供，不是仅凭后来读取成功推断可见。未发现使用官方标注、未来结果或兄弟报告作事实依据。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "图1/E24与图3/E5支持山湖画面到右侧划船者背影的构图突变；时间戳及帧时长支持两帧相邻。图2/E20的右上桨叶、图4/E48的右下桨叶和右缘橙色衣袖，以及图5、图6的人物构图均与报告相符。反例检查发现图9/E45在2.002秒已经出现右下桨叶，因此不能把2.703秒解释为首次入画或单调运动的起点；报告并未作此断言。",
+          "request_ids": [
+            "request_0053"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "完成了局部任务要求：对照A的相邻帧和B的具体中间状态，说明这些状态未在A该处衔接呈现及其对划行情境交代的影响，并保留编辑解释。任务可由现有取帧和直接视觉能力完成，结果有用。未承担全片编辑定位、来源认定或音频核验，不能以这些全局缺口否定本地COMPLETED。",
+          "request_ids": [
+            "request_0047",
+            "request_0052",
+            "request_0053"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "读取对齐记录及针对B过渡空档取帧合理；首次恢复被容量挤出的图片也有比较价值。但0049—0051交替恢复已经与同一组A帧对照过的两组B图片，没有新增取样、裁剪或可辨认的新比较问题。0052改为同时保留关键中间状态和后段人物帧，才形成有用的新组合。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确区分离散采样、相邻帧衔接和完整连续动作；未把B的1.635—4.104秒整体认定为精确删减区间，也未扩大为A全片不存在这些内容。对删帧、加速及另一版本增加过渡等解释保留不确定性，没有从候选对齐推断制作先后或来源身份。",
+          "request_ids": [
+            "request_0053"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "首次读取和补帧具有信息增益，但随后五次图片读取中，0049—0051主要重复切换既有图片组。问题在具体重复的比较内容，不在复看次数本身；0048的首次恢复和0052的混合编组应分别认可。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0052"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "B采样点之间的完整运动、精确编辑机制及相关状态在A其他位置是否出现，仍未证实；报告没有将这些未知作为已完成事实。",
+        "官方描述要求将0—15秒素材处理成10秒，而包内媒体信息为A约8秒、B约20.053秒，二者的时间轴关系未解释。完整官方区间指标无法据此核定，但这不是本次局部HI任务的完成条件。"
+      ]
+    },
+    {
+      "actor": "W3-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次行动均有原始输出、接受输出及后续观察对应，末次报告有提交记录，raw_equals_accepted均为true。request_0056的OCR确实执行但处理失败，不能记作成功识别；这不影响执行对应维度得分。",
+          "request_ids": [
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061",
+            "request_0062",
+            "request_0063",
+            "request_0064",
+            "request_0065"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取对象来自可见卡片，新增帧来自实际检索或取帧观察，报告引用的内容均曾实际提供。E7、E8及E50—E56的使用有历史观察支持，不能因其暂时不在顶部视图就认定越权。未发现使用官方编辑标注、未来结果或其他角色报告作答案依据。",
+          "request_ids": [
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061",
+            "request_0062",
+            "request_0063",
+            "request_0064",
+            "request_0065"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的重要事实与像素相符：E34、E35、E18和E14、E15均为岩壁、林带、湖面倒影，存在构图变化；E38确有黑底、红枫叶、KEEP EXPLORING.CA及下方Canada标识；E54显示前方人物持桨，E8显示湖面、桨和另一条船。E49明确处理A的200帧且matches为空。报告没有把这些事实扩大成全片无宣传卡、精确删减或地点身份结论。",
+          "request_ids": [
+            "request_0065"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "完成了局部任务要求的两项补核：比较指定B开头画面与A开头，以及检查宣传卡在A中的对应情况，并明确区分抽样未见和足以证明不存在。该任务允许报告这种证据边界，COMPLETED可表示限定补核完成；不代表全段不存在已获证实，也不要求本角色完成全局编辑定位或声音比较。",
+          "request_ids": [
+            "request_0056",
+            "request_0057",
+            "request_0059",
+            "request_0061",
+            "request_0062",
+            "request_0065"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "读取既有对齐、尝试OCR、失败后检索已有帧、针对片尾卡对齐及补取未观察时刻均有合理用途。具体反例是request_0060、request_0063、request_0064：重复组合已经看清的材料，未增加可识别的比较问题或新的覆盖。部分必要复看不能为这些后续重复提供正当性。",
+          "request_ids": [
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061",
+            "request_0062",
+            "request_0063",
+            "request_0064"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确限制开头结论为所列采样点，承认语音前文未核查、OCR失败、算法无匹配不证明不存在，以及A仍有未直接查看区间。没有将算法处理200帧写成自己看过200帧，也没有把未提供音频包装成声音一致。相关未知仍然开放，不能作为否定命题通过。",
+          "request_ids": [
+            "request_0065"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "复用既有记录及一次容纳7张新A帧和宣传卡的取帧安排有效，但三次低增益重附图占用了11次行动中的3次。request_0058可视为一次恢复比较，request_0062引入新A开头帧与B的直接比较；request_0060、request_0063、request_0064没有相应的新问题，不能一并奖励。",
+          "request_ids": [
+            "request_0057",
+            "request_0058",
+            "request_0060",
+            "request_0061",
+            "request_0062",
+            "request_0063",
+            "request_0064"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "A未直接观察的帧中是否出现宣传卡仍未知；E49的全范围算法处理和无匹配结果不足以证明全段不存在。",
+        "B开头三个采样点之间是否存在其他内容，以及语音前文内容未知。报告没有声称完成这些核查。",
+        "B宣传卡的精确起止及其是否持续到文件结束未知，局部任务明确不要求精确切换边界。",
+        "官方描述为0—15秒丢帧形成10秒视频，而工具记录显示A为8秒、B约20.053秒，两套时间范围的对应关系未提供，不能据标注推定具体编辑区间或过程。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "直接安排画面时序比较和声音比较，两项均对照A、B并保留来源与未查模态限制。初始能力说明支持这一安排；音频任务还明确允许报告无法核验，后来缺少试听能力不能倒推初始分工错误。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时仅有A/B材料，先进行视觉对齐可建立时序候选，符合局部目标和可用接口。参数合法且有执行对应；不以后续是否命中反推动作质量。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已知候选的早段偏移约0.43—0.47秒、后段约2.66—2.72秒，但早段锚点尚未附图。提取A的起点、早段锚点和1.280秒空档位置，是针对实际未决问题的取证。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "按已有早段候选取得B的1.168、1.635秒，并检查2.7及3.971秒过渡位置；保留四张A帧，满足跨视频比较容量。无需预先知道后续图片才能说明该动作合理。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前已见A的1.280秒山湖和1.360秒人物构图，以及B的桨、人物入画采样。补取A的1.200、1.240、1.320秒能细化已发现的过渡疑点，具有明确增益。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "补取A的1.400秒跳变后状态、尚未查看的2.480和3.680秒锚点，以及两组后段候选之间的5.000秒位置，可检查对应关系是否跨过相关空档。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "为新增A帧提取B侧候选位置，保留四张A图形成四组成对比较。动作依据已有时间关系，未把拟合对应直接当成事实；所得像素可供下一步实质核验。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "在新增后段配对可见后，首次集中重附早段四张A图及三张B图，有助于整合不同偏移附近的变化。虽未创造新证据，但这次针对过渡区域的复看可以成立，不应因使用READ_RECORD就排除。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "首次显式读取完整保存的E13，并重新搭配后段帧，可整合数值对应和像素观察。不过历史中已包含对齐结果、这些帧也已看过，信息增益有限，不宜给满分。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次返回早段图片组，主要比request_0008增加已在更早输入中看过的E18；读取E20本身只返回已知帧元数据。未指向新的差异、定位或测量需求，不适合继续作为优质取证动作模仿。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重排首末及中间锚点具有有限整合价值，但E5/E9、E8/E12早已成对提供，中间帧也已经成对查看。此时再次切换没有补充具体缺口，也未将最关键的E24/E5相邻帧放在同组，整体增益不足。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "仅剩一次动作机会时，又返回与request_0010相同的八张早段图片；E16内容及定位早已取得。没有新增问题或证据，重复直接耗尽取证轮次，是最明确的低效动作。"
+    },
+    {
+      "request_id": "request_0013",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "报告中的山湖、船桨、人物及候选偏移描述基本真实，但没有报告已具备直接证据的A在1.320到1.360秒的相邻帧突变，也未充分使用已见后段成对图。以关键成对核验不足说明INCOMPLETE过于宽泛。应从该报告状态重新生成，将已核实局部事实与尚不能确定的编辑方式、范围分开；不必虚构全片结论。"
+    },
+    {
+      "request_id": "request_0014",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取当前可见的 E13 参数合法，可了解已有对应线索并支持后续音画比较。该行动的合理性来自读取前可见的对齐记录卡片，不依赖后来返回的具体内容。执行对应已提供。"
+    },
+    {
+      "request_id": "request_0015",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "对任务给定的 E1、E2 请求 audio 模式对齐，符合当时工具目录并直接调查声音对应关系。工具实际生成 E33；数值候选的语义正确性仍待验证，但不影响这一取证行动的合理性。"
+    },
+    {
+      "request_id": "request_0016",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "取得数值对齐后，查询共享证据中是否已有声音或转写材料，是补足语义证据的合理尝试。没有请求目录之外的 ASR 功能，也没有把搜索无结果补写成成功观察。"
+    },
+    {
+      "request_id": "request_0017",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "cursor=10 来自上一页返回，访问的是未读记录；同时保留实际已见的 E27、E31，有助于跨媒体参照。上一页全部属于零分回退结果，使继续分页的定向性较弱，但尚不足以认定该次有限探索没有价值或不可执行。"
+    },
+    {
+      "request_id": "request_0018",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "INCOMPLETE 状态与输入及工具能力相符。候选音频范围、两帧时间差和图像描述均有直接依据，且明确说明未听取声音、未证明连续对应及含义变化。声音内容未知已经被正确披露，不构成判定这个受限报告是否真实的关键未知；该目标只能作为诚实的受限报告样本，不能标成声音核查完成样本。"
+    },
+    {
+      "request_id": "request_0019",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据已见对应帧和时移候选，分别补查过渡及首尾语境。前者尚不足以确认具体省略，后者尚未观察且可能改变画面含义，两项都有独立价值；没有因音频INCOMPLETE而重复分配已知不可完成的试听任务。"
+    },
+    {
+      "request_id": "request_0020",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取任务明确提及的 E13，取得候选锚点及测量限制；焦点同时安排此前遗漏的 E26/E27/E29/E30/E31，符合图片容量并支持后续成对核验。依据动作前状态具有明确价值。"
+    },
+    {
+      "request_id": "request_0021",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "读完 E13 并看到后期配对后，重新附上早期 A 帧和 B 的中间状态，加入 E29 进行比较，有合理的过渡核查目的。E20 本身已见，读取元数据的新增价值有限，但此次重新组织比较不能仅因复看而否定。"
+    },
+    {
+      "request_id": "request_0022",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重新显示与 request_0021 输入相同的后期八帧，读取 E26 仅补出已在附图定位中出现的时间元数据。可有一次往返比较的辅助价值，但没有新增证据或明确推进尚未核验的 E5/过渡位置，不宜作为优质行动目标。"
+    },
+    {
+      "request_id": "request_0023",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E13 已提供 E5 的编号及1.360秒位置，此时读取此前未附的 E5，并保留 E24/E25 和 B 中间帧，可直接填补 A 风景转人物的关键一帧。不能用后来确认的突变倒推行动正确，但该位置在执行前已明确值得检查。"
+    },
+    {
+      "request_id": "request_0024",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "刚取得 E5 后，将其与 E29 及较后的举桨、居中人物配对帧共同附上，能够比较新观察和后续状态。读取 E30 本身有重复成分，因此不评满分；其焦点变化仍具有具体比较价值。"
+    },
+    {
+      "request_id": "request_0025",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "返回此前已显示的早期八帧组合，E24 的像素和0.040秒帧时长均已可见；焦点还未保留刚获得的相邻 E5。没有增加对局部突变或候选空档的有效核验。"
+    },
+    {
+      "request_id": "request_0026",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次切换至已多次完整显示的后期帧组。E25 及其时间定位早已提供，此次读取没有新观察，也没有针对尚未确认的时间位置。"
+    },
+    {
+      "request_id": "request_0027",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取初始即已显示的 E16，再次组合已见风景和右缘人物帧。所作焦点调整未形成新的关键配对，已有材料的核心差异仍未被利用。"
+    },
+    {
+      "request_id": "request_0028",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E27/E31 已共同显示多次，E27 的时间元数据也已在附图中给出；此时仅余三次后续决定，返回同一后期组合不能推进具体未决问题。"
+    },
+    {
+      "request_id": "request_0029",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "完整重复 request_0023 的 READ_RECORD E5 和焦点配置。E5 此前已成功读取并参与比较，没有读取失败、图片缺失或新增问题支持此次重复。"
+    },
+    {
+      "request_id": "request_0030",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "将四组配对锚点首次集中于一轮，构图安排比此前反复切换更有整理价值。但各组此前均已共同出现，E26 也已读取；动作没有补齐过渡差异，并在只剩一次后续决定时继续消耗预算。局部整理价值不足以使其成为合格正向目标。"
+    },
+    {
+      "request_id": "request_0031",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "三组画面对应、人物姿态及锚点时距计算可信，INCOMPLETE 状态诚实，不能按官方编辑注释强迫其确认删帧。但局部任务所需的 E24→E5 相邻帧突变和 E20 中间桨入画状态已可报告，却被遗漏；仅给出真实的对应子集不等于完成具体差异核查。应补充这些已有证据支持的有限结论，并补齐原始报告对 E13 的引用。当前0轮时提交报告本身合理，无需编造额外取证。"
+    },
+    {
+      "request_id": "request_0032",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取可见的E13，以理解已有视觉对应候选、覆盖和限制，直接服务于首尾核查。保留了两侧开头及末端比较帧；执行对应明确。"
+    },
+    {
+      "request_id": "request_0033",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在已读取对齐结果后，对B尚未观察的开头和结尾取样，时间均在此前可见的媒体时长内。六张B帧加两张保留的A帧符合总图片容量，能够发现需要进一步核查的前后文；该动作没有声称完成连续区间检查。"
+    },
+    {
+      "request_id": "request_0034",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前E33仅标为另一份align_media结果，尚未揭示其音频模式。读取它以了解另一份对应证据的适用范围是合理行动，不能用读取后才知道是音频这一事实倒扣早期选择。动作本身没有把音频相关性解释为听感或语义一致。"
+    },
+    {
+      "request_id": "request_0035",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "E36此前已附过，但此次将B的11.512秒舟体画面与A末帧及B末端黑屏集中重新附图，可作为一次针对尾部比较的复看。信息增益有限，不能把读取图片元数据记为新的像素发现。"
+    },
+    {
+      "request_id": "request_0036",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E37及主要保留的开头、宣传卡和A比较帧已在0034共同提供；此时也没有新取得的比较帧或新边界问题。再次恢复大致相同的图片组，难以辨认新增信息目标。执行合法，但不宜作为高质量正向行动目标。"
+    },
+    {
+      "request_id": "request_0037",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "补取A的0.720、2.480、4.880、6.040秒，并保留B开头及尾部比较帧，可以核对已有候选并检查两侧可见语境。工具后来复用了部分共享帧，不证明该演员事前已经看过这些像素，也不应因此自动判作重复取证。"
+    },
+    {
+      "request_id": "request_0038",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "新获得A的E15后，重新附B的E34，并保留E35、E18及A的E14、E15，形成更完整的开头跨视频比较。这次复看具有新的比较材料，不能与后续原样切回相同图片组等同。"
+    },
+    {
+      "request_id": "request_0039",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "查询明确列出的已存尾部帧和A比较帧，用于恢复当前卡片视图之外的材料并组织直接比较，目标相关且可执行。它主要改善材料可访问性与共同附图，不能计作新的视频覆盖。"
+    },
+    {
+      "request_id": "request_0040",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时已知B在14.515秒仍为景观、17.484秒为宣传卡、20.020秒为黑屏，补取12.8、15.5、16.5、19.0秒能够检查景观延续及宣传卡转换空档。保留四张A比较帧，容量安排合理。后来两张卡片相似不构成事前采样无价值的证据。"
+    },
+    {
+      "request_id": "request_0041",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次读取E34并恢复与0038基本相同的开头比较组；该组已在0039完整提供，期间没有新增开头材料或改变比较的问题。此时刚取得新的结尾帧，却又消耗有限轮次切回已齐全的开头组，缺乏足够信息增益。"
+    },
+    {
+      "request_id": "request_0042",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "最后一个取证机会用于重新附E39及旧尾部比较组，核心材料已在0040共同提供。没有补查A中宣传卡对应，也没有纳入刚取得的E42、E43、E44来提出新问题；此次切换不足以成为正向行动目标。"
+    },
+    {
+      "request_id": "request_0043",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "结尾景观、宣传卡及黑屏描述得到像素支持，保留全片缺失、精确边界和声音未知也合理。但报告遗漏已具备材料的B开头比较，并用末轮未附图解释未完成，未综合累计观察；E8/E12也早已能够直接比较。这些是可由当前包确定的实质缺陷，而非评审证据不足。E42、E43不带.CA而E38、E44带.CA，是可见差异，但对本任务的旅游推广语境判断不构成另一个关键失败。"
+    },
+    {
+      "request_id": "request_0044",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E24此前未实际附给GIA，此次读取可与已附E5构成A的相邻帧比较，直接解决关键衔接疑点。后续图片确实显示两帧构图突变，读取本身的合理性在行动前已成立。"
+    },
+    {
+      "request_id": "request_0045",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "第一项聚焦已见相邻帧突变在B中的中间状态；第二项处理尚未核实的开头以及宣传卡在A中的对应，均关联原问题。任务没有预设删除或要求精确片尾边界，但开头已有图片可先由GIA读取，重新分派有一定额外成本。"
+    },
+    {
+      "request_id": "request_0046",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取已有E13对齐记录，可检查候选锚点、时间关系及限制，并保留两侧相关图片。行动在当时合理，执行和返回正文对应完整。"
+    },
+    {
+      "request_id": "request_0047",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据已有对齐信息和稀疏过渡帧，在B的四个未采样时刻补帧，并保留A的两帧，直接服务于中间状态核验。参数合法且留有图片容量；其合理性无需依赖后来恰好看到什么。"
+    },
+    {
+      "request_id": "request_0048",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "看到新增中间帧后，首次恢复此次因容量遗漏的E20、E21、E29，有助于核对后段人物构图，应允许必要复看。小缺陷是没有同时保留新增且相关的E48，未充分利用并排比较。"
+    },
+    {
+      "request_id": "request_0049",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "恢复的E45—E48与A的E24、E5已在0048输入中同时显示。读取E45只返回已知时间元数据并再次附上同组图片，未体现新的比较内容；执行真实，但不宜作为正向模仿目标。"
+    },
+    {
+      "request_id": "request_0050",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次恢复0049输入已显示的旧图片组，E21此前也已多次可见。此次遗漏来自前一步焦点切换，不等于内容从未观察；没有新增证据或比较组合。"
+    },
+    {
+      "request_id": "request_0051",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重新显示E45—E48及相同A帧，与0048、0050的输入实质相同。改读E47仅改变优先附图和读取的元数据，没有解决一个新出现的证据缺口。"
+    },
+    {
+      "request_id": "request_0052",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次将E20、E48、E21、E29与A的相邻帧组成同一比较组，能够直接对照桨叶位置、局部衣袖和完整人物构图。相较此前交替整组切换，这一步具有明确的并排比较价值，应按当前状态独立认可。"
+    },
+    {
+      "request_id": "request_0053",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "最终报告的具体像素描述、实际时间和引用相符，完成了局部衔接核验。它确认的是特定过渡状态在A该处未呈现，而非完整删减区间或全片缺失。未列出E45更早的桨叶状态不构成关键遗漏，因为报告没有声称首次入画、穷尽过渡或完整连续动作。"
+    },
+    {
+      "request_id": "request_0054",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取既有对齐记录E33合理。决策前E33和E13都仅标为align_media结果，不能用读取后才知道E33属于音频这一事实，倒推本次选择必然偏题。读取完整返回且引用合法。"
+    },
+    {
+      "request_id": "request_0055",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E33返回音频相关候选后读取另一份尚未展开的E13，能够寻找局部视觉对应依据。动作符合当前未决问题，后续确有完整记录返回。"
+    },
+    {
+      "request_id": "request_0056",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "对A的0—8秒执行OCR可辅助寻找宣传卡文字，工具和参数均允许。此前没有本次加载故障的可见预警。实际结果为16个采样时刻加载失败，应保留为合理行动后的真实失败，不能倒扣为不可执行请求或识别成功。"
+    },
+    {
+      "request_id": "request_0057",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "OCR失败后转而检索已有A帧，查询时间来自已读取的E13，避免重复取帧，也没有把正文提及的编号直接冒充已附像素。检索结果为后续视觉核查提供了实际材料。"
+    },
+    {
+      "request_id": "request_0058",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "检索使当前附图转为A的中后段，本次恢复B开头、A开头和宣传卡以组织直接比较，可作为一次合理重附图。开头组此前已经看过，且E7、E8已与宣传卡同屏，信息增益有限，不宜给满分。"
+    },
+    {
+      "request_id": "request_0059",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "针对A全段与B已知宣传卡所在尾段进行视觉对齐，直接对应局部任务。区间来自既有记录，窄化B范围后增加了针对性；无候选是有效的负面检索结果，本身不使行动错误，也不证明卡片不存在。"
+    },
+    {
+      "request_id": "request_0060",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "在E49无匹配结果后，再次读取E35并恢复request_0058完全相同的八张图。该组合此前已直接比较，没有新增帧、像素冲突或明确的新问题；仅因上一轮暂时只附宣传卡，不足以证明此次重复有必要。"
+    },
+    {
+      "request_id": "request_0061",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "补取0.36、1.04、2、3、4、6、7秒，填补此前A观察中的多个空档，且七张新帧加保留的E38恰好符合八图容量。可提升抽样排查的实用性，但仍不能形成全段不存在的证明。"
+    },
+    {
+      "request_id": "request_0062",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "将新取得的A开头E50、E51与指定B开头帧重新并置，有新增的比较对象，符合直接比较开头语境的要求。其价值不同于原封不动恢复旧组合，引用也有当时历史观察支持。"
+    },
+    {
+      "request_id": "request_0063",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E52、E54、E55此前已与E38同屏，E8也已多次与E38同屏。本次把这些已见A中后段画面再组合，没有说明或显现新的差异、边界或引用问题，不能仅凭换了一组焦点认定有新增核查价值。"
+    },
+    {
+      "request_id": "request_0064",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "在只余一次后续决策时，再读已多次看清的E14，恢复既有开头比较并混入已见E54、E8。定位元数据和对应像素早已可用，没有新增未决问题，是明显低价值重复。"
+    },
+    {
+      "request_id": "request_0065",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "三条finding均有可核对的像素或工具正文支持，准确回答指定开头比较和宣传卡核查，并诚实保留采样空档、OCR失败和算法局限。没有要求其穷尽次要构图差异，也不能将未听音频判作幻觉。全段是否存在宣传卡仍未知，但它没有把这一强命题作为已证实结论；不构成该限定报告的关键未知。"
+    },
+    {
+      "request_id": "request_0066",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E20是新报告描述的重要中间状态，行动前仅有记录和报告而无该图像素。读取可直接核查桨叶入画事实，且剩余轮次允许记忆动作。"
+    },
+    {
+      "request_id": "request_0067",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "E29虽曾看过，但在新取得E20后重新附上B的后续人物帧，有明确的跨时间比较用途；不能仅按复看次数拒绝。已有历史观察使其信息增益有限，故不评满分。"
+    },
+    {
+      "request_id": "request_0068",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前主要保留音频Finding和E33索引，读取原始相关匹配结果可核对最终要引用的范围与限制。该行动没有把相关性当成听觉核验，也没有重试不可用的试听能力。"
+    },
+    {
+      "request_id": "request_0069",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "行动前history_index已包含W2-1完整任务、状态、F6—F8及其限制；请求再次读取报告，既不取得新像素，也不核对底层测量。整体context_truncated标志不能证明这份已完整展示的报告仍需展开。动作真实合法，但不适合作为正向取证目标。"
+    },
+    {
+      "request_id": "request_0070",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E48的重要视觉内容此前未实际附给GIA，读取直接核查B中间状态。实际图片支持右下方桨叶和右缘橙色衣物，是最终局部省略判断的有效依据。"
+    },
+    {
+      "request_id": "request_0071",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E8已在request_0044和request_0045与宣传卡E38共同出现，当前F17也保留同一末帧观察。此次没有新增末端对应疑点，单独重读E8无法解决宣传卡在A全片是否存在的问题，信息增益不足。"
+    },
+    {
+      "request_id": "request_0072",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "相邻帧突变、中间构图状态及宣传卡均有所附像素支持；声音、来源和全片覆盖限制表述诚实，停止符合有限比较任务。小缺陷是“4.104秒才呈现”容易被读为未经证明的首次时刻，以及未清楚汇总已知时长差。它没有宣称完整定位官方删帧区间，不应因未完成该额外目标而判为主要失败。"
+    }
+  ],
+  "construction_revisions": [
+    "GIA: 按请求筛选监督目标，将request_0069和request_0071保留为历史上下文，不因整条轨迹最终成功而一并作为正向动作导出。",
+    "GIA: 附件选择优先保留当前关系核验所需的成对画面和中间状态，减少已知开头景观占用容量而挤出E20、E48等关键图片的情况；保存每次实际附图与E编号的对应。",
+    "GIA: 将音频数值对齐、音频播放和声音内容识别分别写入演员可见的能力说明，避免笼统宣称可处理音频；历史初始决策仍按当时说明评分。",
+    "GIA: 补充官方素材与实际A、B输入的时长及时间轴对应，核实10秒参考描述与8秒输入的差异；在取得解释前不把该参考作为全视频正确性证明。",
+    "GIA: 后续终止样本使用“在4.104秒采样帧可见”等表述，并简洁汇总已有依据的时长或锚点时距差，避免把采样时刻写成首次出现。",
+    "GIA: 若替换历史动作或实质修改任务，从相应决策前状态重新执行受影响后缀，保留原始执行记录，不将新输出直接拼接到不相容的旧轨迹。",
+    "W1-1: 按请求筛选：request_0002—0009保留为候选；request_0010—0012仅保留历史上下文；request_0013修复后重新生成。不得用整条轨迹平均分覆盖末段缺陷。",
+    "W1-1: 修复终报告时使用既有像素：明确E24/E5支持A的相邻帧突变，列出已核实的后段采样对应，再用B的E19、E20、E21说明可见过渡状态及其范围限制。",
+    "W1-1: 若改动中途动作，应从对应决策前状态分叉并重新执行后续过程；若仅修复终报告，可从记录的终轮输入重新生成，但不能冒充新增取证或已执行的下游决定。",
+    "W1-1: 为每轮材料保留明确的E编号与实际附图映射，并明确完整可选择集合与截短展示卡片的区别，避免把缺失卡片或执行成功分别误当作越权证明或合法性证明。",
+    "W1-1: 核对官方0—15秒、目标10秒说明与实际8秒/20.053秒媒体的时间轴关系；关系未确定前，保留官方参考及其不确定性，不用局部命中替换官方范围。",
+    "W1-1: 将W1-1的输出与全局result、其他角色报告分开导出，防止后续声音或宣传卡发现被误归入本角色监督目标。",
+    "W1-2: 按请求分别保留行动与报告目标，并保留 request_0018 的 INCOMPLETE 状态及能力限制；其他角色和 result 中的结论不得混入 W1-2 的正向输出。",
+    "W1-2: 若希望构建实际声音差异及音画含义比较的完成样本，应在行动前提供可试听音频及相应能力。ASR 可支持语音内容调查，但不能单独证明配乐、环境声或听感一致。",
+    "W1-2: 查询返回应明确区分关键词命中、回退浏览和检索是否耗尽，帮助判断继续分页的预期价值；无需通过重复取证来补偿索引语义不清。",
+    "W1-2: 若后续使用官方编辑区间评价定位，应先补充原视频、下载片段与标注时间轴的对应关系；不能直接把标注中的目标时长当作当前文件属性。",
+    "W2-1: 按逐步结果筛选正向目标；保留必要读取和有具体比较价值的重新附图，重复切换步骤仅作为真实历史上下文，不整条打包为正向轨迹。",
+    "W2-1: 修复报告时使用已见的 E24、E5、E20、E21、E29，明确区分 A 相邻帧突变、B 离散中间状态和仍未知的连续编辑范围。若修改此前行动以补查候选或空档，应从对应状态重新执行，不能沿用不相容的旧后缀。",
+    "W2-1: 同时保留 request_0031 原始输出、接受输出及补入 E13 的明确差异，不把框架补齐的引用当作演员原生输出。",
+    "W2-1: 导出时保留对象引用解析结果、逐轮实际附图及其时间定位；累计已观察列表不能替代本轮附件清单。",
+    "W2-1: 核对官方10秒目标与本次8秒、20.053秒媒体之间的版本和时间轴关系；未核实前保留正式定位成绩未知，参考核对信息不进入演员输入。",
+    "W2-2: 保留0032、0033、0034、0035、0037、0038、0039、0040为候选行动；0036、0041、0042保留为真实历史上下文，不作正向模仿目标；0043修复后重新提交或重放。",
+    "W2-2: 修复报告时综合累计已提供的图片：比较B的0.000、0.601、1.168秒与A的0.000、0.720秒，描述实际可见的山壁、林带及湖面倒影，同时明确这些点不能代表整个开头连续区间。",
+    "W2-2: 利用E8/E12说明候选锚点的可见构图高度一致，并继续区分单个配对成立、完整连续对应及真实片段边界。",
+    "W2-2: 结尾报告保留宣传推广语境这一主要发现。需要讨论时间时，纳入15.516和16.517秒已见宣传卡的证据；无需把所有宣传文字细微变化扩展成新的调查任务。",
+    "W2-2: 将低增益重复回看的轮次用于必要的A侧对应核查，或及时汇总已有证据。若改变中间行动，必须从对应真实状态重新执行，不能直接拼接旧后缀或借用其他角色后续结果。",
+    "W2-2: 核对官方编辑说明与实际媒体时长及时间轴的关系，再开展官方区间指标评价；当前不能把参考说明当作已核验的媒体事实。",
+    "W3-1: 按单个输出筛选候选：0049—0051保留为真实历史，不随最终报告一起自动导出为正样本。",
+    "W3-1: 如构建更精简的轨迹，可从补帧后的状态重新执行关键图片的混合编组与报告；不要修改中间行动后直接拼接未经重执行的旧后缀。",
+    "W3-1: 保留逐步实际附件清单、此前观察记录和真实帧时间，确保评审使用当时可见图片，而不是把最终汇总附件提前提供给早期行动。",
+    "W3-1: 在生成全片编辑或官方区间监督前，核对官方15秒到10秒描述与实际8秒、20.053秒媒体的关系；未核清时保留未知，不反向修改金标准。",
+    "W3-1: 训练目标严格限定于steps中的W3-1输出；其他角色结果、最终GIA答案和执行汇总均不自动成为该演员的监督目标。",
+    "W3-2: 按逐目标结论导出；request_0060、request_0063、request_0064仅保留为历史上下文，不因最终报告质量高而一并成为正向行动目标。",
+    "W3-2: 保留request_0056的真实OCR失败观察及request_0057的恢复动作，分别记录调用已执行、处理失败和没有可用识别结果。",
+    "W3-2: 若压缩重复轮次，应重建相应附图、焦点及历史可见状态并重新执行受影响后缀，不能直接删除动作后拼接旧输出。",
+    "W3-2: 随每个目标保留图片与E编号、实际时间和来源的绑定，以及此前已见记录；不要仅保存最终selected_evidence_ids。",
+    "W3-2: 将官方10秒描述与实际8秒、20.053秒媒体范围的差异保留为待核对参考信息，不注入演员输入，也不据此生成具体编辑真值。"
+  ],
+  "rubric_revisions": [
+    "GIA: 分别报告维度评分覆盖率、演员实际像素覆盖和官方编辑范围核验状态；维度均可评分不等于媒体已全面核验。",
+    "GIA: 区分“在某采样点可见”“此前未见”和“首次出现”。轻微时序措辞按实际影响扣分；若首次或边界本身就是任务核心，则按实质定位错误处理。",
+    "GIA: 复看价值按行动前的具体缺口判断：新图片加入后的跨媒体比较可以合理；完整报告已展示时，再读相同摘要不能代替原始证据核查。",
+    "GIA: 声音任务分别评估初始可行性、工具能力反馈后的调整、报告诚实性和实际完成度；缺少试听不是声音幻觉，也不是声音核查通过。",
+    "GIA: 无匹配结果仅证明相应算法没有返回候选。即使处理了A的200帧，也不能自动推出宣传卡不存在，更不能把处理覆盖计作逐帧语义观察。",
+    "GIA: 将用户要求的有限视频比较与官方编辑区间指标分开评价：局部省略观察可以真实且有用，但不能因此认定官方全部删帧位置已正确定位。",
+    "W1-1: 增加对证据使用不足的明确判例：正向描述真实，但遗漏已见关键事实、错误描述缺口或不必要地降为候选，应主要影响task、decision和uncertainty；不得自动等同于内容捏造。",
+    "W1-1: 复看质量按决策前是否存在具体未决问题、图片是否首次有效同屏及新增信息判断。首次跨组整合可接受，后续无新增问题的切换应逐步降级，不设机械次数阈值。",
+    "W1-1: 区分相邻帧可确认的局部突变、离散锚点对应、连续区间关系和官方完整定位。帧时长可以支持相邻性，但不能推出B侧精确删减区间；时间轴或指标定义缺失时，官方定位成绩应保持未知。",
+    "W1-1: 明确COMPLETED与INCOMPLETE均需依据局部任务范围判断：未知的编辑方向或未要求的音频核查不自动阻止完成；诚实的不完整报告也不能掩盖能够完成却未完成的视觉分析。",
+    "W1-1: 分别记录评分维度覆盖率、直接视觉采样范围和算法处理范围。即使七维均可评分，也不得据此宣称全片覆盖或整条轨迹可以全部进入SFT。",
+    "W1-2: 明确区分受限报告的质量与实质核验完成度：正确提交 INCOMPLETE 可以成为候选目标，但不能转化为声音内容已验证或 GIA 全局证据充分。",
+    "W1-2: 将 critical_unknown 明确限定为影响当前输出正确性或适用性的关键未知；已准确披露的任务未知应另外保留，不能一律否决诚实报告，也不能当作事实通过。",
+    "W1-2: 分页探索按行动前的相关线索、未读内容和预期信息增益评价；一次回退分页不等于重复读取，搜索失败也不自动导致低分。",
+    "W1-2: 高分核查应主动寻找超范围推广的反例。本例应检查早期视觉候选偏移与音频偏移不一致，但不能用该反例否定报告明确限定的后段单帧比较。",
+    "W1-2: 评分覆盖率只表示多少质量维度能够评分，应与模态核验及时间覆盖分开呈现；执行链接和独立模型会话均不能替代内容正确性或独立人工真值。",
+    "W2-1: 补充核心遗漏的校准例：报告中的对应关系与计算可以准确，同时因遗漏任务要求的可见相邻帧突变而在 task 和目标可用性上不合格。",
+    "W2-1: 明确区分可定位的画面突变与完整编辑边界：相邻帧时间和帧时长能够支持前者，不能自动证明删减量、来源区间或编辑机制。",
+    "W2-1: 复看评分应检查新取得的证据、新的配对关系和未决问题；首次必要比较、有限整理价值及无增益循环分别评分，不按固定次数判定。",
+    "W2-1: 执行评分单独核对原始、接受和提交版本；已知的引用规范化不等于执行失败，也不能据此认定原始报告已具备完整引用。",
+    "W2-1: 将局部任务完成度与官方全局编辑指标分开：真实的锚点子集不能获得完整定位成绩，未要求的音频、来源和全片核验也不能反向扣减 HI 局部任务分。",
+    "W2-2: 明确区分当前附图、历史已提供像素和已明确写出的核验结论。历史附图不自动证明演员已经完成比较，但末轮未附图也不能证明此前没有可用核查材料。",
+    "W2-2: 将事实正确性、局部任务覆盖和完成状态分别评分。诚实的INCOMPLETE可以避免虚报，却不能抵消对可完成必答项的遗漏。",
+    "W2-2: 复看按新增比较对象、未解问题和图片容量约束判断。首次集中重附或新取得另一侧帧后的复看可以有效；相同图片组在没有新问题时反复切换应降低行动质量。",
+    "W2-2: 读取前仅有通用标签的记录，按当时的信息评价探索价值；工具返回复用帧或事后显示结果不相关，均不足以单独证明原行动错误。",
+    "W2-2: 视觉语境任务不默认要求穷尽文字动画和全部像素差异；时间定位任务则应另行报告已观察命中点、边界未知及官方区间指标，不能以真实局部描述代替完整定位。",
+    "W2-2: 诚实未听音不按声音幻觉扣分；是否需要音频、是否具备可行能力以及已有数值证据能支持什么命题，应分别判断。",
+    "W2-2: 评分覆盖率与媒体覆盖率、局部任务充分性分开报告。未核查的全片对应仍保持未知，执行成功和加权分数均不能把这些未知转为通过。",
+    "W3-1: 复看价值按实际比较组合判定：区分恢复遗漏图片、首次联合展示关键状态和重复显示相同组合，不能只按读取次数或更换record_id评分。",
+    "W3-1: 局部状态缺失与完整时间定位分别评价。相邻帧证据可以充分支持局部衔接结论，但不能据此获得全视频删减区间的完整定位分。",
+    "W3-1: 高分报告应检查已有像素反例。例如E45证明桨叶早于2.703秒出现；只有报告声称首次出现或单调连续运动时才构成相应错误，不能把未穷尽采样点自动判为关键遗漏。",
+    "W3-1: COMPLETED按所接HI任务判定，另行评估GIA的全局充分性；未分派的音频核验不应成为本角色扣分项。",
+    "W3-1: 执行分与事实、决策价值分保持独立；即使加权分较高，也必须逐项排除低增益目标，不能以整段总分替代导出判定。",
+    "W3-2: 明确区分命题未知与目标质量未知：限定报告可以正确报告未能确认，但未解决的全段否定命题必须继续记为未知，不能因报告合格而算作事实通过。",
+    "W3-2: 对明确允许抽样结论的局部任务，COMPLETED按限定核查要求判断；不得自动等同全局证据充分，也不得机械要求所有开放命题都触发INCOMPLETE。",
+    "W3-2: 复看按新增比较对象、证据冲突或具体未决问题判定；本例request_0058、request_0062与request_0060、request_0063、request_0064应区别评分。",
+    "W3-2: 工具选择采用决策前能力和卡片信息：首次读取通用对齐卡不能因后来发现其为音频而追溯扣分；合理OCR请求也不能因随后加载失败被判为不可执行。",
+    "W3-2: 执行得分、报告事实质量和行动价值分别统计，并同时保留逐目标处置，防止高角色汇总分掩盖低价值行动。",
+    "W3-2: 官方时间定位指标仅用于确实要求并输出定位的目标，且先确认媒体时间轴。本轮语境补核不应被强加完整删帧定位要求，也不能用编辑标注替代像素核验。"
+  ]
+}

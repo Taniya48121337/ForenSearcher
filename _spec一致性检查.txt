@@ -1,0 +1,24 @@
+规格：hi@0.2.0 / gia@0.3.0；12 个 run
+
+HI：原口径（system 含教师指令）一致 132 / 不一致 256；去掉教师指令后一致 388 / 不一致 0
+GIA：原口径（system 含教师指令）一致 17 / 不一致 42；去掉教师指令后一致 59 / 不一致 0
+
+逐 run（去掉教师指令后）：
+  true_4124903_r1: HI 20/20，GIA 2/2 一致
+  true_4124903_r2: HI 29/29，GIA 8/8 一致
+  true_17838107_r1: HI 23/23，GIA 4/4 一致
+  true_20205316753904_validation: HI 3/3，GIA 2/2 一致
+  true_20361105_visibility_validation: HI 44/44，GIA 6/6 一致
+  true_24171541709824_r1: HI 20/20，GIA 2/2 一致
+  true_39132300_validation_r3: HI 6/6，GIA 2/2 一致
+  videosham_0069_r1: HI 53/53，GIA 6/6 一致
+  videosham_1007_validation: HI 61/61，GIA 11/11 一致
+  videosham_1028_r2: HI 17/17，GIA 3/3 一致
+  videosham_2010_r1: HI 16/16，GIA 3/3 一致
+  videosham_4126_split_intervals_r7: HI 96/96，GIA 10/10 一致
+
+按规格变体归类（去掉教师指令与修复附注后）：
+  GIA: findings 25，findings_budget_out 18，dispatch 10，default 6
+  HI: main 384，main+repair 4
+
+仍不一致的行按运行时提示特征：

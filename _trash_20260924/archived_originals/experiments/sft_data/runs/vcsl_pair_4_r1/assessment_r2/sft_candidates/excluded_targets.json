@@ -1,0 +1,46 @@
+[
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E14/E18、E15/E19、E16/E20、E17/E21已在request_0004共同展示；本次读取只返回已有元数据并再次附图，没有针对新的具体疑点增加测量。执行有效，但正向模仿价值不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次调回request_0006已展示的同一尾部帧组，期间没有新增尾部证据。已知A演播室帧与标志帧之间的空档仍未缩小，宜保留为历史而非优质目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "输出重新读取E5并调回已反复看过的起始及主段帧，没有直接补足尾部映射。其行动前新增的E30、E31、E32未附给评审，无法完整确认是否存在需要这种复看的视觉冲突，因此不作为已判合格目标，也不判为捏造或不可执行。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E33黑底标志与B尾帧已在request_0010共同展示；其他选中尾帧也已比较。本次主要是从主段再次切回尾段，没有取得更精确边界或新对应关系。最后一次可用行动的新增价值有限。"
+    },
+    "execution_status": "executed"
+  }
+]

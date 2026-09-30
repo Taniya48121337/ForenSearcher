@@ -1,0 +1,95 @@
+{
+  "case_id": "averimatec:423",
+  "dataset": "averimatec",
+  "source_id": "423",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：There has been no increase in the rate of sea level rise.（声明日期：2022-09-03）",
+  "family_key": "averimatec:423",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/423/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "There has been no increase in the rate of sea level rise."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "aap.com.au/factcheck/post-deeply-wrong-about-rate-of-rising-sea-level"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "权威机构（如 NOAA、IPCC）对全球海平面上升速率随时间变化的测量结论",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定图片的内容，以及它能否支持\"海平面上升速率没有增加\"的说法",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "noaa",
+      "description": "NOAA/climate.gov 关于全球海平面上升的说明",
+      "url_pattern": "climate.gov/news-features/understanding-climate/climate-change-global-sea-level*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "ipcc",
+      "description": "IPCC 评估报告中的海平面章节（试点 run 取到 ipcc.ch 报告页）",
+      "url_pattern": "ipcc.ch/report/*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "pnas",
+      "description": "PNAS 关于过去三千年海平面变化的论文（标注来源）",
+      "url_pattern": "*pnas.org/doi/10.1073/pnas.1517056113*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:noaa,ipcc,pnas",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/423/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2022-09-03，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20231204001254/https://www.aap.com.au/factcheck/post-deeply-wrong-about-rate-of-rising-sea-level/。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

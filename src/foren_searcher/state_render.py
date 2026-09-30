@@ -55,7 +55,12 @@ _DROP_KEYS = ("record_type", "artifact_ref", "production_method")   # 卡片里�
 
 
 class RenderError(ValueError):
-    """渲染无法把输入压进预算（任务/材料/最新观察本身就超限）。"""
+    """渲染无法把输入压进预算（任务/材料/最新观察本身就超限）。chars / budget：超限时渲染后的字符数与预算。"""
+
+    def __init__(self, message: str, *, chars: int | None = None, budget: int | None = None) -> None:
+        super().__init__(message)
+        self.chars = chars
+        self.budget = budget
 
 
 def tier_for(name: str | None) -> Tier | None:
@@ -425,7 +430,8 @@ def _fit_hi(payload: dict[str, Any], view: dict[str, Any], tier: Tier, focus: se
     if not truncated:
         view.pop("context_truncated", None)
     if payload_chars(payload) > tier.budget_chars:
-        raise RenderError(f"任务、材料与最新观察本身超过 {tier.name} 的预算（{payload_chars(payload)} > {tier.budget_chars} 字符）")
+        n = payload_chars(payload)
+        raise RenderError(f"任务、材料与最新观察本身超过 {tier.name} 的预算（{n} > {tier.budget_chars} 字符）", chars=n, budget=tier.budget_chars)
 
 
 # --------------------------------------------------------------------------- GIA
@@ -522,8 +528,8 @@ def _fit_gia(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
         truncated = True
     limit = tier.support_text_chars
     for _ in range(3):
-        if payload_chars(payload) <= tier.budget_chars:
-            break
+        if limit <= 1 or payload_chars(payload) <= tier.budget_chars:
+            break     # support_text_chars=0 的档位附件已是单行卡片，再截只剩截断标记、连编号都丢
         limit //= 2
         for report in view.get("latest_reports") or []:
             if isinstance(report, dict) and isinstance(report.get("supporting_records"), list):
@@ -546,10 +552,119 @@ def _fit_gia(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
         _ids_only(view, "image_inputs")
         _slim_visual_summary(view)
         truncated = True
+    if payload_chars(payload) > tier.budget_chars:
+        _shrink_reports(payload, view, tier)
+        truncated = True
     if not truncated:
         view.pop("context_truncated", None)
     if payload_chars(payload) > tier.budget_chars:
-        raise RenderError(f"总任务、材料与最新报告本身超过 {tier.name} 的预算（{payload_chars(payload)} > {tier.budget_chars} 字符）")
+        n = payload_chars(payload)
+        raise RenderError(f"总任务、材料与最新报告本身超过 {tier.name} 的预算（{n} > {tier.budget_chars} 字符）", chars=n, budget=tier.budget_chars)
+
+
+REPORT_STATEMENT_STEPS = (600, 400, 250, 150)   # 最后一级：Finding 陈述逐级收缩的上限
+COLLAPSED_STATEMENT_CHARS = 80                  # 折叠后的旧报告每条 Finding 只留这么多陈述
+
+
+def _report_findings(view: dict[str, Any]) -> list[tuple[dict[str, Any] | None, dict[str, Any]]]:
+    """(所属报告, Finding)：latest_reports[*].report.findings 与 history_index 里较早轮次的 Finding。"""
+
+    out: list[tuple[dict[str, Any] | None, dict[str, Any]]] = []
+    for entry in view.get("latest_reports") or []:
+        report = entry.get("report") if isinstance(entry, dict) else None
+        if isinstance(report, dict):
+            out.append((report, {}))
+            out.extend((report, f) for f in report.get("findings") or [] if isinstance(f, dict))
+    for item in view.get("history_index") or []:
+        if isinstance(item, dict) and "finding_id" in item:
+            out.append((None, item))
+        elif isinstance(item, dict) and "finding_ids" in item:
+            out.append((item, {}))
+    return out
+
+
+def _cap_report_text(view: dict[str, Any], chars: int) -> None:
+    for report, finding in _report_findings(view):
+        if not finding:
+            if report is not None and isinstance(report.get("status_reason"), str):
+                report["status_reason"] = cut_text(report["status_reason"], chars)
+            continue
+        if isinstance(finding.get("statement"), str):
+            finding["statement"] = cut_text(finding["statement"], chars)
+        if isinstance(finding.get("limitations"), list):
+            finding["limitations"] = [cut_text(x, chars) if isinstance(x, str) else x for x in finding["limitations"]]
+
+
+def _collapse_finding(finding: Any) -> Any:
+    if not isinstance(finding, dict):
+        return finding
+    out: dict[str, Any] = {"finding_id": finding.get("finding_id")}
+    if isinstance(finding.get("statement"), str):
+        out["statement"] = cut_text(finding["statement"], COLLAPSED_STATEMENT_CHARS)
+    if "evidence_ids" in finding:
+        out["evidence_ids"] = finding["evidence_ids"]
+    return out
+
+
+def _collapse_report_entry(entry: dict[str, Any]) -> None:
+    """latest_reports 里的一份报告 → 只留 finding_id + 陈述前 80 字 + evidence_ids；附件只留编号。"""
+
+    report = entry.get("report")
+    if isinstance(report, dict):
+        entry["report"] = {k: v for k, v in report.items() if k in ("task_id", "status", "finding_ids")}
+        entry["report"]["findings"] = [_collapse_finding(f) for f in report.get("findings") or []]
+    if isinstance(entry.get("task"), str):
+        entry["task"] = cut_text(entry["task"], COLLAPSED_STATEMENT_CHARS)
+    records = entry.get("supporting_records")
+    if isinstance(records, list):
+        entry["supporting_records"] = [
+            r.get("evidence_id", r) if isinstance(r, dict) else r.split(" ", 1)[0] if isinstance(r, str) and r[:1] == "E" else r
+            for r in records]
+    _ids_only(entry, "image_inputs")
+    entry.pop("visual_observation_summary", None)
+
+
+def _shrink_reports(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
+    """最后一级退化：收缩报告与较早 Finding 的陈述，再把较早的报告折叠成摘要；最新一份报告保留完整陈述。
+
+    每一步都写 view["reports_truncated"] = {"statement_chars": N, "collapsed_reports": [...]}，让 GIA 知道看到的是截断版。
+    """
+
+    info: dict[str, Any] = {"statement_chars": None, "collapsed_reports": []}
+    view["reports_truncated"] = info
+    for chars in REPORT_STATEMENT_STEPS:
+        if payload_chars(payload) <= tier.budget_chars:
+            return
+        info["statement_chars"] = chars
+        _cap_report_text(view, chars)
+    # 较早轮次（history_index 里的报告 / Finding，按时间从早到晚），再是 latest_reports 里除最后一份以外的报告
+    history = view.get("history_index")
+    if isinstance(history, list):
+        for i, item in enumerate(history):
+            if payload_chars(payload) <= tier.budget_chars:
+                return
+            if isinstance(item, dict) and "finding_id" in item:
+                history[i] = {**_collapse_finding(item), **({"workspace_id": item["workspace_id"]} if "workspace_id" in item else {})}
+                owner = item.get("workspace_id")
+            elif isinstance(item, dict) and "finding_ids" in item:
+                history[i] = {k: v for k, v in item.items() if k in ("task_id", "status", "finding_ids")}
+                owner = item.get("task_id")
+            else:
+                continue
+            if owner is not None and owner not in info["collapsed_reports"]:
+                info["collapsed_reports"].append(owner)
+    reports = view.get("latest_reports")
+    if isinstance(reports, list):
+        for entry in reports[:-1]:
+            if payload_chars(payload) <= tier.budget_chars:
+                return
+            if not isinstance(entry, dict):
+                continue
+            _collapse_report_entry(entry)
+            report = entry.get("report")
+            owner = report.get("task_id") if isinstance(report, dict) else None
+            if owner is not None and owner not in info["collapsed_reports"]:
+                info["collapsed_reports"].append(owner)
 
 
 def render_payload(payload: dict[str, Any], renderer: str | None) -> dict[str, Any]:

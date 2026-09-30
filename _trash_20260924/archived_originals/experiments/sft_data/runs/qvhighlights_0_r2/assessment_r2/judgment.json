@@ -1,0 +1,224 @@
+{
+  "assessment_scope": "仅依据所给包与24张实际图片，按对象表递归解析引用，逐项评估12个HI输出；未调用工具或检查文件。演员累计收到28个不同时间点的帧，评审缺少E23、E24、E27、E29的像素。离散采样不等于覆盖整段150秒视频。参考区间仅用于事后指标比较，不作为演员当时可知信息。HI七维加权得分为3.00/4，即75/100，维度评分覆盖率为100%；这不表示资料完整或全部目标合格，具体未知另行标明。本任务是可执行且有用的视觉定位，不要求音频核查。GIA来源为脚本调度器，不存在可评分的GIA模型目标。",
+  "roles": [
+    {
+      "actor": "W1-1（HI）",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "包内12个原始输出均与接受输出一致，11次动作有观察链接，最终报告有提交链接；参数符合所给接口。该分数仅评价包内执行对应，不证明动作有用或报告正确。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "使用的编号可追溯到当时已有材料、真实取帧结果及历史附图清单；没有发现使用未来结果或官方区间的证据。当前卡片列表未展示某编号，不足以否定其历史可见性；评审缺图也不等于演员缺图。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "最终引用的六帧均有评审像素：38秒为店外，41秒为车内餐盒和吐司近景，48及50秒女子举盒，51秒下沿仍有餐盒与食物，51.48秒可见盒角但食物不在画面内。主要事实成立。反例是已见的E21在39秒就有食物近景，因此“实际起点只能限定在38–41秒”没有充分利用已有证据，不能给满分。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "报告给出近景与人物展示共同组成的事件范围，并检查前后变化，主要满足HI局部任务。按同一局部时间轴计算，[38,51.5]与参考[38,52]的交并比为13.5/14，约0.9643；覆盖参考时长96.43%，结束早0.5秒。它接近完整参考区间，不能称为完全一致，也不应因这点差异判为主要失败。起点不确定范围仍可依据已见39秒帧收紧。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "前三次由粗采样转向候选区间和边界细查，request_0008也新增了能区分边界的时刻。部分重新附图有比较价值，但中段及末段多次返回已展示组合；尤其request_0007完全重复request_0005的焦点组，期间没有新取帧。调查推进与停止选择存在实质缺陷。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "报告明确说明离散帧、未逐帧确认及动作连续性未知，也承认38秒仍是店外，没有把采样跨度写成全片覆盖。边界表述仍有小缺陷：已见39秒近景却保留38–41秒起点范围；食物退出构图也只能支持近似结束判断，不能证明精确的动作终点。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "11次工具动作中有7次READ_RECORD，主要作用是重新附上已看过的帧。首次比较及加入新端点的复看可以成立，但request_0006、request_0007及末段切换没有相称的信息增益。轮次最终耗尽，而起点报告仍未利用早已见到的39秒证据。",
+          "request_ids": ["request_0004", "request_0005", "request_0006", "request_0007", "request_0009", "request_0010", "request_0011", "request_0012"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E23（46秒）、E24（49秒）、E27（38.48秒）、E29（47秒）未附评审像素，不能核实这些帧的内容或其对部分复看决定的影响。",
+        "没有连续视频像素，无法确定精确镜头切换、采样间动作连续性及食物展示的逐帧起止。",
+        "包内执行链接可以核对输出对应，但不是本次评审独立运行后的验证。"
+      ]
+    },
+    {
+      "actor": "GIA（scripted_dispatcher）",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "FINISH为脚本调度结果，不是GIA模型输出。",
+          "request_ids": []
+        },
+        {
+          "id": "visibility",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有GIA模型决策样本。",
+          "request_ids": []
+        },
+        {
+          "id": "grounding",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有GIA全局推断可供评分，不能继承HI报告分数。",
+          "request_ids": []
+        },
+        {
+          "id": "task",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "脚本结束提示不能作为GIA完成原问题的质量证据。",
+          "request_ids": []
+        },
+        {
+          "id": "decision",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实GIA分工、补查或停止决定。",
+          "request_ids": []
+        },
+        {
+          "id": "uncertainty",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有GIA模型报告可评估。",
+          "request_ids": []
+        },
+        {
+          "id": "efficiency",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "不能将HI工具轮次归为GIA模型调度表现。",
+          "request_ids": []
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "本包不能据以判断GIA模型能力或端到端全局综合质量。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前没有视频内容或时长观察，以count=8进行初始浏览符合接口并适配8图容量。不能用后来命中的时间倒推首次采样不合理。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时可见46.88秒女子在车内举食物，而28.12秒及65.64秒属于室内场景；选择32–60秒八个新时刻，合理覆盖候选事件及两侧变化。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已见36秒店外、40秒食物近景、48秒举盒、52秒女子与狗、56秒男子持食物、60秒室内。补查37–39及49–51秒，并检查内部时刻，针对真实未决边界，参数合理。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "在新见50秒举盒、51秒餐盒下移后，首次重新展示48、52、56、60秒等锚点，可帮助区分女子展示、男子持食物和后续室内事件。属于可解释的一次复核，但不增加时间采样，信息增益有限。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "首次将36秒与37–39秒、49–51秒组合展示，可用于统一检查两侧边界，仍有有限比较价值。全是已见帧，不能给满分；缺少E24像素不妨碍根据其余明确锚点判断这次动作的基本合理性。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次返回40、44、48、52、56、60秒等已复看锚点，增加的46及65.64秒也曾附图。已知60与65.64秒都是室内后续场景；这些选择不能进一步缩小38–39或51–52秒的边界空档。可保留真实历史，不宜作为高质量正向动作。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "焦点组与request_0005完全相同，该组已在request_0006输入展示；期间没有新取帧或新增问题。改读E19只返回已有帧的元数据并再次附同组图，是明确的低信息增益切换。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "依据当时已见38秒店外、39秒食物及51–52秒变化，新增38.5与51.5秒直接检查边界，41与47秒补充事件内部观察；四张新帧加四张既有帧符合容量。动作价值不依赖其后是否命中参考答案。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "新获得的51.48秒帧中食物不在画面内，重新组合50、51和51.48秒具有具体的结束边界比较价值。36、37秒等重复锚点较冗余，故为3分。此判断不依赖评审未见的38.48或47秒像素。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "返回38.48、40、42、44、46、47、52、56秒，多数内容已反复展示，也未新增时刻。核心E27及同时聚焦的E23、E29缺少评审像素，无法确定是否存在足以支持此次复看的具体视觉歧义。2分反映可见的重复负担，不把未知内容判为错误或通过；补齐图片后应重评。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "41秒食物、48及50秒举盒、51及51.48秒变化均已实际展示，这次用最后一个取证轮次再次组合相同事实，没有缩小任何采样空档。作为报告前整理有有限作用，但不足以成为优质行动目标；该效率判断不依赖缺失帧的具体内容。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "已提交报告的六个引用均有像素支持，近似区间涵盖食物近景与女子举盒，并诚实披露连续性限制。相对参考区间的tIoU约0.9643，遗漏末端0.5秒属于小差异。已见39秒近景使“只能限定38–41秒”显得过宽，故不能给4分；但不构成关键事实错误。缺失四帧不阻止核验本报告的主要断言。"
+    }
+  ],
+  "construction_revisions": [
+    "补齐E23、E24、E27、E29的评审像素，沿用现有E编号及请求映射，分别保留演员实际附图记录和评审实际收到的图片清单。",
+    "按请求选择训练目标：保留通过逐项评估的候选，重复切换作为历史上下文；request_0010在补齐关键图片前不进入正向候选。脚本FINISH不作为GIA训练目标。",
+    "修复重复调查时，从request_0006当时状态选择38–39秒及51–52秒之间的新观察，或提交证据允许的有界报告，并重新执行后续分支；不要把修改后的动作直接接到旧后缀。",
+    "整理报告时利用已经观察到的39秒近景，分别表述候选事件区间、直接观察时刻和边界不确定范围；不得为了贴合参考答案把52秒写入演员结论。",
+    "同时保存预测区间、原参考区间及其计算指标，保持金标准不变；将像素语义判断与区间指标分别记录。"
+  ],
+  "rubric_revisions": [
+    "明确区分近乎完整定位、明显截取事件中段和精确边界一致。本例tIoU约0.9643可支持较高任务分，但不能表述为完整覆盖或全片逐帧核验；单例区间指标也不能替代整个数据集的检索指标。",
+    "复看按具体比较价值评分：首次组织必要锚点或加入新端点可得3–4分；完整重复已展示组合且没有新问题应降分。依据可见状态判断，不要求暴露模型内部推理，也不按固定复看次数机械处罚。",
+    "将演员可见性未知、评审像素缺失和证据本身无法证明的连续性分开。只有决定目标是否成立的缺失才标critical_unknown；缺少无关帧不自动否定已充分支持的目标。",
+    "边界理由必须对照全部已观察的相关证据。保守区间不必等于错误，但在已有39秒正例时声称只能限定到41秒，应阻止满分。",
+    "允许人物全景、食物近景及动作延续共同支持同一事件；不要求每帧同时出现所有描述要素。反过来，餐盒降到画面下沿、食物退出构图和动作实际结束也应分别判断。",
+    "加权得分、维度评分覆盖率、材料完整性和逐目标可用性分别报告；HI报告质量不能覆盖低价值动作，也不能转化为脚本GIA的质量分数。"
+  ]
+}

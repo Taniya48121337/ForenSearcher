@@ -1,0 +1,35 @@
+[
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "首次浏览A开头并保留四张B开头帧，在结构上是合理、可执行的后备比较；但决定前的E32—E35像素未提供，无法充分核实选择该A范围的具体视觉依据。暂存历史，不将缺图误判为幻觉，也不直接导出正向目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "offset=6000遵循已返回的next_offset，不能说成同页重复读取；不过尾页内容已在早期完整结果中出现，焦点又切回已看过的初始8帧。评审缺少本轮新显示的两侧开头帧，不能确认此次复看是否解决新出现的歧义，故不作为充分合格的正向样本。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "已写出的视觉事实和数值转述基本准确，但遗漏另外四组已经取得的成对视觉锚点及其引用，应从最终可见状态补齐报告。这里不要求把候选区间改称连续实证区间。官方完整定位须另评：若四元组按A起/B起/A止/B止且时间轴一致解释，突出报告的A21.058—22.418、B15.778—17.494仅分别占第一标注A1—26、B1—22长度的5.44%和8.17%，也未恢复第二标注的完整范围。这只是该组的原始坐标核对，不是整份报告的官方得分；真实局部匹配不能等同完整定位成功。"
+    },
+    "execution_status": "report_committed"
+  }
+]

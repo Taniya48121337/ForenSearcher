@@ -1,0 +1,79 @@
+[
+  {
+    "request_id": "request_0013",
+    "assessment": {
+      "request_id": "request_0013",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "视觉与来源转述均有依据，但局部任务要求的素材对应及来源仍未确认，却报告COMPLETED。应依据当时状态提交INCOMPLETE，或在较早状态推进已有视频线索后重新执行。"
+    },
+    "execution_status": "report_committed"
+  },
+  {
+    "request_id": "request_0027",
+    "assessment": {
+      "request_id": "request_0027",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重新调入E28至E31及两个封面；完全相同的早段比较组已在request_0026前附图中出现，警方新文本未引出新的视觉问题。可保留为历史，不宜当作优质行动目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0028",
+    "assessment": {
+      "request_id": "request_0028",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次转回原六帧与两个封面，相关后段比较组刚在request_0027输入中展示，没有新增像素或明确未决差异。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0029",
+    "assessment": {
+      "request_id": "request_0029",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "又转回已反复显示的早段帧，E29的时间和派生关系也已知；耗用最后取证轮次而未检查新的位置或来源。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0030",
+    "assessment": {
+      "request_id": "request_0030",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "报告事实和INCOMPLETE限制基本可靠，但接口实际拒收，不能作为已提交目标。问题是正文以E1命名原视频触发校验；派生帧已有引用，不应误判为捏造或未看图片。"
+    },
+    "execution_status": "proposal_not_accepted"
+  },
+  {
+    "request_id": "request_0035",
+    "assessment": {
+      "request_id": "request_0035",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E3虽在本次容量列表中被挤出，但在request_0032至request_0034已连续与候选封面共同展示；没有新问题需要再次读取。当前未附不等于从未看过。"
+    },
+    "execution_status": "gia_decision_accepted"
+  },
+  {
+    "request_id": "request_0036",
+    "assessment": {
+      "request_id": "request_0036",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E4在此前多个决策中已与同组证据共同展示，再次读取只延续容量轮换，没有推进新的比较或来源问题。"
+    },
+    "execution_status": "gia_decision_accepted"
+  }
+]

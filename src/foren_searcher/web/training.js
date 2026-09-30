@@ -9,9 +9,9 @@
   const stageData = [
     {title:'案例选取与依据准备',short:'案例与依据',subtitle:'先界定问题边界，再准备核验材料。',input:'真实问题、原始媒体、来源记录与数据集标注',actor:'数据构造',output:'明确的任务 + 训练侧参考材料',points:['按原始案例、事件或视频来源划分开发与保留检查数据，同一案例的变体放在同一侧。','核对原始材料、时间轴和来源条件。给定候选视频、给定网页与自主搜索分别记录。','参考标注辅助核验；不把缺失证据补写成已经观察过的事实。'],example:'video-correspondence',exampleLabel:'查看双视频对应任务',note:'对应片段可证明内容匹配，但不足以单独判定原创归属。',upgrade:'案例按数据集标注统一入库，每个案例附带来源政策与必需证据；开发集与保留检查集按案例家族划分，并由程序自动核查两侧是否重叠。'},
     {title:'决策输入构造',short:'决策输入构造',subtitle:'每次决策均有明确的信息边界。',input:'当前任务、已取得证据、已有报告与历史',actor:'上下文组织',output:'本轮角色输入 + 实际图片附件',points:['HI 获得自己的局部任务和可见材料；GIA 获得总任务、报告及当前可用证据。','标准答案、评分记录和未来调查结果留在核验侧，不能提前进入决策输入。','独立 GIA 样本可用已核实的真实报告构造状态。报告可信，仍可能没有查完整。'],example:'gia-evidence-states',exampleLabel:'对比同一证据下的四个问题',note:'问题改变时，“已有证据是否足够”的答案也可能改变。',upgrade:'新增状态渲染器：长上下文分两档压缩，实测将调查员一侧的输入字符中位数降至原先的一半以下，证据编号无缺失；超出预算时明确标注已截断，并保留读取全文的入口。'},
-    {title:'教师生成与工具真实执行',short:'生成与执行',subtitle:'完整记录调查过程，支持逐步回放。',input:'当轮可见状态',actor:'GIA / HI 教师',output:'一个决定 → 实际返回 → 下一轮状态',points:['一次教师请求只生成一个角色的输出。工具调用由现有 Harness 实际执行。','保存原始输入、图片、模型输出、工具观察和执行对应关系。失败也按实际结果记录。','GIA 可以独立生成下一步决定；只有接入 HI 并真实执行，才计为协作轨迹。'],example:'video-intervals',exampleLabel:'展开 106 次真实模型输出',note:'检索、抽帧、转写等工具由 Harness 真实执行，非模拟返回。',upgrade:'新增版本化规格：面向学生的角色提示与面向教师的生成指令分开管理，各自带版本号，四项内容统一计算哈希并写入每一行数据，任一样本均可追溯到其规格版本。'},
+    {title:'教师生成与工具真实执行',short:'生成与执行',subtitle:'完整记录调查过程，支持逐步回放。',input:'当轮可见状态',actor:'GIA / HI 教师',output:'一个决定 → 实际返回 → 下一轮状态',points:['一次教师请求只生成一个角色的输出。工具调用由现有 Harness 实际执行。','保存原始输入、图片、模型输出、工具观察和执行对应关系。失败也按实际结果记录。','GIA 可以独立生成下一步决定；只有接入 HI 并真实执行，才计为协作轨迹。'],example:'video-intervals',exampleLabel:'展开 22 次真实角色决策',note:'检索、抽帧、转写等工具由 Harness 真实执行，非模拟返回。',upgrade:'新增版本化规格：面向学生的角色提示与面向教师的生成指令分开管理，各自带版本号，四项内容统一计算哈希并写入每一行数据，任一样本均可追溯到其规格版本。'},
     {title:'逐单元核验与问题定位',short:'逐单元核验',subtitle:'每一步动作、每份报告、每次派工与最终回答，分别判定。',input:'真实输入、输出、执行记录 + 案卷要求',actor:'三道工序 · 核验模型独立于生成模型',output:'问题类型 + 严重度 + 每行处置与权重',points:['四种判定单元分开走：HI 的每一步动作、HI 的局部报告、GIA 的派工、GIA 的最终回答。','三道工序依次执行——程序检查、逐条证据锚定、任务充分性；前一道已判定的不再重复判定。','判定不给分数，只贴统一定义的问题类型；类型自带严重度与是否污染后续结论。'],example:'video-local-intervals',exampleLabel:'查看真实案例的逐步判定',note:'判定针对每一个单元单独进行，不以整份报告的结论替代单步判定。',upgrade:'核验器升到 0.2.0：判定单元由「报告」扩到动作、派工与最终回答；新增两条校准规则，修掉第 0 轮抽样发现的两类误报。'},
-    {title:'筛选、修复与处置',short:'筛选与修复',subtitle:'逐目标判定，不以整体平均分替代单步结论。',input:'逐目标评分 + 实际执行核对',actor:'筛选与重新执行',output:'候选目标 / 重新执行 / 仅作历史 / 排除',points:['逐目标判为可收录、评分 3 或 4、无关键评审未知，并通过执行及输入对应检查，才进入候选。','有实质错误的动作，从对应状态重新执行并复评，不把改写答案接到不相容的旧后续。','错误前缀可以作为之后的真实上下文；它本身不因此成为正向学习目标。'],example:'video-intervals',exampleLabel:'查看 86 条收录与 20 条未收录',note:'如实声明「尚未查完」的报告同样具备示范价值，但不代表该项调查已经完成。',upgrade:'处置结果与统一的问题类型枚举绑定：每一条被退回的输出均归入具体类型，使改进方向可按类型统计，而非仅留一段自由文本说明。'},
+    {title:'筛选、修复与处置',short:'筛选与修复',subtitle:'逐目标判定，不以整体平均分替代单步结论。',input:'逐目标评分 + 实际执行核对',actor:'筛选与重新执行',output:'候选目标 / 重新执行 / 仅作历史 / 排除',points:['逐目标判为可收录、评分 3 或 4、无关键评审未知，并通过执行及输入对应检查，才进入候选。','有实质错误的动作，从对应状态重新执行并复评，不把改写答案接到不相容的旧后续。','错误前缀可以作为之后的真实上下文；它本身不因此成为正向学习目标。'],example:'video-intervals',exampleLabel:'查看 19 行收录与 3 行未收录',note:'如实声明「尚未查完」的报告同样具备示范价值，但不代表该项调查已经完成。',upgrade:'处置结果与统一的问题类型枚举绑定：每一条被退回的输出均归入具体类型，使改进方向可按类型统计，而非仅留一段自由文本说明。'},
     {title:'按角色导出与输入核对',short:'导出与核对',subtitle:'模型仅学习当前角色的合格输出。',input:'通过核验的 GIA 与 HI 决策',actor:'分角色 SFT 数据',output:'当前上下文 → 下一次正确输出',points:['GIA 与 HI 分开导出；开发数据和构造方法的保留检查数据分开保存。','系统提示、用户输入、工具观察及其他角色内容作为上下文；只有最后一条目标输出计算训练损失。','用 Qwen3.5-9B 的实际模板、分词和图片处理检查输入、附件与监督位置，核对是否截断。'],example:'dog-source',exampleLabel:'打开一条实际 SFT 样本',note:'导出后逐条核对监督位置与截断情况，确认模型实际接收的输入与设计一致。',upgrade:'每一行数据均附带规格版本、核验器版本、问题类型与长度估算，训练、评估与后续改进可直接依这些字段切分，无需回溯运行目录。'}
   ];
   const format = n => Number(n||0).toLocaleString('zh-CN');
@@ -25,11 +25,13 @@
   window.stopTrainingPlayback = stop;
   async function get(path){if(T.cache.has(path))return T.cache.get(path);const value=await api(path);T.cache.set(path,value);return value;}
   function loading(){page.innerHTML='<div class="tr-loading" role="status"><span class="tr-loader"></span>正在读取实际训练记录…</div>';}
-  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','轨迹示例']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,label,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')?'':statusStrip(section)}`;}
-  function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">阶段 3 / 5 已完成</span><span>调查框架、数据流水线与质量核验体系均已就位</span><span>候选决策 <b>${format(T.data.stats.total)}</b> 条 · 数据来源 <b>${T.data.stats.datasets}</b> 个</span><span>正在进入首次模型训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
+  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','轨迹示例'],['paper','论文草稿']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,label,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')||section==='paper'?'':statusStrip(section)}`;}
+  function vs(){return (T.data&&T.data.verification)||{};}
+  function num(v){return v===undefined||v===null?'—':format(v);}
+  function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">阶段 3 / 5 已完成</span><span>调查框架、数据流水线与质量核验体系均已就位</span><span>已完成三层核验：调查 <b>${num(vs().runs)}</b> 次 · 报告 <b>${num(vs().reports)}</b> 份 · 数据来源 <b>${num(vs().datasets)}</b> 个</span><span>正在进入首次模型训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
   function renderFlow(){
-    const s=T.data.stats,d=stageData[T.stage];
-    page.innerHTML=top('flow')+`<section class="tr-hero"><div><div class="eyebrow">FROM INVESTIGATION TO LEARNING</div><h2>把每一次真实调查，<br>沉淀为可复用的训练示范<span class="accent">。</span></h2><p>真实执行留下完整过程，逐步评审选出示范样本。<br>GIA 学习判断与分工，HI 学习取证与报告。</p></div><div class="tr-hero-card"><span>当前候选决策</span><strong>${format(s.total)}<small>条</small></strong><div class="tr-role-split"><span class="tr-role-gia">GIA <b>${s.gia}</b></span><span class="tr-role-hi">HI <b>${s.hi}</b></span></div><div class="tr-stat-note">逐步决策数，非独立案例数</div></div></section><div class="tr-stats"><div><b>${format(s.development)}</b><span>开发与训练准备</span></div><div><b>${format(s.validation)}</b><span>构造方法保留检查</span></div><div><b>${s.datasets}</b><span>数据来源</span></div><div><b>${format(s.images)}</b><span>实际附件文件 · 含重复画面</span></div></div><section class="tr-flow-section"><div class="tr-section-title"><div><div class="eyebrow muted">DATA GENERATION PIPELINE</div><h2>一条训练样本的产生过程</h2></div><span>选择步骤，查看输入与产物</span></div><div class="tr-flow-layout"><div class="tr-stages" aria-label="数据生成步骤">${stageData.map((v,i)=>`<button class="tr-stage ${i===T.stage?'active':''}" data-tr-stage="${i}" aria-pressed="${i===T.stage}"><span>${String(i+1).padStart(2,'0')}</span><div><strong>${v.short}</strong><small>${i===2?'模型与工具实际运行':i===3?'逐个决策独立判定':i===5?'GIA / HI 分开保存':i===0?'任务、来源与参考材料':i===1?'隔离参考答案与未来信息':'保留有据可依的示范'}</small></div><i>↗</i></button>`).join('')}</div><article class="tr-stage-detail" aria-live="polite"><div class="tr-panel-kicker">步骤 ${String(T.stage+1).padStart(2,'0')} / 06</div><h3>${d.title}</h3><p class="tr-subtitle">${d.subtitle}</p><div class="tr-transformation"><div><small>输入</small><strong>${d.input}</strong></div><span>→</span><div class="tr-transform-actor"><small>${d.actor}</small><strong>${d.output}</strong></div></div><ol class="tr-points">${d.points.map(p=>`<li>${p}</li>`).join('')}</ol><p class="tr-callout">${d.note}</p><p class="tr-upgrade"><b>本期升级</b>${d.upgrade}</p><div class="tr-stage-footer">${routeButton(`#training/samples/${d.example}`,`${d.exampleLabel} <span>→</span>`)}<div><button class="tr-round" data-tr-stage="${T.stage-1}" ${T.stage===0?'disabled':''} aria-label="上一步">←</button><button class="tr-round" data-tr-stage="${T.stage+1}" ${T.stage===5?'disabled':''} aria-label="下一步">→</button></div></div></article></div><div class="tr-return"><span>↶</span> 需要修复的动作回到对应状态重新执行，保留原来的真实历史。</div></section><section class="tr-supervision"><div><div class="eyebrow muted">WHAT THE MODEL LEARNS</div><h2>上下文用于理解，<br>目标输出才计入监督。</h2><p>一段完整调查被拆分为逐次决策的训练样本。</p></div><div class="tr-message-stack"><div><span>输入上下文</span><p>角色提示 · 当前任务 · 已有证据与报告</p><small>不计算目标损失</small></div><i>↓</i><div class="tr-target-message"><span>当前角色输出</span><p>GIA 的下一次决定 / HI 的下一次行动或报告</p><small>合格输出参与监督</small></div></div></section><div class="tr-footnote">候选数据已完成自动核验与实际多模态输入检查；首次模型训练正在准备中。保留检查数据用于构造方法自检，不作为公开测试集。</div><div class="tr-doc-links">${docLink('method','完整构造方法')} ${docLink('results','实际测量与结果')}</div>`;
+    const v=vs(),d=stageData[T.stage];
+    page.innerHTML=top('flow')+`<section class="tr-hero"><div><div class="eyebrow">FROM INVESTIGATION TO LEARNING</div><h2>把每一次真实调查，<br>沉淀为可复用的训练示范<span class="accent">。</span></h2><p>真实执行留下完整过程，逐单元核验决定去留。<br>GIA 学习判断与分工，HI 学习取证与报告。</p></div><div class="tr-hero-card"><span>已核验的工作区报告</span><strong>${num(v.reports)}<small>份</small></strong><div class="tr-role-split"><span class="tr-role-gia">调查 <b>${num(v.runs)}</b></span><span class="tr-role-hi">证据对照 <b>${num(v.pairs)}</b></span></div><div class="tr-stat-note">第 0 轮三层核验结果</div></div></section><div class="tr-stats"><div><b>${num(v.runs)}</b><span>真实调查</span></div><div><b>${num(v.reports)}</b><span>工作区报告</span></div><div><b>${num(v.pairs)}</b><span>结论–证据逐对核验</span></div><div><b>${num(v.datasets)}</b><span>数据来源</span></div></div><section class="tr-flow-section"><div class="tr-section-title"><div><div class="eyebrow muted">DATA GENERATION PIPELINE</div><h2>一条训练样本的产生过程</h2></div><span>选择步骤，查看输入与产物</span></div><div class="tr-flow-layout"><div class="tr-stages" aria-label="数据生成步骤">${stageData.map((v,i)=>`<button class="tr-stage ${i===T.stage?'active':''}" data-tr-stage="${i}" aria-pressed="${i===T.stage}"><span>${String(i+1).padStart(2,'0')}</span><div><strong>${v.short}</strong><small>${i===2?'模型与工具实际运行':i===3?'逐个决策独立判定':i===5?'GIA / HI 分开保存':i===0?'任务、来源与参考材料':i===1?'隔离参考答案与未来信息':'保留有据可依的示范'}</small></div><i>↗</i></button>`).join('')}</div><article class="tr-stage-detail" aria-live="polite"><div class="tr-panel-kicker">步骤 ${String(T.stage+1).padStart(2,'0')} / 06</div><h3>${d.title}</h3><p class="tr-subtitle">${d.subtitle}</p><div class="tr-transformation"><div><small>输入</small><strong>${d.input}</strong></div><span>→</span><div class="tr-transform-actor"><small>${d.actor}</small><strong>${d.output}</strong></div></div><ol class="tr-points">${d.points.map(p=>`<li>${p}</li>`).join('')}</ol><p class="tr-callout">${d.note}</p><p class="tr-upgrade"><b>本期升级</b>${d.upgrade}</p><div class="tr-stage-footer">${routeButton(`#training/samples/${d.example}`,`${d.exampleLabel} <span>→</span>`)}<div><button class="tr-round" data-tr-stage="${T.stage-1}" ${T.stage===0?'disabled':''} aria-label="上一步">←</button><button class="tr-round" data-tr-stage="${T.stage+1}" ${T.stage===5?'disabled':''} aria-label="下一步">→</button></div></div></article></div><div class="tr-return"><span>↶</span> 需要修复的动作回到对应状态重新执行，保留原来的真实历史。</div></section><section class="tr-supervision"><div><div class="eyebrow muted">WHAT THE MODEL LEARNS</div><h2>上下文用于理解，<br>目标输出才计入监督。</h2><p>一段完整调查被拆分为逐次决策的训练样本。</p></div><div class="tr-message-stack"><div><span>输入上下文</span><p>角色提示 · 当前任务 · 已有证据与报告</p><small>不计算目标损失</small></div><i>↓</i><div class="tr-target-message"><span>当前角色输出</span><p>GIA 的下一次决定 / HI 的下一次行动或报告</p><small>合格输出参与监督</small></div></div></section><div class="tr-footnote">第 0 轮数据已完成三层核验与学生模型处理器的逐行核对；首次模型训练正在准备中。</div><div class="tr-doc-links">${docLink('method','完整构造方法')} ${docLink('results','实际测量与结果')}</div>`;
   }
   const planStates={done:['已完成','done'],doing:['进行中','doing'],todo:['下一阶段','todo']};
   const roadmap=[
@@ -40,10 +42,10 @@
       {state:'done',name:'可追溯的证据库',text:'全局证据持久化存储，具备读取审计与断点恢复。结论链条固定为：最终回答 → 发现 → 证据 → 来源。'},
       {state:'done',name:'多模态输入',text:'GIA 与 HI 均可直接读取原始画面。视频类任务中，调度方若不接触原始材料则只能派发模板化任务，该路径现已打通。'},
       {state:'done',name:'真实任务验证',text:'网页事实核查与视频比对任务均已通过真实接口端到端验证，全过程留有可回放的记录。'}]},
-    {id:'pipeline',kicker:'阶段 02 · 已完成',title:'训练数据流水线',hint:'826 条候选决策 · 6 个数据来源',items:[
-      {state:'done',name:'逐步决策语料',text:'共 826 条候选决策，其中全局调度 108 条、局部调查 718 条，覆盖网页核查、视频比对、图表问答等多类任务。'},
+    {id:'pipeline',kicker:'阶段 02 · 已完成',title:'训练数据流水线',hint:'49 次真实调查 · 6 个数据来源',items:[
+      {state:'done',name:'真实调查留档',text:'来自 6 个数据来源的 49 次真实调查全部留档，覆盖网页核查、视频比对、图表问答等多类任务；每次调查按角色、按决策拆分为训练行，首个案例已按新流程导出。'},
       {state:'done',name:'完整过程留存',text:'每一步均保存当时的输入、图片附件、模型输出与工具真实返回，以及三者之间的对应关系，支持逐步回放。'},
-      {state:'done',name:'2 926 份实际附件',text:'训练样本中出现的每一张图，均为调查过程中真实取得的材料，而非事后补配的示意图。'},
+      {state:'done',name:'附件均为真实材料',text:'训练样本中出现的每一张图，均为调查过程中真实取得的材料，而非事后补配的示意图。'},
       {state:'done',name:'划分与防泄漏',text:'开发集与保留检查集按案例家族划分，由程序核查两侧是否重叠；保留数据一旦被用于调整流程即自动降级。'},
       {state:'done',name:'按角色导出',text:'两个角色分别导出，仅当前角色的目标输出参与训练，其余内容作为上下文；导出后逐条核对监督位置与截断情况。'}]},
     {id:'quality',kicker:'阶段 03 · 已完成',title:'质量与核验体系',hint:'结论可回溯至原始证据',items:[
@@ -54,7 +56,7 @@
       {state:'done',name:'核验与生成分离',text:'核验所用模型与生成数据的模型相互独立，并要求给出引语、由程序回到证据原文中回查，以避免自评。'}]},
     {id:'training',kicker:'阶段 04 · 进行中',title:'首次模型训练',hint:'本地链路 → 服务器 SFT',items:[
       {state:'done',name:'模型口径已确定',text:'学生模型 Qwen3.5-9B（原生支持图片与视频），教师模型 Qwen3.5-122B-A10B，本地调试采用同系列 4B，确保本地与服务器使用同一条多模态路径。'},
-      {state:'doing',name:'第 0 轮数据核验',text:'以三层核验器对已有语料统一重核，形成第一份按问题类型统计的质量基线。'},
+      {state:'doing',name:'第 0 轮数据核验',text:'三层核验器已对 49 次调查的 80 份报告完成重核（641 组结论–证据逐对核验），形成按问题类型统计的质量基线；核验器自身的精确率与召回率校准正在进行。'},
       {state:'doing',name:'本地训练链路',text:'在本地打通「取数据 → 训练一步 → 保存 LoRA → 加载推理 → 打分」的完整链路，确保上服务器前各环节均已验证。'},
       {state:'todo',name:'服务器首次 SFT',text:'在 8×A100 上以开发集训练学生模型，标志项目由数据构造阶段进入模型能力验证阶段。'},
       {state:'todo',name:'保留集对照评估',text:'在训练中未出现的数据集上做对照评估，检验所学为通用调查能力还是特定任务的固定模式。'}]},
@@ -370,11 +372,18 @@
     {layer:'环境级',items:['env_contamination','env_tool_failure'],note:'不计入模型问题，但须单独记录，否则易将网络或工具故障误判为模型能力不足。'}
   ];
   const verifyUnits=[
-    ['step','HI 的每一步动作','HI','动作合法吗、目标当时可见吗、是不是原样重复了上一步、工具报错后有没有调整。再算这一步带来了几条新线索——这一行的权重由它决定。'],
-    ['report','HI 的局部报告','HI','每一条结论逐句对着它所引的每一份证据核；再看所派的任务是不是真的做完了，还是没查完就报了完成。'],
-    ['plan','GIA 的派工','GIA','任务可解析吗、材料存在吗、同一轮的任务互相依赖吗、有没有把尚未核实的说法当成前提写进任务里。'],
-    ['answer','GIA 的最终回答','GIA','引用的证据当时都在视图里吗、结论逐句有依据吗、该停的时候停了吗、有没有照抄上游被判有问题的结论。']
+    ['step','HI 的每一步动作','HI','动作合法吗、目标当时可见吗、是不是原样重复了上一步、工具报错后有没有调整。再算这一步带来了几条新线索——这一行的权重由它决定。','只走第一道'],
+    ['report','HI 的局部报告','HI','每一条结论逐句对着它所引的每一份证据核；再看所派的任务是不是真的做完了，还是没查完就报了完成。','三道全走'],
+    ['plan','GIA 的派工','GIA','任务可解析吗、材料存在吗、同一轮的任务互相依赖吗、有没有把尚未核实的说法当成前提写进任务里。','第一道 + 模型另判'],
+    ['answer','GIA 的最终回答','GIA','引用的证据当时都在视图里吗、结论逐句有依据吗、该停的时候停了吗、有没有照抄上游被判有问题的结论。','三道全走']
   ];
+  const unitLayers=[
+    ['HI 的局部报告','report','full','full','full','每一条结论 × 每一份所引证据，逐对回到原文重读。'],
+    ['GIA 的最终回答','answer','full','full','full','答案拆成句子后，由核验模型逐句对照所引证据锚定。'],
+    ['GIA 的派工','plan','full','judge','gap','第二道换成「只读任务文字判它对准哪些要求、有没有把未核实的说法当前提」，再与事后反推的缺口对照。'],
+    ['HI 的每一步动作','step','full','none','none','一个动作没有「结论」可以锚定。它的价值不用对错衡量，用带来了几条后来被证实的新线索衡量。']
+  ];
+  const layerMark={full:['✓','这一道按原样执行'],judge:['另判','这一道换成另一种模型判定'],gap:['反推','用事后缺口反推代替'],none:['—','对这种单元不适用']};
   const severityRows=[
     ['critical','一票否决','结论不可信，整个单元判为未通过。','unsupported_assertion · completed_without_finishing · premature_finish'],
     ['major','实质缺陷','结论可能仍然成立，但过程有实质问题，计入统计。','attribution_drift · scope_overreach · incomplete_citation_set'],
@@ -382,7 +391,8 @@
   ];
   const calibrationRules=[
     ['R1 · 多证据范围豁免','一条结论引了多份证据、且每一份都被判为支持时，不再按单份证据的覆盖范围判它「过度外推」。'],
-    ['R2 · 漏引降级','「与……相容」这类关系性断言，若支持其实就在本工作区已经引用过的材料里，从「没有支持」降为「引用集合不全」，并且不再污染后续结论。']
+    ['R2 · 漏引降级','「与……相容」这类关系性断言，若支持其实就在本工作区已经引用过的材料里，从「没有支持」降为「引用集合不全」，并且不再污染后续结论。'],
+    ['R4 · 同句证据覆盖','逐对核验一次只看一份证据，可能把「更早的状态」误读成「相反」。同一句所引的另一份证据若已直接支持被反驳的那部分，撤销这条反驳。']
   ];
   const dispositionRows=[
     ['accepted','进入候选','判定通过，且没有被上游污染。权重按这一步带来的新线索定，1 到 3。'],
@@ -406,15 +416,21 @@
 
       <section class="tr-units-section"><div class="tr-section-title"><div><h2>四种判定单元</h2>
         <p>一次调查会产生四类输出，各自单独判定，互不替代。某一份报告未通过，不代表它里面每一步动作都不能学。</p></div></div>
-        <div class="tr-units">${verifyUnits.map(([id,name,role,text])=>
+        <div class="tr-units">${verifyUnits.map(([id,name,role,text,goes])=>
           `<article class="tr-unit"><div class="tr-unit-head"><strong>${esc(name)}</strong>${pill(role,role.toLowerCase())}</div>
-            <code>${esc(id)}</code><p>${esc(text)}</p></article>`).join('')}</div></section>
+            <code>${esc(id)}</code><p>${esc(text)}</p><small>${esc(goes)}</small></article>`).join('')}</div></section>
 
       <section class="tr-verify"><div class="tr-section-title"><div><div class="eyebrow muted">EVIDENCE-ANCHORED VERIFICATION</div>
         <h2>三道工序：谁来判</h2>
         <p>不是三套标准，是同一条流水线上的三道工序。能用程序判的先用程序判，判不了的才调核验模型，最后再对着任务本身查一遍覆盖。前一道已判定的，后一道不再重复判定。</p></div></div>
         <div class="tr-verify-layers">${verifyLayers.map((v,i)=>`<article><div class="tr-verify-head"><span class="tr-verify-index">${String(i+1).padStart(2,'0')}</span><div><strong>${esc(v.name)}</strong><small>${esc(v.tag)}</small></div></div><p>${esc(v.text)}</p><div class="tr-verify-errors">${v.errors.map(e=>`<code>${esc(e)}</code>`).join('')}</div></article>`).join('')}</div>
-        <div class="tr-callout">第二道要求核验模型给出引语，再由程序回到证据原文核查该引语是否存在，未查到即降级为「找不到依据」。核验所用模型与生成数据的模型相互独立，这是「结论经过实际核验」与「模型自评」之间的分界。</div></section>
+        <div class="tr-callout">第二道要求核验模型给出引语，再由程序回到证据原文核查该引语是否存在，未查到即降级为「找不到依据」。核验所用模型与生成数据的模型相互独立，这是「结论经过实际核验」与「模型自评」之间的分界。</div>
+        <div class="tr-matrix"><h3>四种单元各走哪几道</h3>
+          <table><thead><tr><th>判定单元</th><th>程序检查</th><th>逐条证据锚定</th><th>充分性</th><th>说明</th></tr></thead>
+            <tbody>${unitLayers.map(([name,id,a,b,c,note])=>`<tr><th scope="row">${esc(name)}<code>${esc(id)}</code></th>${
+              [a,b,c].map(k=>`<td class="m-${k}" title="${esc(layerMark[k][1])}">${layerMark[k][0]}</td>`).join('')
+            }<td class="m-note">${esc(note)}</td></tr>`).join('')}</tbody></table>
+          <p class="tr-footnote">「另判」「反推」表示这一道对该单元不按原样执行，另有对应的判定方式。三道工序最初是为局部报告设计的，扩到其余三种单元时按各自的形态取舍——动作没有结论，就没有可锚定的对象。</p></div></section>
 
       <section class="tr-errors"><div class="tr-section-title"><div><h2>问题类型：判成什么</h2>
         <p>判定不许写「这里不太对」，必须从下面的类型表里选一个名字。类型统一定义于一处，每一次流程改进均须说明其拟消除的类型，改进因此可归因、可统计。</p></div><span>按发生层级分组</span></div>
@@ -425,9 +441,9 @@
           <p class="tr-callout">第二个属性是「是否污染后续结论」：引证类问题会连带影响所有依赖它的步骤，效率类问题不会。经校准后，轻微问题一律不再向下传播。</p></div></section>
 
       <section class="tr-calib"><div class="tr-section-title"><div><h2>核验器本身也要被核验</h2>
-        <p>第 0 轮抽样复核发现两类误报——把本来正确的判成了错的。核验器随之升到 0.2.0，新增两条校准规则。</p></div></div>
+        <p>第 0 轮抽样复核发现几类误报——把本来正确的判成了错的。核验器随之升到 0.2.0，并陆续新增三条校准规则；规则在更多运行上的误放行率校验正在进行。</p></div></div>
         <ul class="tr-traj-req">${calibrationRules.map(([name,text])=>`<li><b>${esc(name)}</b><p>${esc(text)}</p></li>`).join('')}</ul>
-        <p class="tr-callout">这两条修的是「误判为错」。反方向——注入已知错误，检查核验器抓不抓得到——正在进行中；在它完成之前，被判未通过的报告只做「不进正例」，不作为反例训练。</p></section>
+        <p class="tr-callout">这几条修的是「误判为错」。反方向的校准程序也已落成：把判定干净的结论按六种方式故意改坏——换成别的证据、加一句编的、改掉数字、去掉「据……称」、引一个不存在的证据、删掉一条必需结论却仍报完成——每种改法事先就知道应该报什么错，改坏的报告用与正式核验完全相同的一遍流程再跑，抓到算命中，由此得出每种错误类型的召回率。第一轮结果：内容类的四种改法共 15 处全部抓到、没有误报；「删掉一条必需结论却仍报完成」在不提供案卷时抓不到——没有案卷就没有「该拿的清单」，下一版核验器会按每个工作区所对准的要求来查。在这一类补上之前，被判未通过的报告仍只做「不进正例」，不作为反例训练。</p></section>
 
       <section class="tr-admission"><div class="tr-section-title"><div><h2>三种处置</h2>
         <p>判定结果直接决定这一行数据的去向，不经过任何总分。</p></div></div>
@@ -459,7 +475,7 @@
        produced:'E3 E4 E5 E6 E7 E8 E9 E10（8 帧）', gain:{a:8, o:0, q:0, t:8},
        stills:['e3','e4','e5','e6','e7','e8','e9','e10'],
        user:'[任务 W1-1] 核查材料 A 视频的来源与事件语境……\n[材料] C0 任务卡 | E1 video "材料 A" src=I0 by=HARNESS/ingest\n[候选来源] 无\n[证据视图] E1 | E2 text "媒体属性：video，25.100秒，1280×720，30fps，1条音轨" by=INSPECT/media_profile\n[焦点] 无   [已看正文] 无   [历史] 无   [最新观察] 无\n[约束] turn 1/12 · 直接视觉输入 · 图片上限 8 · 附图 0',
-       output:'{"rationale": "材料只有一段 25 秒视频，还没有任何画面；先均匀抽 8 帧看清场景（铁塔、烟、火的位置），再决定搜什么。",\n "action": "INSPECT",\n "arguments": {"targets": ["E1"], "request": {"operation": "get_frames", "params": {"count": 8}}},\n "focus_evidence_ids": []}',
+       output:'{"action": "INSPECT",\n "arguments": {"targets": ["E1"], "request": {"operation": "get_frames", "params": {"count": 8}}},\n "focus_evidence_ids": []}',
        meta:'"clue_gain": {"acquired": 8, "acquired_ids": ["E3","E4","E5","E6","E7","E8","E9","E10"], "observed": 0, "quote_page": 0, "total": 8},\n"sample_weight": 3.0, "images": [], "loss_scope": "last_assistant"',
        note:'"第一步先抽 8 帧"是最容易被当成套路的动作。这一步不删，但它的权重来自回溯：案卷把视频帧列为必需证据，这 8 帧全部落进有用证据集合，所以算高收益步，权重按上限封到 3。换一个帧根本没用上的案子，同样的动作权重就是 1。'},
       {id:'step_3', role:'HI', actor:'W1-1', action:'SEARCH', round_index:1, preview:'英文关键词检索 → 10 个候选，读到 5 个页面',
@@ -470,7 +486,7 @@
        included:true, weight:3, image_count:8, state:'accepted', produced:'E16 页面、E17 封面', gain:{a:2, o:0, q:0, t:2},
        stills:['e17'],
        user:'[候选来源] R1–R10 一行卡\n[证据视图] E1–E15 一行卡\n[焦点] E6 E10   [已看正文] E11\n[历史] t1 INSPECT→E3–E10；t2 SEARCH→10 候选 5 页；t3 READ E11\n[最新观察] E11 Snopes 全文摘要：…"seized upon photos and video of the event"…"No fire at the #TourEiffel. An accidental truck fire took place at Jena Bridge"…\n[约束] 附图 8',
-       output:'{"rationale": "Snopes 在解释当日火情时直接链接了一个 YouTube 视频，这是目前唯一指向材料 A 来源的线索；用 source 模式打开它拿上传日期、频道和封面。",\n "action": "SEARCH",\n "arguments": {"source": "https://www.youtube.com/watch?v=cv_F3UkbdbI", "output_type": "video"},\n "focus_evidence_ids": ["E6", "E10"]}',
+       output:'{"action": "SEARCH",\n "arguments": {"source": "https://www.youtube.com/watch?v=cv_F3UkbdbI", "output_type": "video"},\n "focus_evidence_ids": ["E6", "E10"]}',
        meta:'"turn": 4, "clue_gain": {"acquired": 2, "acquired_ids": ["E16","E17"], "total": 2},\n"sample_weight": 3.0, "images": ["E3","E4","E5","E6","E7","E8","E9","E10"]'},
       {id:'step_6', role:'HI', actor:'W1-1', action:'READ_RECORD', round_index:1, preview:'读 YouTube 元数据：上传日期 2016-07-14',
        included:true, weight:3, image_count:8, state:'accepted', produced:'E16 元数据', gain:{a:0, o:1, q:1, t:2}},
@@ -490,7 +506,7 @@
        stateNote:'线索收益为 0，且所在工作区被判 negative，暂缓入库。'},
       {id:'step_13', role:'HI', actor:'W1-1', action:'REPORT', report_status:'COMPLETED', round_index:1,
        preview:'提交报告：F1 F2 F3 F4', included:false, image_count:8, state:'rejected',
-       produced:'四条 Finding', stateNote:'仍判未通过；召回率尚未校准，这一行暂不作为反例训练。',
+       produced:'四条 Finding', stateNote:'仍判未通过；这类「未做完却报完成」的错误召回率还测不出来，这一行暂不作为反例训练。',
        meta:'"verdict": "negative",\n"errors": [{"type": "completed_without_finishing", "severity": "critical", "status_should_be": "INCOMPLETE"}],\n"tainted_findings": []（校准后 F3 的过度外推按 R1 豁免）,\n"bucket_reason": "negative_report_until_recall_calibrated", "sample_weight": null',
        note:'GIA 派的任务第一句就是"核查材料 A 视频的来源"；F2 自己写着"不能确认它就是 A 的直接来源"，报告却报了 COMPLETED。这是 HI 相对它自己收到的任务的错，不是 GIA 的错。\nF3 那条"用一帧推整段"的过度外推，校准后判定豁免——它实际引了 7 条证据且全部支持。所以这份报告现在没有被污染的 Finding，但"该报未完成却报了完成"这一条保留。\n下一步是配上同状态重生成的正例（同一桌面、状态改成 INCOMPLETE、其余 Finding 不动），凑成一对对照样本。'},
 
@@ -520,9 +536,9 @@
        task:'综合两份报告，给出最终回答。', preview:'声明不实；视频来源仍未独立核实',
        included:true, weight:2, image_count:8, state:'accepted', produced:'最终答案，引用 E24 E21 E11 E22 E3 E7 E16',
        user:'[本轮新证据] E3–E10 帧 | E11 Snopes | E12–E15 报道 | E16 YouTube 页 | E17 封面 | E18–E20 法媒 | E21 警方推文② | E22 NYDN | E23 Express | E24 警方推文①\n[最新报告]\n  W1-1 COMPLETED · F1 帧显示铁塔附近大量烟雾、低处明火 ←[E3 E4 E5 E7 E8 E9] · F2 YouTube 上传 2016-07-14 ←[E16 E17 E11]，限制：未确认是 A 的直接来源 · F3 与 2016-07-14 火情相符 ←[…] · F4 画面不足以定性恐袭 ←[…]\n  W1-2 COMPLETED · F5 声明不实；警方通报耶拿桥烟花卡车技术事故起火 ←[E24 E21] · F6 NYDN 与 Snopes 均将巴黎火灾与尼斯袭击区分 ←[E22 E11] · F7 帧显示烟雾火光，与报道相容但不能证明恐袭 ←[E3 E5 E7 E10]\n[约束] 第 2 轮 · 附图 8：E3 E17 E5 E4 E7 E10 E8 E9',
-       output:'{"decision": "FINISH",\n "answer": "结论：针对2016年7月14日埃菲尔铁塔附近的已报道火情，该声明不实。巴黎警方当日通报，耶拿桥上一辆装载烟花的卡车因技术事故起火；随后明确确认这是意外火灾，已经扑灭，埃菲尔铁塔本身没有着火。（E24、E21）同期发生在尼斯的恐怖袭击与巴黎这起火灾应予区分。（E11、E22）\\n\\n给定视频画面确实显示铁塔附近有烟雾、低处有明火，但画面本身不能确定起火原因或证明恐怖袭击。（E3、E7）目前找到相关公开视频的上传日期为2016年7月14日，但尚未确认它与给定视频的完整画面对应，因此给定视频的拍摄日期及确切来源仍未独立核实。（E16）"}',
-       meta:'"verdict": "positive", "error_types": [],\n"tainted_input": false, "recovered_from_tainted": true,\n"exec": {"all_visible": true, "label_expected": "false", "label_match": true, "date_check": "2016-07-14 in_range"},\n"anchored": {"sentences": 4, "supported": 4, "anchored_method": "proxy_report_judgments", "status": "pending_judge"},\n"sufficiency": {"REQ1": "covered", "REQ2": "covered", "REQ3": "declared_unverified", "premature_finish": false},\n"sample_weight": 2.0',
-       note:'结论与数据集标签一致，四句话逐句都有依据（见下方"最终答案逐句核对"）。最见功力的是第四句：W1-1 已经把"核查视频来源"报成完成，答案却写"仍未独立核实"——整个调查确实没做过帧对齐，GIA 没有跟着抄，反而把结论收窄了。\n上游被判未通过、下游把它纠正回来，这是最有价值的一类正例，权重给到 2。'}],
+       output:'{"decision": "FINISH",\n "answer": "结论：针对2016年7月14日埃菲尔铁塔附近的已报道火情，该声明不实。巴黎警方当日通报，耶拿桥上一辆装载烟花的卡车因技术事故起火；随后明确确认这是意外火灾，已经扑灭，埃菲尔铁塔本身没有着火。（E24、E21）同期发生在尼斯的恐怖袭击与巴黎这起火灾应予区分；相关火情影像被误传为巴黎遭袭的证据。（E11、E22）\\n\\n给定视频画面确实显示铁塔附近有烟雾、低处有明火，但画面本身不能确定起火原因或证明恐怖袭击。（E3、E7）目前找到相关公开视频的上传日期为2016年7月14日，但尚未确认它与给定视频的完整画面对应，因此给定视频的拍摄日期及确切来源仍未独立核实。（E16）"}',
+       meta:'"verdict": "positive", "error_types": [{"type": "scope_overreach", "severity": "minor"}],\n"tainted_input": false, "recovered_from_tainted": true,\n"exec": {"all_visible": true, "label_expected": "false", "label_match": true, "date_check": "2016-07-14 in_range"},\n"anchored": {"method": "judge_sentences", "sentences": 7, "pairs": 13, "unsupported_sentences": [], "calibration": "R4 撤销 1 处反驳"},\n"sufficiency": {"REQ1": "covered", "REQ2": "covered", "REQ3": "declared_unverified", "premature_finish": false},\n"sample_weight": 2.0',
+       note:'结论与数据集标签一致。核验模型把答案拆成 7 句、13 组句子–证据对逐一核对，7 句全部有依据（下方"最终答案逐句核对"按引用归为四组展示）。最见功力的是第四句：W1-1 已经把"核查视频来源"报成完成，答案却写"仍未独立核实"——整个调查确实没做过帧对齐，GIA 没有跟着抄，反而把结论收窄了。\n上游被判未通过、下游把它纠正回来，这是最有价值的一类正例，权重给到 2。'}],
     checks:[
       ['label_expected', '答案判定应为"不实"'],
       ['entity_in_evidence', '所引证据中须出现 Iéna 或 artifices'],
@@ -535,7 +551,7 @@
       ['W1-1 工作区', 'negative', '原判：报了完成，但任务要求的"核查视频来源"并没有做完（致命）；另有 F3 用一帧推整段（轻微）。校准后过度外推获豁免——它实际引了 7 条证据且全部支持——"该报未完成却报完成"这一条保留，工作区仍判未通过。'],
       ['W1-2 工作区', 'positive', '原判未通过：F7 的"这与报道描述相容"只引了四帧画面、没引任何报道，被判无支持（致命）。校准后降级为"引用集合不全"（重要，不传播污染）——支持其实就在本工作区已经引用过的报道里。工作区转为通过。'],
       ['GIA 派工', 'positive', '两个任务可解析、材料存在、无兄弟依赖、无未核实前提；三项案卷要求都有任务对准。唯一问题是两个任务范围重叠，记为轻微。'],
-      ['GIA 回答', 'positive', '引用的 7 条证据都在视图里，案卷标签与日期都命中；四句逐句有依据；并且纠正了上游过早声明完成的问题。']],
+      ['GIA 回答', 'positive', '引用的 7 条证据都在视图里，案卷标签与日期都命中；拆成 7 句逐句核对，全部有依据（一处被较早的警方推文判为矛盾，同句所引的后一条推文已直接支持，按 R4 撤销），另有一处轻微的范围问题；并且纠正了上游过早声明完成的问题。']],
     timeline:[
       ['当晚', '巴黎国庆烟花放完后，耶拿桥上一辆装烟花的卡车起火，铁塔周围冒出大量烟。'],
       ['21:51 · E24', '巴黎警察局：因技术事故，一辆装烟花的卡车在耶拿桥起火，请避开该区域。'],
@@ -547,7 +563,7 @@
       ['第二句', '与尼斯袭击区分，相关影像被误传', 'Snopes 与纽约每日新闻原文支持（E11、E22）'],
       ['第三句', '画面显示烟和火，但不能确定起火原因', '帧像素支持，而且没有多说（E3、E7）', ['e3','e7']],
       ['第四句', '找到的公开视频上传于 2016-07-14，但与给定视频的对应关系仍未独立核实', '元数据支持上传日期（E16）；"尚未确认"是如实限定', ['e17']]],
-    sentenceNote:'唯一可以挑的地方在第一句的限定语"针对 2016 年 7 月 14 日埃菲尔铁塔附近的已报道火情"——它证明了那天的火是意外，却没有证明给定视频拍的就是那天那场火。答案把这个缺口放在第四句如实交代了，所以整体是诚实的；更严格的写法会把结论再收一档："若给定视频确为该次火情，则声明不实；视频与该事件的对应关系本次未独立确认。"这不影响它进正例，属于可以在规格里提醒的写法问题。',
+    sentenceNote:'这里按引用把答案归为四组展示；核验器实际拆成 7 句逐句核对，结论相同。唯一可以挑的地方在第一句的限定语"针对 2016 年 7 月 14 日埃菲尔铁塔附近的已报道火情"——它证明了那天的火是意外，却没有证明给定视频拍的就是那天那场火。答案把这个缺口放在第四句如实交代了，所以整体是诚实的；更严格的写法会把结论再收一档："若给定视频确为该次火情，则声明不实；视频与该事件的对应关系本次未独立确认。"这不影响它进正例，属于可以在规格里提醒的写法问题。',
     tokens:[
       ['进入候选 · HI', '17 行', '输入 2.6K – 13.6K，中位 10.1K', '监督中位 35'],
       ['进入候选 · GIA', '2 行', '输入 1.7K 与 16.7K', '监督 161 / 196'],
@@ -555,9 +571,9 @@
       ['待校准', '1 行', '输入 14.5K', '监督 593']],
     tokenNote:'用学生模型的真实处理器逐行核对：零失败、零超长（上限 32 768）。一张 1280×720 的图折合 880 token，最长的一行是带 8 张图的最终回答。监督 token 仍然很薄——这一批数据没有留下教师的推理过程，补不上。',
     boundaries:[
-      ['逐句锚定目前是代理', '本轮没有可调用的核验模型，答案逐句对证据的核验，用"报告级判定里该证据是否有支持片段"代替。接上核验模型后需要重跑覆盖。'],
-      ['缺口评判是事后反推', '任务对准了哪几项要求，是用该工作区最终经核实的结论反推的，不是读任务文字判的。所以它只记录，不作为筛选门槛。'],
-      ['校准只做了精确率', '两条规则只覆盖本轮抽样发现的两类误报；召回率校准——注入已知错误看抓不抓得到——还没做，所以未通过的报告暂不作为反例训练。'],
+      ['逐对核验有固有盲区', '答案逐句对证据的核验一次只看一份证据，会把「更早的状态」误读成「相反」。本例的一处就是这样，已由校准规则 R4 处理；这类规则仍需在更多运行上校验。'],
+      ['缺口评判有两种口径', '任务对准了哪几项要求，一种由核验模型读任务文字判定，一种用该工作区最终经核实的结论反推；两者只在一个任务上有出入，以前者为准。缺口只记录，不作为筛选门槛。'],
+      ['召回率只测了一轮', '内容类错误全部抓到，但「未做完却报完成」这类状态级错误在不提供案卷时抓不到；在补上之前，未通过的报告暂不作为反例训练。'],
       ['一个案例不是数据集', '19 行训不出任何东西。这是流水线跑通的验证，接下来要把同模式的其余运行逐个写案卷，用同一条命令导出。']],
     stills:[
       ['e3','E3','1.57 秒','镜头对着铁塔：塔身亮灯、结构完好，右侧已经有烟飘过。'],
@@ -736,14 +752,37 @@
     selectTrajNode('root');
     setPane('map');
   }
+  // 论文草稿：内容与公式、图在 paper.js（window.ForenPaper），这里只负责挂载、语言切换与目录定位。
+  function paperLang(){try{const v=localStorage.getItem('fs-paper-lang');if(v==='en'||v==='zh')return v;}catch(e){}return 'zh';}
+  function renderPaper(){
+    const P=window.ForenPaper;
+    if(!P||!P.render){page.innerHTML=top('paper')+'<div class="tr-empty"><strong>论文草稿未加载</strong><p>缺少 /assets/paper.js。</p></div>';return;}
+    const lang=paperLang(),r=P.render(lang),L=r.L;
+    page.innerHTML=top('paper')+`<div class="pp-shell pp-lang-${lang}" lang="${lang==='en'?'en':'zh-CN'}">
+      <aside class="pp-side"><div class="pp-switch" role="group" aria-label="语言 / Language">${[['zh','中文'],['en','English']].map(([k,l])=>`<button type="button" data-paper-lang="${k}" aria-pressed="${k===lang}">${l}</button>`).join('')}</div>${r.toc}</aside>
+      <article class="pp-paper"><div class="pp-draft">${L.draft}</div>
+        <header class="pp-head"><h1>${L.title}</h1><div class="pp-authors">${L.authors}</div></header>
+        <section class="pp-abs"><h2>${L.abstractTitle}</h2><p>${L.abstract}</p></section>
+        ${r.body}
+      </article></div>`;
+    paperSpy();
+  }
+  let paperTicking=false;
+  function paperSpy(){
+    const btns=[...page.querySelectorAll('.pp-toc button')];if(!btns.length)return;
+    let cur=btns[0].dataset.paperJump;
+    for(const b of btns){const el=document.getElementById(b.dataset.paperJump);if(el&&el.getBoundingClientRect().top<140)cur=b.dataset.paperJump;}
+    btns.forEach(b=>b.classList.toggle('active',b.dataset.paperJump===cur));
+  }
+  window.addEventListener('scroll',()=>{if(T.section!=='paper'||paperTicking)return;paperTicking=true;requestAnimationFrame(()=>{paperTicking=false;paperSpy();});},{passive:true});
   async function open(hash='#training'){
     stop();T.map?.destroy();closeStill();page.classList.remove('tr-detail-page');clearTimeout(S.poll);stopPlayback();const serial=++T.serial;showPage('training-page');navigate(hash);
     if(!T.data){loading();try{T.data=await get('/api/training');}catch(e){if(serial===T.serial)page.innerHTML=`<div class="tr-empty"><strong>训练记录暂时不可用</strong><p>${esc(e.message)}</p><button class="secondary" data-tr="retry">重新读取</button></div>`;return;}}
     if(serial!==T.serial)return;
     const parts=hash.split('/');
-    T.section=['rubric','samples','flow','architecture'].includes(parts[1])?parts[1]:'roadmap';
+    T.section=['rubric','samples','flow','architecture','paper'].includes(parts[1])?parts[1]:'roadmap';
     if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderTrajectory();else if(T.section==='flow')renderFlow();
-    else if(T.section==='architecture')renderArchitecture();else renderRoadmap();window.scrollTo({top:0});
+    else if(T.section==='architecture')renderArchitecture();else if(T.section==='paper')renderPaper();else renderRoadmap();window.scrollTo({top:0});
   }
   window.openTraining=open;
   document.addEventListener('click',async e=>{
@@ -756,6 +795,8 @@
     if(b.dataset.stillStep){stepStill(Number(b.dataset.stillStep));return;}
     if(b.dataset.stillClose!==undefined){closeStill();return;}
     if(b.dataset.trPane){setPane(b.dataset.trPane);return;}
+    if(b.dataset.paperLang){try{localStorage.setItem('fs-paper-lang',b.dataset.paperLang);}catch(err){}const y=window.scrollY;renderPaper();window.scrollTo({top:y});return;}
+    if(b.dataset.paperJump){document.getElementById(b.dataset.paperJump)?.scrollIntoView({behavior:'smooth',block:'start'});return;}
     if(b.dataset.tr==='retry'){T.data=null;T.cache.delete('/api/training');open(location.hash);}
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});

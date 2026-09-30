@@ -1,0 +1,59 @@
+{
+  "case_id": "videosham:4126",
+  "dataset": "videosham",
+  "source_id": "4126",
+  "split": "dev_train",
+  "task_kind": "temporal_locate",
+  "task_text": "确定给定两段6秒视频中，黑衣人物在 B 可见而在 A 对应位置不可见的全部时间区间。核查每段区间的起止边界，并说明定位精度及仍不确定的范围。",
+  "family_key": "videosham:4126",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_4126_split_intervals_r7/artifacts/fcc76c4a59fe45d3abba373be8ea440f.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_4126_split_intervals_r7/artifacts/92c513797f7842a48b77a58ea7246527.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频在区间边界两侧的成对帧",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "黑衣人物在 B 可见而在 A 对应位置不可见的时间区间（每段的起止边界，两侧时间）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "每段边界的定位精度（采样间隔）与仍不确定的范围；未核验区间不当作没有差异",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": "../data/cases/videosham_4126/reference.json",
+  "used_for_revision": [],
+  "notes": "官方编辑描述（reference_status: 需由画面确认）：Remove the guy in black from the frame 00:01-00:07；Manipulation: Removing an entity/Removing a subject；label_expected 经 2026-09-28 审稿决定不写：子串匹配表达不了官方描述（见 cases_draft/review_20260928_labels_offline.md）"
+}

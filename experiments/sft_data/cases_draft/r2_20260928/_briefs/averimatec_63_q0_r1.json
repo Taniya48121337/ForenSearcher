@@ -1,0 +1,186 @@
+{
+ "run": "averimatec_63_q0_r1",
+ "config": {
+  "dataset": "averimatec",
+  "case": "63",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 11,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，查找直接证据并说明适用范围：What does the NDCU Ministry of Health list as effective natural repellents for mosquitos carrying the dengue virus?\n背景声明：Limes spiked with Cloves repel mosquitoes that carry the dengue virus.\n声明日期（任务元数据）：2023-05-25",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "据 AFP 2023年6月20日的报道，斯里兰卡卫生部国家登革热防控部门（NDCU）网站列出的有效天然驱蚊剂是：香茅油（citronella oil）、印度楝油（neem oil）和柠檬草油（lemongrass oil）。该清单涉及油类驱蚊剂，不能作为“青柠插丁香”能够驱赶传播登革热病毒的蚊子的依据；同篇报道引述 NDCU 医生表示，这种青柠与丁香的做法没有相应科学证据。",
+     "evidence_ids": [
+      "E4"
+     ],
+     "limitations": [
+      "清单依据为 AFP 正文的明确转述；NDCU 原网页返回404，存档返回403，未能直接核验官方页面正文。",
+      "报道晚于任务标注的2023年5月25日，不能据此确认该日官网清单的具体状态。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":27251}"
+  },
+  {
+   "id": "E2",
+   "label": "10 Natural Mosquito Repellents: What Works",
+   "source_url": "https://www.healthline.com/health/kinds-of-natural-mosquito-repellant",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Homemade mosquito repellents may help deter insects. Some natural ingredients may cause irritation if you have sensitive skin.\n\n[2] People are usually prone to mosquito bites due to a combination of scent, light, heat, and humidity. If you’re a mosquito magnet, you’re probably tired of having itchy, bumpy skin.\n\n[3] Different species of mosquitoes — like the ones that carry [malaria](https://www.healthline.com/health/malaria) — prefer bacteria and sweat. Others are attracted to carbon dioxide and certain hand odors.\n\n[4] Whichever species you encounter, you can protect yourself without hav…（共 12888 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Frontiers | Repellents against Aedes aegypti bites: synthetic and natural origins",
+   "source_url": "https://www.frontiersin.org/journals/insect-science/articles/10.3389/finsc.2024.1510857/full",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Abstract\n\n[2] Dengue fever, transmitted by mosquitoes of the Aedes genus, particularly Aedes aegypti, has emerged as a global health issue. With the expansion of this mosquito to new geographical areas, driven by factors such as climate change, the need for preventive measures like using insect repellents has become critical. The present review explores the current state of the art on topical mosquito repellents, both synthetic and natural, used globally, especially in regions where dengue is endemic. Among synthetic repellents, DEET is the most widely used, supported by investigations dem…（共 35504 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Experts rubbish claims that clove and citrus are 'effective' dengue mosquito prevention | Fact Check",
+   "source_url": "https://factcheck.afp.com/doc.afp.com.33JQ83X",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Experts rubbish claims that clove and citrus are 'effective' dengue mosquito prevention\n\n[2] - This article is more than three years old.\n\n[3] - Published on June 20, 2023 at 07:59\n\n[4] - 3 min read\n\n[5] - By [AFP Sri Lanka](https://factcheck.afp.com/afp-sri-lanka)\n\n[6] The Sinhala-language claim has been shared more than 26,000 times since it was posted on Facebook [here](https://archive.is/9rvkF) on May 27, 2023 alongside an image of citrus fruit with cloves stuck into the flesh.\n\n[7] \"Just do this minute task to keep dengue mosquitoes away. Take about four limes, cut them in half. Stick…（共 4697 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Dengue: 5 Natural Mosquito Repellents That Can Help In Preventing Mosquito Bites",
+   "source_url": "https://www.ndtv.com/health/dengue-5-natural-mosquito-repellents-that-can-help-in-preventing-mosquito-bites-2060664",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The World Health Organization sees dengue as \"fast emerging pandemic-prone viral disease\" that is prevalent in many parts of the world. Dengue is a mosquito-borne viral infection that causes severe flu-like illness. In the past 50 years, incidence of dengue has increased 30 fold. Dengue is spread by Aedes aegypti mosquito is the vector which transmits virus that causes dengue. The viruses are passed on to humans through infected female Aedes mosquito. Female Aedes mosquito mainly acquires the virus while feeding on the blood of someone who is infected by dengue. In this article, we are goi…（共 3085 字）"
+  },
+  {
+   "id": "E6",
+   "label": "5 Natural Mosquito Repellents You Must Try To Prevent Dengue - Tata 1mg Capsules",
+   "source_url": "https://www.1mg.com/articles/5-natural-mosquito-repellents-you-must-try-to-prevent-dengue/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Every year around this time, our country starts its battle with dengue and malaria and while so much is talked about the prevention, not much is done to stop the breeding of the deadly mosquitoes that cause these diseases. So, it is essential that you protect yourself and your loved ones from mosquito-borne diseases by taking all the necessary precautions. Safe application of repellents is important to prevent mosquito bites, get optimal protection and avoid any harmful side effects. You can even try some of the natural mosquito repellents in addition to the commercially available sprays a…（共 5765 字）"
+  },
+  {
+   "id": "E7",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/sri-lanka-situation/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sri Lanka Situation\n\n[2] Dengue was first serologically confirmed in Sri Lanka in 1962, and the first documented dengue outbreak was reported in 1965. During the period from 1965 to 1968, an island-wide epidemic caused by DENV-1 and DENV-2 serotypes resulted in 51 reported cases and 15 deaths.\n\n[3] Although dengue infections continued to occur intermittently during the 1970s and 1980s, severe dengue and dengue haemorrhagic fever (DHF) were relatively uncommon before 1989. Since 1989, Sri Lanka has experienced regular dengue epidemics with increasing magnitude, geographical spread, and dise…（共 3022 字）"
+  },
+  {
+   "id": "E8",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] National Action for a Dengue-Free Sri Lanka\n\n[2] Protecting Sri Lanka from Mosquito-Borne Disease\n\n[3] The National Dengue Control Unit is the focal point for the National Dengue Control Programme in the Ministry of Health, Sri Lanka. It was established in the year 2005 as a decision taken by the Ministry of Health following the major Dengue outbreak in year 2004. It is responsible for the coordination of Dengue Control or Preventive activities with different stakeholders.\n\n[4] Maximize surveillance for real-time detection and notification of dengue cases and understanding disease dynamics…（共 1524 字）"
+  },
+  {
+   "id": "E9",
+   "label": "Citronella Oil - World Wide Commodities - Sri Lanka",
+   "source_url": "https://www.wwc.world/index.php?route=product/product&product_id=102",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Description\n\n[2] Citronella essential oil is obtained from the Cymbopogon genus plant family. More precisely, it is extracted through steam distillation of the grasses Cymbopogon nardus (Jowitt) and Cymbopogon winterianus (Rendal). This results in two types of citronella oil:\n\n[3] Ceylon, which is obtained from C. nardus and is a native product of Sri Lanka (previously Ceylon). Ceylon citronella oil has a warm, citrusy, and wood scent, and has a pale to dark yellow color.\n\n[4] Citronella oil is one of the essential oils obtained from the leaves and stems of different species of Cymbopogon …（共 2718 字）"
+  },
+  {
+   "id": "E10",
+   "label": "NOCU - Sri lanka",
+   "source_url": "https://nocu.lk/web/citronella-oil/section/citronella-oil",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Extracted from the leaves of Lemongrass (Cymbopogon nardus), a perennial grass that is widely cultivated in Sri Lanka using steam distillation, Ceylon Citronella oil has a warm, citrusy, and wood scent with a pale to dark yellow color.\n\n[2] One of the most common essential oil types used in aromatherapy, citronella oil is the main source for citronellal, citronellol, and geraniol used in a range of production of soap, candles and incense, perfumery, cosmetics, and flavorings. The main chemical components of Ceylon Citronella oil include citronellal, geraniol, geranyl acetate, citronellol, …（共 1229 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Citronella oil: Overview, Uses, Side Effects, Precautions, Interactions, Dosing and Reviews",
+   "source_url": "https://www.webmd.com/vitamins/ai/ingredientmono-627/citronella-oil",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Citronella oil is made from citronella grass. Sri Lanka citronella oil comes from Cymbopogon nardus. Java citronella oil comes from Cymbopogon winterianus.\n\n[2] Citronella grass is native to tropical areas. The essential oil is made through a process called steam distillation. During this process, steam is passed through the grass to pull out the oil.\n\n[3] People most commonly use citronella oil as a mosquito repellent on the skin. It's also used for other conditions, but there is no good scientific evidence to support these uses.\n\n[4] Don't confuse citronella oil with lemongrass or stone …（共 4171 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Essential Oil from Sri Lanka - EDB Sri Lanka",
+   "source_url": "https://www.srilankabusiness.com/spices/essential-oil-from-sri-lanka.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] eMARKETPLACE\n\n[2] Directory\n\n[3] [Spices, Essential Oils & Oleoresins](https://www.srilankabusiness.com/spices/)\n\n[4] Other Spices\n\n[5] Vanilla\n\n[6] Condiments\n\n[7] Spice Mixtures\n\n[8] Essential Oil from Sri Lanka\n\n[9] Essential oils are produced by the distillation of leaves, barks, roots, and flowers of various herbal plants and have been widely used in aromatherapy, Ayurveda, and the cosmetic industry.\n\n[10] The rich variations of herbs, spices, and flowering plants available in Sri Lanka has led to a robust industry that produces essential oils using celebrated Ceylon Spices, that are …（共 13344 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Citronella (Sri Lanka) essential oil (Cymbopogon nardus) – Tanah Essential Oil Company - Online Wholesale/Retail Store - Purchase 100% Pure Essential Oils",
+   "source_url": "https://www.tanah.com.au/products/citronella-essential-oil-cymbopogon-nardus-tanah-100-pure-oils",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] BOTANICAL NAME: Cymbopogon nardus\n\n[2] PLANT PART USED: Leaves\n\n[3] EXTRACTION METHOD: Steam distilled\n\n[4] COUNTRY OF ORIGIN: Sri Lanka\n\n[5] COLOUR: Yellow, brown\n\n[6] AROMATIC SCENT: A well-rounded lemon scent, though it is much softer than actual lemon. It also has subtle wood tones.\n\n[7] Description:\n\n[8] Our premium Citronella essential oil is carefully extracted from the leaves of the Cymbopogon nardus plant, renowned for its potent and aromatic properties. With a rich history and therapeutic applications, this essential oil is a must-have addition to your aromatherapy collection.\n\n[…（共 5528 字）"
+  }
+ ]
+}

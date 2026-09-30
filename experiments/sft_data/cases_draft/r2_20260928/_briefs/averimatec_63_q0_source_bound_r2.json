@@ -1,0 +1,395 @@
+{
+ "run": "averimatec_63_q0_source_bound_r2",
+ "config": {
+  "dataset": "averimatec",
+  "case": "63",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What does the NDCU Ministry of Health list as effective natural repellents for mosquitos carrying the dengue virus?\n背景声明：Limes spiked with Cloves repel mosquitoes that carry the dengue virus.\n声明日期（任务元数据）：2023-05-25\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网页的时间或出处正确，仍须按问题核对。",
+   "status": "INCOMPLETE",
+   "status_reason": "未取得能够确认 NDCU 所列有效天然驱蚊剂的正文。已定位的官方“Registered Mosquito Repellents”页面返回 HTTP 404；搜索摘要未显示具体名单，不能据此补写答案。",
+   "findings": [
+    {
+     "statement": "已读取的 NDCU 官网“Daily Reports”页面仅提供2026年5月的报告下载目录，未提供回答本题所需的天然驱蚊剂名单。",
+     "evidence_ids": [
+      "E7"
+     ],
+     "limitations": [
+      "此观察仅适用于该页面，不能据此断言 NDCU 没有发布相关名单，也不能确认2023年5月25日的官方建议。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":27251}"
+  },
+  {
+   "id": "E2",
+   "label": "Mosquito Repellent",
+   "source_url": "https://www.nea.gov.sg/dengue-zika/stop-dengue-now/use-of-mosquito-repellents",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Government officials will NEVER ask you to transfer money or disclose bank log-in details over a phone call.\n\n[2] Visit ScamShield or call the 24/7 ScamShield Helpline at 1799 if you are unsure if something is a scam.\n\n[3] The NEA Corporate Website will undergo scheduled maintenance on Sat, 12 Sep 2026, from 10.00pm to Sun, 13 Sep 2026, 6.00am. Users may experience intermittent service disruptions during this period.\n\n[4] There are two main types of mosquito repellents:\n\n[5] Topical repellents are applied directly to exposed skin or clothing to help prevent mosquito bites. They are availab…（共 2563 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Mozzie Woes: Dengue",
+   "source_url": "https://www.healthhub.sg/highlights-and-insights/health-safety-advisory/mozzie-woes-dengue",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Text Size :\n\n[2] By Health Promotion Board\n\n[3] How do you prevent mozzie bites when enjoying activities around Singapore or when travelling? Use these simple precautions.\n\n[4] Wear long sleeves and long pants where possible. Cover up exposed skin so insects have less surface area to bite.\n\n[5] Choose light-coloured clothing too; they'll attract fewer mosquitoes than dark-coloured clothing, and will keep you cool at the same time.\n\n[6] Apply insect repellent regularly. Repellents containing DEET, picaridin or IR3535 as the active ingredient is effective and safe. Natural repellents (e.g. e…（共 2467 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Tips and FAQs | Clean & Green Singapore",
+   "source_url": "https://www.cgs.gov.sg/blockdengue/tips/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Trusted websites (opens in new tab)](https://www.gov.sg/trusted-sites#govsites)\n\n[2] Tips and FAQs\n\n[3] Find answers to common questions about dengue prevention\n\n[4] TIPS\n\n[5] - Use mosquito repellent to protect against mosquito bites, even if you are suspected or confirmed with dengue. This prevents mosquitoes from carrying your dengue virus to others.\n\n[6] - Always test first on a small area of your skin to check for allergies\n\n[7] - Effective ingredients for mosquito repellents: Deet, Picaridin or IR3535\n\n[8] For more tips and resources, visit [here (opens in new tab)](https://www.nea.…（共 5901 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Insect Repellents",
+   "source_url": "https://www.healthhub.sg/medication-devices-and-treatment/medications/insect-repellents",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Recommended Dietary Allowances\n\n[2] Strategies to Reduce Abdominal Fat Effectively\n\n[3] Welcome back!\n\n[4] Continue where you left off.\n\n[5] Text Size :\n\n[6] Introduction\n\n[7] Most insect bites cause itchy red lumps or bumps that appear on the skin. This causes scratching, which increases the risk of bleeding, scarring and infection. Mosquito bites may also transmit infections such as Dengue and Zika Virus. There are various insect repellents in the market that can protect you from mosquito bites and mosquito-borne diseases.\n\n[8] What are the different types of mosquito repellents?\n\n[9] - …（共 5524 字）"
+  },
+  {
+   "id": "E6",
+   "label": "10 Best Natural Mosquito Repellents in Singapore & Where to Buy Them",
+   "source_url": "https://www.sassymamasg.com/mosquito-repellent-in-singapore/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Post Category - Family LifeFamily Life](https://www.sassymamasg.com/category/mama/)\n\n[2] [Post Category - WellnessWellness - Post Category - HealthHealth](https://www.sassymamasg.com/category/wellness/health/)\n\n[3] Looking for an easy-to-use, natural mosquito repellent in Singapore? Try these devices, sprays and patches for a mozzie-free day.\n\n[4] Singapore’s tropical climate makes it a [prime breeding ground for mosquitoes](https://www.sassymamasg.com/preventing-dengue-fever-in-singapore/). So the next time you’re off to explore one of the island’s outdoor spaces, get spraying that mosqu…（共 9224 字）"
+  },
+  {
+   "id": "E7",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/daily-reports/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] +94112368416\n\n[2] +94112369893\n\n[3] ndcu2010@yahoo.com\n\n[4] Search for:\n\n[5] Search Button\n\n[6] English\n\n[7] Home\n\n[8] About Us\n\n[9] Objectives\n\n[10] Orgaization Structure\n\n[11] Activities & Services\n\n[12] Disease Surveillance and Risk Assessment\n\n[13] Early Diagnosis & Case Management\n\n[14] Vector Surveillance & Control\n\n[15] Early Detection & Rapid Response to Dengue Outbreaks\n\n[16] Risk Communication, & Community Engagement & Mobilisation\n\n[17] Enhancing Multisectoral Collaboration\n\n[18] Innovation & Research\n\n[19] Information\n\n[20] Dengue Mosquitoes\n\n[21] Sri Lanka Situation\n\n[22] Worl…（共 1749 字）"
+  },
+  {
+   "id": "E8",
+   "label": "How do i identify national and state highway in google maps?? What are different icons used for them - Google Maps Community",
+   "source_url": "https://support.google.com/maps/thread/3612561/how-do-i-identify-national-and-state-highway-in-google-maps-what-are-different-icons-used-for-them?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to main content\n\n[2] Google Maps Help\n\n[3] Sign in\n\n[4] Google Help\n\n[5] Help Center\n\n[6] Community\n\n[7] Google Maps\n\n[8] Privacy Policy\n\n[9] Terms of Service\n\n[10] Submit feedback\n\n[11] Send feedback on...\n\n[12] This help content & information\n\n[13] General Help Center experience\n\n[14] Close\n\n[15] Next\n\n[16] Help Center\n\n[17] Community\n\n[18] Google Maps\n\n[19] Search\n\n[20] Clear search\n\n[21] Close search\n\n[22] Google apps\n\n[23] Main menu"
+  },
+  {
+   "id": "E9",
+   "label": "Overview | Maps JavaScript API | Google for Developers",
+   "source_url": "https://developers.google.com/maps/documentation/javascript/dds-boundaries/overview",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Page Summary\n\n[2] -  Data-driven styling for boundaries allows you to style Google's administrative boundary polygons and combine them with your own data to create customized maps, such as choropleth maps.\n\n[3] -  You can target specific regions using place IDs and apply custom styling to boundary polygons based on feature types like country, state, locality, and postal code.\n\n[4] -  Boundary coverage varies by country and feature type, allowing you to style polygons with fill and stroke properties for visualization.\n\n[5] -  To get started, configure your map style, obtain place IDs for re…（共 3599 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Geocoding Service | Maps JavaScript API | Google for Developers",
+   "source_url": "https://developers.google.com/maps/documentation/javascript/geocoding",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Page Summary\n\n[2] -  Google Maps Geocoding API enables converting addresses to coordinates (geocoding) and coordinates to addresses (reverse geocoding).\n\n[3] -  Geocoding requests are asynchronous and require enabling the Geocoding API in Google Cloud Console.\n\n[4] -  Usage is based on a pay-as-you-go model, and detailed pricing and policies are available in provided links.\n\n[5] -  Responses include address types, components, and status codes to interpret results.\n\n[6] -  Address descriptors provide additional context using landmarks and surrounding areas, enhancing location understanding.…（共 52315 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Google Maps Help",
+   "source_url": "https://support.google.com/maps/?visit_id=639248096946325147-397474497&hl=en&rd=3#topic=3092425",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Popular articlesGet started with Google MapsDownload areas & navigate offline in Google MapsFind & improve your location’s accuracy in Google MapsAdd, edit, or delete Google Maps reviews & ratingsManage your Google Maps TimelineDiscover helpful features in Google MapsContribute to Google Maps & earn pointsShare your real-time location with others in Google MapsGet directions & show routes in Google MapsAsk questions in Google MapsTaking actions within Ask Maps with third-partiesGenerative AI in Google MapsAsk questions in Google MapsTaking actions within Ask Maps with third-partiesHow AI-p…（共 6102 字）"
+  },
+  {
+   "id": "E12",
+   "label": "10 Natural Mosquito Repellents: What Works",
+   "source_url": "https://www.healthline.com/health/kinds-of-natural-mosquito-repellant",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Homemade mosquito repellents may help deter insects. Some natural ingredients may cause irritation if you have sensitive skin.\n\n[2] People are usually prone to mosquito bites due to a combination of scent, light, heat, and humidity. If you’re a mosquito magnet, you’re probably tired of having itchy, bumpy skin.\n\n[3] Different species of mosquitoes — like the ones that carry [malaria](https://www.healthline.com/health/malaria) — prefer bacteria and sweat. Others are attracted to carbon dioxide and certain hand odors.\n\n[4] Whichever species you encounter, you can protect yourself without hav…（共 12888 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Find the Repellent that is Right for You | US EPA",
+   "source_url": "https://www.epa.gov/insect-repellents/find-repellent-right-you",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Find the Repellent that is Right for You\n\n[2] [Use the search tool below](https://www.epa.gov/insect-repellents/find-repellent-right-you#search%20tool)to help you choose the repellent product that is right for you. You can specify:\n\n[3] - mosquitoes, ticks or both;\n\n[4] - protection time;\n\n[5] - active ingredient; or\n\n[6] - other product-specific information.\n\n[7] Consider these factors when choosing a repellent:\n\n[8] - Do you need protection from mosquitoes, ticks or both?\n\n[9] - How long will you be exposed to them? Be sure to use a product with a protection time that fits your activity.…（共 2128 字）"
+  },
+  {
+   "id": "E14",
+   "label": "E book ORIGINAL National Dengue Guidelines 2024",
+   "source_url": "https://www.dengue.health.gov.lk/wp-content/uploads/2026/06/E-book-ORIGINAL-National-Dengue-Guidelines-2024.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nNATIONAL GUIDELINES\nMinistry of Health\n Sri Lanka\nGuidelines on Management of\nDengue Fever & Dengue Haemorrhagic Fever \nin Adults\nIn collaboration with the \nCeylon College of Physicians \nRevised and Expanded Edition September 2024\n\n[page 2]\nNATIONAL GUIDELINES\nMinistry of Health\nSri Lanka\nGuidelines on Management of\nDengue Fever & Dengue Haemorrhagic Fever \nin Adults\nRevised and Expanded Edition September 2024\nISBN 978-624-6511-17-3\nElectronic version available at the websites of:\nNational Dengue Control Unit     Click here \nEpidemiology Unit                         Click here\nCeylon …（共 138932 字）"
+  },
+  {
+   "id": "E15",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/weekly-report/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] +94112368416\n\n[2] +94112369893\n\n[3] ndcu2010@yahoo.com\n\n[4] Search for:\n\n[5] Search Button\n\n[6] English\n\n[7] Home\n\n[8] About Us\n\n[9] Objectives\n\n[10] Orgaization Structure\n\n[11] Activities & Services\n\n[12] Disease Surveillance and Risk Assessment\n\n[13] Early Diagnosis & Case Management\n\n[14] Vector Surveillance & Control\n\n[15] Early Detection & Rapid Response to Dengue Outbreaks\n\n[16] Risk Communication, & Community Engagement & Mobilisation\n\n[17] Enhancing Multisectoral Collaboration\n\n[18] Innovation & Research\n\n[19] Information\n\n[20] Dengue Mosquitoes\n\n[21] Sri Lanka Situation\n\n[22] Worl…（共 1330 字）"
+  },
+  {
+   "id": "E16",
+   "label": "www.dengue.health.gov.lk",
+   "source_url": "https://www.dengue.health.gov.lk/wp-content/uploads/2026/03/Guidelines-on-Management-of-Dengue-Fever.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nM i n i s t r y  o f  H e a l t hS r i  L a n k a\nN a t i o n a l  G u i d e l i n e s\nM a y  2 0 2 3\nG u i d e l i n e s  o n  M a n a g e m e n t  o f  D e n g u e  F e v e r  &  D e n g u e  H a e m o r r h a g i c  F e v e r  \ni\nn\n \nC\nh\ni\nl\nd\nr\ne\nn\n \na\nn\nd\n \nA\nd\no\nl\ne\ns\nc\ne\nn\nt\ns\n\n[page 2]\nMinistry of Health \nSri Lanka \nNational Guidelines \n \n \n \nGuidelines on Management of \nDengue Fever & Dengue \nHaemorrhagic Fever  \nin Children and Adolescents \n \n \n \n \n \n \n \nIn Collaboration with the \nSri Lanka College of Paediatricians \n \nRevised Edition \n2023 May\n\n[page 3]\nii \n \n \nMinistry of …（共 56727 字）"
+  },
+  {
+   "id": "E17",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://dengue.health.gov.lk/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] National Action for a Dengue-Free Sri Lanka\n\n[2] Protecting Sri Lanka from Mosquito-Borne Disease\n\n[3] The National Dengue Control Unit is the focal point for the National Dengue Control Programme in the Ministry of Health, Sri Lanka. It was established in the year 2005 as a decision taken by the Ministry of Health following the major Dengue outbreak in year 2004. It is responsible for the coordination of Dengue Control or Preventive activities with different stakeholders.\n\n[4] Maximize surveillance for real-time detection and notification of dengue cases and understanding disease dynamics…（共 1524 字）"
+  },
+  {
+   "id": "E18",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/national-dengue-control-unit/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] National Dengue Control Unit\n\n[2] The National Dengue Control Unit was established formally in 2005 as a coordinating unit and upgraded in 2012 as a directorate with an annual budget allocation by the Ministry of Health. It comprises both the technical and administrative staff under the Director and the Directorate operates under the Deputy Director General of Public Health Services 1, which is under the Director General of Health Services, Ministry of Health, Sri Lanka.\n\n[3] The NDCU is directly responsible for implementing dengue control jointly with the provincial, district and division…（共 2994 字）"
+  },
+  {
+   "id": "E19",
+   "label": "The Story Behind MosAway: Siddhalepa’s All-Natural Mosquito Repellent Spray - Adaderana Biz English | Sri Lanka Business News",
+   "source_url": "https://bizenglish.adaderana.lk/the-story-behind-mosaway-siddhalepas-all-natural-mosquito-repellent-spray/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] August, 7, 2023\n\n[2] MosAway, a revolutionary mosquito repellent by Siddhalepa hails from the deeply historic ingredient in Sri Lanka, Citronella, which has evolved as a multi-faceted oil with its ability repel mosquitoes being its key usage in the country.\n\n[3] Lankani Hettigoda, Director Research and Development at Siddhalepa, insights that no synthetic chemicals are used in the product, certifying it as non-toxic and having no side effects. “Repellents that contain chemicals are often used for killing mosquitoes thus a prolonged period of usage can make it harmful to humans as well. How…（共 4668 字）"
+  },
+  {
+   "id": "E20",
+   "label": "National Dengue Review 2026 identifies priorities to strengthen Sri Lanka's dengue preparedness and response",
+   "source_url": "https://www.who.int/srilanka/news/detail/14-08-2026-national-dengue-review-2026-identifies-priorities-to-strengthen-sri-lanka-s-dengue-preparedness-and-response",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sri Lanka's health authorities, with support from the World Health Organization (WHO), convened the National Dengue Review 2026 from 11 to 13 August to assess the country's dengue situation, review the ongoing outbreak response, identify operational challenges, and define strategic priorities for strengthening dengue prevention and control nationwide.\n\n[2] The three-day review brought together representatives from the National Dengue Control Unit (NDCU), provincial and district health authorities, consultant community physicians, entomologists, public health experts, and other stakeholders…（共 12967 字）"
+  },
+  {
+   "id": "E21",
+   "label": "Natural Mosquito Repellent Gel, 50ml – Mamaearth Srilanka | Official Website",
+   "source_url": "https://mamaearth.lk/product/natural-mosquito-repellent-gel-50ml/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Hi, I’m Mamaearth Natural Mosquito Repellent Gel. I am a 100% natural and safe insect repellent gel. I am made from natural ingredients like Citronella Oil, Lemongrass Oil, and Peppermint Oil, which are proven to repel almost all kinds of insects away. The MadeSafe Certification and All-natural ingredients prove that I am the safest and the best insect repellent for your baby. I effectively protect your family from mosquito bites while moisturizing the skin. Dermatologically tested, this gel has a family safe formula as it does not contain any undesirable ingredients like DEET, SLES, PEG, …（共 2996 字）"
+  },
+  {
+   "id": "E22",
+   "label": "Mosquito Repellent Spray – Beam Hela Osu",
+   "source_url": "https://www.beamhelaosulanka.lk/product/mosquito-repellent-spray/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Mosquito Repellent Spray\n\n[2] $2.10\n\n[3] Therapeutic Effects\n\n[4] Beam Mosquito Repellent Spray is made using natural extracts of citronella, cinnamon, and neem. It protects you effectively from mosquito bites.\n\n[5] ගුණ\n\n[6] පැඟිරි, කුරුඳු හා කොහොඹ වල ස්වාභාවික සාරයන් යොදා බීම් මදුරු විකර්ශකය නිපදවා ඇත. මෙම නිෂ්පාදනය ඔබව මදුරුවන් දෂ්ඨ කිරීමෙන්් ආරක්ෂා කර තබයි.\n\n[7] பயன்\n\n[8] இயற்கை சாரங்களைப் பயன்படுத்தி பீம் கொசு விரட்டும் திரவம் தயாரிக்கப்பட்டுள்ளது. இது கொசுக்கள் கடிப்பதிலிருந்து உங்களைப் பாதுகாக்கிறது.\n\n[9] Direction of Use\n\n[10] Shake the bottle well before each use. Recommended to us…（共 1101 字）"
+  },
+  {
+   "id": "E23",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/disease-surveillance-and-risk-assessment/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Disease Surveillance and Risk Assessment\n\n[2] Maximize surveillance for real-time detection and notification of dengue cases and understanding disease dynamics by intensifying disease surveillance at all levels including the outpatient departments and private sector to strengthen early detection and reduce the risk of outbreaks.\n\n[3] Intensify case detection according to the dengue case definition following the surveillance case definition\n\n[4] Assess and address gaps in disease notification and coordinate with central, provincial, and regional level health facilities for accurate and real…（共 1162 字）"
+  },
+  {
+   "id": "E24",
+   "label": "National Dengue Control Unit",
+   "source_url": "https://www.dengue.health.gov.lk/sri-lanka-situation/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sri Lanka Situation\n\n[2] Dengue was first serologically confirmed in Sri Lanka in 1962, and the first documented dengue outbreak was reported in 1965. During the period from 1965 to 1968, an island-wide epidemic caused by DENV-1 and DENV-2 serotypes resulted in 51 reported cases and 15 deaths.\n\n[3] Although dengue infections continued to occur intermittently during the 1970s and 1980s, severe dengue and dengue haemorrhagic fever (DHF) were relatively uncommon before 1989. Since 1989, Sri Lanka has experienced regular dengue epidemics with increasing magnitude, geographical spread, and dise…（共 3022 字）"
+  },
+  {
+   "id": "E25",
+   "label": "US10306894B1 - Natural mosquito repellant - Google Patents",
+   "source_url": "https://patents.google.com/patent/US10306894B1/en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] US10306894B1 - Natural mosquito repellant - Google Patents\n\n[2] Natural mosquito repellant\n\n[3] [Download PDF](https://patentimages.storage.googleapis.com/48/26/af/dfb7f76b1fd2e5/US10306894.pdf)\n\n[4] Info\n\n[5] - Publication number\n\n[6] - US10306894B1 US10306894B1 US15/926,446 US201815926446A US10306894B1 US 10306894 B1 US10306894 B1 US 10306894B1 US 201815926446 A US201815926446 A US 201815926446A US 10306894 B1 US10306894 B1 US 10306894B1\n\n[7] - Authority\n\n[8] - US\n\n[9] - United States\n\n[10] - Prior art keywords\n\n[11] - formulation\n\n[12] - mosquitoes\n\n[13] - soybean oil\n\n[14] - oil\n\n[15] …（共 77857 字）"
+  },
+  {
+   "id": "E26",
+   "label": "search result thumbnail",
+   "source_url": "http://www.dengue.health.gov.lk/web/index.php/en/image-gallery/event/2018/SecondNationalMosquito-2018",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 355, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E27",
+   "label": "search result thumbnail",
+   "source_url": "http://www.dengue.health.gov.lk/web/index.php/en/image-gallery/event/MediaConference",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 355, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E28",
+   "label": "search result thumbnail",
+   "source_url": "http://www.dengue.health.gov.lk/web/index.php/en/image-gallery/event/MediaConference",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 355, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E29",
+   "label": "search result thumbnail",
+   "source_url": "https://www.dengue.health.gov.lk/web/index.php/en/publication-and-resources/multimedia/images/event/2018/denguesymposium-2018",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 632, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E30",
+   "label": "search result thumbnail",
+   "source_url": "http://www.dengue.health.gov.lk/web/index.php/en/image-gallery/event/MediaConference",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 355, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E31",
+   "label": "search result thumbnail",
+   "source_url": "https://www.dengue.health.gov.lk/web/index.php/en/image-gallery/event/Workshop-2018",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 355, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E32",
+   "label": "search result thumbnail",
+   "source_url": "https://www.dengue.health.gov.lk/web/index.php/en/publication-and-resources/multimedia/images/event/2019/Training-Programme-2019",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  }
+ ]
+}

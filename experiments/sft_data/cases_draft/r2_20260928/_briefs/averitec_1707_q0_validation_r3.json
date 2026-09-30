@@ -1,0 +1,97 @@
+{
+ "run": "averitec_1707_q0_validation_r3",
+ "config": {
+  "dataset": "averitec",
+  "case": "1707",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 3,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What was Yaba Psychiatric Hospital's budget in 2018?\n背景声明：In 2018, Yaba Psychiatric Hospital had a budget of 133 million Nairas, but less than 10% of that amount, or 13 million Nairas, was released by the federal government.\n声明日期（任务元数据）：2-10-2019",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "According to Vanguard’s report discussing Yaba Psychiatric Hospital’s 2018 Annual Report, over ₦134 million was budgeted, citing the hospital’s Assistant Director of Finance, Bamidele Michael.",
+     "evidence_ids": [
+      "E1"
+     ],
+     "limitations": [
+      "The article does not give an exact amount or clearly specify whether this covers the entire hospital budget or a particular expenditure category."
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "Drug Abuse: Yaba Psychiatric Hospital records 50% increase in patients - Vanguard News",
+   "source_url": "https://www.vanguardngr.com/2018/12/drug-abuse-yaba-psychiatric-hospital-records-50-increase-in-patients/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] By Chioma Obinna\n\n[2] LAGOS—THE Federal Neuro-Psychiatric Hospital Yaba, yesterday, disclosed that it recorded 50 percent increase in the number of patients treated for drug and substance abuse this year.\n\n[3] [Drug dealers sack Ondo community over missing bags of Indian hemp](https://newlive.vanguardngr.com/2018/11/drug-dealers-sack-ondo-community-over-missing-bags-of-indian-hemp/)\n\n[4] The hospital also disclosed that it recorded a 22 percent increase in the number of new patients with various forms of mental disorders, rising from 3,591 in 2017 to 4, 376 in 2018.\n\n[5] The Medical Direct…（共 3292 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Yaba Psychiatric Hospital: 110 years of restoring hope to mentally ill patients - Vanguard News",
+   "source_url": "https://www.vanguardngr.com/2018/03/yaba-psychiatric-hospital-110-years-restoring-hope-mentally-ill-patients/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] From left: Inset: Medical Director, Federal Neurio-Psychiatric Hospital, Yaba, Dr. Oluwayemi Ogun, newly built Emergency unit and a ward at the hospital that have shown leadership in the care of mentally ill over a century now.\n\n[2] By Funmilayo Ishola\n\n[3] A first time visitor to the Psychiatric Hospital, Yaba, Lagos may not immediately appreciate the true relevance of the facility in helping to establish complete state of health for Nigerians over the years.\n\n[4] On the average, 450 people visit the hospital daily for reasons ranging from counseling services to orthodox treatment of vari…（共 9143 字）"
+  },
+  {
+   "id": "E3",
+   "label": "News -- Yaba Psychiatric Hospital: 110 Years of restoring hope to mentally ill patients",
+   "source_url": "https://odili.net/news/source/2018/mar/13/320.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] |   |  Yaba Psychiatric Hospital: 110 years of restoring hope to mentally ill patients    Health By: [Nwafor Polycarp](https://www.vanguardngr.com/author/polycarp/) Tuesday, March 13, 2018     By Funmilayo A first time visitor to the Psychiatric Hospital, Yaba, Lagos may not immediately appreciate the true relevance of the facility in helping to establish complete state of health for Nigerians over the years. On the average, 450 people visit the hospital daily for reasons ranging from counseling services to orthodox treatment of various forms of mental illnesses. Though a standalone facili…（共 8844 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Federal Neuro-Psychiatric Hospital, Yaba",
+   "source_url": "https://hotels.ng/places/hospital/1567-federal-neuro-psychiatric-hospital-yaba",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Federal Neuro-Psychiatric Hospital, Yaba\n\n[2] 8 Harvey Road, Yaba\n\n[3] Federal Neuro-Psychiatric Hospital, Yaba was established in 1907, Built by British Colonialists\n\n[4] in\n\n[5] 1907.\n\n[6] This is a hospital for mental medical issues and the mentally challenged. Called 'Yaba Left' by the young populace, it also houses an asylum, and a School of Post Basic Psychiatric Nursing.\n\n[7] Quote About Place\n\n[8] [\"FNPH Yaba Pioneers Research on Biological Psychiatry-TelNews\"]\n\n[9] What To Bring\n\n[10] [\"Medical reports and documents\",\"Medical educational materials if you are a student\"]\n\n[11] Reas…（共 969 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Federal Neuro Psychiatric Hospital - Yaba • Hospitals - Psychiatric • Yaba, Lagos",
+   "source_url": "https://www.medpages.info/sf/index.php?page=organisation&orgcode=332404",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] | Address: | 8 Harvey Road, Yaba, 00000 |\n\n[2] | Location | Lagos, Nigeria |\n\n[3] This information was last updated on 17 Apr 2026, 10:09 am by the Medpages team\n\n[4] Medpages, an IQVIA business, provides the contact information of healthcare providers as a free public service. The information shown is a small subset of the full content in the Medpages Database."
+  }
+ ]
+}

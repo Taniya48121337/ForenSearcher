@@ -1,0 +1,233 @@
+[
+  {
+    "request_id": "request_0021",
+    "assessment": {
+      "request_id": "request_0021",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图为E5、E63、E7、E70、E62、E71、E15、E11，已经提供首帧阴性、1.333333秒右缘差异、1.366667秒阴性及重叠区间阴性。只剩最后一次工具行动时，却把focus全部换成0.033333至0.133333秒的四组早期帧，丢失当前关键退出边界，也未选回0.2秒起点候选。历史记录只保存元数据，不能替下一模型会话保存这些视觉判断。应在此状态修正末轮附图选择后重新执行后缀。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0022",
+    "assessment": {
+      "request_id": "request_0022",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E39、E6、E65、E33、E26、E35、E28、E8，像素已经显示2.0秒两侧无人、2.5秒B右边缘有人而A没有，以及5.966667秒仍存在人物局部差异。恢复E40/E66以核查2.233333秒本身合理，但所选8图同时丢弃了2.5秒阳性帧对和末帧对，并加入较早的5.866667秒及两个中间命中。下一轮必须报告，且输入历史不保存这些图片的人物状态。应保留关键边界与末帧证据后重新执行，不能将改写行动直接接到旧终轮报告。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0031",
+    "assessment": {
+      "request_id": "request_0031",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E11、E39、E15、E65、E40、E66、E33、E26，已可直接比较2.233333秒阴性与2.500000秒阳性。行动却再次切换到同一组后侧四对帧，没有加入边界时点或保留当前起点对照。合法执行，但作为正向行动目标的信息增益不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0035",
+    "assessment": {
+      "request_id": "request_0035",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E88、E65、E89、E33、E90、E26、E91，新增B帧已经到达，尚需取得同时间A帧。此时再次读取E81并换回后侧整批图片，丢掉新增B帧的当前可见性；可以直接执行后来request_0037所用的成对补取行动。此次复看没有解决新的必要问题。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0039",
+    "assessment": {
+      "request_id": "request_0039",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E96、E89、E97、E90、E98、E91、E99。2.633333秒配对图有清楚的右侧腿鞋差异，2.366667秒右下缘局部也值得定向核查。选择旧锚点混合组本可用于比较，但实际焦点完全排除了这些新帧，下一会话无法同时比较新旧状态，也没有新增边界测量。保留为历史更合适。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0041",
+    "assessment": {
+      "request_id": "request_0041",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E33、E65、E26、E72、E80、E47、E57。恢复缺失的较早像素有潜在价值，但本动作原样换回四对新增早期帧，没有保留当前阳性锚点形成针对性比较，也没有检查已有阴阳性之间的新时点。缺陷在焦点与未决问题的对应不足，而非单纯因为图片曾经出现。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0043",
+    "assessment": {
+      "request_id": "request_0043",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E96、E89、E97、E90、E98、E91、E99。行动再次返回request_0039选择的旧锚点组；E57的读取只提供图片元数据，没有新的视觉问题、裁剪或时间点。又一次丢弃当前起点相关图片，形成无新增覆盖的往返。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0045",
+    "assessment": {
+      "request_id": "request_0045",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E57、E65、E33、E26、E72、E80、E47。读取E90后再次切回同一早期四对帧；其时间和派生关系已经在历史工具结果中存在。若要核查E90的边缘局部，应保留相关阴阳性锚点或安排裁剪，而不是继续两个完整批次交替，尤其此时只剩两次后续决定。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0046",
+    "assessment": {
+      "request_id": "request_0046",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E7、E78、E46、E79、E51、E70、E62，包含首帧、入口前后和1.333333秒最后阳性证据。仅剩一次工具机会，输出却将它们全部换成1.000、1.266667、1.300000、1.366667秒四对帧。可保留E5/E7、E79/E51、E70/E62并补入E71/E63，使终态同时拥有首帧、入口阳性及更紧末端依据。现有选择合法可执行，但对明确任务造成可预见的信息损失，需从该状态修正重跑。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0047",
+    "assessment": {
+      "request_id": "request_0047",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E90、E96、E89、E97、E98、E91、E99。最后一次行动重新附上2.500000至3.233333秒的四对旧阳性帧，虽可支持部分报告，却再次排除了起点相关新证据及3.366667秒交界。可在八图容量内同时选择2.233333秒阴性、2.366667秒边缘候选、2.500000秒阳性及3.366667秒交界的四对帧。应从此状态修正焦点并重新生成报告。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0055",
+    "assessment": {
+      "request_id": "request_0055",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本次像素为E41/E67、E48/E58、E49/E59、E50/E60。动作又转向已对照的4.5、5.5、5.9及最后一帧，未增加未采样空档证据；所选片尾组还缺5.933333秒，不能在下一独立会话完整保留三帧连续性依据。请求合法，但相较具体可执行的空档补查，信息增益不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0056",
+    "assessment": {
+      "request_id": "request_0056",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本次实际附件为E35、E110、E28、E42、E68、E108、E8、E6。输出完全重复0054的READ_RECORD E41及八张焦点，中段帧组刚在0055输入展示；没有新增时刻、裁剪、失败恢复或新的核查问题。跨会话像素不会保留，但这不能使没有推进未决问题的往返循环成为优质取证目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0057",
+    "assessment": {
+      "request_id": "request_0057",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本次像素再次为E41/E67、E48/E58、E49/E59、E50/E60。动作再切回4.5、5.5、5.933333及片尾帧，只替换了此前片尾组中的一个已见时刻；这些对应帧均已直接对照，仍无新增空档证据，也未把三张连续片尾帧共同保留。不宜作为正向模仿目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0076",
+    "assessment": {
+      "request_id": "request_0076",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E98、E163、E106、E90、E102、E24、E87、E107。E163连同E90/E98已支持2.366667秒的局部腿部差异。本动作重新调入旧阴性组和2.633333秒对照，却不保留这组新澄清的阳性证据，也不取得出现边界邻帧或后续空档。可保留为真实历史，不宜作为优质取证选择。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0078",
+    "assessment": {
+      "request_id": "request_0078",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E91、E96、E89、E97、E99、E56、E86。再次切回已多次附带的1.566667、1.700000、1.833333和2.366667秒组，没有增加新时刻或新的裁剪比较，又去掉当前2.633333秒阳性对照。历史裁剪像素确实不在当前输入，但这不使每次整组往返都自动具有信息增益。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0082",
+    "assessment": {
+      "request_id": "request_0082",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E33、E96、E89、E97、E91、E99、E26；E33右下角腿部和鞋与A侧缺失构成可见差异。本动作又调回旧早段及2.366667秒组，丢掉刚取得的2.500000秒对照，没有保留两者作同时比较，也没有新增边界时刻。剩余轮次已少，这次旧组切换不适合作为正向模仿目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0084",
+    "assessment": {
+      "request_id": "request_0084",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E56、E98、E86、E106、E102、E107、E103、E90。读取3.366667秒E73并保留E81核实右交界是合理的；实质缺陷在最终焦点选择：下一次必须报告，却用两组相近阴性帧占据4个位置，舍弃当前可见、能够收窄出现边界的E90/E98。应修复焦点后重新生成终次报告，不能把修正后的行动接到旧报告后缀。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0093",
+    "assessment": {
+      "request_id": "request_0093",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E67、E112、E41、E116、E113、E117、E58、E48，即3.5、3.7、4.1、4.233333秒四对。动作重新选择与0092输入完全相同的4.5–5.266667秒四对，仅更换READ_RECORD对象，没有增加时间点或新的比较组合。独立会话确实使旧像素不再可见，但当前任务要求补连续性空档，这次返回旧组没有足够新增价值。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0094",
+    "assessment": {
+      "request_id": "request_0094",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "实际附图为E28、E115、E35、E59、E49、E114、E118、E119，与0092是同一四对。输出再次回到0093已经收到的3.5、3.7、4.1、4.233333秒组。没有新增裁剪、时间采样、对齐冲突或可核查的新问题，属于已形成的往返循环。执行成功不能补足行动价值。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0095",
+    "assessment": {
+      "request_id": "request_0095",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "实际附图为E67、E116、E41、E112、E113、E117、E58、E48，与0093是同一四对。输出又返回0092、0094的4.5–5.266667秒组，读取E114只返回已知帧元数据并重新附图。此时仍有可采样的具体空档，继续同组往返没有推进局部目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0107",
+    "assessment": {
+      "request_id": "request_0107",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "实际附图仅为E90、E79、E52、E51、E46、E7、E85、E88。零剩余次数且不能新增调查，提交有明确限制的FINISH合理；0.200秒前景差异有当前像素支持，身份与连续性限制也保留准确。其他区间主要综合当前输入中的HI文字，不能指责其仅因未重新附图就非法引用，也不能要求其恢复输入中没有的历史判读。但评分员缺少支持1.366667秒精确尾界及片尾连续性的关键成对像素，无法认证这些确定性断言。该报告可保留为真实历史，暂不能作为通过事实核验的正向目标；调查本身也未完成全部区间定位。"
+    },
+    "execution_status": "gia_decision_accepted"
+  }
+]

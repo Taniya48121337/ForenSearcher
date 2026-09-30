@@ -1,0 +1,87 @@
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "gia_accepted.jsonl": {
+      "rows": 7,
+      "input_tokens": {
+        "min": 1595,
+        "p50": 1651,
+        "p90": 18082,
+        "max": 24697
+      },
+      "supervised_tokens": {
+        "min": 58,
+        "p50": 66,
+        "p90": 72,
+        "max": 73
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 4608,
+        "max": 11832
+      },
+      "above": {
+        "8192": 2,
+        "16384": 2,
+        "32768": 0
+      }
+    },
+    "hi_held.jsonl": {
+      "rows": 28,
+      "input_tokens": {
+        "min": 2613,
+        "p50": 7369,
+        "p90": 11702,
+        "max": 19584
+      },
+      "supervised_tokens": {
+        "min": 21,
+        "p50": 36,
+        "p90": 76,
+        "max": 263
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 3456,
+        "max": 11832
+      },
+      "above": {
+        "8192": 7,
+        "16384": 1,
+        "32768": 0
+      }
+    },
+    "hi_rejected.jsonl": {
+      "rows": 53,
+      "input_tokens": {
+        "min": 5363,
+        "p50": 7260,
+        "p90": 12809,
+        "max": 14703
+      },
+      "supervised_tokens": {
+        "min": 20,
+        "p50": 27,
+        "p90": 76,
+        "max": 263
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 4608,
+        "max": 7040
+      },
+      "above": {
+        "8192": 17,
+        "16384": 0,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}

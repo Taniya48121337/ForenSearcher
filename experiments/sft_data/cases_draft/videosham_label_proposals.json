@@ -1,0 +1,83 @@
+{
+  "_说明": "VideoSham 官方标注不是分类标签，而是篡改描述（data/cases/videosham_*/reference.json 的 source_record.Task / Manipulation）。下面把它起草成 label_expected 检查（答案里出现 label 或任一 alias 即算覆盖）。同义说法需要人确认：写得太宽会漏判，太窄会误判。确认后由脚本并入 cases/*.json。2026-09-28 起草，未入库。",
+  "videosham:0069": {
+    "official": "Duplicate frames to make it seem like the rider is going very slow (00:06 - 00:10)；Frame duplication/Slowing down",
+    "check": {
+      "kind": "label_expected",
+      "params": {
+        "label": "慢放",
+        "aliases": [
+          "放慢",
+          "重复帧",
+          "帧重复",
+          "慢动作",
+          "slow"
+        ]
+      },
+      "note": "官方：A 在 00:06–00:10 复制帧，使骑手显得很慢"
+    }
+  },
+  "videosham:1007": {
+    "official": "Drop frames from 0:00 to 0:15 to make it into a 10 second video；Frame dropping",
+    "check": {
+      "kind": "label_expected",
+      "params": {
+        "label": "删帧",
+        "aliases": [
+          "丢帧",
+          "删减",
+          "截短",
+          "缩短",
+          "剪掉"
+        ]
+      },
+      "note": "官方：A 删掉 0:00–0:15 中的帧，压成约 10 秒"
+    }
+  },
+  "videosham:1028": {
+    "official": "0:00 to 0:06 change the text in the blue box to lorem ipsum；Text Replaced/Text Added",
+    "check": {
+      "kind": "label_expected",
+      "params": {
+        "label": "lorem ipsum",
+        "aliases": [
+          "Lorem ipsum",
+          "Lorem Ipsum"
+        ]
+      },
+      "note": "官方：A 在 0:00–0:06 把蓝框文字换成 lorem ipsum"
+    }
+  },
+  "videosham:2010": {
+    "official": "cut out the red car from 0:38-0:41, and put it on a cartoon road；Adding an entity/Adding a subject",
+    "check": {
+      "kind": "label_expected",
+      "params": {
+        "label": "红色汽车",
+        "aliases": [
+          "红车",
+          "红色车",
+          "卡通道路",
+          "卡通"
+        ]
+      },
+      "note": "官方：A 在 0:38–0:41 把红色汽车抠出放到卡通道路上"
+    }
+  },
+  "videosham:4126": {
+    "official": "Remove the guy in black from the frame 00:01-00:07；Removing an entity/Removing a subject",
+    "check": {
+      "kind": "label_expected",
+      "params": {
+        "label": "黑衣",
+        "aliases": [
+          "穿黑衣",
+          "黑色衣服",
+          "黑衣男子",
+          "黑衣人"
+        ]
+      },
+      "note": "官方：A 在 00:01–00:07 移除了穿黑衣的人（答案需指出这个人在 A 中缺失）"
+    }
+  }
+}

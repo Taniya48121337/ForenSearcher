@@ -56,17 +56,17 @@ def test_case_round_trip_and_heldout_downgrade(tmp_path: Path):
     case = make_case()
     path = case.save(tmp_path / "case.json")
     loaded = cases_mod.Case.load(path)
-    assert loaded == case and loaded.effective_split == "heldout"
+    assert loaded == case and loaded.effective_split == "dev_eval"
     used = loaded.mark_used_for_revision("hi@0.1.1")
-    assert used.effective_split == "dev" and used.used_for_revision == ("hi@0.1.1",)
-    assert json.loads(path.read_text(encoding="utf-8"))["effective_split"] == "heldout"
+    assert used.effective_split == "dev_train" and used.used_for_revision == ("hi@0.1.1",)
+    assert json.loads(path.read_text(encoding="utf-8"))["effective_split"] == "dev_eval"
 
 
 @pytest.mark.parametrize("overrides, message", [
     ({"dataset": "VideoSham", "case_id": "VideoSham:4126"}, "小写"),
     ({"case_id": "videosham:9999"}, "必须等于"),
     ({"checks": (cases_mod.Check("evidence_key_required", {"key": "nope"}),)}, "不存在的 required_evidence"),
-    ({"split": "test"}, "split"),
+    ({"split": "train"}, "split"),
 ])
 def test_case_validation_messages(overrides, message):
     with pytest.raises(cases_mod.CaseError, match=message):

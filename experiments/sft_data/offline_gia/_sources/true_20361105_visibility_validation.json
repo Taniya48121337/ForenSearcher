@@ -1,0 +1,715 @@
+{
+ "source_run": "true_20361105_visibility_validation",
+ "source_request": "request_0050",
+ "n_gia_requests": 6,
+ "task": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online.",
+ "runtime_constraints": {
+  "round_index": 3,
+  "can_create_round": true,
+  "turn_index": 3,
+  "max_turns": 8,
+  "remaining_turns": 5
+ },
+ "history_index": [
+  {
+   "record_type": "evidence",
+   "evidence_id": "E3",
+   "label": "视频E1在2.567秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E4",
+   "label": "视频E1在7.733秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E5",
+   "label": "视频E1在12.867秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E6",
+   "label": "视频E1在18.000秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E7",
+   "label": "视频E1在23.167秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E8",
+   "label": "视频E1在28.300秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E9",
+   "label": "视频E1在33.433秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E10",
+   "label": "视频E1在38.600秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E17",
+   "label": "'We're going to shut them down'! Dem Rep. Frederica Wilson says people who mock members of Congress online 'should be prosecuted' [video] – Twitchy",
+   "source_workspace": "W1-2"
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-1",
+   "status": "INCOMPLETE",
+   "finding_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "selected_evidence_ids": [
+    "E4",
+    "E6",
+    "E11",
+    "E14"
+   ],
+   "status_reason": "尚未取得给定视频的实际语音或经核实与其对应的转写，无法完成对发言者身份、原话及相关语境的视听核验。",
+   "task": "核查给定视频是否支持声明：Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online. 视频中实际可辨认的发言者和言论是什么，相关语境是否支持声明所述的追诉对象与主张？依据实际视听证据回答，说明结论范围与不确定性。",
+   "materials": [
+    "C0",
+    "E1"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F1",
+   "workspace_id": "W1-1",
+   "statement": "材料 A 在7.733秒和18.000秒的画面显示，一名戴浅色宽檐帽、穿浅粉色外套的女性位于讲台和多支话筒前，旁边站着另一名女性。静态画面不能证明具体言论，也不足以独立确认发言者姓名。",
+   "evidence_ids": [
+    "E4",
+    "E6"
+   ],
+   "limitations": [
+    "观察限于两个静态帧，未听取对应语音。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F2",
+   "workspace_id": "W1-1",
+   "statement": "The Blaze 的报道将相关言论归于 Frederica Wilson，引述她谈及“Those people who are online making fun of members of Congress”，随后表示“they should be prosecuted”。同段还引述“You cannot intimidate members of Congress, frighten members of Congress.”，并将背景指向边境巡逻人员的私人 Facebook 群组。就该报道的引语而言，网上嘲弄议员者与追诉主张确实被联系起来，但概括为追诉所有普通网络嘲讽者会遗漏恐吓语境；引语也没有明确将追诉对象仅限于实施威胁者。",
+   "evidence_ids": [
+    "E11"
+   ],
+   "limitations": [
+    "这是报道及其引语所呈现的内容，尚未用给定视频的实际声音核对；群组背景未独立核实。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F3",
+   "workspace_id": "W1-1",
+   "statement": "已读的另一条 YouTube 视频自动字幕包含评论者对 Wilson 言论的转述和评论。该字幕尚未被证实与材料 A 对应，不能替代对给定视频原话的核验。因此，目前不能依据实际视听证据最终判定给定视频是否支持声明。",
+   "evidence_ids": [
+    "E14"
+   ],
+   "limitations": [
+    "仅读取了字幕记录的第一页；未建立该来源与给定视频的影音对应关系。"
+   ]
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-2",
+   "status": "INCOMPLETE",
+   "finding_ids": [
+    "F4",
+    "F5",
+    "F6"
+   ],
+   "selected_evidence_ids": [
+    "E15",
+    "E16",
+    "E20",
+    "E11"
+   ],
+   "status_reason": "已取得报道中的引语、事件背景和原始视频出处线索，但原始记者会视频获取失败，未能直接核验完整问答及声音内容。以下结论限于已读文字证据。",
+   "task": "通过外部证据核查声明：Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online. 相关言论的原始出处和完整语境是什么，声明是否准确概括她针对的行为及其主张？依据实际证据回答，说明结论范围与不确定性。",
+   "materials": [
+    "C0"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F4",
+   "workspace_id": "W1-2",
+   "statement": "已读报道将争议发言定位于2019年7月2日：Wilson率国会代表团视察佛罗里达州Homestead移民儿童拘留设施后，在记者会上发表相关言论。Free Beacon提供的原始录像出处是Wilson本人Facebook页面：https://www.facebook.com/RepWilson/videos/2246130255434536/ ，并称记者当时询问的是参与秘密Facebook群组的边境巡逻人员。",
+   "evidence_ids": [
+    "E15",
+    "E16",
+    "E20",
+    "E11"
+   ],
+   "limitations": [
+    "未直接观看该录像，记者问题的逐字内容尚未核验。",
+    "E20将记者会写为星期一，与E16所载7月2日及E11所称星期二存在出入；日期采用后两者相互一致的记载。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F5",
+   "workspace_id": "W1-2",
+   "statement": "声明有真实引语基础。E20引述她说：“Those people who are online making fun of members of Congress are a disgrace”，随后说：“We're going to shut them down and work with whoever it is to shut them down and they should be prosecuted. You cannot intimidate members of Congress, threaten members of Congress.” 因此，不能说她没有使用“making fun”或没有主张起诉；但紧随其后的解释明确涉及恐吓、威胁国会议员。",
+   "evidence_ids": [
+    "E20",
+    "E11"
+   ],
+   "limitations": [
+    "这是报道所载引语，并非本次直接听录音所得的转写。",
+    "E11在对应位置记为“frighten”，E20记为“threaten”；原始音频未取得，无法裁定具体用词。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F6",
+   "workspace_id": "W1-2",
+   "statement": "结合已读报道，笼统概括为她主张起诉在网上嘲笑国会的人，会遗漏影响含义的语境，具有误导性。她回应的是有关现任、前任边境巡逻人员秘密Facebook群组的报道；其中包括针对议员的性羞辱图像，以及向到访的拉丁裔议员投掷食物的言论。语境支持的较窄判断是：她要求对该群组采取关闭措施，并起诉她认为在恐吓、威胁议员的相关人员。这些证据不足以证明她提出了普遍处罚普通网络讽刺的政策。",
+   "evidence_ids": [
+    "E16",
+    "E20",
+    "E11"
+   ],
+   "limitations": [
+    "群组帖文内容来自已读报道对ProPublica调查的转述，未直接核查原帖或ProPublica全文。",
+    "她使用的措辞宽泛；现有证据不能确定她希望起诉的每类行为，也不能证明具体帖文已构成犯罪或实际发生了起诉。",
+    "完整原始问答尚未直接核验，因此这是依据报道作出的有限判断。"
+   ]
+  }
+ ],
+ "latest_reports": [
+  {
+   "task": "补齐给定视频 E1 的声音核验，以核查声明：Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online. 现有调查只取得静态帧及报道引语，尚未核对视频实际声音。核实视频中关于“making fun of members of Congress”和“they should be prosecuted”的实际原话及相邻语境，提供关键原语摘录与时间位置；核对 E11 与 E20 所载“frighten”和“threaten”的差异。不能用未建立对应关系的评论视频字幕替代原声，听不清或无法取得的部分保持未知。",
+   "materials": [
+    "E1",
+    "E2",
+    "E11",
+    "E20"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W2-1",
+    "status": "INCOMPLETE",
+    "finding_ids": [
+     "F7",
+     "F8",
+     "F9"
+    ],
+    "selected_evidence_ids": [
+     "E11",
+     "E20"
+    ],
+    "status_reason": "尚未听取给定视频的原声，也未取得由其音轨派生的转写。当前可用动作不支持音轨播放或 ASR，官方 Facebook 视频获取失败。因此无法完成实际原话、相邻声音语境及时间位置核验，也无法判定原声使用 frighten 还是 threaten。",
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F7",
+      "workspace_id": "W2-1",
+      "statement": "E11 第7段与 E20 第2段均引用了“Those people who are online making fun of members of Congress are a disgrace”和“they should be prosecuted”。两篇报道的引语在这两处一致。",
+      "evidence_ids": [
+       "E11",
+       "E20"
+      ],
+      "limitations": [
+       "这是报道引语的比对，尚未通过给定视频的原声核实措辞与时间位置。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F8",
+      "workspace_id": "W2-1",
+      "statement": "两篇报道的后续引语存在用词差异：E11 第7段为“You cannot intimidate members of Congress, frighten members of Congress.”；E20 第2段为“You cannot intimidate members of Congress, threaten members of Congress.”。现有已观察证据不足以判定哪个词符合原声。",
+      "evidence_ids": [
+       "E11",
+       "E20"
+      ],
+      "limitations": [
+       "未建立与给定视频的对应关系，不能以评论视频字幕替代原声消除这一差异。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F9",
+      "workspace_id": "W2-1",
+      "statement": "E20 第5段称，完整记者会约9分钟处有人询问秘密 Facebook 群组中边境巡逻人员的事情；该报道据此将 Wilson 的发言置于回应这一问题的语境中。",
+      "evidence_ids": [
+       "E20"
+      ],
+      "limitations": [
+       "这一语境来自报道描述，尚未通过实际声音独立核验；约9分钟是报道给出的完整记者会位置，并非给定视频内已核实的时间位置。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E11",
+     "modalities": [
+      "text"
+     ],
+     "label": "Dem Rep. Frederica Wilson vows to prosecute people for 'making fun of members of Congress' online | Blaze Media",
+     "content": "[1] Tom Williams/CQ Roll Call\n\n[2] © 2026 Blaze Media LLC. All rights reserved.\n\n[3] Dem Rep. Frederica Wilson vows to prosecute people for 'making fun of members of Congress' online\n\n[4] July 02, 2019\n\n[5] That's not how this works, congresswoman\n\n[6] Democratic Rep. Frederica Wilson of Florida [threatened prosecution](https://www.washingtonexaminer.com/news/rep-frederica-wilson-demands-prosecution-for-those-who-mock-congress-online) for people who make fun of Congress online after a [ProPublica report](https://www.propublica.org/article/secret-border-patrol-facebook-group-agents-joke-about-migrant-deaths-post-sexist-memes) Monday revealed that Border Patrol agents had been disparaging immigrants and congresspeople in a private Facebook group.\n\n[7] \"Those people who are online making fun of members of Congress are a disgrace, and there is no need for anyone think that is unacceptable (sic),\" Wilson said Tuesday. \"We're gonna shut them down and work with whoever it is to shut them down, and they should be prosecuted. You cannot intimidate members of Congress, frighten members of Congress. It is against the law, and it's a shame in this United States of America.\"\n\n[8] Wilson and other members of Congress were visiting a child detention center for unaccompanied minor illegal immigrants in Homestead, Florida. Wilson left the tour saying she wanted to close the facility down.\n\n[9] \"This administration has shown a blatant disregard for the mental and physical health of children in custody,\" Wilson said, according to [WBFS-TV](https://miami.cbslocal.com/2019/07/02/frederica-wilson-congressional-delegation-inspect-homestead-facility/). \"They're spending weeks, and even months, in detention conditions that are tantamount to living under house arrest. We are upset about it.\n\n[10] \"We came today to say we will shut this down because this does not have to be this way,\" Wilson continued. \"These children can be processed and sent to foster care, they can be processed and sent to next of kin, aunts, grandmothers, people in the community who know them and that's what we are fighting for today.\"\n\n[11] Wilson did concede, however, that the children were being \"looked after in a clean environment.\"\n\n[12] The shelter in Homestead houses about 3,000 children between the ages of 13 and 17 years old. Officials told WBFS that most children are reunited with family members, and the average stay is 25 days. The children reportedly have six hours per day of school along with recreational activities.\n\n[13] Want to leave a tip?\n\n[14] We answer to you. Help keep our content free of advertisers and big tech censorship by leaving a tip today.\n\n[15] more stories\n\n[16] Sign up for the Blaze newsletter\n\n[17] By signing up, you agree to our\n\n[18] [Privacy Policy](https://www.theblaze.com/privacy)and[Terms of Use](https://www.theblaze.com/terms), and agree to receive content that may sometimes include advertisements. You may opt out at any time.\n\n[19] Related Content\n\n[20] © 2026 Blaze Media LLC. All rights reserved.\n\n[21] Get the stories that matter most delivered directly to your inbox.\n\n[22] By signing up, you agree to our",
+     "source_ref": "R1",
+     "derived_from": [],
+     "artifact_ref": "A11",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-1",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R1",
+      "source_url": "https://www.theblaze.com/news/dem-rep-frederica-wilson-vows-prosecute-people-for-making-fun-of-members-of-congress-online",
+      "final_url": "https://www.theblaze.com/news/dem-rep-frederica-wilson-vows-prosecute-people-for-making-fun-of-members-of-congress-online"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E20",
+     "modalities": [
+      "text"
+     ],
+     "label": "Wilson (D): Border Patrol Agents in Secret FB Group Should Be \"Prosecuted\"",
+     "content": "[1] Rep. Frederica Wilson (D., Fla.) said the border patrol agents who joked about migrant deaths and posted sexist content in a secret Facebook group should be \"prosecuted\" during a press conference on Monday outside of a Homestead, Florida migrant detention center.\n\n[2] \"Those people who are online making fun of members of Congress are a disgrace and there's no need for anyone to think that is unacceptable,\" Wilson said. \"We're going to shut them down and work with whoever it is to shut them down and they should be prosecuted. You cannot intimidate members of Congress, threaten members of Congress. It is against the law, and it's a shame in this United States of America.\"\n\n[3] Democrat Rep. Frederica Wilson (FL) says that people who are 'making fun of members of Congress\" online 'should be prosecuted\" [pic.twitter.com/f69KwOeJ0n](https://t.co/f69KwOeJ0n)\n\n[4] — Ryan Saavedra (@RealSaavedra) [July 2, 2019](https://twitter.com/RealSaavedra/status/1146143587811258370?ref_src=twsrc%5Etfw)\n\n[5] The full press conference, which is [available](https://www.facebook.com/RepWilson/videos/2246130255434536/) on Wilson's Facebook page, clarifies who she was referring to in her comments. Around the 9:00 minute mark, someone asks for comment about the border patrol agents involved in the secret Facebook group.\n\n[6] A report from earlier this week [detailed](https://www.propublica.org/article/secret-border-patrol-facebook-group-agents-joke-about-migrant-deaths-post-sexist-memes) how members of the group, which included current and former border patrol agents, joked about migrant deaths \"joked about the deaths of migrants, discussed throwing burritos at Latino members of Congress visiting a detention facility in Texas on Monday and posted a vulgar illustration depicting Rep. Alexandria Ocasio-Cortez engaged in oral sex with a detained migrant, according to screenshots of their postings.\"\n\n[7] Customs and Border Protection has [launched](https://www.npr.org/2019/07/02/737930088/lawmakers-respond-to-vile-secret-facebook-group-created-by-border-patrol-agents) an investigation into the group.\n\n[8] \"These posts are completely inappropriate and contrary to the honor and integrity I see—and expect—from our agents day in and day out,\" Border Patrol Chief Carla Provost said, adding that employees in violation of CBP's conduct standards \"will be held accountable.\"",
+     "source_ref": "R17",
+     "derived_from": [],
+     "artifact_ref": "A25",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R17",
+      "source_url": "https://freebeacon.com/politics/wilson-d-border-patrol-agents-in-secret-fb-group-should-be-prosecuted/",
+      "final_url": "https://freebeacon.com/politics/wilson-d-border-patrol-agents-in-secret-fb-group-should-be-prosecuted/"
+     }
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E13",
+     "derived_from": [],
+     "locator": "complete cover image"
+    }
+   ],
+   "visual_observation_summary": {
+    "image_evidence_count": 1,
+    "videos": []
+   }
+  },
+  {
+   "task": "核验争议发言所回应的记者问题，以判断声明 Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online 是否遗漏影响追诉对象的语境。E20 提供原始录像线索 https://www.facebook.com/RepWilson/videos/2246130255434536/ ，此前获取失败；利用 E15、E16、E20 已有的录像及来源线索继续补查实际问答，核实问题是否针对秘密 Facebook 群组中的边境巡逻人员，以及回答是否明确限定追诉对象。若取得更长录像，直接与 E1 对照确认争议发言的对应关系。区分实际问答、报道转述和解释，提供取得的关键原语摘录；无法取得时说明具体限制，不重复完整背景调查。",
+   "materials": [
+    "E1",
+    "E15",
+    "E16",
+    "E20"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W2-2",
+    "status": "INCOMPLETE",
+    "finding_ids": [
+     "F10",
+     "F11"
+    ],
+    "selected_evidence_ids": [
+     "E20",
+     "E16",
+     "E24"
+    ],
+    "status_reason": "已取得报道及较长录像的自动字幕，但未取得记者问题的原声或可靠逐字转录，也未取得可与材料 A 直接对照的较长视频内容。因此，尚不能独立确认实际问题的完整措辞、完整回答是否明确限定追诉对象及两份录像的对应关系。",
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F10",
+      "workspace_id": "W2-2",
+      "statement": "报道将记者问题指向秘密 Facebook 群组中的边境巡逻人员。E20 原文为：“Around the 9:00 minute mark, someone asks for comment about the border patrol agents involved in the secret Facebook group.” E16 同样将争议发言解释为回应该群组事件。这是报道对问题内容的转述，并非本次直接核验的记者问话。",
+      "evidence_ids": [
+       "E20",
+       "E16",
+       "E24"
+      ],
+      "limitations": [
+       "E20 所链接的 Facebook 原始录像此前获取失败。",
+       "已读取的 E24 自动字幕未提供可核实该记者问题的文字；字幕空档不能证明录像中没有问话。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F11",
+      "workspace_id": "W2-2",
+      "statement": "取得的回答文本同时包含追诉表述和恐吓、威胁语境。E24 自动字幕从约 08:24 起记录：“those people who are online making fun of members of Congress are a disgrace”，随后记录：“we're going to shut them down and work with whoever it is to shut them down and they should be prosecuted”。E20 引述紧随其后的原话：“You cannot intimidate members of Congress, threaten members of Congress.” 因而，仅概括为追诉网上嘲讽国会的人，会省略报道交代的特定群组背景及回答中关于恐吓、威胁的表述。不过，所见回答引文没有明确说追诉对象“仅限”实施威胁的群组成员；E16 关于她并非主张监禁普通嘲讽者的判断，属于该来源的解释，不能替代对完整实际问答的核验。",
+      "evidence_ids": [
+       "E24",
+       "E20",
+       "E16"
+      ],
+      "limitations": [
+       "E24 是自动字幕，威胁一词附近出现“threat pregnant”等识别异常；“threaten”的精确措辞在此依据报道引文，未由原声独立确认。",
+       "视频获取结果提供了封面和字幕，未提供可供检查的视频内容；未能与材料 A 进行音视频对齐或直接内容比较。",
+       "现有证据不足以判断完整回答是否另有明确限定追诉对象的表述。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E20",
+     "modalities": [
+      "text"
+     ],
+     "label": "Wilson (D): Border Patrol Agents in Secret FB Group Should Be \"Prosecuted\"",
+     "content": "[1] Rep. Frederica Wilson (D., Fla.) said the border patrol agents who joked about migrant deaths and posted sexist content in a secret Facebook group should be \"prosecuted\" during a press conference on Monday outside of a Homestead, Florida migrant detention center.\n\n[2] \"Those people who are online making fun of members of Congress are a disgrace and there's no need for anyone to think that is unacceptable,\" Wilson said. \"We're going to shut them down and work with whoever it is to shut them down and they should be prosecuted. You cannot intimidate members of Congress, threaten members of Congress. It is against the law, and it's a shame in this United States of America.\"\n\n[3] Democrat Rep. Frederica Wilson (FL) says that people who are 'making fun of members of Congress\" online 'should be prosecuted\" [pic.twitter.com/f69KwOeJ0n](https://t.co/f69KwOeJ0n)\n\n[4] — Ryan Saavedra (@RealSaavedra) [July 2, 2019](https://twitter.com/RealSaavedra/status/1146143587811258370?ref_src=twsrc%5Etfw)\n\n[5] The full press conference, which is [available](https://www.facebook.com/RepWilson/videos/2246130255434536/) on Wilson's Facebook page, clarifies who she was referring to in her comments. Around the 9:00 minute mark, someone asks for comment about the border patrol agents involved in the secret Facebook group.\n\n[6] A report from earlier this week [detailed](https://www.propublica.org/article/secret-border-patrol-facebook-group-agents-joke-about-migrant-deaths-post-sexist-memes) how members of the group, which included current and former border patrol agents, joked about migrant deaths \"joked about the deaths of migrants, discussed throwing burritos at Latino members of Congress visiting a detention facility in Texas on Monday and posted a vulgar illustration depicting Rep. Alexandria Ocasio-Cortez engaged in oral sex with a detained migrant, according to screenshots of their postings.\"\n\n[7] Customs and Border Protection has [launched](https://www.npr.org/2019/07/02/737930088/lawmakers-respond-to-vile-secret-facebook-group-created-by-border-patrol-agents) an investigation into the group.\n\n[8] \"These posts are completely inappropriate and contrary to the honor and integrity I see—and expect—from our agents day in and day out,\" Border Patrol Chief Carla Provost said, adding that employees in violation of CBP's conduct standards \"will be held accountable.\"",
+     "source_ref": "R17",
+     "derived_from": [],
+     "artifact_ref": "A25",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R17",
+      "source_url": "https://freebeacon.com/politics/wilson-d-border-patrol-agents-in-secret-fb-group-should-be-prosecuted/",
+      "final_url": "https://freebeacon.com/politics/wilson-d-border-patrol-agents-in-secret-fb-group-should-be-prosecuted/"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E16",
+     "modalities": [
+      "text"
+     ],
+     "label": "Did Rep. Frederica Wilson Advocate Prosecuting People Who 'Make Fun' of Congress? | Snopes.com",
+     "content": "[1] Rep. Wilson expressed an opinion that \"people who are online making fun of members of Congress are a disgrace\" and said \"we're going to shut them down ... and they should be prosecuted.\"\n\n[2] Rep. Wilson was responding to news about a secret Facebook group for Border Patrol agents and referencing persons who used that group to \"intimidate\" and \"threaten\" members of Congress, which is illegal.\n\n[3] On July 2, 2019, amidst a [controversy](https://www.washingtonpost.com/immigration/2019/07/08/un-human-rights-chief-deeply-shocked-by-migrant-detention-center-conditions-texas/) over the conditions at migrant detention centers, U.S. Rep. Frederica Wilson of Florida led a congressional delegation that [toured](https://miami.cbslocal.com/2019/07/02/frederica-wilson-congressional-delegation-inspect-homestead-facility/) the [Homestead Temporary Shelter](https://www.npr.org/2019/02/13/694138106/inside-the-largest-and-most-controversial-shelter-for-migrant-children-in-the-u-) in Homestead, Florida, a 3,200-bed migrant children's detention center operated by a private, for-profit firm (Comprehensive Health Services, Inc.).\n\n[4] At a press conference afterwards, Wilson and others discussed what they had seen on their tour of the detention facility and fielded questions from reporters, but one statement of Wilson's garnered the most press after it was circulated (in isolation) via Twitter: \"Those people who are online making fun of members of Congress are a disgrace, and there's no need for anyone to think that is unacceptable [sic]. We're going to shut them down, and work with whoever it is to shut them down, and they should be prosecuted. You cannot intimidate members of Congress, threaten members of Congress, it is against the law, and it's a shame in this United States of America.\"\n\n[5] Democrat Rep. Frederica Wilson (FL) says that people who are \"making fun of members of Congress\" online \"should be prosecuted\" [pic.twitter.com/f69KwOeJ0n](https://t.co/f69KwOeJ0n)\n\n[6] — Ryan Saavedra (@RealSaavedra) [July 2, 2019](https://twitter.com/RealSaavedra/status/1146143587811258370?ref_src=twsrc%5Etfw)\n\n[7] The statement was used, devoid of context, in memes that presented it as if Wilson had advocated \"prosecuting Americans for free speech\" and \"sending people to jail for sharing opinions\":\n\n[8] Likewise, several right-leaning websites, such as the Daily Wire and the Washington Times, reproduced Wilson's comments absent of any context, employing headlines (\"Frederica Wilson: People 'Should Be Prosecuted' for 'Making Fun of Members of Congress' Online\") and article text that suggested the representative had advocated online pranksters be prosecuted merely for poking fun at members of Congress:\n\n[9] Rep. Frederica Wilson has no love for social media's meme-makers and pranksters — she literally wants them prosecuted.\n\n[10] The Florida Democrat weighed in on free speech issues and told an audience that it should be illegal to mock lawmakers.\n\n[11] \"Those people who are online making fun of members of Congress are a disgrace,\" she said while speaking in Homestead. \"We're gonna shut them down and work with whoever it is to shut them down, and they should be prosecuted. You cannot intimidate members of Congress, frighten members of Congress. It is against the law, and it's a shame in this United States of America.\"\n\n[12] The missing context that was completely omitted by the Daily Wire and the Washington Times was that the day before the congressional delegation toured the Homestead detention facility, ProPublica had published an [article](https://www.propublica.org/article/secret-border-patrol-facebook-group-agents-joke-about-migrant-deaths-post-sexist-memes) revealing the existence of a secret Facebook populated by more than 9,000 former and current Border Patrol agents. Postings to that group included messages and memes depicting or suggesting demeaning and violent acts against members of Congress, including those members who would be touring migrant detention centers:\n\n[13] Several of the postings reviewed by ProPublica refer to the planned visit by members of the Congressional Hispanic Caucus, including [Rep. Alexandria] Ocasio-Cortez and Rep. Veronica Escobar, to a troubled Border Patrol facility outside of El Paso. Agents at the compound in Clint, Texas, have been accused of holding children in neglectful, inhumane conditions.\n\n[14] One member encouraged Border Patrol agents to hurl a \"burrito at these bitches.\" Another, apparently a patrol supervisor, wrote, \"Fuck the hoes.\" \"There should be no photo ops for these scum buckets,\" posted a third member.\n\n[15] Perhaps the most disturbing posts target Ocasio-Cortez. One includes a photo illustration of her engaged in oral sex at an immigrant detention center. Text accompanying the image reads, \"Lucky Illegal Immigrant Glory Hole Special Starring AOC.\"\n\n[16] Another is a photo illustration of a smiling President Donald Trump forcing Ocasio-Cortez's head toward his crotch. The agent who posted the image commented: \"That's right bitches. The masses have spoken and today democracy won.\"\n\n[17] As can be seen in a longer video of the press conference that followed the Homestead Temporary Shelter tour, Wilson was responding to a question from a reporter when she made the statement in question And as [other news outlets](https://www.foxnews.com/politics/florida-democrat-making-fun-congress-should-prosecuted) noted, Wilson was clearly referring to shutting down the secret Facebook group and seeking prosecution of persons who posted material online intended to intimidate or threaten members of Congress (acts which are already [illegal](https://en.wikipedia.org/wiki/Threatening_government_officials_of_the_United_States)); she was not advocating jailing anyone who simply used the internet as a medium for poking fun at Congress. Her response to the reporter's question can be heard after the 8:16 mark in this video):\n\n[18] Wilson's comments came amid a controversy over",
+     "source_ref": "R4",
+     "derived_from": [],
+     "artifact_ref": "A18",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": 6000,
+     "source": {
+      "candidate_id": "R4",
+      "source_url": "https://www.snopes.com/fact-check/frederica-wilson-online-congress/",
+      "final_url": "https://www.youtube.com/watch?v=5PUpBQ-sgkk"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E24",
+     "modalities": [
+      "text"
+     ],
+     "label": "Web Extra: Rep. Wilson At Homestead Facility For Migrant Children subtitles (en)",
+     "content": "{\"language\": \"en\", \"automatic\": true, \"format\": \"ttml\"}\n<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<tt xml:lang=\"en\" xmlns=\"http://www.w3.org/ns/ttml\" xmlns:ttm=\"http://www.w3.org/ns/ttml#metadata\" xmlns:tts=\"http://www.w3.org/ns/ttml#styling\" xmlns:ttp=\"http://www.w3.org/ns/ttml#parameter\" ttp:profile=\"http://www.w3.org/TR/profile/sdp-us\" >\n<head>\n<styling>\n<style xml:id=\"s1\" tts:textAlign=\"center\" tts:extent=\"90% 90%\" tts:origin=\"5% 5%\" tts:displayAlign=\"after\"/>\n<style xml:id=\"s2\" tts:fontSize=\".72c\" tts:backgroundColor=\"black\" tts:color=\"white\"/>\n</styling>\n<layout>\n<region xml:id=\"r1\" style=\"s1\"/>\n</layout>\n</head>\n<body region=\"r1\">\n<div>\n<p begin=\"00:00:00.319\" end=\"00:00:06.150\" style=\"s2\">this administration has shown a blatant</p>\n<p begin=\"00:00:03.510\" end=\"00:00:09.599\" style=\"s2\">disregard for the mental and physical</p>\n<p begin=\"00:00:06.150\" end=\"00:00:12.210\" style=\"s2\">health of children in custody they&#39;re</p>\n<p begin=\"00:00:09.599\" end=\"00:00:14.670\" style=\"s2\">spending weeks and even months in</p>\n<p begin=\"00:00:12.210\" end=\"00:00:18.660\" style=\"s2\">detention conditions that are tantamount</p>\n<p begin=\"00:00:14.670\" end=\"00:00:22.470\" style=\"s2\">to living under house arrest and we are</p>\n<p begin=\"00:00:18.660\" end=\"00:00:29.880\" style=\"s2\">upset about it and we came today to say</p>\n<p begin=\"00:00:22.470\" end=\"00:00:32.759\" style=\"s2\">we will shut this down this does not</p>\n<p begin=\"00:00:29.880\" end=\"00:00:35.670\" style=\"s2\">have to be this way these children can</p>\n<p begin=\"00:00:32.759\" end=\"00:00:38.520\" style=\"s2\">be processed and sent to foster care</p>\n<p begin=\"00:00:35.670\" end=\"00:00:42.230\" style=\"s2\">they can be processed and sent to next</p>\n<p begin=\"00:00:38.520\" end=\"00:00:45.239\" style=\"s2\">of care next of kin aunts grandmothers</p>\n<p begin=\"00:00:42.230\" end=\"00:00:47.280\" style=\"s2\">people in the community who know them</p>\n<p begin=\"00:00:45.239\" end=\"00:00:50.219\" style=\"s2\">and that&#39;s what we&#39;re fighting for today</p>\n<p begin=\"00:00:47.280\" end=\"00:00:52.770\" style=\"s2\">in recent weeks news outlets have</p>\n<p begin=\"00:00:50.219\" end=\"00:00:54.960\" style=\"s2\">reported horror stories about children</p>\n<p begin=\"00:00:52.770\" end=\"00:00:57.270\" style=\"s2\">living in squalor at some of the</p>\n<p begin=\"00:00:54.960\" end=\"00:00:59.969\" style=\"s2\">shelter&#39;s to care for them well these</p>\n<p begin=\"00:00:57.270\" end=\"00:01:02.340\" style=\"s2\">children here seem to be looked after in</p>\n<p begin=\"00:00:59.969\" end=\"00:01:06.060\" style=\"s2\">a clean environment the physical</p>\n<p begin=\"00:01:02.340\" end=\"00:01:08.760\" style=\"s2\">appearance is not always a gauge for</p>\n<p begin=\"00:01:06.060\" end=\"00:01:15.409\" style=\"s2\">mental health so we have to be careful</p>\n<p begin=\"00:01:08.760\" end=\"00:01:15.409\" style=\"s2\">today I came looking for girls</p>\n<p begin=\"00:01:17.390\" end=\"00:01:28.150\" style=\"s2\">[Music]</p>\n<p begin=\"00:01:35.220\" end=\"00:01:51.680\" style=\"s2\">[Music]</p>\n<p begin=\"00:01:54.710\" end=\"00:02:01.030\" style=\"s2\">two days I am prepared to stay until</p>\n<p begin=\"00:02:01.380\" end=\"00:02:16.040\" style=\"s2\">[Applause]</p>\n<p begin=\"00:02:05.650\" end=\"00:02:25.250\" style=\"s2\">sunrise icon mr. John Lewis I must tell</p>\n<p begin=\"00:02:16.040\" end=\"00:02:30.820\" style=\"s2\">you that I came here to learn I came</p>\n<p begin=\"00:02:25.250\" end=\"00:02:34.870\" style=\"s2\">here to learn I&#39;ve been deeply moved by</p>\n<p begin=\"00:02:30.820\" end=\"00:02:38.030\" style=\"s2\">what I have seen what I have observed</p>\n<p begin=\"00:02:34.870\" end=\"00:02:41.450\" style=\"s2\">and I will go back to Washington DC</p>\n<p begin=\"00:02:38.030\" end=\"00:02:45.380\" style=\"s2\">within the next few days much more</p>\n<p begin=\"00:02:41.450\" end=\"00:02:49.370\" style=\"s2\">determined to hold on to something I&#39;ve</p>\n<p begin=\"00:02:45.380\" end=\"00:02:52.430\" style=\"s2\">been believing in for some time if when</p>\n<p begin=\"00:02:49.370\" end=\"00:02:55.610\" style=\"s2\">you see something that is not right not</p>\n<p begin=\"00:02:52.430\" end=\"00:02:59.480\" style=\"s2\">fair not just you have to assess</p>\n<p begin=\"00:02:55.610\" end=\"00:03:01.690\" style=\"s2\">something you have to do something and I</p>\n<p begin=\"00:02:59.480\" end=\"00:03:05.510\" style=\"s2\">want to thank each and every one of you</p>\n<p begin=\"00:03:01.690\" end=\"00:03:08.930\" style=\"s2\">for being out here in the hot Sun day in</p>\n<p begin=\"00:03:05.510\" end=\"00:03:11.299\" style=\"s2\">and day out standing up speaking up and</p>\n<p begin=\"00:03:08.930\" end=\"00:03:14.810\" style=\"s2\">speaking out and get it in good trouble</p>\n<p begin=\"00:03:11.299\" end=\"00:03:17.990\" style=\"s2\">necessary trouble so thank you and may</p>\n<p begin=\"00:03:14.810\" end=\"00:03:25.319\" style=\"s2\">God bless each and every one of you</p>\n<p begin=\"00:03:17.990\" end=\"00:03:25.319\" style=\"s2\">[Music]</p>\n<p begin=\"00:03:27.020\" end=\"00:03:32.670\" style=\"s2\">thank you very much as a congresswoman</p>\n<p begin=\"00:03:30.780\" end=\"00:03:35.480\" style=\"s2\">say I chair the House Committee on</p>\n<p begin=\"00:03:32.670\" end=\"00:03:38.490\" style=\"s2\">Homeland Security part of my</p>\n<p begin=\"00:03:35.480\" end=\"00:03:41.970\" style=\"s2\">responsibility is to come and look at</p>\n<p begin=\"00:03:38.490\" end=\"00:03:45.420\" style=\"s2\">facilities like this and see what we</p>\n<p begin=\"00:03:41.970\" end=\"00:03:48.990\" style=\"s2\">need to do to fix them I can tell you</p>\n<p begin=\"00:03:45.420\" end=\"00:03:52.950\" style=\"s2\">today that it&#39;s what I didn&#39;t see that</p>\n<p begin=\"00:03:48.990\" end=\"00:03:56.550\" style=\"s2\">bothers me the most I don&#39;t see the</p>\n<p begin=\"00:03:52.950\" end=\"00:03:59.310\" style=\"s2\">miami-dade school system involved in the</p>\n<p begin=\"00:03:56.550\" end=\"00:04:02.880\" style=\"s2\">educating of the children who are in</p>\n<p begin=\"00:03:59.310\" end=\"00:04:06.390\" style=\"s2\">this facility I don&#39;t see children being</p>\n<p begin=\"00:04:02.880\" end=\"00:04:09.060\" style=\"s2\">test",
+     "source_ref": "R4",
+     "derived_from": [],
+     "artifact_ref": "A30",
+     "locator": "platform subtitle timestamps",
+     "acquired_by": "SEARCH/open/yt-dlp+http",
+     "discovered_by": "W2-2",
+     "production_method": "source_transcript",
+     "content_offset": 0,
+     "next_offset": 6000,
+     "source": {
+      "candidate_id": "R4",
+      "source_url": "https://www.snopes.com/fact-check/frederica-wilson-online-congress/",
+      "final_url": "https://www.youtube.com/watch?v=5PUpBQ-sgkk"
+     }
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E23",
+     "derived_from": [],
+     "locator": "complete cover image"
+    }
+   ],
+   "visual_observation_summary": {
+    "image_evidence_count": 1,
+    "videos": []
+   }
+  }
+ ],
+ "current_materials": [
+  {
+   "evidence_id": "E2",
+   "reference_id": null,
+   "label": "媒体属性：video，41.167秒，1280×714，30.000fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E11",
+   "reference_id": null,
+   "label": "Dem Rep. Frederica Wilson vows to prosecute people for 'making fun of members of Congress' online | Blaze Media",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R1"
+  },
+  {
+   "evidence_id": "E20",
+   "reference_id": null,
+   "label": "Wilson (D): Border Patrol Agents in Secret FB Group Should Be \"Prosecuted\"",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R17"
+  },
+  {
+   "evidence_id": "E14",
+   "reference_id": null,
+   "label": "Frederica Wilson said WHAT!? subtitles (en)",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R2"
+  },
+  {
+   "evidence_id": "E13",
+   "reference_id": null,
+   "label": "cover: Frederica Wilson said WHAT!?",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": "R2"
+  },
+  {
+   "evidence_id": "E12",
+   "reference_id": null,
+   "label": "Frederica Wilson said WHAT!?",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R2"
+  },
+  {
+   "evidence_id": "E19",
+   "reference_id": null,
+   "label": "Bongino | Um, What? Dem Rep. Wants to “Prosecute” Those Who Make Fun of Congress Online",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R10"
+  },
+  {
+   "evidence_id": "E18",
+   "reference_id": null,
+   "label": "Frederica Wilson to Prosecute People Who Make Fun of Her - The People's Cube - Political Satire",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R11"
+  },
+  {
+   "evidence_id": "E16",
+   "reference_id": null,
+   "label": "Did Rep. Frederica Wilson Advocate Prosecuting People Who 'Make Fun' of Congress? | Snopes.com",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R4"
+  },
+  {
+   "evidence_id": "E15",
+   "reference_id": null,
+   "label": "Rep. Frederica Wilson Leads Congressional Delegation During Homestead Migrant Facility Inspection - CBS Miami",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R3"
+  },
+  {
+   "evidence_id": "E22",
+   "reference_id": null,
+   "label": "House Democrat wants to \"prosecute\" those \"making fun\" members of Congress · The Floridian",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R20"
+  },
+  {
+   "evidence_id": "E21",
+   "reference_id": null,
+   "label": "Congresswoman Frederica S. Wilson to Lead Congressional Delegation Tour of the Homestead Migrant Detention Facility | Congresswoman Frederica Wilson",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R19"
+  },
+  {
+   "evidence_id": "E23",
+   "reference_id": null,
+   "label": "cover: Web Extra: Rep. Wilson At Homestead Facility For Migrant Children",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": "R4"
+  },
+  {
+   "evidence_id": "E24",
+   "reference_id": null,
+   "label": "Web Extra: Rep. Wilson At Homestead Facility For Migrant Children subtitles (en)",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R4"
+  },
+  {
+   "evidence_id": "E25",
+   "reference_id": null,
+   "label": "Florida Democrat says those 'making fun' of members of Congress online should be 'prosecuted' | Fox News",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R26"
+  }
+ ],
+ "visual_observation_summary": {
+  "image_evidence_count": 10,
+  "videos": [
+   {
+    "evidence_id": "E1",
+    "observed_frame_count": 8,
+    "media_duration_s": 41.166666666666664,
+    "coverage_span_s": [
+     0.0,
+     41.166666666666664
+    ],
+    "observed_ranges_s": [
+     [
+      2.566666666666667,
+      2.6
+     ],
+     [
+      7.733333333333333,
+      7.766666666666667
+     ],
+     [
+      12.866666666666667,
+      12.9
+     ],
+     [
+      18.0,
+      18.033333333333335
+     ],
+     [
+      23.166666666666668,
+      23.200000000000003
+     ],
+     [
+      28.3,
+      28.333333333333336
+     ],
+     [
+      33.43333333333333,
+      33.46666666666666
+     ],
+     [
+      38.6,
+      38.63333333333333
+     ]
+    ],
+    "unconfirmed_ranges_s": [
+     [
+      0.0,
+      2.566666666666667
+     ],
+     [
+      2.6,
+      7.733333333333333
+     ],
+     [
+      7.766666666666667,
+      12.866666666666667
+     ],
+     [
+      12.9,
+      18.0
+     ],
+     [
+      18.033333333333335,
+      23.166666666666668
+     ],
+     [
+      23.200000000000003,
+      28.3
+     ],
+     [
+      28.333333333333336,
+      33.43333333333333
+     ],
+     [
+      33.46666666666666,
+      38.6
+     ],
+     [
+      38.63333333333333,
+      41.166666666666664
+     ]
+    ],
+    "unknown_duration_frame_times_s": []
+   }
+  ]
+ },
+ "run_config": {
+  "dataset": "true",
+  "case": "20361105",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "search": "ddgs_text",
+  "evidence_source_policy": "unrestricted_retrospective_web",
+  "source_policy": null,
+  "gia_output_source": "codex_cli"
+ }
+}

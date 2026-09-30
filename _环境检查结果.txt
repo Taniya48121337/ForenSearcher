@@ -1,0 +1,36 @@
+=== python C:\Users\Zya\anaconda3\python.exe 3.12.7
+  torch: 2.10.0+cu128
+  transformers: 5.3.0
+  accelerate: 1.13.0
+  peft: 0.18.1
+  bitsandbytes: 0.49.2
+  httpx: 0.28.1
+  av: 17.0.0
+  cv2: 4.11.0
+  PIL: 12.0.0
+  ddgs: 9.16.0
+  pytest: 9.1.1
+  vllm: MISSING
+  cuda: True NVIDIA GeForce RTX 5090 31.8GB
+=== nvidia-smi
+name, memory.used [MiB], memory.total [MiB], driver_version
+NVIDIA GeForce RTX 5090, 3343 MiB, 32607 MiB, 591.74
+=== ollama C:\Users\Zya\AppData\Local\Programs\Ollama\ollama.EXE
+ollama version is 0.32.5
+NAME        ID              SIZE      MODIFIED     
+qwen3:8b    500a1f067a9f    5.2 GB    2 months ago
+=== ollama api
+  http://127.0.0.1:11434/v1/models -> {"object":"list","data":[{"id":"qwen3:8b","object":"model","created":1783875266,"owned_by":"library"}]}
+
+  http://127.0.0.1:8000/v1/models -> URLError
+  http://127.0.0.1:1234/v1/models -> URLError
+=== codex C:\Users\Zya\AppData\Local\OpenAI\Codex\stable-runtime\codex.EXE
+codex-cli 0.153.4
+=== wsl
+<TimeoutExpired: Command 'wsl -l -v' timed out after 20 seconds>
+=== models dir
+['inspect', 'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-14B-bnb-4bit', 'Qwen3.5-9B']
+=== disk
+'wmic' is not recognized as an internal or external command,
+operable program or batch file.
+=== FOREN env {}

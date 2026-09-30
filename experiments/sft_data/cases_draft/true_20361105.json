@@ -1,0 +1,97 @@
+{
+  "case_id": "true:20361105",
+  "dataset": "true",
+  "source_id": "20361105",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online.",
+  "family_key": "true:20361105",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_20361105_visibility_validation/artifacts/f2bfb55586b24ca2a7913908cfc7f8d9.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "freebeacon",
+      "description": "Wilson (D): Border Patrol Agents in Secret FB Group Should Be \"Prosecuted\"（E20）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "freebeacon.com/politics/wilson-d-border-patrol-agents-in-secret-fb-group-should-be-prosecuted*",
+      "acquired_by": null
+    },
+    {
+      "key": "theblaze",
+      "description": "Dem Rep. Frederica Wilson vows to prosecute people for 'making fun of members of Congress' online | Blaze Media（E11）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "theblaze.com/news/dem-rep-frederica-wilson-vows-prosecute-people-for-making-fun-of-members-of-congress-online*",
+      "acquired_by": null
+    },
+    {
+      "key": "youtube_upload",
+      "description": "Web Extra: Rep. Wilson At Homestead Facility For Migrant Children subtitles (en)（E24）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "youtube.com/watch[?]v=5PUpBQ-sgkk*",
+      "acquired_by": null
+    },
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E4、E6）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "声明是否准确概括她针对的行为及其主张",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "视频中实际可辨认的发言者和言论是什么；相关语境是否支持声明所述的追诉对象与主张",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "相关言论的原始出处和完整语境是什么（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:freebeacon,theblaze,youtube_upload; all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_20361105_visibility_validation 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用（有降级项，见审核单 trace.origin）。",
+  "effective_split": "dev_train"
+}

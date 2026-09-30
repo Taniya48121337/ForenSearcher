@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 变体。2026-09-28 起草，同日经独立审稿修订（审查结果见 cases_draft/review_20260928_labels_offline.md）：去掉 FINISH 题的“依据已取得的材料”捷径措辞，纠正 Finding 编号，不再依据污染 Finding；1028 v3 因环境无 ASR 改为 FINISH，新增 v4。",
+  "source_run": "true_24171541709824_r1",
+  "source_request": "request_0022",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "2003年弗吉尼亚州要求明尼苏达归还第28步兵团战旗时，明尼苏达州州长作何回应？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-1（COMPLETED）F5（干净）引 E9（2017 年 Twin Cities《先锋报》回顾）：2003 年弗州官员（含州长 Mark Warner）要求归还，明州州长 Tim Pawlenty 拒绝，称战旗理应属于明尼苏达。答案须带上 F5 的限制：依据为事后新闻回顾，未取得 2003 年的双方函件或同期官方记录。现有材料足以回答，不需要再查。",
+      "review": "修改"
+    },
+    {
+      "id": "v2",
+      "task": "这面被争议的邦联战旗目前由哪个机构保管？它是怎样从战场缴获一路进入该机构馆藏的？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2（COMPLETED）F7（E2、E3）：弗吉尼亚第28步兵团战旗，1863-07-03 葛底斯堡皮克特冲锋中由明尼苏达第1团列兵 Marshall Sherman 缴获。F8（E2、E5）：曾交美国战争部登记，19 世纪末回到明尼苏达，现为明尼苏达历史学会馆藏，2023 年 MinnPost 称其属于永久馆藏。限制取 F8：馆藏状态以所读资料的记载时间为限，未作实时保管确认。W1-1 F2 被判污染，不作依据。",
+      "review": "修改"
+    },
+    {
+      "id": "v3",
+      "task": "找到2000年弗吉尼亚州参议院那项请求明尼苏达归还战旗的决议的正式文本或议会表决记录，确认它最终是否获得通过。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 F4 只说决议已由规则委员会提交参议院全院（E6），没有表决结果；需要查议会记录。",
+      "review": "通过"
+    },
+    {
+      "id": "v4",
+      "task": "核查2023年之后，弗吉尼亚州官方是否再次正式要求归还这面战旗，以及明尼苏达方面如何回应。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "现有报告最晚到 2017 年回顾报道与 2023 年 MinnPost 的馆藏说明，没有 2023 年之后的请求记录；需要新检索。",
+      "review": "通过"
+    }
+  ]
+}

@@ -32,6 +32,11 @@ class CliGenerator(ModelImageInputs):
         config_path = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))) / "config.toml"
         config = tomllib.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
         self.model_config = {key: config.get(key) for key in ("model", "model_provider", "model_reasoning_effort", "profile")}
+        # 2026-09-30：Codex 的默认模型会随 config.toml / 客户端更新变化（09-30 变成 gpt-6.1-sol，ChatGPT 账号不支持，
+        # 11 个 run 全部 400）。FOREN_CODEX_MODEL 显式指定教师模型，保证与之前的轮次同一个教师；记进 transport.json。
+        self.model_override = os.environ.get("FOREN_CODEX_MODEL") or None
+        if self.model_override:
+            self.model_config = {**self.model_config, "model": self.model_override, "model_override": True}
 
     async def generate_json(self, *, system_prompt: str, payload: dict[str, Any]) -> dict[str, Any]:
         async with self.lock:
@@ -74,6 +79,8 @@ class CliGenerator(ModelImageInputs):
         result_path = directory / "response.json"
         command = [self.codex, "exec", "--ephemeral", "--sandbox", "read-only", "--skip-git-repo-check",
                    "--color", "never", "--json", "-C", str(actor_dir), "-o", str(result_path)]
+        if self.model_override:
+            command.extend(["-m", self.model_override])
         for path in image_paths:
             command.extend(["--image", str(path)])
         command.extend(["--", "-"])
@@ -106,7 +113,10 @@ class CliGenerator(ModelImageInputs):
         metadata["configured_model"] = self.model_config
         (directory / "transport.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
         if completed.returncode or tool_items or not result_path.is_file():
-            raise RuntimeError(f"Policy transport failed or used out-of-environment tools: {directory}")
+            reason = next((str((e.get("error") or {}).get("message") or e.get("message") or "")
+                           for e in reversed(events) if e.get("type") in {"turn.failed", "error"}), "")
+            raise RuntimeError(f"Policy transport failed or used out-of-environment tools: {directory}"
+                               + (f"；Codex 报错：{reason[:300]}" if reason else ""))
         raw = result_path.read_text(encoding="utf-8")
         output = extract_json_object(raw)
         if image_ids:

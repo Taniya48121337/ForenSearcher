@@ -1,0 +1,106 @@
+{
+  "case_id": "videosham:1028",
+  "dataset": "videosham",
+  "source_id": "1028",
+  "split": "dev_train",
+  "task_kind": "video_diff",
+  "task_text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+  "family_key": "videosham:1028",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_1028_r2/artifacts/7d159b6029ad4904a775b93bc02e7469.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_1028_r2/artifacts/8aceba6d1d10483ab137a143961b1e0c.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频的抽帧（差异位置两侧的对应帧）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "media_profile",
+      "description": "两段视频的媒体属性（时长、帧率、音轨数）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/media_profile"
+    },
+    {
+      "key": "alignment",
+      "description": "视觉或音频对齐结果（候选对应时间锚点，只作线索）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/align_media"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "A 在 0:00–0:06 蓝色标题框内的文字是否被替换为 lorem ipsum（官方编辑描述，须由画面确认），以及画面区域",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "音轨是否可取得；可确认的声音差异或无法核验的说明",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "已确认的差异对画面含义的影响（不把未检查的区域或模态当作没有差异）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "未能确定的内容；不预设候选视频 B 的来源身份或制作先后",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "lorem ipsum",
+        "aliases": [
+          "lorem",
+          "占位文字"
+        ]
+      },
+      "note": "官方：A 在 0:00–0:06 把蓝框文字换成 lorem ipsum。匹配不区分大小写，大小写变体不必列。",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/cases/videosham_1028/reference.json",
+  "used_for_revision": [],
+  "notes": "官方编辑描述（reference_status: 需由画面确认）：0:00 to 0:06 change the text in the blue box to lorem ipsum；Manipulation: Text Replaced/Text Added；label_expected 2026-09-28 经独立审稿后加入（只核关键词，位置/方向由 requirements 判）"
+}

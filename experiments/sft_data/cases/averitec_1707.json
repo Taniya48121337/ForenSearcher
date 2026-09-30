@@ -1,0 +1,64 @@
+{
+  "case_id": "averitec:1707",
+  "dataset": "averitec",
+  "source_id": "1707",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：In 2018, Yaba Psychiatric Hospital had a budget of 133 million Nairas, but less than 10% of that amount, or 13 million Nairas, was released by the federal government.（声明日期：2019-10-02）",
+  "family_key": "averitec:1707",
+  "media": [],
+  "claims": [
+    "In 2018, Yaba Psychiatric Hospital had a budget of 133 million Nairas, but less than 10% of that amount, or 13 million Nairas, was released by the federal government."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "2018 年联邦预算中 Yaba 联邦神经精神病院获得的拨款数额，以及该数字的统计口径（总额、资本或经常性支出）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "声明中“联邦政府实际拨付（released）”金额的出处与性质：是医院方面的说法还是联邦政府的拨付记录，能否独立核实",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "budget_2018",
+      "description": "2018 年联邦预算文件中该院的预算条目",
+      "url_pattern": "africacheck.org/wp-content/uploads/2019/11/2018-budget-final*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "vanguard_hospital",
+      "description": "Vanguard 2018-12 关于该院 2018 年度报告的报道（医院财务人员所称预算与拨付数字；试点 run 两次取到）",
+      "url_pattern": "vanguardngr.com/2018/12/drug-abuse-yaba-psychiatric-hospital-records-50-increase-in-patients*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": "../data/averitec/1707/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2019-10-02，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210127230319/https://africacheck.org/fact-checks/reports/fact-checked-al-jazeeras-claims-about-nigerias-mental-health-problem。数据集标签 Not Enough Evidence，按保守规矩不写 label_expected（子串匹配区分不了\"属实/不属实\"等）。（已按 2026-09-28 独立审稿修改 2 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

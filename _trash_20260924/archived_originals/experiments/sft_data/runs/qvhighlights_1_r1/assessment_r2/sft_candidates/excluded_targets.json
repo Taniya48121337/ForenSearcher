@@ -1,0 +1,57 @@
+[
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "返回的集合与request_0005高度重合，增加的E27早在request_0005输入中出现，像素也是白场；它比已知E28更早，不能进一步收紧E28至E20之间的起点范围。存在少量同屏复核价值，但不足以作为优质下一步示范。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次返回request_0006的内部及结尾帧组合，主要变化是加入此前已见的74.007秒E12。没有新增采样或更细边界信息。缺少部分图片限制其内容评价，但不改变本次重新展示既有集合的事实。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "焦点集合与request_0007完全相同，E29像素和精确时间也已提供；没有失败恢复或新的比较对象。执行成功不能弥补明显不足的信息增益。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "焦点集合与request_0008完全相同。改读E30仅返回已知时间等图片元数据，并没有取得新的采样时刻；此前已有成功附图记录，不能把换一个READ_RECORD编号算作新的实质调查。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次使用request_0007及request_0009的同一集合；E28白场和时间定位此前均已可见。该动作在有限轮次内继续重复，未解决新的不确定性；下一轮仍可提交报告，不能误称它导致报告未完成。"
+    },
+    "execution_status": "executed"
+  }
+]

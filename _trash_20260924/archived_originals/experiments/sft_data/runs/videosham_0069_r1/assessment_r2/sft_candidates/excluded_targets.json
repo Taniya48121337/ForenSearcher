@@ -1,0 +1,178 @@
+[
+  {
+    "request_id": "request_0001",
+    "assessment": {
+      "request_id": "request_0001",
+      "disposition": "exclude",
+      "target_rating": 0,
+      "critical_unknown": true,
+      "reason": "解析失败已确认，未形成执行决策；原始输出和完整输入缺失，不能重建内容或把0002当作其无损修复。"
+    },
+    "execution_status": "unparsed_actor_output"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E21及所恢复的早期图组已多次显示，读取主要返回已知定位，未提出新增检验问题。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次切回已显示的尾部图组，E13定位已知，没有补齐时序关系的新证据。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "重新读取E18并切回相同早期对照，延续无新增观察的往返。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0013",
+    "assessment": {
+      "request_id": "request_0013",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "临近报告仍读取已见E12并恢复旧图组，未利用最后取证机会解决具体空档。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0017",
+    "assessment": {
+      "request_id": "request_0017",
+      "disposition": "exclude",
+      "target_rating": 0,
+      "critical_unknown": false,
+      "reason": "语法合法且实际尝试，但此前已知A零音轨，双输入音频对齐的必要条件不成立，无法获得所需比较。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0026",
+    "assessment": {
+      "request_id": "request_0026",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "返回刚看过的尾部图组，E25定位已知，没有新增时间候选或细节问题。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0027",
+    "assessment": {
+      "request_id": "request_0027",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次恢复相同早期配对，E22此前已反复附图，信息增益很低。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0028",
+    "assessment": {
+      "request_id": "request_0028",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取E26再次切换至旧尾部组，未针对已见比例冲突补查新时刻。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0029",
+    "assessment": {
+      "request_id": "request_0029",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取E19再次恢复旧早期组，重复定位元数据不能改善动作配对。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0030",
+    "assessment": {
+      "request_id": "request_0030",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次读取E13与旧尾部组，继续消耗有限轮次而未产生新的检验。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0031",
+    "assessment": {
+      "request_id": "request_0031",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "最后取证动作仍切回同一早期组；E23虽有画面异常，但输出没有针对该异常提出新检查。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0042",
+    "assessment": {
+      "request_id": "request_0042",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次切向已知低头样本与B旧参照，没有补齐关键空档，对剩余两次取证机会的利用不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0055",
+    "assessment": {
+      "request_id": "request_0055",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "刚取得关键局部帧后又切回已多次出现的宽间隔图组，E21定位已知，新增价值不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0057",
+    "assessment": {
+      "request_id": "request_0057",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "A内部重复及采样限制有像素支持，但三组B端关键对应图未附给评分员，主张的精确跨视频映射不能确认；需补齐原附件后复评，不能仅凭标注或提交成功接受。"
+    },
+    "execution_status": "report_committed"
+  },
+  {
+    "request_id": "request_0060",
+    "assessment": {
+      "request_id": "request_0060",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "最终答案的音轨、时长、A重复样本及限制大体有据，但主结论依赖未附评审像素的E59/E65/E63。精确映射不能通过；官方6–10秒完整定位也未完成。有限停止不等于完整核查成功。"
+    },
+    "execution_status": "gia_decision_accepted"
+  }
+]

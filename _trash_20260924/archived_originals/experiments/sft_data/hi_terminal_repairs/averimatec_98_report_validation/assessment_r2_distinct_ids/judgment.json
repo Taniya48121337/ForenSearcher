@@ -1,0 +1,87 @@
+{
+  "assessment_scope": "仅依据所供材料及八张图片，按对象表递归解析引用，评估 steps 中唯一目标 terminal_request_0001、唯一演员 W1-1。recorded_prefix 的 request_0001—request_0011 仅作历史证据，不另列训练目标；脚本调度不评分为 GIA。此次为终端回放，没有新工具动作或下游决策，execution 不适用。六个适用维度全部可评分，覆盖原始权重的90%；归一化加权分为84.7/100，仅概括本报告质量，不表示最早来源核查已经完成。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "执行链接明确为 offline_terminal_replay，new_tool_actions=0。本地输出校验通过仅支持格式对应，不能证明新取证、实际提交或下游采用。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "引用的 E2、E3 均有历史读取正文且在终端输入中可见。AFP 档案线索来自 E2 第19段，BBC 日期及链接来自 E3 第11段，无须借用评审参考答案。未把未附的 E22、E23、E24 当作已见图片。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "两条发现准确区分来源转述与直接确认：E3 支持 HaqCheck 所称的 BBC 2019年10月30日发表记录，E2 支持 AFP 档案及2019年6月法国波城拍摄的说法。具体小缺陷是“AFP archive could not be accessed”概括过宽：历史实际证明的是所链接的 Perma 页面返回403，并非所有 AFP 档案访问方式均失败。图1可见桌面武器；图2/3是太空背景魔方，图4/5是箭头魔方，图6/7是灰色方柱场景魔方，图8是火光背景魔方，均不能补足原图来源匹配；报告没有将这些无关结果当成证据。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部任务要求查明所附武器照片的最早版本网站并取得直接证据。报告给出了有用的 AFP 来源线索和 BBC 有日期候选，但尚未确认原图对应及最早发表关系，核心核查仍未完成。INCOMPLETE 状态准确，不能因此把任务完成度计为通过；也不要求该 HI 回答教会分裂、人物身份等其他问题。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "决策前 remaining_turns=0，此时提交有依据的部分报告是合理选择。剩余秒数不能覆盖轮次限制。没有虚构补查成功，也没有为了迎合参考答案把未核验的最早网站写成定论。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确披露 BBC 日期和图像归属来自 HaqCheck、已检查的 BBC 文字未直接证明日期或图像对应、AFP 原档未查看，并区分拍摄日期与网上发表日期。E11 的 next_offset=6000 表示仍有未读内容，但报告仅说已检查的文字未建立证明，没有声称整页不存在相关信息。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终端报告仅保留两条与来源追溯有关的发现，未展开无关搜索结果，也未新增无信息增益的动作。历史搜索消耗和自动附图不能算成本报告的新行动开销。",
+          "request_ids": ["terminal_request_0001"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "AFP 档案原图与 E1 的直接像素对应、档案上线日期及其相对其他网站的先后关系仍未确认。",
+        "BBC 页面实际图片与 E1 是否对应，以及2019年10月30日是否由原站发表元数据支持，仍未直接核验。",
+        "E11 后续页内容及未附图片的像素未知；不能推断其中存在或不存在决定性证据。",
+        "这些是报告已披露的调查缺口，不是对其两条限定性来源转述无法评分，也不代表局部任务已经完成。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "terminal_request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "可作为如实提交 INCOMPLETE 报告的候选监督目标。已陈述的核心来源转述可由 E2、E3 核对，状态符合缺证据及零剩余轮次的实际状态；存在访问失败范围表述的小缺陷。官方答案 AFP photo archives 与第二条来源线索一致，但不能单独证明档案最早上线；第一条也明确没有把 BBC 候选认定为最早网站。critical_unknown=false 仅表示本报告的限定性事实与状态具有足够评审依据，不表示最早来源这个未决问题通过核查。候选用途应限定为部分调查报告，不作为已完成来源确认或真实新执行轨迹导出。"
+    }
+  ],
+  "construction_revisions": [
+    "导出时保留 terminal_replay、唯一终端目标编号和历史前缀的边界；不得将历史请求或脚本调度扩充为本次新增监督目标，也不得声称发生了新取证或下游验证。",
+    "将访问限制表述具体化为“AFP Fact Check 链接的 Perma 存档页面返回403”；若保留对 BBC 已读内容的说明，可补引 E11 并注明仅读取首个内容页。",
+    "若需要完成型来源调查样本，应从尚有行动预算的历史状态继续真实取证，核查 E11 后续内容、来源图片对应及发表时间证据。保留原始失败观察，不用参考答案或改写报告补造成功后缀。",
+    "保留八张实际附图与 E 编号的对应关系；魔方结果只能证明本次图片搜索未提供所需匹配，不能据此倒推搜索前的相关查询必然不合理。"
+  ],
+  "rubric_revisions": [
+    "明确区分任务完成度与终端报告质量：诚实且有用的 INCOMPLETE 可以成为报告候选，同时任务维度仍因核心证据缺失降分。",
+    "将 critical_unknown 明确定义为影响目标输出正确性判定的关键评审未知；另行记录输出已明确披露的调查未知，避免将其机械判为不合格或误算为任务通过。",
+    "来源追溯分别核对来源声称、图片对应、拍摄日期、网上发表日期和最早性。权威来源及官方答案不能替代这些不同命题的证据。",
+    "访问失败结论应限定到实际尝试的链接、渠道和反馈；分页材料的否定性判断应限定到实际读取范围。"
+  ]
+}

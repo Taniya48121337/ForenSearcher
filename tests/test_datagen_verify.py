@@ -108,7 +108,7 @@ def test_exec_interval_and_label_checks():
     assert hard == []                      # 12.0/15.0 不在文本里只会是 flag（数字来自视频）
     off = report(findings=[{"statement": "视频在 40–45 秒有差异。", "evidence_ids": ["E3"]}])
     hard = [e for e in exec_checks(off, lookup(), case=case) if e.extra["confidence"] == "hard"]
-    assert set(kinds(hard)) == {ErrorType.UNSUPPORTED_ASSERTION, ErrorType.OMITTED_REQUIRED_FACT}
+    assert set(kinds(hard)) == {ErrorType.UNSUPPORTED_ASSERTION}   # 09-24：label_expected 只在 answer 单元核，工作区报告不再报缺标签
     assert [e.extra.get("best_iou") for e in hard if e.type is ErrorType.UNSUPPORTED_ASSERTION] == [0.0]
 
 
@@ -389,3 +389,19 @@ def test_repair_json_quotes_and_fuzzy_quote_match():
     assert fixed["supported_parts"][0]["part"] == 'he said "no" twice' and fixed["notes"] == "ok"
     assert quote_in_source("AFP reporters visited the cemetery on May 2 2023 and photographed", PAGE)   # 少了逗号也算
     assert not quote_in_source("AFP reporters visited the zoo on May 2, 2023 and photographed the elephant", PAGE)
+
+
+def test_coverage_parts_listed_but_grounded_are_minor_notes():
+    """verifier@0.3.2：模型列了"拿不准"的部分但整句判 grounded=true → minor 备注，不再是 critical 无据断言。"""
+
+    stmt = "坟墓位于印度海得拉巴，但尚不能确认拍摄者身份。"
+    table = {("海得拉巴", "E3"): sup("坟墓位于印度海得拉巴", "the grave in the viral photo is in Hyderabad, India")}
+    lenient = FakeJudge(table, coverage={"海得拉巴": {"unsupported_parts": ["尚不能确认拍摄者身份"], "grounded": True, "notes": "限定语"}})
+    result = run(verify_anchored(report(findings=[{"finding_id": "F1", "statement": stmt, "evidence_ids": ["E3"]}]), lookup(), lenient))
+    [err] = result.errors
+    assert err.type is ErrorType.UNSUPPORTED_ASSERTION and err.severity is Severity.MINOR and err.extra["uncertain"]
+    assert decide(result.errors, []) == "positive"
+    strict = FakeJudge(table, coverage={"海得拉巴": {"unsupported_parts": ["尚不能确认拍摄者身份"], "grounded": False, "notes": "缺"}})
+    result = run(verify_anchored(report(findings=[{"finding_id": "F1", "statement": stmt, "evidence_ids": ["E3"]}]), lookup(), strict))
+    [err] = result.errors
+    assert err.severity is Severity.CRITICAL and not err.extra.get("uncertain")

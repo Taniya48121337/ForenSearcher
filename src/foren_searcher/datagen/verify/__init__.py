@@ -12,16 +12,32 @@
 - 第三层 sufficiency：模型看整份报告对照任务要求和必需证据清单，判断"该拿的拿齐没有"、
   COMPLETED / INCOMPLETE 报得对不对。
 
+2026-09-21 起（verifier@0.2.0）核验单元从"报告"扩到四个：report（三层）、step（units.check_step：合法/重复/无视反馈 +
+hindsight.clue_gain）、plan（units.check_plan：可解析/兄弟依赖/重叠 + hindsight 缺口）、answer（units.check_answer：引用可见/
+案卷标签/污染输入/代理锚定/充分性）。calibrate.recalibrate 对已存 report 判定做规则校准（minor 不传播、多证据 scope 豁免、
+关系句引用不全降级）。
+
+接上核验模型后（complete_units CLI）：answer_anchored 把 FINISH 答案拆句后走第二层"部分支持 + 覆盖"逐句锚定，替掉代理；
+plan_judged 让模型只读任务文字判"对准哪些要求 / 前提走私"，与 hindsight 对照；calibrate_recall 往报告副本注入六种已知错误
+再跑三层，出每种注入 / 每种错误类型的召回率（精度校准 calibrate.py 的反面）。
+
 产出是 Verdict（verdict.py）：错误列表、处置（positive / negative / uncertain）、被污染的 Finding、
 核验器与规格指纹。核验模型必须与教师分离（verifier ≠ teacher）；本包只定义 JsonJudge 协议，
 不绑定具体模型。
 """
 
 from .anchored import AnchoredResult, verify_anchored
+from .answer_anchored import anchor_answer, apply_answer_anchoring, split_answer
+from .calibrate import recalibrate
 from .context import DictLookup, EvidenceLookup, StoreLookup
 from .exec_checks import exec_checks
+from .hindsight import UsefulEvidence, build_useful_evidence, clue_gain
+from .plan_judged import apply_plan_judgment, judge_plan
 from .sufficiency import verify_sufficiency
+from .units import check_answer, check_plan, check_step, verify_units
 from .verdict import Disposition, JsonJudge, Verdict, verify_report
 
-__all__ = ["AnchoredResult", "DictLookup", "Disposition", "EvidenceLookup", "JsonJudge", "StoreLookup", "Verdict",
-           "exec_checks", "verify_anchored", "verify_report", "verify_sufficiency"]
+__all__ = ["AnchoredResult", "DictLookup", "Disposition", "EvidenceLookup", "JsonJudge", "StoreLookup", "UsefulEvidence", "Verdict",
+           "anchor_answer", "apply_answer_anchoring", "apply_plan_judgment", "build_useful_evidence", "check_answer", "check_plan",
+           "check_step", "clue_gain", "exec_checks", "judge_plan", "recalibrate", "split_answer", "verify_anchored", "verify_report",
+           "verify_sufficiency", "verify_units"]

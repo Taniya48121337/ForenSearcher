@@ -1,0 +1,129 @@
+{
+  "case_id": "averimatec:441",
+  "dataset": "averimatec",
+  "source_id": "441",
+  "split": "dev_eval",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A photo shows that Pakistani parents locked their daughter's grave to avoid her corpse falling prey to necrophilia（声明日期：2023-04-26）",
+  "family_key": "averimatec:441",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/441/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "A photo shows that Pakistani parents locked their daughter's grave to avoid her corpse falling prey to necrophilia"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "boomlive.in/fact-check/pakistan-grave-necrophilia-rape-locked-cage-hyderabad-21833"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图中坟墓的实际所在地",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "坟墓加装铁栅和锁的真实原因",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "altnews",
+      "description": "Alt News 核查（试点 run 取到）",
+      "url_pattern": "altnews.in/media-misreport-viral-photo-of-grave*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "etvbharat",
+      "description": "ETV Bharat 核查（试点 run 取到）",
+      "url_pattern": "etvbharat.com/english/state/telangana/fact-check-picture-of-grill-lock-on-grave*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "ndtv",
+      "description": "NDTV 报道（试点 run 取到）",
+      "url_pattern": "ndtv.com/india-news/viral-picture-of-padlock-on-grave*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "logicalindian",
+      "description": "The Logical Indian 核查（试点 run 取到）",
+      "url_pattern": "thelogicalindian.com/pakistan-put-locks-daughters-graves*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "local_tweet",
+      "description": "当地人说明坟墓位置的推文（标注来源）",
+      "url_pattern": "*iamsalmansallu/status/1652680592100847617*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "owner_tweet",
+      "description": "说明加锁原因的推文（标注来源）",
+      "url_pattern": "*warispathan/status/1652654774062313472*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:altnews,etvbharat,ndtv,logicalindian,local_tweet,owner_tweet",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/441/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2023-04-26，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20241010064046/https://www.boomlive.in/fact-check/pakistan-grave-necrophilia-rape-locked-cage-hyderabad-21833。（已按 2026-09-28 独立审稿修改 2 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

@@ -1,0 +1,317 @@
+本地核验冒烟（Ollama gemma3-12b，true_4124903_r1，六步） 
+核验模型：local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1（本地，不花钱）；产物标签 .local-gemma3-12b-16k-latest
+run：1 个；步骤 1–6
+
+[1/6] 三层核验工作区报告 → experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_4124903_r1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[judge] 1 calls (0 cached) | last 12.4s | avg 12.4s | total 12.4s | 3 in flight
+[judge] 3 calls (0 cached) | last 18.3s | avg 15.3s | total 18.3s | 3 in flight
+[judge] 5 calls (0 cached) | last 15.2s | avg 16.8s | total 27.5s | 3 in flight
+[judge] 7 calls (0 cached) | last 15.3s | avg 16.6s | total 33.7s | 3 in flight
+[judge] 9 calls (0 cached) | last 13.3s | avg 15.9s | total 40.9s | 3 in flight
+[judge] 11 calls (0 cached) | last 13.1s | avg 15.2s | total 46.8s | 3 in flight
+[judge] 14 calls (0 cached) | last 10.6s | avg 14.4s | total 54.5s | 3 in flight
+[judge] 16 calls (0 cached) | last 12.6s | avg 14.1s | total 1m02s | 3 in flight
+[judge] 18 calls (0 cached) | last 12.7s | avg 14.0s | total 1m07s | 3 in flight
+[judge] 21 calls (0 cached) | last 11.4s | avg 13.6s | total 1m17s | 3 in flight
+[judge] 23 calls (0 cached) | last 13.2s | avg 13.6s | total 1m22s | 3 in flight
+[judge] 27 calls (0 cached) | last 4.7s | avg 12.6s | total 1m30s
+[judge] 29 calls (0 cached) | last 7.0s | avg 12.0s | total 1m38s | 3 in flight
+[judge] 30 calls (0 cached) | last 14.2s | avg 12.1s | total 1m45s | 3 in flight
+[judge] 33 calls (0 cached) | last 14.5s | avg 12.5s | total 1m52s | 3 in flight
+[judge] 37 calls (0 cached) | last 5.6s | avg 12.0s | total 1m58s | 1 in flight
+[1/1] true_4124903_r1: 2 份报告，W1-1=negative, W1-2=negative
+{
+  "reports": 2,
+  "disposition": {
+    "negative": 2
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 2
+  },
+  "errors_total": {
+    "unsupported_assertion": 5,
+    "wrong_citation": 5
+  },
+  "errors_firm": {
+    "unsupported_assertion": 5,
+    "wrong_citation": 5
+  },
+  "reports_with_firm_error": 2,
+  "tainted_findings": 4,
+  "pending": {},
+  "judge_cache": {
+    "hits": 0,
+    "misses": 39
+  }
+}
+[judge] 39 calls (0 cached) | last 1.8s | avg 11.5s | total 2m00s
+
+[2/6] answer 逐句锚定 + plan 模型评判 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+  > python -m foren_searcher.datagen.verify.complete_units --runs experiments\sft_data\runs\true_4124903_r1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+  核验并发 4；预计核验调用：约 21 次（含会命中缓存的）
+  true_4124903_r1: ~21 次（answer 20，plan 1）
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[judge] 1 calls (0 cached) | last 2.7s | avg 2.7s | total 2.7s
+[true_4124903_r1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1", "REQ2"]}, "agreement": {"T1": true, "T2": false}, "premises": {"T1": [{"phrase": "法国国庆日期间埃菲尔铁塔附近出现火焰和浓烟", "status": "given_in_case", "why": "任务文字直接描述事件场景"}, {"phrase": "视频本身能否支持巴黎发生恐怖袭击的说法", "status": "given_in_case", "why": "任务文字提出判断依据"}], "T2": [{"phrase": "埃菲尔铁塔附近升腾的火焰和浓烟是巴黎在法国国庆日遭遇恐怖袭击的证据", "status": "given_in_case", "why": "任务文字直接引用待核查声明"}, {"phrase": "外部可靠来源对相关火情原因及是否涉及恐怖袭击的记载", "status": "given_in_case", "why": "任务文字明确要求查证的内容"}]}, "errors": ["overlapping_sibling_tasks"]}
+[judge] 4 calls (0 cached) | last 5.1s | avg 3.5s | total 7.9s | 3 in flight
+[judge] 8 calls (0 cached) | last 8.6s | avg 5.0s | total 16.5s | 3 in flight
+[judge] 10 calls (0 cached) | last 11.0s | avg 6.2s | total 21.6s | 3 in flight
+[judge] 11 calls (0 cached) | last 14.5s | avg 7.0s | total 26.8s | 3 in flight
+[judge] 14 calls (0 cached) | last 11.4s | avg 8.1s | total 33.0s | 3 in flight
+[judge] 21 calls (0 cached) | last 3.4s | avg 6.6s | total 38.2s
+[true_4124903_r1] answer request_0022: {"method": "judge_sentences", "disposition": "negative", "sentences": 7, "uncited": 0, "unsupported": ["A6", "A7"], "contradicted": [], "errors": ["unsupported_assertion", "unsupported_assertion", "unsupported_assertion"], "severities": ["critical", "critical", "critical"]}
+1 个单元 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+[judge] 21 calls (0 cached) | last 3.4s | avg 6.6s | total 38.2s
+
+[3/6] 三层核验按 plan 评判重定范围（没变的问题命中缓存）→ experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_4124903_r1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/1] true_4124903_r1: 2 份报告，W1-1=negative, W1-2=negative
+{
+  "reports": 2,
+  "disposition": {
+    "negative": 2
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 2
+  },
+  "errors_total": {
+    "unsupported_assertion": 5,
+    "wrong_citation": 5
+  },
+  "errors_firm": {
+    "unsupported_assertion": 5,
+    "wrong_citation": 5
+  },
+  "reports_with_firm_error": 2,
+  "tainted_findings": 4,
+  "pending": {},
+  "judge_cache": {
+    "hits": 39,
+    "misses": 0
+  }
+}
+[judge] 39 calls (39 cached) | total 0.0s
+
+[4/6] 核验器召回率校准（注入已知错误再核验）→ experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.json
+  > python -m foren_searcher.datagen.verify.calibrate_recall --runs experiments\sft_data\runs\true_4124903_r1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --per-kind 2 --out experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.json
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[true_4124903_r1] 15 处注入
+[judge] 47 calls (46 cached) | last 2.7s | avg 2.7s | total 2.7s
+[judge] 49 calls (46 cached) | last 5.8s | avg 3.3s | total 9.9s
+  swap_citation          W1-1 F4   命中 ['unsupported_assertion'] — 引用 ['E11', 'E19', 'E21', 'E4', 'E7', 'E8'] → ['E16']
+[judge] 70 calls (65 cached) | last 5.3s | avg 3.7s | total 15.3s
+[judge] 72 calls (65 cached) | last 5.5s | avg 3.6s | total 22.2s
+  swap_citation          W1-1 F1   漏报 [] — 引用 ['E3', 'E4', 'E5', 'E7', 'E8', 'E9'] → ['E11', 'E21']
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9596
+[judge] 126 calls (117 cached) | last 4.1s | avg 3.7s | total 30.7s
+  fabricate_id           W1-1 F4   命中 ['fabricated_evidence_id'] — 追加不存在的 E9059
+[judge] 127 calls (117 cached) | last 5.9s | avg 4.0s | total 36.6s | 3 in flight
+[judge] 129 calls (117 cached) | last 14.8s | avg 5.4s | total 45.5s | 3 in flight
+[judge] 150 calls (136 cached) | last 14.7s | avg 7.0s | total 51.3s | 1 in flight
+[judge] 153 calls (136 cached) | last 4.9s | avg 6.9s | total 1m01s
+  append_clause          W1-1 F1   漏报 [] — 追加 “现场共有 37 人受伤”
+[judge] 172 calls (152 cached) | last 5.8s | avg 6.5s | total 1m07s | 3 in flight
+[judge] 177 calls (155 cached) | last 12.6s | avg 6.8s | total 1m16s | 1 in flight
+[judge] 179 calls (155 cached) | last 1.4s | avg 7.0s | total 1m22s
+  append_clause          W1-1 F4   命中 ['unsupported_assertion'] — 追加 “现场负责人姓名为 Laurent Mercier”
+[judge] 197 calls (171 cached) | last 3.9s | avg 6.8s | total 1m31s | 3 in flight
+[judge] 203 calls (174 cached) | last 9.5s | avg 6.9s | total 1m36s | 2 in flight
+[judge] 204 calls (174 cached) | last 11.1s | avg 7.0s | total 1m42s | 1 in flight
+[judge] 205 calls (174 cached) | last 14.8s | avg 7.3s | total 1m47s
+[judge] 207 calls (174 cached) | last 4.7s | avg 7.0s | total 1m54s
+  alter_number           W1-1 F4   漏报 [] — 2016 → 2029
+[judge] 228 calls (194 cached) | last 6.4s | avg 7.0s | total 2m00s | 1 in flight
+[judge] 230 calls (194 cached) | last 1.7s | avg 6.9s | total 2m05s
+  swap_citation          W1-2 F5   漏报 [] — 引用 ['E21', 'E24'] → ['E22', 'E11']
+[judge] 238 calls (200 cached) | last 2.2s | avg 6.7s | total 2m11s | 1 in flight
+[judge] 241 calls (200 cached) | last 2.0s | avg 6.4s | total 2m17s
+  swap_citation          W1-2 F7   命中 ['unsupported_assertion'] — 引用 ['E10', 'E3', 'E5', 'E7'] → ['E21', 'E11']
+  fabricate_id           W1-2 F5   命中 ['fabricated_evidence_id'] — 追加不存在的 E9429
+  fabricate_id           W1-2 F7   命中 ['fabricated_evidence_id'] — 追加不存在的 E9147
+[judge] 274 calls (230 cached) | last 2.8s | avg 6.1s | total 2m23s | 1 in flight
+[judge] 277 calls (230 cached) | last 2.2s | avg 5.9s | total 2m29s
+  append_clause          W1-2 F5   命中 ['unsupported_assertion'] — 追加 “该说法此前已被路透社在 2014 年核实”
+[judge] 286 calls (236 cached) | last 7.2s | avg 5.9s | total 2m36s | 1 in flight
+[judge] 289 calls (236 cached) | last 1.8s | avg 5.8s | total 2m42s
+  append_clause          W1-2 F7   命中 ['unsupported_assertion'] — 追加 “事发时间为当地时间凌晨 2 点 40 分”
+[judge] 299 calls (244 cached) | last 5.6s | avg 5.7s | total 2m48s
+  alter_number           W1-2 F5   命中 ['unsupported_assertion'] — 14 → 27
+  drop_required_finding  W1-2 F7   漏报 [] — 删除该 Finding，状态保持 COMPLETED
+召回 0.667（15 处注入）；inconclusive 0，conclusive 召回 0.667 → experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.json
+  swap_citation          2/4  inconclusive 0  conclusive 0.5
+  fabricate_id           4/4  inconclusive 0  conclusive 1.0
+  append_clause          3/4  inconclusive 0  conclusive 0.75
+  alter_number           1/2  inconclusive 0  conclusive 0.5
+  drop_attribution       0/0  inconclusive 0  conclusive None
+  drop_required_finding  0/1  inconclusive 0  conclusive 0.0
+[judge] 308 calls (250 cached) | last 1.7s | avg 5.5s | total 2m52s
+  召回 0.667（15 处注入）；inconclusive 0；conclusive 召回 0.667
+
+[5/6] 用 hi@0.2.0 + gia@0.2.0 规格 + 判定导出 → experiments\sft_data\export\r0_bridge1_hi@0.2.0_gia@0.2.0_compact_16k.local-gemma3-12b-16k-latest
+  > python -m foren_searcher.datagen.export --runs experiments\sft_data\runs\true_4124903_r1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl --hi-spec hi@0.2.0 --gia-spec gia@0.2.0 --renderer compact_16k --out experiments\sft_data\export\r0_bridge1_hi@0.2.0_gia@0.2.0_compact_16k.local-gemma3-12b-16k-latest
+true_4124903_r1: 22 行（case=有，report verdicts=2）
+{
+  "counts": {
+    "hi_accepted": 13,
+    "hi_held": 5,
+    "hi_rejected": 2,
+    "gia_accepted": 1,
+    "gia_held": 0,
+    "gia_rejected": 1
+  },
+  "by_unit": {
+    "hi": {
+      "step": 13
+    },
+    "gia": {
+      "plan": 1
+    }
+  },
+  "by_action": {
+    "hi": {
+      "INSPECT": 1,
+      "SEARCH": 5,
+      "READ_RECORD": 7
+    },
+    "gia": {
+      "INVESTIGATE": 1
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 34.0,
+    "gia": 1.0
+  },
+  "input_tokens_est": {
+    "max": 26748,
+    "p50": 15396
+  }
+}
+
+[6/6] Qwen3.5-9B processor 核对
+  > python -m foren_searcher.datagen.check_inputs --export experiments\sft_data\export\r0_bridge1_hi@0.2.0_gia@0.2.0_compact_16k.local-gemma3-12b-16k-latest --model .models\Qwen3.5-9B --files hi_accepted.jsonl gia_accepted.jsonl hi_held.jsonl hi_rejected.jsonl
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "hi_accepted.jsonl": {
+      "rows": 13,
+      "input_tokens": {
+        "min": 2707,
+        "p50": 11254,
+        "p90": 13983,
+        "max": 15059
+      },
+      "supervised_tokens": {
+        "min": 29,
+        "p50": 35,
+        "p90": 63,
+        "max": 65
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 2640,
+        "p90": 4400,
+        "max": 7040
+      },
+      "above": {
+        "8192": 11,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "gia_accepted.jsonl": {
+      "rows": 1,
+      "input_tokens": {
+        "min": 1731,
+        "p50": 1731,
+        "p90": 1731,
+        "max": 1731
+      },
+      "supervised_tokens": {
+        "min": 161,
+        "p50": 161,
+        "p90": 161,
+        "max": 161
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 0,
+        "max": 0
+      },
+      "above": {
+        "8192": 0,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "hi_held.jsonl": {
+      "rows": 5,
+      "input_tokens": {
+        "min": 9168,
+        "p50": 10204,
+        "p90": 12189,
+        "max": 12189
+      },
+      "supervised_tokens": {
+        "min": 35,
+        "p50": 39,
+        "p90": 59,
+        "max": 59
+      },
+      "image_tokens": {
+        "min": 2640,
+        "p50": 3520,
+        "p90": 3520,
+        "max": 3520
+      },
+      "above": {
+        "8192": 5,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "hi_rejected.jsonl": {
+      "rows": 2,
+      "input_tokens": {
+        "min": 11826,
+        "p50": 11826,
+        "p90": 16221,
+        "max": 16221
+      },
+      "supervised_tokens": {
+        "min": 339,
+        "p50": 339,
+        "p90": 593,
+        "max": 593
+      },
+      "image_tokens": {
+        "min": 3520,
+        "p50": 3520,
+        "p90": 6160,
+        "max": 6160
+      },
+      "above": {
+        "8192": 2,
+        "16384": 0,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}
+
+完成。产物：
+  experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl
+  experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl
+  experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.json
+  experiments\sft_data\export\r0_bridge1_hi@0.2.0_gia@0.2.0_compact_16k.local-gemma3-12b-16k-latest\manifest.json
+EXIT 0 

@@ -1,0 +1,35 @@
+{
+  "reports": 25,
+  "disposition": {
+    "negative": 23,
+    "positive": 2
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 25
+  },
+  "errors_total": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "errors_firm": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "reports_with_firm_error": 23,
+  "tainted_findings": 45,
+  "pending": {
+    "judge_output_invalid": 1
+  },
+  "judge_cache": {
+    "hits": 367,
+    "misses": 0
+  }
+}

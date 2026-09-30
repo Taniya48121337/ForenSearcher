@@ -25,6 +25,10 @@ CATALOG: list[dict[str, Any]] = [
     {"id": "university-budget", "directory": "runs/averitec_2694_budget_plan_execution_r1", "title": "批准预算，等于实际支出吗？", "description": "两所大学的建设支出调查：读报告、核对阶段和金额，区分预算、合同与实际支出。", "tags": ["真实协作", "数字口径", "长文档"], "kind": "web"},
 ]
 
+# 第 0 轮三层核验的汇总（按优先顺序取第一个存在的）。summary49 是正式口径：49 个 run / 80 份报告，
+# 第 50 个 run 未跑完未计入；jsonl.summary 是 reverify 自动写出的全量汇总，作为兜底。
+VERIFICATION_SUMMARIES = ("verdicts_r0_judged.summary49.json", "verdicts_r0_judged.jsonl.summary.json")
+
 DATASETS = {"videosham": "VideoSham", "qvhighlights": "QVHighlights", "vcsl": "VCSL", "true": "TRUE", "averitec": "AVeriTeC", "averimatec": "AVerImaTeC"}
 
 
@@ -187,8 +191,21 @@ class TrainingReader:
                           "hi": sum(f["rows"] for f in files if f["role"] == "HI"),
                           "images": manifest.get("images_used", 0),
                           "datasets": len({str(v.get("dataset", "")).lower() for v in self._candidates.values()})},
+                "verification": self.verification(),
                 "files": files, "samples": samples, "rubric_version": "r6",
                 "training_status": manifest.get("training_status"), "quality_scope": manifest.get("quality_scope")}
+
+    def verification(self) -> dict[str, Any]:
+        """第 0 轮三层核验的规模：页面上的"已核验调查 / 报告 / 证据对照 / 数据来源"只从这里取数。"""
+        for name in VERIFICATION_SUMMARIES:
+            data = read(self.root / name)
+            if not isinstance(data, dict) or not data.get("reports"):
+                continue
+            datasets = [key for key in data.get("by_dataset", {}) if key != "unknown"]
+            return {"runs": data.get("runs"), "reports": data["reports"], "pairs": data.get("pairs"),
+                    "findings": data.get("findings"), "datasets": len(datasets) or None,
+                    "verifier": data.get("verifier"), "source": name}
+        return {}
 
     def sample(self, sample_id: str) -> dict[str, Any]:
         value = self._load_sample(sample_id)

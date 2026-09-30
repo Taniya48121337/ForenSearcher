@@ -1,0 +1,180 @@
+{
+  "assessment_scope": "仅依据所供包及图片，评审 W2-2（HI）的 request_0035—request_0047，共13个目标；未调用工具或检查文件。已按对象表解析引用。result 中的 GIA 答案及其他角色记录仅作背景，不评分。只有 request_0040、request_0044 实际附有 E23，其余请求均无图片；累计观察计数不恢复历史像素。本次来源条件允许回溯使用 Snopes，不能将其误判为违规来源暴露。角色维度加权分为85/100，评分维度覆盖率100%；这不表示记者问话、原声或视频对应已经核实。11项可列为候选，2项需修复，逐目标处置优先于总分。",
+  "roles": [
+    {
+      "actor": "W2-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 3,
+          "reason": "11次工具行动均有接受和执行观察对应；request_0046 明确为 proposal_not_accepted，不能算已提交报告。request_0047 修正后有 report_committed 记录。执行成功不证明内容正确，报告被拒也不自动说明其事实捏造。",
+          "request_ids": ["request_0035", "request_0036", "request_0037", "request_0038", "request_0039", "request_0040", "request_0041", "request_0042", "request_0043", "request_0044", "request_0045", "request_0046", "request_0047"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "检索地址和读取对象均来自当时可见任务、记录或反馈。E23 仅在0040、0044附图；实际像素显示戴浅色宽檐帽、穿浅粉色外套的人持话筒，前方有采访话筒，背景有众议院标志。这张无视频时间定位的封面不能证明问话、声音或素材对应。终端报告没有把历史封面当作当前画面，也没有利用仅在评审参考中出现的转录补全问话。",
+          "request_ids": ["request_0035", "request_0036", "request_0037", "request_0038", "request_0039", "request_0040", "request_0041", "request_0042", "request_0043", "request_0044", "request_0045", "request_0046", "request_0047"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告对记者问题的描述明确归属于 E20、E16 的报道转述。E24 已读页确有约08:24开始的争议措辞及后续追诉表述；threaten 的精确引文归给 E20，同时指出自动字幕的 threat pregnant 异常。所见引文没有明确的仅限条件，报告也未将这一观察扩大为完整回答绝无其他限定。没有冒用未读的 E25，亦未把封面或字幕当作已听原声。",
+          "request_ids": ["request_0042", "request_0046", "request_0047"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "按整段调查对局部目标的实际完成程度评分：取得了有用的报道和关键自动字幕，但记者问题的实际措辞、完整回答是否明确限定对象及与材料 A 的直接对应仍未核实。工具目录没有可调用的 ASR 或播放动作，检索也未提供第二份可检查的视频，不能要求用画面解决声音语义问题。最终 INCOMPLETE 报告本身合格；此分数不把诚实报告降格为幻觉，也不把 GIA 的有限结论当作 HI 已完成核验。",
+          "request_ids": ["request_0035", "request_0038", "request_0039", "request_0042", "request_0043", "request_0045", "request_0047"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "沿已有录像线索取字幕、顺序读取相关页、在间接入口未提供视频后尝试实际 YouTube 地址，以及检索记者问话，均针对具体缺口。主要反例是0045：当时仅剩一次取证机会，却选择通常只返回证据卡片的来源打开操作，本步后必须报告，没有读取新正文的机会。0047是零剩余轮次下的报告修复，不能据此认证自主停止能力。",
+          "request_ids": ["request_0038", "request_0039", "request_0040", "request_0041", "request_0042", "request_0043", "request_0044", "request_0045", "request_0047"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分报道解释、自动字幕、原声和直接素材比较；没有把字幕空档解释为现场没有提问，也没有把某报道的约9:00定位与字幕时间轴强行等同。报告准确保留追诉对象限定及完整问答的未知，使用 INCOMPLETE。调查事实尚未知不妨碍判定这份有限报告是否诚实。",
+          "request_ids": ["request_0046", "request_0047"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "初次读取其他工作区提供的正文不是重复调查；E24的0、6000、12000分页有明确推进，不能按重复读取处理。0043更换为嵌入视频实际地址的单次尝试合理，0044再次附封面来自工具返回，并非主动反复切图。0045消耗最后取证机会后只留下未读 E25，构成具体的预算利用缺陷。",
+          "request_ids": ["request_0035", "request_0036", "request_0037", "request_0040", "request_0041", "request_0042", "request_0043", "request_0044", "request_0045"]
+        }
+      ],
+      "critical_errors": [
+        "request_0045 的行动没有为新来源正文读取保留轮次；来源地址虽合理，但在当时预算和接口下无法转化为本 HI 可核验的新结论。",
+        "request_0046 未通过引用校验，不能作为成功提交的正向目标。触发报错的 E1 出现在未执行比较的限制说明中，不能据此认定演员伪造了 E1 的内容。"
+      ],
+      "unknowns": [
+        "记者实际问话的完整原语及原声未提供；现有材料只能确认报道如何描述该问题。",
+        "争议位置的真实声音、精确用词及完整回答是否另有明确限定，未被直接核实。",
+        "材料 A 与较长录像的音视频对应、连续覆盖和编辑情况未验证；封面没有建立任何采样时刻或连续区间的对应。",
+        "E25只有取得成功的卡片，没有进入演员输入的正文，不能判断该页是否提供了新的问答证据。",
+        "request_0047.previous_invalid_output 的首条 finding 比 request_0046 原始输出多列了 E24；无法确定校验器实际处理的完整对象版本。两版本都含触发报错的 E1，故不影响已知的拒绝状态及此次处置。",
+        "终端报告是在轮次耗尽后生成，不能证明预算充足时的自主停止质量。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0035",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图，只有材料卡片。首次读取任务明确指定、含原始录像线索的 E20，能确定补查入口及报道对记者问题的归属；执行对应完整。"
+    },
+    {
+      "request_id": "request_0036",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图，E20正文已在输入。读取指定的 E16 可获得另一较长录像及定位线索，属于本会话首次展开，且当前来源政策允许使用该事实核查文章。"
+    },
+    {
+      "request_id": "request_0037",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图。E15是任务指定的 CBS 来源线索，读取正文有助于查找现场录像入口；不能因其他角色曾读过就判为无价值重复。"
+    },
+    {
+      "request_id": "request_0038",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图。沿已读 CBS 页面请求视频及英文字幕，参数合法且针对实际问答。后续 UnicodeDecodeError 是工具失败，行动前并不知道会失败，不能倒推此请求不合理。"
+    },
+    {
+      "request_id": "request_0039",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图。CBS入口失败后，改用 E16 已明确提及较长录像的页面请求视频和字幕，是有依据的恢复行动，没有原样重复失败请求。"
+    },
+    {
+      "request_id": "request_0040",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附有 E23，但它只是封面，不能回答记者说了什么。读取刚取得的 E24 字幕是更直接的必要步骤；未保留封面不会丢失解决本次文字问题所需的关键证据。"
+    },
+    {
+      "request_id": "request_0041",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图，累计看过 E23 不恢复其像素。上一页字幕只到约04:02并明确给出 next_offset=6000，按该偏移继续读取是推进到相关问答位置的合法分页。"
+    },
+    {
+      "request_id": "request_0042",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图。上一页在约07:43处截断，并给出 next_offset=12000；继续读取能够覆盖已知约08:16之后的目标位置。该步取得的字幕证据有用，但不等于查看视频或听取原声。"
+    },
+    {
+      "request_id": "request_0043",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图。YouTube地址来自已读 E24 的 source.final_url。此前通过嵌入页只取得封面和字幕，直接打开实际视频地址以争取可比较媒体，是合理的一次替代入口尝试；随后仍只返回既有材料，不能追溯认定这次探索无效。"
+    },
+    {
+      "request_id": "request_0044",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际再次附有 E23，其像素仍不能补足问话语义。检索限定 Wilson、记者提问和 Facebook，针对尚未解决的具体问题，没有扩展为完整背景调查。结果页403不使请求本身错误。"
+    },
+    {
+      "request_id": "request_0045",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前无图。Fox地址确实来自 E16，但当时 remaining_turns=1；已有接口说明和多次观察显示，打开来源先返回正文 E 卡片，仍需 READ_RECORD。此行动后轮次归零，所得 E25 无法被本 HI 阅读。应从该状态改为有实际信息增益且预算允许的行动，或据现有材料提交准确报告；问题是可预见的预算安排，不是事后因未命中而扣分。"
+    },
+    {
+      "request_id": "request_0046",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前无图；报告的重要文字依据仍完整存在于历史正文中。事实限定和 INCOMPLETE 状态基本正确，但报告明确未被接口接受。E1仅用于说明没有执行比较，不能据报错认定视觉或声音幻觉；原始首条 finding 的限制还提到 E24，却未在该条引用表列出。需修正引用表达并重新提交，不能把这一原始提案当作已提交报告。"
+    },
+    {
+      "request_id": "request_0047",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前无图，不能恢复历史 E23，报告也未作依赖其像素的断言。修正后的引用和材料称呼通过提交检查；E20的问题转述、E24的约08:24引文及识别异常均可核对。报告明确没有原声和直接素材比较，未用官方解释补全问话。在零剩余轮次下，这是合格的 INCOMPLETE 报告及接口恢复目标，不代表已完成局部核验或验证了自主停止能力。"
+    }
+  ],
+  "construction_revisions": [
+    "明确视频检索模式实际能返回哪些材料。现有结果中的 video_material.status=not_requested 不能被包装成视频下载成功，也不能自动写成下载失败。若任务继续要求直接声画核验，应提供可取得的媒体及相应读取能力，同时保留真实失败后的 INCOMPLETE 分支。",
+    "为来源发现、正文读取和报告保留相容预算。request_0045 应从其实际输入状态修复并重新生成后续输出，不能将改写行动直接接到旧观察上。",
+    "校验器应区分支持事实的引用和说明未核验对象的提及，避免要求演员为“未与材料 A 比较”引用未观察的原件；保留对肯定性媒体断言必须引用实际观察证据的检查。",
+    "核对 request_0046 原始输出与 request_0047.previous_invalid_output 的首条 evidence_ids 差异，保存实际提交对象及其对应报错，避免在修复前缀中悄然改写引用表。",
+    "分别保存 Snopes落地页、YouTube嵌入视频及字幕的来源关系。直接打开YouTube仍返回 page=E16 的复用行为容易混淆页面身份；R4复用不能说明这是两个独立来源。本演员没有据此错误归属正文。",
+    "逐目标保留实际附图清单：E23仅附于0040、0044。累计观察计数继续与当前附件分开，不应为终端报告自动补回历史像素；本例没有因放弃保留封面而丢失必要的问话证据。",
+    "参考标注中 Mixture及语境限定，与部分 relationship_with_evidence 所称毫无歧义支持声明并不一致，应列为待复核。不得将参考解释升级为已核验的记者逐字问话或明确排他性追诉条件。"
+  ],
+  "rubric_revisions": [
+    "加入最后取证轮次的具体校准例：来源合法、请求可执行，仍可能因无法完成随后必需的正文读取而成为不合格行动；判断依据必须是行动前已知接口和预算。",
+    "分别报告调查目标完成程度、强制报告质量和自主停止质量。准确的 INCOMPLETE 可以获得高质量报告评分，但不能据此认证实际问答已核实，也不能用加权高分覆盖失败目标。",
+    "对引用校验失败分别标注接口缺陷与事实缺陷。否定性的未观察说明触发编号检查，不等于捏造观察；修复后的成功报告与被拒原提案分别评分。",
+    "时间定位必须附所属媒体或来源语境。E20的Facebook约9:00、E16的08:16提示、R6摘要中的6:44及E24字幕08:24，不能未经对应验证便视为同一时间轴上的冲突。本例没有可计算的官方剪辑区间指标。",
+    "字幕缺行、未读正文和缺少原声应按其实际含义处理：它们不能证明现场没有内容，也不必然造成报告评审的 critical_unknown。仅当缺失材料妨碍判断当前输出是否合格时，才使用该标记。"
+  ]
+}

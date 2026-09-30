@@ -1,0 +1,227 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11 个行动均有接受和执行链接，后续输入包含相应反馈；最终报告有提交链接。原始输出与接受输出一致。这证明执行对应关系，不证明取证成功或答案正确。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "后续查询中的官网域名、neem oil 和页面路径线索均已出现在此前可见结果中。首轮使用 citronella 是检索假设，不能据其与参考答案重合认定泄漏。没有引用未读 E、借用其他角色报告或将评审参考当作证据的可见行为。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告仅陈述摘要提到了三种油和短效限制，并说明官网返回 404、未取得并阅读支持性正文。R10、R11 的摘要及实际反馈支持这些限定陈述。没有把商业配方、图片或官方参考标签转化为 NDCU 已确认的推荐。",
+          "request_ids": [
+            "request_0012"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部任务要求独立取得支持 NDCU 清单的资料，最终没有形成任何有正文依据的回答，调查目标尚未达成。但报告准确交代缺口，INCOMPLETE 和空 findings 合理；不能把调查未完成等同于终局报告不诚实，也不要求该 HI 解决整个青柠丁香声明。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "多数行动针对机构归属和失效页面调整查询，包括缩写、全称、排除失败路径、寻找其他政府页面及打开主页，参数可执行。具体不足是取证链没有进入正文核验：request_0011 已是最后工具机会，继续取得索引或 ready(E) 后将无法再 READ_RECORD。此前可考虑沿已见失效 URL 检索存档或迁移页，但不能假定这些路线必然成功。",
+          "request_ids": [
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终明确区分搜索线索与独立确认，未将抓取失败解释为机构没有相关清单，也没有补写未读正文。零剩余轮次时提交 INCOMPLETE 正确；这是受预算约束的报告，不构成自主停止能力已获验证的证据。",
+          "request_ids": [
+            "request_0012"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "11 次工具行动中有 10 次查询和 1 次主页打开，始终没有正文读取。早期无结果探索及错误恢复合理，不能按失败次数扣分；但后段持续围绕已知词组检索，最后一轮仍无法把新来源转成已读证据，整体获取答案的效率不足。附图由环境持续提供，不能算作演员主动反复看图。",
+          "request_ids": [
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "未提供或读到 NDCU 正文，不能认证机构清单及短效限定的完整上下文；参考答案与搜索摘要相符也不能替代原文核查。",
+        "已见失效页面是否存在可访问存档或迁移地址尚未测试，不能把替代路线描述为确定可成功。",
+        "已知地址过滤不保证所有未知镜像均被排除；本轨迹没有将此类材料用于结论，不能据配置认证更广泛的来源独立性。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "初始查询包含机构、登革热、天然驱蚊剂及候选成分，能推进明确的局部问题。候选关键词不是事实断言；不能因后来返回一般健康网页而倒推初始搜索错误。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前结果缺少 NDCU 归属，改用机构缩写和核心词的精确查询，直接针对来源缺口。没有把已下载的一般驱蚊资料当作机构清单。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "R10 已提供官网域名、neem 线索及 404 反馈。限制官网域名查找相关页面，是寻找可访问替代页的合理调整，不是原样重试失败请求。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "两个官方页面均未取得正文后，改用机构全称与相关成分，可寻找其他页面或有明确归属的独立报道。随后发生 PROVIDER_ERROR，不能归为请求本身错误。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据此前反馈，查询排除已失败的语言路径和栏目路径，继续寻找其他官方入口；也没有原样重复刚失败的查询。无结果不否定该调整的合理性。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "以已见摘要中的三种油和 dengue 搜索，可能寻找清单的其他出处，属于合理探索。取消机构约束使商业配方等无关结果更容易进入，针对性略弱；实际返回电商页面不能被解释为演员主动选择商业材料替代机构证据。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "前一轮未取得机构资料，按已知官网和 how-to-prevent 路径线索寻找页面，目标仍相关。与先前官网查询有所重叠，但页面名称提供了不同检索入口，不能机械视为无价值重复。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "直接打开已见官网的主页，尝试从导航寻找有效入口，符合可用 SEARCH 的 URL 模式。此前子页面 404 不足以证明主页也不可访问，因此本次打开合理。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "主页失败后以机构全称和 neem oil 查找其他归属材料。此前相近的全称查询因服务错误而非正常检索耗尽结束，本次调整仍有合理信息增益预期；不能用后来再次出现服务错误扣分。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "扩大到卫生部门域名并避开已失败的 /web/ 路径，可寻找其他政府入口。当时之后仍有一次工具机会，若取得相关 E，尚可读取正文再报告。排除整个路径较宽，但没有足够证据认定其必然阻断所有有效来源。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "引用已见 NDCU 摘要中的较独特短语，作为寻找转载或其他出处的查询本身相关且可执行。但此时只剩最后一次工具机会，已知 SEARCH 返回索引和材料状态，之后必须报告，无法再读取新取得的正文。因此其对本局部任务的可交付价值有限，适合作为真实探索历史保留；这一判断不依赖后来返回了无关结果。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "零剩余轮次下提交报告符合要求。所述三种油、短效提示和官方页面 404 均可从当时历史核对；报告明确将清单保留为未验证摘要线索，没有虚构引文或引用未读 E。INCOMPLETE 准确，可作为诚实报告监督，但不能标记为已回答局部问题或已验证自主停止。"
+    }
+  ],
+  "construction_revisions": [
+    "W1-1: 修正搜索结果的标题、摘要与 URL 绑定。R12 的标题和摘要明显拼接了多个网站内容，request_0012 的 R3 也混入其他结果的标题与摘要；应保留原始返回并按单条来源重建，不能把整段归给首个 URL。",
+    "W1-1: 针对官方页面 404 的恢复样本，应从实际可见的 R10、R11 地址出发尝试存档或迁移页，并为取得资料后的 READ_RECORD 留出轮次。改变行动后须从对应状态重执行，不能直接接用旧反馈。",
+    "W1-1: 明确保留材料已取得、摘要已可见、正文已读取三种状态。当前只有 E1 被标记为内容已观察，不代表演员没有见过搜索摘要；ready(E) 也不代表正文已读。",
+    "W1-1: 补充用于参考复核的 NDCU 正文，并分别记录天然油类与含 DEET 的化学驱蚊剂。当前参考摘录同时包含两类，不能将全部项目统一标为天然驱蚊剂。",
+    "W1-1: 保留本任务不限制资料发表于声明日期之前的条件。2024 至 2026 年结果不能仅因日期较晚排除，但仍须核对其机构归属、适用时间及是否来自被排除的原事实核查文章。",
+    "W1-1: 逐请求筛选候选监督：终局 INCOMPLETE 可保留为报告样本；request_0011 保留为上下文。不得将脚本化 FINISH 或执行成功率包装成 GIA 决策质量。"
+  ],
+  "rubric_revisions": [
+    "W1-1: 在现有 task 维度的理由中明确区分调查目标达成度与受预算约束的报告正确性，避免整条轨迹未取得答案就自动拒绝准确的 INCOMPLETE，也避免报告诚实就把局部任务判为完成。",
+    "W1-1: 对最后几轮行动增加具体的取证链检查：按行动前已知返回形式判断是否还有读取、核验和报告机会；不得仅因搜索最终无结果，或查询次数较多，就认定行动错误。",
+    "W1-1: 效率扣分不能只依据没有 READ_RECORD。应先指出当时存在可读且相关的材料，或具体的恢复及预算问题，避免奖励读取无关网页。",
+    "W1-1: 对问题中的机构归属要求保持一致：原站正文或可信且独立、明确转述该机构的资料可以按题意评价；一般产品成分和健康常识不能替代机构清单，也不应临时追加题目没有要求的原件条件。",
+    "W1-1: 遇到多来源摘要串接时，将工具数据构造缺陷与演员使用错误分开：发现串接不等于演员已经错误归因，只有实际输出采用了错误来源关系才作对应事实扣分。"
+  ]
+}

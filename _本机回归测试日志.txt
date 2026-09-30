@@ -1,0 +1,215 @@
+=== pytest（数据流水线相关测试） 
+...........................F............................................ [ 40%]
+......................................................................FF [ 80%]
+....................................                                     [100%]
+================================== FAILURES ===================================
+____________________ test_all_runs_have_required_evidence _____________________
+
+tmp_path = WindowsPath('E:/Codex/workspaces/ChatGPT/ForenSearcher/.pytest-tmp/test_all_runs_have_required_ev0')
+
+    @pytest.mark.skipif(not ALL_RUNS or not VERDICTS.is_file(), reason="run 未随仓库入库")
+    def test_all_runs_have_required_evidence(tmp_path: Path):
+        """验收：每个 run 的 required_evidence 非空；claim 类有文本来源（run 做过 SEARCH 时）+ 帧（run 抽过帧时）；media 类有派生证据。"""
+    
+        for name in ALL_RUNS:
+            case, draft = _draft_run(name, tmp_path / name)
+            assert case.required_evidence, name
+>           assert "neutral" not in draft["requirement_origin"].values(), name
+E           AssertionError: averimatec_423_q0_validation_r3
+E           assert 'neutral' not in dict_values(['neutral', 'neutral'])
+E            +  where dict_values(['neutral', 'neutral']) = <built-in method values of dict object at 0x000001DEC64D8980>()
+E            +    where <built-in method values of dict object at 0x000001DEC64D8980> = {'REQ1': 'neutral', 'REQ2': 'neutral'}.values
+
+tests\test_datagen_draft_case.py:286: AssertionError
+___________________ test_real_case_scopes_from_units_judged ___________________
+
+    @needs_units
+    def test_real_case_scopes_from_units_judged():
+        case = load_cases(CASES)[CASE_ID]
+        units = _read(UNITS)
+        w1, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-1", units=units)
+        w2, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-2", units=units)
+>       assert w1 == {"REQ2", "REQ3"} and w2 == {"REQ1", "REQ2"}
+E       AssertionError: assert ({'REQ2', 'REQ3'} == {'REQ2', 'REQ3'}
+E         
+E         Use -v to get more diff and {'REQ1'} == {'REQ1', 'REQ2'}
+E         
+E         Extra items in the right set:
+E         'REQ2'
+E         Use -v to get more diff)
+
+tests\test_datagen_sufficiency_scope.py:88: AssertionError
+___ test_scoped_calibration_catches_dropped_finding_without_false_omissions ___
+
+    @needs_run
+    @needs_units
+    def test_scoped_calibration_catches_dropped_finding_without_false_omissions():
+        from foren_searcher.datagen.verify.calibrate_recall import MUTATORS, run_calibration
+    
+        base = _read(VERDICTS)
+        units = _read(UNITS)
+        cases = load_cases(CASES)
+        case = cases[CASE_ID]
+        replay, matches = _replay_from_base(base), _matches(case)
+        assert matches["frames"] and matches["youtube_upload"] and matches["prefpolice_tweets"]
+    
+        def calibrate(mode: str) -> tuple[dict[str, Any], ScopeJudge]:
+            judge = ScopeJudge(replay, case, matches)
+            s = asyncio.run(run_calibration([RUN], cases, base, judge, judge_name="fake", kinds=list(MUTATORS), per_kind=1, seed=3,
+                                            case_mode=mode, units=units, say=lambda _: None))
+            return s, judge
+    
+        scoped, sj = calibrate("scoped")
+        whole, wj = calibrate("whole")
+        clean_scoped = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "scoped"))
+        clean_whole = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "whole"))
+    
+        # 充分性层确实只拿到本工作区的清单
+        assert scoped["case_mode"] == "scoped" and whole["case_mode"] == "whole"
+>       assert {tuple(k) for k in sj.sufficiency_keys} == {("frames", "youtube_upload"), ("frames", "prefpolice_tweets", "snopes")}
+E       AssertionError: assert {('frames', '...s', 'snopes')} == {('frames', '...tube_upload')}
+E         
+E         Extra items in the left set:
+E         ('prefpolice_tweets', 'snopes')
+E         Extra items in the right set:
+E         ('frames', 'prefpolice_tweets', 'snopes')
+E         Use -v to get more diff
+
+tests\test_datagen_sufficiency_scope.py:195: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_datagen_draft_case.py::test_all_runs_have_required_evidence
+FAILED tests/test_datagen_sufficiency_scope.py::test_real_case_scopes_from_units_judged
+FAILED tests/test_datagen_sufficiency_scope.py::test_scoped_calibration_catches_dropped_finding_without_false_omissions
+3 failed, 177 passed in 14.25s
+PYTEST_EXIT 1 
+=== pytest（全部离线测试） 
+........................................................................ [  4%]
+.F...................................................................... [  8%]
+............................................FF.......................... [ 13%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 26%]
+.............................ssss....................................... [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 61%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+.............................................s.s...................      [100%]
+================================== FAILURES ===================================
+____________________ test_all_runs_have_required_evidence _____________________
+
+tmp_path = WindowsPath('E:/Codex/workspaces/ChatGPT/ForenSearcher/.pytest-tmp/test_all_runs_have_required_ev0')
+
+    @pytest.mark.skipif(not ALL_RUNS or not VERDICTS.is_file(), reason="run 未随仓库入库")
+    def test_all_runs_have_required_evidence(tmp_path: Path):
+        """验收：每个 run 的 required_evidence 非空；claim 类有文本来源（run 做过 SEARCH 时）+ 帧（run 抽过帧时）；media 类有派生证据。"""
+    
+        for name in ALL_RUNS:
+            case, draft = _draft_run(name, tmp_path / name)
+            assert case.required_evidence, name
+>           assert "neutral" not in draft["requirement_origin"].values(), name
+E           AssertionError: averimatec_423_q0_validation_r3
+E           assert 'neutral' not in dict_values(['neutral', 'neutral'])
+E            +  where dict_values(['neutral', 'neutral']) = <built-in method values of dict object at 0x0000020D0A5A7940>()
+E            +    where <built-in method values of dict object at 0x0000020D0A5A7940> = {'REQ1': 'neutral', 'REQ2': 'neutral'}.values
+
+tests\test_datagen_draft_case.py:286: AssertionError
+___________________ test_real_case_scopes_from_units_judged ___________________
+
+    @needs_units
+    def test_real_case_scopes_from_units_judged():
+        case = load_cases(CASES)[CASE_ID]
+        units = _read(UNITS)
+        w1, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-1", units=units)
+        w2, _ = requirements_for_workspace(case, "", run=RUN.name, workspace_id="W1-2", units=units)
+>       assert w1 == {"REQ2", "REQ3"} and w2 == {"REQ1", "REQ2"}
+E       AssertionError: assert ({'REQ2', 'REQ3'} == {'REQ2', 'REQ3'}
+E         
+E         Use -v to get more diff and {'REQ1'} == {'REQ1', 'REQ2'}
+E         
+E         Extra items in the right set:
+E         'REQ2'
+E         Use -v to get more diff)
+
+tests\test_datagen_sufficiency_scope.py:88: AssertionError
+___ test_scoped_calibration_catches_dropped_finding_without_false_omissions ___
+
+    @needs_run
+    @needs_units
+    def test_scoped_calibration_catches_dropped_finding_without_false_omissions():
+        from foren_searcher.datagen.verify.calibrate_recall import MUTATORS, run_calibration
+    
+        base = _read(VERDICTS)
+        units = _read(UNITS)
+        cases = load_cases(CASES)
+        case = cases[CASE_ID]
+        replay, matches = _replay_from_base(base), _matches(case)
+        assert matches["frames"] and matches["youtube_upload"] and matches["prefpolice_tweets"]
+    
+        def calibrate(mode: str) -> tuple[dict[str, Any], ScopeJudge]:
+            judge = ScopeJudge(replay, case, matches)
+            s = asyncio.run(run_calibration([RUN], cases, base, judge, judge_name="fake", kinds=list(MUTATORS), per_kind=1, seed=3,
+                                            case_mode=mode, units=units, say=lambda _: None))
+            return s, judge
+    
+        scoped, sj = calibrate("scoped")
+        whole, wj = calibrate("whole")
+        clean_scoped = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "scoped"))
+        clean_whole = asyncio.run(_clean_omitted(case, ScopeJudge(replay, case, matches), units, "whole"))
+    
+        # 充分性层确实只拿到本工作区的清单
+        assert scoped["case_mode"] == "scoped" and whole["case_mode"] == "whole"
+>       assert {tuple(k) for k in sj.sufficiency_keys} == {("frames", "youtube_upload"), ("frames", "prefpolice_tweets", "snopes")}
+E       AssertionError: assert {('frames', '...s', 'snopes')} == {('frames', '...tube_upload')}
+E         
+E         Extra items in the left set:
+E         ('prefpolice_tweets', 'snopes')
+E         Extra items in the right set:
+E         ('frames', 'prefpolice_tweets', 'snopes')
+E         Use -v to get more diff
+
+tests\test_datagen_sufficiency_scope.py:195: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_datagen_draft_case.py::test_all_runs_have_required_evidence
+FAILED tests/test_datagen_sufficiency_scope.py::test_real_case_scopes_from_units_judged
+FAILED tests/test_datagen_sufficiency_scope.py::test_scoped_calibration_catches_dropped_finding_without_false_omissions
+3 failed, 1642 passed, 6 skipped, 26 deselected in 319.53s (0:05:19)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+PYTEST_ALL_EXIT 1 
+=== spec 一致性（gia@0.3.0） 
+规格：hi@0.2.0 / gia@0.3.0；12 个 run
+
+HI：原口径（system 含教师指令）一致 132 / 不一致 256；去掉教师指令后一致 388 / 不一致 0
+GIA：原口径（system 含教师指令）一致 17 / 不一致 42；去掉教师指令后一致 59 / 不一致 0
+
+逐 run（去掉教师指令后）：
+  true_4124903_r1: HI 20/20，GIA 2/2 一致
+  true_4124903_r2: HI 29/29，GIA 8/8 一致
+  true_17838107_r1: HI 23/23，GIA 4/4 一致
+  true_20205316753904_validation: HI 3/3，GIA 2/2 一致
+  true_20361105_visibility_validation: HI 44/44，GIA 6/6 一致
+  true_24171541709824_r1: HI 20/20，GIA 2/2 一致
+  true_39132300_validation_r3: HI 6/6，GIA 2/2 一致
+  videosham_0069_r1: HI 53/53，GIA 6/6 一致
+  videosham_1007_validation: HI 61/61，GIA 11/11 一致
+  videosham_1028_r2: HI 17/17，GIA 3/3 一致
+  videosham_2010_r1: HI 16/16，GIA 3/3 一致
+  videosham_4126_split_intervals_r7: HI 96/96，GIA 10/10 一致
+
+按规格变体归类（去掉教师指令与修复附注后）：
+  GIA: findings 25，findings_budget_out 18，dispatch 10，default 6
+  HI: main 384，main+repair 4
+
+仍不一致的行按运行时提示特征：
+DONE 

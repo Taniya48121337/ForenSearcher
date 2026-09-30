@@ -1,0 +1,58 @@
+[
+  {
+    "raw_event_id": 1,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查2000年弗吉尼亚州参议院决议是否获得通过：确认该提案在弗吉尼亚州议会的正式表决记录或官方文本，验证其最终状态。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E1",
+            "E6",
+            "E9"
+          ]
+        },
+        {
+          "task": "核查2003年弗吉尼亚州官员请求归还旗帜时明尼苏达州的正式回应：确认双方州长在该事件中的官方函件或同期议会记录，验证其内容与形式。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E1",
+            "E9"
+          ]
+        }
+      ]
+    },
+    "accepted_event_id": 2,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "gia_decision_accepted",
+    "accepted_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查2000年弗吉尼亚州参议院决议是否获得通过：确认该提案在弗吉尼亚州议会的正式表决记录或官方文本，验证其最终状态。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E1",
+            "E6",
+            "E9"
+          ]
+        },
+        {
+          "task": "核查2003年弗吉尼亚州官员请求归还旗帜时明尼苏达州的正式回应：确认双方州长在该事件中的官方函件或同期议会记录，验证其内容与形式。必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E1",
+            "E9"
+          ]
+        }
+      ]
+    },
+    "raw_equals_accepted": true,
+    "request_id": "request_0001",
+    "request_file": "experiments\\sft_data\\runs_offline\\true_24171541709824_r1__D_v3\\requests\\request_0001\\request.json"
+  }
+]

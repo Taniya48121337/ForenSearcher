@@ -1,0 +1,1918 @@
+{
+  "assessment_scope": "Existing complete HI reviews reused; GIA independently reassessed with unchanged actual inputs and additional already acquired source images. Additional assessor images are not actor-visible evidence. No independent human certification.",
+  "roles": [
+    {
+      "actor": "GIA",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "10个输出均有原始与接受输出一致的执行链接；两次分工对应后续工作区，七次读取有后续返回记录，最终FINISH被接受。这只能确认执行对应关系，不能认证报告内容。此运行不是terminal_replay。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0100",
+            "request_0101",
+            "request_0102",
+            "request_0103",
+            "request_0104",
+            "request_0105",
+            "request_0106",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取均指向当时已有的合法E；未发现使用官方编辑说明或未来返回内容。最终输入实际只有E90、E79、E52、E51、E46、E7、E85、E88八张图。最终对其他时刻的汇总有当前仍提供的Finding文字依据，不应误判为这些图片仍在当前可见，也不应要求其恢复没有保留的历史像素。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0100",
+            "request_0101",
+            "request_0102",
+            "request_0103",
+            "request_0104",
+            "request_0105",
+            "request_0106",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "主要输出可由提供的像素及报告文字核对：E10/E14支持1秒差异；E61/E84、E55/E85及E62/E70支持前段尾部差异；E63/E71支持1.366667秒的阴性状态；片尾各对图支持人物局部仍可见而A对应位置不可见。E51底边的小片深色前景与E79不同，E52中更明显；最终没有把它直接认定为后续黑衣人物。E90缺少当前A对应图，最终也没有据此新增成对命中。未发现可确定的重要事实错误。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "分工覆盖了开头、前段消失、中段重新出现、后段连续性及片尾，但最终仍未回答全部事件段数、完整起点及各命中之间的连续性。给出了有用的命中子集和部分边界，不能算完成原始定位任务。HI局部INCOMPLETE与GIA全局未完成分别成立；不因最终诚实承认不足而认定任务已完成。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两次分工均针对当时明确未解决的时间缺口，要求直接比较A/B并保留交界，未安排无关调查。最后一轮禁止新增调查后，依次检查对齐、首帧和出现边界，均有可说明的用途。request_0106后仍保留一次最终决策；request_0107预算为零，FINISH合理，不能作为已验证自主停止能力的证据。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0100",
+            "request_0101",
+            "request_0102",
+            "request_0103",
+            "request_0104",
+            "request_0105",
+            "request_0106",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终明确区分帧展示区间、完整事件区间、边界范围及视频截止；没有把1/30秒分辨率当作全部事件边界误差。没有把算法处理180帧或累计观察数量当成连续语义核验，也没有把下肢局部独立认证为黑色上衣。任务本身仍未知，不等于当前受限报告无法判定。",
+          "request_ids": [
+            "request_0062",
+            "request_0100",
+            "request_0107"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "GIA七次读取对象均不同，分别服务于具体缺口，不属于同组图片无目的反复切换。整体仍经历多轮覆盖相近范围的补查，已取得帧的内容判断没有充分保留，导致终局继续恢复早期证据。此处应区分组织效率与框架的附件淘汰问题，不能把累计调用成本全部归责于GIA，也不能倒推某次合理读取错误。",
+          "request_ids": [
+            "request_0025",
+            "request_0062",
+            "request_0100",
+            "request_0101",
+            "request_0102",
+            "request_0103",
+            "request_0104",
+            "request_0105",
+            "request_0106"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "全部差异事件的数量、完整起止及未观察空档中的状态仍未确定；本次不能认证完整定位成功。",
+        "官方说明的00:01–00:07与给定6秒片段之间缺少已核实的时间原点映射，且编辑操作范围不等于人物实际可见范围，因此无法计算可信的官方区间匹配指标。",
+        "累计观察记录不能证明每张历史图片的判断已传入后续独立会话。HI此前具体保留、读取和报告选择不在本次监督目标中，不能据此另行给HI评分。",
+        "未提供独立人工真值复核，不能把本次模型评估描述为人工认证。"
+      ]
+    },
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次行动均有接受及观察链接，最终报告有提交链接，原始输出与接受输出一致。能够确认执行对应，但执行成功不证明取证安排或视觉结论正确。",
+          "request_ids": [
+            "request_0001",
+            "request_0003",
+            "request_0005",
+            "request_0007",
+            "request_0009",
+            "request_0011",
+            "request_0013",
+            "request_0015",
+            "request_0017",
+            "request_0019",
+            "request_0021",
+            "request_0023"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现使用官方标注、未来结果或兄弟报告。已保存但暂未附图的E可以被合法选回，不等于当轮已见像素。最终报告只直接描述当前八张早期帧；对1.000秒和1.966667秒的结论明确归于任务提供的既有观察，没有假称当前重新看到了这些图。",
+          "request_ids": [
+            "request_0001",
+            "request_0003",
+            "request_0005",
+            "request_0007",
+            "request_0009",
+            "request_0011",
+            "request_0013",
+            "request_0015",
+            "request_0017",
+            "request_0019",
+            "request_0021",
+            "request_0023"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的具体断言均可核对：E69/E43、E76/E44、E36/E18、E77/E45在相应时刻均未见黑衣人物，四个相接的帧呈现区间支持[0.033333,0.166667)的阴性结论。任务文字明确提供1.000秒差异命中及1.966667秒双方未见人物，历史E10/E14、E11/E15像素也支持。报告没有把这些事实扩大成完整差异区间。",
+          "request_ids": [
+            "request_0023"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "整段调查没有完成局部任务要求的全部差异区间及边界，主要交付仍是一个差异命中点和阴性子区间。应将这一调查完成度与最终报告质量分开：request_0023在零剩余轮次下准确提交INCOMPLETE，不能因缺少当前未附且无语义文字保留的历史发现而判其报告错误，也不能把该报告当作完整定位成功。",
+          "request_ids": [
+            "request_0021",
+            "request_0023"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "先读对齐候选、广泛抽样、补成对帧以及细化入画和退出附近时刻均有明确用途。关键缺陷出现在最后一次可用行动：request_0021已经直接看到1.333333秒附近的差异及1.366667秒的阴性对照，却将下一输入全部换成更早的阴性帧，且未保留边界语义记录。最终报告是预算强制提交，不能用它评价自主停止能力。",
+          "request_ids": [
+            "request_0001",
+            "request_0003",
+            "request_0005",
+            "request_0011",
+            "request_0013",
+            "request_0021"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告明确区分命中点、帧呈现区间、尚未连续成对检查的空档和当前缺少的首帧像素；没有把1/30秒帧长当作整个事件边界的误差保证，也未把对齐处理180帧等同于人工语义核验。INCOMPLETE状态准确。",
+          "request_ids": [
+            "request_0023"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "早期超出实际附件容量的结果随后通过focus取回，属于有效恢复。后期则多次保留与当前边界关系较弱的早期阴性帧，且两次批量请求包含已保存的A首帧。末轮再次切换到早期阴性组，使已取得的退出边界像素无法进入最终报告。不能把所有跨会话复看一概判为重复，但这次末轮选择确有可避免的信息损失。",
+          "request_ids": [
+            "request_0003",
+            "request_0007",
+            "request_0013",
+            "request_0015",
+            "request_0019",
+            "request_0021"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0021的最后一次取证选择未保留当前可见的关键退出边界。E62右缘仍有极窄的人物衣袖或手臂残余，E70对应位置没有；E63/E71则均未见该人物。将这些图片全部换出，又没有可传递的语义记录，使最终独立会话无法据此报告边界。",
+        "轨迹未完成全部区间定位，不能作为完整定位成功样本整体导出。最终报告已诚实披露这一点；该缺陷不构成request_0023的虚假完成或幻觉。"
+      ],
+      "unknowns": [
+        "未成对检查的中间空档是否存在额外状态变化，现有采样不能穷尽判定。",
+        "E51在0.200秒画面下缘出现细小暗色入画部分，E79对应位置没有；结合随后更明显的人物画面形成起点候选，但精确的首次可辨认帧仍适合局部放大核查。",
+        "官方原视频编辑描述为1–7秒，未提供其与当前6秒素材的截取时间映射，也没有本局部任务的逐帧可见性真值。因此不能计算可信的官方区间IoU或完整边界误差。",
+        "未提供后段工作区的最终结果或下游GIA决策，不能判断全局任务最终是否完成。"
+      ]
+    },
+    {
+      "actor": "W1-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12项原始输出均与接受输出一致；11次行动有对应观察事件，request_0024有报告提交事件。该记录支持行动实际执行与报告实际提交，不单独证明内容正确。本例不是terminal_replay。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0020",
+            "request_0022",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现使用官方编辑标注、未来结果或其他工作区报告作答。终轮实际只有E40/E66、E73/E81、E74/E82、E75/E83四对图片；它对1.966667、3.966667和5.000秒的陈述有当前任务文字支持，其余历史帧编号与累计计数不恢复像素。焦点引用可在输入历史的实际证据记录中追溯，不能仅因未列在短卡片视图中就认定越权。",
+          "request_ids": [
+            "request_0002",
+            "request_0006",
+            "request_0012",
+            "request_0014",
+            "request_0018",
+            "request_0020",
+            "request_0022",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终轮像素支持全部主要视觉陈述：E40/E66在2.233333秒均未见目标；E73/E81在3.366667秒显示B有站在滑板上的黑衣人物、A对应位置无人；E74/E82在4.366667秒显示弯腰人物差异；E75/E83在5.866667秒显示右边缘人物局部及鞋、滑板差异。帧起点与显示时长支持所列三个短显示区间，报告明确未将其作为完整事件区间。历史图片也支持任务文字中的三个既有观察，没有发现可定位的错误事实。",
+          "request_ids": [
+            "request_0024"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "完成了多组成对采样，并在调查过程中检查过重叠段及末帧，但没有确定全部连续区间和起止边界。累计每侧19帧约覆盖本局部区段显示时长的15.7%，不能替代完整定位。终轮INCOMPLETE与实际完成度一致；此维度评价局部任务完成程度，不因此降低一份诚实、被要求提交的部分报告的可用性。",
+          "request_ids": [
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "读取既有对齐结果、补取对应侧图片和检查新时间点大多合理。主要缺陷是request_0022：当时实际可见2.000秒阴性、2.500秒阳性和5.966667秒末帧阳性帧对，却在最后一次行动中用两个中间命中和较早的5.866667秒帧对替换关键证据。可以在同样8图容量内保留2.233333秒阴性、2.500秒阳性、末帧和重叠段证据。request_0024已无剩余轮次，不作为自主停止失败评分。",
+          "request_ids": [
+            "request_0002",
+            "request_0006",
+            "request_0012",
+            "request_0014",
+            "request_0018",
+            "request_0020",
+            "request_0022",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确区分命中点、单帧显示区间、连续事件和未观察空档；没有把30fps、六位小数或对齐算法处理180帧解释为完整边界核验。对当前缺少像素与语义记录的2.000秒、末帧保留未知，并正确使用INCOMPLETE。历史上曾取得这些图片，应追究前序保留选择，而非要求终轮凭编号恢复事实。",
+          "request_ids": [
+            "request_0024"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "多数取帧提供了新时间点或必要的另一侧画面，不属于无价值重复；request_0020恢复边界和结尾证据也有明确用途。但随后request_0022再次切换，使刚恢复的关键状态不能进入最终报告；有限轮次中的证据整理未形成有效保留。调查后期仍主要增加中间采样，具体起点空档未得到集中细化。",
+          "request_ids": [
+            "request_0008",
+            "request_0010",
+            "request_0016",
+            "request_0020",
+            "request_0022"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0022的最终附图选择丢失当时已经可见、且直接关系任务起点与结尾的E33/E26和E8/E6帧对。此缺陷应在该行动及后续输入上修复，不能通过要求request_0024复述其当前不可见的历史像素来弥补。"
+      ],
+      "unknowns": [
+        "所供采样不足以确定全部事件区间、区间之间是否中断以及准确转变边界；尚未检查的帧仍可能改变完整定位结果。",
+        "官方编辑说明的1–7秒与两段6秒素材之间的时间转换、适用于本局部可见性任务的完整区间真值及具体官方计算指标未提供，无法计算可靠的官方区间得分。这不妨碍判断当前行动与部分报告是否合格。"
+      ]
+    },
+    {
+      "actor": "W2-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次动作均有接受及观察事件，最终报告有提交事件，原始输出与接受输出一致。本例不是terminal_replay。执行对应成立，但不能据此认证视觉结论或任务完成。",
+          "request_ids": [
+            "request_0026",
+            "request_0028",
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "所选证据可从当前材料、索引或实际历史工具结果中找到，没有观察到使用官方编辑标注、未来结果或兄弟报告作为事实依据。最终报告引用的8张图片恰好均在该次实际输入中；没有把累计44张历史图片当作当前像素。",
+          "request_ids": [
+            "request_0026",
+            "request_0028",
+            "request_0030",
+            "request_0032",
+            "request_0034",
+            "request_0036",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046",
+            "request_0048"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终当前像素支持所述事实：1.000秒B右侧有大面积黑衣人物；1.266667和1.300000秒B右缘仍有身体局部，A对应位置没有；1.366667秒两侧均未见该人物。两张相邻阳性帧支持[1.266667,1.333333)，其后边界的保守括定也成立。历史1.333333秒阳性帧可以诊断证据流失，但其像素和视觉判定文字均未进入最终输入，不能据此认定最终报告的较宽边界虚假。",
+          "request_ids": [
+            "request_0048"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "按HI局部目标评价，调查仍未解决首帧、包含1.000秒命中的完整区间、连续性和其他差异段。累计仅观察22对帧，若以前2秒60帧计约为36.7%，仍有实质空档。该调查成效不足与最终被迫提交的准确INCOMPLETE报告分别评价；不要求此HI完成后段或全局GIA任务。",
+          "request_ids": [
+            "request_0026",
+            "request_0034",
+            "request_0040",
+            "request_0046",
+            "request_0048"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "读取对齐记录、补齐另一侧帧、检查入口邻帧和时间空档均有明确用途，部分重新附图也形成此前未同时呈现的边界组合。但request_0046在最后一次工具机会中替换了当前首帧、入口及最后阳性帧，改选多组内部阳性帧，使最终输入无法回答已经可以直接核实的首端问题，并放宽末端边界。该选择的损失在动作前即可判断。",
+          "request_ids": [
+            "request_0026",
+            "request_0030",
+            "request_0034",
+            "request_0036",
+            "request_0038",
+            "request_0040",
+            "request_0042",
+            "request_0044",
+            "request_0046"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终正确使用INCOMPLETE，明确分开已核实的帧呈现区间、未证实的连续性和边界待定范围，没有把约1/30秒帧时长当作整段定位误差，也没有把算法处理180帧当作人工视觉核验180帧。零剩余轮次要求提交，因此该报告不能用于证明自主停止能力。",
+          "request_ids": [
+            "request_0048"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "存在有价值的新取帧和必要的成对复看，不能按重复次数全部拒绝。但多轮重新附首帧与末端后，观察结果仍未保留下来，最后一次切换又丢失刚整理的首端证据。框架没有可写视觉观察记录的动作，这部分损耗属于构造限制；最终焦点中保留较冗余阳性帧、舍弃任务关键边界帧则属于可改进的选择。",
+          "request_ids": [
+            "request_0032",
+            "request_0038",
+            "request_0044",
+            "request_0046"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0046的终态证据选择存在实质缺陷：当前E5/E7可核实首帧，E51/E79显示0.200秒下缘局部差异，E62/E70显示1.333333秒右缘仍有差异；输出将这些帧全部移出下一输入。其后报告的信息缺口应追溯到该选择及框架的观察保留机制，不能归为最终报告捏造或偷看。"
+      ],
+      "unknowns": [
+        "未提供空档的全部像素，不能确定局部全部连续差异区间、排除其他短暂差异或计算完整召回。",
+        "任务文字引述0.033333–0.166667秒已有无人物记录，但本包没有该范围所有帧，不能独立认证每一帧。",
+        "官方原视频编辑描述为00:01–00:07，未提供它与给定6秒素材的明确时间轴映射，也没有当前局部逐帧金标准，因此不能计算可信的官方区间IoU或据此认证边界。",
+        "没有本评估角色之后的新GIA决定或全局最终结果，不能推断报告被如何采用。"
+      ]
+    },
+    {
+      "actor": "W2-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次行动均有接受及观察链接，最终报告有提交链接，原始输出与接受输出一致。两个取帧请求确实产生了对应图片。这只确认执行，不认证行动价值或定位完整性。",
+          "request_ids": [
+            "request_0027",
+            "request_0029",
+            "request_0031",
+            "request_0033",
+            "request_0035",
+            "request_0037",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0045",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "请求使用了材料、当前视图或实际历史观察中可选择的编号。最终报告直接描述当前八图，并明确把未附图的交界状态归于任务提供的既有结论；没有把累计观察数量当作当前像素，也没有采用官方标注作为自身观察。",
+          "request_ids": [
+            "request_0027",
+            "request_0029",
+            "request_0031",
+            "request_0033",
+            "request_0035",
+            "request_0037",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0045",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的四组直接发现与像素一致：E33右下角有裤腿，E26对应位置没有；E72/E80、E34/E27、E47/E57也支持目标人物的可见性差异。单帧呈现区间有时长元数据支持。由2.233333秒阴性帧和2.500000秒阳性帧给出的起点括区成立，但并非完整定位。历史图片也支持其明确归属于任务文字的交界状态。",
+          "request_ids": [
+            "request_0049"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 1,
+          "reason": "局部任务的主要要求是补齐空档、确定通向3.366667秒的差异段起点并检查独立区段及中断，实际仍未解决。全历程只有12个不同时间点完成两侧附图，按帧呈现时长合计约0.4秒，不能证明约1.433秒局部范围的完整状态。最终INCOMPLETE报告准确，但不能据此把调查完成度评高；不要求该HI完成范围外的视频区段。",
+          "request_ids": [
+            "request_0033",
+            "request_0037",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0045",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 1,
+          "reason": "初次读取对齐结果、补取四个B时点以及取得对应A帧都有明确用途。但多次整批切换已取得的图片，没有把新旧关键帧同时保留，也没有继续测量边界空档。尤其最后一次焦点选择再次丢失较早时点的像素，使终端只能提交较粗的已知子集。零剩余轮次时提交报告本身是正确决定。",
+          "request_ids": [
+            "request_0027",
+            "request_0029",
+            "request_0031",
+            "request_0033",
+            "request_0035",
+            "request_0037",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0045",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告正确区分单帧呈现、连续差异段、边界括区和未检查空档；没有把1/30秒帧时长说成已达到的边界精度，没有把3.400000秒任务右界说成事件终点。INCOMPLETE及其理由准确。音频不属于本局部任务，不追加声音核查要求。",
+          "request_ids": [
+            "request_0049"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "11次行动中9次为READ_RECORD，只有2次产生新帧。首次读取及必要重新附图可以接受，但后续多个完整批次往返既未增加时间覆盖，也未形成有针对性的跨批次比较，耗尽了轮次。失败并非工具不可用：本轮已成功证明成对取帧可执行。",
+          "request_ids": [
+            "request_0027",
+            "request_0029",
+            "request_0031",
+            "request_0033",
+            "request_0035",
+            "request_0037",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0045",
+            "request_0047"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "调查阶段持续用整批复看替代边界取证，关键空档没有得到足够检查，局部完整定位目标未完成。",
+        "焦点选择反复使刚观察的内容退出下一独立会话，而历史只保留元数据，没有保存视觉判读。这是此前的证据保留和行动选择问题，不能转嫁为最终报告必须凭空恢复历史像素的义务。"
+      ],
+      "unknowns": [
+        "完整差异段数量、精确起止边界以及采样间是否中断仍未知；这些是报告已准确披露的调查未知，不构成最终目标的关键评审未知。",
+        "官方“00:01–00:07”编辑描述与给定6秒材料的时间映射及可见性区间金标准未提供，不能据此计算可信的完整区间指标。历史阴性帧还表明，编辑操作区间不能直接等同于目标人物始终可见的区间。",
+        "包内没有后续GIA决策或全局最终答案，本评估不推定其内容或质量。"
+      ]
+    },
+    {
+      "actor": "W2-3",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次动作均有原始输出、相同的接受输出及观察事件对应；末轮报告有提交事件。参数符合所给接口，未发现拒绝后冒充执行成功。本例不是terminal_replay。执行对应不证明行动有效或报告正确。",
+          "request_ids": [
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现偷用官方标注、未来观察或兄弟报告。末轮使用的四组帧对均实际附带，E4媒体属性也在当前历史正文中。累计36张已观察图片不代表末轮仍有36张像素；此前新增中段帧的视觉内容没有被末轮冒充为当前已见内容。",
+          "request_ids": [
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的具体视觉断言均可核对：5.5秒的B右侧有人物及滑板，A对应位置无人；5.9、5.933333、5.966667秒的B右边缘均有人物局部，A没有。后三帧的呈现时长相接，足以支持[5.9,6.0)连续存在差异。没有把对齐算法处理180帧解释为完成180帧的人物核查，也没有把6秒片尾说成人物消失。",
+          "request_ids": [
+            "request_0061"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部调查取得了真实命中和片尾连续段，但未确定任务范围内全部差异段、中断及重新出现边界。累计核查18组对应帧，按30fps覆盖约0.6秒，仅占本区段79帧的18/79。此分评价局部目标完成度；末轮准确报告INCOMPLETE本身可以是高质量目标。完整逐帧核验还受到12轮、每轮最多4组帧对的构造限制，不能全部归责演员。",
+          "request_ids": [
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "初期读取对应关系、检查未附帧，以及补取片尾两帧和中段四个新时刻均针对真实缺口。主要反例是0055–0057在既有中段组与片尾组之间切换，尤其0056完全重复0054的读取及焦点，未针对可见的未采样空档增加证据。0060为强制报告重新组织完整片尾帧组有实际用途；0061剩余轮次为0，不能据此认定自主停止能力已验证。",
+          "request_ids": [
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060",
+            "request_0061"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告区分单帧命中、连续呈现的三帧片尾、尚未核查的空档和视频截止边界，INCOMPLETE与实际缺口一致。一帧约0.033333秒的表述有依据，没有将它扩张为全区段边界误差保证。其结果是可验证子集，不能记为完整时间定位成功。",
+          "request_ids": [
+            "request_0061"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "0054–0057的四次读取期间，累计实际观察图片停留在28张。允许0054首次重组中段证据，但后续反复切换既不增加采样覆盖，也没有形成可传给独立后续会话的视觉事实记录。0058–0059最终取得四组新证据，末轮却只保留片尾像素；这是具体的信息保留损失，不能用累计ID清单补偿。",
+          "request_ids": [
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057",
+            "request_0058",
+            "request_0059",
+            "request_0060"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "未采样帧中是否存在短暂中断、重新出现及其他差异段仍未知。所有所附对应帧均显示目标差异，不足以排除帧间空档中的变化。",
+        "官方编辑描述为原视频00:01–00:07，但未提供该时间轴与两段6秒材料的转换关系，也未提供当前局部任务的完整像素区间参考。因此不能认证正式区间IoU、召回率或完整边界误差；不能直接把官方描述截成当前金标准。",
+        "未提供后续GIA决策或最终全局结果，不评价该HI报告是否被正确用于全局停止。这些调查或下游未知不构成当前准确INCOMPLETE报告的关键评审材料缺失。"
+      ]
+    },
+    {
+      "actor": "W3-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个输出均有原始输出与接受输出一致的执行链接；11次行动有相应观察，request_0085有report_committed及终止事件。这证明行动执行和报告提交，不单独证明结论正确；本例不是terminal_replay。",
+          "request_ids": [
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0079",
+            "request_0081",
+            "request_0083",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "行动使用任务材料或已有工具观察中的证据编号，未发现使用未来结果。终局只引用其实际附带的8张尾部图片，没有将累计86张图的统计冒充当前可见像素，也没有据历史编号补写起点和中段状态。官方编辑说明未被当作内容证据。",
+          "request_ids": [
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0083",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终局两项发现均符合当前像素：图3、4分别显示B在1.300000和1.333333秒右缘仍有人体局部，图1、2的A对应位置未见该人物；图5–8支持1.366667及1.400000秒两侧均未见。引用和时间对应正确。报告没有宣称两视频所有像素相同，也没有推断具体编辑机制。",
+          "request_ids": [
+            "request_0085"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部全部差异段、起点和通向1.3秒的连续性未形成可交付结论，只交付尾段及结束边界。这是任务完成度的实质缺口，但不是终局诚实INCOMPLETE报告的事实错误。历史图15/16的E52/E92在0.233333秒已清楚显示人物可见性差异，后续还有大量中段对应帧，因此不能把整轮不足解释为源材料始终不可取得；缺口主要是跨会话具体观察未被保留。",
+          "request_ids": [
+            "request_0063",
+            "request_0065",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0079",
+            "request_0081",
+            "request_0083",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "读取对齐结果、补齐双方缺帧及逐批查看未附像素均针对实际空档，末次核查1.333333秒也直接回应任务。request_0065在8图容量下同时保留8张旧焦点图并生成26张A帧，配对容量安排较弱。整个阅读序列没有形成终局可用的起点和连续性观察正文，但现有接口也没有明确的持久观察记录动作，不能将构造限制全部归责于演员。request_0085为零剩余轮次下的必交报告，不构成自主停止能力验证。",
+          "request_ids": [
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0081",
+            "request_0083",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "正确区分当前尾段、完整事件起点及未能汇总的历史状态。两张相邻帧各有1/30秒呈现时长，支持[1.300000,1.366667)这一有限连续区间，并非由稀疏采样任意连接。结束边界限定为视频帧切换，未虚构帧内精度。INCOMPLETE与当前证据及零轮次约束一致。",
+          "request_ids": [
+            "request_0085"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "大部分后续READ_RECORD是在首次展示已保存但尚未附带的对应帧，有实际信息增益，不能按重复操作名称判为无效复看。两次批量取帧没有超出工具schema；工具复用部分既存帧，也不能倒推演员此前已知它们。主要不足是早期焦点容量安排，以及大量观察没有转化为后续会话可用的语义记录，降低了整轮产出。",
+          "request_ids": [
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0079",
+            "request_0081",
+            "request_0083"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "官方说明的原视频00:01–00:07与给定6秒素材缺少明确时间轴映射，不能计算可信的官方区间IoU或边界误差，也不能将该说明直接当作本局部任务的金标准。",
+        "当前包不支持判断0–6秒全局定位是否完成；result为null，其他工作区状态不替代其报告或后续GIA决策。",
+        "起点处极小的边缘露出与残留影像需要明确一致的可见性判定口径；这一问题不妨碍核验终局实际声称的尾段。"
+      ]
+    },
+    {
+      "actor": "W3-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次行动均有原始输出、接受输出及执行观察对应，终次报告有提交记录；未发现解析拒绝或输出替换。执行对应成立，不证明行动有信息增益或任务已完成。本例不是terminal_replay。",
+          "request_ids": [
+            "request_0064",
+            "request_0066",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076",
+            "request_0078",
+            "request_0080",
+            "request_0082",
+            "request_0084",
+            "request_0086"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "行动引用的材料或派生图片有可见记录支持。终次报告只对其实际附带的8张图片作视觉断言，并明确把左交界状态归于任务给定信息。没有证据表明演员使用了官方编辑标注、未来像素或兄弟报告。累计观察计数不作为当前像素可见性的证明。",
+          "request_ids": [
+            "request_0064",
+            "request_0066",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076",
+            "request_0078",
+            "request_0080",
+            "request_0082",
+            "request_0084",
+            "request_0086"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终次三项发现均与当前像素相符：2.066667及2.166667秒两侧未见目标；2.633333秒B右缘有裤腿和黑白鞋而A对应部分缺失；3.366667秒B有黑色上衣人物而A对应位置无人。报告没有把局部裤腿直接断言为已确认黑色上衣，也没有把离散命中合并成连续事件。历史2.366667及2.500000秒的阳性证据不能反驳这些有限事实。",
+          "request_ids": [
+            "request_0086"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "所接局部任务要求解决1.366667–3.400000秒内的全部分段、出现边界和后续中断，调查没有完成这些要求。终次准确使用INCOMPLETE，仍提供了有用的阴性帧、阳性帧和右交界状态，因此报告本身可以合格。缺口不能扩大为本HI没有完成全长6秒任务，也不能全部归因于演员：严格逐帧完整覆盖的预算充分性未获证明。",
+          "request_ids": [
+            "request_0076",
+            "request_0078",
+            "request_0082",
+            "request_0084",
+            "request_0086"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "最初读取对齐结果、调入未查看的成对帧及两次针对右缘小目标的裁剪合理。后期多次切回旧组，没有取得2.266667–2.366667秒的邻近帧，也没有检查后续命中之间的新时刻；这些都是当时工具和材料支持的具体推进方向。最后一次焦点选择又丢失当前可见的2.366667秒关键阳性对照。终次剩余轮次为0，提交报告不构成错误的自主停止。",
+          "request_ids": [
+            "request_0064",
+            "request_0066",
+            "request_0068",
+            "request_0074",
+            "request_0076",
+            "request_0078",
+            "request_0082",
+            "request_0084",
+            "request_0086"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终次区分了帧展示区间、事件边界精度、未检查空档和人物衣着识别限制；没有把约0.033333秒帧时长写成定位误差，也没有把3.400000秒分工边界写成事件终点。INCOMPLETE与实际缺口一致。音频不属于本局部任务，无需额外核查。",
+          "request_ids": [
+            "request_0086"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "11次行动包括9次READ_RECORD和2次crop。前三次决策输入已累计包含12个配对时刻，此后仅首次调入2.500000和3.366667秒两对帧。裁剪及首次针对裁剪线索的复看有价值，但后期多轮旧组切换没有增加时间覆盖，并反复丢失关键对照。此判断不是把所有重新附图都视为浪费。",
+          "request_ids": [
+            "request_0070",
+            "request_0072",
+            "request_0076",
+            "request_0078",
+            "request_0080",
+            "request_0082",
+            "request_0084"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "调查阶段在存在具体可行补查方向时反复切换旧帧，未解决局部任务的边界和连续性要求；不能把最终诚实报告当作完整定位成功。",
+        "request_0084没有把当前可见的E90/E98阳性对照保留到强制报告输入，却保留两组相近阴性对照，造成关键出现边界证据流失。这是前序材料选择缺陷，不是request_0086凭空遗漏仍可见事实。",
+        "未发现终次报告存在可确认的事实捏造、非法引用或错误完成状态。"
+      ],
+      "unknowns": [
+        "离散附件不足以确定本局部范围内全部真实差异区间及命中之间是否有短暂中断。",
+        "1.566667秒B右缘及其裁剪可见细小黑块，但仅凭这些像素不能可靠确定它属于目标人物；这条线索尚需邻帧核查。",
+        "官方“00:01–00:07移除黑衣人物”描述没有提供本地6秒视频的明确时间换算和逐帧可见性金标准，不能据此计算完整区间IoU或真实边界误差。",
+        "没有所评演员以外的全局完成结果可供评价；其他工作区的磁盘错误不能归为W3-2的执行失败。"
+      ]
+    },
+    {
+      "actor": "W3-3",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个目标均有原始输出与接受输出一致的对应记录；11个动作已执行，0099报告已提交。本例不是terminal_replay。磁盘空间错误及恢复属于环境历史，不证明动作内容正确，也不构成演员伪造执行。",
+          "request_ids": [
+            "request_0087",
+            "request_0088",
+            "request_0089",
+            "request_0090",
+            "request_0092",
+            "request_0093",
+            "request_0094",
+            "request_0095",
+            "request_0096",
+            "request_0097",
+            "request_0098",
+            "request_0099"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "选取的记录均可由实际材料或已返回结果追溯，未发现使用官方编辑标注或未来结果。0099只将当前8张图片作为直接视觉发现，将另外6个时间点明确归于任务给定确认；没有把累计46张图片当成本轮仍有46张像素。选择已保存但未附图的E用于下一轮查看，与当前已看见其内容不同。",
+          "request_ids": [
+            "request_0087",
+            "request_0088",
+            "request_0089",
+            "request_0090",
+            "request_0092",
+            "request_0093",
+            "request_0094",
+            "request_0095",
+            "request_0096",
+            "request_0097",
+            "request_0098",
+            "request_0099"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "0099的四组当前像素均支持B有人、A对应位置无人。5.4秒的B仍有部分人物在右边缘，报告正确保留差异。六个继承命中有当前任务文字支持，历史附件也与之相符。单帧呈现区间和未观察空档与时间记录一致。报告没有把对齐算法处理180帧解释成人物可见性已逐帧验证。",
+          "request_ids": [
+            "request_0099"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部目标是解决3.366667–5.9秒内连续性、全部差异段及可能中断边界，不能用全局视频任务替代。轨迹累计取得23对采样帧，按30fps约覆盖该范围76个帧呈现区间中的23个，仍未解决主要连续性要求。终轮准确标为INCOMPLETE并保留交界状态，报告本身合格；局部调查目标仍未完成。当前工具和附件预算也限制了全面核查的可行性。",
+          "request_ids": [
+            "request_0087",
+            "request_0088",
+            "request_0089",
+            "request_0090",
+            "request_0092",
+            "request_0093",
+            "request_0094",
+            "request_0095",
+            "request_0096",
+            "request_0097",
+            "request_0098",
+            "request_0099"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "初期展开已有成对帧、读取对齐结果，以及0096–0098补采未观察位置，均能处理真实缺口。0090、0092首次将跨批帧重新集中比较尚有有限价值；0093–0095继续在相同两组之间往返，没有新增时刻、局部放大或明确的新边界检查。0099已被零剩余轮次要求提交，不作为自主停止能力的证明。",
+          "request_ids": [
+            "request_0087",
+            "request_0088",
+            "request_0089",
+            "request_0090",
+            "request_0092",
+            "request_0093",
+            "request_0094",
+            "request_0095",
+            "request_0096",
+            "request_0097",
+            "request_0098",
+            "request_0099"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "终轮区分了当前像素、任务继承结论、累计观察记录与连续性未知；正确说明1/30秒是帧呈现精度，并非事件边界误差。没有把未观察空档当成真实中断，也没有把范围端点当成人物出现或消失时刻。调查对象尚有未知不影响对此准确INCOMPLETE报告作出明确评价。",
+          "request_ids": [
+            "request_0099"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "前期批量查看已有图片避免了重复取帧，末期一次保存8张A帧、分两批取得对应B帧也有实际信息增益。但0093–0095消耗三个输出机会重复切换已展示过的相同帧组，延迟了补采。跨会话缺少语义观察留存是构造问题，不能据此要求演员使用不存在的记忆写入动作；同样不能把无进展往返作为高质量行动奖励。",
+          "request_ids": [
+            "request_0087",
+            "request_0088",
+            "request_0089",
+            "request_0090",
+            "request_0092",
+            "request_0093",
+            "request_0094",
+            "request_0095",
+            "request_0096",
+            "request_0097",
+            "request_0098"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0093–request_0095反复重新附上相同两组帧，没有推进尚未观察的连续性空档，不宜作为正向行动监督。"
+      ],
+      "unknowns": [
+        "3.366667–5.9秒内未观察帧中的人物可见性、真实差异段数及内部中断边界仍未知；所有提供的采样帧均命中不能排除采样间中断。",
+        "官方编辑说明的01–07秒与给定视频0–6秒时间轴缺少明确转换依据，不能据此计算可信的官方区间IoU或边界误差。",
+        "完整原视频及5.9–6秒的相邻帧未作为本次评审像素提供，不能独立认证该范围的逐帧状态；终轮没有新增宣称已验证这一范围。",
+        "没有提供该报告之后的GIA决策或全局结果，不能判断全局任务最终是否完成。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图为E10、E14、E11、E15，分别支持1秒差异及1.966667秒阴性。读取已有E9对齐结果可以核查对应时间关系，focus E7针对任务要求的视频开头。没有把尚未读到的对齐内容或未附首帧当成已知结论。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E11、E15、E12、E16、E13、E17，分别对应1.966667、3.966667和5.000秒的三对画面。读取当前可用的E9可取得已有时间对应候选，服务后续同时间比较；此时没有必要重新运行对齐，也没有提前使用其返回内容。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E7、E10、E14、E11、E15，并已取得E9正文。对B请求0.1至1.933333秒的八个新时刻，可调查1秒命中前后的状态和潜在额外区间，属于合理初始扫描。批量安排略弱：实际下一输入还附带材料帧，导致E20、E23暂未显示；后续确实通过focus取回，不能把这些遗漏帧当作当时已观察。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仍为E11、E15、E12、E16、E13、E17，当前另有E9完整读取结果。请求A的2.5、3.0、4.5秒和5.966667秒帧，覆盖已知命中之间的空档与结尾；每批4帧符合后续双侧8图比较容量。末帧尚未在当前输入显示，其与新帧一并返回并非无价值重复。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图为E14、E18、E15、E19、E21、E22、E24、E25。E19和E21可见前景黑衣人物，值得补A对应帧。E20、E23虽然当前没有像素，但最新工具结果明确说明已保存；选择它们与新A帧同屏比较合法且有用，没有重复提取B的遗漏结果。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E11、E26、E12、E27、E13、E28、E6、E15，新增的是A侧四帧，历史E16/E17本轮未附。请求B相同四个时间点，并保留E26/E27/E28/E6，能直接形成对应比较，没有把当前缺少的B侧画面当成已核实结果。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E19、E29、E20、E30、E21、E31、E23、E32，前面三对支持人物差异，1.466667秒一对均未见人物。补取A在0、0.1、1.233333、1.933333秒并重新附上对应B帧，能够补齐其他采样点。0秒已有保存的E5，可直接复用；其余三个新时刻及成对观察仍有实质价值。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E26、E33、E27、E34、E28、E35、E6、E8。像素显示2.5秒B右边缘已有目标人物的腿部，A对应位置没有，末帧也存在人物局部差异。请求B的2.0和2.25秒可检查较早转变，3.5和5.5秒可补空档，行动有用；但空focus没有保留最早阳性的2.5秒帧对，使后续独立会话失去这项关键视觉依据。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E7、E5、E18、E36、E22、E37、E25、E38：0与0.1秒阴性，1.233333秒B右缘仍有人物而A没有，1.933333秒阴性。检查B开头未覆盖的帧可以排查短暂入画及更早边界，不能用后来才取得的答案否定这次探索。focus保留的四张B帧与新增时刻不直接成对，安排略欠紧凑。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E26、E39、E27、E40、E28、E41、E6、E42，不能当作四组同时间配对：B的新帧与A旧帧时间不同。请求B的3.233333、4.233333、4.733333和5.733333秒增加了局部任务所需的空档观察，焦点还会恢复末帧对。取证合法且有增益，但对起点转变的推进较弱；历史E33的2.5秒阳性像素本轮并不存在，不能倒推演员本轮已经掌握其人物状态。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图为E19、E43、E20、E44、E21、E45、E23、E46。新增早期B帧均未见人物，而0.333333秒已有明显人物，1.466667秒未见人物。请求0.2至0.3秒及1.3、1.4秒针对起止两侧的实际未决范围，六张新图加两张focus符合附件容量，信息增益明确。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E34、E47、E35、E48、E8、E49、E6、E50。E47/E48/E49/E50是B的新时间点，只有E6是当前A侧末帧。请求A相同四个时间点并保留全部对应B帧，直接解决这些新增观察缺少另一侧证据的问题。"
+    },
+    {
+      "request_id": "request_0013",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E5、E51、E7、E52、E53、E54、E55、E56。E52至E54显示明显入画人物，E55在1.3秒右缘仍有残余，E56在1.4秒未见人物。细化1.266667、1.333333、1.366667、1.433333秒是合理边界调查。focus却选回四张更早的阴性B帧，未保留当前起点候选和退出两侧锚点，降低后续整理效率；本轮新增取证本身仍有效。"
+    },
+    {
+      "request_id": "request_0014",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E47、E57、E48、E58、E49、E59、E50、E60，四组像素均支持对应时刻B有人、A无人。请求A的2.0、2.233333、3.5和5.5秒，并从已有记录恢复对应B帧，补齐另一批尚未成对核验的位置及2.000秒重叠端点。采用实际返回的2.233333秒而非请求值2.25秒，时间参数处理正确。"
+    },
+    {
+      "request_id": "request_0015",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E43、E61、E44、E62、E45、E63、E46、E64。E62的右缘人物残余与E63的阴性状态使补取A的1.333333和1.366667秒具有直接用途，并正确保留对应B帧。A的0秒已保存，B的0.033333秒当前也已显示阴性，这两个早期时刻的取证优先级较低，但不抹去退出边界对照的价值。"
+    },
+    {
+      "request_id": "request_0016",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E39、E65、E40、E66、E41、E67、E42、E68：2.0和2.233333秒均未见目标，3.5和5.5秒存在差异。新增B的2.733333、3.366667、4.366667和5.866667秒仍能补充未检查位置，并非重复取相同帧。但剩余预算已少，焦点优先恢复中间帧对，未优先汇集早期转变依据，边界定位效率较弱；不能据此把所有新采样判为无用。"
+    },
+    {
+      "request_id": "request_0017",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E7、E5、E43、E69、E62、E70、E63、E71。请求A的0.066667、0.133333、0.166667、0.2秒并附对应B帧，能够补前段成对观察，尤其0.2秒对起点候选有用。其他早期B帧虽然在历史会话出现过，其像素及语义结论并未在本次恢复，不能据评审员的历史图断言演员当时已知全部阴性而判该行动无价值。"
+    },
+    {
+      "request_id": "request_0018",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E48、E72、E58、E73、E49、E74、E59、E75。当前虽有4.233333和4.733333秒旧帧对，但新增四个时间点只有B侧像素。请求A对应四帧并保留E72/E73/E74/E75，是必要配对，不是重复确认已有完整比较。"
+    },
+    {
+      "request_id": "request_0019",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图为E44、E76、E45、E77、E46、E78、E51、E79。读取E63并重新附首帧、退出附近和重叠区间的成对图，可以恢复当前独立会话缺少的边界像素。未保留0.2秒下缘入画候选是较弱的整理选择，但此时仍有一次后续行动可重新附入；不能用后来不当的末轮切换倒推此次边界复看本身无价值。"
+    },
+    {
+      "request_id": "request_0020",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E72、E80、E73、E81、E74、E82、E75、E83，均为新增时间点的完整帧对；2.0、2.5和5.966667秒图片本轮没有附带。读取E6并选择2.0、2.5、4.5和末帧四对证据，可恢复报告所需的较早状态与视频结尾。每次调用是独立会话，因此这种有具体用途的重新附图合理，不能因历史上见过就判作机械重复。"
+    },
+    {
+      "request_id": "request_0021",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图为E5、E63、E7、E70、E62、E71、E15、E11，已经提供首帧阴性、1.333333秒右缘差异、1.366667秒阴性及重叠区间阴性。只剩最后一次工具行动时，却把focus全部换成0.033333至0.133333秒的四组早期帧，丢失当前关键退出边界，也未选回0.2秒起点候选。历史记录只保存元数据，不能替下一模型会话保存这些视觉判断。应在此状态修正末轮附图选择后重新执行后缀。"
+    },
+    {
+      "request_id": "request_0022",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E39、E6、E65、E33、E26、E35、E28、E8，像素已经显示2.0秒两侧无人、2.5秒B右边缘有人而A没有，以及5.966667秒仍存在人物局部差异。恢复E40/E66以核查2.233333秒本身合理，但所选8图同时丢弃了2.5秒阳性帧对和末帧对，并加入较早的5.866667秒及两个中间命中。下一轮必须报告，且输入历史不保存这些图片的人物状态。应保留关键边界与末帧证据后重新执行，不能将改写行动直接接到旧终轮报告。"
+    },
+    {
+      "request_id": "request_0023",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图仅为E69、E43、E76、E44、E36、E18、E77、E45；它们确实支持报告的相接阴性帧区间。首帧、0.2秒候选及退出边界像素此时都未附，历史元数据和累计42张统计不能恢复其内容，因此不要求本报告复述这些失落发现。1秒差异和1.966667秒阴性则有当前任务文字明确提供，并与历史像素一致。零剩余轮次下提交INCOMPLETE、列明空档及范围是准确且有用的报告目标；它不证明完整定位或自主停止能力。"
+    },
+    {
+      "request_id": "request_0024",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E40、E66、E73、E81、E74、E82、E75、E83。三个阳性帧对和一个阴性帧对均描述准确；1.966667、3.966667和5.000秒的既有结果有当前任务文字支持。2.0、2.5和5.966667秒的历史像素并未重新附带，当前文本也没有保存其人物状态，故不要求报告恢复这些事实。报告没有虚构连续区间，正确标为INCOMPLETE；零剩余轮次下提交这种有用且准确的部分结果可以作为报告监督，但不证明完整定位或自主停止能力。"
+    },
+    {
+      "request_id": "request_0025",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E69、E11、E10、E73、E15、E12、E43、E75；E14及其他历史配对图不能算本次已见。两份当前报告明确未完成边界和连续性，继续调查有必要。三个子任务直接比较A/B，按前段、中段、后段分工并保留交界，使用已有记录且未重复完整调查。输出中的既有状态有当时报告文字依据，不以未来成果证明本次计划合理。"
+    },
+    {
+      "request_id": "request_0026",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E7、E10、E14、E11、E15、E46、E78。读取尚未展开的E9可核对时间对应，下一焦点选择材料中合法可选的0.200、0.333333、1.233333和1.333333秒成对帧，直接服务边界与空档检查。没有把下一轮图片当作已经观察的事实。"
+    },
+    {
+      "request_id": "request_0027",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E11、E15、E39、E65、E40、E66、E33、E26。读取尚未展开的E9可核对时序对应候选，同时选择遗漏的后侧四对帧供下一轮观察，目标明确且执行合法；没有提前使用尚未附上的像素。"
+    },
+    {
+      "request_id": "request_0028",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E51、E79、E19、E29、E22、E37、E62、E70，并有完整E9文字。查询已有帧索引以避免盲目重复提取是合理行动；下一焦点包含合法的后端边界帧。查询同时罗列较多时点和范围，检索针对性稍弱，但不能用随后返回结果不理想倒推该请求错误。"
+    },
+    {
+      "request_id": "request_0029",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E72、E80、E34、E27、E47、E57、E73、E81。当前可见后侧命中，重新附上较早四对帧以检查起点是合理的一次复看。焦点若同时保留一个后侧锚点会更集中，但此次操作仍有明确任务用途。"
+    },
+    {
+      "request_id": "request_0030",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E7、E71、E63、E70、E64、E23、E32。请求A在1.266667、1.300000、1.400000和1.700000秒的帧，并保留已知B对应帧E61、E55、E56、E24，可用8张容量形成4对比较，补齐出口附近及后续时点的另一侧证据。"
+    },
+    {
+      "request_id": "request_0031",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E11、E39、E15、E65、E40、E66、E33、E26，已可直接比较2.233333秒阴性与2.500000秒阳性。行动却再次切换到同一组后侧四对帧，没有加入边界时点或保留当前起点对照。合法执行，但作为正向行动目标的信息增益不足。"
+    },
+    {
+      "request_id": "request_0032",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E61、E84、E55、E85、E56、E86、E24、E87，能看到1.300000秒仍有差异而1.400000秒已无该人物。下一焦点重新附上0.000、0.200、1.333333和1.366667秒的成对帧，具有核实首端及缩小末端范围的具体用途。部分图片曾出现过，但本次没有其像素；不能机械判作无价值重复。"
+    },
+    {
+      "request_id": "request_0033",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E72、E80、E34、E27、E47、E57、E73、E81。请求B在2.066667、2.166667、2.366667、2.633333秒的新帧，直接针对前侧空档和可能的独立区段；参数合法，并为四张结果与四张既有图片安排了容量。接受此步不表示四个采样点足以完成定位。"
+    },
+    {
+      "request_id": "request_0034",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E7、E51、E79、E62、E70、E63、E71。请求A在0.233333、0.266667、0.300000秒的连续邻帧及1.433333秒帧，保留0.333333秒对照和B的1.433333秒帧，针对入口空档与后续是否重新出现进行补查。一次动作尚未覆盖全部时段不是该动作的错误。"
+    },
+    {
+      "request_id": "request_0035",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E88、E65、E89、E33、E90、E26、E91，新增B帧已经到达，尚需取得同时间A帧。此时再次读取E81并换回后侧整批图片，丢掉新增B帧的当前可见性；可以直接执行后来request_0037所用的成对补取行动。此次复看没有解决新的必要问题。"
+    },
+    {
+      "request_id": "request_0036",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E19、E92、E29、E93、E64、E94、E95、E5。提取B的0.233333、0.266667、0.300000秒并保留A的E92、E93、E94，能完成刚取得的三组对应比较。工具后来复用了E52–E54，但动作前这些编号没有提供给演员，不能将缓存命中判作明知已有结果仍重复取帧。"
+    },
+    {
+      "request_id": "request_0037",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E72、E81、E80、E34、E27、E47、E57、E73。历史工具文字明确给出了四个新增B帧的编号和时间，因此可合法请求同时间A帧，并将E88至E91保留为比较对象。没有宣称当前已看见这些B帧内容；执行后确实形成四组成对新观察。"
+    },
+    {
+      "request_id": "request_0038",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E92、E52、E93、E53、E94、E54、E5、E7。重新附上E84/E61、E85/E55、E70/E62、E71/E63，可把1.266667至1.366667秒四个连续帧起点的成对画面集中比较，存在明确末端核查价值。前两组阳性帧略有冗余，但该次组合不能等同于无目的切换。"
+    },
+    {
+      "request_id": "request_0039",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E96、E89、E97、E90、E98、E91、E99。2.633333秒配对图有清楚的右侧腿鞋差异，2.366667秒右下缘局部也值得定向核查。选择旧锚点混合组本可用于比较，但实际焦点完全排除了这些新帧，下一会话无法同时比较新旧状态，也没有新增边界测量。保留为历史更合适。"
+    },
+    {
+      "request_id": "request_0040",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E84、E61、E85、E55、E70、E62、E71、E63。请求A在0.666667、1.100000、1.566667和1.833333秒的帧，分别落在现有观察空档内，能增加连续性及其他差异段的检查依据。该动作没有声称四个采样点足以完成穷尽定位。"
+    },
+    {
+      "request_id": "request_0041",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E33、E65、E26、E72、E80、E47、E57。恢复缺失的较早像素有潜在价值，但本动作原样换回四对新增早期帧，没有保留当前阳性锚点形成针对性比较，也没有检查已有阴阳性之间的新时点。缺陷在焦点与未决问题的对应不足，而非单纯因为图片曾经出现。"
+    },
+    {
+      "request_id": "request_0042",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E100、E7、E101、E51、E102、E79、E103。请求B在相同四个时间点取帧，并保留A的E100–E103，容量与依赖安排正确。尚未返回的B画面没有被预先描述，行动合理性不依赖随后是否命中差异。"
+    },
+    {
+      "request_id": "request_0043",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E96、E89、E97、E90、E98、E91、E99。行动再次返回request_0039选择的旧锚点组；E57的读取只提供图片元数据，没有新的视觉问题、裁剪或时间点。又一次丢弃当前起点相关图片，形成无新增覆盖的往返。"
+    },
+    {
+      "request_id": "request_0044",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E100、E104、E101、E105、E102、E106、E103、E107。下一焦点把0.000、0.166667、0.200000秒三组成对帧集中呈现，并保留1.333333秒末端阳性对，能核实明确要求的首帧和入口邻接关系，因此仍有用途。新取得的内部观察不会自动被后续会话记住，需要关注随后的证据保留；不能仅据这次重新附图就认定无效。"
+    },
+    {
+      "request_id": "request_0045",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E39、E57、E65、E33、E26、E72、E80、E47。读取E90后再次切回同一早期四对帧；其时间和派生关系已经在历史工具结果中存在。若要核查E90的边缘局部，应保留相关阴阳性锚点或安排裁剪，而不是继续两个完整批次交替，尤其此时只剩两次后续决定。"
+    },
+    {
+      "request_id": "request_0046",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E5、E7、E78、E46、E79、E51、E70、E62，包含首帧、入口前后和1.333333秒最后阳性证据。仅剩一次工具机会，输出却将它们全部换成1.000、1.266667、1.300000、1.366667秒四对帧。可保留E5/E7、E79/E51、E70/E62并补入E71/E63，使终态同时拥有首帧、入口阳性及更紧末端依据。现有选择合法可执行，但对明确任务造成可预见的信息损失，需从该状态修正重跑。"
+    },
+    {
+      "request_id": "request_0047",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本轮实际图片为E88、E90、E96、E89、E97、E98、E91、E99。最后一次行动重新附上2.500000至3.233333秒的四对旧阳性帧，虽可支持部分报告，却再次排除了起点相关新证据及3.366667秒交界。可在八图容量内同时选择2.233333秒阴性、2.366667秒边缘候选、2.500000秒阳性及3.366667秒交界的四对帧。应从此状态修正焦点并重新生成报告。"
+    },
+    {
+      "request_id": "request_0048",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片仅为E14、E71、E10、E84、E61、E85、E55、E63，报告的全部引用与视觉事实均可直接核验。[1.000000,1.033333)和[1.266667,1.333333)是真实的已确认子集；[1.333333,1.366667]是当前证据支持的保守消失边界范围。首帧、0.200秒入口及1.333333秒阳性的历史像素和观察结论文字均不在该输入中，不要求报告复现。零剩余轮次下准确提交INCOMPLETE可作为报告监督，但不代表完整定位成功或自主停止能力通过。"
+    },
+    {
+      "request_id": "request_0049",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本轮实际图片仅为E33、E34、E26、E72、E80、E27、E47、E57。四组直接视觉发现及单帧呈现区间准确；其他交界状态明确归属于当前任务文字，并获评审所持历史像素支持。起点括区较粗但成立，没有声称已完成连续定位。E88至E99的历史像素不在本轮，实际历史文字也未保存其视觉判读，因此不能要求该报告复原这些事实。零剩余轮次下提交有用且准确的INCOMPLETE报告是合格目标；它不证明此前停止安排或整条调查合格。"
+    },
+    {
+      "request_id": "request_0050",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次像素为E73/E81、E41/E67、E12/E16、E48/E58四组对应帧。读取尚未展开的E9以核对时间对应，同时选择尚未附带的4.366667、4.5、4.733333、5秒帧对，符合局部任务和8图容量；没有预先采用读取结果。"
+    },
+    {
+      "request_id": "request_0051",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次像素为E74/E82、E35/E28、E49/E59、E13/E17。首次展开E4可核对帧数、帧率和片尾时间，焦点安排下一批5.5、5.733333、5.866667、5.966667秒对应帧。这是有用途的读取与首次附图，不是无效复看。"
+    },
+    {
+      "request_id": "request_0052",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次像素为E42/E68、E50/E60、E75/E83、E8/E6。5.866667秒和最后一帧均显示B人物局部而A没有，5.9和5.933333秒仍缺帧。请求B的这两帧直接检查片尾空档，时间合法且未重复已有取帧；A侧核对仍需后续执行。"
+    },
+    {
+      "request_id": "request_0053",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附件为E41、E108、E67、E109、E48、E58、E73、E81，其中E108/E109是新取得的B片尾帧。请求A相同时刻并保留这两张B帧，连同辅助帧共8图，能在下一输入进行直接配对，依赖和容量安排正确。"
+    },
+    {
+      "request_id": "request_0054",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次像素为E108/E110、E109/E111、E35/E28、E42/E68。选择3.5、4.233333、4.733333、5.733333秒四组既有帧，首次把这些中段检查点集中到同一输入，有助于选择后续补查位置。信息增益有限，但不能仅因其中帧曾在其他独立会话出现就拒绝这次重组。"
+    },
+    {
+      "request_id": "request_0055",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本次像素为E41/E67、E48/E58、E49/E59、E50/E60。动作又转向已对照的4.5、5.5、5.9及最后一帧，未增加未采样空档证据；所选片尾组还缺5.933333秒，不能在下一独立会话完整保留三帧连续性依据。请求合法，但相较具体可执行的空档补查，信息增益不足。"
+    },
+    {
+      "request_id": "request_0056",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "本次实际附件为E35、E110、E28、E42、E68、E108、E8、E6。输出完全重复0054的READ_RECORD E41及八张焦点，中段帧组刚在0055输入展示；没有新增时刻、裁剪、失败恢复或新的核查问题。跨会话像素不会保留，但这不能使没有推进未决问题的往返循环成为优质取证目标。"
+    },
+    {
+      "request_id": "request_0057",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本次像素再次为E41/E67、E48/E58、E49/E59、E50/E60。动作再切回4.5、5.5、5.933333及片尾帧，只替换了此前片尾组中的一个已见时刻；这些对应帧均已直接对照，仍无新增空档证据，也未把三张连续片尾帧共同保留。不宜作为正向模仿目标。"
+    },
+    {
+      "request_id": "request_0058",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附件为E35、E109、E28、E42、E68、E111、E8、E6。请求A在3.7、4.1、4.866667、5.266667秒的四帧，均位于当时记录的未采样空档；尚有足够轮次取得B对应帧并报告。行动本身合理，不能因后来仍未完成全部定位而倒扣这次补查。"
+    },
+    {
+      "request_id": "request_0059",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附件为E108、E112、E110、E113、E114、E115、E73、E81。四张新A帧已经附带，动作请求B的相同时刻并保留E112–E115，恰好组成四组对应帧。它完成必要的跨视频取证依赖，没有把当前A侧结果提前说成两侧差异。"
+    },
+    {
+      "request_id": "request_0060",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次像素为E112/E116、E113/E117、E114/E118、E115/E119，四组均能直接看到B人物而A对应位置无人。最后一次动作将5.5秒及5.9、5.933333、5.966667秒三张连续片尾帧对组织给报告会话，具有明确用途。代价是四组新中段像素不会进入末轮，且没有对应语义记录；这是上下文保留限制，不能要求末轮凭ID恢复其内容。"
+    },
+    {
+      "request_id": "request_0061",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附件仅为E68、E6、E42、E110、E108、E111、E109、E8，即5.5秒和连续三帧片尾。两条finding与这些像素及当前可读E4属性一致，[5.9,6.0)有连续帧时长支持，6秒被正确解释为视频截止。剩余轮次为0，INCOMPLETE准确；此前3.7等新帧只剩元数据和ID，未报告其视觉内容不能算本目标遗漏已可见事实。该报告是合格的部分报告，不是全部区间定位或自主停止成功。"
+    },
+    {
+      "request_id": "request_0062",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E14、E33、E68、E85、E11、E110、E10、E40。现有报告仍留下明确缺口，三项补查具有互补范围，并利用已保存但缺少内容判断的成对帧；片尾已解决部分被保留。0.166667–0.366667秒作为起点候选的依据较弱，但输出仍要求核查整个0–1.4秒，并未将该候选范围写成已证实边界，属于轻微的搜索优先级缺陷。"
+    },
+    {
+      "request_id": "request_0063",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E5、E7、E46、E78、E51、E79、E52、E92。读取尚未展开的E9可核对时间对应；选择下一批0.266667、0.300000、0.333333、0.566667秒的四组已有帧，直接补查起点候选及后续命中。不能用随后取得的结果倒推此次读取没有价值。"
+    },
+    {
+      "request_id": "request_0064",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E63、E71、E56、E86、E64、E95、E23、E32，覆盖1.366667–1.466667秒四组成对帧。读取已有E9对齐正文，并选择任务明确尚缺判断的四组后续帧，有清楚用途；此时不能把随后返回的E9正文算作已经读过。请求合法且执行对应完整。"
+    },
+    {
+      "request_id": "request_0065",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E53、E93、E54、E94、E19、E29、E20、E30，另有E9正文。请求A的缺失时刻有依据且合法；但在8图容量下保留8张历史焦点图，同时生成26张A帧，未为预期比较安排清楚的附图容量。这是小的调度缺陷，不是非法请求，也不能仅因超过单次附图量而否定批量保存。"
+    },
+    {
+      "request_id": "request_0066",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E96、E89、E97、E90、E98、E91、E99。像素中2.366667秒已有右缘局部腿部差异，2.633333秒有明显裤腿和鞋差异。转而调入1.566667、1.700000、1.833333、1.933333秒的已有成对帧，直接服务另一个尚未解决的早段问题；不能因后来发生信息流失而追溯否定这次首次调入。"
+    },
+    {
+      "request_id": "request_0067",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E5、E69、E7、E124、E78、E133、E46、E86。请求B的同批时刻，并保留当前可见的四张A帧E69、E124、E133、E86，能建立双方对应比较。其余已保存帧尚未附像素，输出没有宣称已经看过它们的内容。"
+    },
+    {
+      "request_id": "request_0068",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E106、E107、E102、E24、E87、E103、E25、E38。E106右缘细小黑块值得核查；裁剪框覆盖该处，并保留A侧E102供比较，属于针对具体未决视觉问题的有效行动。裁剪执行成功不等于黑块已经被证实为目标人物。"
+    },
+    {
+      "request_id": "request_0069",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E69、E43、E124、E145、E133、E154、E86、E56。下一步选取0.066667、0.100000、0.133333、0.366667秒四组帧，补足开头及起点附近尚未直接展示的空档。使用已有结果读取，具有明确增益。"
+    },
+    {
+      "request_id": "request_0070",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E102、E162、E88、E106、E96、E90、E98、E91，E99并未附带。出现新的右缘裁剪线索后，首次针对该线索复看1.400000、1.700000、1.833333和1.933333秒的成对状态有合理用途。焦点没有保留1.566667秒原图或裁剪，使下一次直接比较较弱，但不能仅因邻近帧以前附过就认定本次复看无价值。"
+    },
+    {
+      "request_id": "request_0071",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E76、E44、E36、E18、E77、E45、E120、E141。读取并聚焦0.400000、0.433333、0.466667、0.533333秒四组对应帧，针对连续性空档；不是重复查看当前这组图片，也没有把历史覆盖统计写成内容结论。"
+    },
+    {
+      "request_id": "request_0072",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E56、E24、E86、E87、E107、E103、E25、E38，不含2.366667秒像素。重新调入E90/E98所在组，能够核查出现边界附近尚缺明确判断的局部目标，具有具体用途；这是恢复必要像素，不能把历史E90编号当作本次仍可见。附带较多旧阴性帧使选择效率一般。"
+    },
+    {
+      "request_id": "request_0073",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E121、E142、E122、E143、E123、E144、E125、E146。下一批0.600000、0.633333、0.666667、0.700000秒对应帧仍需直接观察，四组配对符合容量，行动服务于通向1.3秒命中的连续性核查。"
+    },
+    {
+      "request_id": "request_0074",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E90、E96、E89、E97、E98、E91、E99。对E90右下角裁剪覆盖了B侧边缘裤腿，并保留A侧E98，能澄清2.366667秒是否已出现差异。它针对另一处小目标，并非重复同一裁剪，参数适当且执行成功。"
+    },
+    {
+      "request_id": "request_0075",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E126、E147、E127、E148、E100、E104、E128、E149。选取0.733333、0.766667、0.800000、0.833333秒四组已有帧，继续补齐未展示的中段。A中的残影不要求本任务扩展为全部视觉伪影调查，且此输出没有就其作出错误断言。"
+    },
+    {
+      "request_id": "request_0076",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E98、E163、E106、E90、E102、E24、E87、E107。E163连同E90/E98已支持2.366667秒的局部腿部差异。本动作重新调入旧阴性组和2.633333秒对照，却不保留这组新澄清的阳性证据，也不取得出现边界邻帧或后续空档。可保留为真实历史，不宜作为优质取证选择。"
+    },
+    {
+      "request_id": "request_0077",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E129、E150、E130、E151、E31、E21、E131、E152。下一批0.866667、0.933333、0.966667、1.000000秒用于检查剩余连续性空档，读取及焦点均可执行。此前0.9秒的像素只属于历史，不能据此要求当前输出复述其具体状态；该行动本身也未声称全段连续。"
+    },
+    {
+      "request_id": "request_0078",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E91、E96、E89、E97、E99、E56、E86。再次切回已多次附带的1.566667、1.700000、1.833333和2.366667秒组，没有增加新时刻或新的裁剪比较，又去掉当前2.633333秒阳性对照。历史裁剪像素确实不在当前输入，但这不使每次整组往返都自动具有信息增益。"
+    },
+    {
+      "request_id": "request_0079",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E132、E153、E134、E155、E135、E156、E14、E10。读取1.033333、1.066667、1.100000、1.133333秒四组对应帧，直接检查已知1秒命中之后的空档。没有用当前四组图片提前证明下一批状态。"
+    },
+    {
+      "request_id": "request_0080",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E106、E102、E24、E87、E107、E103、E90、E98。请求首次调入2.500000秒E33/E26，能直接核实任务给定的关键命中，并与下一输入保留的2.633333秒对照共同检查人物局部形态。选择有实际增益，但未保留当前2.366667秒对照，削弱了边界比较。"
+    },
+    {
+      "request_id": "request_0081",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E136、E157、E137、E158、E101、E105、E138、E159。下一批1.166667、1.200000、1.233333、1.266667秒对应帧连接至已知尾部命中，属于必要局部核查。行动仍保留一次尾部读取及最终报告的轮次。"
+    },
+    {
+      "request_id": "request_0082",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E88、E33、E96、E89、E97、E91、E99、E26；E33右下角腿部和鞋与A侧缺失构成可见差异。本动作又调回旧早段及2.366667秒组，丢掉刚取得的2.500000秒对照，没有保留两者作同时比较，也没有新增边界时刻。剩余轮次已少，这次旧组切换不适合作为正向模仿目标。"
+    },
+    {
+      "request_id": "request_0083",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E139、E160、E140、E161、E37、E22、E84、E61。聚焦1.300000、1.333333、1.366667、1.400000秒四组帧，可以直接确定任务明确要求的1.333333秒状态和结束边界。1.4秒曾在历史出现，但本次没有其像素，此处重新附图有实际比较用途。早期观察未持久保留应另作构造评价。"
+    },
+    {
+      "request_id": "request_0084",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前实际图片为E56、E98、E86、E106、E102、E107、E103、E90。读取3.366667秒E73并保留E81核实右交界是合理的；实质缺陷在最终焦点选择：下一次必须报告，却用两组相近阴性帧占据4个位置，舍弃当前可见、能够收窄出现边界的E90/E98。应修复焦点后重新生成终次报告，不能把修正后的行动接到旧报告后缀。"
+    },
+    {
+      "request_id": "request_0085",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E85、E70、E55、E62、E71、E63、E86、E56，即图1–8。图3、4支持B在1.3及1.333333秒右缘仍有人体局部，A对应图1、2未见；图5–8支持随后消失。因此有限区间及1.366667秒结束边界有直接依据。历史图15/16等虽能帮助评分员诊断此前取证，却不在当前输入中，且历史正文没有具体可见状态。零剩余轮次下准确提交INCOMPLETE可作为报告监督；它不代表完成全部区间定位或验证自主停止能力。"
+    },
+    {
+      "request_id": "request_0086",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前实际图片仅为E88、E73、E96、E89、E97、E91、E99、E81。三项发现、引用和帧展示区间均有依据，INCOMPLETE准确说明完整分段未完成，且未把右侧分工边界当作事件终点。历史E90/E98、E33/E26的像素和明确内容判断均未保留在本次输入，不能要求本报告复述它们。剩余轮次为0，报告无需再选工具；案件边界仍未知不构成此报告的critical_unknown。"
+    },
+    {
+      "request_id": "request_0087",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E73、E81、E41、E67、E112、E116、E12、E16，即3.366667、3.5、3.7、3.966667秒四对。读取尚未展开的E9可核查时序对应依据，同时focus选择4.1、4.233333、4.366667、4.5秒四对尚未在本会话展示的帧。动作参数和容量安排合理，执行对应明确。评审员拥有的后续图片不是此动作当时的证据。"
+    },
+    {
+      "request_id": "request_0088",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E113、E117、E48、E58、E74、E82、E35、E28，覆盖4.1–4.5秒四对；E9正文也已返回。读取E119并选择4.733333、4.866667、5.0、5.266667秒四对，直接推进任务要求的已有帧核查。0087的像素不在本轮，但本动作不依赖恢复其未留存的视觉判断。"
+    },
+    {
+      "request_id": "request_0089",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E59、E119、E49、E114、E118、E17、E13、E115，即4.733333、4.866667、5.0、5.266667秒四对。读取E50并选择5.5、5.733333、5.866667秒三对，能检查右交界附近的可见性。额外保留3.5秒一对对这一局部比较帮助较弱，但不改变主要行动的有效性。"
+    },
+    {
+      "request_id": "request_0090",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E67、E50、E41、E68、E42、E60、E83、E75，即3.5秒及5.5、5.733333、5.866667秒四对。输出首次把此前分批展示的4.5、4.733333、4.866667、5.266667秒四对集中到下一输入，具有一次跨批比较的有限价值。该动作没有取得新时间点，不能算作已经补齐连续性空档；但不应只因其中图片历史上出现过就一律排除。"
+    },
+    {
+      "request_id": "request_0092",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图为E28、E35、E59、E49、E114、E118、E115、E119，即4.5–5.266667秒四对。输出首次集中3.5、3.7、4.1、4.233333秒四对，重新取得当前输入没有像素或语义判断的前段证据，仍可视为有限的跨批对照。恢复记录保留了真实历史，不等于恢复历史像素，也不额外构成演员错误。这一步尚不能证明帧间连续。"
+    },
+    {
+      "request_id": "request_0093",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E67、E112、E41、E116、E113、E117、E58、E48，即3.5、3.7、4.1、4.233333秒四对。动作重新选择与0092输入完全相同的4.5–5.266667秒四对，仅更换READ_RECORD对象，没有增加时间点或新的比较组合。独立会话确实使旧像素不再可见，但当前任务要求补连续性空档，这次返回旧组没有足够新增价值。"
+    },
+    {
+      "request_id": "request_0094",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "实际附图为E28、E115、E35、E59、E49、E114、E118、E119，与0092是同一四对。输出再次回到0093已经收到的3.5、3.7、4.1、4.233333秒组。没有新增裁剪、时间采样、对齐冲突或可核查的新问题，属于已形成的往返循环。执行成功不能补足行动价值。"
+    },
+    {
+      "request_id": "request_0095",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "实际附图为E67、E116、E41、E112、E113、E117、E58、E48，与0093是同一四对。输出又返回0092、0094的4.5–5.266667秒组，读取E114只返回已知帧元数据并重新附图。此时仍有可采样的具体空档，继续同组往返没有推进局部目标。"
+    },
+    {
+      "request_id": "request_0096",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E28、E114、E35、E59、E49、E118、E115、E119，即4.5–5.266667秒四对。请求A在3.433333、3.6、3.833333、4.166667、4.633333、5.133333、5.4、5.633333秒取帧，均落在已有采样空档中，参数合法且确有信息增益。一次保存8张A帧可供余下两次动作分批取得对应B帧；保存成功不等于8张都已展示或完成配对。先前重复行动的缺陷不追溯到这次合理补采。"
+    },
+    {
+      "request_id": "request_0097",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E35、E164、E49、E166、E118、E169、E119、E171，其中旧B帧与新A帧不是同时间配对。演员没有把相邻展示位置误当作对应关系，而是保留E164、E166、E169、E171并取得B在3.433333、3.833333、5.133333、5.633333秒的对应帧。四张保留图加四张新图适合容量，行动解决了明确的配对缺口。"
+    },
+    {
+      "request_id": "request_0098",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E164、E172、E166、E173、E169、E174、E171、E175，即上一动作形成的四组成对图。输出利用0096已成功保存、但本轮没有像素的另外四张A帧E165、E167、E168、E170，取得对应B帧并重新附上A。没有重复提取A，也没有把未附A当作当前已观察内容，适合最后一次取证机会。"
+    },
+    {
+      "request_id": "request_0099",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E165、E176、E167、E177、E168、E178、E170、E179，即3.6、4.166667、4.633333、5.4秒四对。像素支持全部四个直接发现，尤其5.4秒人物仍部分可见。另六个命中明确归于当前任务文字，历史附件也支持这些来源结论。报告准确列出未观察空档、保留左右交界并使用INCOMPLETE；没有虚构连续段或中断边界。其余13对历史像素在本轮既未附上，也没有留存可恢复的语义判断，不能要求此报告复述它们。零剩余轮次使提交报告成为规定动作，未完成调查不构成该报告的关键未知或不当自主停止。"
+    },
+    {
+      "request_id": "request_0100",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E85、E88、E165、E70、E91、E81、E55、E73。此时E9只有索引，读取其正文可以核对A/B时间对应、覆盖和算法限制，属于跨材料定位的必要依据检查。不能用随后返回的内容倒推它已经在本次输入中可见。"
+    },
+    {
+      "request_id": "request_0101",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附件仍为E85、E88、E165、E70、E91、E81、E55、E73，新增的是E9正文。首帧状态仍是当前报告明确留下的缺口，读取B的E7合理；若B不见目标，即可排除该帧满足题设条件，无须机械要求先取得A首帧。"
+    },
+    {
+      "request_id": "request_0102",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E7、E85、E88、E165、E70、E91、E81、E55。E7首帧未见前景目标，历史文字已报告0.033333–0.166667秒阴性。读取紧接其后的E46可推进出现边界核查，并非重复读取已在本次附带的图片。"
+    },
+    {
+      "request_id": "request_0103",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E46、E7、E85、E88、E165、E70、E91、E81。E46在0.166667秒未见前景人物，读取下一帧E51针对明确边界问题。其合理性来自当时的阴性状态与未决起点，不依赖后来是否命中。"
+    },
+    {
+      "request_id": "request_0104",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E51、E46、E7、E85、E88、E165、E70、E91。E51底边仅有很小的深色前景变化，读取相邻E52有助于判断其性质和延续；当前尚未见E52，不能把这次读取视为对已看清材料的无价值复看。"
+    },
+    {
+      "request_id": "request_0105",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E52、E51、E46、E7、E85、E88、E165、E70。B的前景局部已较明显，但缺少0.200秒A的同刻比较。读取E79直接检验对应位置是否也有该变化；其此前被其他会话读取过，不意味着当前已经拥有像素。"
+    },
+    {
+      "request_id": "request_0106",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "实际附图为E79、E52、E51、E46、E7、E85、E88、E165。前段候选变化已有配对依据，后段起点仍限定在2.266667–2.500000秒。读取区间内部的B帧E90可能收窄阴性端或发现需进一步核对的局部，且仍留有一次最终输出。后来未能收窄，不使这一事前合理选择失效。"
+    },
+    {
+      "request_id": "request_0107",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "实际附图仅为E90、E79、E52、E51、E46、E7、E85、E88；其他命中的依据来自当前仍保留的报告文字，并可用本评审历史图片核对。主要事实、前段尾界和片尾截止解释成立；0.200秒前景局部的身份被保留为未知，E90也未被虚构成已配对命中。明确承认不能列全连续区间，适合作为预算耗尽时的有限报告候选，不能作为完整定位成功答案。其缺点主要是离散命中列表较长、结果组织较繁；未知事件范围本身不构成critical_unknown。"
+    }
+  ],
+  "construction_revisions": [
+    "GIA: 按独立会话保存并展示已实际完成的视觉判断：关联E、实际时间、A/B对应状态及不确定性。仅保留图片编号和累计观察次数会丢失可用于下一步决策的内容。",
+    "GIA: 改进附件选择，使必要的同刻A/B图片和相邻边界帧能够共同保留。当前按最近读取逐张挤出原附件的方式，会让终局无法直接复核此前的重要配对；这属于输入构造问题，不应伪装成模型仍记得像素。",
+    "GIA: 后续分工应优先列出尚缺的具体状态与可用旧帧，并保留已解决区间的明确判断，避免多轮重复承担范围相近的全部定位要求。",
+    "GIA: 补充官方时间区间与当前片段的映射，并明确目标人物局部可见、修补残影及身份不能确定时的标注规则。用实际媒体核查建立区间参考，不能直接复制编辑任务说明。",
+    "GIA: 逐目标保留真实执行链及输入条件。受限FINISH可以作为有限报告监督，但不得与完整定位成功样本混为一类；修复上游证据传递后应重新执行相关后缀。",
+    "GIA: 为完整区间评估补齐决定性边界和空档的视觉材料；保留磁盘故障与恢复记录，不把环境中断改写为模型动作成功或失败。",
+    "W1-1: 修正request_0021的终前证据选择，并从该状态重新执行。末轮应优先保留入画候选前后及退出前后的成对帧，而不是全部换成早期阴性组。",
+    "W1-1: 针对每次调用都是独立会话的结构，传递实际形成的历史观察摘要，包含材料、帧时间、人物状态、对应E和不确定性；明确它是历史观察，不能由工具元数据自动生成视觉事实。若不提供这种记录能力，终前必须通过focus重新附齐报告需要的关键像素。",
+    "W1-1: 生成取帧批量时计入实际会自动附带的材料图片，并复用已保存帧。继续保留对超容量结果的focus恢复机制，不把取帧成功等同于已经显示。",
+    "W1-1: 对0.2秒下缘和1.333333秒右缘的小面积人物残余安排必要的局部放大，明确部分身体进入画面是否计入目标可见；该细节直接影响本任务边界，不属于无关像素普查。",
+    "W1-1: 将request_0023标记为预算耗尽后的准确部分报告监督，与完整定位成功样本分开。保留真实执行前缀，不把修订后的行动或报告接到不相容的旧后缀。",
+    "W1-1: 若要计算官方时间定位指标，补充原标注与给定素材的时间映射，以及符合当前可见性条件的参考区间；在此之前不将原始1–7秒编辑描述直接作为0–2秒局部真值。",
+    "W1-2: 从request_0022的原始状态修复附图选择：保留E40/E66、E33/E26、E8/E6，并用剩余一对容量保留E39/E65等重叠段依据，再重新生成终轮报告。修复后仍须依据实际覆盖判断状态，不能自动改成COMPLETED。",
+    "W1-2: 为独立会话之间提供可回传的观察记录，保存已实际观察的帧对、目标可见状态、时间和证据编号；单纯保留提取元数据与累计见图编号不足以保存语义证据。已有记录仍应允许用原图复核。",
+    "W1-2: 后续定位优先检查具体转变空档，例如已观察的2.233333秒阴性显示结束后至2.500000秒阳性之间；同时保留更早空档可能含短暂区间的未知，不能预设只有一次转变。",
+    "W1-2: 明确“全部区间”的覆盖要求和允许的边界误差，并据此配置轮次。若要求逐帧排除所有短暂中断，当前单目标取帧、每轮8图和12轮预算不足以穷尽本段约121个帧对；不能以增加少数中间样本替代该要求。",
+    "W1-2: 为官方区间评分补充原标注时间轴与给定6秒素材之间的对应关系，以及针对人物可见性谓词的区间真值。保留原编辑说明，不通过裁剪或平移标注来迎合预测。",
+    "W1-2: 保留每轮实际附件清单及其像素映射。累计38张历史图与终轮8张实际附图均符合现有字段定义，无须因数值不同而认定统计错误。",
+    "W2-1: 为独立会话提供可持续的视觉观察记录，保存时间、来源对、人物可见性、直接证据和不确定性；当前动作目录没有写入观察记忆的能力，不能假定演员已经拥有该能力。",
+    "W2-1: 终态输入应保留任务关键证据或已核实的观察文字。累计E编号、图片计数和图片元数据不能代替首帧、入口及出口的实际内容。",
+    "W2-1: 修正request_0046时优先保留边界代表帧，并从该状态重新生成后缀。原request_0048可按其原始输入保留为准确的强制部分报告，不能直接接到改变后的输入上。",
+    "W2-1: 将完整时间定位目标与8张图片容量、单侧取帧接口和12轮预算共同校验。当前方案既要求填补空档又要求跨会话综合，应通过实际运行验证预算能否支持，不能只依赖充足的剩余秒数。",
+    "W2-1: 提供官方编辑时间轴到给定片段的映射及独立于演员输出的逐帧参考核查，分别评估局部语义事实、边界和完整区间覆盖；在映射缺失时不要套用00:01–00:07作为本任务真值。",
+    "W2-2: 让焦点安排围绕具体未决边界保留新旧成对帧，避免完整批次互换导致关键像素不断退出下一独立会话。",
+    "W2-2: 在现有历史记录中保留实际产生的简短视觉判读及对应帧编号、时间和观察范围；若未产生判读，应如实保留空缺，不能由构造器补写。",
+    "W2-2: 按八图容量和十二轮预算验证完整定位任务的可执行排程；若预算只能支持采样核查，应在生成前明确相应任务范围，不能事后把采样子集当作完整答案。",
+    "W2-2: 修正行动后从对应状态重新执行后缀。终端报告可单独保留为准确部分报告监督，但不应作为整条调查成功的标签。",
+    "W2-2: 保留官方编辑区间，并另行核对源视频到给定片段的时间映射及目标可见性；在此之前不生成确定的区间匹配分数。",
+    "W2-3: 让完整定位要求与实际查看预算匹配：本区段约79帧，每次最多4组对应帧，12次输入即使全部用于有效配对也最多48组。若保持当前工具和预算，应明确允许交付经核验子集；若要求排除任意单帧中断，应增加足够轮次或提供真正可审查的逐帧语义结果。",
+    "W2-3: 为独立会话保留演员实际记录的视觉事实：允许动作附带简短、带时间和帧引用的观察文本，并原样传入后续输入。当前仅保留元数据、累计ID和工具结果，无法保存中段核查结论；不得由脚本根据官方标注补写成功观察。",
+    "W2-3: 继续同时保留每次实际image_evidence_ids、累计观察统计和历史图片，但明确三者用途。不要把36张累计图片改写为末轮附件，也不要将累计统计与8图输入不相等视为数据错误。",
+    "W2-3: 保留0055–0057作为真实循环历史，候选导出按单目标筛选；如生成更好的替代行动，应从对应状态重新执行后续依赖，不能拼接不相容的旧观察。",
+    "W2-3: 补齐官方源时间与当前两段6秒材料的映射，以及适用于局部任务的区间评价定义。原编辑描述保持原样，不能凭其文字认证未附帧或直接生成当前任务的完整区间答案。",
+    "W3-1: 为独立模型会话提供可追溯的具体观察保留机制，例如随下一次payload传递演员实际记录的逐帧状态、对应证据及不确定性；不能仅累计E编号和观察次数，也不能由构造脚本事后补造演员观察。",
+    "W3-1: 按A/B对应帧安排附图容量，并明确工具新结果与focus图片的合并规则，避免request_0065这类满容量历史焦点与大量新结果竞争后产生不完整配对。",
+    "W3-1: 保留当前附图集合与历史附图集合的独立标识。visual_observation_summary的86张是累计统计，终局实际8张并非字段错误；需要补充的是语义状态保留，而非把累计数改成8。",
+    "W3-1: 修复观察保留机制后，从相容的原始状态重新生成后续调查和报告。现有诚实INCOMPLETE报告可单独保留为候选，但不能把改写后的完整报告直接接到未提供相应证据的旧输入上。",
+    "W3-1: 为本构造任务提供经媒体核验的本地时间轴参考，明确原标注1–7秒与6秒素材的关系，以及边缘局部露出、残影和帧呈现区间的判定口径；不要以原编辑说明代替这些核验。",
+    "W3-2: 针对每次调用都是独立会话的结构，允许保存并传递演员当时实际形成的简短视觉观察及对应E编号；不得用历史编号、图片元数据或累计数量替代这些观察，也不得事后补写成当时已知。",
+    "W3-2: 最终附图优先保留支持边界变化的阳性与阴性成对证据。裁剪、原图和另一侧对照共同计算8图容量，明确实际遗漏项，避免元数据读取挤掉关键配对图片。",
+    "W3-2: 把后续动作集中到具体空档：例如2.266667–2.366667秒的出现边界，以及2.633333秒之后命中之间的时刻。已有帧优先调入，尚无帧的必要位置再调用get_frames。",
+    "W3-2: 核对完整定位要求与预算是否相容。该局部范围约有61个原生配对帧；若要求排除任何单帧中断，仅以每次4对图片通览就至少需要16次输入。12轮仍能取得有用边界进展，但不能默认足以完成严格逐帧覆盖。",
+    "W3-2: 为本地视频建立实际时间轴上的可见性参考，再评价全部区间和边界误差。官方编辑窗口作为待核查参考，不能直接充当目标人物逐帧可见区间；本包未完成的参考核查继续标为未知。",
+    "W3-3: 使完整连续性要求与实际视觉预算相匹配。该局部范围约含76个帧呈现区间；若要求排除任意单帧中断，需核查相应可见性。12次输入、每次8张图片最多直接展示48对不同帧，即使额外计入任务给定的6个命中仍不足全面覆盖。应增加预算、缩小局部区段，或在生成前明确允许的采样结论与精度。",
+    "W3-3: 为独立会话之间保留可回传的简短语义观察，关联具体E、时间和判断；也可通过更小的任务让必要证据能在终轮同时呈现。当前接口没有写入观察笔记的动作，不能把未使用不存在的能力归为演员错误。",
+    "W3-3: 保留visual_observation_summary的累计定义，并明确区分本轮实际附图、累计曾展示的图片和当前仍有文字可恢复的视觉结论。46张累计图片与终轮8张实际附件并不矛盾。",
+    "W3-3: 保留磁盘故障、恢复和已执行历史。替换0093–0095等行动时，应从对应实际输入重新执行受影响后缀，不能把改写动作接到旧报告上。",
+    "W3-3: 先核实官方01–07秒与本地0–6秒时间轴的对应，再建立基于实际媒体的可见性参考并计算区间指标。现有官方编辑说明不能直接认证本地连续区间。",
+    "W3-3: 将0099保留为准确部分报告候选，并保留其INCOMPLETE状态；不得在导出时把它标成已完成局部连续定位或已完成全局GIA任务。"
+  ],
+  "rubric_revisions": [
+    "GIA: 明确区分原任务完成度与强制终局报告质量：完整定位未完成可以降低task，但事实准确、限制充分的预算耗尽报告仍可成为候选；高加权分不能认证全任务完成。",
+    "GIA: 将每步实际附件、当前文字保存的既有判断、只供评分员查看的历史图片分别记录。来源事实正确性可以借历史像素核对，当前可见性不能因此被补全。",
+    "GIA: 对题设合取条件分别判定：B明确不可见足以排除该时刻满足条件；B可见通常还需要A对应状态。不要机械要求每个阴性判断都必须重新读取双侧图片。",
+    "GIA: 效率评价应区分必要的重新附图、框架导致的证据丢失和真正无信息增益的重复。单次读取未命中或未收窄边界，不自动扣为错误决策。",
+    "GIA: 时间任务分别记录已核实子集、完整事件定位和官方区间指标。缺少时间映射或完整参考时，指标保持未知；不能用帧展示时长、算法处理范围或编辑操作区间代替人物可见区间。",
+    "W1-1: 逐目标同时记录当前像素、当前语义文字、历史像素和仅有元数据四种证据状态。合法引用历史E与当前能够重新核验其像素应分别判断。",
+    "W1-1: 将证据保留及终前重读选择计入行动的decision和efficiency；准确的强制INCOMPLETE报告不替早期取证失误免责，也不承受当前输入已经失去的事实遗漏责任。",
+    "W1-1: 对人物可见性条件，B明确未见目标即可否定该时刻的差异条件；A对照仍可用于核查对应关系，但不应机械要求对所有阴性B帧补A。每次行动须按其当前可见材料判断，不能依赖评审员独有的历史阴性结果。",
+    "W1-1: 允许有明确帧时长依据的相邻帧组成连续呈现区间；禁止把离散命中之间的空档自动连接，或把帧长换算成未经核验的事件边界精度。",
+    "W1-1: 分别评价部分身体入画的像素语义、完整区间定位及官方区间指标。 truthful的命中点或阴性子区间不等于完整定位；时间映射不足时，官方指标应保持不可计算。",
+    "W1-1: 角色加权分、评分覆盖率、实际媒体覆盖和逐目标导出资格分别报告。当前七维均可评分，不意味着0–2秒已被完整核验；报告候选合格也不意味着整条轨迹适合整体正向导出。",
+    "W1-2: 将终轮报告质量、局部任务实际完成度和前序证据保留决策分别解释：准确的强制INCOMPLETE报告可以获得4分，同时完整定位未完成、某个前序行动需修复。",
+    "W1-2: 对重新附图按当时的具体缺口评分：request_0020恢复端点证据有价值；request_0022在最后机会丢弃这些证据才构成实质问题。既不能按固定复看次数处罚，也不能以每次独立会话为由豁免所有切换。",
+    "W1-2: 区分单帧显示时长覆盖、算法处理范围与事件连续性。19个采样帧、对齐处理180帧和完整区间定位是不同证据层级；六位小数不意味着边界达到单帧精度。",
+    "W1-2: 把编辑指令区间与目标人物实际可见区间分开核对。1.966667和2.233333秒的成对图片均未见目标，是不能将官方1–7秒说明直接解释为持续可见差异的具体反例；在缺少时间映射和区间真值时，不计算伪精确的官方指标。",
+    "W1-2: critical_unknown仅表示缺少判断当前目标合格性所必需的评审材料。本例完整事件边界尚未知，但行动、像素和终轮限制已经足以评判各目标，不应据此把所有目标标为关键未知。",
+    "W2-1: 明确分别评价历史上观察过、当前输入可复核、最终输出实际断言三个层次；历史图片可以揭示证据流失，但不能自动成为后来会话的事实记忆。",
+    "W2-1: 重新附图按新增比较关系和任务缺口评价。首次集中入口邻帧或连续出口帧可以合理；临近终态时用重复内部阳性帧替换关键边界证据，应单独扣决策与效率分。",
+    "W2-1: 明确容器给出的单帧呈现时长可以支持该帧对应的半开区间；相邻已核实帧可以合并，跨越未核验帧则不能凭动作连贯性直接合并。",
+    "W2-1: 准确的强制INCOMPLETE报告可以获得高报告分；调查完成度不足和此前证据选择失误另行评分，不能要求报告凭不存在的当前像素补齐事实。",
+    "W2-1: 对完整定位分别报告已确认子集真实性、连续性证据、边界范围和全区间召回。官方时间轴或逐帧真值不足时保留相关指标未知，不把未知视为通过，也不因此拒绝可直接核验的有限报告。",
+    "W2-1: 评分覆盖率与视频覆盖率必须分开。本例七个评分维度均可判定，不意味着前段全部帧已核验；当前报告可合格也不意味着整条调查已完成。",
+    "W2-2: 将报告监督质量、局部任务实际完成度和此前行动效率分别记录，防止准确INCOMPLETE报告替低效调查获得整体通过，也防止历史缺陷污染合格终端报告。",
+    "W2-2: 复看评分应说明恢复了哪个当前缺失的关键事实、是否形成必要的新旧对照，以及同状态下有哪些具体可执行替代；既不按次数机械拒绝，也不把每次会话缺图都视为全批次往返的充分理由。",
+    "W2-2: 明确区分帧呈现时长、累计附图覆盖、算法处理范围和已证明的连续事件范围；本例的真实阳性子集不能获得完整时间定位的高分。",
+    "W2-2: 只有影响当前目标合格判定的材料缺失才设置critical_unknown；已披露的调查空档和当前未主张的官方区间指标，不应自动阻止准确部分报告进入候选。",
+    "W2-3: 把逐目标当前像素清单落实为必填评审依据；历史像素可用于核对源事实和诊断信息损失，不能自动扩大后续输出的可见证据。最终报告遗漏与前序证据保留决策分别评分。",
+    "W2-3: 复看判定应记录具体新增核查问题或必要的重新配对。本例0054的首次重组、0060的报告证据组织与0056的完全相同往返，应得到不同处置，不能只按重复次数判断。",
+    "W2-3: 区分离散命中点、具有真实呈现时长且相接的连续帧、完整事件区间。三张相邻帧可以证明[5.9,6.0)；18组分散命中不能证明整个局部区段连续，也不能由采样间距推导可排除的最短中断。",
+    "W2-3: 分别报告角色任务完成度、单条强制报告质量和自主停止质量。准确的强制INCOMPLETE可以获4分，但不抵消低效行动，也不代表完整时间定位通过。",
+    "W2-3: 正式区间指标缺少时间映射或适用参考时应明确不可计算；这一指标未知不应自动把证据充分、范围准确的部分报告标成critical_unknown，也不能用高加权概括分代替逐目标收录判断。",
+    "W3-1: 增加明确的双层评价示例：终局报告事实及状态可获4分，同时整轮局部任务完成度仍可因缺少完整定位而低分，二者不互相覆盖。",
+    "W3-1: 将跨会话缺证据分成源材料未取得、像素曾展示但未保留、已有具体观察正文仍被忽略三种情况，分别评价构造、证据保留选择和当前输出。",
+    "W3-1: 保留批量提取与实际展示的区别：超过单次附图容量不自动构成错误；后续首次展示保存结果可以是高质量行动，重复读取名称本身不说明没有信息增益。",
+    "W3-1: 明确相邻且具有真实帧时长的全部帧可以支持其呈现区间内的连续状态；稀疏采样和算法处理覆盖则不能替代逐帧语义核查。",
+    "W3-1: 官方区间指标缺少时间映射或本任务金标准时，应明确不报告该指标；不要把这一参考层面的未知扩散成所有局部行动或真实有限报告的critical_unknown。",
+    "W3-1: 对必交报告不评价继续取证的自主停止选择；对前序行动仍逐步检查具体增益，但不得要求演员使用工具目录中不存在的观察写入能力。",
+    "W3-2: 在汇总中显式分开强制终次报告质量、前序调查决策质量和局部任务完成度；准确的INCOMPLETE可以获得高报告分，但不能认证完整定位或自主停止能力。",
+    "W3-2: 逐目标记录当前实际像素集合、当前文字中保留的观察及仅属历史的证据。关键观察流失应定位到材料选择或记忆构造步骤，不以终次累计观察数量追责其事实遗漏。",
+    "W3-2: 复看按具体比较问题和信息增益评分。新裁剪线索后的邻帧核查、恢复必要对照可以接受；没有新时刻、新问题或有效配对的循环切换应单独降级。",
+    "W3-2: 区间评价分别记录已证实的帧展示区间、候选连续事件、边界不确定范围和完整性。缺少适用时间轴与逐帧参考时，官方区间指标保持unknown，不把真实子集当作完整定位。",
+    "W3-2: 边缘身体部分可以支持局部人物可见性差异；是否属于目标人物以及衣服颜色应分别判断。不要要求每帧都显示完整人物，也不要把模糊黑块直接认定为目标。",
+    "W3-3: 把每个目标的实际附图集合列为必核对项；历史像素仅用于核对来源真值和诊断信息丢失。任务文字中的继承结论可被明确归属地转述，但不算本轮独立视觉复核。",
+    "W3-3: 复看评价应检查是否新增有意义的比较组合、边界问题或可恢复依据。一次必要的跨批比较与同一两组反复往返分别评分，不按固定次数机械判定，也不因会话独立就自动接受所有复看。",
+    "W3-3: 分别记录报告质量、局部任务完成程度和自主停止质量。零剩余轮次下事实准确、限制完整的INCOMPLETE可以是4分报告目标，前序低效行动仍须逐项降分。",
+    "W3-3: 时间定位同时记录像素支持的采样呈现区间、未核查空档和完整事件定位结果。单帧时长不是事件边界误差，算法处理全部帧不是人物可见性覆盖，真实命中子集不是完整定位通过。",
+    "W3-3: critical_unknown只用于评审证据或任务定义不足以判断目标合格性；本例未观察时段仍未知，不妨碍判定0099报告合格。官方时间轴未核对时应保留相应指标未知，不能借此把已知重复行动的问题也标成未知。",
+    "W3-3: 加权分与评分覆盖率仅作角色概括，不能让执行、格式或保守措辞的高分抵消逐目标的无效行动，也不能把100%的维度可评分误写成100%的视频核查覆盖。"
+  ]
+}

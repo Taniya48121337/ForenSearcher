@@ -1,0 +1,122 @@
+{
+  "case_id": "videosham:2010",
+  "dataset": "videosham",
+  "source_id": "2010",
+  "split": "dev_train",
+  "task_kind": "video_diff",
+  "task_text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+  "family_key": "videosham:2010",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_2010_r1/artifacts/800da724d84d43afb39e1494af9c98b7.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_2010_r1/artifacts/9689df738e2a4c1181a5f3410ef832de.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频的抽帧（差异位置两侧的对应帧）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "media_profile",
+      "description": "两段视频的媒体属性（时长、帧率、音轨数）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/media_profile"
+    },
+    {
+      "key": "alignment",
+      "description": "视觉或音频对齐结果（候选对应时间锚点，只作线索）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/align_media"
+    },
+    {
+      "key": "crops",
+      "description": "差异区域的裁剪放大（乘员/车辆细节）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/crop"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "A 中红色汽车是否被抠出并置于卡通道路背景（官方编辑描述，须由画面确认），以及差异的时间位置与画面区域",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "音轨是否可取得；可确认的声音差异或无法核验的说明",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "已确认的差异对画面含义的影响（不把未检查的区域或模态当作没有差异）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "未能确定的内容；不预设候选视频 B 的来源身份或制作先后",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "卡通",
+        "aliases": [
+          "绘制的",
+          "插画",
+          "手绘",
+          "动画风格",
+          "cartoon"
+        ]
+      },
+      "note": "官方：A 在 0:38–0:41 把红色汽车抠出，放到卡通道路上。只核“答案点出 A 的背景是绘制/卡通的”；红色汽车两侧都有，不作为标签。",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/cases/videosham_2010/reference.json",
+  "used_for_revision": [],
+  "notes": "官方编辑描述（reference_status: 需由画面确认）：This is the same video as 2009, cut out the red car from 0:38-0:41, and put it on a cartoon road；Manipulation: Adding an entity/ Adding a subject；label_expected 2026-09-28 经独立审稿后加入（只核关键词，位置/方向由 requirements 判）"
+}

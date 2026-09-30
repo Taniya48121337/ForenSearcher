@@ -1,0 +1,117 @@
+{
+  "case_id": "true:4124903",
+  "dataset": "true",
+  "source_id": "4124903",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.",
+  "family_key": "true:4124903",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_4124903_r1/artifacts/6ddac0474543479380abcd12163ca271.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "官方或可靠来源对铁塔附近火情原因的记载，以及是否涉及恐怖袭击",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定视频画面实际显示了什么，画面本身能否支持恐袭说法",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "给定视频的公开来源与日期（可确认则给出，不能确认则明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "prefpolice_tweets",
+      "description": "巴黎警察局 2016-07-14 当晚关于耶拿桥烟花卡车起火的通报推文",
+      "url_pattern": "*prefpolice/status/7537*",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "snopes",
+      "description": "Snopes 对'铁塔被恐怖分子点燃'说法的核查",
+      "url_pattern": "snopes.com/fact-check/eiffel-tower-terrorist-attack*",
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "frames",
+      "description": "从给定视频抽取的帧（画面证据）",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "youtube_upload",
+      "description": "可能的公开来源视频页（含上传日期）",
+      "url_pattern": "youtube.com/watch[?]v=cv_F3UkbdbI*",
+      "must_cite": false,
+      "supports": [
+        "REQ3"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:prefpolice_tweets,snopes; all:frames",
+  "checks": [
+    {
+      "kind": "entity_in_evidence",
+      "params": {
+        "text": "耶拿桥",
+        "aliases": [
+          "pont d'Iéna",
+          "Iéna"
+        ]
+      },
+      "requirement": "REQ1",
+      "note": "火情地点必须出现在结论并能在所引 E 中找到（法文原文 pont d'Iéna，用 aliases 在所引 E 中匹配）；只对对准 REQ1 的工作区查"
+    },
+    {
+      "kind": "date_in_range",
+      "params": {
+        "min": "2016-07-13",
+        "max": "2016-07-15"
+      },
+      "note": "事件日期"
+    },
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "False",
+          "虚假"
+        ]
+      },
+      "note": "数据集标签 rating=False（Snopes）",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/true/4124903/reference.json",
+  "used_for_revision": [],
+  "notes": "requirements / required_evidence 由 true_4124903_r1 经核验的证据链反推（v2 §7 规矩），不是人从数据集标注里抄的。url_pattern 用 *prefpolice* 通配以覆盖 twitter.com 与 x.com 两种 final_url。REQ3 非 must_cite：本 run 只找到候选来源，未做帧对齐。"
+}

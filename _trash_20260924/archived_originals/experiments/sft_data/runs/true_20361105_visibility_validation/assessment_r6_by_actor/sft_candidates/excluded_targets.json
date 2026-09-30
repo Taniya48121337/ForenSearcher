@@ -1,0 +1,68 @@
+[
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6；报告的视觉范围、E11来源限定、E14首页限定及INCOMPLETE均有依据。但执行记录明确显示proposal_not_accepted，不能作为成功提交样本。校验器因正文提到E1而拒绝；原提示却允许以原件编号说明来源并引用派生帧，第一条正是引用E4、E6，因此不能把这次拒绝认定为未观察原视频内容的捏造。保留为真实修复前缀。"
+    },
+    "execution_status": "proposal_not_accepted"
+  },
+  {
+    "request_id": "request_0025",
+    "assessment": {
+      "request_id": "request_0025",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "零剩余轮次时提交有依据的 INCOMPLETE 报告合理。核心引语、语境和来源归属均可对照当前保留的文字；星期一/星期二及 frighten/threaten 冲突明确披露，没有声称亲看录像或完整定位。小缺陷是第一条limitations援用E11的星期二记载，但该条原始evidence_ids未列E11，虽全局及其他finding已引用；接受版本补入了它，应保留这一差异。原音未取得是已说明的调查缺口，不是评审关键未知。"
+    },
+    "execution_status": "report_committed"
+  },
+  {
+    "request_id": "request_0026",
+    "assessment": {
+      "request_id": "request_0026",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E4、E6、E3、E5、E7、E8、E9、E10；E13未附，E23尚未进入该次输入。READ_RECORD参数合法并确实返回报告，但latest_reports已完整提供W1-1的任务、状态、status_reason和F1—F3，未标示相关截断。此次读取没有可辨认的信息缺口，适合作为真实历史保留，不宜作为正向行动目标；它不是事实捏造或执行失败。"
+    },
+    "execution_status": "gia_decision_accepted"
+  },
+  {
+    "request_id": "request_0033",
+    "assessment": {
+      "request_id": "request_0033",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "本次仍实际附带 E13，报告依赖的 E11、E20 正文也在输入中。引语比对、来源限定及 INCOMPLETE 均有依据，但报告因正文提及未核验对象 E1 而被接口拒绝。须修正对象标识表述后重新提交；这是接口修复，不是补造原声证据。后续 request_0034 已实际完成该修正提交。"
+    },
+    "execution_status": "proposal_not_accepted"
+  },
+  {
+    "request_id": "request_0045",
+    "assessment": {
+      "request_id": "request_0045",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前无图。Fox地址确实来自 E16，但当时 remaining_turns=1；已有接口说明和多次观察显示，打开来源先返回正文 E 卡片，仍需 READ_RECORD。此行动后轮次归零，所得 E25 无法被本 HI 阅读。应从该状态改为有实际信息增益且预算允许的行动，或据现有材料提交准确报告；问题是可预见的预算安排，不是事后因未命中而扣分。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0046",
+    "assessment": {
+      "request_id": "request_0046",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前无图；报告的重要文字依据仍完整存在于历史正文中。事实限定和 INCOMPLETE 状态基本正确，但报告明确未被接口接受。E1仅用于说明没有执行比较，不能据报错认定视觉或声音幻觉；原始首条 finding 的限制还提到 E24，却未在该条引用表列出。需修正引用表达并重新提交，不能把这一原始提案当作已提交报告。"
+    },
+    "execution_status": "proposal_not_accepted"
+  }
+]

@@ -1,0 +1,122 @@
+{
+  "assessment_scope": "仅评估 W1-1 在 steps 中的六个真实 HI 输出，按各动作发生前可见的信息判断；脚本化 FINISH 不作为 GIA 目标。对象引用已按内容解析。本例没有附图、音频或视频观察，不作任何像素、听感或全片覆盖判断。七个维度均可评分，适用权重覆盖率为100%，加权得分为3.50/4，即87.5/100；这表示目标质量的评分覆盖，不表示原声明已核实或整例可直接导出。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "五个动作均有接受与观察事件，最终报告有提交事件；各请求的原始输出与接受输出一致。参数符合所给接口。这些记录只证明动作执行和报告提交。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "查询使用任务中的实体、言论及年份；排除域名来自此前实际返回。未使用仅在评审参考中出现的节目名称、原核查文章结论或其他隐藏线索，也未把未读正文作为已观察证据。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的关键断言限定于调查记录：四次检索均返回相同的五类 Microsoft 来源，索引查询返回零分的 recent_fallback 记录，没有取得相关内容证据。报告没有将检索失败推成言论为假，没有虚构引文或引用无关 E。此高分仅适用于其实际说出的有限事实。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部任务要求独立取得支持回答的资料，但本次没有取得相关正文，也未解决言论归属问题，这是不能给高完成度分数的具体反例。最终 INCOMPLETE、空 findings 和缺口说明准确，具有失败报告的监督价值；不能把这种价值计为事实核查已经完成。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "初始搜索和精确短语重试合理；第三次仍主要改写关键词，对前两次返回同一组无关来源的异常针对性较弱。随后排除这些域名、查询索引是有根据的恢复尝试。终止前虽仍有六轮，但已连续出现异常返回且没有相关候选链接；不能仅凭剩余预算要求继续，也不能认定所有其他检索形式都已失效。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告明确区分未取得证据与证明说法为假，列出缺少的支持材料并使用 INCOMPLETE，没有采用官方参考中的绝对化 NEVER 结论，也没有宣称已穷尽所有来源。",
+          "request_ids": ["request_0006"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "没有读取明显无关正文或重复执行已拒绝请求。第三次普通改写的预期增益已因此前重复结果而下降；索引查询与当前卡片可能重合，但作为一次恢复检查仍合理。整个序列随后停止，没有无限重复。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "原言论是否真实仍未核实。参考答案以 Metadata 支撑绝对化否认，且 required_reannotation 为 true，不能据此认证事实结论。",
+        "E1–E5 的正文未提供给评审，也没有被演员 READ_RECORD 读取；不能认证正文内容。当前报告只依据可见返回及未取得相关证据这一状态，此缺失不构成该报告的关键未知。",
+        "重复返回的具体原因及其他允许的检索形式是否有效未测明；现有记录只能确认这些文本检索尝试没有提供相关材料。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次查询围绕实体、核心措辞、任务年份和言论出处，接口合法且已执行。当时尚无检索异常证据，不能用后来返回无关网页倒扣这一动作。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次结果明显无关后，改为更短的精确短语查询是合理恢复，既保留核查对象又减少附加限制。第二次仍返回旧来源不证明该动作事前不合理。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "查询转向 statement denial，能寻找回应材料，未预设否认确实存在。但此前两次已返回同一组无关来源，继续一般关键词改写对异常的针对性有限，属于小幅效率缺陷。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据此前实际出现的三个 Microsoft 域名加入排除条件，直接针对检索异常。此前没有证据证明这些查询条件会被忽略；本次之后仍返回被排除域名，应首先记录为返回异常，不能追溯认定请求错误。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "文本检索多次异常后，使用已公布的可访问索引检查是否存在相关候选或证据，是可执行的一次恢复尝试。它与当前视图可能高度重合，增益有限，但不能仅因后来返回零匹配而认定查询无价值。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "报告准确说明检索和索引均未提供相关资料，正确使用 INCOMPLETE，未编造证据或把未找到等同于反驳。连续异常后，没有已显现的相关来源可供必要追查，现有材料不足以认定停止错误。该目标可用于失败恢复报告监督，不代表完成原问题，也不证明全部检索路径均不可用。"
+    }
+  ],
+  "construction_revisions": [
+    "针对不同查询及域名排除仍返回相同 R1–R5 的现象，检查查询传递、缓存复用、检索适配与结果绑定；保留实际请求、提供方原始返回和解析结果，通过真实重执行定位原因，不补写成功观察。",
+    "将本轨迹标明为检索异常后的恢复样本。候选搜索动作和 INCOMPLETE 报告可分别审核，但不能作为已完成引文核查或已独立支持 Refuted 的整例导出。",
+    "检索问题修复后，从相应状态重新执行并生成兼容的后续输入与输出；原失败轨迹继续保持真实历史身份。",
+    "复核参考标注：Q0 的 Metadata 不提供可检查的直接依据，NEVER 的范围强于 justification 对特定节目出现的限定；Q1 所指网页正文未提供。取得实际来源后核对其内容、归属及与主声明的关系。",
+    "本次没有观察到原核查文章进入演员输入，但无关结果也不能验证来源排除机制有效；后续出现相关材料时，再核查是否为同篇文章的归档或镜像。"
+  ],
+  "rubric_revisions": [
+    "明确区分局部任务的实际证据覆盖与失败报告的可模仿质量：未解决任务可降低 task 概括评分，但准确、合理的 INCOMPLETE 输出仍可成为候选报告目标。",
+    "将检索恢复的判断锚定于动作前已出现的重复结果及可用线索：允许必要改写和一次索引检查，不按重试次数机械拒绝，也不把接口允许的任何额外搜索自动视为必须执行。",
+    "分别记录 target_reached、page=ready、正文已读及结论获得支持；QUERY_MEMORY 的 recent_fallback 且 score=0 不算相关命中。",
+    "critical_unknown 应针对当前输出的决定性断言。未提供网页正文会阻止认证网页事实，但不自动阻止评审准确描述搜索返回和取证失败的报告；案件事实未知也不自动等于目标质量未知。"
+  ]
+}

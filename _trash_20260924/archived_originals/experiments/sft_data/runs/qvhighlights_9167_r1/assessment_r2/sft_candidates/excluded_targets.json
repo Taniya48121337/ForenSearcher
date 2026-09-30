@@ -1,0 +1,90 @@
+[
+  {
+    "request_id": "request_0005",
+    "assessment": {
+      "request_id": "request_0005",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "又切回request_0004输入中已完整展示的E19–E26。两组中的车辆、单人近景及双人画面均可辨认，没有附件遗漏或加载失败；读取E19的时间元数据也不能缩小尚未采样的空档。此次回看增益有限，不宜作为正向目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0006",
+    "assessment": {
+      "request_id": "request_0006",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次回到request_0005已展示的同一候选内部组，仅改变READ_RECORD目标为E16。没有新增问题、图像或定位信息，现有内部空档仍未检查。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次调回已多次展示的E19–E26；E20的81.014秒定位及车辆画面已知，读取单帧记录不能进一步确定候选起点。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取E14并复用相同内部组。93.994秒的单人黑色口罩近景此前已清楚呈现，此次没有新增比较条件或视觉变换，未推进定位。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取已见的83.016秒E21并再次切回边缘组。单人白色口罩近景和时间定位已存在，继续返回相同图片不能解决何时出现双人同框。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次展示相同内部组并读取E17。114.014秒的双人并排阳性画面已经掌握；此时只剩两次后续决策机会，行动仍未增加证据或形成报告。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "仅剩一次后续决策机会时，再读取已见的84.985秒E22并返回同一边缘组。没有图片缺失、新细节需求或新的时间测量，下一轮只能基于原有24帧提交报告。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "115.015、116.016、116.984及117.985秒的四帧均支持报告中的人物、口罩及室内空间描述，限制说明也诚实。问题在于唯一定位范围遗漏了已见的87.988、103.136、108.008及114.014秒阳性证据。按115–118秒计算，官方tIoU仅0.0833；不能因子集真实而认定完整定位通过。完整边界及连续性仍是关键未知。此时提交报告符合零剩余轮次约束，修复应针对证据整合和定位范围，而非要求该步执行已无轮次的补查。"
+    },
+    "execution_status": "report_committed"
+  }
+]

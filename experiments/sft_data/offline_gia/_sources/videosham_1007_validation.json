@@ -1,0 +1,1863 @@
+{
+ "source_run": "videosham_1007_validation",
+ "source_request": "request_0045",
+ "n_gia_requests": 11,
+ "task": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+ "runtime_constraints": {
+  "round_index": 3,
+  "can_create_round": true,
+  "turn_index": 2,
+  "max_turns": 8,
+  "remaining_turns": 6
+ },
+ "history_index": [
+  {
+   "record_type": "evidence",
+   "evidence_id": "E7",
+   "label": "视频E1在5.080秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E9",
+   "label": "视频E2在4.071秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E10",
+   "label": "视频E2在7.574秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E11",
+   "label": "视频E2在7.741秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E17",
+   "label": "视频E1在1.280秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E28",
+   "label": "视频E1在5.000秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E32",
+   "label": "视频E2在7.708秒的帧",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-1",
+   "status": "INCOMPLETE",
+   "finding_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "selected_evidence_ids": [
+    "E16",
+    "E19",
+    "E22",
+    "E23",
+    "E24",
+    "E20",
+    "E21",
+    "E13"
+   ],
+   "status_reason": "已确认局部画面差异，但关键时序跳接仍缺乏充分的成对画面核验，无法确定具体剪辑方式及完整影响；取证轮次已用尽。",
+   "task": "直接比较给定视频 A 与候选视频 B 的画面及镜头时序，调查材料能够确认的差异及其对画面含义的影响。引用具体证据，说明差异在两段视频中的位置，区分已核验范围与未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+   "materials": [
+    "E1",
+    "E2"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F1",
+   "workspace_id": "W1-1",
+   "statement": "A在1.160秒与B在1.635秒的画面高度相似：山体轮廓、树林分布、云层及湖面倒影位置基本对应，支持两段材料在此处存在画面对应关系。",
+   "evidence_ids": [
+    "E16",
+    "E19"
+   ],
+   "limitations": [
+    "单对相似帧不能证明整段连续对应，也不能确认B的原始来源身份或两者的制作先后。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F2",
+   "workspace_id": "W1-1",
+   "statement": "A在1.160、1.200、1.240和1.320秒的可见画面均以山体、树林和湖面倒影为主，未见人物或船桨。B在1.635秒仍呈现相近的山湖构图，2.703秒右上方出现船桨，3.971秒右侧出现戴帽、穿橙色衣物及蓝色救生衣的人物，并可见靠近水面的桨。B这些采样帧提供了明确的划行活动线索；A所列帧呈现的是山湖风景。",
+   "evidence_ids": [
+    "E16",
+    "E22",
+    "E23",
+    "E24",
+    "E19",
+    "E20",
+    "E21"
+   ],
+   "limitations": [
+    "这些时间点并非全部已确认对应，不能据此认定人物或船桨被从对应画面中移除。",
+    "不能把A所列帧未见人物扩大为A整段没有人物；B各采样点之间的完整动作过程也未连续核验。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F3",
+   "workspace_id": "W1-1",
+   "statement": "视觉对齐记录提出：A的0.720—1.160秒锚点对应B的1.168—1.635秒，时间偏移约0.43—0.47秒；A的1.360—4.880秒锚点对应B的4.071—7.574秒，后续A的5.080—7.960秒锚点对应B的7.741—10.677秒，偏移约2.66—2.72秒。若这些候选成立，早段与后段不能用同一个固定时间偏移解释，提示两者在A约1.2—1.4秒附近存在过渡过程缩短或其他时序变化。B在相关空档内的已见帧包含船桨和人物出现，因此该候选关系涉及划行情境如何进入画面。",
+   "evidence_ids": [
+    "E13",
+    "E16",
+    "E19",
+    "E20",
+    "E21",
+    "E24"
+   ],
+   "limitations": [
+    "后段候选的具体画面对应尚不能由本次附图充分复核，不能将上述提示定为已证实的删剪，也不能确定精确边界、删去时长或编辑方向。",
+    "对齐候选按时间同向排列，但不足以排除未核验区间的其他编辑或速度变化。",
+    "B的0—1.168秒、10.711—20.053秒及两侧其他采样空档未充分核验；音轨未检查，不能声称这些部分没有差异。"
+   ]
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-2",
+   "status": "INCOMPLETE",
+   "finding_ids": [
+    "F4",
+    "F5"
+   ],
+   "selected_evidence_ids": [
+    "E33",
+    "E27",
+    "E31"
+   ],
+   "status_reason": "已取得音频对齐结果，但当前输入没有可试听音频，所列动作也不提供试听或声音内容识别功能，无法核验具体声音差异及其含义影响。需取得两段视频的可试听音频才能完成该项比较。",
+   "task": "比较给定视频 A 与候选视频 B 的可用音频，调查能够确认的声音差异，以及这些差异与对应画面结合时对含义的影响。引用具体证据，说明差异在两段视频中的位置和未能确定的内容；若音频不可用或无法核验，明确该限制。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+   "materials": [
+    "E1",
+    "E2"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F4",
+   "workspace_id": "W1-2",
+   "statement": "音频对齐工具成功处理了 A 的 0–8.000 秒和 B 的 0–20.053 秒，给出 A 0–8.000 秒对应 B 2.665–10.665 秒的候选关系。这支持两段音频可能存在对应内容，不能据此确认声音完全相同或确定具体差异。",
+   "evidence_ids": [
+    "E33"
+   ],
+   "limitations": [
+    "相关性匹配不等于听觉内容核验，不能确认对白、音乐、环境声、音量或声音剪辑是否有变化。",
+    "B 的 0–2.665 秒及约 10.665–20.053 秒未包含在该候选对应中；不能将其认定为被删减内容，也不能视为没有声音差异。",
+    "该结果不确认候选视频的来源身份或制作先后。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F5",
+   "workspace_id": "W1-2",
+   "statement": "A 3.680 秒与 B 6.373 秒的画面均可见背对镜头、穿橙色衣服和蓝色救生衣的划船者，船桨、远山及湖面倒影位置相符。两帧约 2.693 秒的时间差与音频候选偏移大致相容，但尚不能确定声音与这些画面结合时是否改变了事件含义或观看感受。",
+   "evidence_ids": [
+    "E27",
+    "E31",
+    "E33"
+   ],
+   "limitations": [
+    "这只是已观察画面锚点与音频候选关系的比较，不能证明整段音画连续对应或全程同步。",
+    "未实际听到声音，不能从湖面和划桨画面推断存在水声、说话声或配乐，也不能断言含义未变。"
+   ]
+  }
+ ],
+ "latest_reports": [
+  {
+   "task": "核验视频A与候选视频B从山湖风景转到划船者画面的具体差异。已有A 1.160秒/B 1.635秒及A 3.680秒/B 6.373秒的对应画面；E13提出的其他时间对应仍是候选。重点对照A 1.160—2.480秒与B 1.635—5.172秒，检查两组对应之间实际发生的画面变化，判断是否足以确认过渡缩短、画面替换或其他差异，不预设编辑方式。利用已有帧补齐关键缺口，引用实际画面说明差异位置、对划行情境呈现的影响及边界不确定性；不能仅凭背景相似认定整帧对应，也不能确认B的来源身份或制作先后。",
+   "materials": [
+    "E1",
+    "E2",
+    "E13",
+    "E16",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E29",
+    "E30",
+    "E31"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W2-1",
+    "status": "INCOMPLETE",
+    "finding_ids": [
+     "F6",
+     "F7",
+     "F8"
+    ],
+    "selected_evidence_ids": [
+     "E16",
+     "E19",
+     "E5",
+     "E29",
+     "E26",
+     "E30",
+     "E27",
+     "E31",
+     "E13"
+    ],
+    "status_reason": "已核实对应画面与锚点间的时距差；过渡区间的连续对应和具体变化边界仍未确定，不能据此确认编辑方式。",
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F6",
+      "workspace_id": "W2-1",
+      "statement": "A 1.160秒与B 1.635秒均为相符的山壁、林带及湖面倒影画面。A 2.480秒与B 5.172秒不仅背景相符，前景划船者的灰色帽子、橙色衣服、蓝色救生衣、抬手姿势及横跨画面的桨也相符。A 3.680秒与B 6.373秒则共同呈现居中的划船者、左侧桨叶和右侧另一条船，支持这三组具体画面对应。",
+      "evidence_ids": [
+       "E16",
+       "E19",
+       "E26",
+       "E30",
+       "E27",
+       "E31"
+      ],
+      "limitations": [
+       "这些对应仅针对已查看的采样画面，不证明其间全程连续对应。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F7",
+      "workspace_id": "W2-1",
+      "statement": "中间采样点A 1.360秒与B 4.104秒都已出现位于画面右缘、身体部分出框的划船者，山湖仍占据大部分画面；随后A 2.480秒与B 5.172秒均呈现人物更靠中间、桨叶举至左上方的画面。这些观察支持两侧都呈现从风景到前景划船活动的变化，但不足以确定整个变化过程是否相同。",
+      "evidence_ids": [
+       "E5",
+       "E29",
+       "E26",
+       "E30",
+       "E13"
+      ],
+      "limitations": [
+       "A 1.360秒与B 4.104秒的构图相近不等于精确整帧对应，也不能替代E13中B 4.071秒候选锚点的核验。",
+       "未核验间隔内的动作和镜头变化不能由这些离散画面补全。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F8",
+      "workspace_id": "W2-1",
+      "statement": "从已对应的风景帧到举桨帧，A经过1.320秒，B约经过3.537秒，A的锚点间时距约短2.217秒；从举桨帧到下一组对应画面，A经过1.200秒，B约经过1.201秒。因此，已确认的时距差位于前一组锚点之间。观看呈现上，A从该风景画面到达该举桨姿势所用时间更短，两侧已见画面仍保留山湖中的划行情境。",
+      "evidence_ids": [
+       "E16",
+       "E19",
+       "E26",
+       "E30",
+       "E27",
+       "E31"
+      ],
+      "limitations": [
+       "2.217秒是对应锚点间的时距差，不是已证实的删减量或过渡缩短量。",
+       "现有证据不足以区分局部变速、省略、停留时长变化或画面替换，也不能确定变化的精确起止点。",
+       "不能据此确认B的来源身份、两视频的制作先后或真实划行速度。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E13",
+     "modalities": [
+      "text"
+     ],
+     "label": "INSPECT align_media 结果",
+     "content": "{\"backend\":\"SIFT/FLANN + RANSAC + local temporal alignment\",\"boundary_uncertainty_s\":null,\"candidate_relationships\":[],\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":146},\"range_s\":[0.0,8.0]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":365},\"range_s\":[0.0,20.053386720053386]}},\"limitations\":[\"coverage 是各输入的处理范围和采样量，failed_ranges 仅指处理失败的区间；它们不表示内容匹配或删减。对应关系见 matches，score 只表示本次调用当前模式内的候选排序，而非结论正确的概率。matches 列出候选对应关系，不是剪辑事件清单或两侧视频的唯一分段。候选可以重叠，不要求全部同时成立；候选数量或重叠本身不能证明发生了删减、重复插入或拼接。range_a_s/range_b_s 是包含采样边界误差的区间，端点之差不是精确时间偏移。每对锚点的 time_b_minus_a_s 是 time_b_s 减去 time_a_s；a/b 对应本次 targets 的先后顺序。\",\"序列分数按匹配量、相似度和时间步长惩罚排序，并按本次采样规模归一化；短片段分数较低不表示没有对应关系。\",\"按候选顺序在视觉输入容量内附首末锚点原帧，每对含A/B两帧；其余锚点只记录时间，可按对应源E和时间调用get_frames。帧对是待核对的对应候选，不能用同类场景任意重配时间。\",\"sampling_interval_s 是取样间隔，候选范围在首末命中外扩一个间隔；未估计真实剪辑边界的误差上限（boundary_uncertainty_s=null），不能换算成 ±误差或可排除的最短编辑长度。低纹理、镜像、倒放或大幅编辑可能无法对齐。\",\"静态或重复画面可能有多个对应位置；未匹配的空档不等于完整删减区间。\"],\"matches\":[{\"anchors\":[{\"image_a_evidence_id\":\"E5\",\"image_b_evidence_id\":\"E9\",\"time_a_s\":1.36,\"time_b_minus_a_s\":2.710737404,\"time_b_s\":4.070737404070737},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":2.48,\"time_b_minus_a_s\":2.691838505,\"time_b_s\":5.171838505171839},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":3.68,\"time_b_minus_a_s\":2.693039706,\"time_b_s\":6.3730397063730395},{\"image_a_evidence_id\":\"E6\",\"image_b_evidence_id\":\"E10\",\"time_a_s\":4.88,\"time_b_minus_a_s\":2.694240908,\"time_b_s\":7.574240907574241}],\"range_a_s\":[1.304993359,4.935006641],\"range_b_s\":[4.015730763,7.629247548],\"score\":0.19527282032235335,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.008127489,\"offset_s\":2.709973448,\"playback_rate_b_relative_to_a\":1.004051613,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":0.995964736}},{\"anchors\":[{\"image_a_evidence_id\":\"E7\",\"image_b_evidence_id\":\"E11\",\"time_a_s\":5.08,\"time_b_minus_a_s\":2.661074408,\"time_b_s\":7.741074407741074},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":6.04,\"time_b_minus_a_s\":2.702075409,\"time_b_s\":8.742075408742075},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":7.0,\"time_b_minus_a_s\":2.67634301,\"time_b_s\":9.676343009676343},{\"image_a_evidence_id\":\"E8\",\"image_b_evidence_id\":\"E12\",\"time_a_s\":7.96,\"time_b_minus_a_s\":2.717344011,\"time_b_s\":10.677344010677343}],\"range_a_s\":[5.024993359,8.0],\"range_b_s\":[7.686067767,10.732350651],\"score\":0.12186213713282822,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.02002002,\"offset_s\":2.592036481,\"playback_rate_b_relative_to_a\":0.985315068,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":1.014903793}},{\"anchors\":[{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":0.72,\"time_b_minus_a_s\":0.447834501,\"time_b_s\":1.1678345011678346},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":0.84,\"time_b_minus_a_s\":0.427934601,\"time_b_s\":1.2679346012679347},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":1.0,\"time_b_minus_a_s\":0.434768101,\"time_b_s\":1.4347681014347682},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":1.16,\"time_b_minus_a_s\":0.474968302,\"time_b_s\":1.6349683016349683}],\"range_a_s\":[0.664993359,1.215006641],\"range_b_s\":[1.112827861,1.689974942],\"score\":0.02816455875051348,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.016137349,\"offset_s\":0.386204386,\"playback_rate_b_relative_to_a\":0.939230769,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":1.064701065}}],\"mode\":\"visual\",\"sampling_interval_s\":[0.055006640627555656,0.055006640627555656],\"speed_ratio_range\":[0.5,2.0]}",
+     "source_ref": null,
+     "derived_from": [
+      "E1",
+      "E2"
+     ],
+     "artifact_ref": null,
+     "locator": "{\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":146},\"range_s\":[0.0,8.0]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":365},\"range_s\":[0.0,20.053386720053386]}}}",
+     "acquired_by": "INSPECT/align_media",
+     "discovered_by": "W1-1",
+     "production_method": "structured_analysis",
+     "content_offset": 0,
+     "next_offset": null
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E16",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在1.160秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.16,\"time_s\":1.16}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A13",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.16,\"time_s\":1.16}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E19",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在1.635秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":1.6349683016349683,\"time_s\":1.6349683016349683}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A16",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":1.6349683016349683,\"time_s\":1.6349683016349683}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E26",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在2.480秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A23",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E30",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在5.172秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":5.171838505171839,\"time_s\":5.171838505171839}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A27",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":5.171838505171839,\"time_s\":5.171838505171839}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E27",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在3.680秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":3.68,\"time_s\":3.68}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A24",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":3.68,\"time_s\":3.68}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E31",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在6.373秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":6.3730397063730395,\"time_s\":6.3730397063730395}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A28",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":6.3730397063730395,\"time_s\":6.3730397063730395}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E5",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在1.360秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.36,\"time_s\":1.36}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A3",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.36,\"time_s\":1.36}",
+     "acquired_by": "INSPECT/align_media",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E29",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在4.104秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":4.104104104104104,\"time_s\":4.104104104104104}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A26",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":4.104104104104104,\"time_s\":4.104104104104104}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E20",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":2.7,\"time_s\":2.7027027027027026}"
+    },
+    {
+     "evidence_id": "E21",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":3.9706373039706375,\"time_s\":3.9706373039706375}"
+    },
+    {
+     "evidence_id": "E22",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.2,\"time_s\":1.2}"
+    },
+    {
+     "evidence_id": "E23",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.24,\"time_s\":1.24}"
+    },
+    {
+     "evidence_id": "E24",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.32,\"time_s\":1.32}"
+    },
+    {
+     "evidence_id": "E25",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.4,\"time_s\":1.4}"
+    },
+    {
+     "evidence_id": "E26",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}"
+    },
+    {
+     "evidence_id": "E27",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":3.68,\"time_s\":3.68}"
+    },
+    {
+     "evidence_id": "E29",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":4.104104104104104,\"time_s\":4.104104104104104}"
+    },
+    {
+     "evidence_id": "E30",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":5.171838505171839,\"time_s\":5.171838505171839}"
+    },
+    {
+     "evidence_id": "E31",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":6.3730397063730395,\"time_s\":6.3730397063730395}"
+    },
+    {
+     "evidence_id": "E5",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":1.36,\"time_s\":1.36}"
+    }
+   ],
+   "image_inputs_truncated": true,
+   "visual_observation_summary": {
+    "image_evidence_count": 14,
+    "videos": [
+     {
+      "evidence_id": "E1",
+      "observed_frame_count": 8,
+      "media_duration_s": 8.0,
+      "coverage_span_s": [
+       0.0,
+       8.0
+      ],
+      "observed_ranges_s": [
+       [
+        1.16,
+        1.28
+       ],
+       [
+        1.32,
+        1.44
+       ],
+       [
+        2.48,
+        2.52
+       ],
+       [
+        3.68,
+        3.72
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.0,
+        1.16
+       ],
+       [
+        1.28,
+        1.32
+       ],
+       [
+        1.44,
+        2.48
+       ],
+       [
+        2.52,
+        3.68
+       ],
+       [
+        3.72,
+        8.0
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     },
+     {
+      "evidence_id": "E2",
+      "observed_frame_count": 6,
+      "media_duration_s": 20.053386720053386,
+      "coverage_span_s": [
+       0.0,
+       20.053386720053386
+      ],
+      "observed_ranges_s": [
+       [
+        1.6349683016349683,
+        1.668335001668335
+       ],
+       [
+        2.7027027027027026,
+        2.7360694027360695
+       ],
+       [
+        3.9706373039706375,
+        4.004004004004004
+       ],
+       [
+        4.104104104104104,
+        4.137470804137471
+       ],
+       [
+        5.171838505171839,
+        5.205205205205205
+       ],
+       [
+        6.3730397063730395,
+        6.406406406406406
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.0,
+        1.6349683016349683
+       ],
+       [
+        1.668335001668335,
+        2.7027027027027026
+       ],
+       [
+        2.7360694027360695,
+        3.9706373039706375
+       ],
+       [
+        4.004004004004004,
+        4.104104104104104
+       ],
+       [
+        4.137470804137471,
+        5.171838505171839
+       ],
+       [
+        5.205205205205205,
+        6.3730397063730395
+       ],
+       [
+        6.406406406406406,
+        20.053386720053386
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     }
+    ]
+   }
+  },
+  {
+   "task": "核查候选视频B尚未充分观察的开头0—1.168秒及结尾10.677—20.053秒，直接与视频A比较，确认这些部分是否提供会影响山湖划行画面含义的前后文，以及相关内容能否在A中找到对应。已有A 7.960秒/B 10.677秒只是待核验的末端对应候选，不能当作片段边界；未被算法匹配也不等于被删除。引用实际画面说明可确认的内容差异及两侧位置，无法确定对应或缺失时明确保留未知，不推断B的来源身份、编辑方向或未听取的声音。",
+   "materials": [
+    "E1",
+    "E2",
+    "E8",
+    "E12",
+    "E13",
+    "E14",
+    "E18"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W2-2",
+    "status": "INCOMPLETE",
+    "finding_ids": [
+     "F9",
+     "F10",
+     "F11",
+     "F12"
+    ],
+    "selected_evidence_ids": [
+     "E36",
+     "E37",
+     "E40",
+     "E8",
+     "E38",
+     "E39",
+     "E14",
+     "E26",
+     "E13"
+    ],
+    "status_reason": "已确认B结尾的景观画面和宣传片尾语境；B开头0—1.168秒的具体内容未能从本次提供的像素核实，部分对应关系及过渡边界仍未知。",
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F9",
+      "workspace_id": "W2-2",
+      "statement": "B在11.512秒可见载人红色舟体、湖面尾迹、针叶林和山体；14.515秒可见湖水、岸林和岩壁。A在6.040秒和7.960秒也出现红色舟体及山湖景观，但前景还可见橙衣划桨者或其部分手臂与桨。B这些尾段画面与A的山湖划行主题相容，提供了更多湖岸景观。",
+      "evidence_ids": [
+       "E36",
+       "E37",
+       "E40",
+       "E8"
+      ],
+      "limitations": [
+       "场景相似不能单独证明同一片段或具体时间对应。",
+       "离散帧不能证明其间连续，也不能据此前景人物不在画面内推断发生了删剪。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F10",
+      "workspace_id": "W2-2",
+      "statement": "B在17.484秒出现黑底片尾卡，中央为红色枫叶和“KEEP EXPLORING.CA”，下方可见Canada标识；20.020秒为黑屏。这张片尾卡为山湖划行画面增加了旅游推广式的语境。直接比较的A在0.000、2.480、6.040和7.960秒均为山湖或划行画面，未见相同片尾卡。",
+      "evidence_ids": [
+       "E38",
+       "E39",
+       "E14",
+       "E26",
+       "E40",
+       "E8"
+      ],
+      "limitations": [
+       "尚未在A中确认该片尾卡的对应；不能由这些抽样帧断言A全片绝无此卡。",
+       "未确定景观转为片尾卡、片尾卡转为黑屏的准确时刻。",
+       "可见标识不能独立证明拍摄地点或视频来源身份。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F11",
+      "workspace_id": "W2-2",
+      "statement": "A的7.960秒与B的10.677秒在视觉对齐结果中属于末端候选锚点。B在更后的11.512秒仍出现舟体与山湖景观，因此10.677秒不能直接作为B山湖画面的结束边界；算法未匹配的尾段也不能认定为从A删除的内容。",
+      "evidence_ids": [
+       "E13",
+       "E8",
+       "E36"
+      ],
+      "limitations": [
+       "本次未附B的10.677秒帧像素，未完成该候选锚点的直接成对复核。",
+       "B后续景观在A中的精确对应仍未知。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F12",
+      "workspace_id": "W2-2",
+      "statement": "B开头0—1.168秒是否包含会影响划行画面含义的前文，目前不能确定。已读视觉对齐结果最早列出的候选为A的0.720秒与B的1.168秒，没有提供更早区间的可靠对应；这不证明该区间没有内容或在A中缺失。",
+      "evidence_ids": [
+       "E13"
+      ],
+      "limitations": [
+       "本次实际附图不包含B在0.000、0.601或1.168秒的像素，记录中的时间与派生关系不能替代画面内容核验。",
+       "未听取声音，不对声音提供的前后文作判断。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E13",
+     "modalities": [
+      "text"
+     ],
+     "label": "INSPECT align_media 结果",
+     "content": "{\"backend\":\"SIFT/FLANN + RANSAC + local temporal alignment\",\"boundary_uncertainty_s\":null,\"candidate_relationships\":[],\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":146},\"range_s\":[0.0,8.0]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":365},\"range_s\":[0.0,20.053386720053386]}},\"limitations\":[\"coverage 是各输入的处理范围和采样量，failed_ranges 仅指处理失败的区间；它们不表示内容匹配或删减。对应关系见 matches，score 只表示本次调用当前模式内的候选排序，而非结论正确的概率。matches 列出候选对应关系，不是剪辑事件清单或两侧视频的唯一分段。候选可以重叠，不要求全部同时成立；候选数量或重叠本身不能证明发生了删减、重复插入或拼接。range_a_s/range_b_s 是包含采样边界误差的区间，端点之差不是精确时间偏移。每对锚点的 time_b_minus_a_s 是 time_b_s 减去 time_a_s；a/b 对应本次 targets 的先后顺序。\",\"序列分数按匹配量、相似度和时间步长惩罚排序，并按本次采样规模归一化；短片段分数较低不表示没有对应关系。\",\"按候选顺序在视觉输入容量内附首末锚点原帧，每对含A/B两帧；其余锚点只记录时间，可按对应源E和时间调用get_frames。帧对是待核对的对应候选，不能用同类场景任意重配时间。\",\"sampling_interval_s 是取样间隔，候选范围在首末命中外扩一个间隔；未估计真实剪辑边界的误差上限（boundary_uncertainty_s=null），不能换算成 ±误差或可排除的最短编辑长度。低纹理、镜像、倒放或大幅编辑可能无法对齐。\",\"静态或重复画面可能有多个对应位置；未匹配的空档不等于完整删减区间。\"],\"matches\":[{\"anchors\":[{\"image_a_evidence_id\":\"E5\",\"image_b_evidence_id\":\"E9\",\"time_a_s\":1.36,\"time_b_minus_a_s\":2.710737404,\"time_b_s\":4.070737404070737},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":2.48,\"time_b_minus_a_s\":2.691838505,\"time_b_s\":5.171838505171839},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":3.68,\"time_b_minus_a_s\":2.693039706,\"time_b_s\":6.3730397063730395},{\"image_a_evidence_id\":\"E6\",\"image_b_evidence_id\":\"E10\",\"time_a_s\":4.88,\"time_b_minus_a_s\":2.694240908,\"time_b_s\":7.574240907574241}],\"range_a_s\":[1.304993359,4.935006641],\"range_b_s\":[4.015730763,7.629247548],\"score\":0.19527282032235335,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.008127489,\"offset_s\":2.709973448,\"playback_rate_b_relative_to_a\":1.004051613,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":0.995964736}},{\"anchors\":[{\"image_a_evidence_id\":\"E7\",\"image_b_evidence_id\":\"E11\",\"time_a_s\":5.08,\"time_b_minus_a_s\":2.661074408,\"time_b_s\":7.741074407741074},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":6.04,\"time_b_minus_a_s\":2.702075409,\"time_b_s\":8.742075408742075},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":7.0,\"time_b_minus_a_s\":2.67634301,\"time_b_s\":9.676343009676343},{\"image_a_evidence_id\":\"E8\",\"image_b_evidence_id\":\"E12\",\"time_a_s\":7.96,\"time_b_minus_a_s\":2.717344011,\"time_b_s\":10.677344010677343}],\"range_a_s\":[5.024993359,8.0],\"range_b_s\":[7.686067767,10.732350651],\"score\":0.12186213713282822,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.02002002,\"offset_s\":2.592036481,\"playback_rate_b_relative_to_a\":0.985315068,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":1.014903793}},{\"anchors\":[{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":0.72,\"time_b_minus_a_s\":0.447834501,\"time_b_s\":1.1678345011678346},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":0.84,\"time_b_minus_a_s\":0.427934601,\"time_b_s\":1.2679346012679347},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":1.0,\"time_b_minus_a_s\":0.434768101,\"time_b_s\":1.4347681014347682},{\"image_a_evidence_id\":null,\"image_b_evidence_id\":null,\"time_a_s\":1.16,\"time_b_minus_a_s\":0.474968302,\"time_b_s\":1.6349683016349683}],\"range_a_s\":[0.664993359,1.215006641],\"range_b_s\":[1.112827861,1.689974942],\"score\":0.02816455875051348,\"time_mapping\":{\"anchor_count\":4,\"formula\":\"time_b_s = scale * time_a_s + offset_s\",\"limitation\":\"仅描述已列候选锚点的线性时间关系；残差不是剪辑边界误差或未采样区间的连续性保证。\",\"max_anchor_residual_s\":0.016137349,\"offset_s\":0.386204386,\"playback_rate_b_relative_to_a\":0.939230769,\"rate_interpretation\":\"scale 是对应区间的 B 时长/A 时长；播放倍速是其倒数。例如 scale=2/3 表示 B 为 A 的 1.5 倍速。该倍速仅描述候选锚点拟合，不证明整个区间连续或实际编辑过程。\",\"scale\":1.064701065}}],\"mode\":\"visual\",\"sampling_interval_s\":[0.055006640627555656,0.055006640627555656],\"speed_ratio_range\":[0.5,2.0]}",
+     "source_ref": null,
+     "derived_from": [
+      "E1",
+      "E2"
+     ],
+     "artifact_ref": null,
+     "locator": "{\"coverage\":{\"a\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":146},\"range_s\":[0.0,8.0]},\"b\":{\"failed_ranges\":[],\"processed\":{\"unit\":\"frames\",\"value\":365},\"range_s\":[0.0,20.053386720053386]}}}",
+     "acquired_by": "INSPECT/align_media",
+     "discovered_by": "W1-1",
+     "production_method": "structured_analysis",
+     "content_offset": 0,
+     "next_offset": null
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E36",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在11.512秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":11.5,\"time_s\":11.511511511511511}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A32",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":11.5,\"time_s\":11.511511511511511}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-2",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E37",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在14.515秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":14.5,\"time_s\":14.514514514514515}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A33",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":14.5,\"time_s\":14.514514514514515}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-2",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E40",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在6.040秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":6.04,\"time_s\":6.04}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A36",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":6.04,\"time_s\":6.04}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-2",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E8",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在7.960秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":7.96,\"time_s\":7.96}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A6",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":7.96,\"time_s\":7.96}",
+     "acquired_by": "INSPECT/align_media",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E38",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在17.484秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":17.5,\"time_s\":17.48415081748415}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A34",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":17.5,\"time_s\":17.48415081748415}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-2",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E39",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E2在20.020秒的帧",
+     "content": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":20.02,\"time_s\":20.02002002002002}",
+     "source_ref": null,
+     "derived_from": [
+      "E2"
+     ],
+     "artifact_ref": "A35",
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":20.02,\"time_s\":20.02002002002002}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-2",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E14",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在0.000秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A11",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E26",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在2.480秒的帧",
+     "content": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A23",
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E36",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":11.5,\"time_s\":11.511511511511511}"
+    },
+    {
+     "evidence_id": "E37",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":14.5,\"time_s\":14.514514514514515}"
+    },
+    {
+     "evidence_id": "E38",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":17.5,\"time_s\":17.48415081748415}"
+    },
+    {
+     "evidence_id": "E39",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":20.02,\"time_s\":20.02002002002002}"
+    },
+    {
+     "evidence_id": "E15",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":0.72,\"time_s\":0.72}"
+    },
+    {
+     "evidence_id": "E26",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":2.48,\"time_s\":2.48}"
+    },
+    {
+     "evidence_id": "E6",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":4.88,\"time_s\":4.88}"
+    },
+    {
+     "evidence_id": "E40",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.04,\"requested_time_s\":6.04,\"time_s\":6.04}"
+    },
+    {
+     "evidence_id": "E41",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":12.8,\"time_s\":12.812812812812814}"
+    },
+    {
+     "evidence_id": "E42",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":15.5,\"time_s\":15.515515515515515}"
+    },
+    {
+     "evidence_id": "E43",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":16.5,\"time_s\":16.516516516516518}"
+    },
+    {
+     "evidence_id": "E44",
+     "derived_from": [
+      "E2"
+     ],
+     "locator": "{\"frame_duration_s\":0.0333667000333667,\"requested_time_s\":19.0,\"time_s\":18.985652318985654}"
+    }
+   ],
+   "image_inputs_truncated": true,
+   "visual_observation_summary": {
+    "image_evidence_count": 18,
+    "videos": [
+     {
+      "evidence_id": "E1",
+      "observed_frame_count": 6,
+      "media_duration_s": 8.0,
+      "coverage_span_s": [
+       0.0,
+       8.0
+      ],
+      "observed_ranges_s": [
+       [
+        0.0,
+        0.04
+       ],
+       [
+        0.72,
+        0.76
+       ],
+       [
+        2.48,
+        2.52
+       ],
+       [
+        4.88,
+        4.92
+       ],
+       [
+        6.04,
+        6.08
+       ],
+       [
+        7.96,
+        8.0
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.04,
+        0.72
+       ],
+       [
+        0.76,
+        2.48
+       ],
+       [
+        2.52,
+        4.88
+       ],
+       [
+        4.92,
+        6.04
+       ],
+       [
+        6.08,
+        7.96
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     },
+     {
+      "evidence_id": "E2",
+      "observed_frame_count": 12,
+      "media_duration_s": 20.053386720053386,
+      "coverage_span_s": [
+       0.0,
+       20.053386720053386
+      ],
+      "observed_ranges_s": [
+       [
+        0.0,
+        0.0333667000333667
+       ],
+       [
+        0.6006006006006006,
+        0.6339673006339673
+       ],
+       [
+        1.1678345011678346,
+        1.2012012012012012
+       ],
+       [
+        10.677344010677343,
+        10.71071071071071
+       ],
+       [
+        11.511511511511511,
+        11.544878211544878
+       ],
+       [
+        12.812812812812814,
+        12.84617951284618
+       ],
+       [
+        14.514514514514515,
+        14.547881214547882
+       ],
+       [
+        15.515515515515515,
+        15.548882215548883
+       ],
+       [
+        16.516516516516518,
+        16.549883216549883
+       ],
+       [
+        17.48415081748415,
+        17.517517517517515
+       ],
+       [
+        18.985652318985654,
+        19.01901901901902
+       ],
+       [
+        20.02002002002002,
+        20.053386720053386
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.0333667000333667,
+        0.6006006006006006
+       ],
+       [
+        0.6339673006339673,
+        1.1678345011678346
+       ],
+       [
+        1.2012012012012012,
+        10.677344010677343
+       ],
+       [
+        10.71071071071071,
+        11.511511511511511
+       ],
+       [
+        11.544878211544878,
+        12.812812812812814
+       ],
+       [
+        12.84617951284618,
+        14.514514514514515
+       ],
+       [
+        14.547881214547882,
+        15.515515515515515
+       ],
+       [
+        15.548882215548883,
+        16.516516516516518
+       ],
+       [
+        16.549883216549883,
+        17.48415081748415
+       ],
+       [
+        17.517517517517515,
+        18.985652318985654
+       ],
+       [
+        19.01901901901902,
+        20.02002002002002
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     }
+    ]
+   }
+  }
+ ],
+ "current_materials": [
+  {
+   "evidence_id": "E13",
+   "reference_id": null,
+   "label": "INSPECT align_media 结果",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E16",
+   "reference_id": null,
+   "label": "视频E1在1.160秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E19",
+   "reference_id": null,
+   "label": "视频E2在1.635秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E20",
+   "reference_id": null,
+   "label": "视频E2在2.703秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E21",
+   "reference_id": null,
+   "label": "视频E2在3.971秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E22",
+   "reference_id": null,
+   "label": "视频E1在1.200秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E23",
+   "reference_id": null,
+   "label": "视频E1在1.240秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E24",
+   "reference_id": null,
+   "label": "视频E1在1.320秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E25",
+   "reference_id": null,
+   "label": "视频E1在1.400秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E26",
+   "reference_id": null,
+   "label": "视频E1在2.480秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E27",
+   "reference_id": null,
+   "label": "视频E1在3.680秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E29",
+   "reference_id": null,
+   "label": "视频E2在4.104秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E30",
+   "reference_id": null,
+   "label": "视频E2在5.172秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E31",
+   "reference_id": null,
+   "label": "视频E2在6.373秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E5",
+   "reference_id": null,
+   "label": "视频E1在1.360秒的帧",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E8",
+   "reference_id": null,
+   "label": "视频E1在7.960秒的帧",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E12",
+   "reference_id": null,
+   "label": "视频E2在10.677秒的帧",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E14",
+   "reference_id": null,
+   "label": "视频E1在0.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E18",
+   "reference_id": null,
+   "label": "视频E2在1.168秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E4",
+   "reference_id": null,
+   "label": "媒体属性：video，20.053秒，640×360，29.970fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E34",
+   "reference_id": null,
+   "label": "视频E2在0.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E35",
+   "reference_id": null,
+   "label": "视频E2在0.601秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E36",
+   "reference_id": null,
+   "label": "视频E2在11.512秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E37",
+   "reference_id": null,
+   "label": "视频E2在14.515秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E38",
+   "reference_id": null,
+   "label": "视频E2在17.484秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E39",
+   "reference_id": null,
+   "label": "视频E2在20.020秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E33",
+   "reference_id": null,
+   "label": "INSPECT align_media 结果",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E3",
+   "reference_id": null,
+   "label": "媒体属性：video，8.000秒，640×360，25.000fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E15",
+   "reference_id": null,
+   "label": "视频E1在0.720秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E6",
+   "reference_id": null,
+   "label": "视频E1在4.880秒的帧",
+   "acquired_by": "INSPECT/align_media",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E40",
+   "reference_id": null,
+   "label": "视频E1在6.040秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E41",
+   "reference_id": null,
+   "label": "视频E2在12.813秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E42",
+   "reference_id": null,
+   "label": "视频E2在15.516秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E43",
+   "reference_id": null,
+   "label": "视频E2在16.517秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E44",
+   "reference_id": null,
+   "label": "视频E2在18.986秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  }
+ ],
+ "visual_observation_summary": {
+  "image_evidence_count": 38,
+  "videos": [
+   {
+    "evidence_id": "E1",
+    "observed_frame_count": 16,
+    "media_duration_s": 8.0,
+    "coverage_span_s": [
+     0.0,
+     8.0
+    ],
+    "observed_ranges_s": [
+     [
+      0.0,
+      0.04
+     ],
+     [
+      0.72,
+      0.76
+     ],
+     [
+      1.16,
+      1.44
+     ],
+     [
+      2.48,
+      2.52
+     ],
+     [
+      3.68,
+      3.72
+     ],
+     [
+      4.88,
+      4.92
+     ],
+     [
+      5.0,
+      5.04
+     ],
+     [
+      5.08,
+      5.12
+     ],
+     [
+      6.04,
+      6.08
+     ],
+     [
+      7.96,
+      8.0
+     ]
+    ],
+    "unconfirmed_ranges_s": [
+     [
+      0.04,
+      0.72
+     ],
+     [
+      0.76,
+      1.16
+     ],
+     [
+      1.44,
+      2.48
+     ],
+     [
+      2.52,
+      3.68
+     ],
+     [
+      3.72,
+      4.88
+     ],
+     [
+      4.92,
+      5.0
+     ],
+     [
+      5.04,
+      5.08
+     ],
+     [
+      5.12,
+      6.04
+     ],
+     [
+      6.08,
+      7.96
+     ]
+    ],
+    "unknown_duration_frame_times_s": []
+   },
+   {
+    "evidence_id": "E2",
+    "observed_frame_count": 22,
+    "media_duration_s": 20.053386720053386,
+    "coverage_span_s": [
+     0.0,
+     20.053386720053386
+    ],
+    "observed_ranges_s": [
+     [
+      0.0,
+      0.0333667000333667
+     ],
+     [
+      0.6006006006006006,
+      0.6339673006339673
+     ],
+     [
+      1.1678345011678346,
+      1.2012012012012012
+     ],
+     [
+      1.6349683016349683,
+      1.668335001668335
+     ],
+     [
+      2.7027027027027026,
+      2.7360694027360695
+     ],
+     [
+      3.9706373039706375,
+      4.004004004004004
+     ],
+     [
+      4.070737404070737,
+      4.137470804137471
+     ],
+     [
+      5.171838505171839,
+      5.205205205205205
+     ],
+     [
+      6.3730397063730395,
+      6.406406406406406
+     ],
+     [
+      7.574240907574241,
+      7.607607607607608
+     ],
+     [
+      7.707707707707708,
+      7.77444110777444
+     ],
+     [
+      10.677344010677343,
+      10.71071071071071
+     ],
+     [
+      11.511511511511511,
+      11.544878211544878
+     ],
+     [
+      12.812812812812814,
+      12.84617951284618
+     ],
+     [
+      14.514514514514515,
+      14.547881214547882
+     ],
+     [
+      15.515515515515515,
+      15.548882215548883
+     ],
+     [
+      16.516516516516518,
+      16.549883216549883
+     ],
+     [
+      17.48415081748415,
+      17.517517517517515
+     ],
+     [
+      18.985652318985654,
+      19.01901901901902
+     ],
+     [
+      20.02002002002002,
+      20.053386720053386
+     ]
+    ],
+    "unconfirmed_ranges_s": [
+     [
+      0.0333667000333667,
+      0.6006006006006006
+     ],
+     [
+      0.6339673006339673,
+      1.1678345011678346
+     ],
+     [
+      1.2012012012012012,
+      1.6349683016349683
+     ],
+     [
+      1.668335001668335,
+      2.7027027027027026
+     ],
+     [
+      2.7360694027360695,
+      3.9706373039706375
+     ],
+     [
+      4.004004004004004,
+      4.070737404070737
+     ],
+     [
+      4.137470804137471,
+      5.171838505171839
+     ],
+     [
+      5.205205205205205,
+      6.3730397063730395
+     ],
+     [
+      6.406406406406406,
+      7.574240907574241
+     ],
+     [
+      7.607607607607608,
+      7.707707707707708
+     ],
+     [
+      7.77444110777444,
+      10.677344010677343
+     ],
+     [
+      10.71071071071071,
+      11.511511511511511
+     ],
+     [
+      11.544878211544878,
+      12.812812812812814
+     ],
+     [
+      12.84617951284618,
+      14.514514514514515
+     ],
+     [
+      14.547881214547882,
+      15.515515515515515
+     ],
+     [
+      15.548882215548883,
+      16.516516516516518
+     ],
+     [
+      16.549883216549883,
+      17.48415081748415
+     ],
+     [
+      17.517517517517515,
+      18.985652318985654
+     ],
+     [
+      19.01901901901902,
+      20.02002002002002
+     ]
+    ],
+    "unknown_duration_frame_times_s": []
+   }
+  ]
+ },
+ "run_config": {
+  "dataset": "videosham",
+  "case": "1007",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "search": null,
+  "evidence_source_policy": null,
+  "source_policy": null,
+  "gia_output_source": "codex_cli"
+ }
+}

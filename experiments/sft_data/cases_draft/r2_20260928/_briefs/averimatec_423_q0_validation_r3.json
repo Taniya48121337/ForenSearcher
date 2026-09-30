@@ -1,0 +1,114 @@
+{
+ "run": "averimatec_423_q0_validation_r3",
+ "config": {
+  "dataset": "averimatec",
+  "case": "423",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 5,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：How do experts define sea level changes?\n背景声明：There has been no increase in the rate of sea level rise.\n声明日期（任务元数据）：2022-09-03\n附带图片是该局部问题的官方输入图片，问题中的图像指代以这些附件为准。",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "The 2019 scientific paper “Concepts and Terminology for Sea Level: Mean, Variability and Change, Both Local and Global” defines sea-level change as the difference between two time-averaged sea-level states. The averaging period must be specified: it depends on the scientific question or application and should be long enough to remove meteorological fluctuations.",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "These definitions do not establish whether the rate of sea-level rise has increased."
+     ]
+    },
+    {
+     "statement": "Experts distinguish changes by their reference point. Relative sea-level change is change with respect to the land, as defined in the 2019 paper. The earth.gov Global Sea Level Change FAQ explains that it combines changes in the ocean surface with vertical land movement. The FAQ defines absolute sea-level change as ocean-surface height change relative to Earth's center. Consequently, local relativ…（共 451 字）",
+     "evidence_ids": [
+      "E5",
+      "E1"
+     ],
+     "limitations": [
+      "The supplied FAQ evidence does not establish its publication date, so it cannot be treated as a verified pre–September 3, 2022 source."
+     ]
+    },
+    {
+     "statement": "For spatial scope, the 2019 paper defines global mean as an area-weighted average over the connected ocean surface, including connected marginal seas but excluding land and inland seas. A global average therefore differs from sea-level change at a particular coastal location.",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": []
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "What is the difference between absolute sea level change and relative sea level change? – Global Sea Level Change",
+   "source_url": "https://earth.gov/sealevel/faq/123/what-is-the-difference-between-absolute-sea-level-change-and-relative-sea-level-change/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [FREQUENTLY ASKED QUESTIONS](https://earth.gov/sealevel/resources/faq/)\n\n[2] What is the difference between absolute sea level change and relative sea level change?\n\n[3] Absolute sea level change refers to changes in the height of the ocean's surface relative to the center of the Earth, measured globally using satellite altimetry. It reflects the actual increase or decrease in the volume of water in the oceans, influenced by factors such as melting ice sheets, thermal expansion, and changes in ocean circulation. In contrast, relative sea level change is the change in sea level experienced …（共 962 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Changes in Sea Level Co-ordinating Lead Authors J.A. Church, J.M. Gregory",
+   "source_url": "https://www.ipcc.ch/site/assets/uploads/2018/03/TAR-11.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nChanges in Sea Level\nCo-ordinating Lead Authors \nJ.A. Church, J.M. Gregory\nLead Authors\nP. Huybrechts, M. Kuhn, K. Lambeck, M.T. Nhuan, D. Qin, P.L. Woodworth\nContributing Authors\nO.A. Anisimov, F.O. Bryan, A. Cazenave, K.W. Dixon, B.B. Fitzharris, G.M. Flato, A. Ganopolski,\nV . Gornitz, J.A. Lowe, A. Noda, J.M. Oberhuber, S.P. O’Farrell, A. Ohmura, M. Oppenheimer,\nW.R. Peltier, S.C.B. Raper, C. Ritz, G.L. Russell, E. Schlosser, C.K. Shum, T.F. Stocker, R.J. Stouffer,\nR.S.W. van de Wal, R. V oss, E.C. Wiebe, M. Wild, D.J. Wingham, H.J. Zwally\nReview Editors\nB.C. Douglas, A. Ramirez\n11…（共 281005 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Sea Level Change — IPCC",
+   "source_url": "https://www.ipcc.ch/report/ar5/wg1/sea-level-change/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] You may freely download and copy the material contained on this website for your personal, non-commercial use, without any right to resell, redistribute, compile or create derivative works therefrom, subject to more specific restrictions that may apply to specific materials."
+  },
+  {
+   "id": "E4",
+   "label": "Sea-Level Rise and the Role of Geneva – Geneva Environment Network",
+   "source_url": "https://www.genevaenvironmentnetwork.org/resources/updates/sea-level-rise-and-the-role-of-geneva/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Update\n\n[2] Sea-Level Rise and the Role of Geneva\n\n[3] Rising sea levels is one of the most severe consequences of climate change, with levels projected to rise as much in the next 30 years as they did in the past century. Driven by melting ice and warming oceans, this trend threatens ecosystems, fuels flooding and displacement, and endangers freshwater supplies. The Intergovernmental Panel on Climate Change (IPCC) Sixth Assessment Report and the Special Report on the Ocean and Cryosphere warn that sea-level rise is now unavoidable for centuries, with increases of 2–6 meters possible over …（共 47231 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Concepts and Terminology for Sea Level: Mean, Variability and Change, Both Local and Global | Surveys in Geophysics | Springer Nature Link",
+   "source_url": "https://link.springer.com/article/10.1007/s10712-019-09525-z",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Abstract\n\n[2] Changes in sea level lead to some of the most severe impacts of anthropogenic climate change. Consequently, they are a subject of great interest in both scientific research and public policy. This paper defines concepts and terminology associated with sea level and sea-level changes in order to facilitate progress in sea-level science, in which communication is sometimes hindered by inconsistent and unclear language. We identify key terms and clarify their physical and mathematical meanings, make links between concepts and across disciplines, draw distinctions where there is …（共 136756 字）"
+  }
+ ]
+}

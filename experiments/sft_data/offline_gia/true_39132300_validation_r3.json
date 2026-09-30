@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "true_39132300_validation_r3",
+  "source_request": "request_0008",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "《Scream》中凶手所戴的面具在用于电影之前是什么商品？由哪家公司生产、归在哪个产品系列？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-1（COMPLETED）F1（干净）引 E2（Snopes）、E5（GhostFace.co.uk）：该面具原是 Fun World “Fantastic Faces” 系列中批量生产的万圣节面具，俗称“peanut-eyed ghost”；E5 称剧组 1995 年发现它时已可在杂货店买到。限制取 F1：依据为回顾性报道和专题介绍，未直接核验当年的销售目录或交易记录，首次开售日期不确定。可直接回答。与 v3（找当年的直接资料）同话题，形成对照。",
+      "review": "通过"
+    },
+    {
+      "id": "v2",
+      "task": "给定视频 A 展示了什么内容？画面中有没有与《Scream》凶手所戴白色鬼脸面具在电影上映前销售有关的包装、标签或文字？",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 的任务材料虽含 E1，但没有对它做任何检查：store 中没有 inspect 记录，current_materials 只有 E2–E7 六个网页，visual_observation_summary 为 null，F1 也没有引用 E1。inspect_operations 有 get_frames、crop、ocr，HI 可以取帧查看并读取画面文字。缺口真实，可以取得。",
+      "review": "修改"
+    },
+    {
+      "id": "v3",
+      "task": "有没有 1996 年以前的一手资料（产品目录、包装或广告等）能证明《Scream》凶手所戴的白色鬼脸面具当时已在销售？如有，给出出处和能证实的最早年份。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 F1（干净）的限制写明：依据为回顾性报道和专题历史介绍，未直接核验当年的销售目录或交易记录。当前材料中没有被 Finding 使用的网页也只是转述：E3（It's Fun Tyme!）第[2]、[7]段称 #9206 Glow-in-Dark Ghost Mask with Shroud 系列 1992 年上市，包装头卡印 Fantastic Faces；E4 第[13]段称该品项列入 Fun World 目录，第[14]段只有“A page from Fun World's 1992 Halloween product catalog”这条图注，目录页图片本身没有取得；E2 第[6]段转引 Hollywood Reporter 称 1991 年创作。年份有 1991 与 1992 两种说法，都不是一手资料。本 run 有 ddgs 搜索（可输出图片），案卷 source_policy 为 unrestricted，HI 可检索目录扫描件、带年份的包装或广告。面具来历已有干净 Finding（v1），一手资料没有，需要新取证。",
+      "review": "修改"
+    },
+    {
+      "id": "v4",
+      "task": "《Scream》上映前，片中凶手所戴的白色鬼脸面具出售时是否已经叫“Ghostface”？如果不是，当时以什么名称出售，“Ghostface”这个名字是随什么出现的？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-1 F1（干净）已明确区分：确认的是面具商品早于电影，不是“Ghostface”名称早已使用。supporting_records 中可以直接读到名称来历：E2 第[1]、[4]段称《Scream》之前它叫“peanut-eyed ghost”“peanut-face ghost mask”；E5 第[2]段称它也被叫作“Weeping Ghost”，在最初的 Fantastic Faces 系列中没有名字；第[8]–[10]段称 Fun World 的 RJ Torbert 在与 Miramax 洽谈电影和商品授权时定名 Ghost Face，并于 1996 年注册商标。当前材料中的 E3 第[26]、[31]段另称上市时的品名是 'Weeping' ghost，电影后先改作 Scream Stalker，2000 年才正式用“Ghost Face”；E4 第[18]段称 1996 年注册并命名；E7 第[17]段称 Scream 3 时注册。定名年份说法不一（1996 / 1999 / 2000），但各来源一致表明：上映前的商品名不是 Ghostface，这个名字随电影授权出现。可直接回答，并说明年份分歧。限制：都是回顾性来源，没有看到商标登记原件。",
+      "review": "修改"
+    }
+  ]
+}

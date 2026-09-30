@@ -12,14 +12,22 @@
    misread_fine_text / sloppy_numeric）；转述写成事实 → attribution_drift；以偏概全提示 → scope_overreach。
 
 核验模型只看"这句话"和"这条 E 的全文/像素"，不看任务、不看演员桌面（CaRR / Rulers 的做法）。
-模型输出坏 JSON 时重试一次，再坏就记 pending，不让整个 run 报废。
+模型调用失败（限流、瞬时错误、坏 JSON）指数退避重试（见 CALL_ATTEMPTS），仍失败就记 pending（带尝试次数与最后错误），不让整个 run 报废。
+
+并发：同一 Finding 的各对 (Finding, E) 与不同 Finding 之间都用 asyncio.gather 并发，所有核验模型调用经 `_call`
+共用一个并发上限（默认 4，环境变量 FOREN_JUDGE_CONCURRENCY 覆盖）；judge_coverage 等该 Finding 的所有 pair 完成后才跑。
+结果（judgments / pending / coverage / errors）按 Finding 顺序、evidence_ids 顺序拼回，与串行时逐字一致。
 """
 
 from __future__ import annotations
 
+import asyncio
 import difflib
 import json
+import os
+import random
 import re
+import weakref
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
@@ -48,6 +56,18 @@ PAIR_SYSTEM_PROMPT = """你是证据核对员。只依据给出的"来源"（全
   漏列的部分后面会被当成"没有支持"。
 - 两个列表都可以为空。"""
 
+# 来源归属规则。只在 payload 带 provenance 时用带这条规则的提示词（PAIR_SYSTEM_PROMPT）；
+# 外部网页等不带 provenance 的对仍用旧提示词（_PAIR_SYSTEM_PROMPT_LEGACY，与改动前逐字相同）——
+# CachedJudge 的 key 含 system_prompt，统一换提示词会让全部文本对的缓存失效。
+_PROVENANCE_RULE = ("- 来源标注了属于哪份材料（A/B）时，待核句里关于**另一份材料**的部分既不写进 supported 也不写进 contradicted；"
+                    "只核关于本材料的部分。\n")
+_PAIR_SYSTEM_PROMPT_LEGACY = PAIR_SYSTEM_PROMPT
+PAIR_SYSTEM_PROMPT = PAIR_SYSTEM_PROMPT.replace(
+    "- 只判断这条来源能覆盖的内容。待核句里讲别的材料、别的时刻、别的页面的部分，不写进 supported 也不写进 contradicted。\n",
+    "- 只判断这条来源能覆盖的内容。待核句里讲别的材料、别的时刻、别的页面的部分，不写进 supported 也不写进 contradicted。\n"
+    + _PROVENANCE_RULE)
+PAIR_SYSTEM_PROMPTS = (PAIR_SYSTEM_PROMPT, _PAIR_SYSTEM_PROMPT_LEGACY)     # 识别"这是一次 pair 调用"时用（假核验模型、统计）
+
 COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（待核句）和它引用的各条来源已经核实的支持片段。
 判断待核句里还有哪些**实质性的可核部分**没有任何来源支持。输出 JSON（字符串里的双引号用“”）：
 {"unsupported_parts":["待核句中没有任何支持片段覆盖的实质部分，尽量逐字摘自待核句"],
@@ -59,6 +79,11 @@ COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（�
   由已支持的数字直接算出的结果、对来源类型的描述（“报道”“帧”）。
 - 支持片段已经由程序核实确实出现在来源里，请信任它们；不要因为片段短就认为不支持。
 - 拿不准的部分列出来，但 grounded 只在确实缺少支持时才为 false。"""
+# 同理：只在支持片段带来源材料标注时用加了这句的提示词，其余沿用旧提示词保住缓存。
+_COVERAGE_SYSTEM_PROMPT_LEGACY = COVERAGE_SYSTEM_PROMPT
+COVERAGE_SYSTEM_PROMPT = COVERAGE_SYSTEM_PROMPT + (
+    "\n- 支持片段旁标注了来源材料；一句话同时讲 A 和 B 时，A 的部分由 A 的来源支持、B 的部分由 B 的来源支持即算覆盖。")
+COVERAGE_SYSTEM_PROMPTS = (COVERAGE_SYSTEM_PROMPT, _COVERAGE_SYSTEM_PROMPT_LEGACY)
 
 
 def _obj(properties: dict[str, Any]) -> dict[str, Any]:
@@ -78,6 +103,33 @@ PAIR_SCHEMA = _obj({
 })
 COVERAGE_SCHEMA = _obj({"unsupported_parts": {"type": "array", "items": {"type": "string"}},
                         "grounded": {"type": "boolean"}, "notes": {"type": "string"}})
+
+
+DEFAULT_CONCURRENCY = 4
+
+
+def judge_concurrency() -> int:
+    """并发上限：FOREN_JUDGE_CONCURRENCY（≥1），缺省或写错时用 4。"""
+
+    try:
+        return max(1, int(os.environ.get("FOREN_JUDGE_CONCURRENCY", DEFAULT_CONCURRENCY)))
+    except ValueError:
+        return DEFAULT_CONCURRENCY
+
+
+# 模块级信号量。asyncio.Semaphore 一旦在某个事件循环里发生等待就绑定到那个循环，而 CLI 每个 run 各调一次
+# asyncio.run（新循环），所以按事件循环各建一个：同一循环内所有调用共用同一个上限，循环结束后自动回收。
+_SEMAPHORES: weakref.WeakKeyDictionary[asyncio.AbstractEventLoop, tuple[int, asyncio.Semaphore]] = weakref.WeakKeyDictionary()
+
+
+def judge_semaphore() -> asyncio.Semaphore:
+    loop = asyncio.get_running_loop()
+    limit = judge_concurrency()
+    entry = _SEMAPHORES.get(loop)
+    if entry is None or entry[0] != limit:
+        entry = (limit, asyncio.Semaphore(limit))
+        _SEMAPHORES[loop] = entry
+    return entry[1]
 
 
 class JsonJudge(Protocol):
@@ -114,7 +166,10 @@ class Judgment:
     is_image: bool = False
     notes: str = ""
     source_label: str = ""            # 来源标签 + URL，汇总时让模型知道"E14 就是 WFAA 那篇报道"
+    provenance: str = ""              # 来源归属（材料 A/B 或外部网页），仅当它进了 pair payload 时才有值；汇总时带给模型
     raw: dict[str, Any] = field(default_factory=dict)
+    call_error: dict[str, str] = field(default_factory=dict)   # verdict=failed 时的异常（并发下不能靠全局 LAST_CALL_ERROR）；不进 to_dict
+    call_failure: CallFailure | None = None                    # verdict=failed 时的完整失败记录（尝试次数、最后错误）；不进 to_dict
 
     def to_dict(self) -> dict[str, Any]:
         return {"finding_id": self.finding_id, "evidence_id": self.evidence_id, "verdict": self.verdict, "source": self.source_label,
@@ -155,35 +210,148 @@ def quote_in_source(quote: str, content: str) -> bool:
     return matched >= 0.85 * len(q)
 
 
+def _payload_provenance(text: EvidenceText) -> str:
+    """这条来源进 payload 的 provenance（空串 = 不进 payload）。
+
+    成本权衡：CachedJudge 的 key 含 payload，多一个字段就让该对缓存失效。
+    - 图片来源：一律带（媒体对照里 A/B 帧交叉引用被误判反驳的正是它们；图片对缓存本来就因 content 句改动失效）。
+    - 文本来源：只有派生证据（derived_from 非空，如媒体属性、align_media 结果）才带；外部网页等非派生文本不带，
+      它们的 payload 与改动前逐字相同，缓存继续命中（配合 _PAIR_SYSTEM_PROMPT_LEGACY）。
+    """
+
+    if not text.provenance:
+        return ""
+    if text.is_text and not text.derived_from:
+        return ""
+    return text.provenance
+
+
 def _source_payload(text: EvidenceText) -> dict[str, Any]:
     content = text.content
     truncated = False
     if len(content) > MAX_SOURCE_CHARS:
         content = content[:MAX_SOURCE_CHARS]
         truncated = True
-    return {"evidence_id": text.evidence_id, "modalities": list(text.modalities), "label": text.label,
-            "derived_from": list(text.derived_from), "source_url": text.source_url,
-            "content": content if text.is_text else "（图片来源：请看附图）", "content_truncated": truncated}
+    provenance = _payload_provenance(text)
+    if text.is_text:
+        shown = content
+    elif provenance:
+        shown = f"（图片来源：请看附图；{provenance}）"
+    else:
+        shown = "（图片来源：请看附图）"
+    payload = {"evidence_id": text.evidence_id, "modalities": list(text.modalities), "label": text.label,
+               "derived_from": list(text.derived_from), "source_url": text.source_url,
+               "content": shown, "content_truncated": truncated}
+    if provenance:
+        payload["provenance"] = provenance
+    return payload
 
 
-LAST_CALL_ERROR: dict[str, str] = {}      # 最近一次失败的异常（类型: 消息），写进 pending 便于排查
+LAST_CALL_ERROR: dict[str, str] = {}      # 最近一次失败的异常（类型: 消息）；并发时只作兼容，本模块用 _call_checked 的返回值
+
+# 重试（09-25）：本机 4 路并发跑召回校准时，大量 pair 调用失败（限流 / 瞬时错误）→ 整条 Finding 跳过 coverage、只记 pending，
+# append_clause 召回从 60/60 掉到 19/60。现在对任何异常都指数退避重试，最多 CALL_ATTEMPTS 次。
+# 与 OpenRouterClient 的分工：client.complete() 自己接住 429（按 Retry-After / x-ratelimit-reset 等 _retry_at，最多 2 次重发、
+# 累计等待 ≤180s），用尽才抛 OpenRouterRateLimitError——这里不再叠第二层等待，直接记失败；BudgetExceeded、HTTP 400/401/402/403/404
+# 这类确定性拒绝也不重试。client 没接住的（5xx、ReadTimeout 等网络错误、HTTP 200 里的 error、截断、坏 JSON）由这里退避重试。
+# 坏输出（坏 JSON / 非 dict / 模型输出不合规）也算一次尝试，但同一次调用里最多坏 BAD_OUTPUT_ATTEMPTS 次（同一问题连坏两次，再问多半还坏），
+# 且坏输出后立即重问、不退避（不是限流问题；也保持旧行为：坏 JSON 连坏两次即 failed，tests/test_datagen_verify.py 依赖这一点）。
+CALL_ATTEMPTS = 4
+BAD_OUTPUT_ATTEMPTS = 2
+BACKOFF_SECONDS = (1.0, 3.0, 9.0)          # 第 n 次失败后等 BACKOFF_SECONDS[n-1] + U(0, 1) 秒
+_NO_RETRY = ("OpenRouterRateLimitError", "BudgetExceeded")
+_NO_RETRY_STATUS = {400, 401, 402, 403, 404}
+_BAD_OUTPUT = ("ValueError", "PolicyOutputError", "OpenRouterOutputError")
+
+
+class JudgeBudgetExhausted(RuntimeError):
+    """OpenRouter 预算用尽（client 抛 BudgetExceeded）：不重试、不记 pending，直接向上抛，由 CLI 落盘已完成产物后以退出码 3 结束。"""
+
+
+_BUDGET_EXHAUSTED = "BudgetExceeded"
+BUDGET_EXIT_CODE = 3
+
+
+def budget_message(exc: object) -> str:
+    """CLI 预算用尽时打在 stdout 的醒目一行（scripts/complete_verify_local.py 按退出码 3 给同一句提示）。"""
+
+    return (f"!!! OpenRouter 预算用尽：{exc}。请调高 .local\\openrouter.json 的 budget_usd 后重跑本步，"
+            "已判过的对会命中缓存。")
+
+
+def _names(exc: BaseException) -> set[str]:
+    return {cls.__name__ for cls in type(exc).__mro__}
+
+
+def _retryable(exc: BaseException) -> bool:
+    if _names(exc) & set(_NO_RETRY):
+        return False
+    return getattr(exc, "status_code", None) not in _NO_RETRY_STATUS
+
+
+def _is_bad_output(exc: BaseException) -> bool:
+    return bool(_names(exc) & set(_BAD_OUTPUT))
+
+
+def _backoff(failures: int) -> float:
+    base = BACKOFF_SECONDS[min(failures, len(BACKOFF_SECONDS)) - 1]
+    return base + random.random()
+
+
+@dataclass
+class CallFailure:
+    """一次核验调用（含重试）的失败记录：各类异常的最后消息、实际尝试次数、最后一次的错误。"""
+
+    errors: dict[str, str] = field(default_factory=dict)
+    attempts: int = 0
+    last_error: str = ""
+
+    def pending_fields(self) -> dict[str, Any]:
+        return {"error": dict(self.errors), "attempts": self.attempts, "last_error": self.last_error}
+
+
+async def _call_checked(judge: JsonJudge, system_prompt: str, payload: dict[str, Any], images: list[Path],
+                        schema: dict[str, Any] | None = None) -> tuple[dict[str, Any] | None, CallFailure]:
+    """调核验模型（每次尝试受并发上限约束，退避等待时不占并发名额）；异常退避重试（坏输出立即重问），最多 CALL_ATTEMPTS 次。
+    成功返回 (dict, 空 CallFailure)；最终失败返回 (None, CallFailure)。预算用尽（BudgetExceeded）抛 JudgeBudgetExhausted。"""
+
+    failure = CallFailure()
+    bad_outputs = 0
+    while failure.attempts < CALL_ATTEMPTS:
+        failure.attempts += 1
+        retry = True
+        async with judge_semaphore():
+            try:
+                raw = await judge.judge(system_prompt=system_prompt, payload=payload, images=images, schema=schema)
+            except Exception as exc:  # noqa: BLE001 —— 模型输出坏掉 / 限流不应让整个 run 报废
+                if _BUDGET_EXHAUSTED in _names(exc):      # 按类名匹配，不硬依赖 openrouter 模块
+                    raise JudgeBudgetExhausted(str(exc)) from exc
+                name, message = type(exc).__name__, str(exc)[:300]
+                retry = _retryable(exc)
+                bad_output = _is_bad_output(exc)
+            else:
+                if isinstance(raw, dict):
+                    return raw, CallFailure()
+                name, message = "not_a_dict", str(raw)[:300]
+                bad_output = True
+        bad_outputs += bad_output
+        failure.errors[name] = message
+        failure.last_error = f"{name}: {message}"
+        if not retry or bad_outputs >= BAD_OUTPUT_ATTEMPTS or failure.attempts >= CALL_ATTEMPTS:
+            break
+        if not bad_output:
+            await asyncio.sleep(_backoff(failure.attempts))
+    return None, failure
 
 
 async def _call(judge: JsonJudge, system_prompt: str, payload: dict[str, Any], images: list[Path],
                 schema: dict[str, Any] | None = None) -> dict[str, Any] | None:
-    """调核验模型；坏 JSON 重试一次；仍失败返回 None（由调用方记 pending）。"""
+    """兼容旧接口（plan_judged 用）：失败时把异常写进 LAST_CALL_ERROR。"""
 
+    raw, failure = await _call_checked(judge, system_prompt, payload, images, schema)
     LAST_CALL_ERROR.clear()
-    for _attempt in range(2):
-        try:
-            raw = await judge.judge(system_prompt=system_prompt, payload=payload, images=images, schema=schema)
-        except Exception as exc:  # noqa: BLE001 —— 模型输出坏掉不应让整个 run 报废
-            LAST_CALL_ERROR[type(exc).__name__] = str(exc)[:300]
-            continue
-        if isinstance(raw, dict):
-            return raw
-        LAST_CALL_ERROR["not_a_dict"] = str(raw)[:300]
-    return None
+    LAST_CALL_ERROR.update(failure.errors)
+    return raw
 
 
 def _parts(items: Any, text: EvidenceText) -> list[Part]:
@@ -205,10 +373,14 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     images = [text.image_path] if text.is_image and text.image_path else []
     if text.is_image and not images:
         return Judgment(finding_id, text.evidence_id, "needs_pixels", is_image=True)
-    payload = {"statement": statement, "source": _source_payload(text), "image_attached": bool(images)}
-    raw = await _call(judge, PAIR_SYSTEM_PROMPT, payload, images, PAIR_SCHEMA)
+    source = _source_payload(text)
+    provenance = str(source.get("provenance") or "")
+    payload = {"statement": statement, "source": source, "image_attached": bool(images)}
+    system_prompt = PAIR_SYSTEM_PROMPT if provenance else _PAIR_SYSTEM_PROMPT_LEGACY
+    raw, failure = await _call_checked(judge, system_prompt, payload, images, PAIR_SCHEMA)
     if raw is None:
-        return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image)
+        return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image, call_error=dict(failure.errors),
+                        call_failure=failure)
     all_supported = _parts(raw.get("supported_parts"), text)
     all_contradicted = _parts(raw.get("contradicted_parts"), text)
     supported = [p for p in all_supported if p.verified is not False]        # 文本来源引语对不上：不采信
@@ -217,7 +389,7 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     verdict = "contradicted" if contradicted else "supported" if supported else "not_found"
     label = " ".join(x for x in (text.label, text.source_url) if x)
     return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted, rejected=rejected,
-                    source_label=label,
+                    source_label=label, provenance=provenance,
                     source_reports_claim=bool(raw.get("source_reports_claim")),
                     statement_asserts_fact=bool(raw.get("statement_asserts_fact", True)),
                     scope_overreach=bool(raw.get("scope_overreach")), is_image=text.is_image,
@@ -225,18 +397,33 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
 
 
 async def judge_coverage(judge: JsonJudge, finding_id: str, statement: str, judgments: list[Judgment]) -> dict[str, Any] | None:
-    support = [{"evidence_id": j.evidence_id, "source": j.source_label, "part": p.part, "quote": p.quote}
-               for j in judgments for p in j.supported]
+    coverage, _errors = await _judge_coverage_checked(judge, finding_id, statement, judgments)
+    return coverage
+
+
+async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: str,
+                                  judgments: list[Judgment]) -> tuple[dict[str, Any] | None, CallFailure]:
+    support: list[dict[str, Any]] = []
+    for j in judgments:
+        for p in j.supported:
+            item: dict[str, Any] = {"evidence_id": j.evidence_id, "source": j.source_label, "part": p.part, "quote": p.quote}
+            if j.provenance:          # 没有归属的（外部网页）不加键，保持旧 payload / 旧缓存
+                item["provenance"] = j.provenance
+            support.append(item)
     payload = {"statement": statement, "supported_parts": support}
-    raw = await _call(judge, COVERAGE_SYSTEM_PROMPT, payload, [], COVERAGE_SCHEMA)
+    system_prompt = COVERAGE_SYSTEM_PROMPT if any("provenance" in item for item in support) else _COVERAGE_SYSTEM_PROMPT_LEGACY
+    raw, failure = await _call_checked(judge, system_prompt, payload, [], COVERAGE_SCHEMA)
     if raw is None:
-        return None
+        return None, failure
     parts = [str(p).strip() for p in (raw.get("unsupported_parts") or []) if isinstance(p, (str, int, float)) and str(p).strip()]
     # 程序兜底：模型列出的"无支持部分"若已逐字出现在某个已核实的支持片段（或其引语）里，不算
     covered_text = _squash(" ".join(f"{p.part} {p.quote}" for j in judgments for p in j.supported))
     parts = [p for p in parts if _squash(p) not in covered_text]
+    # model_grounded（verifier@0.3.2）：提示词让模型"拿不准的部分也列出来，但 grounded 只在确实缺少支持时才为 false"。
+    # 模型列了部分却仍判 grounded=true，说明它认为这些只是拿不准 / 非实质，不能按"无据断言"记 critical。
     return {"finding_id": finding_id, "grounded": bool(raw.get("grounded", not parts)) and not parts,
-            "unsupported_parts": parts, "notes": str(raw.get("notes") or "")}
+            "model_grounded": raw.get("grounded") is True, "unsupported_parts": parts,
+            "notes": str(raw.get("notes") or "")}, CallFailure()
 
 
 def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None,
@@ -254,7 +441,13 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
                              method=method(j), extra={**base_extra, "quote": p.quote[:500]}))
     if coverage is not None and coverage["unsupported_parts"]:
         cited = [j.evidence_id for j in judgments]
+        uncertain = coverage.get("model_grounded") is True
         for part in coverage["unsupported_parts"]:
+            if uncertain:
+                out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准、但整句判为有支持（仅备注）", span=part,
+                                 evidence_ids=cited, method="model", severity=Severity.MINOR,
+                                 extra={**base_extra, "notes": coverage.get("notes", ""), "uncertain": True}))
+                continue
             out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "所引 E 均未支持这一部分", span=part, evidence_ids=cited, method="model",
                              extra={**base_extra, "notes": coverage.get("notes", "")}))
     elif (allow_unsupported and coverage is None and judgments and not any(j.supported for j in judgments)
@@ -273,47 +466,95 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
     return out
 
 
+@dataclass
+class _FindingOutcome:
+    judgments: list[Judgment] = field(default_factory=list)
+    pending: list[dict[str, Any]] = field(default_factory=list)
+    coverage: dict[str, Any] | None = None
+    errors: list[ErrorRecord] = field(default_factory=list)
+
+
+async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceText], judge: JsonJudge) -> _FindingOutcome:
+    """一条 Finding：各 E 的 judge_pair 并发（按 texts 顺序收集），全部完成后再汇总覆盖。"""
+
+    outcome = _FindingOutcome()
+    judgments = list(await asyncio.gather(*(judge_pair(judge, finding_id, statement, text) for text in texts)))
+    outcome.judgments = judgments
+    for judgment in judgments:
+        if judgment.verdict == "needs_pixels":
+            outcome.pending.append({"finding": finding_id, "evidence_id": judgment.evidence_id, "reason": "image_without_pixels"})
+        elif judgment.verdict == "failed":
+            failure = judgment.call_failure or CallFailure(errors=dict(judgment.call_error))
+            outcome.pending.append({"finding": finding_id, "evidence_id": judgment.evidence_id, "reason": "judge_output_invalid",
+                                    **failure.pending_fields()})
+    usable = [j for j in judgments if j.verdict in ("supported", "contradicted", "not_found")]
+    if not usable:
+        return outcome
+    if any(j.verdict == "failed" for j in judgments):
+        # 有一条 E 没判成，就说不清"没被支持的部分"是真没支持还是那条 E 没看；只报反驳，不报无据
+        outcome.errors = _errors_for_finding(finding_id, statement, usable, None, allow_unsupported=False)
+        return outcome
+    coverage, failure = await _judge_coverage_checked(judge, finding_id, statement, usable)
+    if coverage is None:
+        outcome.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", **failure.pending_fields()})
+    outcome.coverage = coverage
+    outcome.errors = _errors_for_finding(finding_id, statement, usable, coverage)
+    return outcome
+
+
 async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge: JsonJudge, *,
                           skip_evidence_ids: set[str] | None = None) -> AnchoredResult:
-    """对每条 Finding：逐条可读 E 判"部分"，再汇总覆盖。skip_evidence_ids 是第一层已判为不存在/不可见的 E。"""
+    """对每条 Finding：逐条可读 E 判"部分"，再汇总覆盖。skip_evidence_ids 是第一层已判为不存在/不可见的 E。
+
+    各 Finding、各 (Finding, E) 并发跑（上限见 judge_concurrency）；产物顺序与串行一致。
+    """
 
     result = AnchoredResult()
     skip = skip_evidence_ids or set()
+    jobs = []
     for index, finding in enumerate(report.get("findings") or []):
         if not isinstance(finding, dict):
             continue
         finding_id = str(finding.get("finding_id") or f"finding[{index}]")
         statement = str(finding.get("statement") or "")
-        judgments: list[Judgment] = []
+        texts: list[EvidenceText] = []
         for eid in finding.get("evidence_ids") or []:
             if not isinstance(eid, str) or eid in skip or not lookup.has(eid):
                 continue
             text = lookup.get(eid)
             if not text.is_text and not text.is_image:
                 continue                         # 视频/音频原件：本层不判，靠派生的帧/转写
-            judgment = await judge_pair(judge, finding_id, statement, text)
-            judgments.append(judgment)
-            if judgment.verdict == "needs_pixels":
-                result.pending.append({"finding": finding_id, "evidence_id": eid, "reason": "image_without_pixels"})
-            elif judgment.verdict == "failed":
-                result.pending.append({"finding": finding_id, "evidence_id": eid, "reason": "judge_output_invalid",
-                                       "error": dict(LAST_CALL_ERROR)})
-        result.judgments.extend(judgments)
-        usable = [j for j in judgments if j.verdict in ("supported", "contradicted", "not_found")]
-        if not usable:
-            continue
-        if any(j.verdict == "failed" for j in judgments):
-            # 有一条 E 没判成，就说不清"没被支持的部分"是真没支持还是那条 E 没看；只报反驳，不报无据
-            result.errors.extend(_errors_for_finding(finding_id, statement, usable, None, allow_unsupported=False))
-            continue
-        coverage = await judge_coverage(judge, finding_id, statement, usable)
-        if coverage is None:
-            result.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", "error": dict(LAST_CALL_ERROR)})
-        else:
-            result.coverage.append(coverage)
-        result.errors.extend(_errors_for_finding(finding_id, statement, usable, coverage))
+            texts.append(text)
+        jobs.append(_verify_finding(finding_id, statement, texts, judge))
+    for outcome in await asyncio.gather(*jobs):
+        result.judgments.extend(outcome.judgments)
+        result.pending.extend(outcome.pending)
+        if outcome.coverage is not None:
+            result.coverage.append(outcome.coverage)
+        result.errors.extend(outcome.errors)
     return result
 
 
-__all__ = ["COVERAGE_SCHEMA", "COVERAGE_SYSTEM_PROMPT", "PAIR_SCHEMA", "PAIR_SYSTEM_PROMPT", "AnchoredResult", "JsonJudge", "Judgment", "Part", "judge_coverage",
-           "judge_pair", "quote_in_source", "verify_anchored"]
+def count_pair_calls(report: dict[str, Any], lookup: EvidenceLookup, *, skip_evidence_ids: set[str] | None = None) -> int:
+    """不调模型，估算 verify_anchored 要发的调用数：每条可判 (Finding, E) 一次 + 每条有可判 E 的 Finding 一次汇总。"""
+
+    skip = skip_evidence_ids or set()
+    total = 0
+    for finding in report.get("findings") or []:
+        if not isinstance(finding, dict):
+            continue
+        pairs = 0
+        for eid in finding.get("evidence_ids") or []:
+            if not isinstance(eid, str) or eid in skip or not lookup.has(eid):
+                continue
+            text = lookup.get(eid)
+            if text.is_text or (text.is_image and text.image_path):
+                pairs += 1
+        total += pairs + (1 if pairs else 0)
+    return total
+
+
+__all__ = ["COVERAGE_SCHEMA", "COVERAGE_SYSTEM_PROMPT", "COVERAGE_SYSTEM_PROMPTS", "BUDGET_EXIT_CODE", "DEFAULT_CONCURRENCY", "JudgeBudgetExhausted", "budget_message", "PAIR_SCHEMA", "PAIR_SYSTEM_PROMPT",
+           "PAIR_SYSTEM_PROMPTS", "AnchoredResult", "CALL_ATTEMPTS", "CallFailure", "JsonJudge",
+           "Judgment", "Part", "count_pair_calls", "judge_concurrency", "judge_coverage", "judge_pair", "judge_semaphore", "quote_in_source",
+           "verify_anchored"]

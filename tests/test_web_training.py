@@ -98,3 +98,17 @@ def test_corpus_changes_refresh_sample_counts(training_project):
     path = training_project / "experiments/sft_data/corpus/hi_development.jsonl"
     path.write_text("", encoding="utf-8")
     assert reader.sample("video-intervals")["included_count"] == 0
+
+
+def test_verification_summary_feeds_overview(training_project):
+    root = training_project / "experiments/sft_data"
+    reader = TrainingReader(training_project)
+    assert reader.verification() == {}
+    write_json(root / "verdicts_r0_judged.jsonl.summary.json", {"reports": 88})
+    assert reader.verification()["reports"] == 88
+    write_json(root / "verdicts_r0_judged.summary49.json", {"runs": 49, "reports": 80, "pairs": 641, "findings": 203,
+        "by_dataset": {"true": {"n": 15}, "videosham": {"n": 21}, "unknown": {"n": 2}}, "verifier": "verifier@0.1.0"})
+    stats = reader.overview()["verification"]
+    assert (stats["runs"], stats["reports"], stats["pairs"], stats["datasets"]) == (49, 80, 641, 2)
+    assert stats["source"] == "verdicts_r0_judged.summary49.json"
+

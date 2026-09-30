@@ -1,0 +1,68 @@
+{
+  "case_id": "qvhighlights:1",
+  "dataset": "qvhighlights",
+  "source_id": "1",
+  "split": "dev_eval",
+  "task_kind": "temporal_locate",
+  "task_text": "在给定视频中定位符合以下描述的片段，给出秒数范围及证据；说明定位的不确定性：Woman wears a white top walking down the street.",
+  "family_key": "qvhighlights:Q2TqU-Oh7KQ",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/qvhighlights/1/inputs/A.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "符合描述的片段在视频中的起止时间（秒）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "支持定位的画面依据：片段内以及边界两侧的帧所显示的内容",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "定位精度与边界的不确定范围（未检查的区间不当作不符合）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "给定视频的抽帧（片段内与边界两侧）",
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "interval_iou",
+      "params": {
+        "start": 72,
+        "end": 102,
+        "min_iou": 0.5
+      },
+      "note": "QVHighlights relevant_windows（片段内秒数）",
+      "requirement": "REQ1"
+    }
+  ],
+  "reference_path": "../data/qvhighlights/1/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：标注片段 [[72, 102]]（视频 150 秒）；family 按源 YouTube 视频号分组。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

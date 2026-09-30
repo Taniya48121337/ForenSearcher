@@ -1,0 +1,95 @@
+{
+  "assessment_scope": "仅依据所供 packet 与附图，按引用表递归解析后评估 W1-1 的三个 HI 输出；未调用工具或检查文件。脚本化 GIA FINISH 不属于评分目标。附图可见绿色、黄色柑橘切半，切面插有深褐色丁香状物，不能证明驱蚊效果。本例评估的是指定来源的取得与内容概括，不是背景声明的完整核查。七个维度均可评分，评分覆盖率为100%，加权分为4.00/4；该分数不代表背景声明已获验证。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两个行动均有接受与执行链接，报告有提交链接，原始输出与接受输出一致。后续输入分别提供打开来源和读取正文的观察；执行对应成立，正确性另行核对。",
+          "request_ids": ["request_0001", "request_0002", "request_0003"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "首次打开的 URL 已在任务中提供；读取 E2 前，该记录已出现在可选证据视图；报告引用前，E2 正文及最终 URL 已实际返回。未见使用官方答案、未来结果或被排除的 AFP 文章。",
+          "request_ids": ["request_0001", "request_0002", "request_0003"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E2 第6段直接支持香茅油、柠檬草油和印楝油三项清单及短期作用范围，第7段支持按产品标签使用。报告将这些表述归于来源，并依据最终 URL 说明取得的是2024年11月19日存档。未将照片或机构清单扩展成丁香插青柠有效或无效的证明。",
+          "request_ids": ["request_0003"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部问题要求回答机构列出的天然驱蚊剂，三种天然油均已列出。DEET 在正文中明确属于化学驱蚊剂，未列入天然清单不是漏项。任务没有限定只能使用声明日期前公开的材料，因此披露存档时间边界后使用 COMPLETED 合理。",
+          "request_ids": ["request_0001", "request_0002", "request_0003"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "打开指定候选来源可解决出处与正文缺口，随后读取已生成但尚未阅读的 E2，均符合当时可用接口。正文取得后已足以回答局部问题，停止调查有依据，无须为了背景声明另行开展功效研究。",
+          "request_ids": ["request_0001", "request_0002", "request_0003"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确区分请求的2024年9月19日存档与最终取得的2024年11月19日存档，并指出不能据此确认2023年5月25日的页面措辞。其完成状态限定于来源清单这一局部任务，没有把历史未知当作已核实。",
+          "request_ids": ["request_0003"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "一次打开、一次正文读取后提交报告，步骤均有必要的信息增益。未重复读取、无关搜索或调用图像工具；附图不承担机构清单的证明任务。",
+          "request_ids": ["request_0001", "request_0002", "request_0003"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "该页面首次公开时间及声明日期当天的具体内容未获确认；报告已披露相应时间限制，不影响当前局部任务合格判定。",
+        "丁香插青柠的实际驱蚊效果不由本轨迹确认；这是背景声明仍未解决的部分，不是该 HI 清单任务的遗漏。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策时任务已提供具体存档 URL，并要求实际打开核对。SEARCH 的 source 与 output_type 参数符合可用接口，目标直接相关，且有执行对应记录；其合理性不依赖后来取得的答案。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前已知 E2 为成功取得的网页文本，但尚未展示正文。READ_RECORD E2 是核对清单与来源范围的必要步骤，记录可见、参数合法，并非重复阅读。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "报告准确概括 E2 第6至7段，引用已读证据，并交代实际存档时间及历史适用边界。官方参考摘录还包含化学驱蚊剂 DEET，但局部问题询问天然驱蚊剂，报告列出的三项已完整回答。COMPLETED 不涉及背景声明真假的全局结论。"
+    }
+  ],
+  "construction_revisions": [
+    "将参考答案中的三种天然油与含 DEET 的化学驱蚊剂分别标注，避免按整段摘录匹配时误判天然清单缺项。",
+    "将本例的监督用途明确标为“指定来源读取与概括”，避免将其统计为开放来源发现、声明日期前取证或完整事实核查样本。"
+  ],
+  "rubric_revisions": [
+    "在清单问题的评分示例中明确：参考摘录包含题目类别之外的并列项目时，依据正文分类判断回答完整性，不要求照抄整段。",
+    "增加对应示例：未限定历史公开时间的来源概括任务，可以在明确披露后来存档及其边界后完成；该完成状态不证明声明当时已有相同指导。"
+  ]
+}

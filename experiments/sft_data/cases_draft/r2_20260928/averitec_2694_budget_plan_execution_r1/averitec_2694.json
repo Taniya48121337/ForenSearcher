@@ -1,0 +1,74 @@
+{
+  "case_id": "averitec:2694",
+  "dataset": "averitec",
+  "source_id": "2694",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+  "family_key": "averitec:2694",
+  "media": [],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "sabeex",
+      "description": "Document Classification - KPMG Confidential University of the Witwatersrand（E13）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": "sabeex.co.za/sites/default/files/nu/reports/chapter-4/4-8_kpmg_-_august_2017_final_report.pdf*",
+      "acquired_by": null
+    },
+    {
+      "key": "spu",
+      "description": "Five-year milestones honour ethos of University’s namesake - Sol Plaatje University（E12）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje*",
+      "acquired_by": null
+    },
+    {
+      "key": "wits",
+      "description": "Close Out Report - Wits University（E1、E10）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": "wits.ac.za/*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "补齐两校首期项目最终总支出的费用归属缺口；Wits结项报告已确认Sol Plaatje University直接项目支出R942,827,946、University of Mpumalanga直接项目支出R539,825,172；另列两校共同费用HETP001共R141,847,377；目前尚无共同费用分摊依据；核查现有结项报告及相关财务资料是否提供共同费用向两校归属的金额或规则；据此判断能否确定各校包含共同费用的最终实际总支出；不能自行假定分摊比例；直接对照Wits首个交付阶段（供2016学年使用的设施；2017年7月结项）与SPU校方2013—2018年首期改造建设约R1.4 billion资本支出的原始说明；查清后者能否提供该校所问首期的另一明确统计口径；是否有与Wits金额衔接的依据；保留两种阶段范围；不能用金额差异推定超支；说明实际取得的费用组成、时间和含税口径；无法确定的全口径金额明确保留未知（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:sabeex,spu,wits",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 averitec_2694_budget_plan_execution_r1 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=neutral），required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

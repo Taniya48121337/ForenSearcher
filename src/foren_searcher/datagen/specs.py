@@ -100,6 +100,7 @@ DEFAULT_HARNESS_PARAMS: dict[str, Any] = {
     "max_evidence_cards": 12,
     "max_candidate_cards": 8,
     "state_renderer": "legacy",       # legacy | compact_8k | compact_16k（渲染器待实现）
+    "search_excerpt_chars": 0,        # 09-30：SEARCH 打开网页后附相关摘录的字符数；0 = 不附
 }
 
 

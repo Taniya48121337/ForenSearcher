@@ -1,0 +1,57 @@
+[
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E21和E10刚在当前附图中出现；再缩成两张没有新增帧、裁剪或可辨性改善。E10是人物近景，未提供可读数值屏幕，不能补出新的检测结果。动作真实合法，但正向训练价值低。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "主要重新显示已在request_0003、0005看过的概览帧，并搭配已见48、54秒画面。此前已有决定性的咬面包与再次吹气帧，这次回到旧概览未补充关键时间边界或新的可辨细节。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次读取清晰的E21并重组已见零值、末值及操作帧，与request_0007的核心比较明显重叠；没有新的采样或测量来解决仍未确认的等待时间。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E17的.018及E21的.000已经反复清晰出现；在只剩一次后续决策时再次重组同类屏幕帧，没有补齐新问题。应利用已有证据形成报告，而不是继续同尺度复看。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0013",
+    "assessment": {
+      "request_id": "request_0013",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "数字、提示词及Start转录准确，音频与连续性限制也诚实；但漏掉已见的E23咬面包、E26或E9再次吹气及E16分析这一关键关系。应报告23秒零值、28秒咬面包、44秒吹气、48秒分析、50秒.018的采样顺序，同时保留非连续观察和非因果证明的限制。"
+    },
+    "execution_status": "report_committed"
+  }
+]

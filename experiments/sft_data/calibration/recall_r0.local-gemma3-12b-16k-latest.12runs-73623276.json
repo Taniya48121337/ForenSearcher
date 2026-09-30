@@ -1,0 +1,65 @@
+{
+  "judge_model": "local:gemma3-12b-16k:latest",
+  "layers": "exec+anchored+sufficiency",
+  "n_injections": 0,
+  "recall_overall": null,
+  "inconclusive": 0,
+  "recall_conclusive": null,
+  "note_inconclusive": "inconclusive = 未命中且有 pending（核验调用失败等）；recall_conclusive 的分母去掉这些",
+  "by_kind": {
+    "swap_citation": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    },
+    "fabricate_id": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    },
+    "append_clause": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    },
+    "alter_number": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    },
+    "drop_attribution": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    },
+    "drop_required_finding": {
+      "n": 0,
+      "detected": 0,
+      "recall": null,
+      "inconclusive": 0,
+      "recall_conclusive": null,
+      "misses": []
+    }
+  },
+  "by_expected_type": {},
+  "false_new_errors": [],
+  "rows": [],
+  "case_mode": "scoped",
+  "baseline": "control: 同 case_mode / requirement_ids / judge 下未改原报告的判定",
+  "controls": {}
+}

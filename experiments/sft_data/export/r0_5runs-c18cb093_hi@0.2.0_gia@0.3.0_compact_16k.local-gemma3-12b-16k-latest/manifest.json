@@ -1,0 +1,808 @@
+{
+  "export_id": "r0_5runs-c18cb093_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest",
+  "exported_at": "2026-09-28",
+  "spec": {
+    "hi": "hi@0.2.0",
+    "gia": "gia@0.3.0"
+  },
+  "spec_hash": {
+    "hi": "sha256:dad57a48f9a26ebd41c34c7a197b6a74f8c78256189ee4d31e8037247516751e",
+    "gia": "sha256:f0b41be8e20d84dbbe5e8a3bdb40a1142e37d762bc50548ef1fb7f3b8d5faa11"
+  },
+  "state_renderer": "compact_16k",
+  "verifier": "verifier@0.3.0",
+  "verdicts_source": "experiments\\sft_data\\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl",
+  "units_source": "experiments\\sft_data\\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl",
+  "cases_dir": "experiments\\sft_data\\cases",
+  "files": {
+    "hi_accepted": "hi_accepted.jsonl",
+    "hi_held": "hi_held.jsonl",
+    "hi_rejected": "hi_rejected.jsonl",
+    "gia_accepted": "gia_accepted.jsonl",
+    "gia_held": "gia_held.jsonl",
+    "gia_rejected": "gia_rejected.jsonl"
+  },
+  "counts": {
+    "hi_accepted": 0,
+    "hi_held": 28,
+    "hi_rejected": 53,
+    "gia_accepted": 7,
+    "gia_held": 0,
+    "gia_rejected": 6
+  },
+  "by_unit": {
+    "hi": {},
+    "gia": {
+      "plan": 7
+    }
+  },
+  "by_action": {
+    "hi": {},
+    "gia": {
+      "INVESTIGATE": 7
+    }
+  },
+  "by_case_family": {
+    "true:20205316753904": {
+      "gia": 2
+    },
+    "true:20361105": {
+      "gia": 1
+    },
+    "true:17838107": {
+      "gia": 1
+    },
+    "true:24171541709824": {
+      "gia": 1
+    },
+    "true:39132300": {
+      "gia": 2
+    }
+  },
+  "splits": {
+    "by_split": {
+      "dev_train": {
+        "cases": 5,
+        "families": 5
+      },
+      "dev_select": {
+        "cases": 0,
+        "families": 0
+      },
+      "dev_confirm": {
+        "cases": 0,
+        "families": 0
+      },
+      "dev_eval": {
+        "cases": 0,
+        "families": 0
+      },
+      "test": {
+        "cases": 0,
+        "families": 0
+      },
+      "contrast_only": {
+        "cases": 0,
+        "families": 0
+      }
+    },
+    "rows_by_split": {
+      "dev_train": 94
+    },
+    "no_case_rows": 0
+  },
+  "sample_weight_sum": {
+    "hi": 0,
+    "gia": 7.0
+  },
+  "input_tokens_est": {
+    "max": 26097,
+    "p50": 11655
+  },
+  "held": [
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 6,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    }
+  ],
+  "rejected": [
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_17838107_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:omitted_required_fact,premature_finish,unsupported_assertion,unsupported_assertion"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:unsupported_assertion,omitted_required_fact,premature_finish"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 3,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20205316753904_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:omitted_required_fact,premature_finish"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_20361105_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:omitted_required_fact,premature_finish"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_24171541709824_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:omitted_required_fact,premature_finish,unsupported_assertion"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 3,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 3,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 4,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 5,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 6,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "true_39132300_lcost_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:omitted_required_fact,premature_finish"
+    }
+  ],
+  "render_overflow": [],
+  "runtime_system_matches_spec": {
+    "gia:True": 13,
+    "hi:True": 81
+  },
+  "note": "system 用规格 student_prompt；与运行时 system 是否逐字一致逐行记在 runtime_system_matches_spec（比较前去掉教师指令与修复附注；gia@0.3.0 起收编运行时全部 8 个 GIA 变体，对上的变体名记在 system_variant，修复轮记 repair_turn）。token 估算按 1.7 字符/token 与每图 1200 token；精确值见 check_inputs 的 summary。"
+}

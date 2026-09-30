@@ -1,0 +1,82 @@
+{
+  "case_id": "videosham:1007",
+  "dataset": "videosham",
+  "source_id": "1007",
+  "split": "dev_train",
+  "task_kind": "video_diff",
+  "task_text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+  "family_key": "videosham:1007",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_1007_validation/artifacts/dafc9dbdaabe4d8a99a6814623e29a74.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_1007_validation/artifacts/691eb0cd3e444a0795f41f667c65cb77.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "alignment",
+      "description": "从给定媒体 E1、E2 经 INSPECT/align_media 取得的派生证据（E5、E8、E49、E33）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/align_media"
+    },
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1、E2 经 INSPECT/get_frames 取得的派生证据（E24、E19、E29、E38）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "说明差异所在位置；直接比较给定视频 A 与候选视频 B 的画面及镜头时序；说明差异在两段视频中的位置",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "比较给定视频 A 与候选视频 B 的可用音频；调查能够确认的声音差异",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响；调查材料能够确认的差异及其对画面含义的影响；这些差异与对应画面结合时对含义的影响",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "说明未能确定的内容；给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all:alignment; all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 videosham_1007_validation 起草，needs_review；requirements 取自总任务与首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

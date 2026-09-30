@@ -1,0 +1,88 @@
+{
+ "run": "averitec_2872_q0_binding_validation",
+ "config": {
+  "dataset": "averitec",
+  "case": "2872",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 6,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：Did Mel Gibson Say Hollywood Is Controlled By 'Parasites' Who Are Involved In Child Sacrifice, Pedophilia?\n背景声明：Actor Mel Gibson Said Hollywood Is Controlled By 'Parasites' Who Are Involved In Child Sacrifice and Paedophilia\n声明日期（任务元数据）：30-11-2017\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证…（共 421 字）",
+   "status": "INCOMPLETE",
+   "status_reason": "多次改写检索均只返回与问题无关的 Microsoft 文档，可访问索引也未找到相关资料。尚未取得该言论的采访原文、录音录像、本人或代表的回应，或可追溯出处的独立报道，因此无法核实 Mel Gibson 是否说过这段话。检索未取得相关证据本身不能证明该说法为假。",
+   "findings": []
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "How to open Sandbox links from Co-Pilot - Microsoft Q&A",
+   "source_url": "https://learn.microsoft.com/en-us/answers/questions/3849779/how-to-open-sandbox-links-from-co-pilot",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] This shortcoming makes the features less than desirable to the point I will just choose a different tool next time. Absolutely unacceptable.\n\n[2] How to open Sandbox links from Co-Pilot\n\n[3] I've asked Co-Pilot to help me create a document.\n\n[4] It creates one in both word and .pdf format.\n\n[5] But when i open the links they are dead.\n\n[6] Does anyone know how to open sandbox links?\n\n[7] Thanks!\n\n[8] *** Moved from Swedish forum Windows ***\n\n[9] Windows for home | Windows 11 | Files, folders, and storage\n\n[10] Locked Question. This question was migrated from the Microsoft Support Community…（共 3560 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Mail merge using an Excel spreadsheet | Microsoft Support",
+   "source_url": "https://support.microsoft.com/en-us/word/mail-merge-using-an-excel-spreadsheet",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Here are some tips to prepare your Excel spreadsheet for a mail merge. Make sure:\n\n[2] - Column names in your spreadsheet match the field names you want to insert in your mail merge. For example, to address readers by their first name in your document, you'll need separate columns for first and last names.\n\n[3] - All data to be merged is present in the first sheet of your spreadsheet.\n\n[4] - Data entries with percentages, currencies, and postal codes are correctly formatted in the spreadsheet so that Word can properly read their values.\n\n[5] - The Excel spreadsheet to be used in the mail m…（共 3571 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Logging in C# - .NET | Microsoft Learn",
+   "source_url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/logging/overview",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] .NET supports high performance, structured logging via the [ILogger](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger) API to help monitor application behavior and diagnose issues. Configure different [logging providers](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging/providers) to write logs to different destinations. Basic logging providers are built-in, and many third-party providers are available.\n\n[2] Get started\n\n[3] This first example shows the basics, but it's only suitable for a trivial console app. This sample console app relies o…（共 46186 字）"
+  },
+  {
+   "id": "E4",
+   "label": "How to sign in to Hotmail | Microsoft Support",
+   "source_url": "https://support.microsoft.com/en-us/accounts-billing/manage/how-to-sign-in-to-hotmail",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sign in to Hotmail or Outlook.com\n\n[2] Hotmail is now Outlook.com\n\n[3] To sign in to Hotmail, you'll need your Microsoft account username and password.\n\n[4] Sign in at [outlook.live.com](https://go.microsoft.com/fwlink/?linkid=2185828)\n\n[5] Tip\n\n[6] - If you can't sign in, or have forgotten your username or password, use our [sign-in troubleshooter](https://go.microsoft.com/fwlink/?linkid=2247286) .\n\n[7] - If you're looking to open a new account, you can create one at [https://signup.live.com/](https://go.microsoft.com/fwlink/?linkid=2248481) .\n\n[8] Troubleshooting: Unable to Sign in to Ho…（共 5325 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Sprachbezeichner und OptionState-ID-Werte in Office 2016 - Office | Microsoft Learn",
+   "source_url": "https://learn.microsoft.com/de-de/office/2016/language/language-identifiers-optionstate-id-values",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Zusammenfassung: Suchen Sie nach Sprachbezeichner- und OptionState-ID-Werten zum Identifizieren und Anpassen von Office 2016-Sprach- und Korrekturhilfeinstallationen.\n\n[2] Verwenden Sie die Werte in den Tabellen Language Identifier und OptionState ID, um das Setup für Office 2016 oder office-Korrekturhilfen zu konfigurieren oder um aktuell installierte Sprachen zu identifizieren. Die angegebenen Werte sind erforderlich, um die in den folgenden Artikeln beschriebenen Verfahren abzuschließen:\n\n[3] - [Hinzufügen oder Entfernen von Sprachpaketen nach der Bereitstellung von Office 2016](https:/…（共 9813 字）"
+  }
+ ]
+}

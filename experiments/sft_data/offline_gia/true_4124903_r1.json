@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 变体。2026-09-28 起草，同日经独立审稿修订（审查结果见 cases_draft/review_20260928_labels_offline.md）：去掉 FINISH 题的“依据已取得的材料”捷径措辞，纠正 Finding 编号，不再依据污染 Finding；1028 v3 因环境无 ASR 改为 FINISH，新增 v4。",
+  "source_run": "true_4124903_r1",
+  "source_request": "request_0022",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "巴黎警方如何说明2016年7月14日埃菲尔铁塔附近的火情？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2（COMPLETED）F5 引 E24（21:51 通报：技术事故致载烟花卡车在耶拿桥起火）与 E21（22:33 通报：铁塔没有起火，意外卡车火灾已扑灭）；W1-1 F3 也记载了同一通报（E21，Franceinfo E19）。F6 的 E22、E11 只是转述同一通报。限制：通报没有说明技术事故的具体机制。可直接回答。",
+      "review": "修改"
+    },
+    {
+      "id": "v2",
+      "task": "给定视频 A 的画面本身能否证明巴黎发生了恐怖袭击？说明画面能支持和不能支持的内容。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-1 F1（E3、E4、E5、E7、E8、E9）与 W1-2 F7（E3、E5、E7、E10）：夜间亮灯的铁塔附近有大量烟雾，较低处可见明火，不能据此认定塔身着火；W1-1 F4：火焰和烟雾不足以确定恐袭性质。限制：离散采样帧，画面不能证明拍摄日期、燃烧物或起火原因。补抽帧不会改变结论，可直接 FINISH。",
+      "review": "修改"
+    },
+    {
+      "id": "v3",
+      "task": "确定给定视频 A 的原始拍摄者与最早发布时间，并尽可能核实它与 YouTube 视频 cv_F3UkbdbI 是否为同一段画面；说明无法核实的部分。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 F2 写明 cv_F3UkbdbI（E16，Rutnet，上传日期 20160714）只是来源候选，尚未核验与 A 的画面对应，原拍摄者和最早发布者未知。可以再派 HI：用封面 E17 与 A 的帧（E3–E10）做裁剪比对，检索更早的上传或转发来源。系统不下载 YouTube 视频文件，做不了整段帧对齐；时长接近（25.1 秒 vs 25 秒）只是线索。",
+      "review": "修改"
+    },
+    {
+      "id": "v4",
+      "task": "查明2016年7月14日耶拿桥烟花卡车起火的具体技术原因，并给出官方调查或权威报道依据。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 F3 与 W1-2 F5 的限制都写明警方通报没有说明起火机制；现有报告回答不了具体原因，需要新的检索。",
+      "review": "通过"
+    }
+  ]
+}

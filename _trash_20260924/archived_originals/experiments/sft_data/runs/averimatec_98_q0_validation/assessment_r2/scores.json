@@ -1,0 +1,22 @@
+[
+  {
+    "actor": "W1-1",
+    "score_on_assessed": 92.5,
+    "coverage": 1.0,
+    "critical_errors": [],
+    "unknowns": [
+      "AFP档案中的具体原图、记录编号和首次上线时间未直接核实。",
+      "BBC页面是否包含与E1相同的图片，以及2019年10月30日是否为其原始刊登日期，仍依赖HaqCheck转述。",
+      "E11仅读取offset=0，next_offset=6000之后的正文未提供；不能推断后续页是否包含有用日期或图片信息。",
+      "本次证据不能独立确定最早发布网站，也不能证明该任务在其他可用路径下不可完成。",
+      "武器查询返回魔方壁纸，以及部分搜索标题混入多个结果的原因未知，不能直接归因为模型捏造或已确认的后端故障。"
+    ]
+  },
+  {
+    "actor": "scripted_dispatcher（非模型GIA）",
+    "score_on_assessed": null,
+    "coverage": null,
+    "critical_errors": [],
+    "unknowns": []
+  }
+]

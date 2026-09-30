@@ -1,0 +1,1476 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "GIA",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "13个输出均有原始输出与接受输出一致的对应记录；读取结果可在后续输入核对，两次分工对应后续工作区，最终答复对应返回结果。本例不是terminal_replay。执行成立不用于推定内容正确。",
+          "request_ids": [
+            "request_0025",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0078",
+            "request_0079",
+            "request_0080",
+            "request_0081",
+            "request_0082",
+            "request_0083",
+            "request_0084",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "请求使用的E均已出现在当时视图或历史中，分页位置遵循已有next_offset。E54、E55是在读取后进入实际附图，未提前利用其像素。最终引用的E1、E5、E6有当时可用正文支持，未使用官方Supported标签补齐预算答案。",
+          "request_ids": [
+            "request_0025",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0078",
+            "request_0079",
+            "request_0080",
+            "request_0081",
+            "request_0082",
+            "request_0083",
+            "request_0084",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两校直接支出、共同费用及合计与E5一致；SPU四包预算、决算和差额计算正确。具体反例检查通过：图5的R1,951,506,053是两校协议扩展预算，图7的R593,488,165是两年度现金流，图9—10的年度资本支出及资产余额均不能替代单校首期决算，GIA未作这些替换。E5的UMP三包决算行和为R318,782,847，与所列Total R320,468,897不一致；最终仅逐包判断低于预算，没有采用有冲突的总计。",
+          "request_ids": [
+            "request_0025",
+            "request_0053",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "分工及最终答复覆盖两校、项目阶段、直接成本与共同费用、预算口径和SPU另一种首期定义；最终明确保留整项目预算关系未知。小缺陷是SPU给出工程包精确比较，UMP仅说各包低于预算，没有列出已经可用的成对金额，降低了两校比较的完整性。完整调查目标仍未解决，但没有被冒充完成。",
+          "request_ids": [
+            "request_0025",
+            "request_0053",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两轮分工分别处理预算对应与SPU校方口径，能独立启动且有互补目标。第二轮利用新读出的协议金额、批准页及尚未取得的2018年资料线索，并非单纯重置失败调查。调查轮次耗尽后继续读取已有证据，最后在零剩余次数时提交有限结论，符合当时能力和约束。",
+          "request_ids": [
+            "request_0025",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0078",
+            "request_0079",
+            "request_0080",
+            "request_0081",
+            "request_0082",
+            "request_0083",
+            "request_0084",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "持续区分预算内与金额相等、工程包与整项目、单校直接费用与含共同费用总成本。未因HI已提交报告而认定全局充分，也未将未取得表4.4解释成该表不存在。最终FINISH准确表达可确认部分和未决事项；这不是已经验证的自由选择提前停止样本。",
+          "request_ids": [
+            "request_0025",
+            "request_0053",
+            "request_0085"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现GIA无新增问题地反复切换同一组图片。E54与E55分别补充预算建议和批准签署信息；E5连续读取是在12000字符分页接口下展开尚未展示的相关章节；E6重读恢复当前输入缺少的原文。不能将HI产生的无关检索结果或整条运行成本直接归责于这些GIA动作。",
+          "request_ids": [
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0078",
+            "request_0079",
+            "request_0080",
+            "request_0081",
+            "request_0082",
+            "request_0083",
+            "request_0084"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "两校各自同阶段、同费用及税务口径的最终批准总预算，以及共同费用的单校分摊依据仍未核定；这是调查未决事实，不是无法评判当前有限答复的关键未知。",
+        "SPU约R1.4 billion校方口径与Wits直接支出的逐项目衔接仍未知；不能按年份或金额差额推定归属。",
+        "所供图片仅证明相应页面内容。图2、图4的PwC财务报表审计意见及责任说明不认证首期项目预算一致性，图6、图8的建设页面也不是完整项目决算。",
+        "未证明所缺最终预算资料能够通过当时公开检索取得，也未证明其不存在；不能据调查未命中追溯认定分工不可执行。"
+      ]
+    },
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个目标的原始输出与接受输出一致；行动有对应观察，最终报告有提交记录。request_0005确实执行后超时，不是成功取得附件版PDF。执行对应成立不替代事实核对。",
+          "request_ids": [
+            "request_0001",
+            "request_0003",
+            "request_0005",
+            "request_0007",
+            "request_0009",
+            "request_0011",
+            "request_0013",
+            "request_0015",
+            "request_0017",
+            "request_0019",
+            "request_0021",
+            "request_0022"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "使用的E1、E2、E3均为初始可见材料；两个第14章URL来自已读E1，E5在打开成功并进入可见集合后才读取。最终引用均已实际读取，未发现采用兄弟报告、未来结果或原数据集标签。所用来源不属于包中明确排除的原事实核查文章；任务也没有要求仅使用声明日前发表的资料。",
+          "request_ids": [
+            "request_0001",
+            "request_0005",
+            "request_0007",
+            "request_0009",
+            "request_0019",
+            "request_0021",
+            "request_0022"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的重要金额、范围和引用可由所给正文核对。表14.6支持HETN001直接支出R942,827,946；四个工程包结算相加确为R695,763,114，下单时控制预算相加为R726,024,282，差额R30,261,168正确。报告没有把表14.15的DHET成本标准列当作批准预算，也没有把共同费用、R804 million施工预算、校方约R1.4 billion资本支出或两校合同价值互换。",
+          "request_ids": [
+            "request_0022"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "已完成有用的局部核查：直接成本中心支出、四个工程包预算比较，以及两种首期范围的区别。但尚未完成所接任务的核心全项目对照：缺少与全部实际支出同口径的批准预算，也未解决共同费用归属和2013—2018年资本支出的衔接。此分数评价核查成果的完整度；最终诚实使用INCOMPLETE本身不是错误，也不因未调查另一所大学而扣分。",
+          "request_ids": [
+            "request_0017",
+            "request_0019",
+            "request_0022"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "先读结项目录、打开支出章节、超时后换用目录中另一真实链接，再按分页寻找支出分类及预算表，均能处理当时的具体缺口。末段读取校方材料直接满足局部任务要求。request_0021之前虽已知道第4章预算表线索，但仅剩一次取证动作；按本轨迹接口，打开新PDF后还需另一次READ_RECORD，不能把两步取证视作当时可完成的一步替代。最终提交由零剩余轮次要求，不计为自主停止能力证据。",
+          "request_ids": [
+            "request_0001",
+            "request_0003",
+            "request_0005",
+            "request_0007",
+            "request_0009",
+            "request_0011",
+            "request_0013",
+            "request_0015",
+            "request_0017",
+            "request_0019",
+            "request_0021",
+            "request_0022"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分直接成本与含共同费用的全部成本、施工控制预算与完整项目预算、合同价值与实际支出，以及Wits交付阶段与校方2013—2018年计划。没有把“预算内”写成金额相等，没有补造未取得的预算或分摊数。报告限定为已读材料，不声称读完第14章或穷尽预算来源；INCOMPLETE及原因与现有缺口一致。",
+          "request_ids": [
+            "request_0007",
+            "request_0022"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "连续READ_RECORD读取不同的12000字符分页，具有新信息，不能算重复复看；超时后的链接切换也有明确增益。最后读取NEC介绍与合同口径有关，但对尚缺的同口径批准总预算提供的帮助较间接，边际价值低于前面的原始结项表格核查。没有证据支持把整个分页过程判为无价值消耗。",
+          "request_ids": [
+            "request_0003",
+            "request_0007",
+            "request_0011",
+            "request_0013",
+            "request_0015",
+            "request_0017",
+            "request_0021"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "与HETN001全部直接实际支出同阶段、同范围的批准预算及调整明细未取得；R804 million不能直接填补这一缺口。",
+        "共同项目费用应分摊给SPU的金额，以及校方2013—2018年约R1.4 billion与Wits结项支出的明细对应仍未知。",
+        "第4章表4.4、相关增补协议、第15章及E5在offset=60000之后的正文未在本演员已读内容中出现；不能据此断言这些来源没有所需信息。",
+        "未提供PDF页面像素，但关键表头、行值、注释及正文已提供，足以评估本报告的文字与计算；没有据此认证页面视觉布局或底层财务记录的独立审计。"
+      ]
+    },
+    {
+      "actor": "W1-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11个工具请求均有接受和观察事件，最终报告有提交事件；raw与accepted一致。超时和404是已执行请求的失败观察，并非解析失败或成功取证。本评分仅确认包内执行对应关系。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0020",
+            "request_0023",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E1开始即在可见集合中；第14章链接经目录读取后使用，E5取得后才读取和引用。E5的discovered_by为W1-1不构成偷看：它已通过本工作区工具观察进入可见集合。报告只引用已读E1、E5，没有采用其他角色报告、未来结果或原事实核查文章。未把2019年声明日期擅自变成本预算任务的来源截止日期。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0020",
+            "request_0023",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "报告核心数字和口径有提供的正文支持：表14.2、14.5支持UMP直接支出539,825,172兰特及其构成；两校直接支出加共同费用确为1,624,500,495兰特；第14.9.1节支持约493.1百万兰特的建设控制预算；表14.15、14.16支持所列工程包对照及施工合同合计。具体瑕疵是把返回404的普通chapter4.pdf称为“另一已提供地址”：E1的普通Chapter 4链接实际指向chapter5.pdf，前者是按路径规律推导的试探地址。失败结果真实，但地址出处表述不准确。另核对到表14.15的UMP三项决算相加为318,782,847，与提取文本中的小计320,468,897不一致；报告未引用该争议小计，不能据此判其逐项金额错误。",
+          "request_ids": [
+            "request_0010",
+            "request_0012",
+            "request_0016",
+            "request_0018",
+            "request_0023",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部取证取得了有用的结项直接支出、费用分类和部分工程包预算对照，但尚未完成所要求的UMP同阶段、同口径最终总支出与批准预算核对：共同费用分摊和对应预算明细仍缺失。此分描述任务达成度，不把诚实的部分报告判为幻觉。报告正确使用INCOMPLETE，明确区分首期交付项目与内部2012—2013年Phase 1，也未承担另一所大学或GIA全局结论。",
+          "request_ids": [
+            "request_0010",
+            "request_0012",
+            "request_0018",
+            "request_0020",
+            "request_0023",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "决策持续针对实际未决问题：先读目录，取得支出章节，超时后改用目录中另一版本，分段读取至预算和决算表，再沿表4.4交叉引用补查。末次普通chapter4.pdf试探有目录命名规律和此前第14章恢复经验作为依据，不能用后来404倒推请求必然错误。仍有已见全集等未尝试路径，说明不能认证已穷尽调查，但报告也未作该声明。最终remaining_turns为0，提交报告是规定动作，不构成可验证的自主停止决策。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0020",
+            "request_0023",
+            "request_0024"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告清楚区分直接支出、共同费用、施工合同金额、工程包决算和建设控制预算；没有用539,825,172与493,100,000的差额宣布超支，也没有把“预算内”解释为金额相等。没有把第14章读过的部分称为全章核验，没有编造第4章表4.4内容。预算对照仍未知是调查结果的缺口，并不使这份明确披露缺口的报告成为关键评审未知。",
+          "request_ids": [
+            "request_0024"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E1和E5读取均按next_offset推进，没有重复读取成功的相同内容。E5连续分页用于寻找尚缺的预算及费用口径；实际接口只提供记录分页和卡片索引，不能假定存在正文关键词跳转能力。两个超时后的请求均改变了文档路径，最终取得了可用的部分答案，未转向无关调查。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0006",
+            "request_0008",
+            "request_0010",
+            "request_0012",
+            "request_0014",
+            "request_0016",
+            "request_0018",
+            "request_0020",
+            "request_0023"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "UMP包含共同费用分摊后的全口径最终总支出，以及其与同阶段批准预算的对应关系仍未取得；这是已披露的任务缺口。",
+        "第4章表4.4正文未取得，不能认证其预算构成、税务口径或与HETM001的关系，也不能断言全部替代来源均不可取得。",
+        "表14.15的UMP行值与提取文本小计不一致；没有原页像素，无法判定是原表问题还是文本提取问题。报告未采用该小计，因此该未知不阻断当前报告的核心事实判断。"
+      ]
+    },
+    {
+      "actor": "W2-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个原始输出均与接受输出一致，11次动作有对应观察，request_0049有报告提交记录。完整报告打开超时、扫描PDF无文本层均被如实记录，没有补写成功结果。此分只认证执行对应。",
+          "request_ids": [
+            "request_0026",
+            "request_0028",
+            "request_0035",
+            "request_0039",
+            "request_0041",
+            "request_0043",
+            "request_0044",
+            "request_0045",
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "完整报告和增补协议URL来自已读E1；后续页码与引用可以追溯到实际返回的页面。部分E未出现在精简证据卡列表中，但存在于当前观察或历史成功结果，不能据此认定非法使用。最终引用的E5、E62、E63均已实际提供，没有发现使用未来结果或其他角色报告的证据。",
+          "request_ids": [
+            "request_0028",
+            "request_0039",
+            "request_0043",
+            "request_0046",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的直接支出、共同费用、VAT口径和成本分类均有E5正文支持；R403,002,774的减法正确。实际像素E62、E63显示UMP清单的Elemental Estimate总额为R4,427,615,518，并含延伸至2018、2019年的建设安排，报告正确限制其用途。没有将该估算、施工控制预算或共同费用合计冒充单校同口径最终预算。核心缺陷是遗漏已知预算依据，单列在task维度。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "本地任务明确要求预算组成、批准和调整依据。报告补充了直接成本分类与共同费用边界，但遗漏了已读E42、E44、E45、E46、E47、E48中的重要成果：两校合计协议预算由R504,471,053调整为含VAT的R1,951,506,053，以及管理费、预备金、余款和签署依据。这些仍不足以确定单校预算，却直接回应本地补查要求，应作为已完成部分交付。两校直接支出彼此不等不能替代各校实际支出与预算的比较。",
+          "request_ids": [
+            "request_0044",
+            "request_0046",
+            "request_0047",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "打开完整报告、超时后定向搜索、转读可取得的MOA、无文本层后渲染页面，均是合理恢复。目录及协议正文取页有效；最后沿已知附件邻近位置查预算清单也有事前依据。不足在于较晚才读取现成E5的费用分类，且预算附件定位和第二次表号搜索不够集中。零剩余轮次时提交报告符合约束，不据此评价其自主停止能力。",
+          "request_ids": [
+            "request_0028",
+            "request_0035",
+            "request_0039",
+            "request_0041",
+            "request_0044",
+            "request_0045",
+            "request_0046",
+            "request_0048",
+            "request_0049"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "INCOMPLETE状态合理，明确保留共同费用分摊、单校总支出及预算对应关系未知；没有把找不到分摊规则写成从未分摊，也没有把多年估算认作首期批准预算。小缺陷是状态理由笼统称缺少批准、调整依据，未区分已取得的两校合计审批文件与仍缺的单校同口径对应。",
+          "request_ids": [
+            "request_0049"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "没有重复已经失败的相同打开请求，也没有重复生成同一批页面。request_0046、request_0047读取了不同的E5正文片段，不能因同时重新附图就判作无效重复。不过再次保留整组已读附件与审批备忘录的必要性较弱；后期搜索遗漏University等限定词，也降低了查询的针对性。",
+          "request_ids": [
+            "request_0035",
+            "request_0044",
+            "request_0045",
+            "request_0046",
+            "request_0047"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0049遗漏已取得且直接回应本地任务的合计预算批准、调整和费用条款，导致预算核查成果实质不完整。应修复报告，不能仅凭准确的INCOMPLETE状态直接导出为正向目标。"
+      ],
+      "unknowns": [
+        "表4.4及其与各校直接成本中心的对应尚未取得，不能确定各校同口径批准预算、是否在预算内或金额是否相等。",
+        "共同费用的单校归属或分摊依据仍未知，因此不能确认包含共同费用后的单校最终总支出。这是调查缺口，并非本次评审缺少核对最终报告所需材料。",
+        "未提供完整PDF全部页面及后续GIA决策，不能证明其他页面不存在对应依据，也不能判断全局任务最终是否解决。"
+      ]
+    },
+    {
+      "actor": "W2-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12项输出均有对应执行链接，原始输出与接受输出一致；11项工具行动记录为 executed，request_0042 有报告提交事件。对应关系支持执行发生，不单独证明取页正确或事实成立。",
+          "request_ids": [
+            "request_0027",
+            "request_0029",
+            "request_0030",
+            "request_0031",
+            "request_0032",
+            "request_0033",
+            "request_0034",
+            "request_0036",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取对象、续读偏移和打开的校方链接均来自行动前可见材料。报告引用的E24—E31虽然未列入当轮content_observed列表，但已明确附图且出现在最新观察中；实际引用E30、E31合法。累计见图16张与当前附图8张相容，没有发现使用未来结果、不可见兄弟报告或官方答案的证据。",
+          "request_ids": [
+            "request_0027",
+            "request_0030",
+            "request_0032",
+            "request_0037",
+            "request_0040",
+            "request_0042"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的重要事实均有直接支持：E6第28—30段支持约R1.4 billion、六座新建筑和Luka Jantjie House改造；已读E5支持R942,827,946直接成本、费用组成、共用费用另列及建设控制预算。实际像素中，E30印刷页86列2018年PPE余额R1,645.4 million和新增资本支出R333 million；E31印刷页87列2018年转入完工建筑R462 million。报告正确区分这些数字的性质，没有据差额编造项目归属。",
+          "request_ids": [
+            "request_0042"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部调查取得了有用的项目与费用边界信息，但核心要求仍未完成：六座建筑与Wits项目的对应关系、校方口径精确最终支出及同范围批准预算均未核清。该评价只针对SPU局部调查，不要求其完成UMP任务。request_0042在零剩余轮次下准确提交INCOMPLETE，报告本身可以是高质量目标，不能因此把调查完成度也评为高分。",
+          "request_ids": [
+            "request_0034",
+            "request_0036",
+            "request_0038",
+            "request_0040",
+            "request_0042"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "沿校方链接、Wits费用章节和校方年报调查，行动总体能回答实际缺口；发现页码偏移后也有效调整。优先级仍有不足：request_0038前已见E5预算章节及next_offset=48000，后续两次却都用于2019年报取页，预算组成仍未核查。该续读是具体可行的补查，但不能假定其必然解决全部范围问题。最终被预算要求提交报告，不构成已验证的自主停止决定。",
+          "request_ids": [
+            "request_0032",
+            "request_0034",
+            "request_0037",
+            "request_0038",
+            "request_0040",
+            "request_0042"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确保留了项目交集、包含关系、费用分摊和预算对应的未知；没有将“预算内”等同金额相等，也没有将不同年份或金额差异当成后续建设的证明。年报结论限定于已读页面，未声称整份年报不存在明细。INCOMPLETE及其理由与零剩余轮次、实际证据缺口一致。",
+          "request_ids": [
+            "request_0042"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "E5各次读取使用不同连续偏移，两次取页也不重叠，没有无价值的重复复看。但初次取页实际落到员工统计、安保和章节图片等内容，页码未校准造成低信息增益；纠正后的批次仍包含目录已标为城市指示牌等关联较弱页面。不能将初次未命中全部归为事前可知的错误，但整条取证路径尚非充分高效。",
+          "request_ids": [
+            "request_0029",
+            "request_0030",
+            "request_0031",
+            "request_0037",
+            "request_0038",
+            "request_0040"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "校方2013—2018年首期计划与Wits成本中心的完整项目对应关系、精确最终支出和同范围批准预算尚未取得；这是调查对象的未知，不是当前报告无法评审。",
+        "未提供演员未读的E5偏移48000以后、表4.4及相关项目明细，不能断言这些补查一定能解决问题。",
+        "本包没有下游GIA决定及全局最终报告，不能评价全局完成或停止质量。"
+      ]
+    },
+    {
+      "actor": "W3-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个输出均有对应执行链接，原始输出与接受输出一致；11个行动执行，最终报告提交。超时和404是实际执行后的失败观察，不是请求未执行，也不证明取证成功。",
+          "request_ids": [
+            "request_0054",
+            "request_0056",
+            "request_0058",
+            "request_0061",
+            "request_0064",
+            "request_0066",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076",
+            "request_0077"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告引用的页面像素及E1、E5相关文字均已在本角色输入中出现。第五次增补协议和表4.4来自局部任务，不能视为偷用未来信息。报告没有采用仅见于包内完整E5后文的R804m、R493.1m。E64等页面及E40虽复用了全局已有证据，本角色此前未见，不能据缓存复用认定无价值重复。",
+          "request_ids": [
+            "request_0054",
+            "request_0064",
+            "request_0066",
+            "request_0068",
+            "request_0074",
+            "request_0077"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "实际像素支持主要视觉断言：E54第4.2(d)确列R504,471,053至R1,951,506,053；E52写明延期至2016年3月31日；E55有双方签署区域和手写签名；E62—E63为UMP跨年度预算表，末行明确标注2014/15与2015/16现金流合计R593,488,165。已读E5表14.2支持两校直接支出、VAT及共同费用；R403,002,774的差额计算正确。未将文稿v5认作第五次增补协议，也未将现金流或协议合计冒充单校最终预算。",
+          "request_ids": [
+            "request_0077"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "本轮局部目标是补齐最终批准版本、各校预算组成、VAT和共同费用归属，主要对应缺口仍未解决。报告提供了有用的预算层级区分，并准确提交INCOMPLETE；但不能因此给取证任务完成度高分。具体不足是E5首次读取明确返回next_offset=12000，后续仍有多个取证轮次，却没有继续读取这份直接相关的结项报告。此评价不要求重复任务已排除的工程包比较，也不要求W3-1承担整个GIA问题。",
+          "request_ids": [
+            "request_0066",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076",
+            "request_0077"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "先读索引、打开附录版、改查合订本及替代路径，均针对明确的预算缺口；超时后的调整合理。检查协议相邻缺页和末页也有阶段及批准信息方面的价值。后段优先级较弱：已知E5尚有续页，却持续选择外围检索；最后一次查询又省略大学和报告限定。缺陷来自当时可见的取证机会及剩余轮次，不是后来返回无关结果。",
+          "request_ids": [
+            "request_0054",
+            "request_0056",
+            "request_0058",
+            "request_0061",
+            "request_0064",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告清楚区分已读事实、计算、尚未取得的预算对应关系及可能另存的共同费用分摊记录。没有以未找到推断文件不存在，没有自行分摊费用，也没有把预算内与金额相等混同。报告时remaining_turns=0，INCOMPLETE准确；不能要求该报告再调用工具，也不能将它作为自主停止能力已获验证的证据。",
+          "request_ids": [
+            "request_0077"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "前段的不同取证路径及无结果探索值得保留；主要低效发生在E5读取之后，多个轮次未利用明确的续读入口，最终又以较弱的表号查询消耗最后一次取证机会。反复附带原有五张图片主要是焦点保留和输入机制，不能逐次算作无价值复看；检索器自动打开无关页面也不等于演员主动逐页调查。",
+          "request_ids": [
+            "request_0066",
+            "request_0068",
+            "request_0070",
+            "request_0072",
+            "request_0074",
+            "request_0076"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "尚未核实第五次增补协议、表4.4及两校同范围最终批准预算的完整对应关系，不能认证任一校累计直接支出是否在该预算内或与之相等。",
+        "共同费用是否存在另行编制的单校归属或分摊记录仍未知；已读材料未提供依据不等于不存在。",
+        "附录版和合订本的超时不证明来源长期不可取得；替代访问是否能成功也未执行验证。",
+        "上述事项属于调查对象尚未解决的未知，不构成评审最终INCOMPLETE报告所需关键材料的缺失。"
+      ]
+    },
+    {
+      "actor": "W3-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11个行动均有对应的接受及观察事件，原始输出与接受输出一致；request_0075有报告提交事件。参数符合所给接口，未发现被拒绝后冒充执行的行动。此分只确认执行对应，不认证调查结论或下游GIA决定。",
+          "request_ids": [
+            "request_0055",
+            "request_0057",
+            "request_0059",
+            "request_0060",
+            "request_0062",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取的E5、E70均已进入当时材料或检索观察。E81/E84及E95/E98虽曾因容量未附图，但已由成功取页观察列出，随后通过focus补看，不是预知未来证据。最终只引用实际分页读过的E5，没有把共享目录中的其他演员报告或评审参考答案作为自身发现。未发现采用被排除的原事实核查文章；本任务也没有声明日前公开的时间限制。",
+          "request_ids": [
+            "request_0055",
+            "request_0059",
+            "request_0062",
+            "request_0065",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的有限事实可由实际已读E5核对：SPU直接支出R942,827,946、基础设施R837,127,471、家具设备R72,825,226、项目管理R23,735,245及另列共同费用均与正文相符。表14.15四项发包预算相加确为R726,024,282，最终结算相加确为R695,763,114，未把DHET成本规范列错当预算。像素反例也已检查：E95图23的2018年资本支出为R175 million，而E30/E31图1、2的2019年报把2018比较数列为R333 million；报告没有使用这些冲突的年度数字填补累计决算。该高分仅评价说出的事实，不证明校方计划总额或预算衔接。",
+          "request_ids": [
+            "request_0075"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "调查没有取得局部任务的核心新增答案：校方2013—2018年计划的精确累计支出、费用及VAT范围、同范围批准预算和逐项目衔接仍全部未定。报告提供了有用的Wits成本分类和较小工程包预算比较，但主要成果仍在已有Wits口径一侧；已查2018年报的有限项目阶段事实也没有进入报告。INCOMPLETE状态准确，因此不能把任务未解决进一步判成虚假完成，也不能用整体GIA答案弥补该局部缺口。",
+          "request_ids": [
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "定向寻找2018年报、遇到部分文本抽取后渲染页面、按next_offset继续读取Wits正文，均能处理合理未决问题。主要不足是取得E87财务目录后，仍未沿其指向的正式财务报表和附注继续检查，而将后续行动集中于建设概览、财务综述及Wits长文。目录已给出印刷页89的财务状况表、92的现金流量表及93起的附注，这是当时具体可行的补查方向，但不能保证其中必有完整答案。末轮剩余次数为0，提交报告合适；不能用这一强制提交样本认证自主停止能力。",
+          "request_ids": [
+            "request_0057",
+            "request_0059",
+            "request_0060",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确保留精确累计金额、税务范围、批准预算及移交对账的未知，未用时间或金额差直接归属差额，未把四个工程包推成整个计划，亦未把预算内解释为金额相等。其措辞是尚未核实，不是断言相关资料不存在。当前附图、累计观察和整份年报覆盖没有被混同。缺少所调查的最终答案不构成评审材料的关键未知，当前INCOMPLETE报告可被判定。",
+          "request_ids": [
+            "request_0062",
+            "request_0071",
+            "request_0075"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "没有重复执行相同get_pages，且首次目录读取、必要的遗漏图补附均有价值。但两次取得8张新页时，默认附带的E30/E31均挤掉了新页；request_0069又优先重附8张已看过的建设页，将尚未看到的E95/E98留到后续。五次各12000字符的E5展开占据较多轮次，22张新增2018年报页面最终没有形成报告中的校方证据条目。结合已可定位但未检查的财务附注，这构成实质性的资源分配不足；不能简单把所有复看或无结果探索都判为浪费。",
+          "request_ids": [
+            "request_0060",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0075"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "调查仍未解决校方2013—2018年计划的精确决算、同口径批准预算、VAT及费用范围和Wits移交对账关系；这些未知不等于预算不存在或项目超支。",
+        "包内没有提供尚未读取的完整财务报表、附注及项目批准文件，无法判断继续沿这些线索取证最终能否完整解题。",
+        "E95与E30/E31关于2018年度资本支出的R175 million和R333 million存在可见冲突，原因未核实；最终报告没有采用这些数字作累计金额推算。",
+        "没有针对本HI最终报告存在的关键评审材料缺失；上述未知主要属于调查对象，而非无法判断当前输出是否诚实合格。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E1是明确可见的Wits结项报告入口，优先读取直接对应局部任务的一手线索，参数及执行对应正确。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E1是当前可见的Wits结项报告入口；首次读取直接服务于确定项目范围和原始报告路径，参数合法且执行对应明确。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前次读取返回next_offset=12000且目录尚未结束；按该偏移继续读取合理，不是重复读取同一内容。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前次明确返回next_offset=12000，目录尚未读完；继续读取是合理导航，不是重复确认。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已读目录明确提供带附件的第14章链接，主题为支出及资金使用成效，选择有直接依据。实际超时是工具结果，不反向证明该请求错误。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "打开刚读到的第14章附附件链接，章节标题直接对应支出与价值审查。该链接当时真实可见，后续超时不否定行动合理性。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "依据超时反馈，改开同一已读目录提供的不带附件版本。没有虚构URL，也没有原样重复失败参数，属于有效恢复。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "收到超时后改用E1中另一个真实可见的第14章普通版本，属于有依据的恢复；没有重复原失败参数或补写成功结果。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E5已经在打开结果及可见证据集合中出现；读取正文是从取得文档到核验数字的必要步骤。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E5已经由工具返回为ready并进入可见集合；读取正文是从取得文档到核查数字的必要步骤，不能仅凭ready状态直接引用。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首段已显示总额和成本中心，仍缺SPU分类及预算关系；依据next_offset继续展开支出章节合理。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首段只给出主要成本中心及部分说明，完整费用构成和同口径预算仍未解决。沿next_offset继续读取针对真实缺口。"
+    },
+    {
+      "request_id": "request_0013",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "虽然已读到SPU直接支出，批准预算问题仍未回答。继续读取同章未读内容具有合理目标，不能因后来该分页主要涉及进度和质量就倒推为错误。"
+    },
+    {
+      "request_id": "request_0014",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已获得UMP费用构成，但尚未取得可比较预算；继续阅读该支出审查章节有明确目的。不能因下一段包含其他大学和工期内容而事后判定本次读取无效。"
+    },
+    {
+      "request_id": "request_0015",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "支出及价值评估章节尚未结束，继续按真实分页寻找成本控制内容合理；未重复已读页，也未假设未知偏移对应特定表格。"
+    },
+    {
+      "request_id": "request_0016",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "预算核对仍未完成，上一段仍有后续内容；顺序读取新片段符合当时可用的分页接口，不是已看清材料的重复。"
+    },
+    {
+      "request_id": "request_0017",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前一分页刚出现R804 million控制预算及14.9.2节，正文在费用范围处截断。续读直接服务于表头、范围和实际结算比较，是必要取证。"
+    },
+    {
+      "request_id": "request_0018",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "上一段已进入14.9预算与成本结果，且14.9.2在段尾截断；继续读取直接针对预算组成和最终决算，行动前依据充分。"
+    },
+    {
+      "request_id": "request_0019",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "任务明确要求对照校方2013—2018年约R1.4 billion说法，而E2尚未读取。读取原有校方材料能核实该说法及其范围，优先级有明确任务依据。"
+    },
+    {
+      "request_id": "request_0020",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E5明确指向第4章表4.4，E1提供相应附附件链接；已有工程包对照不能解决项目总口径，因此补查有必要。后续超时是工具观察，不是错误决策的证明。"
+    },
+    {
+      "request_id": "request_0021",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "NEC项目介绍是尚未读取且与合同金额、预算表述有关的可见来源，核查有价值，但对完整批准预算的帮助较间接。当时只剩一次取证动作，不能要求用需要打开再读取的第4章方案直接替代并假设能够完成核验。"
+    },
+    {
+      "request_id": "request_0022",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "这是零剩余轮次下实际提交的准确部分报告。主要金额、计算和出处可核对，四包预算比较没有扩大到全项目，缺失的批准总预算、共同费用和阶段对应均明确保留。INCOMPLETE符合局部任务现状。案件金额仍有未知，不构成判断这份报告是否忠实的关键未知；该目标可作报告监督，不能计为全任务完成或自主停止成功。"
+    },
+    {
+      "request_id": "request_0023",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "附附件版本超时后试探同目录普通chapter4.pdf，是有命名规律依据的有限探索，404不使其成为不可执行请求。但该地址不是E1实际提供的Chapter 4链接，而是推导路径；其依据弱于已见的真实链接，不能标为已确认出处。"
+    },
+    {
+      "request_id": "request_0024",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "零剩余轮次下提交INCOMPLETE正确，主要数字、费用范围和部分工程包比较均有已读正文支持；没有混同预算与支出，也没有虚构缺失表格。明确的小瑕疵是将试探所得的普通chapter4.pdf称为“另一已提供地址”，应准确表述为按路径规律尝试的地址。该瑕疵不改变失败事实或财务结论；缺失表4.4已如实披露，报告可作为部分结果监督，不能作为已完成预算核验或自主停止能力的样本。"
+    },
+    {
+      "request_id": "request_0025",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时已有直接支出及局部工程包比较，但整项目预算口径和SPU两套首期关系未解决。分别沿Wits预算文件与校方财务建设资料补查，目标互补；第4章此前访问失败仍有完整报告等具体替代线索，继续调查合理。"
+    },
+    {
+      "request_id": "request_0026",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取任务指定的E1，以取得完整报告和附件的真实入口；对象可见、动作必要且执行对应清楚。"
+    },
+    {
+      "request_id": "request_0027",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取任务明确指定且当前可选择的E2，核查校方约R1.4 billion说法及原文线索，目标直接且可执行。"
+    },
+    {
+      "request_id": "request_0028",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "直接打开刚读到的完整结项报告URL，符合已有章节地址失败后的替代路径要求。后来超时不能反推该选择错误。"
+    },
+    {
+      "request_id": "request_0029",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取已有Wits第14章E5，以核对结项阶段和成本中心口径；没有仅把任务中的金额当作已验证事实。"
+    },
+    {
+      "request_id": "request_0030",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "按上一观察明确提供的next_offset=12000续读，可取得费用分解与项目范围，属于必要的新内容读取。"
+    },
+    {
+      "request_id": "request_0031",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "使用已知next_offset=24000继续核查交付项目与阶段。行动前已有未完的建设范围说明，续读有明确依据，不是重复确认。"
+    },
+    {
+      "request_id": "request_0032",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "打开E2实际给出的五周年原文链接，以取得标签页摘要之外的项目范围；没有猜造URL或把摘要视为全文。"
+    },
+    {
+      "request_id": "request_0033",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取刚取得的E6正文，能核查六座新建筑、改造及资本支出说法，遵守获取来源与读取正文的区分。"
+    },
+    {
+      "request_id": "request_0034",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "定向检索SPU、2018年、年报、基础设施及支出，符合当时缺少财务明细的局部问题。返回2019年报和域外候选是工具结果，不能倒推查询错误。"
+    },
+    {
+      "request_id": "request_0035",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "完整报告超时后，按已知表号、预算主题和Wits域名搜索，针对真实未决问题调整方法。返回无关结果属于搜索结果质量，未被演员采用为预算证据。"
+    },
+    {
+      "request_id": "request_0036",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "读取已取得的SPU 2019年报有合理价值，可能提供2018年比较资料和建设线索；但年份与待核首期终点并不完全匹配，只能作为补充路径，不能认证为目标年度决算。"
+    },
+    {
+      "request_id": "request_0037",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "回到E5已知未读偏移36000，继续检查建设费用与预算，属于互补取证。返回的改善工程和控制预算内容有实际价值。"
+    },
+    {
+      "request_id": "request_0038",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "依据年报目录尝试定位基础设施和财务部分，批量8页符合图片容量。行动前没有已确认的正文页码偏移，不能用后来未命中认定其明知选错；但定位未经校准，实际返回印刷页56—59、81及章节图片，信息增益较低。"
+    },
+    {
+      "request_id": "request_0039",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "沿E1中的真实MOA第四增补协议链接取证，直接服务预算批准与调整问题。文件仅部分解析成功，仍可通过已公布的取页能力继续核查。"
+    },
+    {
+      "request_id": "request_0040",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前像素已经显示PDF第67页对应印刷页56，演员据此按偏移11调整，成功针对基础设施和财务部分取得新页，属于有效恢复。批次包含目录已明确的城市指示牌等弱关联内容，有限轮次下仍可更聚焦。"
+    },
+    {
+      "request_id": "request_0041",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "获知PDF无文本层后请求8张页面，参数合法且符合附图容量，初步定位有用。相对预算审批目标，广泛抽样的针对性略弱；不能把抽样当成通读全文。"
+    },
+    {
+      "request_id": "request_0042",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "零剩余轮次要求提交报告。输出准确陈述已取得的校方与Wits证据，所引年度金额可由E30、E31像素核实，并明确保留精确决算、同口径预算及项目调节关系，INCOMPLETE状态正确。它是合格的部分报告目标，不证明局部任务已解决或自主停止已被验证。"
+    },
+    {
+      "request_id": "request_0043",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "看到协议封面及混合附件后，明确读取第2至9页以检查目录、修订正文和签署部分，具有清楚的局部目标，并取得关键预算依据。"
+    },
+    {
+      "request_id": "request_0044",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "已知目录列有批准附件，末页又是第四增补协议审批备忘录，向文档末段查找有合理依据；7张新页加1张保留页符合容量。尚未直接定位预算组成附件，保留整张备忘录的必要性有限。"
+    },
+    {
+      "request_id": "request_0045",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "表4.4仍未取得，改用学校名称与表号搜索是合理尝试。查询省略University、结项报告或预算等限定词，针对性有小缺陷；不能仅因后来返回人物传记等结果判为无关行动。"
+    },
+    {
+      "request_id": "request_0046",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次实际展开现成E5正文，核对共同费用及各成本中心，并重新附上协议正文以便比较预算范围，具有明确新增信息价值。"
+    },
+    {
+      "request_id": "request_0047",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "按返回的next_offset读取E5下一段，取得两校费用组成和涉及后续项目的范围说明，是必要续读。与此同时重新附上整组已读末段附件，信息收益较小，但不使正文续读成为无效重复。"
+    },
+    {
+      "request_id": "request_0048",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在最后一次取证机会中，检查已知交接计划之前的相邻附件页，可能取得实施计划预算表；这是基于当时文档结构的可执行选择。后来出现空白页及多年估算，不足以反推此行动不合理。"
+    },
+    {
+      "request_id": "request_0049",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "金额、费用分类及多年估算的适用边界有依据，零剩余轮次下使用INCOMPLETE也正确。但实际像素E44、E45明确记载含VAT的合计协议金额R1,951,506,053及由R504,471,053调整的依据；E46、E47还列预备金和余款条款，E48提供签署依据。这些已观察的核心预算成果完全未进入报告，而单校之间的支出差额并非所问比较。应补充已知合计审批范围，同时继续保留单校对应与分摊未知；问题可由现有包确定，不应标成评审关键未知。"
+    },
+    {
+      "request_id": "request_0050",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E23已在当前证据集合中，读取可核对协议原件记录及可用正文。动作前没有明确展示其无文本层，不能用随后返回元数据而追溯判为无效请求。"
+    },
+    {
+      "request_id": "request_0051",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "得知E23无文本层后，改读尚未附给GIA的E54页面。当前已见协议目的及动机页，继续查看预算建议所在的后续页面有明确价值；图5随后实际显示4.2(d)金额。"
+    },
+    {
+      "request_id": "request_0052",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时E54位于RECOMMENDATIONS章节，预算建议不能单独证明批准。读取相邻E55验证批准状态合理；图14显示APPROVAL及双方签署区域，未要求从手写签名推定身份真伪。"
+    },
+    {
+      "request_id": "request_0053",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "新分工使用已见E52、E54、E55准确说明期限、预算调整和批准页，继续追查单校最终预算版本；另一任务针对尚缺的2018年校方资料。未把标题v5当成第五次增补协议，也未把跨至2019年的估算当首期单校预算。"
+    },
+    {
+      "request_id": "request_0054",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E1是当前可见的Wits结项报告索引，首次读取能够寻找局部任务明确要求的第四章及协议材料。请求合法、已执行，不是重复读取。返回内容虽分页，但所需下载线索已在首段出现。"
+    },
+    {
+      "request_id": "request_0055",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "新工作区此前只有E5卡片和任务给出的总额，展开原始正文以了解项目阶段及成本中心是必要取证，不应因别的工作区已读过而判为重复。读取对象合法且执行对应完整。"
+    },
+    {
+      "request_id": "request_0056",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "直接打开刚读到的Chapter 4 with annexures真实链接，正对表4.4缺口。随后超时属于合理取证失败，不能据此降低该行动的正确性或补写成功观察。"
+    },
+    {
+      "request_id": "request_0057",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当时持有2019年报，局部缺口明确指向2018年校方财务和建设资料。限定SPU官网、2018和annual report的查询与缺口直接对应，不能因后续未获得精确决算而倒扣这次合理搜索。"
+    },
+    {
+      "request_id": "request_0058",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在附录版超时后，用Wits域名、报告名称及表号寻找替代入口，目标具体且与缺口相关。没有重复原样打开失败链接；后来出现无关命中不使此前查询自动不合理。"
+    },
+    {
+      "request_id": "request_0059",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "检索已返回E70及部分抽取状态，读取其正文和目录可定位相关章节。部分页面无可提取文字不等于整份PDF不可用，选择READ_RECORD没有冒充读取未返回内容。"
+    },
+    {
+      "request_id": "request_0060",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "依据年报目录取建设章节页面是合理探索，所取物理页62—69对应印刷页53—60，包含相关建设材料。批量未覆盖章节开头且8张新页与2张默认图竞争容量，导致两张重要叙述页延后显示，属于导航和容量安排的小缺陷；不能把首次取页未命中金额视为错误行动。"
+    },
+    {
+      "request_id": "request_0061",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "采用E1已提供的完整报告链接作为另一条取得第四章的路径，能覆盖所需章节。它与此前附录版是不同请求，后续超时仍应保留为真实失败。"
+    },
+    {
+      "request_id": "request_0062",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E5的next_offset明确为12000，继续读取成本分类可支持费用范围比较；同时focus选择刚被遗漏的E81/E84，正确补看已保存页面。这两个编号存在于当时取页观察，不是仅凭正文猜测的不可选择编号。"
+    },
+    {
+      "request_id": "request_0063",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "已知财务报表章节始于印刷页79，取物理页88—91可以获得其入口和详细目录，行动在当时有合理信息价值。实际出现目录、责任声明及审计前言，不能据此倒推该请求必然无用；但这不是已经读取决算或相关财务附注。"
+    },
+    {
+      "request_id": "request_0064",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "尝试同一报告目录下的chapter4.pdf，是已有目录结构支持的合理路径探索。该地址不是E1中明确列出的普通第四章链接，确定性较低，但演员没有宣称它已被验证。返回404应限制后续使用，不能倒推本次探索为捏造来源。"
+    },
+    {
+      "request_id": "request_0065",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "补取此前缺少的建设章节开头及项目框架页，有助于辨认阶段；图15确实记载自然科学实验楼在2018年取得占用许可。保留6张已有建设页与2张新页比较有可解释价值，但保留范围较宽，且此时也已有可继续追查的财务目录。"
+    },
+    {
+      "request_id": "request_0066",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取已保存的第14章E5，可直接核实实际支出、统计范围、VAT和共同费用，符合本地任务。返回next_offset=12000意味着尚未读完；本次读取本身正确，后续未续读应另行评价。"
+    },
+    {
+      "request_id": "request_0067",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "首次查看运营财务持续性和年度财务综述，可能补充资本项目及预算背景，属于合理的来源内探索。不足是再次请求8张新图而未处理默认图占位，令财务状况页E95被遗漏；正式报表及附注已可定位，后续应据结果收窄调查。"
+    },
+    {
+      "request_id": "request_0068",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "检查UMP预算附件后、批准正文前的连续缺页，能够寻找阶段、移交和协议附件关系；8页符合单次图片容量，并清空焦点容纳新页。本角色此前未见这些像素，不能因为结果复用已有E编号而判为重复。该批次较宽，但不能用后来发现空白页倒推行动无效。"
+    },
+    {
+      "request_id": "request_0069",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "继续读取尚未读过的E5建设叙述，可服务于Wits项目与校方建设阶段的比对，因此不是纯粹重复操作。不过重附8张已见建设页的边际收益有限，且没有优先补看刚遗漏的E95/E98；这是效率扣分依据，不足以认定整个行动无价值或使用未来信息。"
+    },
+    {
+      "request_id": "request_0070",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "第五次增补协议是任务明确列出的未决材料；以Wits、新大学及fifth检索具有合理目的。查询未加入addendum等更明确的协议词，精度有小缺陷，但没有依据将一次未命中探索判为错误目标。"
+    },
+    {
+      "request_id": "request_0071",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "按真实next_offset继续读取E5，并通过focus补看此前未展示的E95/E98，操作合法且有新增观察。六张已见财务页同时重附并非全部必要；该行动不能被计为整份2018财务报表已经核查。"
+    },
+    {
+      "request_id": "request_0072",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "外部路径失败后检索可访问的共享候选和证据索引，是合法的恢复方式；不会自动获取其他角色报告。查询包含较多通用词，定位效率一般，但当时尚未得到这次词法检索反馈，不能以后来的排序不佳倒推其不可执行。"
+    },
+    {
+      "request_id": "request_0073",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决定前E5正文已到§14.9成本控制及新建筑预算范围，并在关键句中截断；读取48000起的下一段有明确依据，可完成费用范围和预算表的阅读。这里的合理性来自行动前已见的章节线索，不依赖后来确实出现表14.15倒推。"
+    },
+    {
+      "request_id": "request_0074",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "此前已知E23共158页，当前签署页为157页；查看未见的末页以补核批准日期和版本有明确依据，且只取一页。实际返回的2014年9月23日第四增补协议审批备忘录有有限价值，不能据此确认第五次增补或最终预算。"
+    },
+    {
+      "request_id": "request_0075",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "剩余次数为0，报告准确使用INCOMPLETE并逐项指出缺少的材料；三项Wits发现及预算加总有已读正文支持，范围限定正确。不足是没有汇总已查2018年报能够支持的有限项目阶段事实，校方一侧新增成果较弱。可作为有依据的部分报告候选，不能标作局部任务已完成、全局预算问题已解决或自主停止能力已验证。"
+    },
+    {
+      "request_id": "request_0076",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "这是最后一次取证机会。此前表号及宽泛关键词检索未补齐缺口，E5却仍有明确可继续读取的相关正文；本次继续用省略University和报告名称的表号查询，取证优先级存在实质缺陷。问题不在后来出现市政网页，而在当时已有的未读材料和有限轮次。应从相应状态重选续读或更明确的大学预算查询，并依据真实结果重生成后续报告。"
+    },
+    {
+      "request_id": "request_0077",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "零剩余轮次下提交INCOMPLETE准确，主要数值、图片解读、出处及适用边界均有支持。没有假称取得表4.4、第五次增补或共同费用分摊依据。两校支出之间的差额虽计算正确，却不是本轮要求核定的预算差额，属轻微范围冗余。此报告可以作为诚实部分报告的候选，不代表其前序调查充分或预算问题已经解决。"
+    },
+    {
+      "request_id": "request_0078",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "禁止新增调查轮次但允许读取记忆。E5当前正文在12000字符处截断，读取该offset可核查两校费用组成及后续项目管理范围，属于最终数量结论的必要依据。"
+    },
+    {
+      "request_id": "request_0079",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "按上一返回的next_offset继续读取。此时费用定义已展开，但阶段交付与后续预算分析原文仍未完整展示；连续读取既有章节合理，不依赖后来命中的内容倒推。"
+    },
+    {
+      "request_id": "request_0080",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "上一分页停在14.8部分，已知报告指向14.9预算控制。继续36000处正文是抵达所需原文的合法分页动作，没有重复已展示内容。"
+    },
+    {
+      "request_id": "request_0081",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "上一返回已到14.9.1及14.9.2开头，但预算组成说明尚被截断。读取48000处可核对预算范围、表14.15及其注释，直接服务预算与决算的有限比较。"
+    },
+    {
+      "request_id": "request_0082",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E75当时仅以Addendum to DHET Agreement卡片出现，具体增补版本和正文能力未展示。读取以辨明其是否能补预算缺口合理；后来发现是第一次增补且无文本层，不使此前动作错误。"
+    },
+    {
+      "request_id": "request_0083",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "发现E75不是所需后续增补后，按表4.4、第五次增补及两校金额定向查询既有证据，在上下文截断情况下有实际意义。查询无决定性命中不等于行动不合理，也不能据返回排名证明缺失文件不存在。"
+    },
+    {
+      "request_id": "request_0084",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "当前输入仅保留E6卡片和历史报告概括，重读校方原文可核实约R1.4 billion及六座新建筑的归属措辞。动作仍留有一次最终决策，不违反次数约束。"
+    },
+    {
+      "request_id": "request_0085",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "零剩余次数下的有限答复可信且有用：直接支出、共同费用、阶段及SPU工程包计算有依据，完整预算比较明确未知，没有把未知当一致或超支。小缺陷是UMP已有各包预算和决算数值却仅作定性概括，可补列成对金额。该目标可作有限结论监督，不能标为原调查任务已全面完成。"
+    }
+  ],
+  "construction_revisions": [
+    "GIA: 将本例明确标为从提供证据开始的预算调查；录制初始分工、HI历史报告与GIA监督输出分别保存，不把原AVeriTeC Supported标签用作预算问题真值。",
+    "GIA: 保留每次决策实际附图、正文offset及执行结果的对应关系。累计图片计数与当前附图数继续按各自定义记录，不因数量不同认定缺图或偷看。",
+    "GIA: 明确区分Wits首期交付、报告内部2012—2013年Phase 1和SPU校方2013—2018年首期。若训练目标必须完整给出预算差额，应提供可取得的对应预算依据；否则保留有依据的未核定结果。",
+    "GIA: 对表14.15的UMP总计冲突保留原始表述及逐行数据，补充原页核对材料；不得静默将R320,468,897当作三个决算行的正确和。",
+    "GIA: 最终答复可补列UMP各工程包的预算与决算成对金额，保持工程包范围限定；如生成修订监督目标，应保存为相应状态的新输出，不冒充原始执行结果。",
+    "W1-1: 若试验目标包括完成全项目预算核验，应在新运行中给已发现的预算线索保留完整的打开、读取及必要追查轮次。至少应实际尝试第4章表4.4及其相关预算资料；不能把后来取得的内容补入本次旧报告或拼接到不相容的后缀。",
+    "W1-1: 预算问题的参考答案应另据同阶段、同费用范围的实际支出与批准预算建立。原数据集“建成两所大学”的标签、其他主题问答及required_reannotation均不能充当预算金额真值。",
+    "W1-1: 将本次终端目标明确作为有执行记录的INCOMPLETE报告样本使用；导出范围保持为steps中的W1-1输出，不把记录计划、其他工作区结果或未执行的后续决策加入监督目标。",
+    "W1-2: 保留真实请求及失败观察；校正报告中“另一已提供地址”的出处表述，区分E1原始链接、按目录规律推导的地址和实际取得的正文。",
+    "W1-2: 为预算问题建立独立于原AVeriTeC问答的参考依据，明确首期交付范围、直接费用与共同费用、含税口径，以及比较初始还是经批准调整后的预算。",
+    "W1-2: 针对已见的全集或相关章节链接补跑预算明细获取分支，验证在相同工具和预算下能否取得表4.4；不得预设替代链接必然成功。若改变行动，应从相应状态重新执行。",
+    "W1-2: 补附关键财务表原页，核对表14.15的UMP行值与小计差异；在核清前保留差异，不把有争议的小计写成参考答案。",
+    "W1-2: 将最终输出标记为预算耗尽时的部分报告监督，与自主停止决策及完整任务解答分别记录；不以整条轨迹的高分自动批准所有导出用途。",
+    "W2-1: 从request_0049的同一终端状态重新生成报告，纳入已读协议的合计批准金额、调整、VAT和相关费用条款，明确它们尚不能分解为两校同口径预算。保留INCOMPLETE及共同费用分摊限制。",
+    "W2-1: 预算题的参考核查应以成本中心、费用类别、项目阶段、预算版本和VAT为对应单位；原AVeriTeC大学建设声明及其无关问答不能提供本题数值真值。",
+    "W2-1: 若重构行动顺序，应较早读取现成E5的费用分类，再沿真实目录和链接定位预算组成，减少仅靠表号的搜索。改变动作后重新执行相容后缀，保留原始失败与观察记录。",
+    "W2-1: 保留PDF物理页码与页内印刷页码的区别，以及按请求绑定的图片。累计31张已见图片与单轮8张附件并不矛盾，无需据此修正为同一计数。",
+    "W2-2: 将此轨迹标为真实执行的部分调查及INCOMPLETE报告样本；不要包装成已解决两校最终支出与预算核验的完整成功案例。",
+    "W2-2: 只导出steps中的W2-2输出作为本次候选目标；记录中的初始分工、其他工作区状态及原数据集问答保留为背景。",
+    "W2-2: 保留每次取页的PDF物理页号、像素可见印刷页号和当时附件清单，便于区分事前页码不确定与观察后的纠错；累计见图16张和当前附图8张无需改成相同数值。",
+    "W2-2: 若构造完成调查的后续样本，可从request_0038前的真实状态重新执行，核查已知E5续页及与六座建筑有关的校方明细；修改行动后应重新生成后缀，不能沿用不相容的旧观察。",
+    "W2-2: 为构造的预算问题单独补充同阶段、同费用范围的核验依据；原AVeriTeC声明及Supported标签不适合作为该数量问题的答案标准。",
+    "W3-1: 保留逐请求目标边界：仅导出steps中的演员输出，root.result、其他角色报告和记录计划只作指定用途的上下文，不能追加为W3-1监督目标。",
+    "W3-1: 从request_0068所对应的E5首段读取后状态构造续读替代分支，使用已返回的next_offset推进，依据实际观察核查后续预算讨论；不得把包内完整E5直接补进历史演员视图，也不得沿用不相容的旧后缀。",
+    "W3-1: 在普通执行与证据核对记录中保留READ_RECORD实际返回的字符范围和next_offset。仅有content_observed_evidence_ids中的E5，不能表示整章已读；当前包已提供分页反馈，应在监督核验中实际使用。",
+    "W3-1: 如实保留附录版及合订本的TIMEOUT、试探chapter4.pdf路径的404。可达性问题与演员决策分别记录，替代访问路径须真正执行后才能成为成功取证样本。",
+    "W3-1: 为此预算任务建立与项目阶段、费用组成、VAT及预算版本对应的来源依据。原AVeriTeC的Supported标签及混杂问答不能充当预算问题真值；required_reannotation也不能直接决定这些目标的评分。",
+    "W3-1: 保留图片与E编号、物理页码的对应，以及累计见过和本次附带的区别。当前13或14张累计观察与单次5张附图并不矛盾，无须据此改写计数字段。",
+    "W3-2: 按W3-2的12个实际输出分别保留行动和报告监督；不导入初始重放计划、其他演员报告或result中的GIA答案作为本演员目标，也不因整条运行返回成功而整批认证。",
+    "W3-2: 后续取证分支应沿已见E87目录检查正式财务报表及附注，特别是现金流、固定资产、资本承诺和相关项目说明，再判断是否存在累计项目账目；不能预先承诺这些页面一定能给出答案。",
+    "W3-2: 保留PDF物理页号与印刷页号的对应，并改进附图容量安排。已保存而未展示的页面优先补附；累计看过24张图不等于当前附带24张，也不等于覆盖179页年报。",
+    "W3-2: 把校方计划决算、批准及调整预算、费用和税务组成、Wits移交及校方后续入账的对应材料作为下一轮实际取证对象。新增发现应重新生成相容的报告和后续状态，不能直接给旧报告补写未经执行取得的数字。",
+    "W3-2: 保留E95的R175 million与E30/E31的R333 million冲突，核对其来源和口径；不要选其中一个当作累计计划成本金值。原AVeriTeC的Supported及required_reannotation仅作原声明背景，不能充当新预算问题答案。"
+  ],
+  "rubric_revisions": [
+    "GIA: 明确角色评分覆盖率、候选目标质量和原任务实际完成程度是三个不同指标；高覆盖率及高分不能把有限结论转换成完整取证成功。",
+    "GIA: 将表内算术一致性纳入数量grounding检查。来源中的总计与明细冲突时，准确引用并标明计算范围优于盲从总计；没有使用冲突数字的目标不应连带判错。",
+    "GIA: 区分预算建议、批准签署、后续修订和最终控制预算。签署页可支持审批状态核查，但不自动证明单校金额、最终版本或同口径对应。",
+    "GIA: 对连续分页和重新附图按当时未决问题评价；无文本层、无结果或版本不符若是在返回后才获知，不追溯惩罚此前合理请求。",
+    "GIA: 预算一致性至少分别评价是否同口径、是否预算内和金额是否相等；财务报表审计意见不能替代具体建设项目决算与预算的对应证明。",
+    "GIA: 对次数耗尽时的FINISH按有限报告质量评分，同时单列未解决事项；不将这种强制结束样本当作已验证自主停止能力。",
+    "W1-1: 补充轮次预算实例：当SEARCH只返回已取得的证据卡、正文需READ_RECORD时，可行补查必须计算整个获取与读取链，不能以一个已知URL就认定末轮能够完成核查。",
+    "W1-1: 在评分示例中明确展示：局部任务成果尚不完整，可以降低角色task维度；零轮次下事实准确、范围清楚且状态正确的INCOMPLETE报告，仍可单独获得高分并成为报告候选。",
+    "W1-1: 明确可辨识的PDF提取表头、行值及注释可以支持文字和计算核对；仅在关键列归属或字符存在无法消解的歧义时，缺少页面像素才构成相应关键未知。",
+    "W1-2: 明确角色层面的任务达成度与终端报告合格性可以不同：核心调查尚未完成可降低task评分，但如实披露缺口的必交INCOMPLETE仍可成为候选报告目标。",
+    "W1-2: 明确按已见目录规律试探URL不等于伪造证据；评价其行动前依据，同时单独检查报告是否把推导地址误称为来源明确提供的链接。",
+    "W1-2: 对财务表分别核查单行值、汇总算术、费用范围和预算版本。来源小计有冲突时，不能自动否定被其他已提供表格支持的行值，也不能认证争议汇总。",
+    "W1-2: 保持critical_unknown仅指影响当前输出合格判定的评审缺口；报告已准确披露且未拿来支撑确定结论的未取得材料，不机械触发关键未知。",
+    "W2-1: 补充本例校准：报告可以事实真实、状态正确，却因遗漏已取得的核心任务成果而需要修复；遗漏主要计入task，不应把全部事实依据一起降为不可靠。",
+    "W2-1: 数量比较分别检查单校实际支出与预算、两校彼此差额、多年估算及合计资金授权。算术正确不能替代比较对象正确，合计审批文件也不能自动支持单校预算结论。",
+    "W2-1: 将“未取得单校对应依据”与“没有取得任何批准调整依据”区分评分；已有部分审批证据时，限制应准确说明缺的是哪一层对应。",
+    "W2-1: 复看应结合同时发生的新正文读取评价。必要续读仍可作为正向动作，仅对缺少具体比较用途的附图开销作效率扣分。",
+    "W2-1: 保持critical_unknown的窄定义：本案未解的预算与分摊问题不自动造成评审关键未知；末次报告的已知遗漏可以直接判定，强制终端报告也不认证自主停止能力。",
+    "W2-2: 明确角色task维度中的调查完成度与强制提交时报告的目标质量可以不同：核心金额未取得可降低调查完成度，事实充分且状态准确的INCOMPLETE报告仍可得4分。",
+    "W2-2: 为分页探索增加评分示例：未知偏移下的合理首次定位、已见偏移后的有效修正、已知无关页的继续读取应分别判断；不能仅按返回页面是否命中倒推行动质量。",
+    "W2-2: 用本例校准数量口径：R333 million年度资本支出、R462 million资产转类和R1,645.4 million资产余额均不能替代首期累计决算；准确识别这种不适用性属于有效发现。",
+    "W2-2: 保留现有覆盖率规则，并明确调查对象尚有未知不自动触发critical_unknown；只有缺少判断当前输出所需的材料或任务定义，才阻止该目标按候选标准评审。",
+    "W3-1: 明确分页证据的判定单位：核对断言是否落在演员实际收到的文字范围内；评审包中的完整来源可以用于复核，却不能证明演员此前已读后文。",
+    "W3-1: 用具体可见替代行动评价后段效率。本例可指出E5续读入口长期未使用；不能仅凭超时、404、无关搜索结果或某次查询未命中就拒绝合理探索。",
+    "W3-1: 分别评价局部取证完成度与强制提交报告的质量。诚实INCOMPLETE不补足任务缺口，但零剩余轮次下的正确部分报告可以合格；前序行动不足不自动使报告变成虚假输出。",
+    "W3-1: 预算比较须区分协议合计、跨年建设估算、年度现金流、单校控制预算、直接实际支出及共同费用。没有同范围对应关系时，既不能计算所谓超支，也不能认证预算内或金额相等。",
+    "W3-1: 区分实际输入机制与演员行为：共享缓存已有页面不等于该角色已见；持续保留图片不等于逐次无价值复看；搜索器自动打开候选不等于演员主动调查每个无关来源。",
+    "W3-1: critical_unknown仅用于影响当前目标合格判定的评审缺口。最终预算仍未知，不妨碍判定一份有充分证据支持、准确披露缺口的INCOMPLETE报告；已能判断的行动缺陷仍应直接评分。",
+    "W3-2: 同时报告事实可靠性与局部目标达成程度。本例grounding较高而task较低并不矛盾；强制末轮的准确INCOMPLETE可以是报告候选，但不能计为精确数量核查成功。",
+    "W3-2: 单次行动按决定前的具体线索评价，不能因后来页面没有金额而否定首次合理探索；累计效率则检查是否在已有目录、遗漏图和明确缺口之间合理分配轮次。",
+    "W3-2: 对复看区分首次补附遗漏页、伴随新材料的必要比较和缺少新增问题的重复展示。本例不能按固定复看次数直接排除，也不能把所有旧图重附都评满分。",
+    "W3-2: 对财务断言分别核验成本中心支出、工程包决算、控制预算、成本规范、年度资本支出、竣工资产转入和未来资本承诺；同为兰特金额不足以建立可比关系。",
+    "W3-2: 高分必须限定到已经说出的事实和已执行行动。候选目标的3或4分不证明整个调查充分，角色加权分也不能抵消尚未解决的校方精确决算与预算衔接缺口。"
+  ]
+}

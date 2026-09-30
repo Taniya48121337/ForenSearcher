@@ -1,0 +1,57 @@
+{
+  "states": [
+    {
+      "id": "state_03",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 是离线决策，未执行所提调查；不评价工具执行或真实联动结果。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 仅使用当前可见的 E1、E2、E11、E15 和已有报告。两张实际附件支持标题差异，未见使用 reference 或未来结果。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 所述已确认事实仅为标题差异：E11 显示“lorem ipsum”，E15 显示“A conversation about CRPS”。输出未将标题差异推断为音轨替换，也未预设替换方向。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 针对尚未核查的实际言语补查，并要求结合对应画面和谈话上下文判断含义影响，覆盖原问题的两个必要部分。已有标题核查作为背景使用。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 创建一项可独立开展的跨视频对照任务，材料引用合法、目标具体。当前只有成对画面证据，继续取得声音证据合理；角色说明提供了媒体处理能力，尚无明确限制要求停止。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 明确区分标题提示与实际谈话内容，要求无法核实的部分保留未知，没有把局部 COMPLETED 当作全局核验完成。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 将言语差异及其画面含义影响交给同一项调查，没有另建重复标题核查。所需原话、双方时间及画面对应依据服务于差异定位和语义判断，未夹带身份、诊断或来源先后等额外调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "递归解析后，唯一目标是 o2 引用的单项 INVESTIGATE 决策；accepted_decision 是同一输出，不重复计分。其补查具有实际证据缺口和任务依据，而非仅与标注建议同名。已评分适用权重为90/90，覆盖率100%（占总权重90%），归一化评分4.00/4。可作为离线决策候选；此判断不代表执行对应检查已通过或音轨核验成功。"
+    }
+  ],
+  "construction_revisions": [],
+  "rubric_revisions": []
+}

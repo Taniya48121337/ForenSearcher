@@ -1,0 +1,1023 @@
+{
+ "source_run": "true_4124903_r2",
+ "source_request": "request_0037",
+ "n_gia_requests": 8,
+ "task": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.",
+ "runtime_constraints": {
+  "round_index": 3,
+  "can_create_round": true,
+  "turn_index": 6,
+  "max_turns": 8,
+  "remaining_turns": 2
+ },
+ "history_index": [
+  {
+   "record_type": "evidence",
+   "evidence_id": "E9",
+   "label": "Fact Check: Viral Eiffel Tower Fire Video Was AI-Generated",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E10",
+   "label": "ISIS video claim responsibility for ACCIDENTAL fireworks blaze at the Eiffel Tower | Daily Mail Online",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E11",
+   "label": "ISIS propaganda claims Bastille Day Eiffel Tower fire was terror attack - even though it was an ACCIDENT - The Mirror",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E12",
+   "label": "Dailymotion",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E13",
+   "label": "Dailymotion",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E14",
+   "label": "Dailymotion",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E15",
+   "label": "14 juillet : un camion prend feu à cause des feux d'artifices sous la tour Eiffel (IMAGES)",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E16",
+   "label": "Dailymotion",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E17",
+   "label": "Incendie à la Tour Eiffel : La Préfecture de Paris dément",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E21",
+   "label": "Un incendio en la Torre Eiffel levantó sospechas, pero no estaba relacionado con Niza - Infobae",
+   "source_workspace": "W1-1"
+  },
+  {
+   "record_type": "evidence",
+   "evidence_id": "E22",
+   "label": "Attentat à Nice : prise d'otage, incendie à la tour Eiffel... Les fausses rumeurs se sont propagées sur internet – franceinfo",
+   "source_workspace": "W1-2"
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-1",
+   "status": "COMPLETED",
+   "finding_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "selected_evidence_ids": [
+    "E3",
+    "E5",
+    "E8",
+    "E20",
+    "E21",
+    "E18",
+    "E19"
+   ],
+   "task": "核查给定视频与“巴黎埃菲尔铁塔附近升起的火焰和浓烟是巴士底日恐怖袭击的证据”这一声明的对应关系。检查实际视频，必要时搜索外部证据，核实视频来源、时间和地点，并说明画面能够支持的事实及无法据此确定的内容。依据实际证据回答，说明结论范围与不确定性。",
+   "materials": [
+    "E1"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F1",
+   "workspace_id": "W1-1",
+   "statement": "现有证据不支持“火焰和浓烟是巴士底日恐怖袭击的证据”。材料A的已查看帧显示：夜间亮灯的埃菲尔铁塔周围有烟雾，较低处、塔身右侧可见橙色火焰，远景可见河面和河岸。画面能够支持附近存在火情，不能据此确定起火原因、行为人或恐怖主义动机，也不能将烟雾遮挡塔身理解为铁塔本体燃烧。",
+   "evidence_ids": [
+    "E3",
+    "E5",
+    "E8"
+   ],
+   "limitations": [
+    "结论依据抽取帧，未逐帧检查完整视频或核验音轨；火焰所在的具体物体在这些画面中无法辨认。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F2",
+   "workspace_id": "W1-1",
+   "statement": "外部报道将相关事件定位为2016年7月14日巴黎埃菲尔铁塔附近耶拿桥的意外卡车火灾。Snopes与Infobae均转载巴黎警察局当日声明：铁塔没有起火，耶拿桥发生了一起意外卡车火灾，且已被扑灭。Infobae另明确报道该火灾与尼斯袭击无关。因此，对于报道中的这次事件，恐袭说法与警方说明相矛盾。",
+   "evidence_ids": [
+    "E20",
+    "E21"
+   ],
+   "limitations": [
+    "警方声明通过报道中的转载核验，未直接读取警方原帖；两篇报道引用同一声明，不能视为两项独立现场调查。",
+    "这些报道本身没有建立材料A与该事件之间的完整来源链。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F3",
+   "workspace_id": "W1-1",
+   "statement": "视频来源与时间找到了一条相关公开线索：YouTube视频 https://www.youtube.com/watch?v=YmDMziYntEs 的标题为“ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016”，平台元数据显示上传日期为2016年7月14日、时长25秒；其封面与材料A具有相似的塔身灯光和烟雾场景。这支持材料A可能对应上述2016年国庆日火灾，但目前只能确认存在这一候选公开视频，不能确认它是材料A的原始来源。画面与巴黎埃菲尔铁塔附近环境相符，耶拿桥这一具体起火位置来自报道。",
+   "evidence_ids": [
+    "E18",
+    "E19",
+    "E3",
+    "E8",
+    "E20"
+   ],
+   "limitations": [
+    "仅查看了候选视频的元数据和封面，未取得其完整视频进行时序比对；相似封面不足以证明同一片段。",
+    "原始拍摄者、首次发布来源、确切拍摄时间和拍摄机位尚未确定；上传日期不等于拍摄日期。"
+   ]
+  },
+  {
+   "record_type": "report",
+   "task_id": "W1-2",
+   "status": "COMPLETED",
+   "finding_ids": [
+    "F4",
+    "F5",
+    "F6"
+   ],
+   "selected_evidence_ids": [
+    "E23",
+    "E20",
+    "E3",
+    "E5",
+    "E8"
+   ],
+   "task": "核查“巴黎埃菲尔铁塔附近升起的火焰和浓烟是巴士底日恐怖袭击的证据”这一声明的事件背景与因果解释。必要时检查给定视频并搜索外部证据，核实相关火情的日期、地点、起因，以及是否有可靠证据支持其属于恐怖袭击。依据实际证据回答，区分来源声称与已证实事实，说明结论范围与不确定性。",
+   "materials": [
+    "C0",
+    "E1"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F4",
+   "workspace_id": "W1-2",
+   "statement": "“火焰和浓烟是巴黎巴士底日恐怖袭击的证据”这一解释与警方通报不符。巴黎警察局2016年7月14日声明：埃菲尔铁塔没有起火；耶拿桥（pont d’Iéna）发生的是意外卡车火灾，已经扑灭。该一手来源支持意外火灾的解释，没有支持恐怖袭击的证据。",
+   "evidence_ids": [
+    "E23"
+   ],
+   "limitations": [
+    "警方这则简短通报没有说明具体点火机制，也未提供完整事故调查材料。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F5",
+   "workspace_id": "W1-2",
+   "statement": "Snopes将该事件置于2016年7月14日尼斯袭击后谣言扩散的背景中，并报道巴黎的烟雾来自附近耶拿桥上卡车运输的烟花意外爆炸。尼斯袭击与巴黎火情不能因发生在同一节日而被认定具有共同原因或属于协调袭击。",
+   "evidence_ids": [
+    "E20",
+    "E23"
+   ],
+   "limitations": [
+    "“运输中的烟花意外爆炸”是Snopes的报道细节；已读取的警方原文只确认意外卡车火灾，未直接确认烟花及爆炸机制。"
+   ]
+  },
+  {
+   "record_type": "finding",
+   "finding_id": "F6",
+   "workspace_id": "W1-2",
+   "statement": "材料A在2.100、10.467和23.000秒的已观察帧显示夜间亮灯的埃菲尔铁塔、附近烟雾，以及后两帧中铁塔右侧较低位置的明亮火焰。画面本身不能确定起火原因、行为人或恐怖袭击性质，也不能据烟雾靠近铁塔认定铁塔本体起火。",
+   "evidence_ids": [
+    "E3",
+    "E5",
+    "E8"
+   ],
+   "limitations": [
+    "仅观察了三个离散时刻，未逐帧核验整段视频。",
+    "尚未独立确认材料A的拍摄日期、原始来源及其与上述已报道事件的确切对应；画面与事件描述相容并不等于来源对应已获证实。"
+   ]
+  }
+ ],
+ "latest_reports": [
+  {
+   "task": "核实给定视频E1与2016年7月14日巴黎埃菲尔铁塔附近意外卡车火灾的对应关系，以判断声明“Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.”是否适用于这段素材。现有警方通报已确认当日耶拿桥发生意外卡车火灾，但尚未确认E1就是该事件的视频。直接对照E1与候选公开视频https://www.youtube.com/watch?v=YmDMziYntEs（已有元数据E18、封面E19）；必要时追查E20引用的视频https://www.youtube.com/watch?v=cv_F3UkbdbI。依据可区分的画面细节、片段时序和来源信息，说明能否确认同一片段及其事件归属，区分上传日期与拍摄日期；若无法取得或对应，明确说明限制。",
+   "materials": [
+    "E1",
+    "E18",
+    "E19",
+    "E20",
+    "E23"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W2-1",
+    "status": "INCOMPLETE",
+    "finding_ids": [
+     "F7",
+     "F8",
+     "F9",
+     "F10"
+    ],
+    "selected_evidence_ids": [
+     "E28",
+     "E29",
+     "E4",
+     "E19",
+     "E27",
+     "E3",
+     "E24",
+     "E26",
+     "E23",
+     "E20"
+    ],
+    "status_reason": "候选公开视频仅取得封面和元数据，尚未建立与材料 A 的视频帧及片段时序对应，无法确认材料 A 就是所述意外卡车火灾的视频。",
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F7",
+      "workspace_id": "W2-1",
+      "statement": "材料 A 的0秒和0.5秒帧显示夜间埃菲尔铁塔、烟雾、河面及铁塔右下方的火光；6.267秒帧更近地显示岸边火光和烟雾。这些画面不能辨认起火车辆、起火原因或恐袭行为。",
+      "evidence_ids": [
+       "E28",
+       "E29",
+       "E4"
+      ],
+      "limitations": [
+       "判断限于已观察的抽样帧；火光和烟雾本身不能证明恐怖袭击。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F8",
+      "workspace_id": "W2-1",
+      "statement": "候选 YmDMziYntEs 与 cv_F3UkbdbI 的封面在塔身平台转角、钢架构图、黄紫灯光及烟雾形态上高度一致，前者另有上下黑边，支持两候选封面使用同一画面。材料 A 所见照明及烟雾场景与这些封面相容，但尚不足以确认同一视频片段。",
+      "evidence_ids": [
+       "E19",
+       "E27",
+       "E28",
+       "E3"
+      ],
+      "limitations": [
+       "封面对应不能证明两段完整视频相同，也不能证明材料 A 来自其中任何一个视频。",
+       "未取得候选视频的可比较帧，未建立跨视频时间锚点，无法判断连续对应、截取或编辑关系。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F9",
+      "workspace_id": "W2-1",
+      "statement": "两个候选视频的元数据均将上传日期列为2016年7月14日。YmDMziYntEs 的标题和描述也将内容标注为当日埃菲尔铁塔脚下火灾。这些信息是上传记录及来源标注，不能独立确定真实拍摄日期，也不能确定材料 A 的拍摄日期。",
+      "evidence_ids": [
+       "E24",
+       "E26"
+      ],
+      "limitations": [
+       "上传日期不等于拍摄日期；材料 A 与候选视频的素材对应关系尚未确认。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F10",
+      "workspace_id": "W2-1",
+      "statement": "巴黎警方2016年7月14日通报称，耶拿桥发生的是已扑灭的意外卡车火灾，埃菲尔铁塔本身没有起火。Snopes 正文将 cv_F3UkbdbI 链接作为该事件被误传为恐袭的视频材料。因此，将这一已知事件的火烟解释为巴黎国庆日恐袭证据，与警方通报冲突。材料 A 的已见画面同样不足以支持恐袭声明，但其属于该事件的直接联系仍未确认。",
+      "evidence_ids": [
+       "E23",
+       "E20",
+       "E28",
+       "E4"
+      ],
+      "limitations": [
+       "警方通报确认事件性质，没有直接鉴定材料 A。",
+       "Snopes 对链接视频的事件归属提供来源线索，不能替代材料 A 与该视频的实际片段对照。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E24",
+     "modalities": [
+      "text"
+     ],
+     "label": "ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+     "content": "{\n  \"title\": \"ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=YmDMziYntEs\",\n  \"channel\": \"5,555,554 vues\",\n  \"upload_date\": \"20160714\",\n  \"duration\": 25,\n  \"description\": \"ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016!\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"YmDMziYntEs\"\n}",
+     "source_ref": "R26",
+     "derived_from": [],
+     "artifact_ref": "A30",
+     "locator": "video source fields: title, webpage_url, channel, upload_date, duration, description, extractor, live_status, video_id",
+     "acquired_by": "SEARCH/open/yt-dlp",
+     "discovered_by": "W2-1",
+     "production_method": "source_metadata",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R26",
+      "source_url": "https://www.youtube.com/watch?v=YmDMziYntEs",
+      "final_url": "https://www.youtube.com/watch?v=YmDMziYntEs"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E26",
+     "modalities": [
+      "text"
+     ],
+     "label": "Smoke rises around Eiffel Tower",
+     "content": "{\n  \"title\": \"Smoke rises around Eiffel Tower\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=cv_F3UkbdbI\",\n  \"channel\": \"Rutnet\",\n  \"upload_date\": \"20160714\",\n  \"duration\": 25,\n  \"description\": \"Smoke rises around Eiffel Tower\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"cv_F3UkbdbI\"\n}",
+     "source_ref": "R27",
+     "derived_from": [],
+     "artifact_ref": "A32",
+     "locator": "video source fields: title, webpage_url, channel, upload_date, duration, description, extractor, live_status, video_id",
+     "acquired_by": "SEARCH/open/yt-dlp",
+     "discovered_by": "W2-1",
+     "production_method": "source_metadata",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R27",
+      "source_url": "https://www.youtube.com/watch?v=cv_F3UkbdbI",
+      "final_url": "https://www.youtube.com/watch?v=cv_F3UkbdbI"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E23",
+     "modalities": [
+      "text"
+     ],
+     "label": "Préfecture de Police on X: \"Ne propagez pas de fausses rumeurs. Aucun incendie à la #TourEiffel. Un incendie accidentel de camion a eu lieu pont d'Iéna. Il est éteint.\" / X",
+     "content": "[1] Préfecture de Police@prefpoliceNe propagez pas de fausses rumeurs. Aucun incendie à la #TourEiffel. Un incendie accidentel de camion a eu lieu pont d'Iéna. Il est éteint.10:33 PM · Jul 14, 2016657K2.4K",
+     "source_ref": "R22",
+     "derived_from": [],
+     "artifact_ref": "A28",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R22",
+      "source_url": "https://x.com/prefpolice/status/753719036245073920",
+      "final_url": "https://x.com/prefpolice/status/753719036245073920"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E20",
+     "modalities": [
+      "text"
+     ],
+     "label": "Eiffel Tower Set Ablaze by Terrorists | Snopes.com",
+     "content": "[1] Just after a devastating [attack](https://www.reuters.com/article/us-france-crash-hollande-idUSKCN0ZV08R?mod=related&channelName=worldNews) in Nice, France, on 14 July 2016 — in which dozens of people were killed and still more wounded when a man identified as French-Tunisian drove a huge truck through a large crowd watching fireworks — rumors spread thick and fast, as they do after any mass casualty event.\n\n[2] Nine hundred kilometers away in Paris, Bastille Day celebrants saw smoke begin to billow up around the Eiffel Tower — the result of an accidental [explosion](https://www.mirror.co.uk/news/world-news/panic-huge-plumes-smoke-billow-8425417) of fireworks being trucked across the nearby Jena Bridge — and must have thought Paris itself was under attack. But it wasn't, and the structure itself was never in flames.\n\n[3] Fear-mongering extremist and conspiracy web sites seized upon photos and [video](https://www.youtube.com/watch?v=cv_F3UkbdbI) of the event, however, misleadingly presenting them as \"evidence\" that the entire country was under coordinated attack. The Paris Police were quick to douse this speculation via social media. \"Don't spread false rumors,\" read a boldface tweet from the Préfecture de police. \"No fire at the #TourEiffel. An accidental truck fire took place at Jena Bridge. It has been put out.\"\n\n[4] Ne propagez pas de fausses rumeurs. Aucun incendie à la [#TourEiffel](https://twitter.com/hashtag/TourEiffel?src=hash). Un incendie accidentel de camion a eu lieu pont d'Iéna. Il est éteint.\n\n[5] — Préfecture de police (@prefpolice) July 14, 2016\n\n[6] No injuries were reported in the Paris fireworks explosion.",
+     "source_ref": "R20",
+     "derived_from": [],
+     "artifact_ref": "A24",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-1",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R20",
+      "source_url": "https://www.snopes.com/fact-check/eiffel-tower-terrorist-attack/",
+      "final_url": "https://www.snopes.com/fact-check/eiffel-tower-terrorist-attack/"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E28",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在0.000秒的帧",
+     "content": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A34",
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E29",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在0.500秒的帧",
+     "content": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.5,\"time_s\":0.5}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A35",
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.5,\"time_s\":0.5}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W2-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E4",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在6.267秒的帧",
+     "content": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":6.275000000000001,\"time_s\":6.266666666666667}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A3",
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":6.275000000000001,\"time_s\":6.266666666666667}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E19",
+     "modalities": [
+      "image"
+     ],
+     "label": "cover: ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+     "content": "{\"source_url\": \"https://i.ytimg.com/vi/YmDMziYntEs/sddefault.jpg\", \"width\": 640, \"height\": 480, \"format\": \"JPEG\"}",
+     "source_ref": "R12",
+     "derived_from": [],
+     "artifact_ref": "A22",
+     "locator": "complete cover image",
+     "acquired_by": "SEARCH/open/yt-dlp+http",
+     "discovered_by": "W1-1",
+     "production_method": "source_material",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。",
+     "source": {
+      "candidate_id": "R12",
+      "source_url": "https://www.youtube.com/watch?v=YmDMziYntEs",
+      "final_url": "https://www.youtube.com/watch?v=YmDMziYntEs"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E27",
+     "modalities": [
+      "image"
+     ],
+     "label": "cover: Smoke rises around Eiffel Tower",
+     "content": "{\"source_url\": \"https://i.ytimg.com/vi/cv_F3UkbdbI/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}",
+     "source_ref": "R27",
+     "derived_from": [],
+     "artifact_ref": "A33",
+     "locator": "complete cover image",
+     "acquired_by": "SEARCH/open/yt-dlp+http",
+     "discovered_by": "W2-1",
+     "production_method": "source_material",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。",
+     "source": {
+      "candidate_id": "R27",
+      "source_url": "https://www.youtube.com/watch?v=cv_F3UkbdbI",
+      "final_url": "https://www.youtube.com/watch?v=cv_F3UkbdbI"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E3",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在2.100秒的帧",
+     "content": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":2.091666666666667,\"time_s\":2.1}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A2",
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":2.091666666666667,\"time_s\":2.1}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E25",
+     "derived_from": [],
+     "locator": "complete cover image"
+    },
+    {
+     "evidence_id": "E3",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":2.091666666666667,\"time_s\":2.1}"
+    },
+    {
+     "evidence_id": "E4",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":6.275000000000001,\"time_s\":6.266666666666667}"
+    },
+    {
+     "evidence_id": "E5",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":10.458333333333334,\"time_s\":10.466666666666667}"
+    },
+    {
+     "evidence_id": "E6",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":14.641666666666667,\"time_s\":14.633333333333333}"
+    },
+    {
+     "evidence_id": "E7",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":18.825,\"time_s\":18.833333333333332}"
+    },
+    {
+     "evidence_id": "E8",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":23.008333333333336,\"time_s\":23.0}"
+    },
+    {
+     "evidence_id": "E27",
+     "derived_from": [],
+     "locator": "complete cover image"
+    },
+    {
+     "evidence_id": "E28",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.0,\"time_s\":0.0}"
+    },
+    {
+     "evidence_id": "E29",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":0.5,\"time_s\":0.5}"
+    },
+    {
+     "evidence_id": "E30",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":1.0,\"time_s\":1.0}"
+    },
+    {
+     "evidence_id": "E31",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":1.5,\"time_s\":1.5}"
+    }
+   ],
+   "image_inputs_truncated": true,
+   "visual_observation_summary": {
+    "image_evidence_count": 13,
+    "videos": [
+     {
+      "evidence_id": "E1",
+      "observed_frame_count": 10,
+      "media_duration_s": 25.1,
+      "coverage_span_s": [
+       0.0,
+       25.1
+      ],
+      "observed_ranges_s": [
+       [
+        0.0,
+        0.03333333333333333
+       ],
+       [
+        0.5,
+        0.5333333333333333
+       ],
+       [
+        1.0,
+        1.0333333333333334
+       ],
+       [
+        1.5,
+        1.5333333333333334
+       ],
+       [
+        2.1,
+        2.1333333333333333
+       ],
+       [
+        6.266666666666667,
+        6.3
+       ],
+       [
+        10.466666666666667,
+        10.5
+       ],
+       [
+        14.633333333333333,
+        14.666666666666666
+       ],
+       [
+        18.833333333333332,
+        18.866666666666667
+       ],
+       [
+        23.0,
+        23.033333333333335
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.03333333333333333,
+        0.5
+       ],
+       [
+        0.5333333333333333,
+        1.0
+       ],
+       [
+        1.0333333333333334,
+        1.5
+       ],
+       [
+        1.5333333333333334,
+        2.1
+       ],
+       [
+        2.1333333333333333,
+        6.266666666666667
+       ],
+       [
+        6.3,
+        10.466666666666667
+       ],
+       [
+        10.5,
+        14.633333333333333
+       ],
+       [
+        14.666666666666666,
+        18.833333333333332
+       ],
+       [
+        18.866666666666667,
+        23.0
+       ],
+       [
+        23.033333333333335,
+        25.1
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     }
+    ]
+   }
+  }
+ ],
+ "current_materials": [
+  {
+   "evidence_id": "E18",
+   "reference_id": null,
+   "label": "ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R12"
+  },
+  {
+   "evidence_id": "E19",
+   "reference_id": null,
+   "label": "cover: ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": "R12"
+  },
+  {
+   "evidence_id": "E20",
+   "reference_id": null,
+   "label": "Eiffel Tower Set Ablaze by Terrorists | Snopes.com",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R20"
+  },
+  {
+   "evidence_id": "E23",
+   "reference_id": null,
+   "label": "Préfecture de Police on X: \"Ne propagez pas de fausses rumeurs. Aucun incendie à la #TourEiffel. Un incendie accidentel de camion a eu lieu pont d'Iéna. Il est éteint.\" / X",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R22"
+  },
+  {
+   "evidence_id": "E24",
+   "reference_id": null,
+   "label": "ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R26"
+  },
+  {
+   "evidence_id": "E25",
+   "reference_id": null,
+   "label": "cover: ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": "R26"
+  },
+  {
+   "evidence_id": "E2",
+   "reference_id": null,
+   "label": "媒体属性：video，25.100秒，1280×720，30.000fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E3",
+   "reference_id": null,
+   "label": "视频E1在2.100秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E4",
+   "reference_id": null,
+   "label": "视频E1在6.267秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E5",
+   "reference_id": null,
+   "label": "视频E1在10.467秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E6",
+   "reference_id": null,
+   "label": "视频E1在14.633秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E7",
+   "reference_id": null,
+   "label": "视频E1在18.833秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E8",
+   "reference_id": null,
+   "label": "视频E1在23.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E26",
+   "reference_id": null,
+   "label": "Smoke rises around Eiffel Tower",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R27"
+  },
+  {
+   "evidence_id": "E27",
+   "reference_id": null,
+   "label": "cover: Smoke rises around Eiffel Tower",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": "R27"
+  },
+  {
+   "evidence_id": "E28",
+   "reference_id": null,
+   "label": "视频E1在0.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E29",
+   "reference_id": null,
+   "label": "视频E1在0.500秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E30",
+   "reference_id": null,
+   "label": "视频E1在1.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E31",
+   "reference_id": null,
+   "label": "视频E1在1.500秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  }
+ ],
+ "visual_observation_summary": {
+  "image_evidence_count": 13,
+  "videos": [
+   {
+    "evidence_id": "E1",
+    "observed_frame_count": 10,
+    "media_duration_s": 25.1,
+    "coverage_span_s": [
+     0.0,
+     25.1
+    ],
+    "observed_ranges_s": [
+     [
+      0.0,
+      0.03333333333333333
+     ],
+     [
+      0.5,
+      0.5333333333333333
+     ],
+     [
+      1.0,
+      1.0333333333333334
+     ],
+     [
+      1.5,
+      1.5333333333333334
+     ],
+     [
+      2.1,
+      2.1333333333333333
+     ],
+     [
+      6.266666666666667,
+      6.3
+     ],
+     [
+      10.466666666666667,
+      10.5
+     ],
+     [
+      14.633333333333333,
+      14.666666666666666
+     ],
+     [
+      18.833333333333332,
+      18.866666666666667
+     ],
+     [
+      23.0,
+      23.033333333333335
+     ]
+    ],
+    "unconfirmed_ranges_s": [
+     [
+      0.03333333333333333,
+      0.5
+     ],
+     [
+      0.5333333333333333,
+      1.0
+     ],
+     [
+      1.0333333333333334,
+      1.5
+     ],
+     [
+      1.5333333333333334,
+      2.1
+     ],
+     [
+      2.1333333333333333,
+      6.266666666666667
+     ],
+     [
+      6.3,
+      10.466666666666667
+     ],
+     [
+      10.5,
+      14.633333333333333
+     ],
+     [
+      14.666666666666666,
+      18.833333333333332
+     ],
+     [
+      18.866666666666667,
+      23.0
+     ],
+     [
+      23.033333333333335,
+      25.1
+     ]
+    ],
+    "unknown_duration_frame_times_s": []
+   }
+  ]
+ },
+ "run_config": {
+  "dataset": "true",
+  "case": "4124903",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "search": "ddgs_text",
+  "evidence_source_policy": null,
+  "source_policy": null,
+  "gia_output_source": "codex_cli"
+ }
+}

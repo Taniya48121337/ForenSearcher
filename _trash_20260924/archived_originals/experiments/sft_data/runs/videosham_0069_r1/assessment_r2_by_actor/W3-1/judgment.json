@@ -1,0 +1,215 @@
+{
+  "assessment_scope": "仅评估 W3-1（HI）的 request_0046 至 request_0057，共12个输出；按 objects 递归解释引用，仅使用所供文本和图片。root.result 中的 GIA 答案及其他角色记录不作为监督目标。本段包含实际执行及报告提交，并非 terminal_replay。角色加权评分为82.5/100，维度评分权重覆盖率100%；该分数不代表局部任务完成或所有目标合格。官方6–10秒标注仅作参考，不能覆盖实际像素证据。critical_unknown 用于标记妨碍判定目标质量的关键缺证，未解决的全视频问题另列于 unknowns。",
+  "roles": [
+    {
+      "actor": "W3-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11个动作均有原始输出、接受输出和观察事件对应，且 raw_equals_accepted=true；request_0057 有报告提交事件。执行对应完整，但不证明取证选择或报告内容充分。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0048",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056",
+            "request_0057"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "动作使用已提供或此前工具返回的证据编号，最终引用的8张图片均在历史输入及最终附图中可见。没有发现使用官方标注、未来结果或其他角色报告作为自身结论的证据。其他工作区生成的图片由本角色合法取得，不构成信息越界。",
+          "request_ids": [
+            "request_0046",
+            "request_0048",
+            "request_0051",
+            "request_0054",
+            "request_0057"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告明确说出的主要视觉事实得到像素支持：图1的E67与图5的E59一致；图2、3的E68/E69与图6的E65一致；图4的E37与图7的E63一致。腿部轮廓、运动模糊、车把及背景共同对应，依据超出周期性踩踏姿态相似。0.36秒、0.40秒和0.04秒的计算正确；图8的E24确实比这些前段画面更抬头。主要缺陷是漏报任务要求的其他对应，计入task，不把真实局部发现判为虚假。",
+          "request_ids": [
+            "request_0057"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "报告提供了有用的局部重复证据，并正确提交INCOMPLETE，但遗漏了任务点名的三个主要锚点。实际像素显示：图10的E53与图6的E65一致，图9的E20与图27的E50一致，图11的E21与图28的E66一致，即A 2.92→B 0.28、A 4.00→B 0.40、A 6.68→B 0.64。这些成对图片已多次同时提供，最终却全部列为尚未确认。它们直接回答局部任务，不能视为可省略的次要差异。全段抬头动作是否出现仍未解决；不因本HI没有完成声音核查而扣分。",
+          "request_ids": [
+            "request_0051",
+            "request_0053",
+            "request_0055",
+            "request_0057"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "先读取已有对齐结果，得知matches为空后转向人工取帧，符合当时可见状态；逐步细化B前段及A 2.76–3.20秒附近也有明确调查价值。后期多次切回已成对呈现的图片，未解决仍可直接判断的主要锚点，行动收益下降。不能用后来返回的缓存证据倒推request_0047当时属于明知重复取证。",
+          "request_ids": [
+            "request_0046",
+            "request_0047",
+            "request_0049",
+            "request_0050",
+            "request_0051",
+            "request_0054",
+            "request_0055",
+            "request_0056"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "正确区分离散对应、连续定格、完整循环和固定倍速；没有以总时长比判断播放倍率，也未宣称A全段没有抬头动作。INCOMPLETE状态诚实。缺陷在于对已有直接像素支持的三个主要锚点继续保留未知。关于B 1.80、2.68秒不在最终本轮附图中的说明字面成立，但这些图片此前已经提供，最后一轮附件范围不能替代累计观察范围。",
+          "request_ids": [
+            "request_0057"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "中段新取帧具有信息增益；request_0052首次将E58/E60并排比较，request_0053结合其他锚点作一次复核也有合理性。但request_0055再次调回相同主要锚点组，request_0056又回到刚看过的局部对应组，消耗末两次取证机会，未增加时间覆盖或解决主要对应。不是所有READ_RECORD复看都应拒绝，但这两次的边际价值不足。",
+          "request_ids": [
+            "request_0048",
+            "request_0052",
+            "request_0053",
+            "request_0054",
+            "request_0055",
+            "request_0056"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0057遗漏局部任务明确要求核查、且已由实际成对像素支持的A 2.92、4.00、6.68秒对应关系，并把它们统一列为未确认。这是主要任务信息遗漏，足以阻止该报告直接进入正向SFT候选。"
+      ],
+      "unknowns": [
+        "最终实际观察为A、B各14个取样时刻。按每帧0.04秒计算，分别约占文件时间的5.5%和13.9%；coverage_span_s覆盖文件起止不等于全片已看。E5处理过255/101帧但没有匹配候选，也不构成全段对应确认。",
+        "A重复画面的连续保持时长、完整重复区间、是否存在其他顺序变化，以及A未查看区间是否出现抬头动作，仍未确定。",
+        "官方6–10秒标注与当前文件时间轴的适用关系没有核实。报告没有提交完整编辑区间，不能据此计算完整定位指标或判为定位通过；也不能因局部证据位于标注外就否定像素支持的重复。",
+        "声音内容没有提供，但不属于本HI的局部任务，且本HI未声称完成试听、转写或声音语义核查。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0046",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E5已在材料中，读取已有时序对齐结果可确定后续调查基础，避免重复调用同一分析。动作及执行对应完整，没有提前假定对齐成功。"
+    },
+    {
+      "request_id": "request_0047",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当时已知E5无候选，分散取A全段8个时刻是合理探索，时间参数有效。一次取满8张且未保留明确的B侧比较焦点，导致下一轮部分新结果未附，容量安排有小缺陷；不能因工具后来复用了旧E就认定此前已知这些图片。"
+    },
+    {
+      "request_id": "request_0048",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "上一轮明确遗漏E57/E37/E47/E26，当前通过focus恢复这4张A帧并保留4张B帧，同时读取B属性。它解决了实际附件遗漏，属于必要复看。"
+    },
+    {
+      "request_id": "request_0049",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已见A多个低头样本而B后段抬头，补取B前1秒的4个时刻可检验前段对应解释。保留4张A帧，符合跨视频比较容量，不能用后续命中结果反推这一探索早已确定答案。"
+    },
+    {
+      "request_id": "request_0050",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据上一轮B粗采样进一步取0.08、0.32、0.88秒，检查邻近动作相位，具有明确增量价值。4张A帧、1张既有B帧与3张新B帧合计8张，容量安排合理。"
+    },
+    {
+      "request_id": "request_0051",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "补取B 0.28、0.40、0.64秒，同时保留任务点名的A 2.92、4.00、6.68秒及末段样本，直接针对尚未解决的主要锚点。动作可执行且有调查价值；后续报告漏用结果不应倒扣该动作。"
+    },
+    {
+      "request_id": "request_0052",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "重新组织4组成对锚点，其中E58/E60此前未同时呈现，可补查A 7.80与B 0.76秒的对应。其他几对已有共同观察，增量有限，但此次不能简单归为无价值重复。"
+    },
+    {
+      "request_id": "request_0053",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "在检查另一组时序锚点后，第一次返回任务点名的3组锚点及末段对照，仍可作为跨组复核。图片均已存在，没有增加覆盖，因此只给3分；后续继续原样切换不能沿用此次合理性。"
+    },
+    {
+      "request_id": "request_0054",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "围绕已有A 2.92与3.20秒样本补取2.76、2.80、3.16秒，并保留B 0.24、0.28、0.32秒，能够检验重复与邻近变化，属于有用的局部细化。再次请求已见的3.20秒稍有冗余，可直接用其已有E37作为焦点。"
+    },
+    {
+      "request_id": "request_0055",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前已获得新的局部对应及重复证据，却再次调回在request_0052和request_0054输入中已完整成对呈现的同一组8张图片。没有新增像素或针对性测量来解决主要锚点，且仅剩2次行动机会。可保留为真实历史，不适合作为优选行动目标。"
+    },
+    {
+      "request_id": "request_0056",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "回调的8张图片中7张刚在request_0055输入中共同出现；加入E24可用于报告中的姿态对照，但其抬头特征早已清楚可见。这次汇总复看没有解决A全段姿态或主要时间锚点问题，耗尽最后一次取证机会，边际收益偏低。"
+    },
+    {
+      "request_id": "request_0057",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "已报告的局部对应、重复及时间差都真实，INCOMPLETE状态也恰当；问题是遗漏核心任务已有答案。E53/E65、E20/E50、E21/E66的实际像素分别支持A 2.92→B 0.28、4.00→0.40、6.68→0.64，不能全部以未确认代替。这一缺陷可由现有材料明确判定，无需假设缺失证据。应从对应终端状态重新生成报告，纳入这些离散对应，同时继续保留连续区间、完整编辑方式和全段抬头呈现的限制。"
+    }
+  ],
+  "construction_revisions": [
+    "保留每步决策前的工具目录、实际附件、历史已见集合与执行对应；明确区分已保存图片、当轮附图和累计观察。不要把最后一轮未附图片改写成整条轨迹从未见过。",
+    "保留E5原始matches为空的观察及随后合理的人工取帧恢复，不补写成功对齐，也不将处理全帧的coverage转换成已确认匹配覆盖。",
+    "在已有主要锚点成对显示后优先形成对应判断；后续取帧用于检查具体过渡或歧义。修复后期行动时从该状态重执行，不能把新行动接到不相容的旧观察上。",
+    "重新生成request_0057时纳入三个主要离散对应及其直接引用，保留真实的INCOMPLETE范围。若进一步声称连续保持时长或完整变速区间，须另外取得相应时序证据。",
+    "逐请求导出候选；request_0055、request_0056保留为历史上下文，request_0057修复后重新评估。root.result中的GIA答案不能替代本HI报告或成为该角色额外目标。",
+    "正式定位评估先核对官方区间与当前媒体的时间轴关系，再分别记录原标注指标与像素语义结论；不改动金标准来适配局部发现。"
+  ],
+  "rubric_revisions": [
+    "明确将正面断言真实性、主要任务信息遗漏和证据不确定性分别评分。本例局部重复发现真实，但漏报三个点名锚点仍构成实质任务缺陷。",
+    "INCOMPLETE不自动获得高分，也不自动失败：同时检查未完成项是否确实缺证，以及模型是否有效使用已经获得、足以回答的问题证据。",
+    "复看按当时的新比较关系、具体歧义和剩余预算判断。首次补齐遗漏、首次并排比较与末段重复切换应区别处理，不能只按次数分类。",
+    "将离散重复时刻、连续保持区间、完整编辑定位明确分开。没有预测完整区间时，不自行把两个样本端点拼成预测区间，也不能把真实局部发现视为完整定位通过。",
+    "明确critical_unknown是目标可判定性上的关键缺证，区别于报告诚实披露的客观未决问题；已被像素证实的遗漏属于已知缺陷。",
+    "高加权分必须同时呈现低分维度和逐目标处置；执行、可见性和局部事实获得高分，不能抵消主要任务遗漏并自动批准SFT导出。",
+    "音轨存在、听感和声音语义继续分开评估，并先核对HI局部任务是否包含声音要求；不得用GIA的全局需求替代本HI任务范围。"
+  ]
+}

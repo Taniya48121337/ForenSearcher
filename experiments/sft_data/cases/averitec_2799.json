@@ -1,0 +1,102 @@
+{
+  "case_id": "averitec:2799",
+  "dataset": "averitec",
+  "source_id": "2799",
+  "split": "dev_eval",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：California wildfire is as a result of poor forest management.（声明日期：2018-11-10）",
+  "family_key": "averitec:2799",
+  "media": [],
+  "claims": [
+    "California wildfire is as a result of poor forest management."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden",
+      "politifact.com/california/statements/2018/nov/12/donald-trump/trumps-overly-simplistic-and-false-claim-californi",
+      "politifact.com/factchecks/2018/nov/12/donald-trump/trumps-overly-simplistic-and-false-claim-californi"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "消防部门或消防员组织对\"林业管理不善导致加州山火\"这一说法的公开回应",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "2018 年 11 月加州山火的类型、位置与起因的可靠说明，能否支持\"林业管理不善\"的归因",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "pfa_tweet",
+      "description": "帕萨迪纳消防员协会主席的推文（标注来源）",
+      "url_pattern": "*pfa809/status/1061371157583032320*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "newsweek",
+      "description": "Newsweek 关于消防员反驳的报道（试点 run 取到）",
+      "url_pattern": "newsweek.com/trump-wildfire-tweet-was-reckless*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "nbcnews",
+      "description": "NBC 关于消防员反驳的报道（试点 run 取到）",
+      "url_pattern": "nbcnews.com/news/us-news/trump-draws-ire-firefighters*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "cpf",
+      "description": "加州专业消防员协会主席的回应（试点 run 取到）",
+      "url_pattern": "legacy.cpf.org/go/cpf/news-and-events/news/cpf-president-brian-rice*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:newsweek,nbcnews,cpf,pfa_tweet",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averitec/2799/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2018-11-10，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210129204017/https://www.politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden/。（已按 2026-09-28 独立审稿修改 3 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

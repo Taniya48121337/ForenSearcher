@@ -1,0 +1,54 @@
+{
+  "spec_id": "gia",
+  "version": "0.2.0",
+  "parent": "0.1.0",
+  "harness_params": {
+    "image_input_limit": 8,
+    "max_workspace_turns": 12,
+    "read_page_chars": 6000,
+    "max_model_view_chars": 180000,
+    "max_evidence_cards": 12,
+    "max_candidate_cards": 8,
+    "state_renderer": "legacy"
+  },
+  "changelog": [
+    {
+      "targets": [
+        "unsupported_assertion",
+        "wrong_citation",
+        "fabricated_evidence_id",
+        "source_restriction_miss",
+        "attribution_drift",
+        "scope_overreach",
+        "misread_fine_text",
+        "sloppy_numeric",
+        "omitted_required_fact",
+        "completed_without_finishing",
+        "incomplete_though_answerable",
+        "empty_report",
+        "illegal_action",
+        "redundant_action",
+        "evidence_dropped",
+        "wrong_tool",
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "unnecessary_round",
+        "dependent_sibling_tasks"
+      ],
+      "rationale": "初始版本：收编运行时提示与试点指令，rubric 按 errors.py 逐类生成"
+    },
+    {
+      "targets": [
+        "premature_finish",
+        "unnecessary_round",
+        "task_not_gap_driven"
+      ],
+      "rationale": "minor 升版：把运行时 _gia_turn_prompt 在存在可汇总 Finding 且可再开轮次时追加于 _GIA_SYSTEM_PROMPT 之后的两段附注（“当前或历史轮次存在可汇总的 Finding……缺少必要部分时只调查该缺口。”）收编进 student_prompt 主提示段，使导出的 system 与运行时逐字一致；首轮变体段原样保留；只收编运行时文本、不改行为；不改 rubric、teacher_instruction 与 harness_params"
+    }
+  ],
+  "output_schema": "contracts.parse_gia_decision",
+  "verifier": "verifier@0.3.0",
+  "notes": "student_prompt 含主提示与首轮派工变体，以分隔注释区分；运行时按是否有历史报告选择。主提示 = local_models._GIA_SYSTEM_PROMPT + _gia_turn_prompt 在 statements 非空且 can_create_round 时追加的附注（取自 run true_4124903_r1 的 GIA 请求 system_prompt，逐字）；首轮变体 = _GIA_DISPATCH_PROMPT（无 empty_material_guidance 时），与 gia@0.1.0 相同。_gia_turn_prompt 的其它分支（round_in_progress、轮次预算用完、无 Finding 的继续调查、空材料提示）未收编。",
+  "hash": "sha256:4691a092d3431b3995faebeeab1618ebf0892f856af19c4f7d5bab42c5b653ca"
+}

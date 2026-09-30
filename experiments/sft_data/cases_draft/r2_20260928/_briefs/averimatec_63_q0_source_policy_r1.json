@@ -1,0 +1,176 @@
+{
+ "run": "averimatec_63_q0_source_policy_r1",
+ "config": {
+  "dataset": "averimatec",
+  "case": "63",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What does the NDCU Ministry of Health list as effective natural repellents for mosquitos carrying the dengue virus?\n背景声明：Limes spiked with Cloves repel mosquitoes that carry the dengue virus.\n声明日期（任务元数据）：2023-05-25\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网页的时间或出处正确，仍须按问题核对。",
+   "status": "INCOMPLETE",
+   "status_reason": "Search snippets for NDCU pages mention citronella oil, lemon grass oil and neem oil, and caution that repellent effects are short term. However, the official pages returned HTTP 404; no supporting NDCU source text was obtained and read. The list therefore remains an unverified search lead rather tha…（共 336 字）",
+   "findings": []
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":27251}"
+  },
+  {
+   "id": "E2",
+   "label": "10 Natural Mosquito Repellents: What Works",
+   "source_url": "https://www.healthline.com/health/kinds-of-natural-mosquito-repellant",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Homemade mosquito repellents may help deter insects. Some natural ingredients may cause irritation if you have sensitive skin.\n\n[2] People are usually prone to mosquito bites due to a combination of scent, light, heat, and humidity. If you’re a mosquito magnet, you’re probably tired of having itchy, bumpy skin.\n\n[3] Different species of mosquitoes — like the ones that carry [malaria](https://www.healthline.com/health/malaria) — prefer bacteria and sweat. Others are attracted to carbon dioxide and certain hand odors.\n\n[4] Whichever species you encounter, you can protect yourself without hav…（共 12888 字）"
+  },
+  {
+   "id": "E3",
+   "label": "5 Natural Mosquito Repellents You Must Try To Prevent Dengue - Tata 1mg Capsules",
+   "source_url": "https://www.1mg.com/articles/5-natural-mosquito-repellents-you-must-try-to-prevent-dengue/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Every year around this time, our country starts its battle with dengue and malaria and while so much is talked about the prevention, not much is done to stop the breeding of the deadly mosquitoes that cause these diseases. So, it is essential that you protect yourself and your loved ones from mosquito-borne diseases by taking all the necessary precautions. Safe application of repellents is important to prevent mosquito bites, get optimal protection and avoid any harmful side effects. You can even try some of the natural mosquito repellents in addition to the commercially available sprays a…（共 5765 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Dengue: 5 Natural Mosquito Repellents That Can Help In Preventing Mosquito Bites",
+   "source_url": "https://www.ndtv.com/health/dengue-5-natural-mosquito-repellents-that-can-help-in-preventing-mosquito-bites-2060664",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The World Health Organization sees dengue as \"fast emerging pandemic-prone viral disease\" that is prevalent in many parts of the world. Dengue is a mosquito-borne viral infection that causes severe flu-like illness. In the past 50 years, incidence of dengue has increased 30 fold. Dengue is spread by Aedes aegypti mosquito is the vector which transmits virus that causes dengue. The viruses are passed on to humans through infected female Aedes mosquito. Female Aedes mosquito mainly acquires the virus while feeding on the blood of someone who is infected by dengue. In this article, we are goi…（共 3085 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Dengue: Here's how you can prevent the disease by using natural insect repellents - India Today",
+   "source_url": "https://www.indiatoday.in/information/story/use-these-five-natural-insect-repellent-to-prevent-dengue-1847039-2021-08-30",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Here's how you can prevent dengue by using natural insect repellents\n\n[2] Using natural insect repellents can be effective in preventing mosquito bites and dengue. Here is a list of five natural insect repellents that will help you keep mosquitoes at bay.\n\n[3] Mosquitoes can spread various infections such as dengue, malaria, chikungunya, yellow fever and others. Such mosquito-borne diseases are common in the monsoon season as mosquitoes breed in stagnant rainwater and spread the infection.\n\n[4] A mosquito-borne viral infection, the symptoms of dengue are similar to those of flu and has bee…（共 4039 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Frontiers | Repellents against Aedes aegypti bites: synthetic and natural origins",
+   "source_url": "https://www.frontiersin.org/journals/insect-science/articles/10.3389/finsc.2024.1510857/full",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Abstract\n\n[2] Dengue fever, transmitted by mosquitoes of the Aedes genus, particularly Aedes aegypti, has emerged as a global health issue. With the expansion of this mosquito to new geographical areas, driven by factors such as climate change, the need for preventive measures like using insect repellents has become critical. The present review explores the current state of the art on topical mosquito repellents, both synthetic and natural, used globally, especially in regions where dengue is endemic. Among synthetic repellents, DEET is the most widely used, supported by investigations dem…（共 35504 字）"
+  },
+  {
+   "id": "E7",
+   "label": "Smell Lemongrass Citronella / Lavender Liquid Spray 60ml",
+   "source_url": "https://shopee.sg/Smell-Lemongrass-Citronella-Lavender-Liquid-Spray-60ml-i.172181894.18056448081",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Please enable JavaScript on your browser."
+  },
+  {
+   "id": "E8",
+   "label": "Shree Sanjeevani Mosquito Repellent Spray with natural ingredients Neem oil,Lemongrass oil,Citronella oil etc, protection against Dengue, Malaria & Chikungunya, Safe on Skin : Amazon.in: Health & Personal Care",
+   "source_url": "https://www.amazon.in/Sanjeevani-ingredients-Lemongrass-Citronella-Chikungunya/dp/B0D8P6RS9N",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Learn more](<javascript:void(0)>)\n\n[2] Price higher than typical\n\n[3] Amazon strives to show customers high-quality pricing. We have recently seen better prices on Amazon from other sellers for this product.\n\n[4] Mosquito Repellent Spray with natural ingredients Neem oil,Lemongrass oil,Citronella oil etc, protection against Dengue, Malaria & Chikungunya, Safe on Skin\n\n[5] Return Policy\n\n[6] Tap on the category links below for the associated return window and exceptions (if any) for returns.\n\n[7] [Learn more](https://www.amazon.in/gp/help/customer/display.html?nodeId=202115020)\n\n[8] | Bran…（共 7080 字）"
+  },
+  {
+   "id": "E9",
+   "label": "Citrus essential oils to keep away mosquitoes Citrus essential oils to keep away mosquitoes",
+   "source_url": "https://shiora.com.sg/blogs/tips-for-you/citrus-essential-oils-to-keep-away-mosquitoes-fight-dengue-and-zika-virus",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] There are countries where mosquitoes find it easier to breed because of the [climate conditions](https://scied.ucar.edu/learning-zone/climate-change-impacts/vector-borne-disease#:~:text=Anopheles%20mosquitoes%20thrive%20in%20regions,growth%20cycle%20within%20the%20mosquitoes.). Asian countries in tropical and sub-tropical areas like Singapore and India know these insects can be significant health threats. Their bites cause skin irritations and also cause significant diseases. Fortunately, with the help of medical science, malaria no longer scares us as much as it used to.\n\n[2] But dengue a…（共 15319 字）"
+  },
+  {
+   "id": "E10",
+   "label": "The Best Natural Mosquito Repellent: We Tried Them All! - Beyond The Tent",
+   "source_url": "https://www.beyondthetent.com/best-natural-mosquito-repellent/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Mosquito season is in full force, and like many of you, we’ve been on a search for the best natural repellent. We wanted to know if natural mosquito repellents actually work, and were surprised to find a list of natural options to choose from.\n\n[2] Our goal was to find repellents that are DEET-free, environmentally safe, and–of course–actually repel mosquitoes. And it was a bonus if they smelled good because we’re tired of smelling like poison.\n\n[3] Keep reading to see our top picks for the best natural mosquito repellents. Later, we’ll walk you through the ingredients we like to see and t…（共 15858 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Hrishikesh Awasare, Int. J. of Pharm. Sci., 2026, Vol 4 ...",
+   "source_url": "https://www.ijpsjournal.com/assetsbackoffice/uploads/article/Formulation-and-Evaluation-of-Herbal-Mosquito-Repellent-Ointment-.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nHrishikesh Awasare, Int. J. of Pharm. Sci., 2026, Vol 4, Issue 9, 927-941 | Research \n*Corresponding Author: Hrishikesh Awasare \nAddress: Department of Pharmacy, Mahadev Kanchan College of Pharmaceutical Education and Research, Dr. \nBabasaheb Ambedkar Technological University, Lonere, Maharashtra, India..  \nEmail      :   hrishikeshawasare@gmail.com   \nRelevant conflicts of interest/financial disclosures: The authors declare that the research was conducted in the absence of \nany commercial or financial relationships that could be construed as a potential conflict of interest.   \n     …（共 34968 字）"
+  },
+  {
+   "id": "E12",
+   "label": "10 Essential Oils to Repel Mosquitoes & Bugs (And Soothe Bites!) – Sonoma Lavender",
+   "source_url": "https://www.sonomalavender.com/blogs/news/essential-oils-repel-bugs-bites",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 10 ESSENTIAL OILS TO NATURALLY REPEL MOSQUITOES AND BUGS (AND SOOTHE ITCHY BITES TOO!)\n\n[2] Essential oils are highly effective natural insect repellents to help you finally get rid of all those irritating mosquitoes, plus other insects and bugs that raid your house. And many, as a bonus, also help relieve sore or itchy bug bites…\n\n[3] Written by Sonoma Lavender Wellness Team\n\n[4] Over 20 years’ experience producing lavender spa products in Sonoma County, California.\n\n[5] STORY AT A GLANCE\n\n[6] • Instead of using chemical pesticides and insect repellents, opt for essential oils, a safer, n…（共 27824 字）"
+  },
+  {
+   "id": "E13",
+   "label": "17 Simple DIY Mosquito Repellent Remedies",
+   "source_url": "https://www.tipsbulletin.com/homemade-mosquito-repellent/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] One of the worst parts of summer is the dreaded mosquito bites. It’s fun to be outdoors and enjoy the sunshine. However, no one enjoys having a handful of itchy and swollen bumps. Bug repellents contain harsh chemicals that may be too powerful for the skin, dangerous to use around pets, and not safe for kids.\n\n[2] What if we told you that you could make homemade mosquito repellents? There are plenty of organic ingredients that are known for keeping [mosquitoes](https://www.tipsbulletin.com/how-to-keep-mosquitoes-away/) away. Not only are these ingredients effective, but they also can be ma…（共 12849 字）"
+  }
+ ]
+}

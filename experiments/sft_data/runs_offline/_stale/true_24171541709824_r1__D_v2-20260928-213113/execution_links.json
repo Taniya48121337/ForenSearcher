@@ -1,0 +1,77 @@
+[
+  {
+    "raw_event_id": 1,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "FINISH",
+      "answer": "这面被争议的弗吉尼亚第28步兵团战旗目前由明尼苏达历史学会保管。依据现有材料，该旗帜确为美国内战期间缴获的邦联战旗：1863年7月3日，在葛底斯堡战役皮克特冲锋中，明尼苏达第一志愿步兵团列兵Marshall Sherman从第28团缴获此旗，并交由美国战争部登记。据明尼苏达历史学会及MNopedia等官方资料记载，该旗帜自19世纪末起回归明尼苏达，现为该学会永久馆藏。多个媒体报道（如MinnPost、《洛杉矶时报》）均明确指出，弗吉尼亚方面多次请求归还此旗未果，且当前保管状态与声明中的对象对应关系成立。现有材料虽未提供实物视觉核验或原始缴获登记，但机构档案、新闻报道及历史文献已足够支撑该结论。"
+    },
+    "accepted_event_id": null,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "proposal_not_accepted",
+    "request_id": "request_0001",
+    "request_file": "experiments\\sft_data\\runs_offline\\true_24171541709824_r1__D_v2\\requests\\request_0001\\request.json"
+  },
+  {
+    "raw_event_id": 2,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查这面旗帜当前是否确实由明尼苏达历史学会保管：依据现有材料，该机构的馆藏记录、公开声明及媒体报道是否可确认其为永久性收藏？必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E2",
+            "E3",
+            "E5",
+            "E9"
+          ]
+        },
+        {
+          "task": "核查明尼苏达历史学会是否在官方渠道（如网站、出版物或新闻稿）中明确声明该旗帜为永久馆藏：是否存在公开的收藏说明或展览记录支持其非临时性保管？必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E2",
+            "E3",
+            "E5"
+          ]
+        }
+      ]
+    },
+    "accepted_event_id": 3,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "gia_decision_accepted",
+    "accepted_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查这面旗帜当前是否确实由明尼苏达历史学会保管：依据现有材料，该机构的馆藏记录、公开声明及媒体报道是否可确认其为永久性收藏？必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E2",
+            "E3",
+            "E5",
+            "E9"
+          ]
+        },
+        {
+          "task": "核查明尼苏达历史学会是否在官方渠道（如网站、出版物或新闻稿）中明确声明该旗帜为永久馆藏：是否存在公开的收藏说明或展览记录支持其非临时性保管？必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性。",
+          "materials": [
+            "C0",
+            "E2",
+            "E3",
+            "E5"
+          ]
+        }
+      ]
+    },
+    "raw_equals_accepted": true,
+    "request_id": "request_0002",
+    "request_file": "experiments\\sft_data\\runs_offline\\true_24171541709824_r1__D_v2\\requests\\request_0002\\request.json"
+  }
+]

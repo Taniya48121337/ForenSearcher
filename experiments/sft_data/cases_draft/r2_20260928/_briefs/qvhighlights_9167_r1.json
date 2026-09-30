@@ -1,0 +1,383 @@
+{
+ "run": "qvhighlights_9167_r1",
+ "config": {
+  "dataset": "qvhighlights",
+  "case": "9167",
+  "question_index": null,
+  "search": null,
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "在给定视频中定位符合以下描述的片段，给出秒数范围及证据；说明定位的不确定性：Men are standing side by side in a large hangar wearing masks.",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "定位到约115–118秒的匹配片段。115.015、116.016、116.984和117.985秒的画面均显示两名男子并排站在宽敞、高顶的室内空间，左侧男子戴黑色口罩，右侧男子戴白色口罩和黑色帽子，符合目标描述的可见特征。",
+     "evidence_ids": [
+      "E23",
+      "E24",
+      "E25",
+      "E26"
+     ],
+     "limitations": [
+      "该范围为已核实采样点覆盖的范围，不是片段的精确起止边界；匹配内容可能向前或向后延伸。",
+      "离散帧不能确认采样点之间始终连续呈现该场景。",
+      "建筑外观与大型机库相容，但仅凭画面无法确认其实际用途。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 A",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "video"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"A.mp4\",\"media_type\":\"video/mp4\",\"byte_size\":8213504}"
+  },
+  {
+   "id": "E2",
+   "label": "媒体属性：video，150.017秒，534×300，29.970fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":150.01653333333334,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":29.97002997002997,\"frame_count\":4496,\"height\":300,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":534}"
+  },
+  {
+   "id": "E3",
+   "label": "视频E1在9.376秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":9.376033333333334,\"time_s\":9.376033333333334}"
+  },
+  {
+   "id": "E4",
+   "label": "视频E1在28.128秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":28.128100000000003,\"time_s\":28.1281}"
+  },
+  {
+   "id": "E5",
+   "label": "视频E1在46.880秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":46.88016666666667,\"time_s\":46.88016666666667}"
+  },
+  {
+   "id": "E6",
+   "label": "视频E1在65.632秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":65.63223333333333,\"time_s\":65.63223333333333}"
+  },
+  {
+   "id": "E7",
+   "label": "视频E1在84.384秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":84.38430000000001,\"time_s\":84.3843}"
+  },
+  {
+   "id": "E8",
+   "label": "视频E1在103.136秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":103.13636666666667,\"time_s\":103.13636666666666}"
+  },
+  {
+   "id": "E9",
+   "label": "视频E1在121.888秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":121.88843333333334,\"time_s\":121.88843333333334}"
+  },
+  {
+   "id": "E10",
+   "label": "视频E1在140.641秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":140.6405,\"time_s\":140.6405}"
+  },
+  {
+   "id": "E11",
+   "label": "视频E1在72.005秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":72.0,\"time_s\":72.00526666666667}"
+  },
+  {
+   "id": "E12",
+   "label": "视频E1在78.011秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":78.0,\"time_s\":78.01126666666667}"
+  },
+  {
+   "id": "E13",
+   "label": "视频E1在87.988秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":88.0,\"time_s\":87.9879}"
+  },
+  {
+   "id": "E14",
+   "label": "视频E1在93.994秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":94.0,\"time_s\":93.9939}"
+  },
+  {
+   "id": "E15",
+   "label": "视频E1在100.000秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":100.0,\"time_s\":99.9999}"
+  },
+  {
+   "id": "E16",
+   "label": "视频E1在108.008秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":108.0,\"time_s\":108.0079}"
+  },
+  {
+   "id": "E17",
+   "label": "视频E1在114.014秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":114.0,\"time_s\":114.0139}"
+  },
+  {
+   "id": "E18",
+   "label": "视频E1在118.986秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":119.0,\"time_s\":118.98553333333334}"
+  },
+  {
+   "id": "E19",
+   "label": "视频E1在79.012秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":79.0,\"time_s\":79.01226666666666}"
+  },
+  {
+   "id": "E20",
+   "label": "视频E1在81.014秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":81.0,\"time_s\":81.01426666666667}"
+  },
+  {
+   "id": "E21",
+   "label": "视频E1在83.016秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":83.0,\"time_s\":83.01626666666667}"
+  },
+  {
+   "id": "E22",
+   "label": "视频E1在84.985秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":85.0,\"time_s\":84.9849}"
+  },
+  {
+   "id": "E23",
+   "label": "视频E1在115.015秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":115.0,\"time_s\":115.0149}"
+  },
+  {
+   "id": "E24",
+   "label": "视频E1在116.016秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":116.0,\"time_s\":116.0159}"
+  },
+  {
+   "id": "E25",
+   "label": "视频E1在116.984秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":117.0,\"time_s\":116.98353333333333}"
+  },
+  {
+   "id": "E26",
+   "label": "视频E1在117.985秒的帧",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E1"
+   ],
+   "content": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":118.0,\"time_s\":117.98453333333333}"
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+  "assessment_scope": "仅依据所供 packet，按递归对象引用解析后的内容评估 W1-1 的 terminal_request_0001。recorded_prefix 的三次请求仅作历史证据，不另列监督目标；脚本化调度与未执行的下游 GIA 决策不评分。本样本为终端报告重放，execution 不适用。未调用工具或检查文件；本任务不涉及像素、音频或视频区间核查。适用维度加权得分为 4.00/4，适用维度评分覆盖率为 100%，已评分权重占原始总权重的 90%；该分数仅评价这份局部报告。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "执行链接标明 offline_terminal_replay，新增工具动作数为 0。返回成功和本地输出校验通过仅说明报告生成与格式校验，不构成新调查动作或下游决策的执行证明。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "决策前输入明确列出已观察 E6，并提供其完整读取正文，next_offset 为 null。报告仅引用 E6，关键内容均已可见，无需借用官方答案、未来结果或其他角色报告。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E6 第7段支持 Brian K. Rice 的职务，第11段逐字支持核心引语及植被、风、湿度和地理因素的概括，第13段支持组织自述代表超过三万名消防员及急救人员。报告将这些内容归于 Rice 或组织，没有据此宣布个别山火的实际成因已获证实。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部问题要求确认是否有人从消防界回应该声明，并说明适用范围。组织网站上的具名直接回应足以回答这一存在性问题，任务可行且结果有用。未列 Scott Austin、未核验参考视频或未取得精确发布日期，不构成当前任务的必要项遗漏；COMPLETED 合理。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "当前输入明确要求基于已有状态提交报告。已读一手文本足以支持局部答案，此时提交完成报告合理；剩余轮次与时间不意味着必须继续调查。此评分不追认历史搜索选择的正确性。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确区分消防代表的公开回应与正式火因调查，并保留发布日期及其与任务日期关系的未知。其完成状态仅覆盖是否存在相关回应，没有把日期未知当作已确认，也没有把官方 Refuted 标签当作独立证据。",
+          "request_ids": ["terminal_request_0001"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "单条 finding 给出回答、具名身份、直接引语及必要边界，引用集中于已读 E6，没有无信息增益的重复或无关扩展。评分限于当前报告，不据此推断整条历史调查的效率。",
+          "request_ids": ["terminal_request_0001"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E6 所载回应的精确发布日期及其与任务日期 10-11-2018 的时间关系未确认。正文直接涉及对应的森林管理归因说法，因此该未知不阻断当前局部存在性回答。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "terminal_request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "报告的重要事实、直接引语和引用编号均有决策前已读 E6 支持，局部完成状态正确。高分经日期缺失、消防代表身份与正式火因认定的区别、未覆盖全部参考答案等反例检查后仍成立：这些因素均未造成当前任务的关键缺口。可作为终端报告候选，不应标成新增工具执行轨迹或 GIA 全局裁决。"
+    }
+  ],
+  "construction_revisions": [
+    "报告正文与 COMPLETED 状态无需修复。导出时保留 terminal_replay 标识及源请求映射，仅将 terminal_request_0001 作为当前输出目标。",
+    "保留 E6 正文、已观察标记和来源关系作为目标依据；历史请求与官方参考答案不得转化为本次新增监督输出。"
+  ],
+  "rubric_revisions": [
+    "明确存在性问题的完成条件：一个身份和回应内容均有直接依据的案例即可充分回答；参考答案中的其他人物或媒体形式不自动成为必答项。",
+    "缺失发布日期是否关键，应取决于它是否妨碍确认所回应的声明，或是否违反明确的时序要求；不能仅因日期未知机械判为 INCOMPLETE。",
+    "终端重放的汇总应同时显示适用维度评分覆盖率与原始权重覆盖比例，避免把 execution 不适用后的高分解释为整条执行轨迹已通过验证。"
+  ]
+}

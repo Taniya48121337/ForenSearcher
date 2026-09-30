@@ -1,0 +1,59 @@
+{
+  "case_id": "vcsl:pair_5",
+  "dataset": "vcsl",
+  "source_id": "pair_5",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。",
+  "family_key": "vcsl:pair_5",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../../../runs/vcsl_pair_5_validation/artifacts/1350bcf138a74477985493ab93bcd3f3.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../../../runs/vcsl_pair_5_validation/artifacts/49aed390defe4b8e94e0d368cb0c828a.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E40）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定媒体实际显示了什么，能否支持声明",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 vcsl_pair_5_validation 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=neutral、REQ2=neutral），required_evidence 取自干净 Finding ∩ 答案引用（有降级项，见审核单 trace.origin）。",
+  "effective_split": "dev_train"
+}

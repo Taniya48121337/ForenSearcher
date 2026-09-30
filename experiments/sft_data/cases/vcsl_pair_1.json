@@ -1,0 +1,62 @@
+{
+  "case_id": "vcsl:pair_1",
+  "dataset": "vcsl",
+  "source_id": "pair_1",
+  "split": "dev_train",
+  "task_kind": "copy_detect",
+  "task_text": "在给定视频 A 与 B 中查找相同或经变换的对应片段，给出两侧时间范围及证据。不要把内容对应推断成原创归属。输入仅包含视频轨，不评估音频。",
+  "family_key": "vcsl:snowman_song",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/vcsl/pair_1/inputs/A.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../data/vcsl/pair_1/inputs/B.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "A 与 B 中内容对应（相同或经变换）的片段，以及两侧各自的时间范围",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "对应关系的画面依据：两侧对应帧的内容，以及画面包装、裁剪、叠加等变换",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容：边界精度、未检查的区间；不把内容对应推断为原创归属或传播先后",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频的对应帧",
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": "../data/vcsl/pair_1/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：VCSL 标注对应段 A 1–24 秒 ↔ B 1–24 秒（格式按 [A起, B起, A止, B止] 解读，与两段视频时长一致）。标注较粗，试点答案常只给出其中一部分或找到标注外的重复位置，所以不写 interval_iou，由充分性层判。"
+}

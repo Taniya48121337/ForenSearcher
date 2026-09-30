@@ -1,0 +1,112 @@
+{
+  "case_id": "true:17838107",
+  "dataset": "true",
+  "source_id": "17838107",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The consumption of hot cross buns has the potential to affect breathalyzer readings.",
+  "family_key": "true:17838107",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_17838107_r1/artifacts/268fd8f37d83458ba9870b0418952e0c.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "The consumption of hot cross buns has the potential to affect breathalyzer readings."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "snopes",
+      "description": "Snopes 对该说法的核查",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ],
+      "url_pattern": "snopes.com/fact-check/hot-cross-bun-breathalyzer*",
+      "acquired_by": null
+    },
+    {
+      "key": "breathalyser",
+      "description": "Breathalyser 公司的自测报道（含西澳警方 20 分钟复测归零的转述）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "breathalyser.com.au/media/hot-cross-bun-breathalyser-reading-claim-put*",
+      "acquired_by": null
+    },
+    {
+      "key": "fmcsa",
+      "description": "FMCSA 酒精检测指南：口腔酒精导致偏高、确认检测须等待 15 分钟",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ3"
+      ],
+      "url_pattern": "fmcsa.dot.gov/regulations/drug-alcohol-testing/implementation-guidelines*",
+      "acquired_by": null
+    },
+    {
+      "key": "frames",
+      "description": "视频抽帧：仪器显示 .000 与 .018 的两帧",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对“食用热十字面包能否影响呼气酒精检测读数”及其发生条件的记载",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定视频实际显示的检测读数变化，以及这些画面能支持和不能支持的范围",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "读数偏高与体内酒精水平的区别（口腔残留酒精干扰、等待时间等机制依据）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:snopes,breathalyser; all:frames,fmcsa",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "基本不实",
+        "aliases": [
+          "大体不实",
+          "多数不实",
+          "基本错误",
+          "Mostly False"
+        ]
+      },
+      "note": "数据集标签 rating=Mostly False（Snopes）",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/true/17838107/reference.json",
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_17838107_r1 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。"
+}

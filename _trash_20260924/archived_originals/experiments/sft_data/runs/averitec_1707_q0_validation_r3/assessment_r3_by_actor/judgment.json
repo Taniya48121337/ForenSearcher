@@ -1,0 +1,125 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "三个输出均有原始输出与接受输出相同的执行链接。搜索和读取分别有后续观察，报告有提交记录；这些记录只证明执行对应，不证明报告正确。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "首次查询只使用局部任务中的实体、年份和声明数值。读取前 E1 已出现在可见证据卡片和搜索观察中；报告前已提供 E1 全部提取正文，且 next_offset 为 null。没有使用参考答案或未来证据的迹象。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告准确保留了转述关系：E1第5段提到2018年年度报告，第13段给出财务负责人姓名和职务，第14段写明预算超过1.34亿奈拉。输出没有把该金额改成背景声明中的1.33亿，也没有声称已独立证实全院预算。关键缺陷在任务完成和停止判断，而非这条来源摘述失实。",
+          "request_ids": [
+            "request_0003"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "取得了相关预算报道，但尚未确认其中金额对应的预算范围。报告自己承认不清楚它是全院预算还是某类支出；这使其尚不能充分回答所接年度医院预算问题。任务并非仅要求概括 Vanguard 的说法，COMPLETED 因而缺乏支持。此判断不以必须取得原件或精确金额为额外要求。",
+          "request_ids": [
+            "request_0003"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "初始检索合理；读取当时可见、涉及财务需求的 E1 也有明确价值。停止则过早：当时仍有9轮和约3561秒，E1第13段的 overhead 上下文及输出自身的范围疑问构成具体缺口。可以用现有 SEARCH 定向查找2018年预算及支出类别，无需预知参考答案，也无需保证检索成功。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 2,
+          "reason": "limitations 如实指出金额不精确、预算类别不清，且保留来源归属；但这一必要范围尚未确定时仍标记 COMPLETED，状态与已披露的证据边界不一致。调查对象未知不等于评审无法识别这一错误。",
+          "request_ids": [
+            "request_0003"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "一次检索建立候选，一次读取取得关键正文，未见重复读取、无信息增益的切换或无关调查。调用少不证明任务充分，提前停止的问题计入 decision。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0003：尚未把报道数额与所问年度医院预算的口径对应起来，就宣布 COMPLETED，并在存在具体可行补查的情况下结束调查。"
+      ],
+      "unknowns": [
+        "E1所称超过1.34亿奈拉究竟对应全院预算还是某一支出类别，当前正文没有明确说明。",
+        "参考答案给出33亿奈拉，但所指预算PDF及相关页面未提供，不能将该数额当作本次已独立核实的真值。",
+        "后续定向检索能否取得充分预算材料未经执行；可行的补查不等于保证成功。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在尚无外部证据时，用医院名称、年份及待核查数字进行初始检索，参数合法且与局部问题相关。把声明数字作为检索词不等于认定声明为真；不能依据后来的结果倒推该查询错误。执行对应记录充分。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "行动前 E1 已明确可见，R2搜索摘要涉及医院财务需求和 overhead。读取其正文能核实预算语句及上下文，符合当前未决问题；R2未列在候选卡片数组中不影响 E1 已可选择的事实。读取执行及正文观察均有对应记录。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "来源归属、人物和超过1.34亿奈拉的摘述有正文支持，可保留为真实发现。然而报告明确承认预算范围不清，却把事实性年度预算问题标为 COMPLETED。尚有充足预算且 SEARCH 可用，应针对 overhead 与年度医院预算的关系继续调查。该缺陷可由现有输入确定，不需先证明参考答案33亿正确；仅改成 INCOMPLETE 仍不能充分修复本次自主提前停止。"
+    }
+  ],
+  "construction_revisions": [
+    "W1-1: 保留 request_0001 和 request_0002 的真实输入、输出及执行观察，作为独立候选目标。",
+    "W1-1: 从 request_0003 的决策前状态重新生成后续调查，围绕已观察到的预算类别疑问使用 SEARCH；新结果必须来自实际执行，不能把参考数额写成工具观察。",
+    "W1-1: 后续报告保留有依据的媒体转述，并依据预算范围是否已对应来选择状态；仍缺必要依据时使用 INCOMPLETE。修正后的行动须连接新执行的后续轨迹。",
+    "W1-1: 任务构造时明确所问预算的统计范围，以及是否仅要求报告某来源说法；不因参考答案采用PDF而事后增加必须核验原件的要求。",
+    "W1-1: 若用33亿奈拉校验数值正确性，应在评审包提供对应预算页面、表头及必要上下文，并保持其与演员决策输入分离。"
+  ],
+  "rubric_revisions": [
+    "W1-1: 将本例作为 grounding 与 task 分离评分的校准案例：来源转述可以充分有据，同时仍未满足事实问题所需的预算范围确认。",
+    "W1-1: 明确数值不精确本身不必导致未完成；应检查数值的上下限、时间和统计范围是否足以回答当前问题。",
+    "W1-1: 自主停止的扣分须指出当时可见的具体缺口、可用行动和剩余预算，不要求模型预知检索结果。本例的具体缺口是 overhead 上下文与年度预算范围的关系。",
+    "W1-1: 区分对象事实未知与评审关键未知：无法确认真实预算不妨碍判定已明确暴露的完成状态错误；未提供的参考PDF也不能用于宣布报告数值已被证伪。"
+  ]
+}

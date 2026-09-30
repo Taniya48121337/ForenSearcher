@@ -1,0 +1,68 @@
+{
+  "case_id": "true:39132300",
+  "dataset": "true",
+  "source_id": "39132300",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\"",
+  "family_key": "true:39132300",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_39132300_validation_r3/artifacts/c29bb2ecd71d4d2082e8e65e9b073fbe.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\""
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "ghostface",
+      "description": "GhostFace Masks – GhostFace.co.uk – | The Site of GhostFace®（E5）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "ghostface.co.uk/mask-info*",
+      "acquired_by": null
+    },
+    {
+      "key": "snopes",
+      "description": "Did the 'Ghostface' Mask Predate 'Scream'? | Snopes.com（E2）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "snopes.com/fact-check/ghostface-predate-scream*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明“The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\"”所述内容的记载",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定媒体实际显示了什么，能否支持声明“The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\"”",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "any_one_of:ghostface,snopes",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_39132300_validation_r3 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=claim_template、REQ2=claim_template），required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "request_id": "request_0006",
+    "assessment": {
+      "request_id": "request_0006",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E20、E24、E21、E25、E22、E26、E23、E27，包含1秒早期阳性配对。READ_RECORD配合历史图片重新附图本身可行，但E9完整结果已在当前历史中；新的焦点却换出了早期阳性证据，无法与拟恢复的0秒、1.5秒阴性帧形成边界约束。所选焦点还含5张B，超过提示中的每侧4张安排要求。应修复保留组合并重执行，不能仅凭读取成功接受。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E13、E28、E18、E29、E14、E30、E19、E31。为三个B阳性时刻取A是正确配对动作；实质缺陷是丢弃当前可见且没有目标人物的E28。保留E28、E29、E30、E31并加入三张新A只需7图，能同时保留入场前约束。原选择留下四组阳性配对，损失了当前任务所需的互补信息。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "实际附图为E29、E36、E32、E37、E31、E38、E34、E39。配取A在2.7、4、5.8秒的帧有价值，但下一轮必须报告，原焦点会丢失E36的2.2秒阴性状态和E31/E34的5.933秒配对。一个具体可行替代是仅取A在2.7、4秒的帧，保留E36、E37、E38、E31、E34，共7图，可获得三组阳性对照及一个阴性约束。原决策应修复后重新执行。"
+    },
+    "execution_status": "executed"
+  }
+]

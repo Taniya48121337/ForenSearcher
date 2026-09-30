@@ -1,0 +1,169 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "七次输出均有原始输出与接受输出一致的对应记录：六次工具执行，一次报告提交。首次搜索确实执行并返回访问限制；执行成立不代表检索成功或结论正确。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "unknown",
+          "rating": null,
+          "reason": "所选 E 和报告引用均可追溯到当时可见材料，未见主动读取或引用 E2。但 request_0002 的观察向后续输入暴露了 R5/E2：其 AFP 文档标识主体32JR6NT与被排除文章一致，标题、摘要直接透露本案结论。未提供该变体的正文及与参考地址的对应记录，无法认证后续输入满足独立来源条件，也不能据此断言演员阅读了原核查全文或依赖其作答。",
+          "request_ids": [
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "E1像素支持白色长角山羊、红制服人员、军乐队及城堡门洞，没有可见宰杀行为。E9显示相似动物、着装和队列，但机位、背景和构图不同，不能当作同帧。E8正文支持皇家威尔士团、Shenkin IV、即位宣告背景及2022年9月11日上传日期；E3支持9月11日活动。具体事件归属属于有支持的图文综合判断，证据强度低于直接画面对应；报告已披露这一边界。",
+          "request_ids": [
+            "request_0003",
+            "request_0005",
+            "request_0007"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告回答了图片显示的场景，并区分即位宣告与背景声明中的加冕献祭。局部问题没有要求最早来源、精确视频帧或证明动物日后未被献祭，因此这些未完成检查不要求将局部状态改为 INCOMPLETE。来源隔离是否合格另列为关键未知。",
+          "request_ids": [
+            "request_0007"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "图像搜索受限后改用文字线索，读取可取得的相关报道，再寻找带画面的新闻来源，路径合理。request_0006再次按R9请求视频时，已知其页面与封面就绪，预期新增信息不明确；但工具目录未清楚说明如何取得视频本体，不能仅凭后来没有新增材料，倒推这次首次按来源请求必然错误。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确将身份和事件背景归于相关来源，说明尚未确认精确视频帧，并限制静态图片对动物后续遭遇的证明力。没有把封面当成完整视频观察，也没有把上传日期直接写成经像素确认的拍摄日期。局部 COMPLETED 不等于已完成全局反驳。",
+          "request_ids": [
+            "request_0007"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "主要行动均围绕场景识别，未追查音乐专辑、2026年峰会等无关结果。request_0006重复打开已自动取得页面和封面的R9，实际没有增加证据，构成有限效率损失；尚不属于多轮无目的重复。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "R5/E2是否为被排除AFP文章的同篇地址变体，缺少正文或地址对应证据；已有共同文档标识及结论摘要足以阻止直接认证来源隔离通过。",
+        "无法判断暴露的AFP摘要对后续决策产生了多少影响；没有证据证明演员主动读取其全文。",
+        "未取得输入图片与R9视频具体帧的对应关系，也没有全视频观察；这些缺口不自动否定当前局部图片说明。",
+        "E3未提供首次发布日期；报告中的9月11日是其记载的活动日期。任务未限定只能使用声明日期以前公开的材料。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "图像检索符合当时公布的接口，E1可见且目标明确。部署禁止上传图片的限制是在执行后才告知，不能追溯为演员选错工具。失败反馈也被真实保留。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "依据图片中的山羊、红制服队伍、城堡及声明背景改用文字检索，是有效恢复。proclamation属于查询假设，并非已证实事实的断言。该输出生成时尚未收到R5/E2，不能将随后返回的来源问题归责于此决策。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "E3已就绪，其他直接相关页面有明确获取失败记录，优先读取E3合理且可执行。动作本身质量充分；但其输入已包含与被排除AFP文章高度关联的标题和摘要，当前材料不足以认证独立来源条件。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "查询标题来自先前可见的R1，日期与E3活动描述及任务背景相容；寻找视频来源有助于补充图片与报道之间的联系。不能因结果夹杂无关视频判查询错误。来源隔离问题仍未解决。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "context_only",
+      "target_rating": 4,
+      "critical_unknown": true,
+      "reason": "实际附图中E9与E1共享山羊、红制服队列和城堡场景，读取对应E8并保留两图比较合理。E7是街道游行封面，E13是音乐专辑，E11是峰会宣传图；演员没有把这些无关或较弱材料混作已验证来源。暂不能认证其输入符合原文章隔离条件。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "R9和参数均合法。此前页面、封面已取得，再次请求的新增目标不够明确，最终也未取得视频本体；但这是首次按该来源请求，且目录未明确下载机制，最多构成有限效率缺陷，不能判作明确不可执行。来源隔离仍阻止候选导出。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": true,
+      "reason": "报告已真实提交。其可见场景、来源归属和静态图片限制基本有据，局部COMPLETED合理；没有宣称山羊后来未被献祭，也未声称完成全视频核验。事件关联仍依赖封面与说明的综合判断。独立来源条件未获认证，因此不能仅凭内容正确直接导出。"
+    }
+  ],
+  "construction_revisions": [
+    "W1-1: 核对R5/E2与参考AFP文章的正文及最终地址关系；处理32JR6NT与32JR6NT-1这类文档地址变体，并让排除规则同时作用于候选标题、摘要和自动打开结果。不能扩大为排除同域名所有不同文章。",
+    "W1-1: 保留request_0001、request_0002的合理决策及真实失败记录。修复来源隔离后，从request_0002的检索观察重新执行后续轨迹；不要将改写后的报告直接接到现有后缀。",
+    "W1-1: 在决策前工具说明中公开已知的图像上传限制，并明确output_type=video是否仅返回页面和封面、如何取得可供get_frames使用的视频E。",
+    "W1-1: 修正request_0006和request_0007的附件摘要：实际image_inputs及传输记录均为两张，visual_observation_summary却仍计为五张。",
+    "W1-1: 将脚本化FINISH保留为运行状态记录，不作为GIA决策监督，也不据此宣称原始献祭声明已完成全局核查。"
+  ],
+  "rubric_revisions": [
+    "W1-1: 为来源限制增加明确的逐步判例：检索动作在污染结果返回前可以合格；后续输入的来源隔离问题须单独处理，不能倒扣早期决策，也不能因最终未引用禁用来源而自动认证独立取证。",
+    "W1-1: 来源暴露记录应区分候选标题或摘要可见、正文已取得、正文已读取及最终引用；这些状态不能互相替代。缺少同篇地址关系的决定性材料时，保留critical_unknown。",
+    "W1-1: 补充一次按来源打开视频的边界判例：根据当时目录和已有就绪状态评估预期收益，区分合理能力尝试、低收益重复与明确不可执行请求，不用事后结果替代行动判断。",
+    "W1-1: 用本例校准局部完成状态：回答图片内容可以由实际像素和相关报道共同支持；精确同帧、最早来源及动物后续遭遇只有被任务要求时才成为必要完成条件。"
+  ]
+}

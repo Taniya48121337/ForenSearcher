@@ -1,0 +1,1704 @@
+{
+ "run": "averitec_2694_budget_plan_execution_12k_r1",
+ "config": {
+  "dataset": "averitec",
+  "case": "2694",
+  "question_index": null,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "task": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+ "first_plan": {
+  "decision": "INVESTIGATE",
+  "tasks": [
+   {
+    "task": "补齐两校首期项目批准预算与结项实际支出的同口径对应。已有Wits结项报告第14章表14.2记载：截至2017年7月31日，SPU直接支出R942,827,946、UMP直接支出R539,825,172，另列两校共同费用R141,847,377，均含VAT。第14.9.1节所述施工控制预算为SPU R804 million、UMP R493.1 million，但尚未确认与上述直接支出的范围一致。沿E1所列完整结项报告、第4章及MOA增补协议线索，取得表4.4及相关预算组成、批准和调整依据，直接对照两校实际支出的阶段、费用范围和税务口径，分别判断是否在预算内、金额是否相等；同时核实共同费用是否有单校归属或分摊依据，以确定各校可报告的最终总支出口径。此前第4章附附件地址超时、另一地址404，应利用完整报告等现有替代线索补查。不要重复已完成的工程包调查，不能以局部工程包比较代替项目总额比较；无法对应的金额保留未知。",
+    "materials": [
+     "E1",
+     "E5"
+    ]
+   },
+   {
+    "task": "核清SPU校方2013—2018年“首期”资本支出约R1.4 billion与Wits首期交付结项支出之间的范围关系。E2称2013—2018年完成首期改造与建设、资本支出约R1.4 billion；E1及E5的Wits项目主要交付2016学年设施并于2017年7月结项，SPU直接支出为R942,827,946。沿校方原文及相应财务、建设资料核查两处首期的项目边界和费用组成，寻找校方口径的精确最终实际支出及同范围批准预算，直接判断两份材料是否覆盖同一项目阶段、能否衔接，并在可对应时核对实际支出与预算是否一致。不要仅凭截止年份或金额差异推定差额属于后续建设，也不要将年度资本支出或拨款直接替代首期项目决算。说明出处及仍无法取得的必要对应关系。",
+    "materials": [
+     "E1",
+     "E2",
+     "E5"
+    ]
+   }
+  ]
+ },
+ "answer": "能确认的是两校首期交付项目的累计直接支出；包含共同费用分摊的单校全部成本，以及各校总支出是否与同口径最终批准预算一致，尚不能完全核定。\n\n1. Sol Plaatje University（SPU）：累计直接实际支出为R942,827,946，含增值税。出处为Wits《新大学项目管理团队结项报告》第14章表14.2、14.6（正文第252、256页），成本中心HETN001。[E5]\n\n2. University of Mpumalanga（UMP）：累计直接实际支出为R539,825,172，含增值税。出处为同报告表14.2、14.5（正文第252、255页），成本中心HETM001。[E5]\n\n阶段与口径：上述数字来自2017年7月31日提取的PMIS账目，按2012—2017日历年／学年累计。对应Wits受DHET委托实施的首期交付，主要提供2016学年所需设施，并延续至2017年7月结项；不能把报告内部称为“Phase 1”的2012—2013年可研与设立阶段等同于整个首期建设项目。[E1][E5] 两校直接支出包含改造、新建、专业顾问、家具设备、项目管理及规划等费用，部分项目管理服务涉及后续项目的前期规划，因而也不是单纯施工合同金额。[E5，§14.4—14.5]\n\n两校共同的规划、协调和交付管理费用R141,847,377另列于HETP001。加上两校直接支出，项目合计为R1,624,500,495，均含增值税。现有材料未提供共同费用的单校分摊依据，因此不能自行加回各校，形成所谓全口径总成本。[E5，表14.2—14.3]\n\n与预算的核对：报告§14.9.1列出的、经第五次增补协议调整的施工控制预算为SPU R804 million、UMP R493.1 million，但尚未取得其所指表4.4及足够的预算组成、调整和税务对应资料，无法将其与上述累计直接支出作同口径比较。因此，两校全部直接支出是否超出最终批准预算、是否恰等于预算，均不能确认；不能直接相减后判定超支。[E5]\n\n可以确认的较小范围是具体工程包：SPU的C001、C002、C003、CX01最终结算合计R695,763,114，低于发包时控制预算合计R726,024,282，差额R30,261,168；合计及差额由表列数值计算。UMP的L001、L004、L006及表注所列电气、土木和主干基础设施，列示决算也分别低于相应控制预算。这些比较说明所列工程包在预算内且金额不相等，不能替代整个首期项目的总额核对。[E5，表14.15]\n\n另须区分SPU校方2018年五周年回顾中的“首期”：校方称过去五年改造与建设资本支出约R1.4 billion，涉及六座新建筑及Luka Jantjie House改造。[E6] 该近似数尚缺精确决算、税务口径、批准预算及与Wits项目账目的衔接明细，不能替换R942,827,946，也不能将两数差额直接归为后续建设费用。[E5][E6]",
+ "n_decisions": 85,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "查清 Sol Plaatje University 首期校园建设项目最终的实际总支出，并核对其与同阶段、同统计口径的批准预算是否一致，说明项目阶段、统计口径与出处。直接对照 Wits 首期项目结项报告、校方所述2013—2018年约R1.4 billion资本支出及相关预算资料，核实这些材料的阶段和费用范围是否对应。区分最终实际支出、合同金额与预算；“预算内”不能直接视为金额相等。无法取得的金额或对应关系明确保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "已核实Wits结项报告中的SPU直接实际支出及四个工程包的结算与控制预算，但未取得与全部直接支出同口径的批准总预算，也未取得校方2013—2018年约R1.4 billion资本支出与Wits首期交付范围的明细对应，无法完成全项目总支出与批准预算的最终核对。",
+   "findings": [
+    {
+     "statement": "Wits结项报告第14章表14.6记载，Sol Plaatje University成本中心HETN001在2012年至2017年结项期间的直接实际总支出为R942,827,946，含VAT；PMIS数据提取日为2017年7月31日。其费用包括基础设施建设及改造R837,127,471、家具设备等R72,825,226、项目管理服务R23,735,245，以及规划、可行性研究等项目。Wits报告所称首期交付主要服务于2016学年设施需求，并延续至2017年结项；报告内部另分可研与设立、施工准备、施工交付、移交结项四个管理阶段，不能把其中2012—2013年的“Phase 1”视为整个首期校园建设。",
+     "evidence_ids": [
+      "E1",
+      "E5"
+     ],
+     "limitations": [
+      "R942,827,946是SPU直接成本中心的支出。两校共同发生的HETP001项目总体费用R141,847,377另列，已读材料未给出其中应归属SPU的分摊额，因此不能将直接支出无条件称为包含共同费用的全部成本。",
+      "项目管理服务还包括新项目前期规划和设计相关服务，统计范围不完全等于2016年交付建筑的施工费用。"
+     ]
+    },
+    {
+     "statement": "在可以逐项对应的四个SPU新建工程包C001、C002、C003和CX01范围内，表14.15及14.17给出的最终实际结算合计为R695,763,114，含VAT及专业服务费。表14.15所列下单时按已商定目标价形成的控制预算分别为R217,870,833、R243,958,078、R174,421,800和R89,773,571，计算合计R726,024,282。最终结算比该控制预算合计低R30,261,168，因此这四个工程包的实际费用在预算内，但金额不相等。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "上述合计和差额根据表中数值计算。",
+      "这是四个工程包施工及专业服务费用的对应比较，不能替代全部SPU直接支出或2013—2018年资本支出与批准总预算的比较。"
+     ]
+    },
+    {
+     "statement": "Wits报告第14.9.1节记载，SPU施工控制预算额度为R804 million，由备忘录第四份增补协议确立，并经第五份增补协议调整。报告将相关新建项目预算范围描述为新建筑、主干及场地基础设施、ICT基础设施、专业服务费和家具设备等。这一施工控制预算与表14.6涵盖规划、可研、改造及其他直接费用的R942,827,946并非已证实的同口径数值，不能直接以二者差额判定超支，也不能据“预算内”认定最终支出恰等于R804 million。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "报告指向的第4章表4.4最终控制预算汇总及增补协议原文未取得；尚缺与HETN001全部直接实际支出逐项对应的批准预算和调整明细。"
+     ]
+    },
+    {
+     "statement": "SPU校方基础设施网页称，2013—2018年完成了改造与建设计划的首期，资本支出约R1.4 billion，包括教学空间、教职工办公室和校内宿舍。该表述的截止年份及统计名称与Wits截至2017年7月的首期交付结项直接支出不同。Wits报告还明确列出由各大学自行管理、服务于2017学年的第二期建设。因此，两处“首期”不能仅凭名称视为相同阶段；现有材料不足以将约R1.4 billion与R942,827,946视为同一费用范围，或用其差额确定后续建设费用。",
+     "evidence_ids": [
+      "E2",
+      "E5"
+     ],
+     "limitations": [
+      "校方数字是近似资本支出，已读网页没有提供精确决算、费用分类、VAT口径、对应批准预算或与Wits结项数据的衔接表。",
+      "2013—2018年校方口径的精确最终实际总额及其与同口径批准预算是否相等仍未知。"
+     ]
+    },
+    {
+     "statement": "NEC项目介绍中的约R1.6 billion是两所大学合计约290份NEC合同、700个工作包的合同价值；其中R113 million指改造合同，R890 million指新建工程合同。它们均不能作为SPU单校最终实际总支出。该介绍引述项目负责人称整体维持在预算内，但未给出SPU同阶段、同费用范围的批准总预算与最终支出相等的依据。",
+     "evidence_ids": [
+      "E3"
+     ],
+     "limitations": [
+      "合同价值、最终实际支出和批准预算是不同统计量；该介绍中的预算内表述不足以完成金额相等性核验。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W1-2",
+   "task": "查清 University of Mpumalanga 首期校园建设项目最终的实际总支出，并核对其与同阶段、同统计口径的批准预算是否一致，说明项目阶段、统计口径与出处。核查 Wits 首期项目结项报告及相关预算资料，直接对照该校最终支出与批准预算，辨明两校合计金额与该校金额、合同金额与项目总支出的区别。NEC所述合同价格涨幅及“预算内”不能直接视为最终总支出与批准预算相等。无法取得的金额或对应关系明确保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "已取得结项报告中的UMP累计直接支出及部分工程包预算、决算，但未取得第4章表4.4的最终控制预算明细，无法将批准预算与UMP累计支出逐项对应，因此尚不能确认同阶段、同统计口径的最终总支出与批准预算是否相等。",
+   "findings": [
+    {
+     "statement": "项目范围是Wits受DHET委托管理的两所新大学首期交付项目，并非Wits自身校园建设。报告涵盖2011年启动至2017年7月结项，主要交付供2016学年使用的设施；第14章支出数据于2017年7月31日从PMIS提取，按2012—2017日历年记录。报告内部称为“Phase 1”的2012—2013年可行性与设立阶段，只是整个首期交付项目的一个管理阶段。",
+     "evidence_ids": [
+      "E1",
+      "E5"
+     ],
+     "limitations": []
+    },
+    {
+     "statement": "可核实的UMP结项累计直接支出为539,825,172南非兰特，出处为结项报告第14章表14.2及表14.5（正文第252、255页），成本中心为HETM001，金额含增值税。其中基础设施供给支出459,791,040兰特，包括改造、新建及相关顾问费用；家具、装置和设备支出53,547,965兰特；项目管理服务18,559,797兰特，另有学术规划、可行性等项目。这是该成本中心的累计直接支出，不能称为单纯施工合同金额。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "HETM001不包含另列的两校共同项目费用；项目管理服务还包含新项目的前期规划和设计服务，不能将该成本中心全部支出都解释为首批新建筑的施工费用。"
+     ]
+    },
+    {
+     "statement": "表14.2中的1,624,500,495兰特是两校项目合计支出，由UMP直接支出539,825,172兰特、Sol Plaatje University直接支出942,827,946兰特及两校共同项目费用141,847,377兰特组成，均含增值税。因此，两校合计金额不能用作UMP单校金额。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "已读材料未提供共同项目费用在两校之间的分摊关系；UMP包含共同费用分摊后的全口径总支出仍未知。"
+     ]
+    },
+    {
+     "statement": "第14.9.1节（正文第267页）记载，建设控制预算经MOA第4增补确立、第5增补调整后，UMP为R493.1 million，即约493,100,000兰特，并指向第4章表4.4“Final Control Budget summary”。该数被标为建设控制预算，尚未取得其与HETM001累计直接支出539,825,172兰特之间的项目组成、时间及税务口径对应关系，不能直接据两数差额判定超支，也不能据“预算内”判定二者相等。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "第4章附附件版本打开超时，另一已提供地址返回404；未取得表4.4正文，UMP同口径批准预算及其与最终累计支出的差额、是否相等仍未知。"
+     ]
+    },
+    {
+     "statement": "能够直接核对的是部分工程包，而非整个UMP项目：表14.15（正文第269页）列出订单签发时的控制预算与最终决算，L001为100,117,037对91,605,442兰特，L004为47,621,235对47,070,781兰特，L006为184,023,243对180,106,624兰特；预算含增值税及专业费用估计，决算含增值税及实际专业费用，三个工程包均低于所列预算。该表注7另列电气、土木及主干基础设施控制预算87,482,995兰特、最终决算76,692,025兰特。表14.16仅统计施工合同，三个UMP建筑工程包对客户的最终施工成本合计275,620,192兰特；它不同于包含专业费用的工程包决算，也不同于HETM001累计直接支出539,825,172兰特。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "这些对照证明所列工程包在相应预算以内且金额不相等，不能外推为UMP整个首期项目最终总支出与批准预算的关系；合同价格涨幅同样不能替代项目总支出与批准预算的对照。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W2-1",
+   "task": "补齐两校首期项目批准预算与结项实际支出的同口径对应。已有Wits结项报告第14章表14.2记载：截至2017年7月31日，SPU直接支出R942,827,946、UMP直接支出R539,825,172，另列两校共同费用R141,847,377，均含VAT。第14.9.1节所述施工控制预算为SPU R804 million、UMP R493.1 million，但尚未确认与上述直接支出的范围一致。沿E1所列完整结项报告、第4章及MOA增补协议线索，取得表4.4及相关预算组成、批准和调整依据，直接对照两校实际支出的阶段、费用范围和税务口径，分别判断是否在预算内、金额是否相等；同时核实共同费用是否有单校归属或分摊依据，以确定各校可报告的最终总支出口径。此前第4章附附件地址超时、另一地址404，应利用完整报告等现有替代线索补查。不要重复已完成的工程包调查，不能以局部工程包比较代替项目总额比较；无法…（共 410 字）",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未取得表4.4及首期项目预算的批准、调整和费用组成依据，无法完成两校预算与结项支出的阶段、费用范围和VAT口径对应；共同费用的单校归属或分摊依据亦未确认。",
+   "findings": [
+    {
+     "statement": "第14章表14.2记载，截至2017年7月31日，2012—2017年累计直接项目支出为：SPU R942,827,946，UMP R539,825,172，均含VAT。两校直接支出金额不相等，SPU比UMP高R403,002,774；该差额由表列总额相减得到。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "这些金额属于各校直接成本中心，未包含另列的两校共同费用。"
+     ]
+    },
+    {
+     "statement": "表14.5、14.6及说明显示，两校直接支出涵盖学术和机构规划、可行性研究、办公及管理费用、基础设施、家具设备、项目管理等。基础设施包括改造、新建及顾问费用；项目管理还包括后续新项目的前期规划与设计服务。因此，必须核对施工控制预算是否覆盖这些组成及阶段，才能与直接支出总额比较。SPU和UMP是否在首期批准预算内、各自实际支出是否等于对应预算，目前均无法确定。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "缺少表4.4及相关批准、调整依据，尚未建立施工控制预算与全部直接支出的对应关系。"
+     ]
+    },
+    {
+     "statement": "MOA增补协议附件中的UMP清单，在“Elemental Estimate”栏列示“UMP Total Building Costs and Infrastructure”为R4,427,615,518。清单预算栏跨2014/15至2018/19，并包含2018、2019年完成的建设安排，以及家具设备、基础设施和ICT等项目。这一多年度清单估算总额不能直接认定为本次首期结项范围的批准预算。",
+     "evidence_ids": [
+      "E62",
+      "E63"
+     ],
+     "limitations": [
+      "可见页未明确该估算的VAT口径，也未提供其与截至2017年7月31日结项直接支出的对应关系；该清单不能替代表4.4。"
+     ]
+    },
+    {
+     "statement": "表14.2、14.3将R141,847,377共同费用单列在HETP001，说明其用于两校的规划、协调和交付管理。两校直接支出加共同费用的报告总额为R1,624,500,495，均含VAT。已读内容未给出共同费用归属各校的金额或分摊规则，因此各校目前可明确报告的是直接支出；包含共同费用分摊后的单校最终总支出仍未知。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "未确认分摊依据不等于共同费用从未分摊；不能自行按一半或直接支出比例分配。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W2-2",
+   "task": "核清SPU校方2013—2018年“首期”资本支出约R1.4 billion与Wits首期交付结项支出之间的范围关系。E2称2013—2018年完成首期改造与建设、资本支出约R1.4 billion；E1及E5的Wits项目主要交付2016学年设施并于2017年7月结项，SPU直接支出为R942,827,946。沿校方原文及相应财务、建设资料核查两处首期的项目边界和费用组成，寻找校方口径的精确最终实际支出及同范围批准预算，直接判断两份材料是否覆盖同一项目阶段、能否衔接，并在可对应时核对实际支出与预算是否一致。不要仅凭截止年份或金额差异推定差额属于后续建设，也不要将年度资本支出或拨款直接替代首期项目决算。说明出处及仍无法取得的必要对应关系。",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未取得校方2013—2018年首期项目的逐项范围、精确最终实际支出及同范围批准预算，也未取得其与Wits结项账目的对照和调节表。因此不能完成两套金额的衔接或实际支出与预算的一致性核验。",
+   "findings": [
+    {
+     "statement": "SPU校方五周年原文第27—30段将首期描述为过去五年的改造与建设计划，资本支出约R1.4 billion，成果包括六座新建筑、北校区主楼Luka Jantjie House的改造，以及教学空间、教职员办公室和容纳近600名学生的校内住宿。该数是校方对建设计划的近似支出陈述，原文没有提供精确决算、批准预算或逐项费用表。出处：SPU《Five-year milestones honour ethos of University’s namesake》及其infrastructure标签页。",
+     "evidence_ids": [
+      "E2",
+      "E6"
+     ],
+     "limitations": [
+      "原文未列六座新建筑的名称、项目编号及各自金额，不能仅据约R1.4 billion确定与Wits账目的包含关系。"
+     ]
+    },
+    {
+     "statement": "两处“首期”不能直接认定为同一项目阶段及同一费用范围。Wits结项报告第14章明确，2016学年SPU主要新建交付为C001住宅楼、C002混合用途楼、C003教学楼及配套场地基础设施CX01，并包含早期改造；报告还记载2016年移交建设责任、由各大学管理供2017学年使用的第二期建设。C001、C002、C003及CX01另有改善工程，于2017年4月完成。因此可以确认建设与管理工作的延续，但校方“六座新建筑”的五年总结尚不能与Wits这组交付逐项对应。出处：Wits第14章表14.1、表14.12及改善工程说明。",
+     "evidence_ids": [
+      "E5",
+      "E6"
+     ],
+     "limitations": [
+      "未取得校方六座新建筑与Wits项目编号的对照，不能确认两套“首期”的完整交集、包含关系或差额归属。",
+      "不能仅凭2017年结项与2018年总结的时间差，把金额差额归为后续建设。"
+     ]
+    },
+    {
+     "statement": "Wits表14.6的R942,827,946是HETN001成本中心在2012年至2017年结项期间记录的SPU直接项目总支出，采用含增值税的兰特金额，PMIS提取日为2017年7月31日。主要组成包括基础设施供给R837,127,471、家具设备等Movables R72,825,226及项目管理服务R23,735,245，另有学术与机构规划、可行性、一般办公室及管理费、DHET出版物等费用。基础设施供给包含改造、新建、顾问费和施工费；项目管理服务还包含新项目的前期规划与设计管理。两校共用的HETP001总体计划费用R141,847,377另列，并不包含在该SPU直接成本中心总额中。出处：Wits第14章§14.2、§14.5及表14.2、表14.6，印刷页252、256—257。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "该直接项目总支出不能自动等同于校方所称首期资本支出：两者资本化范围、共用费用分摊及前期规划费用归属尚未对应。",
+      "未取得将上述成本中心账目调节至校方约R1.4 billion的明细。"
+     ]
+    },
+    {
+     "statement": "已读Wits§14.9.1列出SPU总建设控制预算R804 million，说明其依据MOA第四次补充协议设立、第五次补充协议调整，并指向表4.4的最终控制预算。报告还称两校2016学年新建筑交付在预算内，以及SPU改善工程在R10.36 million控制预算内完成，该改善预算来自原合同节余。这些内容均不足以证明校方2013—2018年首期实际支出等于批准预算；也不能把R804 million直接与R942,827,946或约R1.4 billion比较后认定超支。出处：Wits第14章表14.7、改善工程说明及§14.9.1。",
+     "evidence_ids": [
+      "E5",
+      "E6"
+     ],
+     "limitations": [
+      "尚未读取表4.4的预算组成及有关协议，R804 million与全部直接项目支出、校方六座新建筑计划的对应范围未核清。",
+      "“在预算内”不表示实际支出与预算金额相等；校方同范围首期批准预算和最终实际支出仍缺失。"
+     ]
+    },
+    {
+     "statement": "SPU《2019年年报》印刷页86—87提供的2018年比较数包括新增资本支出R333 million、在建资产转入完工建筑R462 million，以及年末物业、厂房及设备余额R1,645.4 million。这些分别是年度支出、资产转类金额和年末资产存量，不是2013—2018年首期项目累计决算。所见页面未提供它们与校方约R1.4 billion、Wits直接支出R942,827,946之间的项目调节关系，因此不能用这些数补齐首期最终支出或解释两套金额的差额。",
+     "evidence_ids": [
+      "E30",
+      "E31",
+      "E5",
+      "E6"
+     ],
+     "limitations": [
+      "此判断限于已读年报页面，不能据此断言其他财务附注或项目档案不存在所需明细。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W3-1",
+   "task": "补查两校首期项目预算与结项实际支出的对应缺口。E54第4.2(d)记载两校协议预算由R504,471,053扩至R1,951,506,053，E52说明范围延长至2016年3月，E55为批准签署页。直接对照这些页面、协议预算附件、后续第五次增补协议及Wits结项报告第4章表4.4，核清最终批准版本、各校预算和费用范围，并与E5截至2017年7月31日的含VAT累计直接支出——SPU R942,827,946、UMP R539,825,172——对应，分别判断是否在预算内及金额是否相等。核实另列共同费用R141,847,377是否有单校归属依据；只有存在依据时才能形成包含共同费用的单校总额。重点解决预算调整、阶段、费用组成和VAT口径，不重复已完成的工程包比较，不把两校协议总预算或跨至2019年的建设估算当作单校首期预算。无法取得的对应关系保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "未取得后续第五次增补协议及Wits结项报告第4章表4.4，尚不能确认两校首期项目的最终批准预算，以及预算与结项支出在阶段、费用组成和VAT口径上的对应关系；共同费用的单校归属也缺少依据。",
+   "findings": [
+    {
+     "statement": "所见批准材料标为ANNEXURE “4”、APPROVAL NO: CA04，标题中的v5是该文稿的版本标记，不能据此认定已取得第五次增补协议。第4.2(d)列明两校协议预算由R504,471,053扩至R1,951,506,053；协议期限延至2016年3月31日，范围包括2016学年所需基础设施、交付能力建设和责任移交。E55为带有双方手写签署的批准页。",
+     "evidence_ids": [
+      "E52",
+      "E54",
+      "E55"
+     ],
+     "limitations": [
+      "R1,951,506,053是两校协议合计预算，所见页面没有给出两校分别的最终预算，也不足以确认后续是否再次调整。"
+     ]
+    },
+    {
+     "statement": "E62–E63为UMP建设及基础设施预算附件，表头覆盖2014/15至2018/19，并包含未来年度建设。费用项目包括建筑、土地购置、家具及设备、场地及主干基础设施、公共服务接入和ICT等。末行R593,488,165明确标为2014/15与2015/16两财政年度的现金流合计，不能直接作为截至2017年结项的UMP首期最终预算。",
+     "evidence_ids": [
+      "E62",
+      "E63"
+     ],
+     "limitations": [
+      "这两页未明确VAT口径；跨年度建设估算及两年度现金流与首期最终批准预算的对应关系尚未取得。"
+     ]
+    },
+    {
+     "statement": "E5第14章表14.2记录：截至2017年7月31日，SPU累计直接支出为R942,827,946，UMP为R539,825,172，均含VAT，并按日历年／学年记录。两校直接支出不相等，SPU比UMP多R403,002,774。该结项报告覆盖首轮交付项目；第14章又将其划分为筹建、施工动员、施工交付、移交结项四个管理阶段，因此上述累计数涵盖多个阶段。",
+     "evidence_ids": [
+      "E1",
+      "E5"
+     ],
+     "limitations": [
+      "这些金额是单校直接项目成本，不是包含共同费用分摊后的单校总成本。"
+     ]
+    },
+    {
+     "statement": "E5将R141,847,377另列为HETP001共同项目费用，说明其为两校共同发生的规划、协调和交付管理成本；表14.3列有学术规划、可行性研究、一般办公及管理费、基础设施规划、机构规划和交付管理。已读内容没有提供该总额归属或分摊至单校的依据，因此不能形成包含共同费用的SPU或UMP单校总额。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "尚未核实是否存在另行编制的单校分摊记录；不能假定平均分摊、按直接支出比例分摊或全部归入某一校。"
+     ]
+    },
+    {
+     "statement": "SPU的R942,827,946和UMP的R539,825,172是否分别在最终批准的首期预算内，以及各校实际支出是否等于其预算，目前均无法核定。现有两校协议合计预算和UMP跨年度附件，尚不能提供与上述含VAT累计直接支出相同范围的单校预算比较值。",
+     "evidence_ids": [
+      "E54",
+      "E62",
+      "E63",
+      "E5"
+     ],
+     "limitations": [
+      "必要缺口为第五次增补协议、第4章表4.4及其预算版本、单校金额、费用组成、阶段范围和VAT说明；不能以两校合计预算替代单校预算作出结论。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W3-2",
+   "task": "补查SPU校方2013—2018年首期改造与建设计划的精确累计实际支出及同范围批准预算。E2、E6称该计划资本支出约R1.4 billion，完成六座新建筑及Luka Jantjie House改造；E30、E31所列2018年年度资本支出和资产余额不能替代该计划决算。沿校方2018年对应财务及建设资料核实这项累计金额、费用与税务范围及批准预算，并直接与E5中Wits截至2017年7月31日SPU直接支出R942,827,946的项目范围对照，确定两套“首期”能否衔接。已有近似数和年度资产数无需重复确认；重点取得会影响累计金额、阶段对应和预算比较的缺失依据。不能仅凭年份或金额差异归属差额，无法核实则说明具体缺少的材料及可支持的有限结论。",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未核实校方2013—2018年首期计划的精确累计实际支出、费用及VAT口径、同范围批准预算，以及与Wits项目账目的对应关系。所缺关键材料是该计划逐项目累计决算及费用税务明细、预算批准及调整文件、Wits移交支出与校方后续入账的对账表。",
+   "findings": [
+    {
+     "statement": "Wits报告表14.6记录：截至2017年7月31日，2012—2017年SPU直接成本中心HETN001累计支出R942,827,946，包含VAT。其中基础设施提供为R837,127,471，可移动家具、装置及设备为R72,825,226，项目管理服务为R23,735,245；其余类别包括学术及机构规划、可行性研究、一般办公及管理费、DHET基础设施出版物。基础设施支出包含改造、新建及专业顾问费用，项目管理服务还涉及未来项目的前期规划和设计。两校共同的HETP001整体项目费用R141,847,377另列，不包含在上述SPU直接支出中。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "这是Wits成本中心累计支出口径，不能直接视为校方2013—2018年首期建设计划决算。",
+      "没有两校共同费用向SPU分摊并纳入校方计划的对应依据。"
+     ]
+    },
+    {
+     "statement": "Wits表14.15提供了可作同范围比较的较小项目集合：C001、C002、C003及配套场地基础设施CX01。四行发包时基于约定目标价的控制预算相加为R726,024,282；四项最终结算合计R695,763,114。控制预算包含VAT，并按表下注释计入专业费估计、价格调整准备和5%预备费；最终结算明确包含VAT及专业费，依据实际成本。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "预算合计为依据表14.15四行数值计算所得。",
+      "该比较仅覆盖四个工作包，不能替代校方2013—2018年整个首期计划的累计实际支出和批准预算。"
+     ]
+    },
+    {
+     "statement": "Wits报告将2016年3月至2017年7月列为移交及收尾阶段，同时注明由各大学管理、面向2017学年的第二期建设启动；其2016学年新建项目成本分析在SPU侧主要对应C001、C002、C003及CX01。因此，Wits报告的收尾日期并不是足以将校方2013—2018年计划支出划分归属的项目边界。目前不能确定两套“首期”是否覆盖相同项目，或如何逐项衔接。",
+     "evidence_ids": [
+      "E5"
+     ],
+     "limitations": [
+      "缺少校方六座新建筑及Luka Jantjie House改造与Wits项目代码、移交金额和后续支付的逐项对应。",
+      "不能仅凭年份或金额差异，将未解释金额归为后续建设、共同管理费用或税款，也不能判断校方整个计划是否在批准预算内完成。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "Close Out Report - Wits University",
+   "source_url": "https://www.wits.ac.za/ipdm/evidence-based-publications/close-out-report/",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] New Universities Case Study Close Out Report\n\n[2] Project overview\n\n[3] Towards the end of 2011, the University of the Witwatersrand (Wits) was approached by the Department of Higher Education and Training (DHET) to provide specialised delivery capacity for the implementation of government’s decision to establish new universities in the Mpumalanga and Northern Cape provinces of South Africa. A memorandum of agreement (MOA) between Wits and DHET established the New Universities Project Management Team (NUPMT) to direct academic and institutional planning as well as the planning, design, con…（共 17087 字）"
+  },
+  {
+   "id": "E2",
+   "label": "infrastructure Archives - Sol Plaatje University",
+   "source_url": "https://www.spu.ac.za/index.php/tag/infrastructure/",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2018 marks Sol Plaatjie University’s fifth year since its establishment, and of a period in which South Africa’s youngest university has made notable achievements. 1. Institutional development of a new Sol Plaatje University Sol Plaatje University was established by Government [Read More …](https://www.spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje/)\n\n[2] Tag: infrastructure\n\n[3] The past five years (2013-2018) have seen the completion of the first phase of the refurbishment and construction programme, representing a capital expenditure of approxi…（共 689 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Sol Plaatje University and University of Mpumalanga, South Africa | NEC Projects | NEC Contracts | NEC Contracts",
+   "source_url": "https://www.neccontract.com/projects/sol-plaatje-university-and-university-of-mpumalanga-south-africa",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The South African government has used NEC contracts to procure the first phase of its two newest universities. After a search for appropriate sites starting in 2011, Sol Plaatje University in Kimberley, Northern Cape Province and the University of Mpumalanga in Nelspruit, Mpumalanga Province were formally established in 2013.\n\n[2] Both universities have been developed on existing sites, so much of the initial work involved the refurbishment of existing buildings. Sol Plaatje includes the former Kimberley Civic Centre and National Institute for Higher Education, while University of Mpumalan…（共 4932 字）"
+  },
+  {
+   "id": "E4",
+   "label": "New SA universities named | SAnews",
+   "source_url": "https://www.sanews.gov.za/south-africa/new-sa-universities-named",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Pretoria – President Jacob Zuma has announced the names of the two new universities government will be building in Mpumalanga and the Northern Cape.\n\n[2] The new university in the Northern Cape will be named Sol Plaatje University and the one in Mpumalanga will be called the University of Mpumalanga.\n\n[3] The announcement was made at the Union Buildings in Pretoria on Thursday.\n\n[4] Sol Plaatje was a famous writer, a South African intellectual, journalist, linguist, politician and translator. He was born just outside Boshof in the then Orange Free State.\n\n[5] Historically, Mpumalanga and t…（共 4701 字）"
+  },
+  {
+   "id": "E5",
+   "label": "chapter14.pdf",
+   "source_url": "https://www.wits.ac.za/media/wits-university/faculties-and-schools/-engineering-and-the-built-environment/construction-economics-and-management/ipdm/documents/close-out-report/chapter14.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nClose out Report\nof the New Universities Project Management Team on the\nDevelopment of New Universities in\nMpumalanga and the Northern Cape\n01 NOVEMBER 2011 - 31 JULY 2017\n\n[page 2]\nChapter 14\nReview of expenditure and value for money\n\n[page 3]\n250 \n \n \n14. Review of Expenditure and Value for Money \nThis chapter provides a management review of project performance based on project \nrecords and the Programme Management Information System (PMIS) maintained by the \nNew Universities Project Management Team (NUPMT). All PMIS values were extracted from \nthe PMIS on 31 July 2017. \nThis manage…（共 85317 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Five-year milestones honour ethos of University’s namesake - Sol Plaatje University",
+   "source_url": "https://www.spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2018 marks Sol Plaatjie University’s fifth year since its establishment, and of a period in which South Africa’s youngest university has made notable achievements.\n\n[2] 1. Institutional development of a new Sol Plaatje University\n\n[3] Sol Plaatje University was established by Government Gazette on 23 August 2013. The then Minister of Higher Education and Training, Dr Nzimande, appointed a five-person interim council in August 2013. This was made up of Ms Jenny Glennie (Chair), Mr Abel Madonsela, Prof Vishnu Padayachee, Dr Yvonne Muthien and Mr Maruping Lekwene.\n\n[4] The Interim Head, Prof …（共 6032 字）"
+  },
+  {
+   "id": "E7",
+   "label": "SOL PLAATJE UNIVERSITY ANNUAL REPORT 2019 L i g u it A f ri k a – v ir d i e M",
+   "source_url": "https://www.spu.ac.za/wp-content/uploads/2019/08/SPU-Annual-Report-2019-amended.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSOL PLAATJE  \nUNIVERSITY\nANNUAL  \nREPORT  \n2019\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\n\n[page 2]\ni\nSPU\nANNUAL REPORT\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nSOL PLAA TJE UNIVERSITY\nANNUAL REPORT 2019\nFor the year ended 31 December 2019\n\n[page 3]\nii\nSPU\nANNUAL REPORT…（共 393198 字）"
+  },
+  {
+   "id": "E8",
+   "label": "2018-gauteng-infrastructure-development-annual-report. ...",
+   "source_url": "https://provincialgovernment.co.za/department_annual/648/2018-gauteng-infrastructure-development-annual-report.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 2]\nGauteng Department of Infrastructure Development Annual Report  2017/2018 1\nDEPARTMENT OF INFRASTRUCTURE DEVELOPMENT\nPROVINCE OF GAUTENG \nVOTE NO. 15\nANNUAL REPORT \n2017/2018 FINANCIAL YEAR\n\n[page 3]\nGauteng Department of Infrastructure Development Annual Report  2017/20182\n\n[page 4]\nGauteng Department of Infrastructure Development Annual Report  2017/2018 3\nContents\nPART A: GENERAL INFORMATION ............................................................................................... 5\n1. Department General Information .............................................................…（共 355328 字）"
+  },
+  {
+   "id": "E9",
+   "label": "March 2021 Infrastructure for South Africa An assessment of the obstacles",
+   "source_url": "https://blsa.org.za/wp-content/uploads/2021/03/BLSA-Intellidex-Infrastructure-Report.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nMarch 2021\nInfrastructure for \nSouth Africa \nAn assessment \nof the obstacles \nand solutions \nto greater \ninfrastructure \ninvestment\nResearching Capital Markets and Financial Services\nCommissioned by\n\n[page 2]\n2\nDisclosures\nThis report was commissioned by Business Leadership South \nAfrica but was conducted independently by Intellidex. Intellidex \nretained full editorial control and is solely responsible for the \ncontent of this report.\nIntellidex aims to deliver impartial and objective assessments \nof securities, companies, and other subjects. The information \ncontained in this report …（共 209793 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Fee Structure - Wits University",
+   "source_url": "https://www.wits.ac.za/internationalstudents/financial-information/fee-structure/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Fee Structure for international students\n\n[2] All international students must provide proof of funds to the Department of Home Affairs before receiving a study visa.\n\n[3] Your fees depend on your citizenship, immigration status, and what you are studying. Find your category below to see what you will pay.\n\n[4] Important notes\n\n[5] Fees increase annually based on inflation and the university's operational needs. The amounts shown here are guidelines. Always check the current year's fee schedule.\n\n[6] Payment must clear before registration. Plan your international money transfers to arrive a…（共 3876 字）"
+  },
+  {
+   "id": "E11",
+   "label": "2018-03 - Wits University",
+   "source_url": "https://www.wits.ac.za/news/latest-news/in-their-own-words/2018/2018-03/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Are South African universities under assault?\n\n[2] Declining subsidies and fees coupled with increasing demands for higher remuneration could jeopardise the future sustainability of universities in South Africa.\n\n[3] Maybe assault is too harsh a word, as it suggests premeditated, malevolent intent and I do not believe that this is the case. But the recent actions of a variety of stakeholders, both internal and external, effectively amount to an assault on the very soul of universities, which could compromise their future sustainability. This would be tragic as universities, and in particul…（共 124772 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Entry requirements - Wits University",
+   "source_url": "https://www.wits.ac.za/undergraduate/entry-requirements/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Entry requirements\n\n[2] Which school-leaving qualification have you completed?\n\n[3] - The National Senior Certificate (NSC) (see below and [here](https://www.wits.ac.za/undergraduate/entry-requirements/admission-requirements-nsc/) )\n\n[4] - [Admission Requirements for International Qualifications](https://www.wits.ac.za/undergraduate/entry-requirements/admission-requirements-nsc/)\n\n[5] - [The National Certificate (Vocational) (NCV)](https://www.wits.ac.za/undergraduate/entry-requirements/national-certificate-vocational-ncv-guidelines/)\n\n[6] - [The Senior Certificate (as Amended) - SC(a)](<h…（共 2770 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Tuition fees - Wits University",
+   "source_url": "https://www.wits.ac.za/study-at-wits/student-fees/tuition-fees/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Average Tuition Fees for the 2026 academic year\n\n[2] Please note that the Average Tuition Fee summaries do not include additional charges. Please check the [Fees Booklet](https://www.wits.ac.za/study-at-wits/student-fees/) or the online Fee Estimator (accessible via the Student Self-Service Portal) for more information."
+  },
+  {
+   "id": "E14",
+   "label": "媒体属性：document，211页，0条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"audio_tracks\":0,\"backend\":\"PyMuPDF\",\"format\":\"PDF\",\"media_kind\":\"document\",\"page_count\":211,\"version\":\"1.27.2.2\"}"
+  },
+  {
+   "id": "E15",
+   "label": "文档E7第67页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":67}"
+  },
+  {
+   "id": "E16",
+   "label": "文档E7第68页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":68}"
+  },
+  {
+   "id": "E17",
+   "label": "文档E7第69页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":69}"
+  },
+  {
+   "id": "E18",
+   "label": "文档E7第70页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":70}"
+  },
+  {
+   "id": "E19",
+   "label": "文档E7第92页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":92}"
+  },
+  {
+   "id": "E20",
+   "label": "文档E7第93页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":93}"
+  },
+  {
+   "id": "E21",
+   "label": "文档E7第94页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":94}"
+  },
+  {
+   "id": "E22",
+   "label": "文档E7第95页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":95}"
+  },
+  {
+   "id": "E23",
+   "label": "3-10_HET-Wits_MOA_-_Addendum_4.pdf",
+   "source_url": "https://www.wits.ac.za/media/wits-university/faculties-and-schools/-engineering-and-the-built-environment/construction-economics-and-management/ipdm/documents/close-out-report/chapters-with-annexures/chapter-3-annexures/3-10_HET-Wits_MOA_-_Addendum_4.pdf",
+   "acquired_by": "SEARCH/open/pdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "PDF acquired; pages=158; pages_with_text=0"
+  },
+  {
+   "id": "E24",
+   "label": "文档E7第71页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":71}"
+  },
+  {
+   "id": "E25",
+   "label": "文档E7第72页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":72}"
+  },
+  {
+   "id": "E26",
+   "label": "文档E7第73页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":73}"
+  },
+  {
+   "id": "E27",
+   "label": "文档E7第74页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":74}"
+  },
+  {
+   "id": "E28",
+   "label": "文档E7第76页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":76}"
+  },
+  {
+   "id": "E29",
+   "label": "文档E7第96页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":96}"
+  },
+  {
+   "id": "E30",
+   "label": "文档E7第97页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":97}"
+  },
+  {
+   "id": "E31",
+   "label": "文档E7第98页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E7"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":98}"
+  },
+  {
+   "id": "E32",
+   "label": "媒体属性：document，158页，0条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"audio_tracks\":0,\"backend\":\"PyMuPDF\",\"format\":\"PDF\",\"media_kind\":\"document\",\"page_count\":158,\"version\":\"1.27.2.2\"}"
+  },
+  {
+   "id": "E33",
+   "label": "文档E23第1页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":1}"
+  },
+  {
+   "id": "E34",
+   "label": "文档E23第23页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":23}"
+  },
+  {
+   "id": "E35",
+   "label": "文档E23第46页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":46}"
+  },
+  {
+   "id": "E36",
+   "label": "文档E23第68页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":68}"
+  },
+  {
+   "id": "E37",
+   "label": "文档E23第91页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":91}"
+  },
+  {
+   "id": "E38",
+   "label": "文档E23第113页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":113}"
+  },
+  {
+   "id": "E39",
+   "label": "文档E23第136页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":136}"
+  },
+  {
+   "id": "E40",
+   "label": "文档E23第158页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":158}"
+  },
+  {
+   "id": "E41",
+   "label": "文档E23第2页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":2}"
+  },
+  {
+   "id": "E42",
+   "label": "文档E23第3页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":3}"
+  },
+  {
+   "id": "E43",
+   "label": "文档E23第4页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":4}"
+  },
+  {
+   "id": "E44",
+   "label": "文档E23第5页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":5}"
+  },
+  {
+   "id": "E45",
+   "label": "文档E23第6页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":6}"
+  },
+  {
+   "id": "E46",
+   "label": "文档E23第7页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":7}"
+  },
+  {
+   "id": "E47",
+   "label": "文档E23第8页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":8}"
+  },
+  {
+   "id": "E48",
+   "label": "文档E23第9页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":9}"
+  },
+  {
+   "id": "E49",
+   "label": "文档E23第151页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":151}"
+  },
+  {
+   "id": "E50",
+   "label": "文档E23第152页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":152}"
+  },
+  {
+   "id": "E51",
+   "label": "文档E23第153页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":153}"
+  },
+  {
+   "id": "E52",
+   "label": "文档E23第154页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":154}"
+  },
+  {
+   "id": "E53",
+   "label": "文档E23第155页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":155}"
+  },
+  {
+   "id": "E54",
+   "label": "文档E23第156页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":156}"
+  },
+  {
+   "id": "E55",
+   "label": "文档E23第157页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":157}"
+  },
+  {
+   "id": "E56",
+   "label": "Client Challenge",
+   "source_url": "https://www.jstor.org/stable/10.18772/22016109810",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] JavaScript is disabled in your browser.\n\n[2] Please enable JavaScript to proceed.\n\n[3] A required part of this site couldn’t load. This may be due to a browser extension, network issues, or browser settings. Please check your connection, disable any ad blockers, or try using a different browser."
+  },
+  {
+   "id": "E57",
+   "label": "Client Challenge",
+   "source_url": "https://www.jstor.org/stable/10.18772/12012116017",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] JavaScript is disabled in your browser.\n\n[2] Please enable JavaScript to proceed.\n\n[3] A required part of this site couldn’t load. This may be due to a browser extension, network issues, or browser settings. Please check your connection, disable any ad blockers, or try using a different browser."
+  },
+  {
+   "id": "E58",
+   "label": "Sol Plaatje University SPU 2026 Rankings, Courses, Tuition & Admissions",
+   "source_url": "https://www.unirank.org/za/uni/sol-plaatje-university/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sol Plaatje University is a non-profit public higher education institution located in the urban setting of the small city of Kimberley, Northern Cape, South Africa. Founded in 2013, Sol Plaatje University (SPU) is a coeducational institution and is officially recognized by the Department of Higher Education and Training. SPU offers courses and programs leading to officially recognized higher education degrees, such as pre-bachelor's degrees (i.e. certificates, diplomas, associate or foundation) and bachelor's degrees in several areas of study. See the uniRank degree levels and areas of stu…（共 13268 字）"
+  },
+  {
+   "id": "E59",
+   "label": "Sol Plaatje University [Ranking 2026 + Acceptance Rate]",
+   "source_url": "https://edurank.org/uni/sol-plaatje-university/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sol Plaatje University Rankings\n\n[2] | Ranking | Category |\n\n[3] |---|---|\n\n[4] | #9200 of 14,131 | In [the World](https://edurank.org/geo/) |\n\n[5] | #428 of 1,104 | In [Africa](https://edurank.org/geo/af/) |\n\n[6] | #26 of 26 | In [South Africa](https://edurank.org/geo/za/) |\n\n[7] Quick Review\n\n[8] - Acceptance rate\n\n[9] - 80%\n\n[10] - Enrollment\n\n[11] - 3,000\n\n[12] - Type\n\n[13] - Non-profit\n\n[14] - Funding\n\n[15] - Public-private\n\n[16] partnership\n\n[17] - Highest Degree\n\n[18] - Bachelor\n\n[19] - Website\n\n[20] -  [www.spu.ac.za](https://www.spu.ac.za/?from=edurank.org)\n\n[21] Acceptance rate &…（共 2504 字）"
+  },
+  {
+   "id": "E60",
+   "label": "Sol Plaatje - UVA Press",
+   "source_url": "https://www.upress.virginia.edu/title/5320/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sol Plaatje\n\n[2] While the story of modern South Africa has long captured global attention, the story of one of its key forefathers has been eclipsed by those of more iconic political figures. In Sol Plaatje: A Life, Brian Willan restores to history the importance of a remarkable man whose contributions as an intellectual, politician, teacher, linguist, and journalist expanded and advanced the vision of a common South Africa.\n\n[3] Drawing on an extraordinary range of sources reflecting decades of archival and field work, Willan animates Plaatje’s personal and professional fortunes in the c…（共 1397 字）"
+  },
+  {
+   "id": "E61",
+   "label": "文档E23第143页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":143}"
+  },
+  {
+   "id": "E62",
+   "label": "文档E23第144页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":144}"
+  },
+  {
+   "id": "E63",
+   "label": "文档E23第145页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":145}"
+  },
+  {
+   "id": "E64",
+   "label": "文档E23第146页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":146}"
+  },
+  {
+   "id": "E65",
+   "label": "文档E23第147页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":147}"
+  },
+  {
+   "id": "E66",
+   "label": "文档E23第148页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":148}"
+  },
+  {
+   "id": "E67",
+   "label": "文档E23第149页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":149}"
+  },
+  {
+   "id": "E68",
+   "label": "文档E23第150页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E23"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":150}"
+  },
+  {
+   "id": "E69",
+   "label": "SOL PLAATJE UNIVERSITY ANNUAL REPORT 2017 L i g u it A f ri k a – v ir d i e M",
+   "source_url": "https://www.spu.ac.za/wp-content/uploads/2018/09/SPU-ANNUAL-REPORT-2017.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSOL PLAATJE  \nUNIVERSITY\nANNUAL  \nREPORT  \n2017\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\n\n[page 2]\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nSOL PLAATJE UNIVERSITY \nANNUAL REPORT 2017\nFor the year ended 31 December 2017\n\n[page 3]\nPage ii\n\n[page 4]\nANNUAL REPORT 2017\nLig…（共 265134 字）"
+  },
+  {
+   "id": "E70",
+   "label": "SOL PLAATJE UNIVERSITY ANNUAL REPORT 2018 L i g u it A f ri k a – v ir d i e M",
+   "source_url": "https://www.spu.ac.za/wp-content/uploads/2019/09/SPU-Annual-Report-2018.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSOL PLAATJE  \nUNIVERSITY\nANNUAL  \nREPORT  \n2018\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\n\n[page 2]\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nLig uit Afrika – vir die Mensdom\n • Light from Africa - for Humanity • Lesedi la Afrika - go Batho •\nSOL PLAA TJE UNIVERSITY\nANNUAL REPORT 2018\nFor the year ended 31 December 2018\n\n[page 3]\nREGISTERED ADDRESS:\nPOSTAL ADDRESS  STRE…（共 376919 字）"
+  },
+  {
+   "id": "E71",
+   "label": "1 Succession Disputes, Chiefs and Headmen: The Batswana Community",
+   "source_url": "https://openhub.spu.ac.za/server/api/core/bitstreams/606bd4a5-ecae-43ee-884b-a8a1f130b511/content",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\n1 \n \nSuccession Disputes, Chiefs and Headmen: The Batswana Community \nin Kuruman, Northern Cape South Africa \n \nBy  \nKgoroshi Rosy Mogaladi  \nStudent Number: 202353392 \nSubmitted in Accordance with the requirements \nfor the degree of \n \nMaster of Arts \nIn \nANTHROPOLOGY \n \nSol Plaatje University, South Africa \nSchool of Humanities \n \nSupervisor: Professor Godfrey Maringira \nCo - Supervisors: Professor Jesmael Mataga & \nProfessor Gilbert Pwiti\n\n[page 2]\n2 \n \nDeclaration \nI Kgoroshi Rosy Mogaladi, Student Number: 202353392 hereby declare that this dissertation \nis my original work and ha…（共 271052 字）"
+  },
+  {
+   "id": "E72",
+   "label": "SOL PLAATJE UNIVERSITY ANNUAL REPORT 2017 For the year ended 31 December 2017",
+   "source_url": "https://www.spu.ac.za/wp-content/uploads/2019/01/SPU-Annual-Report-2017.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSOL PLAATJE UNIVERSITY\nANNUAL REPORT 2017\nFor the year ended 31 December 2017\n\n[page 2]\nCONTENTS\nPAGE\nSECTION 1: GOVERNANCE\n1.1 Introduction 6\n1.2 Report by the Chairperson of Council 7\n1.3 Performance Assessment Report 8\n1.4 Council Statement on Governance 10\n1.5 Report on Internal Control and Risk Management 20\n1.6 Senate Report to Council 21\n1.7 Report of the Institutional Forum 23\n1.8 Report on Transformation 25\nSECTION 2: OPERATIONS\n2.1 Report of the Vice-Chancellor and Principal 27\n2.2 Student Applications, Registration and Academic Performance 30\n2.3 Staffing Development and St…（共 193716 字）"
+  },
+  {
+   "id": "E73",
+   "label": "Term Dates - Wits University",
+   "source_url": "https://www.wits.ac.za/students/academic-matters/term-dates/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2025 Term Dates\n\n[2] | Activity | Dates |\n\n[3] | Publication of Matric Results | Friday 16 January |\n\n[4] | Gateway to Success | Monday 27 January - Friday 07 February |\n\n[5] | Postgraduate (PG) Orientation | Wednesday 05 February - Friday 07 February |\n\n[6] | Returning Students Registrations PG and Undergraduate (UG) (including earlier date for online registration) | Thursday 02 January - Tuesday 04 February |\n\n[7] | Start of Term | Monday 10 February |\n\n[8] | First Teaching Block | Monday 10 February - Wednesday 26 March (32 days) |\n\n[9] | Mid-term Vacation/Study/Research Break | Thursda…（共 5095 字）"
+  },
+  {
+   "id": "E74",
+   "label": "Exam Timetables - Wits University",
+   "source_url": "https://www.wits.ac.za/exams/exam-timetables/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Examinations / Assessment Timetables\n\n[2] - Please contact your Course Coordinator if any of your courses do not reflect on the Assessment Schedule.\n\n[3] - It is essential that you determine, in advance, in which venue you are scheduled to write.\n\n[4] - The timetable encompasses all postgraduate and undergraduate courses across all faculties.\n\n[5] Refresh this page to make sure you are seeing the latest version of the timetables.\n\n[6] [Revised May/June 2026 Final Assessment Schedule.xlsx](https://www.wits.ac.za/media/wits-university/students/exams/documents/REVISED%20Final%20Timetable%2029…（共 1823 字）"
+  },
+  {
+   "id": "E75",
+   "label": "Addendum to DHET Agreement",
+   "source_url": "https://www.wits.ac.za/media/wits-university/faculties-and-schools/-engineering-and-the-built-environment/construction-economics-and-management/ipdm/documents/close-out-report/chapters-with-annexures/chapter-3-annexures/3-4_DHET-Wits_MOA_-_Addendum_1.pdf",
+   "acquired_by": "SEARCH/open/pdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "PDF acquired; pages=46; pages_with_text=0"
+  },
+  {
+   "id": "E76",
+   "label": "2026 Term Dates - Wits University",
+   "source_url": "https://www.wits.ac.za/students/academic-matters/term-dates/2026-term-dates/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2026 Term Dates\n\n[2] | Activity | Dates |\n\n[3] | Publication of Matric Results | Monday 12 January |\n\n[4] | Welcome Day | Sunday 18 January |\n\n[5] | Gateway to Success and Postgraduate (PG) Orientation | Tuesday 20 January - Monday 02 February (10 days) |\n\n[6] | Returning Students Registrations PG and Undergraduate (UG) (including earlier date for online registration) | Friday 02 January - Monday 02 February |\n\n[7] | Start of Term | Tuesday 03 February |\n\n[8] | First Teaching Block | Tuesday 03 February - Wednesday 18 March (32 days) |\n\n[9] | Mid-term Vacation/Study/Research Break | Thursd…（共 4742 字）"
+  },
+  {
+   "id": "E77",
+   "label": "Table Tennis - Wits University",
+   "source_url": "https://www.wits.ac.za/sport/clubs/table-tennis/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] -  [About](https://www.wits.ac.za/sport/clubs/table-tennis/#accordion-1012402) The Wits Table Tennis Club is one of the fast growing clubs at Wits and is open to members of different calibre from beginner’s right through to elite. Members can choose to compete on a recreational or competitive level. The club competes in the Gauteng Central Table Tennis Association (GCTTA) League and University Sports South Africa (USSA) Tennis Tournaments. Every year, the Wits Table Tennis Club hosts three tournaments: one in the first semester and the other two in the second semester.\n\n[2] -  [Contact Us]…（共 858 字）"
+  },
+  {
+   "id": "E78",
+   "label": "媒体属性：document，179页，0条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "source_url": null,
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"audio_tracks\":0,\"backend\":\"PyMuPDF\",\"format\":\"PDF\",\"media_kind\":\"document\",\"page_count\":179,\"version\":\"1.27.2.2\"}"
+  },
+  {
+   "id": "E79",
+   "label": "文档E70第62页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":62}"
+  },
+  {
+   "id": "E80",
+   "label": "文档E70第63页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":63}"
+  },
+  {
+   "id": "E81",
+   "label": "文档E70第64页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":64}"
+  },
+  {
+   "id": "E82",
+   "label": "文档E70第65页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":65}"
+  },
+  {
+   "id": "E83",
+   "label": "文档E70第66页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":66}"
+  },
+  {
+   "id": "E84",
+   "label": "文档E70第67页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":67}"
+  },
+  {
+   "id": "E85",
+   "label": "文档E70第68页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":68}"
+  },
+  {
+   "id": "E86",
+   "label": "文档E70第69页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":69}"
+  },
+  {
+   "id": "E87",
+   "label": "文档E70第88页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":88}"
+  },
+  {
+   "id": "E88",
+   "label": "文档E70第89页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":89}"
+  },
+  {
+   "id": "E89",
+   "label": "文档E70第90页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":90}"
+  },
+  {
+   "id": "E90",
+   "label": "文档E70第91页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":91}"
+  },
+  {
+   "id": "E91",
+   "label": "文档E70第60页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":60}"
+  },
+  {
+   "id": "E92",
+   "label": "文档E70第61页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":61}"
+  },
+  {
+   "id": "E93",
+   "label": "文档E70第58页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":58}"
+  },
+  {
+   "id": "E94",
+   "label": "文档E70第80页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":80}"
+  },
+  {
+   "id": "E95",
+   "label": "文档E70第81页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":81}"
+  },
+  {
+   "id": "E96",
+   "label": "文档E70第82页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":82}"
+  },
+  {
+   "id": "E97",
+   "label": "文档E70第83页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":83}"
+  },
+  {
+   "id": "E98",
+   "label": "文档E70第84页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":84}"
+  },
+  {
+   "id": "E99",
+   "label": "文档E70第85页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":85}"
+  },
+  {
+   "id": "E100",
+   "label": "文档E70第86页",
+   "source_url": null,
+   "acquired_by": "INSPECT/get_pages",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [
+    "E70"
+   ],
+   "content": "{\"dpi\":144,\"page_number\":86}"
+  },
+  {
+   "id": "E101",
+   "label": "2026-01 - Welcome back, Witsies! - Wits University",
+   "source_url": "https://www.wits.ac.za/news/latest-news/general-news/2026/2026-01/welcome-back-witsies.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Welcome back, Witsies!\n\n[2] - Zeblon Vilakazi\n\n[3] Professor Zeblon Vilakazi, Vice-Chancellor and Principal of Wits University, welcomes staff and students to a new academic year.\n\n[4] Dear Colleagues and Students\n\n[5] I hope that you are well rested and revitalised. As we start the 2026 academic year, I extend a warm welcome to every member of the Wits community.\n\n[6] Next five years\n\n[7] This year marks the beginning of my second term of office and I would like to thank those who supported me during my first term. I would also like to use this opportunity to share my vision for the next …（共 5922 字）"
+  },
+  {
+   "id": "E102",
+   "label": "2026-08 - Women are at the heart of innovation - Wits University",
+   "source_url": "https://www.wits.ac.za/news/latest-news/general-news/2026/2026-08/women-are-at-the-heart-of-innovation.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Women are at the heart of innovation\n\n[2] - FALF\n\n[3] FALF is strengthening women-led research and innovation coming out of South Africa's public universities through new partnerships.\n\n[4] The [Female Academic Leaders Fellowship](https://falfafrica.org/) (FALF), proudly sponsored by Standard Bank Private Banking, hosted her flagship annual gathering, bringing together academic leaders, researchers, innovators, policymakers, industry partners and stakeholders from across South Africa. The event provided a platform to advance dialogue, collaboration and action on research commercialisation,…（共 10894 字）"
+  },
+  {
+   "id": "E103",
+   "label": "Home - Wits University",
+   "source_url": "https://www.wits.ac.za/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Start main page content]\n\n[2] [All News](https://www.wits.ac.za/news/)\n\n[3] [Telkom Foundation, BCX and Alibaba Cloud Partner with Wits to expand digital skills The programme will provide approximately 165 third-year Computer Science students at Wits with access to AI-powered development tools. 11 September 2026](https://www.wits.ac.za/news/latest-news/research-news/2026/2026-09/telkom-foundation-bcx-and-alibaba-cloud-partner-with-wits-to-expand-digital-skills.html)\n\n[4] [What are we dying from? Cardiovascular diseases now account for a third of deaths in adults over 40 in a rural South A…（共 2017 字）"
+  },
+  {
+   "id": "E104",
+   "label": "2026-06 - Wits University",
+   "source_url": "https://www.wits.ac.za/news/latest-news/research-news/2026/2026-06/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Researchers shine at AFRETEC & WSoE Research Bonanza\n\n[2] - Wits University\n\n[3] Schools of education are at the centre of some of the most emerging and urgent questions of our time.\n\n[4] “If Africa is to succeed in the next phase of global transformation, it will depend not only on engineers, doctors, and entrepreneurs, but on the quality of its educators and the strength of its educational system,” said Professor Ruksana Osman, Senior Deputy Vice-Chancellor: Academic.\n\n[5] She was speaking at a joint conference for the Wits School of Education’s AFRETEC Project and Research Bonanza. The …（共 89239 字）"
+  },
+  {
+   "id": "E105",
+   "label": "General news - Wits University",
+   "source_url": "https://www.wits.ac.za/news/latest-news/general-news/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Njabulo Maphumulo on ‘culture’ at Wits residences\n\n[2] Maphumulo shares how Wits residences shape belonging, learning and student success.\n\n[3] Happy to be pain-free\n\n[4] For years, Gontse Mabaso lived with severe pain that many dismissed as normal for ‘some women’.\n\n[5] Wits staff sport to host major intervarsity tournaments\n\n[6] Teams prepare for competitive games and look forward to networking and regional collaboration.\n\n[7] Carol Crosley: A legacy of service excellence\n\n[8] After almost three decades at Wits, the Registrar retires and leaves a legacy of commitment, service excellence,…（共 183209 字）"
+  },
+  {
+   "id": "E106",
+   "label": "SOL PLAATJE MUNICIPALITY ANNUAL BUDGET (MARCH)",
+   "source_url": "http://www.solplaatje.org.za/wordpress/wp-content/uploads/2023/09/Draft-Budget-2023-2024.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nSOL PLAATJE MUNICIPALITY \n       ANNUAL BUDGET (MARCH) \n2023/24 –  2025/26\n     intranet: http://solplaatje\n\n[page 2]\nList of acronyms \nACIP Accelerated Community Infrastructure Programme \nBEE Black Economic Empowerment \nCAPEX Capital Expenditure \nCBD Central Business District \nCDW Community Development Worker \nCOGHSTA Co-operative Governance Human Settlement and Traditional Affairs \nCPIX Consumer Price Index \nCRR Capital Replacement Reserve \nDBSA Development Bank of South Africa \nDEAT Department of Education and Training \nDoRA Division of Revenue Act \nDoRAA Division of Revenue Amendm…（共 2533335 字）"
+  },
+  {
+   "id": "E107",
+   "label": "Statements",
+   "source_url": "https://www.solplaatje.online/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sol Plaatje Local Municipality\n\n[2] Pay your\n\n[3] Sol Plaatje Local Municipality\n\n[4] bill through\n\n[5] Register\n\n[6] Search\n\n[7] @Mail Billing\n\n[8] Department\n\n[9] Update\n\n[10] Account Info\n\n[11] Registration\n\n[12] Video Guide\n\n[13] Submit\n\n[14] Meter Forms\n\n[15] Copyright © 2026 -\n\n[16] Lesaka Easypay\n\n[17] Statement month wise\n\n[18] Register User\n\n[19] Statement month wise"
+  },
+  {
+   "id": "E108",
+   "label": "Sol Plaatje Local Municipality | South African Government",
+   "source_url": "https://www.gov.za/about-government/contact-directory/nc-municipalities/sol-plaatje-local-municipality",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Website\n\n[2] Postal Address\n\n[3] Private Bag X5030, KIMBERLEY, 8300\n\n[4] Street Address\n\n[5] Sol Plaatje Drive, KIMBERLEY\n\n[6] Phone\n\n[7] 053 830 6911\n\n[8] 053 830 6100\n\n[9] Fax\n\n[10] 053 833 1005"
+  },
+  {
+   "id": "E109",
+   "label": "DA welcomes tabling of Sol Plaatje budget and IDP amid double victory for due process",
+   "source_url": "https://nc.da.org.za/2026/04/da-welcomes-tabling-of-sol-plaatje-budget-and-idp-amid-double-victory-for-due-process",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The Democratic Alliance (DA) welcomes the tabling of Sol Plaatje Municipality’s outstanding draft budget and Integrated Development Plan (IDP), following ongoing attempts by the ANC to destabilise council and obstruct its lawful functioning.\n\n[2] Today marks a significant victory for both Sol Plaatje and its residents, with due process and accountability prevailing in council.\n\n[3] The successful facilitation of the budget process was made possible through decisive leadership in council, with DA Councillor Elize Niemann elected as Acting Speaker, and Councillor Pienaar, from Sol Plaatje Se…（共 2141 字）"
+  }
+ ]
+}

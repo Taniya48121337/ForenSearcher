@@ -1,0 +1,75 @@
+{
+  "case_id": "averitec:2694",
+  "dataset": "averitec",
+  "source_id": "2694",
+  "split": "dev_select",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Over the past five years… President Cyril's government has built two new universities in South Africa（声明日期：2019-02-07）",
+  "family_key": "averitec:2694",
+  "media": [],
+  "claims": [
+    "Over the past five years… President Cyril's government has built two new universities in South Africa"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "声明所说的过去五年（约 2014–2019）内，南非是否新建并开办了两所大学，分别是哪两所、何时开始招生",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "\"建成\"的含义与时间范围是否和记载相符（开办时间、建设阶段）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "sanews_named",
+      "description": "南非政府新闻社关于两所新大学命名的报道（试点 run 取到）",
+      "url_pattern": "sanews.gov.za/south-africa/new-sa-universities-named*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "spu_site",
+      "description": "Sol Plaatje University 官网的沿革或建设记载（试点 run 取到）",
+      "url_pattern": "spu.ac.za/*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "treasury_review",
+      "description": "2018 年预算审查报告（标注来源）",
+      "url_pattern": "treasury.gov.za/documents/national%20budget/2018/review/fullbr.pdf*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:sanews_named,spu_site,treasury_review",
+  "checks": [],
+  "reference_path": "../data/averitec/2694/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2019-02-07，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210226001653/https://africacheck.org/fact-checks/reports/state-facts-verifying-cyril-ramaphosas-sona2019-claims。数据集标签 Supported，按保守规矩不写 label_expected（子串匹配区分不了\"属实/不属实\"等）。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

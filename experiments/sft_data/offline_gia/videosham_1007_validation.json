@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "videosham_1007_validation",
+  "source_request": "request_0045",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "候选视频 B 的结尾部分呈现了什么内容？其中出现了哪些文字或标识？这些内容对理解整段视频的性质有什么作用？",
+      "expected_decision": "FINISH",
+      "rationale": "W2-2（INCOMPLETE）F10（干净）引 E38、E39、E14、E26、E40、E8：B 在 17.484 秒出现黑底片尾卡，中央为红色枫叶和“KEEP EXPLORING.CA”，下方有 Canada 标识，20.020 秒为黑屏；F10 认为这给山湖划行画面加上了旅游推广式的语境。F9（干净，E36、E37、E40、E8）：B 在 11.512、14.515 秒为舟体与湖岸景观。限制取 F10：片尾卡切换的准确时刻未确定，标识不能证明拍摄地点或来源身份；B 在 12.813、15.516、16.517、18.986 秒已取帧（E41–E44），但没有被描述。W2-2 的 INCOMPLETE 针对 B 的开头和对应关系，不影响本题。可以直接回答。与 v2 同话题，形成 FINISH↔INVESTIGATE 对照。",
+      "review": "修改"
+    },
+    {
+      "id": "v2",
+      "task": "视频 A 的任何位置是否出现片尾卡、文字或标识？给出查看范围和位置。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W2-2 F10（干净）的限制写明尚未在 A 中确认片尾卡的对应，不能由抽样帧断言 A 全片没有。visual_observation_summary 显示 A 只在 0、0.72、1.16–1.44、2.48、3.68、4.88–5.12、6.04、7.96 秒一带有观察，其余区间未查看，状态中也没有 OCR 结果。inspect_operations 有 get_frames、ocr（视频可指定 range_s）、crop，HI 可以全段加密取帧并做 OCR。缺口可取。",
+      "review": "通过"
+    },
+    {
+      "id": "v3",
+      "task": "视频 A 与 B 的音频是否相同？如有差异，差在哪里、位于何处？",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2 F4（干净）引 E33：音频对齐（FFT 相关）给出 A 0–8.000 秒对应 B 2.665–10.665 秒的候选；限制写明相关性匹配不等于听觉核验，不能确认对白、音乐、环境声或声音剪辑是否变化，B 的 0–2.665 秒和约 10.665 秒之后也不能认定为删减。W1-2 status_reason 写明当前输入没有可试听的音频，所列动作不提供试听或声音内容识别；inspect_operations 确实没有 asr/audio_qa。音频对齐已经做过，再派 HI 取不到声音内容。应 FINISH：给出对齐候选这一有限结论，说明声音内容上的差异无法核验。W1-2 F5 被 r0 判 minor 越界，不作依据。",
+      "review": "通过"
+    },
+    {
+      "id": "v4",
+      "task": "两段视频的开头画面是否对应？B 的开头部分在 A 中能否找到对应画面？",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W2-2 F12（干净）引 E13：B 开头 0–1.168 秒是否含有影响含义的前文目前不能确定，对齐最早的候选是 A 0.720 秒对应 B 1.168 秒；限制写明本次附图不含 B 在 0.000、0.601、1.168 秒的像素。这些帧其实已经取得（E34、E35 由 W2-2 取帧，E18 由 W1-1 取帧；A 侧有 E14 0.000 秒、E15 0.720 秒），都在 current_materials 中，但没有任何 Finding 描述它们的内容；B 的 0.033–0.601、0.634–1.168 秒和 A 的 0.04–0.72 秒也没有看过。需要 HI 对这些成对帧做直接比对（用 crop 看山体、林带、倒影），必要时加密取帧。缺口真实，可以取得。",
+      "review": "修改"
+    }
+  ]
+}

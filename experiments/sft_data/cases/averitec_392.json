@@ -1,0 +1,114 @@
+{
+  "case_id": "averitec:392",
+  "dataset": "averitec",
+  "source_id": "392",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A Budweiser employee has been urinating in a beer tank for 12 years.（声明日期：2020-07-02）",
+  "family_key": "averitec:392",
+  "media": [],
+  "claims": [
+    "A Budweiser employee has been urinating in a beer tank for 12 years."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "这则故事最早发布在哪个网站或帖子",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "该网站的性质：是否声明其内容为讽刺或虚构",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "origin_site",
+      "description": "最早发布该故事的网站",
+      "url_pattern": "foolishhumor.com*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "origin_archive",
+      "description": "原站存档",
+      "url_pattern": "archive.ph/vdhyf*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "timesnow",
+      "description": "Times Now 核查（试点 run 取到）",
+      "url_pattern": "timesnownews.com/the-buzz/article/budweiser-employee-peeing*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "businesstoday",
+      "description": "Business Today 核查（试点 run 取到）",
+      "url_pattern": "businesstoday.in/latest/trends/story/did-a-budweiser-employee-really-urinate*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "ibtimes",
+      "description": "IBTimes 核查（试点 run 取到）",
+      "url_pattern": "ibtimes.co.in/fact-check-no-budweiser-employee*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:origin_site,origin_archive,timesnow,businesstoday,ibtimes",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averitec/392/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2020-07-02，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20200811004202/https://www.vishvasnews.com/english/viral/fact-check-satire-post-claiming-budweiser-employee-been-pissing-in-beer-tank-for-12-years-going-viral/。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

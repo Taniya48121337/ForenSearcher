@@ -1,0 +1,135 @@
+{
+  "case_id": "averimatec:699",
+  "dataset": "averimatec",
+  "source_id": "699",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The iron pillar in Qutub Minar has the names of the ancestors of the Mughals proving that they built it.（声明日期：2023-02-20）",
+  "family_key": "averimatec:699",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/699/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "The iron pillar in Qutub Minar has the names of the ancestors of the Mughals proving that they built it."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "en.youturn.in/factcheck/inscription-on-the-iron-pillar-in-qutub-minar.html"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图中铁柱的实际身份与所在地",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "顾特卜塔（Qutub Minar）建筑群内铁柱铭文的实际内容",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "altnews",
+      "description": "Alt News 核查（试点 run 取到）",
+      "url_pattern": "altnews.in/photo-of-iron-pillar-in-bharatpur-fort*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "newsmobile",
+      "description": "NewsMobile 核查（试点 run 取到）",
+      "url_pattern": "newsmobile.in/nm-fact-checker/fact-check-image-of-loha-stambh*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "telugupost",
+      "description": "Telugu Post 核查（试点 run 取到）",
+      "url_pattern": "telugupost.com/english-factcheck/iron-pillar-in-viral-image*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "toi",
+      "description": "Times of India 核查（试点 run 取到）",
+      "url_pattern": "timesofindia.indiatimes.com/times-fact-check/news/fake-alert-photo-of-devanagari-inscriptions*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "thewire",
+      "description": "The Wire 关于顾特卜塔铁柱的文章（标注来源）",
+      "url_pattern": "*thewire.in/article/history/qutb-minar-complex-iron-pillar*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "jatland_lohagarh",
+      "description": "Jatland Wiki「Lohagarh Fort」条目：巴拉特布尔宫内铁柱（Vijay Stambha）刻贾特王族世系",
+      "url_pattern": "jatland.com/home/lohagarh_fort*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "wiki_delhi_pillar",
+      "description": "Wikipedia「Iron pillar of Delhi」：铭文内容（笈多体梵文，记旃陀罗王）",
+      "url_pattern": "en.wikipedia.org/wiki/iron_pillar_of_delhi*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:altnews,newsmobile,telugupost,toi,jatland_lohagarh; any_one_of:thewire,wiki_delhi_pillar",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/699/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2023-02-20，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20240520114444/https://en.youturn.in/factcheck/inscription-on-the-iron-pillar-in-qutub-minar.html。（已按 2026-09-28 独立审稿修改 1 处，见 cases_draft/r2_20260928/review_20260928.md）（2026-09-29 护栏对照修补：REQ1 组原四项均为二手核查、默认黑名单下全被拦，补 jatland_lohagarh（must）；REQ2 补 wiki_delhi_pillar，与 thewire 合为可选组。）"
+}

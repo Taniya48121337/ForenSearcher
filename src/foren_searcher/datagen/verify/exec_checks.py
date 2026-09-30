@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from ..cases import Case
+from ..cases import Case, Check
 from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText, normalize_source_key
 
@@ -83,9 +83,60 @@ def _iou(a: tuple[float, float], b: tuple[float, float]) -> float:
     return inter / union if union > 0 else 0.0
 
 
+def fact_check_errors(check: Check, statements: str, cited_text_pool: str) -> list[ErrorRecord]:
+    """entity_in_evidence / numeric_in_evidence 的共用判定（工作区报告与 answer 单元同口径）。
+
+    statements：结论文字（报告全部 Finding 或 GIA 答案）；cited_text_pool：所引 E 的文本拼接。
+    不出现 → hard omitted_required_fact；出现但所引 E 文本里没有 → flag unsupported_assertion（MAJOR）。其它 kind 返回 []。
+    """
+
+    params = check.params
+    out: list[ErrorRecord] = []
+
+    def hard(kind: ErrorType, detail: str, extra: dict[str, Any]) -> None:
+        out.append(error(kind, detail, method="exec", extra={"confidence": "hard", **extra}))
+
+    def flag(kind: ErrorType, detail: str, extra: dict[str, Any]) -> None:
+        out.append(error(kind, detail, method="exec", severity=Severity.MAJOR, extra={"confidence": "flag", **extra}))
+
+    scope = {"requirement": check.requirement} if check.requirement else {}
+    if check.kind == "entity_in_evidence":
+        needle = str(params["text"])
+        # params.aliases（可选）：所引 E 原文里的等价写法（如 耶拿桥 ↔ pont d'Iéna），只用于"在所引 E 文本中"这一步
+        forms = [needle, *(str(a) for a in params.get("aliases") or [])]
+        if needle.lower() not in statements.lower():
+            hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的实体 {needle!r}", {"check": check.kind, "reference": True, **scope})
+        elif not any(form.lower() in cited_text_pool.lower() for form in forms):
+            flag(ErrorType.UNSUPPORTED_ASSERTION, f"实体 {needle!r} 出现在结论里，但不在所引 E 的文本中", {"check": check.kind, **scope})
+    elif check.kind == "numeric_in_evidence":
+        target = float(params["value"])
+        tol = float(params.get("tolerance", 0))
+        found = [n for n in numbers_in(statements) if abs(float(n) - target) <= tol]
+        if not found:
+            hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的数值 {params['value']}", {"check": check.kind, "reference": True, **scope})
+        elif not any(abs(float(n) - target) <= tol for n in numbers_in(cited_text_pool)):
+            flag(ErrorType.UNSUPPORTED_ASSERTION, f"数值 {found[0]} 出现在结论里，但不在所引 E 的文本中", {"check": check.kind, **scope})
+    return out
+
+
+# interval_iou 同样按 check.requirement 收窄（2026-09-28 第二批案卷审稿发现：只做边界复核的工作区不该被整案区间检查判错）
+_SCOPED_KINDS = frozenset({"entity_in_evidence", "numeric_in_evidence", "date_in_range", "status_expected", "interval_iou"})
+
+
 def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | None = None,
-                visible_ids: set[str] | None = None) -> list[ErrorRecord]:
-    """report：{status, findings[{statement, evidence_ids, limitations}], selected_evidence_ids, status_reason}。"""
+                visible_ids: set[str] | None = None, requirement_ids: set[str] | None = None) -> list[ErrorRecord]:
+    """report：{status, findings[{statement, evidence_ids, limitations}], selected_evidence_ids, status_reason}。
+
+    requirement_ids：这份报告所属工作区对准的案卷要求（scope.requirements_for_workspace）；给了就只按这几项反查必需证据。
+
+    案卷断言里跳过 label_expected（verifier@0.3.0，09-24 收窄测试发现）：标签是整案结论，只有 GIA 的 FINISH 答案该带，
+    由 units.check_answer 在 answer 单元核对；工作区报告只查来源 / 语境等子任务，不该因为没写"不实"之类的标签被记
+    omitted_required_fact。其它 check kinds 照旧在这里跑。
+
+    check.requirement（09-24）：entity_in_evidence / numeric_in_evidence / date_in_range / status_expected 若标了 requirement，
+    且给了 requirement_ids 而该 REQ 不在其中，就跳过——只查外部报道的实体不该扣只看视频画面的工作区。
+    requirement_ids 为 None（不收窄）时全部照跑。answer 单元不分 requirement 全查（units.check_answer）。
+    """
 
     errors: list[ErrorRecord] = []
     status = report.get("status")
@@ -138,6 +189,40 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
     if case is None:
         return errors
 
+    # ---- 必需证据（verifier@0.3.0）：按工作区范围，用 url_pattern / acquired_by 程序匹配所引 E；any_one_of 分组任取其一
+    scoped = {r.key: r for r in case.scoped_required_evidence(requirement_ids)}
+    matchable = {k for k, r in scoped.items() if r.url_pattern or r.acquired_by or r.source_hint}
+    matched_keys = {key for key, req in scoped.items()
+                    if any(req.matches(source_url=t.source_url, acquired_by=t.acquired_by, label=t.label) for t in cited_texts.values())}
+    for mode, keys in case.evidence_groups():
+        keys = tuple(k for k in keys if k in scoped)
+        if not keys:
+            continue
+        satisfied = all(k in matched_keys for k in keys) if mode == "all" else any(k in matched_keys for k in keys)
+        if satisfied:
+            continue
+        must = any(scoped[k].must_cite for k in keys)
+        label = " / ".join(keys) if mode == "any_one_of" else keys[0]
+        if not must:
+            # verifier@0.3.1：组内全部 must_cite=False = 可选证据（帮助性材料，如 media_profile / alignment / 旁证报道）。
+            # 没引用只记 minor 备注：不计入处置（decide 只数 critical / major）、不转 uncertain、不污染 Finding。
+            errors.append(error(ErrorType.OMITTED_REQUIRED_FACT, f"可选证据 {label} 未被引用（仅备注）", method="exec",
+                                severity=Severity.MINOR,
+                                extra={"confidence": "hard", "check": "required_evidence_cited", "optional": True, "key": keys[0],
+                                       "keys": list(keys), "mode": mode,
+                                       "scope": sorted(requirement_ids) if requirement_ids else None}))
+            continue
+        if not all(k in matchable for k in keys):
+            # 没有 url_pattern / acquired_by / source_hint 的项程序判不了，留给第三层按描述判
+            flag(ErrorType.OMITTED_REQUIRED_FACT, f"必需证据 {' / '.join(keys)} 没有程序可匹配的特征，留给充分性层判断",
+                 extra={"check": "required_evidence_cited", "pending_layer": 3, "key": keys[0], "keys": list(keys)})
+            continue
+        hard(ErrorType.OMITTED_REQUIRED_FACT, f"必需证据 {label}（{scoped[keys[0]].description}）未被任何 Finding 引用",
+             extra={"check": "required_evidence_cited", "key": keys[0], "keys": list(keys), "mode": mode, "scope": sorted(requirement_ids) if requirement_ids else None})
+        if status == "COMPLETED" and must:
+            hard(ErrorType.COMPLETED_WITHOUT_FINISHING, f"必需证据 {label} 未取得却报 COMPLETED",
+                 extra={"check": "required_evidence_cited", "key": keys[0]})
+
     # ---- 来源限制
     excluded = [k.lower() for k in case.source_policy.excluded_keys]
     for eid, text in cited_texts.items():
@@ -152,6 +237,8 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
     required = {r.key: r for r in case.required_evidence}
     for check in case.checks:
         params = check.params
+        if check.kind in _SCOPED_KINDS and not check.applies_to(requirement_ids):
+            continue
         if check.kind == "status_expected":
             expected = params["status"]
             if status != expected and expected == "COMPLETED":
@@ -159,25 +246,9 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
             elif status != expected:
                 hard(ErrorType.COMPLETED_WITHOUT_FINISHING, "案卷标注不可完成，报告却是 COMPLETED", extra={"check": check.kind})
         elif check.kind == "label_expected":
-            label = str(params["label"])
-            if label.lower() not in statements.lower():
-                hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的标签 {label!r}", extra={"check": check.kind, "reference": True})
-        elif check.kind == "entity_in_evidence":
-            needle = str(params["text"])
-            if needle.lower() not in statements.lower():
-                hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的实体 {needle!r}", extra={"check": check.kind, "reference": True})
-            elif needle.lower() not in cited_text_pool.lower():
-                flag(ErrorType.UNSUPPORTED_ASSERTION, f"实体 {needle!r} 出现在结论里，但不在所引 E 的文本中", severity=Severity.MAJOR,
-                     extra={"check": check.kind})
-        elif check.kind == "numeric_in_evidence":
-            target = float(params["value"])
-            tol = float(params.get("tolerance", 0))
-            found = [n for n in numbers_in(statements) if abs(float(n) - target) <= tol]
-            if not found:
-                hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的数值 {params['value']}", extra={"check": check.kind, "reference": True})
-            elif not any(abs(float(n) - target) <= tol for n in numbers_in(cited_text_pool)):
-                flag(ErrorType.UNSUPPORTED_ASSERTION, f"数值 {found[0]} 出现在结论里，但不在所引 E 的文本中", severity=Severity.MAJOR,
-                     extra={"check": check.kind})
+            continue          # 整案标签只在 answer 单元核（units.check_answer），见 docstring
+        elif check.kind in ("entity_in_evidence", "numeric_in_evidence"):
+            errors.extend(fact_check_errors(check, statements, cited_text_pool))
         elif check.kind == "date_in_range":
             found = dates_in(statements)
             lo, hi = params.get("min"), params.get("max")
@@ -197,20 +268,9 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
                 hard(ErrorType.UNSUPPORTED_ASSERTION, f"结论区间与案卷区间 {want} 重叠度低于 {params['min_iou']}",
                      extra={"check": check.kind, "reference": True, "best_iou": round(max(_iou(want, g) for g in got), 3)})
         elif check.kind == "evidence_key_required":
-            req = required[params["key"]]
-            hint = (req.source_hint or "").lower()
-            if not hint:
-                flag(ErrorType.OMITTED_REQUIRED_FACT, f"必需证据 {req.key} 没有 source_hint，留给充分性层判断",
-                     extra={"check": check.kind, "pending_layer": 3, "key": req.key})
-                continue
-            matched = any(hint in ((t.source_url or "") + " " + t.label).lower() for t in cited_texts.values())
-            if not matched:
-                hard(ErrorType.OMITTED_REQUIRED_FACT, f"必需证据 {req.key}（{req.description}）未被引用",
-                     extra={"check": check.kind, "key": req.key})
-                if status == "COMPLETED" and req.must_cite:
-                    hard(ErrorType.COMPLETED_WITHOUT_FINISHING, f"必需证据 {req.key} 未取得却报 COMPLETED",
-                         extra={"check": check.kind, "key": req.key})
+            # evidence_key_required：0.3.0 起由上面的必需证据检查统一处理（按范围、按分组），这里不再重复
+            continue
     return errors
 
 
-__all__ = ["dates_in", "exec_checks", "numbers_in", "numbers_missing"]
+__all__ = ["dates_in", "exec_checks", "fact_check_errors", "numbers_in", "numbers_missing"]

@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "true_20361105_visibility_validation",
+  "source_request": "request_0050",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "Frederica Wilson 关于“网上嘲讽国会议员的人应当被起诉”的那番话，是在什么时间、什么场合说的？当时她在回应什么话题？给出出处。",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2（INCOMPLETE）F4（干净）引 E15、E16、E20、E11：发言在 2019 年 7 月 2 日 Wilson 率国会代表团视察佛州 Homestead 移民儿童拘留设施后的记者会上，Free Beacon 给出的原始录像出处是她本人的 Facebook 页面。W2-2 F10（干净）引 E20、E16、E24：报道称记者在约 9 分钟处询问秘密 Facebook 群组中的边境巡逻人员，她的话是对此的回应；W2-1 F9（干净，E20）同。限制：F4 写明 E20 称“星期一”，与 E16、E11 不一致，日期采用后两者；F10 写明记者问题来自报道转述，Facebook 原始录像获取失败，问话原文未直接核验。W1-2 F5 被 r0 判 wrong_citation，不作依据。W1-2、W2-x 的 INCOMPLETE 针对的是原声核验，不影响本题。",
+      "review": "通过"
+    },
+    {
+      "id": "v2",
+      "task": "Wilson 在说完“they should be prosecuted”之后紧接着说了什么？她的原话用词能否确定？",
+      "expected_decision": "FINISH",
+      "rationale": "W2-1 F7（干净，E11、E20）：两篇报道在“making fun of members of Congress are a disgrace”和“they should be prosecuted”两处引语一致。F8（干净，E11、E20）：紧接的一句，E11 第[7]段记为“You cannot intimidate members of Congress, frighten members of Congress. It is against the law…”，E20 第[2]段记为“…threaten members of Congress.”。当前材料里其他报道也载有这句：E16（Snopes）第[4]段作 threaten、第[11]段转引作 frighten，E19、E22、E25、E18 作 frighten；这些报道多为相互转引，出现次数不能代替原声。W2-2 F11（干净）的限制写明 E24 自动字幕在该处识别为“threat pregnant”，不能据此定词（该段字幕在离线视图可见部分之外，只能经 F11 转述）。W2-1 status_reason 明写“当前可用动作不支持音轨播放或 ASR，官方 Facebook 视频获取失败”，W2-2 status_reason 也写未取得原声或可靠逐字转录；两轮都没取到原声，再检索只能得到更多二手转写，不能判定原话。应 FINISH：给出紧随其后的那句及两种版本，说明原声用词无法确定及原因。W1-2 F5 被 r0 判 wrong_citation（把 threaten 归给 E11），不作依据。",
+      "review": "修改"
+    },
+    {
+      "id": "v3",
+      "task": "Wilson 本人或其办公室事后是否就这番“起诉”言论公开作出解释、澄清或回应？给出出处。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "状态中的干净 Finding（W1-1 F1–F3，W1-2 F4、F6，W2-1 F7–F9，W2-2 F10、F11）都只涉及当天的发言和报道转述，没有任何一条说明她事后的回应。本 run 有 ddgs 搜索，evidence_source_policy 为 unrestricted_retrospective_web，HI 可以检索她的官网新闻稿、社交媒体和后续报道。与 v1（当天场合，已有干净 Finding）形成 FINISH↔INVESTIGATE 对照。",
+      "review": "通过"
+    },
+    {
+      "id": "v4",
+      "task": "给定视频 A 的画面中是否有台标、字幕条或其他文字，可以说明它出自哪家媒体或哪一场活动？",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 F1（干净，E4、E6）只描述了 7.733 秒和 18.000 秒两帧中讲台前的人物，限制写明只看了两个静态帧；已取的 8 帧（E3–E10）之间还有大段未查看区间，状态里没有任何 OCR 结果或关于画面文字的 Finding。inspect_operations 有 get_frames、crop、ocr，HI 可以取得。即使画面没有文字，也要实际查看后才能这样回答。",
+      "review": "通过"
+    }
+  ]
+}

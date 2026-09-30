@@ -1,0 +1,109 @@
+{
+ "run": "averimatec_441_q0_r1",
+ "config": {
+  "dataset": "averimatec",
+  "case": "441",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 6,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，查找直接证据并说明适用范围：Where is the grave in the image located?\n背景声明：A photo shows that Pakistani parents locked their daughter's grave to avoid her corpse falling prey to necrophilia\n声明日期（任务元数据）：2023-04-26",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "图中坟墓位于印度海得拉巴（Hyderabad）Madannapet 地区的 Darab Jung Colony，Masjid-e-Salar Mulk 清真寺对面的墓地内，并非巴基斯坦。Alt News 报道了具体地址，并委托当地居民到场拍摄核对；AFP 也通过街景定位，且其记者于2023年5月2日到访墓地、拍摄该坟墓。",
+     "evidence_ids": [
+      "E6",
+      "E3"
+     ],
+     "limitations": [
+      "定位依据为已读取的实地核查报道；本次未直接查看报道中的街景及现场照片。结论仅针对所附照片中的坟墓。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":38394}"
+  },
+  {
+   "id": "E2",
+   "label": "Fact check: Picture of grill lock on grave is from Hyderabad not Pakistan",
+   "source_url": "https://www.etvbharat.com/english/state/telangana/fact-check-picture-of-grill-lock-on-grave-is-from-hyderabad-not-pakistan/na20230430223527138138072",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Fact check: Picture of grill lock on grave is from Hyderabad not Pakistan\n\n[2] On April 29, news agency ANI reported a story with the caption 'Pakistani parents lock daughters' graves to avoid rape' while using a picture of the grave from Hyderabad. The report was quoting a tweet from controversial Athiest author from Pakistan Harris Sultan who too had shared the same picture and claimed that it was a grave somewhere in Pakistan. Harris deleted his tweet soon after his claim was debunked.\n\n[3] Hyderabad: A picture that had gone viral on social media claiming that grill locks were used on g…（共 3957 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Locked grave photo from India falsely shared as Pakistan 'anti-rape gate' | Fact Check",
+   "source_url": "https://factcheck.afp.com/doc.afp.com.33EA28V",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Locked grave photo from India falsely shared as Pakistan 'anti-rape gate'\n\n[2] - This article is more than three years old.\n\n[3] - Published on May 5, 2023 at 12:05\n\n[4] - 3 min read\n\n[5] - By [Devesh MISHRA](https://factcheck.afp.com/devesh-mishra) ,[AFP India](https://factcheck.afp.com/afp-india)\n\n[6] \"Graves of women in Pakistan,\" reads a [tweet](https://archive.ph/BCIlb) posted on April 26.\n\n[7] \"Locked like this to prevent \"rap€\" with their dead bodies...Nothing is safe..!\"\n\n[8] The post, which has more than 3,000 retweets, shows a photo of a grave secured with a locked gate.\n\n[9] Aus…（共 4299 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Viral Picture Of Padlock On Grave Not From Pak: A Fact Check",
+   "source_url": "https://www.ndtv.com/india-news/viral-picture-of-padlock-on-grave-not-from-pak-a-fact-check-3993678",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] A report that claimed parents are placing padlocks on the graves of their daughters in Pakistan to guard against necrophilia has been contradicted by a fact-checking site. Many news sites, including NDTV, ran news agency ANI's report quoting the Daily Times.\n\n[2] The Daily Times quoted a viral tweet by Harris Sultan, an ex-Muslim atheist activist and the author of the book \"The Curse of God, why I left Islam\".\n\n[3] In the tweet, he had shared photos of a padlocked grave and accused Pakistan of creating a \"sexually frustrated society\", where \"people are now putting padlocks on the graves of…（共 2694 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Media Misreport Image Of Padlocked Grave Shared With False Necrophilia Claim - The Logical Indian",
+   "source_url": "https://thelogicalindian.com/pakistan-put-locks-daughters-graves-pakistan-fake-claim-shared-indian-media-40757/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] An image of a padlocked grave is doing rounds on social media. In the viral image, a grave can be seen covered with a green colour grille (jaali) with a padlock on it. While sharing this image, it is being claimed that due to rising cases of necrophilia in Pakistan, parents put locks on their daughters’ graves in order to protect their bodies from rape.\n\n[2] Several news outlets shared a photo with the claim that a grave is padlocked to combat necrophilia cases in Pakistan.\n\n[3] News agency ANI used this image in their [article](https://aninews.in/news/world/asia/pakistani-parents-lock-dau…（共 13922 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Viral photo of grave with iron grille is from Hyderabad, not Pakistan by ANI, TOI, HT, Mirror Now, ThePrint, India Today, Wion, IndiaTV, Times Now, DNA India, OpIndia Hindi, News24, ABP News, Amar Ujala, News18, Firstpost, Jagran – Alt News",
+   "source_url": "https://www.altnews.in/media-misreport-viral-photo-of-grave-with-iron-grille-is-from-hyderabad-not-pakistan/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The image of a padlocked grave has been shared by an X (Twitter) user named [Cillian (@CilComLFC)](https://archive.is/3ZFCB) with the claim that parents in Pakistan are putting padlocks on the graves of their dead daughters to prevent them from being dug up and raped.\n\n[2] In Pakistan, parents are now putting PADLOCKS on the graves of their dead daughters to prevent them from being dug up and raped.\n\n[3] Western countries have to stop importing millions of men like this, who don’t possess the intellectual capacity to understand that rape is wrong. [pic.twitter.com/mzrsfyi4zh](https://t.co/…（共 12266 字）"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "_说明": "审查后建议（2026-09-28）。null 表示建议删除该条 label_expected，由 requirements 与充分性层判。",
+ "videosham:0069": {
+  "official": "Duplicate frames to make it seem like the rider is going very slow (00:06 - 00:10)；Frame duplication/Reversed Frames/Frame dropping/Speeding up/Slowing down",
+  "check": {
+   "kind": "label_expected",
+   "params": {
+    "label": "重复帧",
+    "aliases": [
+     "帧重复",
+     "重复出现",
+     "画面重复",
+     "复制帧",
+     "慢放",
+     "放慢",
+     "慢动作",
+     "duplicat",
+     "slow"
+    ]
+   },
+   "note": "官方：A 在 00:06–00:10 复制帧，使骑手显得很慢。只核“答案点出画面重复或放慢”；位置与方向由 REQ1/REQ4 判。否定句会误命中，属已知残余风险。"
+  }
+ },
+ "videosham:1007": {
+  "official": "Drop frames from 0:00 to 0:15 to make it into a 10 second video；Frame duplication/Reversed Frames/Frame dropping/Speeding up/Slowing down",
+  "check": null
+ },
+ "videosham:1028": {
+  "official": "0:00 to 0:06 change the text in the blue box to lorem ipsum；Text Replaced/Text Added",
+  "check": {
+   "kind": "label_expected",
+   "params": {
+    "label": "lorem ipsum",
+    "aliases": [
+     "lorem",
+     "占位文字"
+    ]
+   },
+   "note": "官方：A 在 0:00–0:06 把蓝框文字换成 lorem ipsum。匹配不区分大小写，大小写变体不必列。"
+  }
+ },
+ "videosham:2010": {
+  "official": "This is the same video as 2009, cut out the red car from 0:38-0:41, and put it on a cartoon road (you can draw something simple yourself)；Adding an entity/ Adding a subject",
+  "check": {
+   "kind": "label_expected",
+   "params": {
+    "label": "卡通",
+    "aliases": [
+     "绘制的",
+     "插画",
+     "手绘",
+     "动画风格",
+     "cartoon"
+    ]
+   },
+   "note": "官方：A 在 0:38–0:41 把红色汽车抠出，放到卡通道路上。只核“答案点出 A 的背景是绘制/卡通的”；红色汽车两侧都有，不作为标签。"
+  }
+ },
+ "videosham:4126": {
+  "official": "Remove the guy in black from the frame 00: 01-00: 07；Removing an entity/Removing a subject",
+  "check": null
+ }
+}

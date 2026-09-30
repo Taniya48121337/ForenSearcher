@@ -1,0 +1,92 @@
+{
+  "case_id": "averimatec:652",
+  "dataset": "averimatec",
+  "source_id": "652",
+  "split": "dev_select",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Police in Charlottesville, Virginia picked up a homeless dog called Chloe and offered her for adoption when the owner refused to take her back.（声明日期：2023-02-28）",
+  "family_key": "averimatec:652",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/652/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    },
+    {
+      "ref": "I1",
+      "path": "../data/averimatec/652/inputs/image_1.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Police in Charlottesville, Virginia picked up a homeless dog called Chloe and offered her for adoption when the owner refused to take her back."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "leadstories.com/hoax-alert/2023/03/fact-check-stray-dog-was-not-found-by-police-and-up-for-adoption-post-is-a-real-estate-scam.html"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图片的最早发布者与发布日期",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "图中这只狗的真实经历：是否被警方作为流浪狗收容并送养",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "southlake_fb",
+      "description": "Southlake 公共安全部门的原始帖子（标注来源）",
+      "url_pattern": "facebook.com/southlakepublicsafety/*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "wfaa_fire",
+      "description": "WFAA 关于 Southlake 警员从起火房屋救出该狗的报道（链接 Southlake DPS 原帖；试点 run 取到）",
+      "url_pattern": "wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:southlake_fb,wfaa_fire",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/652/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2023-02-28，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20240625175125/https://leadstories.com/hoax-alert/2023/03/fact-check-stray-dog-was-not-found-by-police-and-up-for-adoption-post-is-a-real-estate-scam.html。（已按 2026-09-28 独立审稿修改 3 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

@@ -1,0 +1,113 @@
+{
+  "case_id": "true:4124903",
+  "dataset": "true",
+  "source_id": "4124903",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris.",
+  "family_key": "true:4124903",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_4124903_r2/artifacts/3c20b978d28c448ea2828ea0503547c7.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "Fire and smoke billowing from the vicinity of the Eiffel Tower were evidence of a Bastille Day terrorist attack in Paris."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "prefpolice_tweets",
+      "description": "Préfecture de Police on X: \"Ne propagez pas de fausses rumeurs. Aucun incendie à la #TourEiffel. Un incendie accidentel …（E23）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "*prefpolice/status/753719036245073920*",
+      "acquired_by": null
+    },
+    {
+      "key": "snopes",
+      "description": "Eiffel Tower Set Ablaze by Terrorists | Snopes.com（E20）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "snopes.com/fact-check/eiffel-tower-terrorist-attack*",
+      "acquired_by": null
+    },
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E28、E4）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "youtube_upload",
+      "description": "cover: ALERTE : incendie au pied de la Tour Eiffel 14 Juillet 2016（E19、E24、E26）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ3"
+      ],
+      "url_pattern": "youtube.com/watch*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "核查“巴黎埃菲尔铁塔附近升起的火焰和浓烟是巴士底日恐怖袭击的证据”这一声明的事件背景与因果解释；核实相关火情的日期、地点、起因；是否有可靠证据支持其属于恐怖袭击；区分来源声称与已证实事实",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "说明画面能够支持的事实及无法据此确定的内容",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "核查给定视频与“巴黎埃菲尔铁塔附近升起的火焰和浓烟是巴士底日恐怖袭击的证据”这一声明的对应关系；核实视频来源、时间和地点（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:prefpolice_tweets,snopes; all:frames",
+  "checks": [
+    {
+      "kind": "entity_in_evidence",
+      "params": {
+        "text": "耶拿桥"
+      },
+      "note": "答案中的地点实体（旁证：Finding 原文）；所引 E 可能是外文原文，程序只查结论出现，需人工确认"
+    },
+    {
+      "kind": "date_in_range",
+      "params": {
+        "min": "2016-07-13",
+        "max": "2016-07-15"
+      },
+      "note": "答案首段结论里的事件日期 ±1 天；见于来源 E23、E20、E24、E26 正文"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_4124903_r2 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

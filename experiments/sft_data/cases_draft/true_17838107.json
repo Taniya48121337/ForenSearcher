@@ -1,0 +1,92 @@
+{
+  "case_id": "true:17838107",
+  "dataset": "true",
+  "source_id": "17838107",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The consumption of hot cross buns has the potential to affect breathalyzer readings.",
+  "family_key": "true:17838107",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_17838107_r1/artifacts/268fd8f37d83458ba9870b0418952e0c.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "The consumption of hot cross buns has the potential to affect breathalyzer readings."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "breathalyser",
+      "description": "Hot Cross Bun breathalyser reading claim put to the test（E29）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "breathalyser.com.au/media/hot-cross-bun-breathalyser-reading-claim-put-to-the-test*",
+      "acquired_by": null
+    },
+    {
+      "key": "dot",
+      "description": "Implementation Guidelines for Alcohol and Drug Regulations - Chapter 7 | FMCSA（E33）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "fmcsa.dot.gov/regulations/drug-alcohol-testing/implementation-guidelines-alcohol-and-drug-regulations-chapter-7*",
+      "acquired_by": null
+    },
+    {
+      "key": "snopes",
+      "description": "Can Eating Hot Cross Buns Trigger False Positive Breathalyzer Results? | Snopes.com（E27）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "snopes.com/fact-check/hot-cross-bun-breathalyzer*",
+      "acquired_by": null
+    },
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E21、E17）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "判断这种影响是否存在、在什么条件下发生；读数变化是否代表体内酒精水平变化",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "判断给定媒体中实际呈现的内容是否支持食用热十字面包会影响呼气酒精检测读数",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "any_one_of:breathalyser,dot,snopes; all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_17838107_r1 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

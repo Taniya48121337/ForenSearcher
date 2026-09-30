@@ -1,0 +1,222 @@
+{
+  "assessment_scope": "仅依据所给数据包，递归解析对象引用，评估steps中W3-2的12个HI输出；未调用工具、检查文件或开展人工复核。其他角色报告、记录中的初始计划及result中的GIA答案仅作背景，不作为评分目标。局部任务是共同费用归属及分类差异核查，不追加全局批准预算核对要求。未附图片，不能认证PDF附录的像素内容；result中的完整文档也不等于该演员已读全文。原数据集Supported标签及required_reannotation不能证明本次财务问题的答案。以下角色评分加权为3.15/4，即78.75/100，适用维度评分覆盖率100%；该覆盖率不代表调查完成或原件检查完整，概括分不能覆盖request_0081的事实状态错误。",
+  "roles": [
+    {
+      "actor": "W3-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12项均提供原始输出、接受输出及观察或提交事件对应，且raw_equals_accepted为true。request_0077确实执行了打开请求，但结果是超时，不能计为成功取得正文。",
+          "request_ids": [
+            "request_0059",
+            "request_0061",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0080",
+            "request_0081"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取的E13、E10、E1均在决策前可见集合中；打开第4章附录版的URL来自此前实际读取的E1。报告只引用已读材料，未发现使用未来结果、未读预算章节或其他角色报告的断言。",
+          "request_ids": [
+            "request_0059",
+            "request_0061",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0080",
+            "request_0081"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 2,
+          "reason": "PMIS金额、KPMG按校加总及三类差额均能由已读原文核对，差额合计为零也正确。但最后一项finding将E13的“DHET approved the release”概括成“DHET直接向两校拨付R183,000,000”，遗漏批准这一关键限定，把批准拨款写成已实施拨付。来源归属措辞不能消除该事实状态错误。",
+          "request_ids": [
+            "request_0081"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "就强制提交时的报告要求而言，逐项回应了共同费用性质、两表分类差异、分校总额可否计算及缺少的依据，并正确使用INCOMPLETE。没有擅自分摊，也没有把转拨金额加作支出。该评分表示报告覆盖了局部问题及未完成项目，不表示共同费用归属已经查明。",
+          "request_ids": [
+            "request_0081"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "顺序展开KPMG财务表及附录说明、对照PMIS、沿目录打开附录版，均针对真实缺口且参数可执行。request_0080的续读仍能补充SPU费用范围，但最后一次取证机会用于已读分类说明的后续文字，优先级弱于通过get_pages核对E13第14、15页实际附录内容。该替代动作有明确对象，但不能保证发现分摊规则。request_0081为零剩余轮次下的报告，不作为自主停止能力证据。",
+          "request_ids": [
+            "request_0059",
+            "request_0061",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0080"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "准确区分KPMG项目行加总与含共同费用的最终总额，未把合计相同解释为分类一致，也明确提取文字缺附表不能证明原始附件没有依据。不过，对R183,000,000没有保留批准与实际拨付之间的状态界限。",
+          "request_ids": [
+            "request_0081"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "分页均推进到此前未读内容，没有原样重复失败请求；目录读取服务于实际来源定位，超时本身不构成浪费。主要不足是末轮续读的预期增益较低，未优先检查已明确缺失的附录页面。",
+          "request_ids": [
+            "request_0059",
+            "request_0061",
+            "request_0063",
+            "request_0065",
+            "request_0067",
+            "request_0069",
+            "request_0071",
+            "request_0073",
+            "request_0075",
+            "request_0077",
+            "request_0080"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0081最后一项finding遗漏“批准拨款”中的批准限定，将R183,000,000描述为已经直接拨付。该句即使属于背景、且没有被加进支出总额，仍须修复后才能成为正向目标。"
+      ],
+      "unknowns": [
+        "共同费用的正式按校归属依据、PMIS与KPMG分类差额对应的交易及调节原因尚未取得。",
+        "没有附录页面像素或底层附表，不能判断实际PDF附录是否包含文本提取遗漏的财务内容；报告对此保持了正确边界。",
+        "R183,000,000获批后是否实际拨付，以及相关资金在收款学校端的实际支出，未获证实。这不妨碍确定报告遗漏批准限定的错误。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0059",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E13已明确可见且为局部任务指定的KPMG来源。首次读取能够核对报告范围、金额状态和后续明细入口，行动合理且执行对应完整。"
+    },
+    {
+      "request_id": "request_0061",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前次观察明确返回next_offset=6000；继续读取财务明细有直接任务价值，不是重复已读内容。"
+    },
+    {
+      "request_id": "request_0063",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前页在SPU项目金额中途截断，next_offset=12000。续读是取得完整项目行、总额及后续限制说明的必要步骤。"
+    },
+    {
+      "request_id": "request_0065",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前页余额说明尚未结束，且任务明确涉及KPMG附录。读取18000偏移可继续核查保证范围及附录入口；不能因返回的提取文字没有实际附表而倒推该行动无效。"
+    },
+    {
+      "request_id": "request_0067",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已读KPMG后首次读取E10，为直接比较两种财务分类取得另一份原始材料，同时核对项目阶段，符合局部任务。"
+    },
+    {
+      "request_id": "request_0069",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E10前次观察在成本中心说明处截断。按next_offset续读可取得三类总额、VAT口径及HETP001性质，直接对应共同费用缺口。"
+    },
+    {
+      "request_id": "request_0071",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "续读尚未结束的管理费用说明及逐校明细，可核对分类调整线索和学校支出范围。任务中给出的金额不能代替此次原文核查。"
+    },
+    {
+      "request_id": "request_0073",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在KPMG提取文本仅提供附录引介的状态下，读取Wits来源目录以寻找附录及所引资料是具体、可行的探索，也可核对首个交付阶段的含义。"
+    },
+    {
+      "request_id": "request_0075",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前次目录在第3章附件链接中截断，存在明确next_offset。续读用于取得后续章节及附录链接，具有新增信息价值。"
+    },
+    {
+      "request_id": "request_0077",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "直接打开此前E1提供的第4章附录版URL，来源真实可见、参数合法，适合追查相关财务材料。实际超时属于工具结果，不使事前合理的请求成为错误；也未生成成功正文。"
+    },
+    {
+      "request_id": "request_0080",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "超时后改为读取E10此前未读的18000偏移，能补充SPU成本组成，属于合理恢复。末轮取证优先级略弱：E13附录第14、15页尚可用get_pages核对，较贴近当前核心缺口；但不能据此将本次相关续读判成无价值重复。"
+    },
+    {
+      "request_id": "request_0081",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "按校加总、分类差额和不擅自分摊的结论有依据，零剩余轮次使用INCOMPLETE也正确。但最后一项将原文批准直接拨款R183,000,000写成直接拨付，改变事件状态，不能以其余内容可靠接受整条报告。应从该终端输入重新生成准确保留批准限定的报告；缺失分摊依据本身不构成评审关键未知。"
+    }
+  ],
+  "construction_revisions": [
+    "从request_0081原始输入重新生成报告，将R183,000,000明确表述为DHET批准直接向两校拨付的金额，不宣称实际拨付或到账已获核实；保留有依据的加总、分类差异及INCOMPLETE状态。",
+    "在对应取证状态补做E13第14、15页的页面检查，区分提取文本缺表与原件没有附表。若调整request_0080行动，应重新执行依赖该观察的后续报告，不能拼接旧后缀。",
+    "评审与导出材料持续保留每次实际返回的文本偏移、next_offset、URL及失败观察；明确区分演员读过的E10片段与result收录的完整E10。",
+    "本例仅导出逐项合格的W3-2目标；初始记录计划、其他工作区报告及GIA结果维持背景身份，不能因执行汇总成功而自动收录。"
+  ],
+  "rubric_revisions": [
+    "将本例加入事实状态校准样例：来源中的批准拨款不等于已经拨付；即使错误位于背景句、主结论保守且未用于计算，整条报告仍须修复。",
+    "增加局部任务校准示例：共同费用核查应评价归属依据和分类调节，不因完整参考文档另有预算章节而追加全局预算任务。",
+    "明确分页动作按决策前可见截断位置与待解问题评价；合理来源打开失败可以接受，末轮行动的优先级则依据当时具体可用的替代检查判断。",
+    "区分调查未知与评审关键未知：准确声明未取得附表的INCOMPLETE报告不自动触发critical_unknown；声称检查过附表但评审缺少其决定性内容时才需暂缓认证。",
+    "保留强制报告与自主停止的分离：request_0081可以评价事实和状态，但不能用其提交行为证明演员已合理耗尽所有调查途径。"
+  ]
+}

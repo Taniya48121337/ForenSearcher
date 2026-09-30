@@ -1,0 +1,108 @@
+{
+  "case_id": "averimatec:660",
+  "dataset": "averimatec",
+  "source_id": "660",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A ram was sacrificed in a ritual to mark the crowning of King Charles III.（声明日期：2022-09-14）",
+  "family_key": "averimatec:660",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/660/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "A ram was sacrificed in a ritual to mark the crowning of King Charles III."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "factcheck.afp.com/doc.afp.com.32JR6NT-1",
+      "factcheck.afp.com/doc.afp.com.32JR6NT"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图片实际显示的场景（地点、时间、事件）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "图中动物的身份，以及它是否在该场合或之后被献祭",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "yahoo_goat",
+      "description": "山羊领队进入加的夫城堡的报道（标注来源）",
+      "url_pattern": "*band-led-goat-marches-cardiff*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "blackheritage",
+      "description": "Black Heritage Radio 关于宣告仪式游行的报道（试点 run 取到）",
+      "url_pattern": "blackheritageradio.com/uk-goat-leads-welsh-military-parade*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "moneycontrol",
+      "description": "Moneycontrol 关于山羊军衔与薪水的报道（试点 run 取到）",
+      "url_pattern": "moneycontrol.com/news/trends/goat-seen-at-king-charles-iiis-proclamation*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    },
+    {
+      "key": "mascot_history",
+      "description": "皇家威尔士团博物馆关于吉祥物的介绍（标注来源）",
+      "url_pattern": "*royalwelshmuseum.wales/a-brief-history-of-the-regimental-mascot*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:yahoo_goat,blackheritage,moneycontrol,mascot_history",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/660/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2022-09-14，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20240310014434/https://factcheck.afp.com/doc.afp.com.32JR6NT-1。（已按 2026-09-28 独立审稿修改 2 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

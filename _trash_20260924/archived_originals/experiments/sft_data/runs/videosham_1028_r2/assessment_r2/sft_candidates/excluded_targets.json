@@ -1,0 +1,24 @@
+[
+  {
+    "request_id": "request_0005",
+    "assessment": {
+      "request_id": "request_0005",
+      "disposition": "context_only",
+      "target_rating": 0,
+      "critical_unknown": true,
+      "reason": "仅提供unparsed_actor_output及JSON解析拒绝信息，没有可评原始输出或完整前置状态。不能作为正向决策目标；只能保留已记录的失败事实，不能重建其内容或认定其执行过。"
+    },
+    "execution_status": "unparsed_actor_output"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "四组成对帧在此前及当前输入中已逐组可见，此步再读E10并重附同批八图，没有明确的新歧义需要解决。操作合法，单次总览也非严重错误，但该状态下信息增益不足以作为优选模仿目标。"
+    },
+    "execution_status": "executed"
+  }
+]

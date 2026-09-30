@@ -1,0 +1,68 @@
+[
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次回到概览组，仅把已经看过的50秒换入此前组合。此前已有概览与边界比较，未显示新的核查问题或新增采样，信息增益有限；保留为真实历史，不作为优质正向动作。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "返回与request_0007输入相同的边界图片组。READ_RECORD E28增加的只是已知45.48秒元数据，未增加帧或可见比较对象。缺少六帧像素不妨碍识别该组已被重复提供。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次切回已经完整提供的概览组；E13的40秒定位早已可见，读取其元数据不能补查40秒前后空档。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次请求相同边界组，E22的46秒图和时间信息均已提供。当前只剩2次后续决策机会，此动作仍未推进未解决的时间范围问题。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "最后一次可调查机会继续切回旧概览组，读取已知44秒元数据，没有新增视觉问题或证据。这是明确的低收益重复，不是格式或执行失败。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "报告中的45秒闭盒、49–50秒展示和51秒部分可见均有像素支持，不属于幻觉；近似范围与非连续覆盖的说明也有价值。但完整定位不足：[45,51]对参考[38,52]的tIoU为0.4286。46–48秒已有明确展示，40秒已有相关食物特写，早段关系未解决；六张缺失边界帧使评审无法判断现有证据能否进一步收紧边界。需补齐材料并从相容状态修正或重执行，不能直接把参考窗口写成演员已证实的答案。"
+    },
+    "execution_status": "report_committed"
+  }
+]

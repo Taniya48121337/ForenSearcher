@@ -81,8 +81,8 @@
     mount(container) {
       this.container = container;
       container.innerHTML = `<div class="tr-map-toolbar"><div><strong>调查脑图</strong><span id="tr-map-count"></span></div><button class="tr-control" data-map-action="overview">收起分支</button></div>
-        <div class="tr-map-filters" aria-label="筛选脑图输出">${[['all','全部'],['GIA','GIA'],['HI','HI'],['excluded','未收录']].map(([id,label])=>`<button data-map-filter="${id}" aria-pressed="${this.filter===id}" class="${this.filter===id?'active':''}">${label}</button>`).join('')}</div>
-        <div class="tr-map-legend"><span class="gia">GIA 调度</span><span class="hi">HI 取证</span><span class="report">报告 / 回答</span><span class="unselected">○ 未收录</span></div>
+        <div class="tr-map-filters" aria-label="筛选脑图输出">${[['all','全部'],['GIA','GIA'],['HI','HI'],['excluded','未进候选']].map(([id,label])=>`<button data-map-filter="${id}" aria-pressed="${this.filter===id}" class="${this.filter===id?'active':''}">${label}</button>`).join('')}</div>
+        <div class="tr-map-legend"><span class="gia">GIA 调度</span><span class="hi">HI 取证</span><span class="report">报告 / 回答</span><span class="unselected">○ 未进候选</span></div>
         <div class="tr-map-viewport" id="tr-map-viewport" tabindex="0" aria-label="调查脑图。拖动平移，使用加减按钮缩放，按方向键平移。"><div class="tr-map-stage"><svg class="tr-map-lines" aria-hidden="true"></svg><div class="tr-map-nodes"></div></div><div class="tr-map-empty" hidden>当前分类没有输出</div></div>
         <div class="tr-map-bottom"><span>拖动平移 · 点击节点查看详情</span><div><button data-map-action="out" aria-label="缩小脑图">−</button><output class="tr-map-zoom" aria-label="脑图缩放比例">100%</output><button data-map-action="in" aria-label="放大脑图">＋</button><button data-map-action="fit" aria-label="适应全部可见节点" title="适应画布">⊡</button><button data-map-action="locate" aria-label="定位选中节点" title="定位选中节点">◎</button></div></div>`;
       this.viewport = container.querySelector('.tr-map-viewport');
@@ -146,13 +146,14 @@
       }).join('');
       this.container.querySelector('.tr-map-nodes').innerHTML=[...this.visible.values()].map(n=>{
         const step=n.step, matching=n.steps.filter(s=>this.matches(s));
-        const footer=step?`${step.included?'✓ 已收录':'○ 未收录'}${step.rating==null?'':` · ${step.rating} / 4 分`}${step.image_count?` · ${step.image_count} 张图`:''}`:n.status||`${matching.length} 次输出 · ${matching.filter(s=>s.included).length} 条收录`;
+        const state=step?(step.held?'◐ 暂缓':step.included?'✓ 进入候选':'○ 待校准'):'';
+        const footer=step?`${state}${step.weight==null?'':` · 权重 ${step.weight}`}${step.rating==null?'':` · ${step.rating} / 4 分`}${step.image_count?` · ${step.image_count} 张图`:''}`:n.status||`${matching.length} 次输出 · ${matching.filter(s=>s.included).length} 条进入候选`;
         return `<div class="tr-map-node ${n.kind} ${n.id===this.selected?'selected':''} ${step&&!step.included?'not-included':''}" style="left:${n.x}px;top:${n.y}px" data-map-id="${esc(n.id)}">
           <button class="tr-map-select" data-map-select="${esc(n.id)}" aria-pressed="${n.id===this.selected}" title="${esc(n.subtitle)}"><span class="tr-node-badge">${esc(n.badge)}</span><strong>${esc(n.label)}</strong><p>${esc(n.subtitle)}</p><span class="tr-node-footer">${esc(footer)}</span></button>
           ${n.collapsible?`<button class="tr-map-toggle" data-map-toggle="${esc(n.id)}" aria-expanded="${this.expanded.has(n.id)}" aria-label="${this.expanded.has(n.id)?'收起':'展开'} ${esc(n.label)}">${this.expanded.has(n.id)?'−':'+'}</button>`:''}</div>`;
       }).join('');
       const count=this.sample.steps.filter(s=>this.matches(s)).length;
-      this.container.querySelector('#tr-map-count').textContent=`${count} / ${this.sample.step_count} 次输出`;
+      this.container.querySelector('#tr-map-count').textContent=`${count} / ${this.sample.step_count} 次决策`;
       this.container.querySelector('.tr-map-empty').hidden=count>0;
       this.transform();
     }

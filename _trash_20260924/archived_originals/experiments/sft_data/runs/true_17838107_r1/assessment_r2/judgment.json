@@ -1,0 +1,399 @@
+{
+  "assessment_scope": "仅依据所给 packet 与24张图片，递归解析对象引用，逐项评审全部27个请求；未调用工具、检查文件或进行外部核验。像素仅覆盖媒体属性所记1650帧中的24帧，约1.45%，不代表连续观看全片。参考核查文本及Mostly False标签仅用于交叉核对，不能代替像素或演员当时可见证据。本例不是完整时序定位任务，不生成编辑区间指标。按给定权重计算，GIA为100/100，W1-1为81.25/100，W1-2为100/100；三者维度评分覆盖率均为100%，表示各维度可评，不表示所有事实均已核实。逐目标判定为22个accept_candidate、1个repair_reexecute、4个context_only；加权高分不能覆盖局部漏答或低价值动作。候选不等于已经完成程序化导出检查，本评审也不是独立人工真值。",
+  "roles": [
+    {
+      "actor": "GIA",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "四次输出均有对应的原始与接受记录；两次读取的正文在后续输入出现，最终决定与返回结果一致。这些是模型决策，不是脚本调度输出。",
+          "request_ids": ["request_0001", "request_0025", "request_0026", "request_0027"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "初始分工仅使用已有C0、E1。最终引用来自已提供的正文、报告和实际附图；等待期依据经过分页读取。没有使用评审参考中的日期、转录或未附进食帧冒充自身观察。",
+          "request_ids": ["request_0001", "request_0025", "request_0026", "request_0027"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E21与E17像素分别支持“.000”和“.018”；最终明确这些数值不证明面包致因或真实血液浓度。E33第68段支持口腔酒精干扰及确认检测等待期，E29被准确表述为公司网站报道。没有把参考标签或来源声称升级为完整实验验证。",
+          "request_ids": ["request_0027"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "回答了原声明中的可能性、即时检测条件、与醉酒及血液浓度的区别，并说明证据限制。原问题并非要求复述Mostly False标签；有条件成立与参考文本承认即时口腔干扰的内容相容。视频HI遗漏进食画面应单独扣分，不能自动使已有外部证据支持的全局回答失败。",
+          "request_ids": ["request_0001", "request_0027"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "视频呈现与外部机制、条件核查是互补且可独立开始的目标。收到报告后补读FMCSA相关正文，核对关键推断再结束；无需为了原问题额外穷尽视频、人物身份或取得不可用的语音转录。",
+          "request_ids": ["request_0001", "request_0025", "request_0026", "request_0027"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分显示值、因果关系、血液浓度和制度适用范围；未将美国确认检测要求推广到所有地区，也未把缺少实验方法、配对血检及统一消退时间写成已经解决。",
+          "request_ids": ["request_0027"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "初始分工没有重复完整调查。GIA最初只收到E33第一页，随后两次连续分页用于取得实际引用的等待期条文，具有新增信息；证据足以回答限定命题后适时停止。",
+          "request_ids": ["request_0001", "request_0025", "request_0026", "request_0027"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "面包测试的完整方法、原始测量、校准资料及配对血液检测未取得，不能独立确认个案机制、发生概率或普遍效应。",
+        "视频连续性、精确吞咽时刻、实际等待时长及声音内容未核验；最终答案没有声称完成这些检查。",
+        "E33提供的是特定制度的指南正文，本包未另行验证其版本日期及现行效力；不能由此推出各地当前执法规则。"
+      ]
+    },
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "全部动作及报告均有执行或提交对应。OCR确实被执行但处理失败；后续没有伪造OCR成功结果。READ_RECORD配合focus后的附图记录也支持实际重新查看。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012", "request_0013"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "取帧时间来自自身此前观察后的探索，引用均可追溯至已实际附图的E。当前卡片列表未列出全部历史E不等于不可访问；没有兄弟报告或评审参考泄漏证据。",
+          "request_ids": ["request_0002", "request_0005", "request_0006", "request_0007", "request_0013"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告中的关键转录与像素一致：E12为Blow，E20为Sample，E21为.000，E17为.018，E18为Start。最后一个Start没有被误认成复测归零。未声称数值就是血液浓度，也未编造音频。主要问题是遗漏已见事件，应在task维度处理。",
+          "request_ids": ["request_0013"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "局部任务要求判断视频实际呈现及测试条件。E23在28.001秒清楚显示咬面包，E26在44.001秒显示嘴接吹管且屏幕为Blow，E16在48.002秒为Analysing Sample，随后E17显示.018。报告只重点列出数值及首次检测提示，遗漏进食与再次检测这一任务核心，不能用未连续核验的限制替代对已见事件的报告。",
+          "request_ids": ["request_0007", "request_0011", "request_0013"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "初始抽样、尝试OCR及失败后的定点取帧合理。取得零值、进食、吹气和末值后，多次切换旧图没有有效收敛成局部答案。request_0011集中比较进食阶段仍有用途，但最终没有利用该比较补齐报告。",
+          "request_ids": ["request_0002", "request_0003", "request_0005", "request_0006", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012", "request_0013"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "正确保留离散采样、连续操作链、校准、此前饮食饮酒、单位及因果关系的限制。音轨存在不等于语义已经核验；诚实说明未核验语音不属于幻觉。对已见进食事件的遗漏另扣task分，不因同一问题重复判为捏造。",
+          "request_ids": ["request_0004", "request_0013"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "request_0007首次跨批合并关键证据有价值，request_0011的进食阶段集中对照也有有限价值；但request_0008、0009、0010、0012重复显示已看清的旧帧，未新增采样、改善可辨性或测量关键间隔，消耗多轮后仍遗漏核心观察。",
+          "request_ids": ["request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012", "request_0013"]
+        }
+      ],
+      "critical_errors": [
+        "request_0013以COMPLETED提交，却未报告实际看见的咬面包及再次吹气、分析过程。这是与局部目标直接相关的实质遗漏，不是无关视觉细节，也不是读数转录错误。"
+      ],
+      "unknowns": [
+        "只核验了24个采样帧，无法确认全部操作连续性、进食与检测的精确边界或实际等待时间。",
+        "当前目录没有可调用的ASR操作；一条音轨的媒体属性不足以验证讲话内容，但局部视觉核查本身仍然可行且有用。",
+        "仪器单位与换算、校准、参与者此前饮食饮酒、面包配方及真实血液浓度未核实。",
+        "参考材料所称吞咽后约一秒不能替代本地时间测量；28秒咬面包与44秒吹气两个采样点也不能给出吞咽后的等待时长。"
+      ]
+    },
+    {
+      "actor": "W1-2",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "搜索、读取、分页及报告均有对应记录，原始输出与接受输出一致。搜索抓取失败和E32仅返回JavaScript提示均保留为真实观察。",
+          "request_ids": ["request_0014", "request_0015", "request_0016", "request_0017", "request_0018", "request_0019", "request_0020", "request_0021", "request_0022", "request_0023", "request_0024"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E27、E29来自本地搜索后实际读取；FMCSA地址已出现在E27正文。研究标题搜索依据此前候选，不是未来信息。虽可见共享图片卡片，但没有冒称看过兄弟工作区的像素或报告。",
+          "request_ids": ["request_0014", "request_0015", "request_0016", "request_0018", "request_0020", "request_0024"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "正确将E29的另行测试和西澳警方说法标为报道或转述；E33第67—74段支持有条件的确认检测、15至30分钟等待及口腔酒精解释。没有把E32提示页或失败来源的搜索摘要当成论文结果，也没有照抄E27关于血液浓度精确为零、任意多面包均无影响的过强断言。",
+          "request_ids": ["request_0019", "request_0023", "request_0024"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "完成其独立外部核查目标：给出条件性影响、口腔干扰与全身酒精水平的区别、等待条件及适用范围。未取得完整研究方法被明确限制，不构成将来源报道冒充完整实验验证。",
+          "request_ids": ["request_0024"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "先查相关报道，再尝试原始研究；访问失败后按已发现论文标题寻找替代来源，发现E32没有研究内容后转查已知官方指南。没有反复重试相同失败路径或凭摘要补写成功结果。",
+          "request_ids": ["request_0014", "request_0017", "request_0018", "request_0019", "request_0020", "request_0024"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "区分公开测试报道与完整实验、口腔读数与配对血检、美国制度与西澳警方转述；明确不能确定发生概率、所有配方与仪器的表现或统一消退时间。限制与主结论相容。",
+          "request_ids": ["request_0024"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两次研究搜索分别承担发现原始研究和寻找替代入口的作用；失败不使这些探索失去事前合理性。E33的连续分页确实取得新内容，关键条文已足够后停止，没有读取无关设备清单。",
+          "request_ids": ["request_0017", "request_0018", "request_0019", "request_0020", "request_0021", "request_0022", "request_0023", "request_0024"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "候选研究全文及可用的完整摘要未取得；E32只是JavaScript提示，不能视为已完成原始研究复核。",
+        "E29没有完整实验设计、样本量、校准及原始数据，另行实验的质量与独立性未获原始记录验证。",
+        "西澳警方说法尚属转述，不能据此确认所有地区、所有阈值及当前执法要求。",
+        "食用前后真实血液酒精变化、效应概率、幅度及不同配方的消退时间仍未测定。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "将视频呈现与独立外部证据分为互补任务，保留原声明及条件、不确定性要求，材料真实且两项可独立开始。没有预设后续结果或强制不可用的音频操作。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "尚未观察视频且时长未知，按8张容量作首次抽样合理；参数合法，后续确实提供对应帧。不能因首批未命中全部读数而倒推此步错误。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首批画面尚未提供清晰的前后结果，尝试合法的视频OCR可补充屏幕文字。该动作发生前没有LoadImageError反馈；之后处理失败属于工具结果，不是不可执行请求或捏造。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "OCR失败后读取媒体属性并重新附上首批画面，可以恢复视觉核查并确认时长。部分属性已在卡片出现，信息增益有限，但属于合理的首次恢复。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据此前场景补取检测、进食和末段附近的新时刻，时间合法且正好8帧。属于失败后的实质调整，不是重复原参数。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前已看到19秒Blow和50秒.018，补查20—23秒的首次结果、27—29秒进食阶段及41、44秒操作，直接针对未决测试顺序。不能用后来的命中反推其使用了未来信息。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次把新取得的.000、进食、吹气画面与此前.018、分析及Start画面放在同一输入中，跨批对照有明确用途。E引用均已有且未超图片容量。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E21和E10刚在当前附图中出现；再缩成两张没有新增帧、裁剪或可辨性改善。E10是人物近景，未提供可读数值屏幕，不能补出新的检测结果。动作真实合法，但正向训练价值低。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "主要重新显示已在request_0003、0005看过的概览帧，并搭配已见48、54秒画面。此前已有决定性的咬面包与再次吹气帧，这次回到旧概览未补充关键时间边界或新的可辨细节。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次读取清晰的E21并重组已见零值、末值及操作帧，与request_0007的核心比较明显重叠；没有新的采样或测量来解决仍未确认的等待时间。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "选图首次集中呈现24秒持面包、27—28秒入口、其后进食阶段、44.7秒吹气及48秒分析，可用于整理测试条件与采样顺序。虽有较多旧图重叠，仍有具体比较价值，不能只按复看次数拒绝。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E17的.018及E21的.000已经反复清晰出现；在只剩一次后续决策时再次重组同类屏幕帧，没有补齐新问题。应利用已有证据形成报告，而不是继续同尺度复看。"
+    },
+    {
+      "request_id": "request_0013",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "数字、提示词及Start转录准确，音频与连续性限制也诚实；但漏掉已见的E23咬面包、E26或E9再次吹气及E16分析这一关键关系。应报告23秒零值、28秒咬面包、44秒吹气、48秒分析、50秒.018的采样顺序，同时保留非连续观察和非因果证明的限制。"
+    },
+    {
+      "request_id": "request_0014",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "查询直接针对面包、检测读数、口腔干扰和研究证据，符合独立外部核查目标。口腔酒精作为检索假设不等于预先认定结论。"
+    },
+    {
+      "request_id": "request_0015",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取搜索已返回的E27正文，避免仅凭摘要作结论。该网页经正常检索取得，即使与评审参考同源，也不构成标注泄漏。"
+    },
+    {
+      "request_id": "request_0016",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E29的候选摘要涉及另行测试及等待复测，读取正文能补充具体条件和来源性质。读取商业来源本身不是认可其全部说法。"
+    },
+    {
+      "request_id": "request_0017",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已有报道后进一步寻找实验研究，针对证据强度的真实缺口。后来候选访问受限不应降低这次搜索的事前合理性。"
+    },
+    {
+      "request_id": "request_0018",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "依据上一轮发现的论文标题寻找其他入口，是对访问失败的有效调整；没有把失败摘要补写成已取得的论文结果。"
+    },
+    {
+      "request_id": "request_0019",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E32在当时标为ready且对应相关论文入口，读取正文用于核实内容合理。JavaScript提示是在读取后才获知，不能倒推此次读取无意义。"
+    },
+    {
+      "request_id": "request_0020",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "确认E32没有研究内容后，打开E27已给出的FMCSA链接，转而核验口腔干扰和检测程序的一手制度依据。地址有合法来源，调整具有实际用途。"
+    },
+    {
+      "request_id": "request_0021",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "读取刚取得的E33正文是确认官方资料内容的必要步骤，不能以抓取成功替代正文阅读。"
+    },
+    {
+      "request_id": "request_0022",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "第一页未包含关键确认检测条文，按next_offset=6000继续读取合法且有信息增益。"
+    },
+    {
+      "request_id": "request_0023",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "上一页仍未到确认检测章节，按next_offset=12000继续查阅合理；后续确实取得第67—74段，而不是重复同页。"
+    },
+    {
+      "request_id": "request_0024",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "完整回答本地外部核查问题，区分条件性读数影响与真实血液变化，准确限制公司测试、警方转述及FMCSA适用范围。未使用失败研究或占位页作为证据，未要求未知实验参数已经解决。"
+    },
+    {
+      "request_id": "request_0025",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "GIA收到的E33 supporting_records只有第一页，尚未显示HI引用的等待期依据；从已知next_offset=6000补读原文，是核查报告而非无价值重复。"
+    },
+    {
+      "request_id": "request_0026",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "6000页未含目标条文，继续至12000页取得确认检测条件及口腔酒精解释，参数与已有游标一致。"
+    },
+    {
+      "request_id": "request_0027",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "有限结论得到实际像素、公开测试报道及已读制度正文支持，保留因果、血液浓度和适用范围限制。未声称看过未附的进食帧或完成全片连续核验；与参考标签不同不等于否定参考文本支持的条件性事实。"
+    }
+  ],
+  "construction_revisions": [
+    "修复request_0013：补入E23、E26或E9、E16支持的进食及再次检测采样顺序，分别说明已见事件与尚未确认的吞咽、等待时间和连续性。修复后重新执行接收该报告的GIA后续决策，不直接拼接旧后缀。",
+    "将request_0008、0009、0010、0012保留为真实历史上下文，不作为正向动作目标。保留request_0007的跨批比较及request_0011的进食阶段比较，避免机械删除所有复看。",
+    "保留OCR的真实失败输出；如修复LoadImageError后重跑，应记录新的实际观察，不能把成功OCR文本补写进原轨迹。",
+    "区分媒体总时长与实际观察覆盖。coverage_span_s=[0,55.002]不能表达已看完整视频，应与observed_ranges_s、unconfirmed_ranges_s及24帧采样事实明确区分。",
+    "区分页面抓取成功与取得目标正文：E32应保留其JavaScript提示内容，不能标成论文已读；同时保留E33分页范围和游标，使报告引用可追溯到演员实际读到的页面。",
+    "保留每次请求实际工具目录和附件清单，明确音轨属性、可调用ASR能力和已取得转录是不同状态。本例不应凭通用角色提示要求HI完成未提供的声音操作。",
+    "在参考材料侧记录日期与时长差异：参考正文写2018年，video_date为20190105，参考时长55.2839秒而本地探测约55.002秒。未核对前不将这些字段当成统一时间轴，也不把差异作为演员已经犯错的证据。"
+  ],
+  "rubric_revisions": [
+    "为事实核查增加声明层次示例：区分字面上的可能影响读数、规范检测下的结果以及醉酒或法律后果的延伸说法。参考分类标签不得覆盖待核查句子的实际量词与条件。",
+    "明确报告可以grounding和uncertainty高分而task低分。本例准确转录.000、.018并诚实保留连续性限制，仍不能弥补遗漏可见咬面包及再次检测的核心关系。",
+    "为复看动作增加可比较范例：首次跨批合并关键证据、集中检查新的操作阶段可以保留；同尺度重复显示清晰旧帧且未解决新问题应降级。不能只按调用次数或是否产生新E评分。",
+    "明确执行成功、取得目标内容和结论正确分别判定。OCR处理失败不使此前合理请求变成错误；ready页面只有JavaScript提示也不算取得研究证据。",
+    "区分事实未知与评分资料缺失。未知音频、校准或原始实验参数若已诚实限制且不妨碍有限答案，不自动成为critical_unknown；若目标依赖这些未知事实作确定断言，则必须阻止其作为候选通过。",
+    "对时间相关结论同时记录采样点事实与连续区间主张。本例可以报告零值、咬面包、吹气和末值的先后，不能推导吞咽后的精确等待时间；原任务没有完整定位要求时，不额外引入全片区间指标。",
+    "高分依据须检查具体反例：E18的Start不是归零，E10人物近景不提供读数，E32不是研究正文，E33确认检测有适用条件。分别核对后再决定是否扣分，避免凭可靠措辞或来源标签给分。",
+    "总分与评分覆盖率之外，保留逐请求准入结果和关键漏答。本例W1-1的加权分仍高于80分，但request_0013及低增益循环不能因此整体进入正向SFT。"
+  ]
+}

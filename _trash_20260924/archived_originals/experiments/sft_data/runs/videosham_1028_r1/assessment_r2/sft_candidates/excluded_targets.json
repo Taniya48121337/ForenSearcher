@@ -1,0 +1,79 @@
+[
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E18及所选四对中间帧已在request_0007完整附见，读取只补已有定位对应的元数据。未显示新的疑点或缺失材料，不宜作为优选正向行动。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次切回request_0008已经完整附见的首末及0.8秒三对帧；E6时间和来源此前已知，没有新增覆盖或明确问题。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "又切回request_0009已附见的四对中间帧，E11记录未提供超出现有locator的实质新信息，重复价值低。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次请求已多次清楚展示的早期与末尾图片组，未针对0秒可见蓝框差异开展新的核查，也未扩大取证范围。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "只剩一次后续决策仍重复读取E19并返回同一中间图片组。材料已经足以提交有限报告，此步没有可见信息增益。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0016",
+    "assessment": {
+      "request_id": "request_0016",
+      "disposition": "exclude",
+      "target_rating": 0,
+      "critical_unknown": false,
+      "reason": "后续校验明确说明E5—E8不在当时可focus的Workspace View，整条提案未被接受。E9正文出现这些编号不赋予focus权限；可保留失败前缀作恢复上下文，但不能输出为正向目标。"
+    },
+    "execution_status": "proposal_not_accepted"
+  },
+  {
+    "request_id": "request_0018",
+    "assessment": {
+      "request_id": "request_0018",
+      "disposition": "exclude",
+      "target_rating": 0,
+      "critical_unknown": false,
+      "reason": "再次加入不可focus的E5—E8，校验拒绝且没有执行。该次输入未携带此前校验文字，应判当前请求不可执行，而非推断其有意忽视此前反馈。"
+    },
+    "execution_status": "proposal_not_accepted"
+  }
+]

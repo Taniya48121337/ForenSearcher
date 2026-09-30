@@ -1,0 +1,224 @@
+{
+  "assessment_scope": "仅依据所给数据包及24张实际附图，按对象引用解析后的决策前状态逐请求评审；未调用工具、检查文件或引入人工复核。区分HI局部对应片段发现与VCSL完整区间定位。HI七维加权概括为3.45/4，可评分维度权重覆盖100%，但不代表全部像素或视频时段已核验，也不能覆盖低质量单步。E29未附，相关细节保留未知。任务明确排除音频，不因缺少音频扣分。脚本调度器不作为GIA训练目标。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个输出均有原始输出与接受输出一致的执行链接；11次动作执行、1次报告提交。参数符合所列接口，未见解析拒绝或伪造成功观察。此分仅评价执行对应，不证明定位正确。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "请求引用的证据可由此前卡片、工具观察及历史追溯，未见使用官方标注、未来结果或兄弟报告。E12、E15先因容量遗漏，之后实际附图，不能认定提前看过。最终引用的E31已在报告当次直接附图；累计已观察列表尚未更新不构成越界。",
+          "request_ids": ["request_0003", "request_0004", "request_0005", "request_0006", "request_0011", "request_0012"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告核心视觉断言可由像素支持：E5/E7呈现对应的门店、雪人队列及权杖；E11/E18为幕布前队列；E12/E31为柠檬背景下眨眼、双手靠近嘴部的雪人；E14/E20为双雪人、冰淇淋及弧形光效。B的吉他雪人、吉祥如意边框和灯笼，以及A的蚊子图案与部分歌词均清晰可见。数值区间正确归因于E9候选，未将排序分数写成正确概率，也未推断原创归属。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "按局部任务未明示穷尽全部对应片段的范围，报告给出了有依据的区间、成对时刻和变换说明，具有实际用途。但它只完成有限对应发现，不能获得完整定位高分。原标注按A[1,24]、B[1,24]读取时，所报B约27.58–28.46秒与标注无交集；额外锚点跨度也不是连续区间预测。",
+          "request_ids": ["request_0001", "request_0003", "request_0004", "request_0011", "request_0012"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "先全范围对齐、再按候选偏移检查跨场景锚点是合理策略，最后补取29.56秒也解决了具体缺口。反例是早已可见A0/E10与B23.56/E24、A22/E16与B45.56/E21不对应，却在后期反复恢复旧图，没有有效推进边界或其他出现位置的调查。不能因第二次对齐后来仍只返回短候选，就倒推该次探索本身错误。",
+          "request_ids": ["request_0001", "request_0003", "request_0004", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告明确区分算法估计端点、已核对锚点及锚点跨度，承认连续性、完整范围和速度尚未确定，没有把不对应采样写成删减或重排。COMPLETED只能按局部发现理解，不能用于证明完整VCSL定位完成。未评估音频符合任务范围。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "前期恢复候选帧及首次重组成对画面有合理价值，不应机械处罚READ_RECORD。后期request_0008和request_0010则重复已经共同展示过的配对；request_0010完整重复request_0008的focus集合，读取的元数据也已知。有限轮次被用于低增益切换，存在实质效率缺陷。request_0009涉及未附E29，不能完整判断其复看必要性。",
+          "request_ids": ["request_0005", "request_0006", "request_0008", "request_0009", "request_0010", "request_0011"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E29在演员附件清单中出现，但评审包没有其像素；不能独立确认E27/E29的具体匹配细节或细微歧义。",
+        "未提供原标注时间轴与实际下载片段之间的映射记录；时长接近参考值不能证明时间原点完全一致。",
+        "未采样区间的连续对应、真实起止边界、完整播放速度及B前半段的对应范围仍未确定。",
+        "没有官方评测实现和匹配阈值，不能给出官方最终精确率、召回率或F1；可以检查原坐标下的区间交集。"
+      ]
+    },
+    {
+      "actor": "scripted_dispatcher",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "结果中的FINISH来自脚本调度器，不是GIA模型输出。",
+          "request_ids": []
+        },
+        {
+          "id": "visibility",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有可评分的GIA模型决策及其证据使用行为。",
+          "request_ids": []
+        },
+        {
+          "id": "grounding",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "脚本结束语没有提供可作为GIA目标的综合判断。",
+          "request_ids": []
+        },
+        {
+          "id": "task",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "不能用HI局部报告或all_workspaces_reported替代GIA任务完成评价。",
+          "request_ids": []
+        },
+        {
+          "id": "decision",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实或明确标注的离线GIA分工、补查或停止决策。",
+          "request_ids": []
+        },
+        {
+          "id": "uncertainty",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有GIA模型对局部证据限制的综合处理可供评价。",
+          "request_ids": []
+        },
+        {
+          "id": "efficiency",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "脚本流程不能代表GIA规划效率。",
+          "request_ids": []
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": ["本包不能说明真实GIA的规划、综合推断或停止能力。"]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "材料对象明确，visual align_media是当前可用且直接服务于时序对应的操作。先建立全范围候选合理；后来只命中短片段不降低此前行动的合理性。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "在仅有短候选的状态下，对A取分散时刻及首尾帧可建立内容概览，所有时间均有效。八张A帧未给比较材料留出充分容量，下一状态有两张被遗漏，但它们已保存并在后续合法补看，属于小缺陷。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "根据已知约23.56秒候选偏移，取B的四个对应假设时刻并保留四张A帧，适合八图容量，可检验该关系是否跨场景成立。此时是在检验假设，不能因后续45.56秒不对应而倒扣。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前已出现尾部不对应，补查B开头、前半段以及23.56和41.56秒有合理价值，同时恢复此前遗漏的A帧。焦点与新帧并非全部构成已建立的时间配对，但没有将这些探索样本声称为对应事实。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "E9正文已经可见，重复读取本身不增加数值信息；但在概览后恢复初始候选帧，并与跨场景采样放在同一观察中，仍有一次合理的复核价值。不能仅按READ_RECORD次数判为无效。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "读取E25并重组焦点，可首次同时比较A18/B41.56和A0/B23.56这些假设配对，且保留已支持的中段锚点。虽然含重复画面，但存在具体比较增益。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "已有多个中段采样支持约23.56秒偏移，限定范围重新对齐可以检验该分支，并提高采样密度。首尾反例意味着不能预先认定整段对应，但不禁止搜索这一范围；该行动没有作出完整对应断言。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "恢复的四组配对均已在此前共同展示，E21的45.56秒定位也已知。新对齐结果没有给这一帧新增位置歧义；此次读取没有补充边界或空档证据，作为真实历史保留即可。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "E30完整结果已在request_0008提供，多数组合也已见，已知部分的信息增益有限。但所恢复的精细配对包含评审未附的E29，无法完整判断该对是否存在值得复看的像素歧义，不能将其当成已充分核验的正向比较目标。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "focus集合与request_0008完全相同，E24的时间及来源元数据早已提供。当前仅剩两次后续决策，仍以整组旧图切换代替获取未决时段证据，属于明显低增益行动。执行成功不使其适合正向模仿。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "A6秒画面已知，约23.56秒偏移已有其他锚点支持，补取B29.56秒可解决具体缺口。七张焦点加一张新图符合容量，并为下一轮报告留下位置；其价值可在看到新帧之前判断。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "仅接受为HI局部对应发现报告候选。所有核心视觉发现及引用均有实际像素支持，且明确把2–14秒与25.56–37.56秒称为锚点跨度，没有冒充连续定位。具体反例是A0为空幕布而B23.56为跳跃雪人，A22为三雪人而B45.56为点赞等图标，确实不能把23.56秒偏移扩展到全段；报告没有这样扩展。按原坐标将标注读取为A[1,24]、B[1,24]，主候选B约27.58–28.46与标注交集为0，A侧仅覆盖标注约3.7%，因此不能宣称完整官方定位成功。这是有证据的另一位置对应，不是已命中原标注的完整区间。最终报告不引用缺失的E29，完整边界未知也已明确限缩，故不构成这些局部声明的关键未知。"
+    }
+  ],
+  "construction_revisions": [
+    "逐目标导出：request_0008至request_0010保留为历史上下文，不作为正向输出；其余候选仍须保留准确的决策前状态，不能由整轨高分统一放行。",
+    "明确区分局部对应发现与完整VCSL定位两种训练任务。request_0012只适用于前者；若要求完整定位，应补查其他出现位置及边界并重新执行，不能仅改写报告状态或区间后接旧后缀。",
+    "补齐E29原始像素，并将评审端的“-”读图错误关联到具体附件；不要据此覆盖演员各轮image_inputs及image_input_errors的记录。",
+    "保留原标注，补充原视频到下载片段的时间轴映射及评测定义，同时记录原坐标区间结果与像素语义判断；不要为适配已找到的第二个位置而移动金标准。",
+    "后期补查应针对已出现的首尾反例、连续区间空档和B前半段候选；把有限轮次用于新增时间证据，减少已知元数据和同组图片的往返。",
+    "分别保存算法处理范围、演员实际看到的帧和评审实际收到的帧。全时长coverage_span不能作为全视频内容已核验的标签；脚本FINISH继续排除出GIA目标。"
+  ],
+  "rubric_revisions": [
+    "将局部任务是否要求穷尽对应片段写入评分条件：真实且明确限缩的子集可在局部发现任务获3分，但不能因此获得完整定位通过标签；若任务明确要求完整范围，遗漏主要区间应在task及目标处置中扣分。",
+    "时间评测同时列出原坐标交集与语义对应。本例B侧无标注交集应明确记录，但不能反向把已由像素支持的另一出现位置称为捏造；缺少时间轴映射时，不报告未经计算的官方最终指标。",
+    "复看质量按具体未决问题和已有共同展示记录判断：首次重组配对可接受，完整恢复相同集合且无新增歧义应降分；不要按固定复看次数机械处罚。",
+    "缺图应按目标依赖传播未知：E29缺失限制相关精细配对评价，不自动否定未引用它的最终报告，也不证明演员未曾看到它。",
+    "要求高分给出范围内的反例检验。A0/B23.56及A22/B45.56足以否定全段固定偏移，但不否定已确认的中段锚点；次要水印差异不应被扩张为本任务必答项。",
+    "角色加权分之外，必须呈现逐目标处置、关键未知及评审覆盖。本例执行与事实依据较强，仍包含不应正向模仿的后期行动，不能用平均分掩盖。"
+  ]
+}

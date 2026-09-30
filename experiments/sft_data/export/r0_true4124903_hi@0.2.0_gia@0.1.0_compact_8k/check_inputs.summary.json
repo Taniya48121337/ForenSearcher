@@ -1,0 +1,113 @@
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "hi_accepted.jsonl": {
+      "rows": 17,
+      "input_tokens": {
+        "min": 2690,
+        "p50": 10136,
+        "p90": 11609,
+        "max": 13693
+      },
+      "supervised_tokens": {
+        "min": 29,
+        "p50": 35,
+        "p90": 63,
+        "max": 339
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 3520,
+        "p90": 4400,
+        "max": 7040
+      },
+      "above": {
+        "8192": 15,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "gia_accepted.jsonl": {
+      "rows": 2,
+      "input_tokens": {
+        "min": 1722,
+        "p50": 1722,
+        "p90": 16673,
+        "max": 16673
+      },
+      "supervised_tokens": {
+        "min": 161,
+        "p50": 161,
+        "p90": 196,
+        "max": 196
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 7040,
+        "max": 7040
+      },
+      "above": {
+        "8192": 1,
+        "16384": 1,
+        "32768": 0
+      }
+    },
+    "hi_held.jsonl": {
+      "rows": 2,
+      "input_tokens": {
+        "min": 9235,
+        "p50": 9235,
+        "p90": 10005,
+        "max": 10005
+      },
+      "supervised_tokens": {
+        "min": 39,
+        "p50": 39,
+        "p90": 43,
+        "max": 43
+      },
+      "image_tokens": {
+        "min": 2640,
+        "p50": 2640,
+        "p90": 2640,
+        "max": 2640
+      },
+      "above": {
+        "8192": 2,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "hi_rejected.jsonl": {
+      "rows": 1,
+      "input_tokens": {
+        "min": 14594,
+        "p50": 14594,
+        "p90": 14594,
+        "max": 14594
+      },
+      "supervised_tokens": {
+        "min": 593,
+        "p50": 593,
+        "p90": 593,
+        "max": 593
+      },
+      "image_tokens": {
+        "min": 6160,
+        "p50": 6160,
+        "p90": 6160,
+        "max": 6160
+      },
+      "above": {
+        "8192": 1,
+        "16384": 0,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}

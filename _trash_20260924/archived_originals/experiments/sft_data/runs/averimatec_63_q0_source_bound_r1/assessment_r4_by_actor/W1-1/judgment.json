@@ -1,0 +1,159 @@
+{
+  "assessment_scope": "仅评估 steps 中 W1-1 的 11 个 HI 输出，已按对象表递归理解引用，仅使用所给文字与附图像素。脚本化 dispatcher 和 FINISH 不作为 GIA 目标。7 个适用维度的评分覆盖率为 100%，加权分为 3.30/4（82.5/100）；该分数不代表局部问题已经解决，也不认证整条轨迹适合导出。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "10 个 SEARCH 均有接受及观察事件，最终报告有提交事件；原始输出与接受输出一致。参数符合所给接口。这些记录仅证明执行对应，不证明检索相关或调查成功。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现引用不可见证据、偷用参考答案或将未读正文当作已读内容。首轮 citronella 是检索假设，单凭与参考答案词语重合不能认定泄漏。演员未收到参考中的机构网址，不能要求其直接打开该隐藏网址。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告的重要断言与历史一致：检索返回错误或明显不相关的候选，没有取得可支持回答的 NDCU 资料。附图可见切开的绿色、黄色柑橘及插入其切面的丁香状物体，没有机构清单、署名或效力测量，不能证明卫生部门推荐什么。此分评价实际说出的事实，不认证尚未回答的驱蚊剂清单。",
+          "request_ids": ["request_0011"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 1,
+          "reason": "局部任务要求取得支持 NDCU 所列天然驱蚊剂的资料；轨迹没有得到清单或相关正文，实质目标未完成。最终正确标为 INCOMPLETE，使报告本身可以合格，但不能据此提高调查完成度，也不能推导背景声明已被证伪。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "前段从缩写、机构全称、官方网站到叮咬预防和机构检索，属于可执行的恢复尝试；不能根据后来无关结果倒判请求错误。request_0010 已接近早期查询的重组，缺少新的取证方向。最终停止可以成立：此前持续错误或离题，当前没有相关链接，也没有明确可用的替代搜索后端。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确区分未取得资料与机构没有推荐，使用 INCOMPLETE、空 findings 和空引用，没有凭常识补入答案。没有把工具的 target_reached 当作任务完成，也没有从图片推出驱蚊效果。虽然尚余一次后续决定机会，但停止理由可以由已有失败记录支持，不必虚构预算耗尽。",
+          "request_ids": ["request_0011"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "早期改写具有合理探索价值，后段持续在同一异常检索通道重组相近词语，收益明显下降，request_0010 最突出。没有必要为了形式完整读取明显无关的股票、地图或登录页面；每轮重复附图由环境提供，也不计作演员主动重复查看。",
+          "request_ids": ["request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "未提供 NDCU 相关正文，无法独立认证实际清单、措辞或适用范围；演员也没有声称认证成功。",
+        "多次查询返回 Instagram、微软股票、地图、Gmail 等明显离题结果，足以确认检索失效现象，但无法确定其根因是查询传递、缓存、解析还是搜索提供方。",
+        "source_exclusion_aliases 指向 32JR6NT 并提及 AVerImaTeC 660，本案参考文章却是 33JQ83X。完整排除实现未提供，不能确认本案限制正确生效，也不能据此认定演员已接触被排除文章。",
+        "现有记录不能证明相关来源在整个环境中绝对不可取得；它只证明这些实际尝试没有取得所需资料。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首轮直接围绕机构、登革热和天然驱蚊剂检索，参数可执行。citronella 可作为待验证关键词，不是已证实答案；随后提供方报错不构成该决定的错误。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在首轮 PROVIDER_ERROR 后缩短查询并使用精确词组，是合理恢复。没有重复被拒绝的格式，也没有将搜索失败解释为不存在相关资料。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "当前结果均为 Instagram 或交易登录入口，放宽引号限制并加入机构归属有合理目的。与首轮部分重合，但属于不同检索约束下的尝试，不按随后知乎和 Google 结果倒扣。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "缩写检索连续离题后改用机构全称与 repellents，针对实体歧义作出有实质区别的调整。全称用于查询，不等于未经证据确认机构身份。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "在全称查询仅返回地图论坛后，取消引号并加入 official website，尝试寻找机构入口，仍有合理价值。查询较长且与前轮相近，但尚不足以认定为无价值重复。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "上一轮报错后，转用疾病、天然驱蚊剂和卫生部门组合，降低对机构名称的依赖。后来返回微软股票且标记 target_reached，只能说明工具结果不相关，不能反向证明此查询本身错误。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "改用 mosquito bites 搜索机构预防建议，可能找到使用不同标题或术语的材料，具有区别于 repellents 的检索目的。持续离题使预期收益降低，但并非重复相同请求。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "仅用 NDCU 与 Ministry of Health 查询机构身份和入口，是从主题检索转向机构定位。当前没有相关可打开链接，不能要求演员读取无关页面或使用评审方才知道的网址。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "机构查询报错后取消具体机构约束，尝试通过 dengue control 与天然驱蚊剂找到可归属的资料或转述，仍属合理探索。与既往查询接近、增量有限，但不能只因随后命中 Gmail 就判为错误目标。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "此前已有九次失败或明显离题检索，本次再次组合 Ministry、NDCU、dengue、natural mosquito repellents，仅增加 prevention 和 oils，没有新增来源线索或明显不同的恢复方法。请求合法且未捏造事实，但不足以作为优质正向行动目标；判断依据是此前可见记录，而非本轮后来返回 YouTube。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "INCOMPLETE 准确说明未取得相关机构资料，图片不足以证明机构清单，且没有填入未经读取的参考答案。空 findings 合适。此时虽然仍可再作一次后续决定，但没有具体相关链接或已公布的替代通道，持续失败后停止合理。可作为失败后的报告与停止样本，不代表问题已解决。"
+    }
+  ],
+  "construction_revisions": [
+    "核对本案来源排除配置：参考文章为 33JQ83X，而附带别名记录指向 32JR6NT 和案例 660。修正案例关联并保存实际应用的排除规则；现有记录不足以认证排除生效，也没有证据表明本轨迹已使用被禁来源。",
+    "针对查询与结果严重离题的问题，核对实际发送的查询、提供方响应与解析后的候选对应关系，并用真实检索验证修复。保留本次失败观察，不能补写为成功结果。",
+    "request_0010 保留为历史上下文。若生成替代行动，应从其决策前状态重新执行；若修复搜索环境，应从受影响状态重跑，不把新观察接入旧后缀。",
+    "将 request_0011 明确归入未完成调查的报告样本，保留其真实剩余轮次和失败前缀；不要标成预算强制提交、任务成功或 GIA 已验证的结束决策。",
+    "复核 Q0 参考答案的类别范围：题目问天然驱蚊剂，摘录却同时包含明确标为 chemical repellents 的 DEET。应核对原文后区分天然项目与额外化学项目，不能直接奖励整串照抄。"
+  ],
+  "rubric_revisions": [
+    "在评分说明中明确区分局部任务的实质完成度与未完成报告的质量：没有取得清单可使 task 得低分，同时准确的 INCOMPLETE 报告仍可进入候选。",
+    "检索重复按决策前的语义增量判断：实体消歧、机构入口查找和预防术语替换可以有价值；已有明显异常后单纯重组相近关键词可降级。不得以固定次数或事后是否命中决定合格性。",
+    "将搜索结果的相关性、提供方成功标记和执行对应分开评价。target_reached、page=ready 及执行链接均不能代替取得任务所需证据。",
+    "明确 critical_unknown 指向当前目标的可判定性。真实清单未知不妨碍判定准确的未完成报告；但来源排除是否生效的未知应限制整批数据的来源条件认证。",
+    "按实际局部问题核对机构归属与证据范围，不额外要求验证所有驱蚊效果、背景声明或最早来源；声明日期元数据也不自动构成资料公开时间截止线。"
+  ]
+}

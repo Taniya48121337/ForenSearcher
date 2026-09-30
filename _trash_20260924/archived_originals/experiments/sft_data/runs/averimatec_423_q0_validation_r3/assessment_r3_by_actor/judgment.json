@@ -1,0 +1,133 @@
+{
+  "assessment_scope": "Separate independent CLI sessions by actor; all images actually attached to that actor are supplied. No independent human certification.",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "四次动作均有原始输出、相同的接受输出及后续观察对应；报告有提交记录。SEARCH、READ_RECORD 的参数符合给定接口。执行记录仅用于确认对应关系，事实正确性另行核对。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "首次搜索依据局部问题；E5、E1 均在读取前进入可见证据集合；6000 偏移来自此前返回的 next_offset。报告只引用已读 E5、E1，没有使用评审参考答案或未读来源作为证据。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告的时间平均状态及状态间变化对应 E5 第17—18段；相对陆地的定义对应第10段；全球面积加权平均对应第22段；绝对参考点和陆地升降对应 E1 第3段。论文年份在可见 R6 搜索信息中有依据。报告分别讨论参考点和空间平均，没有把绝对海平面直接等同于全球平均，也没有由定义推断上升速率已经加快。",
+          "request_ids": [
+            "request_0005"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部任务要求解释专家如何定义海平面变化；报告回答了时间、参考点和空间范围，并明确来源。参考答案涉及热膨胀和另一篇论文，但当前问题没有要求穷举成因、指定该论文或核验背景速率声明，不能据此追加必答项。COMPLETED 与局部范围相符。",
+          "request_ids": [
+            "request_0005"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "搜索针对术语问题；依据标题选择术语论文合理；随后按分页反馈补读；再读取标题明确涉及绝对与相对变化的 FAQ，可补充参考点解释。已有正文足以回答局部问题时提交报告合理，剩余轮次不构成继续调查的义务。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确说明定义不能确定上升速率是否增加，并披露 FAQ 发布日期未证实，不能当作已核实的2022年9月3日前来源。任务未设严格证据截止日期，核心定义另有2019年论文支持，因此该日期未知不使局部完成状态失实。未声称读完论文全文。",
+          "request_ids": [
+            "request_0005"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "一次搜索、两页论文读取和一次 FAQ 读取各有明确用途。第二次读取 E5 是继续分页，并非重复已读页面；E1 提供参考点与陆地运动的补充解释。没有无信息增益的重试或扩大调查范围。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E1 的发布日期未证实；报告已准确披露，此未知不影响当前局部问题的合格判定。",
+        "E5 从 offset=12000 起的正文未读取；本次评分只核对已提供段落，不认定完成了全文核验。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "在没有证据的初始状态下，以 IPCC、术语、全球平均及相对海平面组成查询，直接服务于局部定义问题，参数合法。部分搜索结果访问失败不使该请求失当。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前 E5 已可选，其标题明确覆盖局部与全球海平面的概念和术语。读取正文是合理取证，不是把搜索摘要当作完整证据。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前读取明确返回 next_offset=6000，且正文在相关讨论中截断。按该偏移继续读取能够补充定义，属于必要分页而非无价值重复。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "此前可见 E1 的标题与摘要已经表明它解释绝对变化、相对变化及陆地运动；这些内容能够补充已读论文段落。该选择在行动前就有明确依据。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "三个 finding 均有已读正文支持，引用集合完整，来源与适用范围清楚。报告完成的是定义问题，并明确没有据此证明背景速率声明。FAQ 日期未知已披露，论文尚有未读分页也不意味着相关定义缺证据；当前状态下停止并提交 COMPLETED 合理。"
+    }
+  ],
+  "construction_revisions": [],
+  "rubric_revisions": []
+}

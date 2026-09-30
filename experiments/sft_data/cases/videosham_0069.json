@@ -1,0 +1,113 @@
+{
+  "case_id": "videosham:0069",
+  "dataset": "videosham",
+  "source_id": "0069",
+  "split": "dev_train",
+  "task_kind": "video_diff",
+  "task_text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+  "family_key": "videosham:0069",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_0069_r1/artifacts/819b84d032d04724adf88ce41158c664.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_0069_r1/artifacts/3f6e46d0d50046c8a427f35ebb5e1444.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频的抽帧（差异位置两侧的对应帧）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "media_profile",
+      "description": "两段视频的媒体属性（时长、帧率、音轨数）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/media_profile"
+    },
+    {
+      "key": "alignment",
+      "description": "视觉或音频对齐结果（候选对应时间锚点，只作线索）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/align_media"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "A 在约 0:06–0:10 是否存在帧重复/放慢（官方编辑描述，须由画面确认），以及两侧对应位置",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "音轨是否可取得；可确认的声音差异或无法核验的说明",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "已确认的差异对画面含义的影响（不把未检查的区域或模态当作没有差异）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "未能确定的内容；不预设候选视频 B 的来源身份或制作先后",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "重复帧",
+        "aliases": [
+          "帧重复",
+          "重复出现",
+          "画面重复",
+          "复制帧",
+          "慢放",
+          "放慢",
+          "慢动作",
+          "duplicat",
+          "slow"
+        ]
+      },
+      "note": "官方：A 在 00:06–00:10 复制帧，使骑手显得很慢。只核“答案点出画面重复或放慢”；位置与方向由 REQ1/REQ4 判。否定句会误命中，属已知残余风险。",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/cases/videosham_0069/reference.json",
+  "used_for_revision": [],
+  "notes": "官方编辑描述（reference_status: 需由画面确认）：Duplicate frames to make it seem like the rider is going very slow (00:06 - 00:10)；Manipulation: Frame duplication/Reversed Frames/Frame dropping/Speeding up/Slowing down；label_expected 2026-09-28 经独立审稿后加入（只核关键词，位置/方向由 requirements 判）"
+}

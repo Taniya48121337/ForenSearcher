@@ -1,0 +1,374 @@
+{
+  "export_id": "r0_bridge1_hi@0.2.0_gia@0.2.0_compact_16k.local-gemma3-12b-16k-latest",
+  "exported_at": "2026-09-28",
+  "spec": {
+    "hi": "hi@0.2.0",
+    "gia": "gia@0.2.0"
+  },
+  "spec_hash": {
+    "hi": "sha256:dad57a48f9a26ebd41c34c7a197b6a74f8c78256189ee4d31e8037247516751e",
+    "gia": "sha256:4691a092d3431b3995faebeeab1618ebf0892f856af19c4f7d5bab42c5b653ca"
+  },
+  "state_renderer": "compact_16k",
+  "verifier": "verifier@0.3.0",
+  "verdicts_source": "experiments\\sft_data\\verdicts_r0_judged.local-gemma3-12b-16k-latest.jsonl",
+  "units_source": "experiments\\sft_data\\verdicts_units_judged.local-gemma3-12b-16k-latest.jsonl",
+  "cases_dir": "experiments\\sft_data\\cases",
+  "files": {
+    "hi_accepted": "hi_accepted.jsonl",
+    "hi_held": "hi_held.jsonl",
+    "hi_rejected": "hi_rejected.jsonl",
+    "gia_accepted": "gia_accepted.jsonl",
+    "gia_held": "gia_held.jsonl",
+    "gia_rejected": "gia_rejected.jsonl"
+  },
+  "counts": {
+    "hi_accepted": 0,
+    "hi_held": 10,
+    "hi_rejected": 23,
+    "gia_accepted": 2,
+    "gia_held": 0,
+    "gia_rejected": 1
+  },
+  "by_unit": {
+    "hi": {},
+    "gia": {
+      "plan": 2
+    }
+  },
+  "by_action": {
+    "hi": {},
+    "gia": {
+      "INVESTIGATE": 2
+    }
+  },
+  "by_case_family": {
+    "videosham:1028": {
+      "gia": 2
+    }
+  },
+  "splits": {
+    "by_split": {
+      "dev_train": {
+        "cases": 1,
+        "families": 1
+      },
+      "dev_select": {
+        "cases": 0,
+        "families": 0
+      },
+      "dev_confirm": {
+        "cases": 0,
+        "families": 0
+      },
+      "dev_eval": {
+        "cases": 0,
+        "families": 0
+      },
+      "test": {
+        "cases": 0,
+        "families": 0
+      },
+      "contrast_only": {
+        "cases": 0,
+        "families": 0
+      }
+    },
+    "rows_by_split": {
+      "dev_train": 36
+    },
+    "no_case_rows": 0
+  },
+  "sample_weight_sum": {
+    "hi": 0,
+    "gia": 2.0
+  },
+  "input_tokens_est": {
+    "max": 23776,
+    "p50": 10958
+  },
+  "held": [
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 4,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 1,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 2,
+      "reason": "workspace_uncertain"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 3,
+      "reason": "workspace_uncertain"
+    }
+  ],
+  "rejected": [
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 5,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-1",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 2,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 4,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 5,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 6,
+      "reason": "step_errors:illegal_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 6,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 7,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 7,
+      "reason": "step_errors:redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W2-2",
+      "turn": 8,
+      "reason": "step_errors:illegal_action,redundant_action"
+    },
+    {
+      "run": "videosham_1028_l0_1",
+      "role": "gia",
+      "unit": "answer",
+      "workspace": null,
+      "turn": 0,
+      "reason": "answer_errors:premature_finish,unsupported_assertion,unsupported_assertion,scope_overreach"
+    }
+  ],
+  "render_overflow": [],
+  "runtime_system_matches_spec": {
+    "gia:True": 1,
+    "hi:True": 24,
+    "hi:False": 9,
+    "gia:False": 2
+  },
+  "note": "system 用规格 student_prompt；与运行时 system 是否逐字一致逐行记在 runtime_system_matches_spec（hi@0.2.0 起 HI 一致；GIA 主提示与规格仍有差异）。token 估算按 1.7 字符/token 与每图 1200 token；精确值见 check_inputs 的 summary。"
+}

@@ -1,0 +1,54 @@
+{
+  "case_id": "qvhighlights:0",
+  "dataset": "qvhighlights",
+  "source_id": "0",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "视频描述定位的质量要求：按用户描述识别一个事件的合理范围，并核实候选范围前后的变化。事件可能通过人物全景、物体近景和动作延续共同呈现；不要求描述中的所有词在每一帧同时可见，也不应只报告最明显的中间瞬间。根据实际画面判断镜头切换是否仍属于同一事件，不把相邻位置未经查看的内容补成连续事实。\n\n对已经观察过的相同图片组，只在仍有具体未决问题时重新附图。若边界或事件范围尚未确定，优先选择能区分候选解释的新观察；若证据已足以支持任务所需精度，提交有范围限制的报告，不必用完次数。正文提到的 E 不自动成为当前可用焦点；错误反馈后须采用合法引用。\n\n不同数据集的标准区间不是演员可见信息。不要推测参考答案、时间标签或数据集习惯；依据当前输入与真实工具结果定位，明确仍无法确认的边界。",
+  "family_key": "qvhighlights:0",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../../../runs/qvhighlights_0_r2/artifacts/cf4bce0bddff4245a592a184c555a2f7.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E3、E4）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定媒体实际显示了什么，能否支持声明",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "外部可靠来源对声明所述事件的记载",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "all:frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 qvhighlights_0_r2 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=neutral、REQ2=neutral），required_evidence 取自干净 Finding ∩ 答案引用（有降级项，见审核单 trace.origin）。",
+  "effective_split": "dev_train"
+}

@@ -1,0 +1,216 @@
+{
+  "states": [
+    {
+      "id": "state_01",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001是未执行的离线提议；accepted_decision不证明读取或联动成功。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E5已在current_materials和supporting_records中展示，6000逐字对应其next_offset，无须借用reference或后续内容。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E5正文在第[10]段中途截断；F1的时间平均定义和F3的全球面积加权定义尚未在可见正文中展开，续读有具体依据。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取现有概念论文直接服务于解释三种海平面变化及来源范围，没有增加实际加速度调查。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "READ_RECORD的记录编号与续页参数均符合可见接口；剩余7次决策允许读取后继续判断。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "先核对尚未展开的原文，符合Finding不能代替正文的要求；没有把定义解释为趋势证据。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "这是沿已知续页位置的一次读取；可见历史没有重复阅读，也没有新增无关工作区。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001是有具体原文缺口支持的合理读取决定。加权分4.00/4；已评分权重占总权重90%，适用维度覆盖率100%。候选资格仅针对离线决定，不表示最终解释已完成或执行对应检查已通过。"
+    },
+    {
+      "id": "state_02",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001的两个调查任务均未实际下发，不能评价执行结果或声称真实联动成功。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "声明、截止日期和全球与局部的区分均来自当前task；E5是可用材料，第二项使用空materials符合角色规则。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "F1明确表示定义不能确定上升速率是否增加，当前正文也未提供可比较的速率结果；补充实证依据有明确缺口支持，任务未预设核查结论。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项均保留待核查声明和截止日期，要求核对时间、统计对象及单位，并保留全球结论对局部现象的适用边界。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "第一项取得科学评估中的长期趋势，第二项检查卫星观测记录中的速率变化；证据方向可互补，任务各自完整且不依赖本轮另一项的结果。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确要求不确定性、观测时段、短期波动及观测与预测的区别；没有假定日期未知的E1在截止日前已发布，也未把独立核查宣称为独立数据佐证。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项集中补充速率变化证据，没有重做定义、另查具体海岸或追溯FAQ传播链。评估综合与卫星记录核查具有合理互补价值，不能仅因部分范围重合判为重复调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001的合理性来自具体证据缺口、可执行分工及范围约束，而非INVESTIGATE名称符合参考建议。未发现夹带的不必要调查。加权分4.00/4；已评分权重占总权重90%，适用维度覆盖率100%。真实执行及所得来源关系尚未验证。"
+    },
+    {
+      "id": "state_03",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001尚未执行，没有E5续页返回或后续报告可供执行评分。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E5及其next_offset=6000均直接出现在当前supporting_records中，读取位置无需推测。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E5只展示了部分正文；F1说明定义本身不能确定速率变化，并不证明整份已保存论文都没有相关内容。续读可核对材料的实际回答范围。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取已经取得的E5属于任务允许的材料范围，没有替用户新增外部搜索。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "依可见next_offset展开现有材料是合理路径；参考建议允许有限结束，并不排斥先核对尚未展示的正文。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "该决定避免把当前摘录未展示趋势数据直接扩大为全部现有材料均无相关证据，也没有虚构趋势结果。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "首次读取明确存在的续页有信息增益；当前没有反复读取或超出材料范围调查的证据。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001可作为合理的现有材料核对目标，不必因未立即FINISH而降分。未来续页内容缺失不妨碍判断当前读取选择。加权分4.00/4；已评分权重占总权重90%，适用维度覆盖率100%。本步不构成已验证的报告或自主停止样本。"
+    },
+    {
+      "id": "state_04",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001只是离线读取决定，没有执行观察可评分。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E5是当前可见记录，offset=6000来自其明确给出的next_offset，未使用参考标注作为行动参数。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E1第[3]段已支持陆地运动导致局部相对变化不同；F3的全球面积加权定义尚未在E5可见正文中展示，续读可核对另一项直接相关的推理依据。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "读取概念论文仍服务于局部相对量与全球平均量的逻辑关系，没有安排具体海岸实测或全球实际趋势调查。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "已有材料允许形成有限逻辑回答，同时首次续读以核对全球平均定义也合理；参数有效且有充足剩余决策次数。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "选择核对概念依据，没有将逻辑上的不足以反驳混同于对全球实际趋势的实证确认。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "这次读取针对未展开的相关原文，不属于已看清相同材料后的无价值重复；没有夹带额外调查任务。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001的续读有与概念推理直接相关的核对价值；立即回答并非唯一合理路径。加权分4.00/4；已评分权重占总权重90%，适用维度覆盖率100%。缺少尚未执行的续页结果不构成当前决定的关键未知，也不证明读取已经成功。"
+    }
+  ],
+  "construction_revisions": [
+    "若将这些离线决定扩展为执行轨迹，应从各自state实际执行并保存返回与后续决策；不得直接拼接原案例后缀，或把accepted_decision当作执行成功记录。",
+    "若构造后续报告或停止目标，应提供届时实际可见的E5续页内容；当前三个READ_RECORD目标不能替代对最终答案、证据充分性和自主停止质量的评估。"
+  ],
+  "rubric_revisions": [
+    "明确记忆动作的grounding、task和uncertainty评价其当前选择依据与范围，不将其得分解释为尚未生成的报告已经合格；尚未发生的工具返回缺失本身不构成critical_unknown。",
+    "并行调查的效率判断应逐项检查互补证据价值，并区分分工独立与底层数据独立；任务部分重合既不自动构成重复，也不自动构成独立佐证。"
+  ]
+}

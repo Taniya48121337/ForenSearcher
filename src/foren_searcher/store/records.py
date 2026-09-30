@@ -44,6 +44,9 @@ class MemoryPolicy:
     max_report_chars: int = 64000
     max_query_chars: int = 4000
     state_renderer: str = "legacy"   # legacy | compact_8k | compact_16k：送模型前把输入压到哪一档（见 state_render.py）
+    # SEARCH 自动打开网页后，在观察里附每页与查询最相关的一段摘录（字符数；0 = 不附，与以前相同）。2026-09-30 加，
+    # 用来试"少一步 READ_RECORD"是否让 HI 更多地去搜；默认关，靠规格 harness_params.search_excerpt_chars 或 --harness-override 打开。
+    search_excerpt_chars: int = 0
 
     def __post_init__(self) -> None:
         """构造后逐项确认所有上限都是正整数，渲染档位名合法。"""
@@ -52,6 +55,8 @@ class MemoryPolicy:
 
         if self.state_renderer not in TIERS:
             raise ValueError(f"state_renderer must be one of {', '.join(TIERS)}")
+        if isinstance(self.search_excerpt_chars, bool) or not isinstance(self.search_excerpt_chars, int) or not 0 <= self.search_excerpt_chars <= 4000:
+            raise ValueError("search_excerpt_chars must be an integer in [0, 4000]")
 
         # 用字段名循环可以保证新增上限时复用相同的严格校验。
         for name in (

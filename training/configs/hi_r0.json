@@ -1,0 +1,18 @@
+{
+  "role": "hi",
+  "export_dir": "experiments/sft_data/export/r0_true4124903_hi@0.2.0_gia@0.2.0_compact_16k",
+  "model": ".models/Qwen3.5-9B",
+  "output_dir": "outputs/lora/hi_r0",
+  "max_tokens": 32768,
+  "epochs": 2,
+  "lr": 1e-4,
+  "warmup_steps": 5,
+  "grad_accum": 8,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "lora_dropout": 0.05,
+  "dtype": "bfloat16",
+  "device_map": "auto",
+  "use_sample_weight": true,
+  "log_every": 1
+}

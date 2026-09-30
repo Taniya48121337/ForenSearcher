@@ -847,6 +847,7 @@ class WorkspaceHarness:
         if result.error is not None:
             # 部分成功时仍可能带顶层错误，把它保留在摘要中供 HI 决定是否继续。
             observations.append(f"SEARCH {result.error.code}: {result.error.message}")
+        observations.extend(self._search_excerpts(action, result))
         self._record_evidence_access(evidence_ids)
         response_value = result.to_dict()
         observation = ToolObservation(
@@ -865,6 +866,35 @@ class WorkspaceHarness:
                                   tuple(self.memory.focus_evidence_ids))
         )
         return result
+
+    def _search_excerpts(self, action: Any, result: SearchResponse) -> list[str]:
+        """harness 参数 search_excerpt_chars > 0 时（09-30 对照项）：SEARCH 自动打开的文本页各附一段与查询最相关的摘录。
+
+        只是节选，不标记为已读正文（content_observed 不变）；完整内容仍需 READ_RECORD。默认 0，行为与以前完全相同。
+        """
+
+        limit = self.memory_policy.search_excerpt_chars
+        if limit <= 0:
+            return []
+        query = action.get("query") if isinstance(action, dict) else getattr(action, "query", None)
+        if isinstance(query, dict):
+            query = query.get("text")
+        lines: list[str] = []
+        for item in result.results:
+            for material in item.materials:
+                if material.status not in {"ready", "partial"}:
+                    continue
+                for card in material.evidence:
+                    if "text" not in tuple(getattr(card, "modalities", ()) or ()):
+                        continue
+                    try:
+                        text = self.store.evidence(card.evidence_id).content
+                    except Exception:  # noqa: BLE001 —— 取不到正文就不附，不影响 SEARCH 本身
+                        continue
+                    excerpt = best_excerpt(text if isinstance(text, str) else str(text), str(query or ""), limit)
+                    if excerpt:
+                        lines.append(f"{card.evidence_id} 摘录（与查询最相关的一段；完整正文用 READ_RECORD）：{excerpt}")
+        return lines
 
     @staticmethod
     def _memory_observation(
@@ -1183,3 +1213,44 @@ class WorkspaceRunner:
                 extra={"workspace_id": self.harness.memory.task_id},
             )
         raise WorkspaceTurnLimit(message)
+
+
+_EXCERPT_WORD = __import__("re").compile(r"[A-Za-z0-9][A-Za-z0-9'’-]{2,}")
+_EXCERPT_CJK = __import__("re").compile(r"[\u4e00-\u9fff]{2,}")
+_EXCERPT_SPLIT = __import__("re").compile(r"(?<=[。！？.!?])\s+|\n+")
+_EXCERPT_STOP = frozenset("the and for with that this from was were are has have had not but its his her their what when where which who how "
+                          "site http https www com org".split())
+
+
+def best_excerpt(text: str, query: str, limit: int) -> str:
+    """在正文里找与查询词重合最多的一段连续句子（不超过 limit 字符）；查询为空或都不命中时取开头。纯程序，不调模型。"""
+
+    text = " ".join(text.split()) if "\n" not in text else text
+    if not text.strip() or limit <= 0:
+        return ""
+    terms = {w.lower() for w in _EXCERPT_WORD.findall(query) if w.lower() not in _EXCERPT_STOP}
+    for run in _EXCERPT_CJK.findall(query):
+        terms.update(run[i:i + 2] for i in range(len(run) - 1))
+    sentences = [x.strip() for x in _EXCERPT_SPLIT.split(text) if x and x.strip()]
+    if not sentences:
+        return ""
+
+    def score(chunk: str) -> int:
+        low = chunk.lower()
+        return sum(1 for t in terms if t in low)
+
+    best, best_score = "", (-1, False)
+    for start in range(len(sentences)):
+        window = ""
+        for sentence in sentences[start:]:
+            candidate = (window + " " + sentence).strip()
+            if len(candidate) > limit and window:
+                break
+            window = candidate
+        value = (score(window), score(sentences[start]) > 0)      # 同样命中数时，优先从命中句开头的一段
+        if value > best_score:
+            best, best_score = window, value
+        if not terms:
+            break
+    best = best[:limit]
+    return best + ("…" if len(best) >= limit else "")

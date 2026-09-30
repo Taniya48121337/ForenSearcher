@@ -1,0 +1,132 @@
+{
+  "case_id": "averimatec:98",
+  "dataset": "averimatec",
+  "source_id": "98",
+  "split": "dev_select",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Images show an assortment of weapons that were found in the house of an Ethiopian Orthodox Church leader of a church in Jimma after the split of the Orthodox Church.（声明日期：2023-02-07）",
+  "family_key": "averimatec:98",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/98/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    },
+    {
+      "ref": "I1",
+      "path": "../data/averimatec/98/inputs/image_1.jpg",
+      "media_type": "image/jpeg"
+    },
+    {
+      "ref": "I2",
+      "path": "../data/averimatec/98/inputs/image_2.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Images show an assortment of weapons that were found in the house of an Ethiopian Orthodox Church leader of a church in Jimma after the split of the Orthodox Church."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "factcheck.afp.com/doc.afp.com.339D4FH"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "各张图片的最早出处与原始说明（尤其武器图片的原始拍摄场合）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "图中人物的身份及其与武器说法的关系（能确认则给出，不能确认则明确说明）",
+      "must_cite": false
+    },
+    {
+      "id": "REQ3",
+      "text": "埃塞俄比亚正教会分裂的时间，图片首次发布是否早于这一事件",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "haqcheck",
+      "description": "HaqCheck 核查（试点 run 取到）",
+      "url_pattern": "haqcheck.org/false-the-image-doesnt-show-weapons*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ]
+    },
+    {
+      "key": "afp_archive",
+      "description": "AFP 图片档案存档（标注来源）",
+      "url_pattern": "perma.cc/krm4-24qe*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "image2_origin",
+      "description": "第 2 张图片的最早发布（标注来源）",
+      "url_pattern": "perma.cc/8wt4-3tvq*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ]
+    },
+    {
+      "key": "person_origin",
+      "description": "人物身份的出处（标注来源）",
+      "url_pattern": "perma.cc/t32w-4bt5*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "church_split",
+      "description": "教会分裂时间的报道（标注来源）",
+      "url_pattern": "perma.cc/2ms6-9r4y*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ3"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:haqcheck,afp_archive,image2_origin,person_origin,church_split",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/98/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2023-02-07，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20230320060950/https://factcheck.afp.com/doc.afp.com.339D4FH。（已按 2026-09-28 独立审稿修改 4 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

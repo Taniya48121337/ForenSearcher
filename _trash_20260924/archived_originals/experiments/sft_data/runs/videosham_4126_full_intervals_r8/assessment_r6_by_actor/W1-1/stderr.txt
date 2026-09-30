@@ -1,0 +1,13 @@
+2026-09-12T16:03:56.798345Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:03:56.798386Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:03:56.808603Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-09-12T16:03:57.324779Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:03:57.324809Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:04:00.324271Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 192ms)... turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa retries=1 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:04:02.423919Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 438ms)... turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa retries=2 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:04:07.638204Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 858ms)... turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa retries=3 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:04:09.877512Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.578s)... turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa retries=4 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:04:13.622050Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.206s)... turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa retries=5 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:04:18.686256Z  WARN codex_core::client: falling back to HTTP
+2026-09-12T16:15:40.712823Z  WARN codex_core::hook_runtime: after_agent hook failed; continuing turn_id=01a0965c-76b6-77f3-b3d3-bdde7ec965fa hook_name=legacy_notify error=文件名或扩展名太长。 (os error 206)
+2026-09-12T16:15:50.719932Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)

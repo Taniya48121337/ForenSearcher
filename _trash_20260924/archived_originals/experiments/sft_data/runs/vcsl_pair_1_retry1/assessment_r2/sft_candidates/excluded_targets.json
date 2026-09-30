@@ -1,0 +1,35 @@
+[
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "恢复的四组配对均已在此前共同展示，E21的45.56秒定位也已知。新对齐结果没有给这一帧新增位置歧义；此次读取没有补充边界或空档证据，作为真实历史保留即可。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "E30完整结果已在request_0008提供，多数组合也已见，已知部分的信息增益有限。但所恢复的精细配对包含评审未附的E29，无法完整判断该对是否存在值得复看的像素歧义，不能将其当成已充分核验的正向比较目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "focus集合与request_0008完全相同，E24的时间及来源元数据早已提供。当前仅剩两次后续决策，仍以整组旧图切换代替获取未决时段证据，属于明显低增益行动。执行成功不使其适合正向模仿。"
+    },
+    "execution_status": "executed"
+  }
+]

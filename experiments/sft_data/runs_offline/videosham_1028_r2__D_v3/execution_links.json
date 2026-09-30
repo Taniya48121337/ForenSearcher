@@ -1,0 +1,48 @@
+[
+  {
+    "raw_event_id": 1,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核验视频 A 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“lorem ipsum”相对应。",
+          "materials": [
+            "E1"
+          ]
+        },
+        {
+          "task": "核验视频 B 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“A conversation about CRPS”相对应。",
+          "materials": [
+            "E2"
+          ]
+        }
+      ]
+    },
+    "accepted_event_id": 2,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "gia_decision_accepted",
+    "accepted_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核验视频 A 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“lorem ipsum”相对应。",
+          "materials": [
+            "E1"
+          ]
+        },
+        {
+          "task": "核验视频 B 的音轨中是否存在可辨认的言语；若有，言语内容是否与标题“A conversation about CRPS”相对应。",
+          "materials": [
+            "E2"
+          ]
+        }
+      ]
+    },
+    "raw_equals_accepted": true,
+    "request_id": "request_0001",
+    "request_file": "experiments\\sft_data\\runs_offline\\videosham_1028_r2__D_v3\\requests\\request_0001\\request.json"
+  }
+]

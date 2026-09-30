@@ -1,0 +1,227 @@
+{
+  "assessment_scope": "仅依据所给包内递归解析的对象、12 个 HI 请求及执行记录评估，未调用工具或读取文件。附件清单为空，不作像素、音频或视频覆盖判断。官方参考中的 6.9%、Refuted 和 required_reannotation=false 均不替代原始证据核验。HI 七个维度均可评分，评分覆盖率为 100%，加权分为 78.75/100；这表示评估资料足以判断这些维度，不表示问题证据完整或整条轨迹合格。脚本调度不作为 GIA 教师目标。本评估不构成独立人工复核。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12 次原始输出均与接受输出对应；11 次动作具有观察链接，最终 INCOMPLETE 报告具有提交链接。动作符合所给接口，引用编号合法。该高分仅确认执行对应，不证明调查选择或答案正确。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E6、E7 在读取前均已列入可见证据；Africa Check 来源在 request_0004 的结果中出现后才用于定向搜索。未发现官方答案、兄弟报告或后续结果被提前使用。检索出现较晚年份的来源，本身不构成未来信息泄漏。",
+          "request_ids": ["request_0003", "request_0005", "request_0007", "request_0010", "request_0012"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告准确描述了已读内容：E6 只有报告摘要，没有农业分配数值；E7 讨论全国预算，不能确定县级平均值。R12、R13 的 HTTP 403 也有实际记录。HI 没有将 E7 的全国 2.9% 当成县级答案，也没有把证据不足写成已证伪。",
+          "request_ids": ["request_0007", "request_0010", "request_0012"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 1,
+          "reason": "局部任务要求查明县级农业预算占比及适用范围，最终没有获得该比例或计算依据。E6 摘要提到 FY2019/20 和 47 个县，但不足以确认背景声明中平均值的统计范围。诚实提交 INCOMPLETE 是正确报告行为，不能替代核心问题的完成。",
+          "request_ids": ["request_0004", "request_0010", "request_0012"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "早期扩展查询、调整年份及寻找受限 PDF 的替代来源合理。但 request_0008 和 request_0011 继续围绕争议数字改写搜索，而直接相关的官方索引 E8 已可读取。后者还是最后一次取证机会。该判断依据动作前的来源、历史和轮次，不依赖后来是否搜到正确答案。",
+          "request_ids": ["request_0002", "request_0004", "request_0005", "request_0008", "request_0009", "request_0011"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终报告明确区分全国与县级口径、未核实与错误，并如实说明轮次用尽。其财年和县覆盖范围未确认，应理解为尚未绑定到所称平均值，而非否认 E6 摘要中的年度和县数。此高分仅评价不确定性表达，实际占比仍未知。",
+          "request_ids": ["request_0012"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "全程进行了 9 次搜索、2 次正文读取；多次围绕 7.3 改写查询，却始终未读取已保存的官方索引 E8。存在取证机会分配不当。首次空结果、403 和供应商错误不单独扣分，部分改写也确有合理的信息增益预期。",
+          "request_ids": ["request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0011"]
+        }
+      ],
+      "critical_errors": [
+        "核心局部数值任务未完成，且不能认定调查已无可执行路径：request_0008、request_0011 决策前，官方索引 E8 已可读取但未被检查。最终报告没有伪造完成状态，但整条轨迹不能作为成功回答该问题的示范。"
+      ],
+      "unknowns": [
+        "未提供农业分配表正文，无法独立验证官方参考的 6.9%，也无法确认采用县占比的算术平均还是汇总金额之比。",
+        "E8、E12 的正文未提供且 HI 未读取；它们是否包含可用的 FY2019/20 报告入口，以及后续获取能否成功，均未知。",
+        "E6 是转载页面摘要，并非已核验的完整原始报告；其年度和县数描述不能证明所称 7.3% 使用相同范围。"
+      ]
+    },
+    {
+      "actor": "scripted_dispatcher",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "脚本 FINISH 仅是运行结束记录，不是 GIA 教师输出。",
+          "request_ids": []
+        },
+        {
+          "id": "visibility",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实 GIA 决策前状态和模型请求可评。",
+          "request_ids": []
+        },
+        {
+          "id": "grounding",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有 GIA 对县级预算比例作出的事实判断。",
+          "request_ids": []
+        },
+        {
+          "id": "task",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "运行结束和工作区已报告不等于原问题已回答。",
+          "request_ids": []
+        },
+        {
+          "id": "decision",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "不将脚本调度评为模型的分工或停止决策。",
+          "request_ids": []
+        },
+        {
+          "id": "uncertainty",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实 GIA 综合报告可评。",
+          "request_ids": []
+        },
+        {
+          "id": "efficiency",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有可归因于 GIA 模型的调查序列。",
+          "request_ids": []
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "真实 GIA 如何处理此份 INCOMPLETE 报告、是否补查及如何形成全局结论，本包无法判断。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次查询包含国家、县级对象、农业预算、争议数字和年份，符合初始局部问题。后续无结果不使这个初始探索变成错误。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次空结果后去掉年份并加入 allocation，是合理的查询扩展。不能用随后返回较晚年份材料倒推该动作不合理。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "面对明显较晚的结果，尝试日期限制有明确目的。但发表日期截止不能代替财政年度核对，还可能排除后来追溯 FY2019/20 的材料；作为一次探索可接受。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "移除争议数字的精确匹配，改查 2019/2020 年县级农业预算平均分配及报告，直接服务于寻找独立数值证据。无需依赖后来命中参考 PDF 才能认可该选择。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "相关 PDF 返回 403 后，利用刚发现的 Africa Check 域名寻找相关报道，是合理替代路径。查询仍依赖 7.3 且未限制财年，针对性有所不足，但不是无效重试或标注泄漏。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "同域结果仍为受限且年份不合的 PDF 后，改查带 July 2020 和 fact check 的报道具有合理目的。随后发生的 PROVIDER_ERROR 不应归为模型请求错误；当时读取现成官方索引也会是更直接的选择。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "搜索服务失败后读取已缓存的同年度农业预算文章，是可执行的恢复动作，也能核实口径。此前标题和摘要已提示全国预算，E6、E8 与县级问题更直接，因此不评满分；不因后来确认其为全国口径而将读取本身判错。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "已读 E7 无法回答县级问题，且 E6、E8 均可读取，此时再次围绕 7.3 搜索并移除 Kenya 和年份，未有效推进已知的直接取证路径。缺陷依据动作前状态成立，不以随后出现美国县资料作为倒推理由。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "限定已知相关域名和 2020，排除反复受限的 PDF，同时移除 7.3，构成有实质调整的替代检索。仍有 E8 未读的机会成本，但不能把该次查询仅因随后空结果判为无价值。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E6 的标题和已有摘要直接对应 FY2019/20 县级预算报告，读取其实际内容是合理核验。读取前不能预知保存正文只有摘要，因此不因缺少数值而降低该动作评分。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "这是最后一次取证机会。将此前多次检索的数字换成 7.3 per cent，可能有少量收益，但未改变寻找争议数字的路径，也再次缺少年份限定；官方索引 E8 始终未读。应从当时状态改做更直接的来源检查，不能假定替代读取必然成功。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "剩余轮次为零时，提交有实际读取支持的 INCOMPLETE 报告合理。报告忠实说明 E6、E7 的限制及两份 PDF 的获取失败，没有伪造数值或错误宣称证伪。可作为诚实报告不足的候选，不能标注为问题已解。实际占比未知与报告是否忠实的审查未知不同；后者在本包中可以判断。"
+    }
+  ],
+  "construction_revisions": [
+    "按请求筛选候选，不整条接受或排除。request_0008、request_0011 保留为真实历史，但须修正并重新执行后才能成为正向动作目标。",
+    "替代执行可从相应前状态读取 E8，再根据实际返回内容决定是否打开报告链接。不得预写成功观察，也不得将新动作接到不相容的旧后缀上。",
+    "保留最终报告的 INCOMPLETE 状态及其真实失败前缀；导出时明确这是不足证据报告，不能因 report_committed、all_workspaces_reported 或脚本 FINISH 标成任务成功。",
+    "为参考答案审计补充原始分配表、计算方法及相关来源正文；这些材料留在评审侧，不能把 6.9% 回填为演员早期已知信息。",
+    "保留原始空结果、HTTP 403 和供应商错误。候选来源卡片、已保存正文、实际读取内容及报告引用应继续分别记录。",
+    "脚本调度输出仅保留为上下文和运行元数据，不进入 GIA 正向目标集合。"
+  ],
+  "rubric_revisions": [
+    "明确区分报告忠实性与任务完成度：受轮次限制的诚实 INCOMPLETE 报告可以成为候选，同时局部 task 维度仍可低分。",
+    "明确 critical_unknown 指影响该输出可接受性判断的关键评审缺口；任务答案被诚实保留为未知，不自动使报告不可评，也不代表答案核验通过。",
+    "搜索决策应比较当时已有来源、查询变化和剩余机会。合理空结果不扣分，重复也不按固定次数判错；但已有直接来源长期未读，应影响 decision 和 efficiency。",
+    "分别检查声明日期、资料发表日期和统计财年。日期截止查询只能算探索策略，事后发布但追溯相关财年的来源不应自动排除。",
+    "数值核查明确区分县级与全国、预算分配与实际支出、县占比均值与汇总金额占比。官方答案及无重标记标志不能替代这些核对。",
+    "同时报告评分覆盖率与关键任务缺口。即使全部维度可评分且加权分较高，也不得掩盖核心数值未获得或个别动作必须修复的事实。"
+  ]
+}

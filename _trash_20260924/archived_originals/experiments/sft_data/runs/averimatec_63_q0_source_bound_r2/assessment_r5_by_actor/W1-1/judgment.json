@@ -1,0 +1,207 @@
+{
+  "assessment_scope": "仅依据所供数据包和8张图片，递归解析对象引用，评估W1-1的12个实际HI输出；未调用工具或检查文件。脚本化FINISH不属于GIA训练目标，不另评GIA。执行记录证明11次动作执行和1次报告提交，不证明答案正确。本例七维评分覆盖率为100%，加权分为3.35/4（83.75/100）；该分数不表示已回答局部问题，也不支持整条轨迹直接作为成功解题样本导出。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "12个输出均有对应接受记录，raw_equals_accepted均为true；前11步有工具观察链接，最后一步有报告提交链接。没有被拒绝后冒充执行成功的动作。本例不是terminal_replay。",
+          "request_ids": [
+            "request_0001",
+            "request_0002",
+            "request_0003",
+            "request_0004",
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "查询与读取均基于局部任务、既有线索或明确的搜索假设。查询中出现citronella、neem不能单独证明标注泄漏。E7在request_0004前可选且随后确实读取；最终引用它有历史依据。英文路径尝试是基于已见泰米尔语路径的语言变体探索，没有冒称该页已取得。所见输入未显示原AFP核查文章进入上下文。",
+          "request_ids": [
+            "request_0001",
+            "request_0004",
+            "request_0007",
+            "request_0009",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "最终唯一finding与E7正文吻合：当前Daily Reports页面正文列出2026年5月下载目录，没有所问名单；局限明确限定于该页。官方页面404也有实际观察支持。没有把商业产品成分或新加坡机构建议归给NDCU。像素中图1为插有丁香状花蕾的切半柑橘；图2—4、6—8为会议、发言或合影场景；图5为三张宣传海报的展示板，不能一概称为会议照片。这些像素没有建立所问天然驱蚊剂名单或实际驱蚊效果，报告也未作这种推断。",
+          "request_ids": [
+            "request_0012"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 1,
+          "reason": "局部目标是查明NDCU列出的有效天然驱蚊剂，最终没有取得任何能够回答该名单的依据，主要信息目标未满足。INCOMPLETE准确说明未完成项目，因此最后一份报告本身可以合格；不能将报告诚实等同于调查完成，也不能要求该HI完成全局声明的科学效力核查。",
+          "request_ids": [
+            "request_0012"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "多数动作有明确用途：限定官网、调整机构名与关键词、读取已有正文、尝试语言变体及档案检索。无关结果和404不能倒推这些请求错误。具体不足是后段仍主要改写查询，尚未利用E7显示的防控与信息栏目、已保存的官网入口E17发展新路径；最后一次图片搜索也缺少名单以图表呈现的明确线索。不过它仍是针对同一名单的可执行探索，不能用随后返回的会议缩略图判为事前不合理。零剩余轮次时提交报告符合要求。",
+          "request_ids": [
+            "request_0002",
+            "request_0004",
+            "request_0007",
+            "request_0009",
+            "request_0010",
+            "request_0011",
+            "request_0012"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分页面未取得、摘要没有所需名单、已读页面内容与机构是否曾发布名单；没有从检索失败推断名单不存在。最终使用INCOMPLETE，没有补写参考答案。对2023年建议未确认的说明是证据边界，没有据此宣称后来资料一律无效。该输出是预算要求提交的报告，不能据此认证自主停止能力。",
+          "request_ids": [
+            "request_0012"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "11个取证动作中有10次SEARCH、1次正文读取，后段查询存在较多主题重叠，官网入口与已读导航利用不足。不过各次确有范围、词项、语言路径或媒体形式调整，没有机械重复已读正文。搜索工具自动重试R1及自动取得无关网页，不应全部计为演员主动重复取证。",
+          "request_ids": [
+            "request_0005",
+            "request_0006",
+            "request_0007",
+            "request_0008",
+            "request_0009",
+            "request_0010",
+            "request_0011"
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "所问NDCU名单及其适用范围仍未核实；参考答案没有附对应how-to-prevent正文，不能作为已独立验证的机构清单。",
+        "E14、E16、E17、E18等未读正文未提供，无法认定其中必有答案；这些记录至多构成可继续调查的方向。",
+        "现有运行证明目标资料未被找回，不能证明在给定环境与预算下必然可完成，也不能证明任务不可完成。",
+        "已知地址排除机制不能认证所有潜在镜像或转述的独立性；本包未显示具体污染来源，不能据此指控演员泄漏。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首轮查询直接对应机构、天然驱蚊剂和登革热；citronella是检索假设，不是已经取得的答案。请求合法且执行对应明确。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首轮混入新加坡资料且NDCU候选页404，随后限定斯里兰卡官网能解决来源归属缺口。不能因结果仍不理想而降低这一合理动作的质量。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "官网限定检索未取得名单后，使用机构全称和主题词寻找相关页面或独立转述合理。随后出现Google Maps结果属于检索异常或低相关返回，不能归为演员选择了地图调查。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "E7确实可见且可读取；首次展开已取得的官方正文可确认内容与导航。已知daily-reports路径使其直接回答名单的可能性较低，但这次读取仍有合理信息价值。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "确认E7只是日报目录后，使用先前已见的Registered Mosquito Repellents标题定向搜索，针对的是实际来源线索。工具再次尝试失败页面不等于演员原样重复被拒请求。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "前次返回一般驱蚊资料后，以官网域名及repellents、oil缩小范围，是针对机构清单的合理查询调整。没有把其他机构或商业说法当成NDCU证据。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "加入Sri Lanka有助消歧，citronella与neem可以作为候选词搜索，不能视为已核实成分。与首轮查询重叠较多，且已有官网入口E17未读取，优先性不够充分；仍不足以认定为无价值重复。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "新结果主要是产品及一般报道，改为官网内单一成分词检索，既限定机构又减少组合词约束。其合理性不依赖后来是否命中。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "依据已见官方页面结构尝试英文语言路径，是一次有限且可执行的恢复动作。泰米尔语路径失败不能证明英文路径必然失败；实际404只说明本次未取到正文。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "英文页面404后，围绕已知标题寻找档案是相关恢复尝试。查询中的archive没有实际完成归档访问，但输出也没有声称已找到归档；专利结果不能倒推查询错误。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "文字搜索屡次未取得名单后，图片搜索可尝试寻找同一官方标题相关的图表或截图，属于可执行的替代渠道。事前没有明确图表线索，最后一次取证机会的使用仅属一般；不能用随后出现的会议与宣传海报缩略图追溯否定此动作。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "剩余轮次为0，准确提交INCOMPLETE；E7引用已读且支持限定于当前页面的finding，404说明有执行观察依据。未取得名单是调查对象的未知，不是评审无法判断报告合格的关键未知。新增图片没有建立所需名单依据，未逐张描述不是任务遗漏。该目标仅适合作为诚实的未完成报告监督。"
+    }
+  ],
+  "construction_revisions": [
+    "将本运行标记为局部问题未解决、终端INCOMPLETE报告合格；动作候选与报告候选分别保存，不把脚本化FINISH或all_workspaces_reported转成成功答案标签。",
+    "诊断相关查询返回Google Maps页面、专利及会议图库的检索问题，核对实际查询、返回来源与自动抓取行为；保留真实失败记录，修复后从对应状态重新运行。",
+    "实际验证允许使用的NDCU资料及其归档能否通过当前SEARCH接口发现和读取，并保留正文、最终URL及日期信息。参考中的how-to-prevent与演员找到的registered-mosquito-repellents是不同页面，不能假定二者内容等同，也不能把评审员知道的前者当成演员漏用的已知链接。",
+    "复核Q0参考答案的分类：其摘录同时列出天然油类和明确称为chemical repellents的DEET，不能把整段统一标成天然驱蚊剂。须取得对应正文再认证名单；本例没有足够证据修改具体项目。",
+    "仅为实际被输出采用的正文和视觉结论要求完整评审材料；未读记录缺正文不应自动使所有动作失去可评性。"
+  ],
+  "rubric_revisions": [
+    "增加本例校准：轨迹未回答名单可以获得低task分，同时零预算下准确的INCOMPLETE报告可以成为高质量报告目标；两者不应互相覆盖。",
+    "对搜索效率扣分要求指出决策前可见的重复、缺口与替代动作。后来的无关结果、404、自动抓取次数或固定搜索次数本身，不足以判定请求错误。",
+    "机构归属问题允许有依据的独立转述，不能机械追加原站要求；但普通产品配方与其他机构建议不能替代NDCU名单。声明日期元数据也不能自动成为资料公开时间截止线。",
+    "明确本例的视觉边界：宣传海报不等于驱蚊剂清单，摆拍柑橘与丁香不证明有效性；与局部文本问题无关的图片细节无需写入报告。",
+    "保留critical_unknown与案件未解决的区别：本报告的缺口和状态均可核对，因此无需因名单仍未知而暂缓其报告候选资格。"
+  ]
+}

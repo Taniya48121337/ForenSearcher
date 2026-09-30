@@ -1,0 +1,119 @@
+{
+ "run": "averitec_1766_q0_r1",
+ "config": {
+  "dataset": "averitec",
+  "case": "1766",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 7,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，查找直接证据并说明适用范围：Zaira Wasim returned to Bollywood?\n背景声明：Zaira Wasim who quit acting in June citing religion is making a comeback to Bollywood.\n声明日期（任务元数据）：9-9-2019",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "针对2019年9月9日这则声明，把Zaira Wasim参演《The Sky Is Pink》解释为退出后的复出，属于误导。她于6月30日宣布退出时，该片已经完成拍摄。News18转引制片方Roy Kapur Films的声明，确认拍摄已结束，并表示支持她退出的决定。因此，这部既有作品随后上映不能证明她重返宝莱坞。",
+     "evidence_ids": [
+      "E4",
+      "E1"
+     ],
+     "limitations": [
+      "制片方声明通过News18转引，未取得声明原件。结论限于2019年9月这次传言，不涉及其后职业动向。"
+     ]
+    },
+    {
+     "statement": "流传的剧组海滩合照也不能证明复出。India Today的9月11日核查称，该照片拍于她宣布退出之前，并称她当时没有参加该片宣传。9月8日的报道则明确将她可能出席多伦多首映礼描述为网友根据Priyanka Chopra帖文作出的猜测，并未确认她出席或恢复演艺工作。",
+     "evidence_ids": [
+      "E1",
+      "E2"
+     ],
+     "limitations": [
+      "照片时间的判断依据核查报道正文；本次未直接查看照片像素或原始社交媒体帖文。9月11日核查晚于声明日期，属于事后核查材料；其正文也注明尚待Wasim本人回应。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "Fact Check: Beach photo of Zaira Wasim goes viral with claim she has returned to Bollywood - India Today",
+   "source_url": "https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Fact Check: Beach photo of Zaira Wasim goes viral with claim she has returned to Bollywood\n\n[2] Social media is abuzz with claims that Zaira Wasim who quit acting in June citing religion is making a comeback to Bollywood.\n\n[3] Social media is abuzz with claims that Zaira Wasim who quit acting in June citing religion is making a comeback to Bollywood. A viral picture of the Dangal girl wearing a sarong and posing with actors Farhan Akhtar and Priyanka Chopra on a beach seems to have triggered the claim.\n\n[4] Facebook user Akanksha Ojha posted the picture on September 9 and said sarcasticall…（共 3379 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Zaira Wasim criticised over speculations of attending The Sky Is Pink premiere in Toronto - India Today",
+   "source_url": "https://www.indiatoday.in/movies/celebrities/story/zaira-wasim-criticised-over-speculations-of-attending-the-sky-is-pink-premiere-in-toronto-1596867-2019-09-08",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Zaira Wasim criticised over speculations of attending The Sky Is Pink premiere in Toronto\n\n[2] Zaira Wasim was criticised on the internet over speculations of attending the premiere of her film The Sky Is Pink in Toronto.\n\n[3] Priyanka Chopra's new film The Sky Is Pink, co-starring Zaira Wasim, will premiere at the Toronto International Film Festival (TIFF) on September 13 but will the Dangal actress attend the event? The internet is busy speculating whether [Zaira will attend the premiere considering she announced her \"disassociation from the field of acting\" in June](https://www.indiatod…（共 4748 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Zaira Wasim called a Hypocrite, Trolled for promoting The Sky is Pink after calling quits from ...",
+   "source_url": "https://www.indiaforums.com/article/zaira-wasim-called-a-hypocrite-trolled-for-promoting-the-sky-is-pink-after-calling-quits-from-films_154591",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Zaira Wasim called a Hypocrite, Trolled for promoting The Sky is Pink after calling quits from Films\n\n[2] The Sky is Pink stars Priyanka Chopra, Farhan Akhtar, and Zaira Wasim. Zaira has announced her disassociation from films in a shocking statement citing religion and is now being trolled for promoting the film...\n\n[3] Published: Tuesday,Sep 10, 2019 12:19 PM GMT+05:30\n\n[4] [Zaira Wasim](https://www.indiaforums.com/person/zaira-wasim_12674) had taken the whole film industry and fans by shock when she suddenly announced her disassociation from films saying she was not happy with the line …（共 3751 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Producers of Zaira Wasim's Upcoming Film The Sky Is Pink Support her Decision to Quit Bollywood | Movies News - News18",
+   "source_url": "https://www.news18.com/news/movies/the-sky-is-pink-producer-on-zaira-wasim-quitting-bollywood-this-is-purely-personal-decision-2211169.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [News](https://www.news18.com/)\n\n[2] [movies](https://www.news18.com/movies/)Producers of Zaira Wasim's Upcoming Film The Sky Is Pink Support her Decision to Quit Bollywood\n\n[3] Producers of Zaira Wasim's Upcoming Film The Sky Is Pink Support her Decision to Quit Bollywood\n\n[4] In a statement, Roy Kapur Films, who is backing 'The Sky is Pink', said Zaira Wasim has been a \"complete professional\" throughout the filming of the movie, which also features Priyanka Chopra Jonas and Farhan Akhtar.\n\n[5] [Rapid Read](https://www.news18.com/short-news/)\n\n[6] Zaira Wasim on Sunday announced her \"disa…（共 2871 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Zaira Wasim quits Bollywood | Zaira Wasim quits Bollywood",
+   "source_url": "https://www.deccanchronicle.com/entertainment/bollywood/300619/zaira-wasim-quits-bollywood.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Zaira Wasim quits Bollywood\n\n[2] Zaira began her short-lived, three-year, three-movie career in Bollywood as Aamir Khanâ€™s spirited daughter in Dangal.\n\n[3] Actress Zaira Wasim has made a rather controversial departure from Bollywood. In a lengthy social-media post on Sunday, Zaira, while announcing her decision to quit acting said, “Five years ago, I made a decision that changed my life forever. As I stepped my foot in Bollywood, it opened doors of massive popularity for me. I started to become the prime candidate of public attention, I was projected as the gospel of the idea of success …（共 2819 字）"
+  },
+  {
+   "id": "E6",
+   "label": "X on X / X",
+   "source_url": "https://x.com/roykapurfilms/status/1104297931358785536",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Post\n\n[2] Log in\n\n[3] Sign up\n\n[4] Post\n\n[5] Log in\n\n[6] Sign up\n\n[7] X on X"
+  }
+ ]
+}

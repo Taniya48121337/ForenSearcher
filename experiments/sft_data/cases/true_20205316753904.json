@@ -1,0 +1,82 @@
+{
+  "case_id": "true:20205316753904",
+  "dataset": "true",
+  "source_id": "20205316753904",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A video shows a woman hanging by her hair in a train car.",
+  "family_key": "true:20205316753904",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_20205316753904_validation/artifacts/952aefe19b5f494cb271dc7ceff6b83b.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "A video shows a woman hanging by her hair in a train car."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "视频抽帧：显示悬吊姿态的帧",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "crops",
+      "description": "头发与吊环连接处的裁剪放大",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/crop"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频画面是否显示一名女子在列车车厢内以头发悬吊，以及画面能确认和不能确认的细节（固定方式、是否完全由头发承重）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "视频的来源或语境（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "属实",
+        "aliases": [
+          "支持该描述",
+          "基本支持",
+          "真实",
+          "True"
+        ]
+      },
+      "note": "数据集标签 rating=True（Snopes）",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/true/20205316753904/reference.json",
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_20205316753904_validation 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=claim_template、REQ2=claim_template），required_evidence 取自干净 Finding ∩ 答案引用（有降级项，见审核单 trace.origin）。"
+}

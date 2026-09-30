@@ -1,0 +1,320 @@
+{
+ "run": "averimatec_652_q1_visibility_validation",
+ "config": {
+  "dataset": "averimatec",
+  "case": "652",
+  "question_index": 1,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 11,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：Was Southlake DPS trying to adopt the dog out after finding it homeless?\n背景声明：Police in Charlottesville, Virginia picked up a homeless dog called Chloe and offered her for adoption when the owner refused to take her back.\n声明日期（任务元数据）：2023-02-28\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网…（共 453 字）",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "No. The supplied photograph matches the officer-and-dog photograph associated with WFAA’s report, “Texas dog starts fire going after snacks on stove.” That report describes Wrigley, a homeowner’s 11-month-old Goldendoodle in Southlake, Texas, being rescued from a smoke-filled house and placed in a police vehicle. The documented circumstances were a house-fire rescue, not finding a homeless dog nam…（共 439 字）",
+     "evidence_ids": [
+      "E1",
+      "E15",
+      "E14"
+     ],
+     "limitations": [
+      "This conclusion relies on WFAA’s reporting and the matching photograph. The linked Southlake DPS Facebook post could not be read, and WFAA does not explicitly discuss adoption or the dog’s subsequent disposition."
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":34271}"
+  },
+  {
+   "id": "E2",
+   "label": "Dogs & Puppies for Adoption in Southlake, TX | Petfinder",
+   "source_url": "https://www.petfinder.com/search/dogs-for-adoption/us/tx/southlake/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to content\n\n[2] Find a Pet\n\n[3] Location\n\n[4] Use current location available\n\n[5] Find a dog\n\n[6] Find a cat\n\n[7] Find Other Pets\n\n[8] All About Pets\n\n[9] Adopt or Get Involved\n\n[10] Open Submenu\n\n[11] About Petfinder\n\n[12] Adopting Pets\n\n[13] Animal Shelters & Rescues\n\n[14] Petfinder Foundation\n\n[15] Dogs & Puppies\n\n[16] Open Submenu\n\n[17] Dog Adoption\n\n[18] Dog Breeds\n\n[19] Feeding Your Dog\n\n[20] Dog Behavior\n\n[21] Dog Health & Wellness\n\n[22] Dog Training\n\n[23] Other Dog Information\n\n[24] Cats & Kittens\n\n[25] Open Submenu\n\n[26] Cat Adoption\n\n[27] Cat Breeds\n\n[28] Feeding Your Cat\n\n[…（共 1139 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Pet of the Week: Chloe is available from Second Chance Small Dog Rescue",
+   "source_url": "https://www.southbendtribune.com/story/news/local/2023/07/23/pet-of-the-week-chloe-is-available-from-second-chance-small-dog-rescue/70421613007/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Chloe is a mature dog who is homeless due to aging owners finding it hard to care for her\n\n[2] [Cheryl Morey](https://www.southbendtribune.com/staff/4969206001/cheryl-morey/)\n\n[3] Hello, my name is Chloe which is a feminine name of Greek origin, meaning “blooming” and I would love to be picked by you to continue blooming in your family garden. I am 12 years old and have a terrier-mix bloodline. As you can see my large brown eyes are set off beautifully by my lovely golden-brown fur. I am up to date on my vaccinations, spayed, heartworm negative, and on prevention. I recently had a successf…（共 2514 字）"
+  },
+  {
+   "id": "E4",
+   "label": "‘Distraught’ 89-year-old owner reunites with lost NC dog | Charlotte Observer",
+   "source_url": "https://www.charlotteobserver.com/news/state/north-carolina/article292358609.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [North Carolina](https://www.charlotteobserver.com/news/state/north-carolina/)\n\n[2] 89-year-old was ‘distraught’ when beloved dog went missing. Then came a joyful reunion\n\n[3] An 89-year-old man was “distraught” when his beloved dog went missing — then came a joyful reunion.\n\n[4] “Our volunteer [reunited them and the happy tears](https://www.facebook.com/heartofthefoothills/posts/907970728031803?ref=embed_post) were flowing,” Heart of the Foothills Animal Rescue in North Carolina wrote Sept. 9 on Facebook. “Chloe was so happy to be back with her family. She is a very loved girl!”\n\n[5] The …（共 2405 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Chloe - Adopted | Petfinder",
+   "source_url": "https://www.petfinder.com/dog/chloe-1aab763f-e9e8-4899-b224-1bbbbd10a6cc/wa/friday-harbor/animal-protection-society-friday-harbor-wa162/details/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Chloe\n\n[2] - Adult\n\n[3] - Female\n\n[4] - Small\n\n[5] Chloe\n\n[6] Current Location\n\n[7] Friday Harbor, WA\n\n[8] Breed\n\n[9] Physical Traits\n\n[10] Behavior\n\n[11] Health\n\n[12] Chloe's Compatibility\n\n[13] - This pet has unknown compatibility with kids.\n\n[14] - This pet has unknown compatibility with dogs.\n\n[15] - This pet has unknown compatibility with cats.\n\n[16] - This pet has unknown compatibility with other animals.\n\n[17] Adoption Fee\n\n[18] Please [contact the shelter](https://www.petfinder.com/dog/chloe-1aab763f-e9e8-4899-b224-1bbbbd10a6cc/wa/friday-harbor/animal-protection-society-friday-harb…（共 2509 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Adopter Has Message for Previous Owners Who Dropped Dog Off at the Shelter - Newsweek",
+   "source_url": "https://www.newsweek.com/adopter-has-message-previous-owner-who-dropped-dog-off-at-shelter-11789322",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] A once-terrified shelter dog who had to be carried into her first meeting with potential adopters has undergone a remarkable transformation—and her new family has a message for the people who once loved her.\n\n[2] Claudia and her husband Eric adopted their dog, Chloe, just over a year ago. She told Newsweek via TikTok that the [animal shelter](https://www.newsweek.com/heartbreaking-shelter-statistics-reveal-more-owners-surrendering-their-pets-11486165) provided reassuring background information about the pup’s past. Chloe had come from what was described as a caring home, but her previous o…（共 5343 字）"
+  },
+  {
+   "id": "E7",
+   "label": "Southlake officer rescues two canine escapees in Thursday's frigid temperatures",
+   "source_url": "https://www.audacy.com/krld/news/local/southlake-officer-rescues-two-canine-escapees",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Southlake police managed to capture a couple of canine escapees during Thursday's miserable conditions.\n\n[2] Police got calls about two dogs wandering in the cold near Byron Nelson Parkway and Southlake Boulevard. Police officer Scott Cepak found them and stopped, hoping to get them into his warm squad car. Rather than run for it, the dogs seemed grateful and hopped right in.\n\n[3] \"We had a call on two escapees who dug their way out of their fence earlier this morning,\" Southlake DPS tweeted. \"We didn't get the dogs' names, so we'll call them Andy Dufresne and Red to make it easier as we t…（共 1017 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Pets for adoption from Epic Animal Rescue | Petfinder",
+   "source_url": "https://www.petfinder.com/member/us/tx/southlake/epic-animal-rescue-tx2186/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Our Mission\n\n[2] Visit Epicanimalrescue.org for the latest NEWS!\n\n[3] Epic Animal Rescue is dedicated to saving the homeless and abandoned animals of Texas. We will provide a safe haven for these animals while providing food, shelter and all veterinary needs while in our care while we search for their forever adoptive homes. Our team is dedicated to the welfare of all animals and will provide educational support to the general public regarding the need for neuter, adequate vaccination and lifelong vet care of companion animals.\n\n[4] Adoption Policy\n\n[5] All animals must recieve an adoption…（共 985 字）"
+  },
+  {
+   "id": "E9",
+   "label": "Pet Adoptions in Southlake, TX",
+   "source_url": "https://www.goldentriangleanimalhospital.com/patient-resources/pet-adoptions",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Now offering Snout Wellness Plans! [Learn more here »](https://www.goldentriangleanimalhospital.com/services/wellness-prevention/pet-wellness-plans)\n\n[2] Your Guide to Adopting a Pet\n\n[3] Adopting a pet is one of the most rewarding experiences. They bring joy, companionship, and unconditional love to our lives. However, choosing the right pet for your family is an important decision that requires careful thought. Whether you’re looking to adopt a dog or puppy, a cat or kitten here’s what you need to know.\n\n[4] Why Choose Pet Adoption?\n\n[5] Here are some of the benefits of adopting a pet fr…（共 2510 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Pet Adoptions at Tesla Southlake - Dallas Animal Services",
+   "source_url": "https://bedallas90.org/upcoming-events/pet-adoptions-at-tesla-southlake/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Pet Adoptions at Tesla Southlake Come out to the Southlake Tesla to adopt a shelter pet from Dallas Animal Services. Bring your ID to adopt! Southlake Town Center 257 Grand Avenue Southlake, TX 76092 + Add to Google Calendar + iCal / Outlook export The event is finished. Tags: adoptions Date Mar 02 2024 Expired! Time 11:00 am - 2:00 pm Category Adoptions Share this event\n\n[2] Sorry, the comment form is closed at this time."
+  },
+  {
+   "id": "E11",
+   "label": "Animal Shelters Southlake TX - Pet Net ID",
+   "source_url": "https://petnetid.com/animal-shelter/usa/tx/animal-shelter-southlake-tx/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Lost your pet? Found a pet? Or want to adopt a pet in Southlake TX?\n\n[2] PetNetID.com understands how distressing it is when a dearest family animal gets lost. That’s the reason why we do our very best to reunite lost pets with their pet parents in Southlake and bordering locations.\n\n[3] On this page, you can locate information on all things in regarded to pet rescue Southlake and cat or dog adoption Southlake. There are also essential procedures on what to do if you’ve lost your family pet or located another person’s pet.\n\n[4] Humane Societies, Dog Adoptions & Animal Shelters in Southlake…（共 4478 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Southlake DPS (@SouthlakeDPS) / X",
+   "source_url": "https://x.com/SouthlakeDPS",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Log in\n\n[2] Sign up\n\n[3] Log in\n\n[4] Sign up\n\n[5] Southlake DPS\n\n[6] 18.1K posts\n\n[7] Southlake DPS\n\n[8] @SouthlakeDPS\n\n[9] The City of Southlake Department of Public Safety (DPS) provides Police, Fire, EMS, and Emergency Management services for the City of Southlake, Texas.\n\n[10] Southlake, Texas, U.S.A.\n\n[11] cityofsouthlake.com\n\n[12] Joined August 2009\n\n[13] 754\n\n[14] Following\n\n[15] 24K\n\n[16] Followers\n\n[17] Mention\n\n[18] Follow\n\n[19] Posts\n\n[20] Posts\n\n[21] Replies\n\n[22] Replies\n\n[23] Reposts\n\n[24] Reposts\n\n[25] Media\n\n[26] Media"
+  },
+  {
+   "id": "E13",
+   "label": "Southlake DPS Southlake Style — Southlake's Premiere Lifestyle Resource",
+   "source_url": "https://www.southlakestyle.com/topics/southlake-dps/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to main content\n\n[2] Search\n\n[3] About Us\n\n[4] Advertise With Us\n\n[5] Special Sections\n\n[6] Readers' Choice\n\n[7] facebook\n\n[8] twitter\n\n[9] instagram\n\n[10] RSS\n\n[11] Home\n\n[12] Dragon Pride\n\n[13] Fall\n\n[14] Winter\n\n[15] Spring\n\n[16] Community\n\n[17] School\n\n[18] City\n\n[19] Business\n\n[20] People\n\n[21] Food\n\n[22] Openings & Closings\n\n[23] Featured Plates\n\n[24] Date Nights\n\n[25] Events\n\n[26] Women's Luncheon\n\n[27] Beauty, Bellinis & Brunch\n\n[28] Style\n\n[29] Shopping\n\n[30] Travel\n\n[31] Home\n\n[32] Wellness\n\n[33] Promotions\n\n[34] Travel With Style\n\n[35] Student of the Month\n\n[36] Ask An Expe…（共 979 字）"
+  },
+  {
+   "id": "E14",
+   "label": "Texas dog starts fire going after snacks on stove | wfaa.com",
+   "source_url": "https://www.wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove-police-help-save-house/287-8b6f78e9-57c2-474a-b30f-4526808852f6",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] SOUTHLAKE, Texas — Thanks to the quick work of a nearby police officer, a dog that started a fire in North Texas was saved and the house sustained little damage.\n\n[2] On Sunday, a Southlake Police officer [was doing a regular neighborhood check](https://www.facebook.com/SouthlakePublicSafety/posts/pfbid0wypCT4yA8EeehTjfLR6QGaAum854KwS5DbN1w4Ss2kKGVmdaoYLutmkZF6ztWQcQl) on Vail Road near Grapevine Lake. A homeowner got the attention of the officer, letting her know they could hear an alarm going off down the street.\n\n[3] Once the officer got near the house, they found a house with smoke com…（共 1710 字）"
+  },
+  {
+   "id": "E15",
+   "label": "Texas dog starts fire going after snacks on stove | wfaa.com",
+   "source_url": "https://www.wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove-police-help-save-house/287-8b6f78e9-57c2-474a-b30f-4526808852f6",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 750, \"height\": 422, \"format\": \"JPEG\", \"source_url\": \"https://media.wfaa.com/assets/WFAA/images/aaa7b529-b632-47e5-935e-2a1e865bd140/aaa7b529-b632-47e5-935e-2a1e865bd140_750x422.jpg\"}"
+  },
+  {
+   "id": "E16",
+   "label": "search result thumbnail",
+   "source_url": "https://www.wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove-police-help-save-house/287-8b6f78e9-57c2-474a-b30f-4526808852f6",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E17",
+   "label": "Texas dog starts fire going after snacks on stove | wfaa.com",
+   "source_url": "https://www.wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove-police-help-save-house/287-8b6f78e9-57c2-474a-b30f-4526808852f6",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1920, \"height\": 1080, \"format\": \"JPEG\", \"source_url\": \"https://media.wfaa.com/assets/WFAA/images/aa158853-111e-49a8-8bdc-883dd8418cbe/aa158853-111e-49a8-8bdc-883dd8418cbe_1920x1080.jpg\"}"
+  },
+  {
+   "id": "E18",
+   "label": "search result thumbnail",
+   "source_url": "https://www.wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove-police-help-save-house/287-8b6f78e9-57c2-474a-b30f-4526808852f6",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E19",
+   "label": "Two dogs rescued from house fire",
+   "source_url": "https://cbs12.com/news/local/two-dogs-rescued-from-house-fire",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1320, \"height\": 740, \"format\": \"JPEG\", \"source_url\": \"https://cbs12.com/resources/media/f793c3fa-ee72-4157-b6a2-2c3dee45d5e7-jumbo16x9_SLCfirerescue1.JPG?1581869377760\"}"
+  },
+  {
+   "id": "E20",
+   "label": "Two dogs rescued from house fire",
+   "source_url": "https://cbs12.com/news/local/two-dogs-rescued-from-house-fire",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Two dogs rescued from house fire\n\n[2] FORT PIERCE, Fla. (CBS12) — Two large dogs are grateful to St. Lucie County Fire District crews after a house fire in Fort Pierce.\n\n[3] According to fire rescue, the call came in around 8:30 a.m. Sunday for a house on Birch Drive. The fire was put out in less than 20 minutes.\n\n[4] No injuries were reported and no one was displaced, fire rescue says.\n\n[5] The cause of the fire is under investigation.\n\n[6] NEWS IN PHOTOS:\n\n[7] \"Local\"\n\n[8] 7\n\n[9] NEWStorm chances stay elevated across the Palm Beaches and Treasure Coast this weekend\n\n[10] 9\n\n[11] Atlantic…（共 858 字）"
+  },
+  {
+   "id": "E21",
+   "label": "search result thumbnail",
+   "source_url": "https://cbs12.com/news/local/two-dogs-rescued-from-house-fire",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 265, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E22",
+   "label": "Title: The Hero Who Lost His Job to Save a Dog: A Story of Courage ...",
+   "source_url": "https://ifeg.info/2025/11/10/title-the-hero-who-lost-his-job-to-save-a-dog-a-story-of-courage-compassion-and-loyalty/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1280, \"height\": 720, \"format\": \"JPEG\", \"source_url\": \"https://pbs.twimg.com/media/Gr4jbKuXgAEH9j9.jpg:large\"}"
+  },
+  {
+   "id": "E23",
+   "label": "search result thumbnail",
+   "source_url": "https://ifeg.info/2025/11/10/title-the-hero-who-lost-his-job-to-save-a-dog-a-story-of-courage-compassion-and-loyalty/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E24",
+   "label": "A Life Worth Breaking the Rules For: The Firefighter’s Unforgettable ...",
+   "source_url": "https://ifeg.info/2025/12/05/a-life-worth-breaking-the-rules-for-the-firefighters-unforgettable-act-of-courage/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1320, \"height\": 743, \"format\": \"JPEG\", \"source_url\": \"https://cbsaustin.com/resources/media/6a652761-4d8b-4c83-9f62-7a1ff33b50c4-jumbo16x9_GTk3IPRWgAAXnh8.jpg\"}"
+  },
+  {
+   "id": "E25",
+   "label": "search result thumbnail",
+   "source_url": "https://ifeg.info/2025/12/05/a-life-worth-breaking-the-rules-for-the-firefighters-unforgettable-act-of-courage/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  }
+ ]
+}

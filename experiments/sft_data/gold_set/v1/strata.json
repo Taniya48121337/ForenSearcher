@@ -1,0 +1,1154 @@
+{
+ "meta": {
+  "batch": "v1",
+  "seed": "20260928",
+  "report_verdicts": "verdicts_r0_judged.jsonl",
+  "unit_verdicts": "verdicts_units_judged.jsonl",
+  "counts": {
+   "finding": 60,
+   "answer": 12,
+   "plan": 8
+  }
+ },
+ "strata": [
+  {
+   "id": "F001",
+   "run": "averimatec_63_q0_r1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:63",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F002",
+   "run": "averitec_1707_q0_repair_r5",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averitec:1707",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "attribution_drift"
+   ],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F003",
+   "run": "qvhighlights_1_r1",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:1",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F004",
+   "run": "true_20205316753904_validation",
+   "dataset": "true",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "true:20205316753904",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F005",
+   "run": "vcsl_pair_6_r1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "vcsl:pair_6",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F006",
+   "run": "videosham_4126_split_intervals_r7",
+   "dataset": "videosham",
+   "workspace": "W3-1",
+   "finding": "F16",
+   "case_id": "videosham:4126",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F007",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F4",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F008",
+   "run": "qvhighlights_2_validation",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:2",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F009",
+   "run": "true_4124903_r2",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F5",
+   "case_id": "true:4124903",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F010",
+   "run": "vcsl_pair_1_retry1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "vcsl:pair_1",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F011",
+   "run": "videosham_1028_r2",
+   "dataset": "videosham",
+   "workspace": "W1-2",
+   "finding": "F3",
+   "case_id": "videosham:1028",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F012",
+   "run": "averitec_2694_budget_plan_execution_r1",
+   "dataset": "averitec",
+   "workspace": "W2-2",
+   "finding": "F12",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F013",
+   "run": "qvhighlights_0_r2",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:0",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F014",
+   "run": "true_17838107_r1",
+   "dataset": "true",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "true:17838107",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F015",
+   "run": "vcsl_pair_6_r1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "vcsl:pair_6",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F016",
+   "run": "videosham_0069_r1",
+   "dataset": "videosham",
+   "workspace": "W1-2",
+   "finding": "F5",
+   "case_id": "videosham:0069",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F017",
+   "run": "averitec_2694_budget_plan_execution_r1",
+   "dataset": "averitec",
+   "workspace": "W1-2",
+   "finding": "F3",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F018",
+   "run": "true_24171541709824_r1",
+   "dataset": "true",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "true:24171541709824",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F019",
+   "run": "videosham_1007_validation",
+   "dataset": "videosham",
+   "workspace": "W3-2",
+   "finding": "F15",
+   "case_id": "videosham:1007",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F020",
+   "run": "averitec_2694_budget_plan_execution_r1",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F8",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F021",
+   "run": "true_20361105_visibility_validation",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F5",
+   "case_id": "true:20361105",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F022",
+   "run": "videosham_4126_split_intervals_r7",
+   "dataset": "videosham",
+   "workspace": "W3-3",
+   "finding": "F20",
+   "case_id": "videosham:4126",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation",
+    "wrong_citation",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F023",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W2-2",
+   "finding": "F14",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F024",
+   "run": "true_4124903_r1",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F7",
+   "case_id": "true:4124903",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F025",
+   "run": "videosham_0069_r1",
+   "dataset": "videosham",
+   "workspace": "W3-1",
+   "finding": "F14",
+   "case_id": "videosham:0069",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F026",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W3-2",
+   "finding": "F21",
+   "case_id": "averitec:2694",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F027",
+   "run": "videosham_1028_r2",
+   "dataset": "videosham",
+   "workspace": "W2-1",
+   "finding": "F6",
+   "case_id": "videosham:1028",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "misread_fine_text",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F028",
+   "run": "videosham_0069_r1",
+   "dataset": "videosham",
+   "workspace": "W2-1",
+   "finding": "F9",
+   "case_id": "videosham:0069",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F029",
+   "run": "videosham_4126_full_intervals_r7",
+   "dataset": "videosham",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "videosham:4126",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F030",
+   "run": "videosham_1007_validation",
+   "dataset": "videosham",
+   "workspace": "W3-1",
+   "finding": "F13",
+   "case_id": "videosham:1007",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F031",
+   "run": "averimatec_63_q0_archived_source_r1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:63",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F032",
+   "run": "averitec_2694_budget_plan_execution_r1",
+   "dataset": "averitec",
+   "workspace": "W1-2",
+   "finding": "F1",
+   "case_id": "averitec:2694",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F033",
+   "run": "qvhighlights_9167_r2",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:9167",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F034",
+   "run": "true_4124903_r1",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F5",
+   "case_id": "true:4124903",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F035",
+   "run": "vcsl_pair_1_retry1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "vcsl:pair_1",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F036",
+   "run": "videosham_0069_r1",
+   "dataset": "videosham",
+   "workspace": "W1-2",
+   "finding": "F6",
+   "case_id": "videosham:0069",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F037",
+   "run": "averimatec_660_q0_source_bound_r1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "averimatec:660",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F038",
+   "run": "averitec_2694_q8_source_validation",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "averitec:2694",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F039",
+   "run": "qvhighlights_0_r1",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:0",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F040",
+   "run": "true_20361105_visibility_validation",
+   "dataset": "true",
+   "workspace": "W2-1",
+   "finding": "F8",
+   "case_id": "true:20361105",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F041",
+   "run": "vcsl_pair_5_validation",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "vcsl:pair_5",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F042",
+   "run": "videosham_0069_r1",
+   "dataset": "videosham",
+   "workspace": "W3-1",
+   "finding": "F15",
+   "case_id": "videosham:0069",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F043",
+   "run": "averimatec_652_q1_visibility_validation",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:652",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F044",
+   "run": "averitec_392_q0_validation",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averitec:392",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F045",
+   "run": "qvhighlights_9167_r1",
+   "dataset": "qvhighlights",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "qvhighlights:9167",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F046",
+   "run": "true_4124903_r2",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F6",
+   "case_id": "true:4124903",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F047",
+   "run": "vcsl_pair_5_validation",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "vcsl:pair_5",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F048",
+   "run": "videosham_2010_r1",
+   "dataset": "videosham",
+   "workspace": "W1-2",
+   "finding": "F5",
+   "case_id": "videosham:2010",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F049",
+   "run": "averimatec_699_q0_r1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:699",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F050",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W1-2",
+   "finding": "F6",
+   "case_id": "averitec:2694",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F051",
+   "run": "true_4124903_r2",
+   "dataset": "true",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "true:4124903",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F052",
+   "run": "vcsl_pair_5_validation",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "vcsl:pair_5",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F053",
+   "run": "videosham_1028_r1",
+   "dataset": "videosham",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": null,
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F054",
+   "run": "averimatec_98_q0_validation",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:98",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F055",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W1-1",
+   "finding": "F5",
+   "case_id": "averitec:2694",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F056",
+   "run": "true_20361105_visibility_validation",
+   "dataset": "true",
+   "workspace": "W1-2",
+   "finding": "F4",
+   "case_id": "true:20361105",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F057",
+   "run": "vcsl_pair_4_r1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "vcsl:pair_4",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F058",
+   "run": "videosham_1028_r1",
+   "dataset": "videosham",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": null,
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F059",
+   "run": "averimatec_423_q0_validation_r3",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:423",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "F060",
+   "run": "averitec_2694_budget_plan_execution_12k_r1",
+   "dataset": "averitec",
+   "workspace": "W2-1",
+   "finding": "F19",
+   "case_id": "averitec:2694",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.1.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A001",
+   "kind": "answer",
+   "run": "true_20361105_visibility_validation",
+   "request": "request_0050",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "scope_overreach",
+    "wrong_citation"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A002",
+   "kind": "answer",
+   "run": "true_4124903_r1",
+   "request": "request_0022",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "wrong_citation",
+    "scope_overreach"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A003",
+   "kind": "answer",
+   "run": "true_24171541709824_r1",
+   "request": "request_0022",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "attribution_drift"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A004",
+   "kind": "answer",
+   "run": "videosham_4126_split_intervals_r7",
+   "request": "request_0107",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A005",
+   "kind": "answer",
+   "run": "true_39132300_validation_r3",
+   "request": "request_0008",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A006",
+   "kind": "answer",
+   "run": "videosham_1007_validation",
+   "request": "request_0072",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A007",
+   "kind": "answer",
+   "run": "videosham_1028_r2",
+   "request": "request_0021",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "premature_finish",
+    "scope_overreach",
+    "wrong_citation",
+    "wrong_citation",
+    "wrong_citation",
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "scope_overreach"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A008",
+   "kind": "answer",
+   "run": "true_20205316753904_validation",
+   "request": "request_0005",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "premature_finish",
+    "wrong_citation"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A009",
+   "kind": "answer",
+   "run": "videosham_0069_r1",
+   "request": "request_0060",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "sloppy_numeric",
+    "unsupported_assertion",
+    "scope_overreach",
+    "unsupported_assertion",
+    "wrong_citation",
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A010",
+   "kind": "answer",
+   "run": "true_4124903_r2",
+   "request": "request_0037",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "omitted_required_fact"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A011",
+   "kind": "answer",
+   "run": "videosham_2010_r1",
+   "request": "request_0019",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "scope_overreach",
+    "scope_overreach",
+    "scope_overreach",
+    "wrong_citation",
+    "wrong_citation",
+    "scope_overreach",
+    "scope_overreach"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "A012",
+   "kind": "answer",
+   "run": "true_17838107_r1",
+   "request": "request_0027",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "omitted_required_fact",
+    "attribution_drift",
+    "unsupported_assertion",
+    "scope_overreach"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P001",
+   "kind": "plan",
+   "run": "true_20361105_visibility_validation",
+   "request": "request_0027",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "overlapping_sibling_tasks",
+    "unnecessary_round",
+    "task_not_gap_driven",
+    "task_not_gap_driven",
+    "premise_smuggling"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P002",
+   "kind": "plan",
+   "run": "videosham_4126_split_intervals_r7",
+   "request": "request_0062",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "overlapping_sibling_tasks",
+    "unnecessary_round",
+    "task_not_gap_driven",
+    "task_not_gap_driven",
+    "premise_smuggling",
+    "task_not_gap_driven"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P003",
+   "kind": "plan",
+   "run": "videosham_1007_validation",
+   "request": "request_0019",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "overlapping_sibling_tasks",
+    "unnecessary_round",
+    "premise_smuggling"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P004",
+   "kind": "plan",
+   "run": "videosham_1007_validation",
+   "request": "request_0001",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "overlapping_sibling_tasks"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P005",
+   "kind": "plan",
+   "run": "videosham_0069_r1",
+   "request": "request_0020",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unnecessary_round",
+    "premise_smuggling"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P006",
+   "kind": "plan",
+   "run": "videosham_1007_validation",
+   "request": "request_0045",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unnecessary_round",
+    "task_not_gap_driven"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P007",
+   "kind": "plan",
+   "run": "true_4124903_r2",
+   "request": "request_0018",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unnecessary_round",
+    "premise_smuggling"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  },
+  {
+   "id": "P008",
+   "kind": "plan",
+   "run": "videosham_1028_r2",
+   "request": "request_0012",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "task_not_gap_driven"
+   ],
+   "verifier": "verifier@0.3.0",
+   "judge_model": "openrouter:qwen/qwen3.8-27b"
+  }
+ ]
+}

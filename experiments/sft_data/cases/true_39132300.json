@@ -1,0 +1,82 @@
+{
+  "case_id": "true:39132300",
+  "dataset": "true",
+  "source_id": "39132300",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\"",
+  "family_key": "true:39132300",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_39132300_validation_r3/artifacts/c29bb2ecd71d4d2082e8e65e9b073fbe.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.\""
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "snopes",
+      "description": "Snopes 核查：面具早于电影",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": "snopes.com/fact-check/ghostface-predate-scream*",
+      "acquired_by": null
+    },
+    {
+      "key": "ghostface_site",
+      "description": "GhostFace.co.uk 面具历史页（Fun World 1991 年 Fantastic Faces 系列）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "ghostface.co.uk/mask-info*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "后来称为 Ghostface 的面具在 1996 年《Scream》上映前是否已作为商品出售（Fun World “Fantastic Faces” 系列）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "证据的性质与限制：是回顾性报道还是当年销售记录；“Ghostface”名称与面具商品是否同期",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:snopes,ghostface_site",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "属实",
+        "aliases": [
+          "支持该声明",
+          "真实",
+          "True"
+        ]
+      },
+      "note": "数据集标签 rating=True（Snopes）",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/true/39132300/reference.json",
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_39132300_validation_r3 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=claim_template、REQ2=claim_template），required_evidence 取自干净 Finding ∩ 答案引用。（2026-09-29 护栏对照修补：snopes 为 TRUE 声明的原始核查、默认黑名单整站拦截，唯一必需组做不到；ghostface_site 改 must，与 snopes 组成 any_one_of。）"
+}

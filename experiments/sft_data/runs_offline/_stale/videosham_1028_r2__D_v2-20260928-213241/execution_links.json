@@ -1,0 +1,109 @@
+[
+  {
+    "raw_event_id": 1,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "FINISH",
+      "answer": "视频 A 与 B 的行走画面主体（人物、拐杖、背景建筑）在多个关键帧中相互对应，包括0.00秒、1.60秒、3.20秒和4.80秒的帧。这些帧中的两人使用拐杖沿小路走向镜头，左侧木制建筑及树木道路背景一致，支持两者为同一行走镜头的不同版本。在1.60秒和3.20秒的画面中，左下角蓝色标题区存在明显差异：A 显示单行白色无衬线文字“lorem ipsum”，B 显示两行白色手写体文字“A conversation about CRPS”。这表明 B 版本提供了关于 CRPS 的谈话这一主题提示，而 A 版本的占位文字未提供该提示。因此，两者在画面含义上存在可确认差异，主要体现在标题文本内容及其传达的主题信息上。"
+    },
+    "accepted_event_id": null,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "proposal_not_accepted",
+    "request_id": "request_0001",
+    "request_file": "experiments\\sft_data\\runs_offline\\videosham_1028_r2__D_v2\\requests\\request_0001\\request.json"
+  },
+  {
+    "raw_event_id": 2,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "对照视频 A 与 B，在1.60秒和3.20秒的对应帧中，核验左下角蓝色标题区的文字内容是否完全一致，并说明其在画面含义上的影响。引用具体证据 E5、E7、E10、E12、E13，保留无法区分或未观察区间的内容。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E13"
+          ]
+        },
+        {
+          "task": "核验视频 A 与 B 的行走画面主体（人物、拐杖、背景建筑）在0.00秒至4.80秒的对应帧中是否完全一致，包括姿态、位置和环境细节。引用具体证据 E5、E7、E10、E12、E16、E17、E18，说明差异或未观察区间的影响，并保留无法区分的原因。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E16",
+            "E17",
+            "E18"
+          ]
+        },
+        {
+          "task": "核验视频 A 与 B 的标题文字是否在所有已观察帧中保持一致，包括字体、颜色和布局，以及这些差异对画面含义的影响。引用具体证据 E5、E7、E10、E12、E13、E16、E17、E18，说明变化或未观察区间，并保留无法区分的原因。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E13",
+            "E16",
+            "E17",
+            "E18"
+          ]
+        }
+      ]
+    },
+    "accepted_event_id": 3,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "gia_decision_accepted",
+    "accepted_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "对照视频 A 与 B，在1.60秒和3.20秒的对应帧中，核验左下角蓝色标题区的文字内容是否完全一致，并说明其在画面含义上的影响。引用具体证据 E5、E7、E10、E12、E13，保留无法区分或未观察区间的内容。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E13"
+          ]
+        },
+        {
+          "task": "核验视频 A 与 B 的行走画面主体（人物、拐杖、背景建筑）在0.00秒至4.80秒的对应帧中是否完全一致，包括姿态、位置和环境细节。引用具体证据 E5、E7、E10、E12、E16、E17、E18，说明差异或未观察区间的影响，并保留无法区分的原因。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E16",
+            "E17",
+            "E18"
+          ]
+        },
+        {
+          "task": "核验视频 A 与 B 的标题文字是否在所有已观察帧中保持一致，包括字体、颜色和布局，以及这些差异对画面含义的影响。引用具体证据 E5、E7、E10、E12、E13、E16、E17、E18，说明变化或未观察区间，并保留无法区分的原因。",
+          "materials": [
+            "E5",
+            "E7",
+            "E10",
+            "E12",
+            "E13",
+            "E16",
+            "E17",
+            "E18"
+          ]
+        }
+      ]
+    },
+    "raw_equals_accepted": true,
+    "request_id": "request_0002",
+    "request_file": "experiments\\sft_data\\runs_offline\\videosham_1028_r2__D_v2\\requests\\request_0002\\request.json"
+  }
+]

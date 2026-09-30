@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ..cases import Case
-from ..errors import ErrorRecord, ErrorType, error
+from ..errors import ErrorRecord, ErrorType, Severity, error
 from .anchored import JsonJudge, _obj
 
 SUFFICIENCY_SCHEMA = _obj({
@@ -53,23 +53,43 @@ def _report_payload(report: dict[str, Any]) -> dict[str, Any]:
     return {"status": report.get("status"), "status_reason": report.get("status_reason"), "findings": findings}
 
 
-async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: JsonJudge, *, case: Case | None = None) -> SufficiencyResult:
-    required = [{"key": r.key, "description": r.description, "must_cite": r.must_cite} for r in (case.required_evidence if case else ())]
+async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: JsonJudge, *, case: Case | None = None,
+                             requirement_ids: set[str] | None = None) -> SufficiencyResult:
+    """requirement_ids：本工作区对准的要求；给了就只把对准这些要求的必需证据交给模型（verifier@0.3.0，整案清单不再压给单个工作区）。"""
+
+    scoped = case.scoped_required_evidence(requirement_ids) if case else ()
+    required = [{"key": r.key, "description": r.description, "must_cite": r.must_cite} for r in scoped]
     payload = {"task": task_text, "required_evidence": required, "report": _report_payload(report)}
     try:
         raw = await judge.judge(system_prompt=SUFFICIENCY_SYSTEM_PROMPT, payload=payload, images=[], schema=SUFFICIENCY_SCHEMA)
     except Exception:  # noqa: BLE001 —— 坏输出：这一层记空，不影响前两层
         raw = {"_failed": True}
-    result = SufficiencyResult(raw=dict(raw))
+    result = SufficiencyResult(raw={**raw, "scope": sorted(requirement_ids) if requirement_ids is not None else None,
+                                    "required_keys": [r["key"] for r in required]})
     status = report.get("status")
     requirements = [r for r in (raw.get("requirements") or []) if isinstance(r, dict)]
     must_keys = {r["key"] for r in required if r["must_cite"]}
-    uncovered = [r for r in requirements if not r.get("covered")]
     case_keys = {r["key"] for r in required}
+    # any_one_of 分组：组里有一项 covered 就算整组满足，不再单独责难组里其它项
+    covered_keys = {str(r.get("key")) for r in requirements if r.get("covered")}
+    satisfied_by_group: set[str] = set()
+    optional_keys: set[str] = set()      # verifier@0.3.1：所在组全部 must_cite=False 的项只记 minor 备注，不计入处置
+    if case is not None:
+        for mode, group in case.evidence_groups():
+            group_keys = tuple(k for k in group if k in case_keys)
+            if mode == "any_one_of" and any(k in covered_keys for k in group_keys):
+                satisfied_by_group.update(group_keys)
+            if group_keys and not any(k in must_keys for k in group_keys):
+                optional_keys.update(group_keys)
+    uncovered = [r for r in requirements if not r.get("covered") and str(r.get("key")) not in satisfied_by_group]
     for item in uncovered:
         key = str(item.get("key") or "?")
         if key not in case_keys:
             continue      # 模型自己从任务文字归纳的要求只留在 raw 里作参考；试点上它把“说明来源与适用范围”这类套话也算成缺项，噪音太大
+        if key in optional_keys:
+            result.errors.append(error(ErrorType.OMITTED_REQUIRED_FACT, f"可选证据 {key!r} 未覆盖（仅备注）：{item.get('note') or ''}".strip("："),
+                                       method="model", severity=Severity.MINOR, extra={"requirement": key, "from_case": True, "optional": True}))
+            continue
         result.errors.append(error(ErrorType.OMITTED_REQUIRED_FACT, f"任务要求 {key!r} 未被回答：{item.get('note') or ''}".strip("："),
                                    method="model", extra={"requirement": key, "from_case": True}))
     missing_must = [r for r in uncovered if str(r.get("key")) in must_keys]

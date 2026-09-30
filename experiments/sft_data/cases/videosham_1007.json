@@ -1,0 +1,94 @@
+{
+  "case_id": "videosham:1007",
+  "dataset": "videosham",
+  "source_id": "1007",
+  "split": "dev_train",
+  "task_kind": "video_diff",
+  "task_text": "比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。",
+  "family_key": "videosham:1007",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/videosham_1007_validation/artifacts/dafc9dbdaabe4d8a99a6814623e29a74.mp4",
+      "media_type": "video/mp4"
+    },
+    {
+      "ref": "I1",
+      "path": "../runs/videosham_1007_validation/artifacts/691eb0cd3e444a0795f41f667c65cb77.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "两段视频的抽帧（差异位置两侧的对应帧）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ3"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "media_profile",
+      "description": "两段视频的媒体属性（时长、帧率、音轨数）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/media_profile"
+    },
+    {
+      "key": "alignment",
+      "description": "视觉或音频对齐结果（候选对应时间锚点，只作线索）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/align_media"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "A 相对 B 是否存在丢帧/缩短（官方描述：0:00–0:15 段被压成约 10 秒，须由画面确认），以及两侧对应位置",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "音轨是否可取得；可确认的声音差异或无法核验的说明",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "已确认的差异对画面含义的影响（不把未检查的区域或模态当作没有差异）",
+      "must_cite": true
+    },
+    {
+      "id": "REQ4",
+      "text": "未能确定的内容；不预设候选视频 B 的来源身份或制作先后",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": "../data/cases/videosham_1007/reference.json",
+  "used_for_revision": [],
+  "notes": "官方编辑描述（reference_status: 需由画面确认）：Drop frames from 0:00 to 0:15 to make it into a 10 second video；Manipulation: Frame duplication/Reversed Frames/Frame dropping/Speeding up/Slowing down；label_expected 经 2026-09-28 审稿决定不写：子串匹配表达不了官方描述（见 cases_draft/review_20260928_labels_offline.md）"
+}

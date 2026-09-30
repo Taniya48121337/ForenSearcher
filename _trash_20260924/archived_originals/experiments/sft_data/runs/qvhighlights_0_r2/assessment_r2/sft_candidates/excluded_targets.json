@@ -1,0 +1,46 @@
+[
+  {
+    "request_id": "request_0006",
+    "assessment": {
+      "request_id": "request_0006",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次返回40、44、48、52、56、60秒等已复看锚点，增加的46及65.64秒也曾附图。已知60与65.64秒都是室内后续场景；这些选择不能进一步缩小38–39或51–52秒的边界空档。可保留真实历史，不宜作为高质量正向动作。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "焦点组与request_0005完全相同，该组已在request_0006输入展示；期间没有新取帧或新增问题。改读E19只返回已有帧的元数据并再次附同组图，是明确的低信息增益切换。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "返回38.48、40、42、44、46、47、52、56秒，多数内容已反复展示，也未新增时刻。核心E27及同时聚焦的E23、E29缺少评审像素，无法确定是否存在足以支持此次复看的具体视觉歧义。2分反映可见的重复负担，不把未知内容判为错误或通过；补齐图片后应重评。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "41秒食物、48及50秒举盒、51及51.48秒变化均已实际展示，这次用最后一个取证轮次再次组合相同事实，没有缩小任何采样空档。作为报告前整理有有限作用，但不足以成为优质行动目标；该效率判断不依赖缺失帧的具体内容。"
+    },
+    "execution_status": "executed"
+  }
+]

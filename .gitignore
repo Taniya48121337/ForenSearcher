@@ -46,6 +46,8 @@ _git提交结果.txt
 # --- SFT 数据构造试验：脚本和文档进 git，大体积的运行记录和语料不进 ---
 # 语料 jsonl 和 manifest 进 git，只排除图片
 experiments/sft_data/corpus/images/
+experiments/sft_data/export/*/images/
+experiments/sft_data/export/*/check_inputs.rows.jsonl
 experiments/sft_data/runs/
 experiments/sft_data/batch_logs/
 experiments/sft_data/examples/

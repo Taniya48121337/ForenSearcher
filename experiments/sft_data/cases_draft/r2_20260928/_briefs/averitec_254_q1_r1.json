@@ -1,0 +1,171 @@
+{
+ "run": "averitec_254_q1_r1",
+ "config": {
+  "dataset": "averitec",
+  "case": "254",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": ""
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 9,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "report": null
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "Budgeting for Basic Education - Public Finance Conference",
+   "source_url": "https://thepfckenya.org/wp-content/uploads/2024/11/Education-Financing-Public-Finance-Conference-PFC24.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nBudgeting for \nBasic Education\nSESSION PAPER NO. 4\nDevolution remains a key pillar of \nKenya’s development strategy, aimed \nat promoting equity and fairness across \nthe country. While significant progress \nhas been achieved in the first decade \nof devolution, several challenges \ncontinue to hinder the full realization of \nits objectives. This session will focus on \nthe importance of intergovernmental \nrelations, which are crucial for supporting \nand providing the support, funding and \noversight to both national and county \ngovernments to ensure the effective \nfunctioning of devolution…（共 16531 字）"
+  },
+  {
+   "id": "E2",
+   "label": "Revenue Allocation Committee",
+   "source_url": "https://cra.go.ke/division-and-allocation-of-revenue/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] About the Committee\n\n[2] Purpose\n\n[3] Terms of Reference\n\n[4] Purpose\n\n[5] Terms of Reference\n\n[6] Articles\n\n[7] [CRA Submits Revenue Sharing Recommendations for FY 2026/2027](https://cra.go.ke/2026/02/03/cra-submits-revenue-sharing-recommendations-for-fy-2026-2027/)\n\n[8] The Commission submitted to Parliament its Recommendations on the Basis for Equitable Sharing of Revenue between the National and County Governments for the Financial Year 2026/2027, in fulfilment of its constitutional mandate. The recommendations are informed by an assessment of Kenya’s macroeconomic outlook, revenue per…（共 8851 字）"
+  },
+  {
+   "id": "E3",
+   "label": "How Much is Your County Receiving in FY2021/2022?",
+   "source_url": "https://cra.go.ke/2021/07/19/how-much-is-your-county-receiving-in-fy2021-2022/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] How Much is Your County Receiving in FY2021/2022?\n\n[2] The 2021 Division of Revenue Act allocates the county governments an equitable share of Ksh. 370 billion in the financial year 2021/2022. The allocation is an increase of Ksh.53.5 billion from the Ksh. 316.5 billion allocated to the counties during the 2020/2021 financial year.\n\n[3] The Equitable Share allocation to the counties of Ksh. 370 billion for the financial year 2021/22 is equivalent to 27.3 per cent of the last audited accounts (Ksh. 1,358 billion for FY 2016/17) and as approved by Parliament. The allocation, therefore, meets…（共 2617 字）"
+  },
+  {
+   "id": "E4",
+   "label": "What the budget holds for the agriculture sector in Kenya",
+   "source_url": "https://theconversation.com/what-the-budget-holds-for-the-agriculture-sector-in-kenya-162531",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Kenya’s [second budget](https://www.treasury.go.ke/wp-content/uploads/2021/06/FY-2021-22-Budget-Statement.pdf) under the shadow of the COVID-19 pandemic has prioritised a stimulus for economic recovery and the implementation of [President Uhuru Kenyatta’s legacy projects](https://www.delivery.go.ke/flagship). In the president’s last full financial year, the emphasis is clearly on finalising ongoing investments and creating a suitable environment for economic recovery to safeguard livelihoods.\n\n[2] The agriculture sector, which has received a slightly bigger share of the budget, remains vit…（共 8737 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Kenya post budget review: What the FY2019/20 budget means for food security | Heinrich Böll Stiftung | Nairobi Office Kenya, Uganda, Tanzania",
+   "source_url": "https://ke.boell.org/en/2019/07/04/kenya-post-budget-review-what-fy201920-budget-means-food-security",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The Cabinet Secretary for the National Treasury presented the FY 2019/20 Budget Statement to the National Assembly on 13 June 2019 based on the Printed Estimates of Recurrent and Development Expenditure and the Program Based Budget (PBB), finalised earlier in May.\n\n[2] Key insights from the budget, from a food and nutrition security perspective, are described in this article. In addition, you can [download the full report](https://routetofood.org/wp-content/uploads/2019/06/RTFI-Kenya-Post-Budget-Review-Food-and-Nutrition-Security-Final.pdf) and analysis of the budget for more detail.\n\n[3] …（共 3972 字）"
+  },
+  {
+   "id": "E6",
+   "label": "The 2019/2020 Kenya Budget in relation to agriculture – NPCK",
+   "source_url": "https://npck.org/the-2019-2020-kenya-budget-in-relation-to-agriculture/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Treasury Cabinet Secretary Henry Rotich with the Budget briefcase at the National Treasury on his way to Parliament to present the 2019/2020 Budget on June 13, 2019\n\n[2] The Kenya government unveiled the 2019/2020 fiscal budget KES 3.2 trillion which outlined the government plan to implement its Big 4 Agenda on food security, affordable housing, manufacturing and affordable healthcare. The increase in budget allocation in agriculture from KES 45 billion in 2018/2019 financial year to 52 billion or 2.9 % of this year total budget underrates the contribution (26% direct and 27% indirect) of …（共 2300 字）"
+  },
+  {
+   "id": "E7",
+   "label": "What the budget holds for the agriculture sector in Kenya",
+   "source_url": "https://www.downtoearth.org.in/africa/what-the-budget-holds-for-the-agriculture-sector-in-kenya-77457",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Kenya’s [second budget](https://www.treasury.go.ke/wp-content/uploads/2021/06/FY-2021-22-Budget-Statement.pdf) under the shadow of the novel coronavirus disease (COVID-19) pandemic has prioritised a stimulus for economic recovery and the implementation of [President Uhuru Kenyatta’s legacy projects](https://www.delivery.go.ke/flagship). In the president’s last full financial year, the emphasis is clearly on finalising ongoing investments and creating a suitable environment for economic recovery to safeguard livelihoods.\n\n[2] The agriculture sector, which has received a slightly bigger shar…（共 9077 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Kenyan Budget Allocation in the Sector of Agriculture for the FY 2020/2021 - The Elephant",
+   "source_url": "https://www.theelephant.info/analysis/2020/08/07/kenyan-budget-allocation-in-the-sector-of-agriculture-for-the-fy-2020-2021/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] One of the important responses and mitigation tools for proper planning and resource allocation during a time of crisis is a budget. Kenya has experienced infestation of desert locusts, floods as well as the rise in confirmed COVID19 cases. Following the government-imposed restrictions to reduce the spread of the coronavirus, the country is currently not only undergoing a health crisis but also economic crisis.\n\n[2] On 11th June 2020, the Cabinet Secretary for the National Treasury and Planning Ukur Yatani tabled a [Ksh. 2.7 Trillion budget](http://www.parliament.go.ke/sites/default/files/…（共 8589 字）"
+  },
+  {
+   "id": "E9",
+   "label": "Agriculture Sector Budget FY 2025/26 - IEA Kenya IEA Kenya",
+   "source_url": "https://ieakenya.or.ke/blog/agriculture-sector-budget-fy-2025-26/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The agriculture sector in Kenya is a vital component which continues to play a crucial role in the rural economy directly, and urban economy indirectly. Additionally, the sector is a key source of raw materials as it provides both forward and backward links with other economic sectors such as manufacturing, and wholesale and retail trade. With the devolved system of governance being implemented, it is one of the sectors to fully devolve, with the aim of ensuring enhanced food security, providing employment opportunities, and helping to sustain livelihoods. For the year 2024, the [sector co…（共 9558 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Treasury cuts agriculture sector budget by 12% to KES47.6Bn | Maudhui House",
+   "source_url": "https://newsroom.maudhui.co.ke/economy/treasury-cuts-agriculture-sector-budget-12-kes476bn-41207",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Treasury cuts agriculture sector budget by 12% to KES47.6Bn\n\n[2] The National Treasury has slashed the agriculture sector's allocation by KES7 billion in the 2025/2026 fiscal year—even as millions of Kenyans rely on the sector for food and income.\n\n[3] Treasury Cabinet Secretary John Mbadi announced a KES47.6 billion allocation to agriculture, down from KES54.6 billion in the current fiscal year. Presenting his first budget before Parliament on Thursday, Mbadi defended the reduced allocation, saying it will still fund critical programs that aim to bolster food security, uplift farmers’ pro…（共 2825 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Agriculture drives Kenya’s economy as counties report record farm output - Sacco Review | The Leading Newspaper for Co-operative Movement in Kenya",
+   "source_url": "https://saccoreview.co.ke/agriculture-drives-kenyas-economy-as-counties-report-record-farm-output/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] - Agriculture’s GDP share rose to 23.2 per cent, with output valued at Ksh 4.07 trillion.\n\n[2] - Horticulture, coffee, tea and milk posted strong growth, while wheat and sugarcane output declined.\n\n[3] - Counties want more funding for irrigation, mechanisation and value addition.\n\n[4] Agriculture remained the backbone of Kenya’s economy in the last financial year, with the sector’s share of Gross Domestic Product (GDP) climbing as counties posted record output in horticulture, coffee, milk and cotton.\n\n[5] Council of Governors (CoG) Chair Ahmed Abdullahi made the announcement while deliver…（共 4505 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Kenya Unveils Historic Ksh4.7 Trillion Budget - Here's What Counties and Citizens Get - Kenyans.co.ke",
+   "source_url": "https://www.kenyans.co.ke/news/120674-kenya-unveils-historic-ksh47-trillion-budget-heres-what-counties-and-citizens-get",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Kenyans are set to experience expanded government services as Cabinet endorses a historic Ksh4.7 trillion budget for the 2026/27 financial year, marking a significant increase from last year's allocation.\n\n[2] The massive budget, approved on February 10, 2026, represents a Ksh410 billion jump from the current year's Ksh4.29 trillion spending plan, signaling the government's ambitious push for economic transformation across all sectors.\n\n[3] Treasury projections show the country will collect Ksh3.53 trillion in revenues against the Ksh4.7 trillion expenditure, creating a funding gap that wi…（共 3020 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Kenya`s Budget 2021/22 – Allocation to Agriculture Sector",
+   "source_url": "https://www.afa.go.ke/wp-content/uploads/2024/10/AFA-e-bulletin-Q1-2021-22.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\n0\n\n[page 2]\n1 \n \n \n \n \n  The Economic Outlook ………………………………………………………………………………………2 \nKenya`s Budget 2021/22 – Allocation to Agriculture Sector…………….…3 \nDigital device promises to save farmers millions ………………………………………4 \nSurveillance of coconut disease ………………………………………………….…….……………5  \n \nKalro bets on quality potato seed to boost yield in Syngenta deal………5 \n \n \n \n \nJuly - September 2021\n\n[page 3]\n2 \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \nThe Economic Outlook \nDespite turning out better than expected, growth \nin 2020 i…（共 11891 字）"
+  }
+ ]
+}

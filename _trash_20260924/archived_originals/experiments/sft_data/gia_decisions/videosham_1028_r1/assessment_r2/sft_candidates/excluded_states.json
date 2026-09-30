@@ -1,0 +1,53 @@
+[
+  {
+    "id": "state_03",
+    "dimensions": [
+      {
+        "id": "execution",
+        "status": "not_applicable",
+        "rating": null,
+        "reason": "两项拟议调查均未执行，不能声称已取得音频证据或完成比较。"
+      },
+      {
+        "id": "visibility",
+        "status": "scored",
+        "rating": 4,
+        "reason": "使用的 E1、E2、E11、E15 均在当前视图中；已知标题内容与实际附件一致，没有偷用后续结果。"
+      },
+      {
+        "id": "grounding",
+        "status": "scored",
+        "rating": 4,
+        "reason": "标题陈述有成对帧支持；音轨替换被保留为待查问题，没有由标题推断实际口头内容。"
+      },
+      {
+        "id": "task",
+        "status": "scored",
+        "rating": 2,
+        "reason": "第一项直接核查口头言语及其含义影响，符合原任务；第二项扩展到视频中其他标题、字幕和文字差异，未说明这些调查如何解决言语替换问题。"
+      },
+      {
+        "id": "decision",
+        "status": "scored",
+        "rating": 2,
+        "reason": "声音取证是合理下一步，任务材料也可用；但同时下发全面文字调查缺乏具体疑点或必要依赖，正确的第一项不能抵消第二项的范围扩张。"
+      },
+      {
+        "id": "uncertainty",
+        "status": "scored",
+        "rating": 4,
+        "reason": "区分言语内容与音量、音质变化，并要求在无法辨认或核查时说明限制；没有把视觉报告视为音频结论。"
+      },
+      {
+        "id": "efficiency",
+        "status": "scored",
+        "rating": 2,
+        "reason": "第一项已包含结合对应画面判断含义；第二项再次调查已知标题及其他文字，未体现对原问题的独立信息增益，增加了不必要工作。"
+      }
+    ],
+    "target_rating": 2,
+    "disposition": "repair_reexecute",
+    "critical_unknown": false,
+    "reason": "request_0001 识别了必要的声音核验，但夹带缺乏任务依据的文字普查，构成实质决策缺陷。适用维度评分覆盖率为 100%（90/90 权重），加权分为 3.22/4；该平均分不能抵消多余调查。音频结果未知是待执行调查的对象，不妨碍评价当前决策。"
+  }
+]

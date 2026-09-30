@@ -1,0 +1,102 @@
+{
+  "export_id": "r0_true4124903_hi@0.1.0_gia@0.1.0_compact_8k",
+  "exported_at": "2026-09-21",
+  "spec": {
+    "hi": "hi@0.1.0",
+    "gia": "gia@0.1.0"
+  },
+  "spec_hash": {
+    "hi": "sha256:4bc81adc89dcc6384659067f009534460c1c7cd068e8325e4ae98b1527bec2ba",
+    "gia": "sha256:b2cd46cdac58d895f682c23ac84c0b1a6cf8cae44d5dfb7748b847ca6aa2f4a7"
+  },
+  "state_renderer": "compact_8k",
+  "verifier": "verifier@0.2.0",
+  "verdicts_source": "experiments/sft_data/verdicts_r0_judged.jsonl",
+  "cases_dir": "experiments/sft_data/cases",
+  "files": {
+    "hi_accepted": "hi_accepted.jsonl",
+    "hi_held": "hi_held.jsonl",
+    "hi_rejected": "hi_rejected.jsonl",
+    "gia_accepted": "gia_accepted.jsonl",
+    "gia_held": "gia_held.jsonl",
+    "gia_rejected": "gia_rejected.jsonl"
+  },
+  "counts": {
+    "hi_accepted": 17,
+    "hi_held": 2,
+    "hi_rejected": 1,
+    "gia_accepted": 2,
+    "gia_held": 0,
+    "gia_rejected": 0
+  },
+  "by_unit": {
+    "hi": {
+      "step": 16,
+      "report": 1
+    },
+    "gia": {
+      "plan": 1,
+      "answer": 1
+    }
+  },
+  "by_action": {
+    "hi": {
+      "INSPECT": 1,
+      "SEARCH": 6,
+      "READ_RECORD": 9,
+      "COMPLETED": 1
+    },
+    "gia": {
+      "INVESTIGATE": 1,
+      "FINISH": 1
+    }
+  },
+  "by_case_family": {
+    "true:4124903": {
+      "gia": 2,
+      "hi": 17
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 42.0,
+    "gia": 3.0
+  },
+  "input_tokens_est": {
+    "max": 19267,
+    "p50": 12976
+  },
+  "held": [
+    {
+      "run": "true_4124903_r1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 6,
+      "reason": "gain0_in_negative_ws"
+    },
+    {
+      "run": "true_4124903_r1",
+      "role": "hi",
+      "unit": "step",
+      "workspace": "W1-1",
+      "turn": 11,
+      "reason": "gain0_in_negative_ws"
+    }
+  ],
+  "rejected": [
+    {
+      "run": "true_4124903_r1",
+      "role": "hi",
+      "unit": "report",
+      "workspace": "W1-1",
+      "turn": 12,
+      "reason": "negative_report_until_recall_calibrated"
+    }
+  ],
+  "runtime_system_matches_spec": {
+    "gia:True": 1,
+    "hi:False": 20,
+    "gia:False": 1
+  },
+  "note": "system 用规格 student_prompt；运行时 HI 提示多一段时间预算附注、GIA 主提示与规格有差异，均记录在 runtime_system_matches_spec。token 估算按 1.7 字符/token 与每图 1200 token；精确值见 check_inputs 的 summary。"
+}

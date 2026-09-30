@@ -1,0 +1,24 @@
+规格：hi@0.2.0 / gia@0.2.0；12 个 run
+
+HI：原口径（system 含教师指令）一致 132 / 不一致 256；去掉教师指令后一致 384 / 不一致 4
+GIA：原口径（system 含教师指令）一致 12 / 不一致 47；去掉教师指令后一致 35 / 不一致 24
+
+逐 run（去掉教师指令后）：
+  true_4124903_r1: HI 20/20，GIA 2/2 一致
+  true_4124903_r2: HI 28/29，GIA 8/8 一致
+  true_17838107_r1: HI 23/23，GIA 4/4 一致
+  true_20205316753904_validation: HI 3/3，GIA 2/2 一致
+  true_20361105_visibility_validation: HI 41/44，GIA 4/6 一致
+  true_24171541709824_r1: HI 20/20，GIA 2/2 一致
+  true_39132300_validation_r3: HI 6/6，GIA 2/2 一致
+  videosham_0069_r1: HI 53/53，GIA 1/6 一致
+  videosham_1007_validation: HI 61/61，GIA 3/11 一致
+  videosham_1028_r2: HI 17/17，GIA 3/3 一致
+  videosham_2010_r1: HI 16/16，GIA 3/3 一致
+  videosham_4126_split_intervals_r7: HI 96/96，GIA 1/10 一致
+
+仍不一致的行按提示变体：
+  HI multimodal+time_note: 4 行；例 true_4124903_r2/request_0031 @3846: 运行时…'\n\n上一个 HI 输出未通过接口校验。具体错误见用户数据中的 validation_error，原输出见 previou' | 规格…''
+  GIA findings+budget_out: 18 行；例 videosham_0069_r1/request_0058 @4878: 运行时…'调查轮次预算已经用完，不能再输出 INVESTIGATE。\ncan_create_round=false 只禁止新增 H' | 规格…'证据充分时可 FINISH；仍有关键缺口时输出 INVESTIGATE；摘要不足时先用记忆动作。\n局部判断及其限制位于用'
+  GIA default: 6 行；例 true_20361105_visibility_validation/request_0026 @4820: 运行时…'请依据已有报告、实际读到的 Evidence 和总任务判断是否仍有关键缺口。Workspace 的失败状态不使已经提交的' | 规格…'当前或历史轮次存在可汇总的 Finding，但这只表示相应局部任务有了结果。请先覆盖总任务、检查其他报告状态和冲突。证据'
+EXIT 0 

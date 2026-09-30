@@ -1,0 +1,99 @@
+{
+  "case_id": "averitec:1766",
+  "dataset": "averitec",
+  "source_id": "1766",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Zaira Wasim who quit acting in June citing religion is making a comeback to Bollywood.（声明日期：2019-09-09）",
+  "family_key": "averitec:1766",
+  "media": [],
+  "claims": [
+    "Zaira Wasim who quit acting in June citing religion is making a comeback to Bollywood."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "扎伊拉·瓦西姆 2019 年 6 月宣布退出影视圈的记载，以及声明发布时是否有她复出的可靠证据",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "声明所依据的材料（流传的照片、即将上映的影片或其宣传）的拍摄或完成时间，是否早于她宣布退圈",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "quit_news18",
+      "description": "News18 关于其宣布退圈的报道",
+      "url_pattern": "news18.com/news/movies/dangal-actor-zaira-wasim-quits-bollywood*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "quit_deccan",
+      "description": "Deccan Chronicle 关于其宣布退圈的报道（试点 run 取到）",
+      "url_pattern": "deccanchronicle.com/entertainment/bollywood/300619/zaira-wasim-quits-bollywood*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "photo_origin_tweet",
+      "description": "照片早于退圈的说明推文（存档）",
+      "url_pattern": "*funu365/status/1170985803410837505*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "news18_producer",
+      "description": "News18 转引制片方关于其退圈与《The Sky Is Pink》已拍完的声明（试点 run 取到）",
+      "url_pattern": "news18.com/news/movies/the-sky-is-pink-producer-on-zaira-wasim-quitting-bollywood*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:quit_news18,quit_deccan; any_one_of:news18_producer,photo_origin_tweet",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averitec/1766/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2019-09-09，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20191107183836/https://www.indiatoday.in/fact-check/story/fact-check-beach-photo-of-zaira-wasim-goes-viral-with-claim-she-has-returned-to-bollywood-1598157-2019-09-11。（已按 2026-09-28 独立审稿修改 4 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

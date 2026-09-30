@@ -1,0 +1,28 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "videosham_4126_split_intervals_r7",
+  "source_request": "request_0062",
+  "variants": [
+    {
+      "id": "v2",
+      "task": "A 与 B 的音轨能否在时间上对齐？如能，偏移是多少，与画面的时间对应是否一致？",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "E3、E4 显示两段各有 1 条音轨，但状态中没有任何音频检查：E9 是 visual 模式，所有报告只做了画面比对，没有涉及声音的 Finding。inspect_operations 的 align_media 支持 mode=audio，HI 可以直接取得音频对齐结果。本 run 没有 asr/audio_qa，本题只问时间对齐，不要求听辨内容。",
+      "review": "通过"
+    },
+    {
+      "id": "v3",
+      "task": "除黑衣人物是否出现之外，A 与 B 的画面在其他位置（地面、墙面、其他人物或物体）是否还有可见差异？给出时刻、位置和依据；未检查的区域说明为未知。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "所有报告都只核查黑衣人物是否可见，没有任何 Finding 描述其他区域是否一致。F1–F14 在 r0 中全部被判污染（units recalibrate 后只有 F4、F12 干净，而且两条都只讲黑衣人物）。r0 还多处指出，报告把穿绿色上衣、黑短裤的滑板者当成了“黑衣人物”，所以现有报告对画面其他区域更不可依赖。inspect_operations 有 get_frames、crop，HI 可以在两侧取同一时刻的帧，裁剪比对。本 run 为 provided_media，没有搜索，只用给定材料就能完成。",
+      "review": "修改"
+    },
+    {
+      "id": "v4",
+      "task": "两段视频的文件属性（时长、分辨率、帧率、音轨数）是否相同？这些属性能否说明哪一段是原始版本？",
+      "expected_decision": "FINISH",
+      "rationale": "不依据 Finding（W1-2 F7 关于时长的陈述被判污染）；依据原始材料 E3、E4（INSPECT/media_profile）：两段都是 6.000 秒、960×540、30fps、1 条音轨，属性相同。E3、E4 自带说明未核验日期、地点、作者等来源元数据；GIA 规则 3 写明 I0、I1 编号不表示来源关系，属性相同也不能证明谁由谁制作。问题针对这些属性本身，再查也无法用它们判断先后，可直接回答：属性一致，不能据此判断哪段是原始版本。",
+      "review": "通过"
+    }
+  ]
+}

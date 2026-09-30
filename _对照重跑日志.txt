@@ -1,0 +1,164 @@
+==== 改进前后对照（09-28）：同 11 个案例，Codex 教师重跑一遍 
+改动：核查站点黑名单 + 日期截断（阶段 04）、hi@0.3.0 / gia@0.4.0（rationale 字段 + 教师指令"优先 SEARCH"）、导出权重与沾染规则 
+ 
+[1/4] 旧 run 新规则重导出 
+true_4124903_r1: 22 行（case=有，report verdicts=2）
+true_4124903_r2: 37 行（case=有，report verdicts=3）
+true_17838107_r1: 27 行（case=有，report verdicts=2）
+true_20205316753904_validation: 5 行（case=有，report verdicts=1）
+true_20361105_visibility_validation: 50 行（case=有，report verdicts=4）
+true_24171541709824_r1: 22 行（case=有，report verdicts=2）
+true_39132300_validation_r3: 8 行（case=有，report verdicts=1）
+videosham_0069_r1: 59 行（case=有，report verdicts=5）
+videosham_1007_validation: 72 行（case=有，report verdicts=6）
+videosham_1028_r2: 20 行（case=有，report verdicts=4）
+videosham_2010_r1: 19 行（case=有，report verdicts=3）
+videosham_4126_split_intervals_r7: 106 行（case=有，report verdicts=8）
+{
+  "counts": {
+    "hi_accepted": 258,
+    "hi_held": 105,
+    "hi_rejected": 25,
+    "gia_accepted": 22,
+    "gia_held": 32,
+    "gia_rejected": 5
+  },
+  "by_unit": {
+    "hi": {
+      "step": 242,
+      "report": 16
+    },
+    "gia": {
+      "plan": 19,
+      "answer": 3
+    }
+  },
+  "by_action": {
+    "hi": {
+      "INSPECT": 82,
+      "SEARCH": 37,
+      "READ_RECORD": 114,
+      "COMPLETED": 5,
+      "INCOMPLETE": 11,
+      "QUERY_MEMORY": 9
+    },
+    "gia": {
+      "INVESTIGATE": 19,
+      "FINISH": 3
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 488.75,
+    "gia": 23.0
+  },
+  "input_tokens_est": {
+    "max": 27729,
+    "p50": 16382
+  },
+  "fact_check_exposure": {
+    "rows_in_context": 54,
+    "rows_target_held": 17,
+    "accepted_in_context": 34
+  },
+  "weight_adjustments": {
+    "memory_action_gain0": 48,
+    "repetitive_run_middle": 59
+  },
+  "report_status": {
+    "hi": {
+      "COMPLETED": 5,
+      "INCOMPLETE": 11
+    }
+  },
+  "rationale_rows": {
+    "hi": 0,
+    "gia": 0
+  },
+  "supervised_tokens_est": {
+    "p50": 89
+  }
+}
+计划：11 个 run（待跑 11，已完成 0，半截 0）；教师 codex；轮次 r0b
+  todo       true_17838107_r0b_1                           true:17838107（dev_train）
+  todo       true_20205316753904_r0b_1                     true:20205316753904（dev_train）
+  todo       true_20361105_r0b_1                           true:20361105（dev_train）
+  todo       true_24171541709824_r0b_1                     true:24171541709824（dev_train）
+  todo       true_39132300_r0b_1                           true:39132300（dev_train）
+  todo       true_4124903_r0b_1                            true:4124903（dev_train）
+  todo       videosham_0069_r0b_1                          videosham:0069（dev_train）
+  todo       videosham_1007_r0b_1                          videosham:1007（dev_train）
+  todo       videosham_1028_r0b_1                          videosham:1028（dev_train）
+  todo       videosham_2010_r0b_1                          videosham:2010（dev_train）
+  todo       videosham_4126_r0b_1                          videosham:4126（dev_train）
+[1/11] 开跑 true_17838107_r0b_1（true:17838107，日志 experiments\sft_data\batch_logs\true_17838107_r0b_1.log）
+[1/11] true_17838107_r0b_1：完成；361s，教师 17 次，输入 634,135 / 输出 4,357 token
+[2/11] 开跑 true_20205316753904_r0b_1（true:20205316753904，日志 experiments\sft_data\batch_logs\true_20205316753904_r0b_1.log）
+[2/11] true_20205316753904_r0b_1：完成；64s，教师 5 次，输入 150,261 / 输出 893 token
+[3/11] 开跑 true_20361105_r0b_1（true:20361105，日志 experiments\sft_data\batch_logs\true_20361105_r0b_1.log）
+[3/11] true_20361105_r0b_1：完成；482s，教师 24 次，输入 828,227 / 输出 5,749 token
+[4/11] 开跑 true_24171541709824_r0b_1（true:24171541709824，日志 experiments\sft_data\batch_logs\true_24171541709824_r0b_1.log）
+[4/11] true_24171541709824_r0b_1：完成；147s，教师 10 次，输入 308,968 / 输出 1,748 token
+[5/11] 开跑 true_39132300_r0b_1（true:39132300，日志 experiments\sft_data\batch_logs\true_39132300_r0b_1.log）
+[5/11] true_39132300_r0b_1：完成；125s，教师 7 次，输入 204,204 / 输出 1,108 token
+[6/11] 开跑 true_4124903_r0b_1（true:4124903，日志 experiments\sft_data\batch_logs\true_4124903_r0b_1.log）
+[6/11] true_4124903_r0b_1：完成；225s，教师 13 次，输入 431,233 / 输出 2,796 token
+[7/11] 开跑 videosham_0069_r0b_1（videosham:0069，日志 experiments\sft_data\batch_logs\videosham_0069_r0b_1.log）
+[7/11] videosham_0069_r0b_1：完成；591s，教师 29 次，输入 963,222 / 输出 10,808 token
+[8/11] 开跑 videosham_1007_r0b_1（videosham:1007，日志 experiments\sft_data\batch_logs\videosham_1007_r0b_1.log）
+[8/11] videosham_1007_r0b_1：完成；670s，教师 33 次，输入 1,178,730 / 输出 11,429 token
+[9/11] 开跑 videosham_1028_r0b_1（videosham:1028，日志 experiments\sft_data\batch_logs\videosham_1028_r0b_1.log）
+[9/11] videosham_1028_r0b_1：完成；229s，教师 11 次，输入 368,976 / 输出 3,223 token
+[10/11] 开跑 videosham_2010_r0b_1（videosham:2010，日志 experiments\sft_data\batch_logs\videosham_2010_r0b_1.log）
+[10/11] videosham_2010_r0b_1：完成；181s，教师 10 次，输入 320,051 / 输出 3,370 token
+[11/11] 开跑 videosham_4126_r0b_1（videosham:4126，日志 experiments\sft_data\batch_logs\videosham_4126_r0b_1.log）
+[11/11] videosham_4126_r0b_1：完成；916s，教师 40 次，输入 1,536,228 / 输出 16,213 token
+
+成本记录追加到 experiments\sft_data\run_manifests\r0b.jsonl
+
+本批 11 个 run：完成 11，失败 0
+  每个 run 平均：墙钟 6.0 分钟，教师调用 18 次，输入 629,476 token，输出 5,609 token，附图 78 张
+!!! 连不上本地核验服务 http://127.0.0.1:8000/v1（ConnectError: [WinError 10061] 由于目标计算机积极拒绝，无法连接。）。先把模型服务起起来（vLLM / LM Studio / Ollama 都行，要 OpenAI 兼容接口），或用 --endpoint / 环境变量 FOREN_JUDGE_ENDPOINT 指到正确地址。
+（核验/导出失败，只做教师侧对照） 
+# 对照：r0 → r0b
+
+## 教师侧行为（只看 run，不依赖核验器）
+
+| 指标 | r0 | r0b |
+|---|---|---|
+| run 数 | 12 | 11 |
+| 每 run 教师调用 | 37.4 | 18.1 |
+| 每 run 输入 token | 1453971 | 629476 |
+| GIA 给出 FINISH 的比例 | 0 | 0 |
+| HI 动作步数 | 343 | 134 |
+| SEARCH 占步数 | 0.122 | 0.112 |
+| READ_RECORD 占步数 | 0.574 | 0.351 |
+| INSPECT 占步数 | 0.268 | 0.478 |
+| 报告 COMPLETED | 18 | 13 |
+| 报告 INCOMPLETE | 23 | 12 |
+| 最长同动作连击（最大） | 11 | 7 |
+| 最长同动作连击（中位） | 3.5 | 3 |
+| 带 rationale 的输出占比 | 0 | 0.759 |
+| 轨迹里出现的核查站点 URL 数 | 10 | 0 |
+| 实际打开的核查站点页面数 | 18 | 0 |
+| 护栏拦下的核查站点候选/打开 | 0 | 9 |
+| 护栏按日期拦下 | 0 | 0 |
+
+## 数据侧（导出；两边核验器：local-gemma3-12b-16k-latest / —）
+
+| 指标 | r0 | r0b |
+|---|---|---|
+| 行数 | hi_accepted 178; hi_held 165; hi_rejected 45; gia_accepted 22; gia_held 34; gia_rejected 3 | — |
+| HI 权重和 | 468 | — |
+| GIA 权重和 | 22 | — |
+| GIA accepted 答案数 | 1 | — |
+| HI 权重份额（按动作） | INSPECT 0.5; READ_RECORD 0.404; SEARCH 0.088; COMPLETED 0.006; INCOMPLETE 0.002 | — |
+| HI 监督 token 中位 | 91 | — |
+| accepted 报告状态 | None | — |
+| 核查站点沾染 | None | — |
+| 带 rationale 的 accepted 行 | None | — |
+| 权重调整次数 | None | — |
+
+说明：教师侧指标不依赖核验器，可直接比；数据侧指标只有两边用同一个核验器时才可比。
+READ_RECORD 占比高本身不一定是坏事（读页面是取证的一部分），要看 SEARCH 是否上来、连击是否消失。
+
+写到 experiments\sft_data\compare_r0_vs_r0b.md / experiments\sft_data\compare_r0_vs_r0b.json

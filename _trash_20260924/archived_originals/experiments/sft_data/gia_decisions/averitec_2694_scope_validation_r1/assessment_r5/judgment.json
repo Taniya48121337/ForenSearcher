@@ -1,0 +1,159 @@
+{
+  "states": [
+    {
+      "id": "state_01",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 是未执行的离线 FINISH 目标，不评价执行对应或真实联动。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "所引 E2、E3、E4、E5 的相关正文均已在 supporting_records 展示；无需借助 reference 或未返回的读取结果。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "2013年成立、2014年招生及10月开工、2016学年开始前交付分别有 E4[1][3][10] 支持；2017年7月收尾有 E2[4] 支持。E3[3] 的2013—2018年范围被正确限定为SPU。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确回答成立、招生和新建设施交付不是同一时间点，并给出当前证据支持的时间线；没有将初期设施交付扩大为全部校园建成。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "核心时间节点及区别已有可见正文支持，FINISH 合理；E2未展示的后续内容不妨碍这些有限结论，无须先机械读取或另查全部扩建历史。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "区分 E5[18] 的2015年开放计划与实际交付记录，也区分设施交付、项目收尾和单校阶段总结；未声称确定各设施具体交付日或全部建设完成日。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "直接利用现有正文完成有限时间线；补充收尾及计划节点用于澄清时间性质，没有夹带新的调查任务。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001 的事实、引用和停止范围均成立。归一化加权分4.00/4；适用维度评分覆盖率100%（90/90权重，占全部权重90%）。仅认定为离线候选，不表示当前决定已通过执行对应检查。"
+    },
+    {
+      "id": "state_02",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 的两项调查尚未执行，不能据任务描述认定报告取得或预算核对成功。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项任务的 materials 均来自当前可见的 E2—E5；E2[19] 已提供结项报告下载链接，相关预算资料被作为待查对象，没有虚构已取得的文件。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "SPU的2013—2018年约R1.4 billion资本支出来自 E3[3]；合同价值、价格涨幅和预算内说法来自 E4[11][12]。任务没有把这些信息冒充为两校各自的最终总支出或批准预算。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项任务分别覆盖两校最终实际支出、同阶段同口径批准预算及出处，并要求辨明项目阶段；已有局部报告未回答这些核心财务问题，补查没有被其 COMPLETED 状态替代。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E2[4][16][19] 提供具体可行的结项报告线索，角色提示允许 Workspace 处理PDF。两校任务均可从现有材料独立开始，并直接比较相关来源与预算，不依赖另一项任务先返回。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分合同金额、最终实际支出、批准预算及两校合计与单校金额；没有将“预算内”解释为金额相等，并要求无法取得的金额和对应关系保留未知。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项补查各自解决一所学校尚未回答的财务缺口。共享结项报告不等于重复完整调查；核对SPU已有约数的阶段归属也是必要工作，没有追加成立历史、人物归因或后续扩建调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001 的补查针对真实缺口，分工清楚且没有夹带不必要调查。最终金额尚未知属于调查对象的未知，不妨碍判定当前行动。归一化加权分4.00/4；适用维度评分覆盖率100%（90/90权重，占全部权重90%）。执行效果尚未验证。"
+    },
+    {
+      "id": "state_03",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 是未执行的离线 FINISH 目标，不评价实际提交或执行对应。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "金额辨析依据的 E3、E4 正文已完整展示且 next_offset 均为 null；各项事实可直接从演员输入核对，不需要 reference。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E4[5] 将R1.5 billion归于Wits自身35个项目；E4[11] 将R1.6 billion归于两所新大学相关290份NEC合同；E3[3] 将约R1.4 billion归于SPU在2013—2018年的首期资本支出。输出归属和单位换算均正确。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "逐一解释三个金额的对象与口径，并回答不能将它们视为同一项目同一口径的矛盾报价，符合“仅依据当前取得的材料”的范围。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "关键原文已足以完成金额对象辨析，FINISH 合理；取得完整结算账目不是本题必要条件，无须为证明这些金额的区别另行调查。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "没有将合同价值等同于最终实际总支出，也没有断言两个相关金额已完成对账；明确保留截止时间、费用构成及分校金额对应关系，并拒绝用差额推算另一校支出。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "利用已展示的相关正文直接回答，没有重复读取，也没有把有限的口径辨析扩展为外部预算或结算调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001 的金额归属、推断边界及停止决定均有依据，不能仅因最终账目仍未知而要求继续调查。归一化加权分4.00/4；适用维度评分覆盖率100%（90/90权重，占全部权重90%）。仅认定为离线候选，未验证当前决定的执行对应。"
+    }
+  ],
+  "construction_revisions": [],
+  "rubric_revisions": []
+}

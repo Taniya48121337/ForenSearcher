@@ -1,0 +1,403 @@
+{
+  "averitec:1707": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "requirements[1].text",
+        "new": "声明中“联邦政府实际拨付（released）”金额的出处与性质：是医院方面的说法还是联邦政府的拨付记录，能否独立核实",
+        "why": "原文把限制（“取不到时须明确说明无法核实”）塞进 must_cite=True 的要求：取不到就不可能有 supported Finding 覆盖它，must_cite 与“可以说明取不到”互相矛盾。试点两次都取到 Vanguard 报道，其中医院财务副主任称预算逾 1.34 亿奈拉、联邦拨付 1300 万（repair_r5 W1-1 F1 引 E6），可以把“拨付金额的出处与性质”作为可判定的要求。"
+      },
+      {
+        "field": "required_evidence[1]",
+        "new": {
+          "key": "vanguard_hospital",
+          "description": "Vanguard 2018-12 关于该院 2018 年度报告的报道（医院财务人员所称预算与拨付数字；试点 run 两次取到）",
+          "url_pattern": "vanguardngr.com/2018/12/drug-abuse-yaba-psychiatric-hospital-records-50-increase-in-patients*",
+          "acquired_by": null,
+          "must_cite": true,
+          "supports": [
+            "REQ2"
+          ]
+        },
+        "why": "REQ2 原来没有任何证据项；该页在 validation_r3 的 E1 与 repair_r5 的 E6 都被打开并引用，是非原始来源。规则保持 all（两项各自一组）。"
+      }
+    ]
+  },
+  "averitec:1766": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "requirements[1].text",
+        "new": "声明所依据的材料（流传的照片、即将上映的影片或其宣传）的拍摄或完成时间，是否早于她宣布退圈",
+        "why": "AVeriTeC 是纯文本声明，调查代理看不到“照片”，只写照片会让缺口评判在代理未找到照片时误判缺项；标注答案的关键事实是“影片 3 月已拍完、早于 6 月退圈”，要求应覆盖照片和影片两种依据。"
+      },
+      {
+        "field": "required_evidence[3]",
+        "new": {
+          "key": "news18_producer",
+          "description": "News18 转引制片方关于其退圈与《The Sky Is Pink》已拍完的声明（试点 run 取到）",
+          "url_pattern": "news18.com/news/movies/the-sky-is-pink-producer-on-zaira-wasim-quitting-bollywood*",
+          "acquired_by": null,
+          "must_cite": true,
+          "supports": [
+            "REQ2"
+          ]
+        },
+        "why": "REQ2 唯一的证据项是存档推文（未取到）；试点 q0_r1 的 E4 被 F1 引用来确认拍摄已结束，是非原始来源。"
+      },
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:quit_news18,quit_deccan; any_one_of:news18_producer,photo_origin_tweet",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 photo_origin_tweet 单独成组，任何对准 REQ2 的报告都会因没引这条存档推文被记 major。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averitec:254": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "checks",
+        "new": [],
+        "why": "两次试点都没取到任何农业拨款数据（Africa Check 表 HTTP 403，retry1 状态说明），标注理由本身也只是“看起来更低”（6.9% 对 7.3%）。在这种证据条件下正确答案往往是“无法核实”，label_expected=不实 会把它记成遗漏，属于误判风险大的检查。"
+      },
+      {
+        "field": "notes",
+        "new": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2020-07-23，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20210226130032/https://africacheck.org/fact-checks/reports/verifying-kenyan-governors-claims-progress。数据集标签 Refuted（6.9% vs 7.3%），审稿后不写 label_expected：试点取不到拨款表，差距小，正确答案可能是“无法核实”。",
+        "why": "与上条同步说明。"
+      }
+    ]
+  },
+  "averitec:2694": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:sanews_named,spu_site,treasury_review",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 treasury_review 试点从未打开，单独成组会让每份对准 REQ1 的报告都多一条 major；它与 sanews/spu 支撑同一事实，应同组。"
+      }
+    ]
+  },
+  "averitec:2799": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "source_policy.excluded_keys",
+        "new": [
+          "politifact.com/factchecks/2019/dec/18/joe-biden/california-firefighters-spoke-out-against-presiden",
+          "politifact.com/california/statements/2018/nov/12/donald-trump/trumps-overly-simplistic-and-false-claim-californi",
+          "politifact.com/factchecks/2018/nov/12/donald-trump/trumps-overly-simplistic-and-false-claim-californi"
+        ],
+        "why": "reference.json 的 original_claim_url 不是声明原帖，而是 PolitiFact 对这条声明本身的核查（标题 “Trump's overly simplistic and false claim on California's wildfires”，评级 False，文中也写了消防员的反驳）。它和 fact_checking_article 一样是原始核查，现在没排除；旧式 /california/statements/ 地址会跳到 /factchecks/ 新地址，两种都要写。"
+      },
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:newsweek,nbcnews,cpf,pfa_tweet",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 pfa_tweet 是存档推文，试点未取到，单独成组会给每份报告加 major；它与 newsweek/nbc/cpf 支撑同一事实（消防方面的回应）。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averitec:2872": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实",
+          "捏造",
+          "虚构"
+        ],
+        "why": "同通用理由；本案是伪造引语，答案自然写法是“捏造/虚构的引语”“不属实”，都不含“不实/虚假”。"
+      }
+    ]
+  },
+  "averitec:392": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实",
+          "虚构"
+        ],
+        "why": "同通用理由；本案原文来自自称虚构的讽刺站，答案常写“虚构内容/不属实”。"
+      }
+    ]
+  },
+  "averimatec:423": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:441": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:altnews,etvbharat,ndtv,logicalindian,local_tweet,owner_tweet",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 两条推文（试点均未取到）各自成组，一份同时对准 REQ1、REQ2 的报告即使引了 Alt News 也会有 2 个 major，按处置规则（≥2 major）直接 negative。四家核查报道都同时支撑 REQ1、REQ2，推文应并入同组。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:63": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[0].description",
+        "new": "斯里兰卡国家登革热控制中心的预防说明页（旧站地址已失效，只能经存档取到）",
+        "why": "如实说明取得条件。"
+      },
+      {
+        "field": "required_evidence[3]",
+        "new": {
+          "key": "nea_repellent",
+          "description": "新加坡国家环境局关于驱蚊剂使用的说明（试点 run 取到）",
+          "url_pattern": "nea.gov.sg/dengue-zika/stop-dengue-now/use-of-mosquito-repellents*",
+          "acquired_by": null,
+          "must_cite": true,
+          "supports": [
+            "REQ1"
+          ]
+        },
+        "why": "ndcu_prevent 是 REQ1 唯一的必引项，但四次试点里只有 archived_source_r1 取到，而那一次的任务文本直接给了候选来源地址（“提供的候选来源：…”）；其余三次正常搜索都没取到（旧站 /web/index.php 路径已迁移，source_bound_r2 的 status_reason 写明官方页 404）。REQ1 写的是“卫生主管机构（如 NDCU）”，其他卫生主管机构的驱蚊说明同样满足，需要可取到的替代项。"
+      },
+      {
+        "field": "required_evidence[4]",
+        "new": {
+          "key": "epa_repellent",
+          "description": "美国 EPA 驱蚊剂选择说明（试点 run 取到）",
+          "url_pattern": "epa.gov/insect-repellents/find-repellent-right-you*",
+          "acquired_by": null,
+          "must_cite": true,
+          "supports": [
+            "REQ1"
+          ]
+        },
+        "why": "同上，source_bound_r2 的 E13。"
+      },
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:ndcu_prevent,nea_repellent,epa_repellent; any_one_of:clove_review,mnt_clove",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 clove_review 与 mnt_clove 都支撑 REQ2 且试点都没取到，各自成组时对准 REQ2 的报告至少 2 个 major（直接 negative）；两者任取其一即可。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:652": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[1]",
+        "new": {
+          "key": "wfaa_fire",
+          "description": "WFAA 关于 Southlake 警员从起火房屋救出该狗的报道（链接 Southlake DPS 原帖；试点 run 取到）",
+          "url_pattern": "wfaa.com/article/news/local/texas-dog-starts-fire-going-snacks-on-stove*",
+          "acquired_by": null,
+          "must_cite": true,
+          "supports": [
+            "REQ1",
+            "REQ2"
+          ]
+        },
+        "why": "本案唯一的证据项是 Southlake DPS 的 Facebook 帖（must_cite=False，试点未能读取）。试点 q1 取到 WFAA 报道（E14 文本 + E15 同图），F1 据此确认狗是房屋火灾中被救出的住户宠物，并在限制里说明 FB 帖读不到；它是非原始来源，直接支撑 REQ2，并给出原帖发布者。"
+      },
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:southlake_fb,wfaa_fire",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 原来 southlake_fb 单独成组，几乎所有报告都会因为读不到 FB 帖被记 major。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:660": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "requirements[1].text",
+        "new": "图中动物的身份，以及它是否在该场合或之后被献祭",
+        "why": "原文括号里的“军团吉祥物山羊”就是标注问答的答案（声明说的是 ram），违反脚本 docstring 自己写的“不把答案写进要求”。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:699": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "averimatec:98": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "requirements[1]",
+        "new": {
+          "id": "REQ2",
+          "text": "图中人物的身份及其与武器说法的关系（能确认则给出，不能确认则明确说明）",
+          "must_cite": false
+        },
+        "why": "标注里“此人被捕是否与武器有关”是 Unanswerable，身份出处只有 perma.cc 存档（试点未取到），HaqCheck 也不点名此人。must_cite=True 在这种条件下没有可取得的 supported Finding，任何 FINISH 都会被记 premature_finish。"
+      },
+      {
+        "field": "required_evidence[0].supports",
+        "new": [
+          "REQ1",
+          "REQ3"
+        ],
+        "why": "HaqCheck 原文核查了两张武器图（2019-10-30 BBC Afaan Oromo、2021-10-07 Addis Ketema 报道）并写明 2023-01-22 的分裂事件，但不识别人物；原标的 REQ2 不对，漏了 REQ3。"
+      },
+      {
+        "field": "required_evidence_rule",
+        "new": "any_one_of:haqcheck,afp_archive,image2_origin,person_origin,church_split",
+        "why": "must_cite=False 的项只要不在 any_one_of 组里，就被 evidence_groups() 当成单独的 all 组；exec_checks.py:196-211 对未被引用的每一组都记 hard omitted_required_fact（MAJOR），sufficiency.py:74-87 同样对未覆盖项记 omitted，must_cite 只决定是否再记 completed_without_finishing。 三条 perma.cc 存档各自成组，一份不收窄的报告会有 3 个 major，必然 negative；HaqCheck 已同时覆盖图片出处与分裂时间。"
+      },
+      {
+        "field": "checks[0].params.aliases",
+        "new": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ],
+        "why": "label_expected 是答案子串匹配（units.py:208，不区分大小写）；中文最常见的否定写法“不属实”不含子串“不实”，正确答案会被记 omitted_required_fact。加“不属实”只放宽 Refuted 方向，不引入属实类误命中。"
+      }
+    ]
+  },
+  "qvhighlights:0": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[1]",
+        "new": null,
+        "why": "试点 6 次报告里 media_profile 一次都没被引用（每次都取了、但时长帧率与定位结论无关），它又单独成 all 组，每份报告都会被 exec_checks 记一条 hard omitted_required_fact（MAJOR）。QV 的 REQ3 是边界不确定性，靠边界两侧的帧说明，不需要媒体属性。删掉此项，frames 仍为必引。（new=null 表示删除该项）"
+      }
+    ]
+  },
+  "qvhighlights:1": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[1]",
+        "new": null,
+        "why": "试点 6 次报告里 media_profile 一次都没被引用（每次都取了、但时长帧率与定位结论无关），它又单独成 all 组，每份报告都会被 exec_checks 记一条 hard omitted_required_fact（MAJOR）。QV 的 REQ3 是边界不确定性，靠边界两侧的帧说明，不需要媒体属性。删掉此项，frames 仍为必引。（new=null 表示删除该项）"
+      }
+    ]
+  },
+  "qvhighlights:2": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[1]",
+        "new": null,
+        "why": "试点 6 次报告里 media_profile 一次都没被引用（每次都取了、但时长帧率与定位结论无关），它又单独成 all 组，每份报告都会被 exec_checks 记一条 hard omitted_required_fact（MAJOR）。QV 的 REQ3 是边界不确定性，靠边界两侧的帧说明，不需要媒体属性。删掉此项，frames 仍为必引。（new=null 表示删除该项）"
+      }
+    ]
+  },
+  "qvhighlights:9167": {
+    "verdict": "修改",
+    "changes": [
+      {
+        "field": "required_evidence[1]",
+        "new": null,
+        "why": "试点 6 次报告里 media_profile 一次都没被引用（每次都取了、但时长帧率与定位结论无关），它又单独成 all 组，每份报告都会被 exec_checks 记一条 hard omitted_required_fact（MAJOR）。QV 的 REQ3 是边界不确定性，靠边界两侧的帧说明，不需要媒体属性。删掉此项，frames 仍为必引。（new=null 表示删除该项）"
+      }
+    ]
+  },
+  "vcsl:pair_1": {
+    "verdict": "通过",
+    "changes": []
+  },
+  "vcsl:pair_4": {
+    "verdict": "通过",
+    "changes": []
+  },
+  "vcsl:pair_5": {
+    "verdict": "通过",
+    "changes": []
+  },
+  "vcsl:pair_6": {
+    "verdict": "通过",
+    "changes": []
+  }
+}

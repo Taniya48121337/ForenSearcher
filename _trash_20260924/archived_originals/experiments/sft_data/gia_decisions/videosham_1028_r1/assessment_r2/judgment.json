@@ -1,0 +1,165 @@
+{
+  "states": [
+    {
+      "id": "state_01",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "离线决策未执行新工具，不评价实际下发或联动结果。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "仅使用当前可见的 E1、E2、E9，没有引用后续标题帧或 reference 信息。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未将 E9 的算法对应候选解释为内容完全相同，也未编造尚未观察的差异。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "已有报告只完成视觉对应候选提取；下发任务覆盖实际内容比较及差异对含义的影响。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "实际内容尚未核实，继续调查合理。单个 HI 同时取得两侧视频及对齐记录，且按 o1 要求逐字承接原任务。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "没有把局部 COMPLETED、同秒锚点或处理覆盖范围当作全局结论，保留了内容核验缺口。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "只安排一个比较任务，解决此前对齐报告未回答的问题，没有额外复核或无关调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001 的继续调查有明确证据缺口支持。适用维度评分覆盖率为 100%（90/90 权重），加权分为 4.00/4；仅作为离线候选，执行对应关系未验证。"
+    },
+    {
+      "id": "state_02",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "离线最终决定未发生实际提交或工具执行，不评价执行成功。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E11、E15 的实际附件像素及来源、时间元数据均已提供，答案使用的标题内容属于当前可见信息。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "附件直接显示 A 的“lorem ipsum”和 B 的“A conversation”“about CRPS”；标题差异足以否定完全相同，主题提示的解释也有依据。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "回答了是否完全相同及已确认差异对画面理解的影响；原任务不要求穷尽全部差异。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "已有一个可直接确认的反例，足以形成有限且完整的答案，停止调查合理。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确不能据此判断其余画面、音轨或实际谈话内容，没有推断修改方向、版本先后或人物诊断。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "直接利用已附成对帧作答，没有追加不会改变“不完全相同”结论的全面检查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001 的事实、引用和停止决定均得到 E11、E15 支持。适用维度评分覆盖率为 100%（90/90 权重），加权分为 4.00/4；仅作为离线候选，执行对应关系未验证。"
+    },
+    {
+      "id": "state_03",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "两项拟议调查均未执行，不能声称已取得音频证据或完成比较。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "使用的 E1、E2、E11、E15 均在当前视图中；已知标题内容与实际附件一致，没有偷用后续结果。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "标题陈述有成对帧支持；音轨替换被保留为待查问题，没有由标题推断实际口头内容。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "第一项直接核查口头言语及其含义影响，符合原任务；第二项扩展到视频中其他标题、字幕和文字差异，未说明这些调查如何解决言语替换问题。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 2,
+          "reason": "声音取证是合理下一步，任务材料也可用；但同时下发全面文字调查缺乏具体疑点或必要依赖，正确的第一项不能抵消第二项的范围扩张。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "区分言语内容与音量、音质变化，并要求在无法辨认或核查时说明限制；没有把视觉报告视为音频结论。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 2,
+          "reason": "第一项已包含结合对应画面判断含义；第二项再次调查已知标题及其他文字，未体现对原问题的独立信息增益，增加了不必要工作。"
+        }
+      ],
+      "target_rating": 2,
+      "disposition": "repair_reexecute",
+      "critical_unknown": false,
+      "reason": "request_0001 识别了必要的声音核验，但夹带缺乏任务依据的文字普查，构成实质决策缺陷。适用维度评分覆盖率为 100%（90/90 权重），加权分为 3.22/4；该平均分不能抵消多余调查。音频结果未知是待执行调查的对象，不妨碍评价当前决策。"
+    }
+  ],
+  "construction_revisions": [
+    "修正 state_03 为一个 HI 承担原任务；遵循 o1，将 task 逐字写为“核查给定视频 A 与 B 是否存在言语内容替换，及其是否改变画面含义。”材料可包含 E1、E2、E11、E15，已有标题帧作为语境依据，不追加其他文字差异普查。",
+    "修正后的 state_03 应从对应状态重新执行；当前三个样本继续明确标记为离线决策，accepted_decision 字段不能替代执行验收，也不能补写成功观察。"
+  ],
+  "rubric_revisions": [
+    "明确对 INVESTIGATE 中的每个子任务分别核查必要性、范围和信息增益；包含一项正确补查，不足以使整个决定合格，额外任务造成的实质范围扩张应影响目标判定。",
+    "明确覆盖率以适用维度权重为分母，unknown 保留在分母中，not_applicable 排除；离线 execution 不适用与已通过执行对应检查必须分别表述。"
+  ]
+}

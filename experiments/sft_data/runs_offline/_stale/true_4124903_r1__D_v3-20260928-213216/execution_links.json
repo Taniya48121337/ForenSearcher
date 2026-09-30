@@ -1,0 +1,73 @@
+[
+  {
+    "raw_event_id": 1,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "FINISH",
+      "answer": "给定视频 A 的原始拍摄者与最早发布时间无法确定，但其内容与 YouTube 视频 cv_F3UkbdbI 在画面和事件语境上相符。该视频由 Rutnet 频道于2016年7月14日上传，时长25秒，标题为“Smoke rises around Eiffel Tower”。综合证据表明，材料 A 与2016年7月14日法国国庆日期间埃菲尔铁塔附近火情的场景相符。巴黎警察局当日通报明确表示：铁塔没有着火，耶拿桥发生了一起意外卡车火灾，已经扑灭。因此，声明“埃菲尔铁塔附近升腾的火焰和浓烟是巴黎在法国国庆日遭遇恐怖袭击的证据”不成立；相关事件被官方定性为意外事故，而非恐怖袭击。"
+    },
+    "accepted_event_id": null,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "proposal_not_accepted",
+    "request_id": "request_0001",
+    "request_file": "experiments\\sft_data\\runs_offline\\true_4124903_r1__D_v3\\requests\\request_0001\\request.json"
+  },
+  {
+    "raw_event_id": 2,
+    "actor": "GIA",
+    "role": "GIA",
+    "raw_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查视频 E1 中的火焰和浓烟是否与巴黎耶拿桥上烟花卡车火灾的场景在时间、位置和视觉特征上相符，必要时对比 YouTube 视频 cv_F3UkbdbI 的画面与事件语境。依据实际观察和证据说明结论范围与不确定性。",
+          "materials": [
+            "E1",
+            "E24",
+            "E21",
+            "E17"
+          ]
+        },
+        {
+          "task": "验证材料 A 与 YouTube 视频 cv_F3UkbdbI 是否为同一段画面，通过对比两者在时间戳、视觉内容和事件语境上的对应性。必要时读取并核对视频元数据及公开来源的描述。",
+          "materials": [
+            "E1",
+            "E16",
+            "E24"
+          ]
+        }
+      ]
+    },
+    "accepted_event_id": 3,
+    "observation_event_id": null,
+    "terminal_event_id": null,
+    "status": "gia_decision_accepted",
+    "accepted_output": {
+      "decision": "INVESTIGATE",
+      "tasks": [
+        {
+          "task": "核查视频 E1 中的火焰和浓烟是否与巴黎耶拿桥上烟花卡车火灾的场景在时间、位置和视觉特征上相符，必要时对比 YouTube 视频 cv_F3UkbdbI 的画面与事件语境。依据实际观察和证据说明结论范围与不确定性。",
+          "materials": [
+            "E1",
+            "E24",
+            "E21",
+            "E17"
+          ]
+        },
+        {
+          "task": "验证材料 A 与 YouTube 视频 cv_F3UkbdbI 是否为同一段画面，通过对比两者在时间戳、视觉内容和事件语境上的对应性。必要时读取并核对视频元数据及公开来源的描述。",
+          "materials": [
+            "E1",
+            "E16",
+            "E24"
+          ]
+        }
+      ]
+    },
+    "raw_equals_accepted": true,
+    "request_id": "request_0002",
+    "request_file": "experiments\\sft_data\\runs_offline\\true_4124903_r1__D_v3\\requests\\request_0002\\request.json"
+  }
+]

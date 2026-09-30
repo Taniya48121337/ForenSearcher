@@ -1,0 +1,211 @@
+[
+  {
+    "request_id": "request_0001",
+    "assessment": {
+      "request_id": "request_0001",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": true,
+      "reason": "只有解析失败记录，没有原始教师输出。已知输出格式未满足执行要求，可保留为真实失败上下文；不能据此构造正向目标或猜测其内容。"
+    },
+    "execution_status": "unparsed_actor_output"
+  },
+  {
+    "request_id": "request_0010",
+    "assessment": {
+      "request_id": "request_0010",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E21的时间和派生信息已知，其像素以及E18—E21与B四帧的组合已在request_0007、0009出现。此次读取和回切没有可辨认的新比较问题，也不补充相邻帧，保留为真实历史即可。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取E13并返回E6、E10、E12、E13与B四帧的组合，重复request_0010已显示的材料。时序关系仍未解决，动作未带来新的观察或定位依据。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E18的1.32秒定位与像素早已可见，再次回到E18—E21与B四帧的相同组合，缺乏新增价值。此时仍可选择有限的新取帧，重复读取不是有效补查。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0013",
+    "assessment": {
+      "request_id": "request_0013",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次读取已知E12并回到另一组重复附图，消耗最后一个可用于取证的动作机会。没有新像素、测量或需要恢复的缺失附件，不适合作为正向行动目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0017",
+    "assessment": {
+      "request_id": "request_0017",
+      "disposition": "repair_reexecute",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "动作符合接口且确实运行，但此前已读取 E3 的 audio_tracks=0。双输入音频对齐缺少必要输入，不能解决声音内容比较；实际仅返回针对 E1 的不可重试 NO_AUDIO。缺陷来自事前已知条件，而非事后以失败倒推。应从此状态调整行动并重新执行。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0026",
+    "assessment": {
+      "request_id": "request_0026",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次返回request_0025已完整展示的末段组，E25正文只是已知定位元数据。当前输出未体现新的比较组合、局部细节或待检验边界，关键连续对应空档保持不变，正向训练价值有限。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0027",
+    "assessment": {
+      "request_id": "request_0027",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E22及所选前段组此前已多次直接附图；读取其正文不补充新的动作证据。没有新增采样、裁剪或候选关系，继续回到相同材料不足以推进当前核心缺口。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0028",
+    "assessment": {
+      "request_id": "request_0028",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取E26并恢复同一末段组，重复已经完成的观看；A 9.00秒的定位与像素此前均已提供。此次没有可辨认的新核查对象或信息增益。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0029",
+    "assessment": {
+      "request_id": "request_0029",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E19自首轮已可见，前段对照组也已反复展示。此时仍未检查连续动作，却继续读取已有帧元数据并切换焦点，不能作为有效补查范例。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0030",
+    "assessment": {
+      "request_id": "request_0030",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E13及末段对照已经看过多次，其10.16秒时间戳也已知。再次附图没有核验E27/E13之间的过渡，未将已见重复画面线索转化为进一步证据。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0031",
+    "assessment": {
+      "request_id": "request_0031",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "当时remaining_turns为1，执行后只剩报告机会；仍选择读取早已见过的E23并恢复相同前段组。没有新增问题或证据的可辨认收益，是预算紧张时的低价值重复。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0032",
+    "assessment": {
+      "request_id": "request_0032",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "报告的时长计算、姿态差异、对齐限制及INCOMPLETE状态诚实且有依据，不能因未完成而判为捏造。但局部核心对应关系未建立，并遗漏直接相关的E27/E13重复画面线索，不能仅凭谨慎措辞给高分。应修正取证与报告后重新执行，不能直接改成COMPLETED。完整视频事实未知已被明确保留，不构成评审该报告所缺失的关键材料。"
+    },
+    "execution_status": "report_committed"
+  },
+  {
+    "request_id": "request_0039",
+    "assessment": {
+      "request_id": "request_0039",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "焦点几乎重复request_0037已展示的组合，仅以E16替换E45；E16此前也已与这些A帧比较。没有新增时间点、局部放大或可辨识的新问题，信息增益不足以作为正向动作目标。执行本身真实且合法。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0041",
+    "assessment": {
+      "request_id": "request_0041",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "在新增B前段材料后，重新请求的8张焦点有7张与request_0039相同，替换的E37也已多次观察。没有利用新增前段材料推进对应核查，主要产生又一次已有姿态比较。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0042",
+    "assessment": {
+      "request_id": "request_0042",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "再次回到E10、E21、E13与B参照等早期已看组合，新增并列的E6、E42也已经比较过。此时剩余轮次有限，没有明确新增疑点支持再次切换；适合作为历史上下文保留。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0055",
+    "assessment": {
+      "request_id": "request_0055",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "当前已获得新的局部对应及重复证据，却再次调回在request_0052和request_0054输入中已完整成对呈现的同一组8张图片。没有新增像素或针对性测量来解决主要锚点，且仅剩2次行动机会。可保留为真实历史，不适合作为优选行动目标。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0056",
+    "assessment": {
+      "request_id": "request_0056",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "回调的8张图片中7张刚在request_0055输入中共同出现；加入E24可用于报告中的姿态对照，但其抬头特征早已清楚可见。这次汇总复看没有解决A全段姿态或主要时间锚点问题，耗尽最后一次取证机会，边际收益偏低。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0057",
+    "assessment": {
+      "request_id": "request_0057",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "已报告的局部对应、重复及时间差都真实，INCOMPLETE状态也恰当；问题是遗漏核心任务已有答案。E53/E65、E20/E50、E21/E66的实际像素分别支持A 2.92→B 0.28、4.00→0.40、6.68→0.64，不能全部以未确认代替。这一缺陷可由现有材料明确判定，无需假设缺失证据。应从对应终端状态重新生成报告，纳入这些离散对应，同时继续保留连续区间、完整编辑方式和全段抬头呈现的限制。"
+    },
+    "execution_status": "report_committed"
+  }
+]

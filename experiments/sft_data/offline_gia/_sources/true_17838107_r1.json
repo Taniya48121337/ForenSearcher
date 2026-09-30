@@ -1,0 +1,1210 @@
+{
+ "source_run": "true_17838107_r1",
+ "source_request": "request_0027",
+ "n_gia_requests": 4,
+ "task": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：The consumption of hot cross buns has the potential to affect breathalyzer readings.",
+ "runtime_constraints": {
+  "round_index": 2,
+  "can_create_round": true,
+  "turn_index": 3,
+  "max_turns": 8,
+  "remaining_turns": 5
+ },
+ "history_index": [],
+ "latest_reports": [
+  {
+   "task": "核查声明“The consumption of hot cross buns has the potential to affect breathalyzer readings.” 检查给定视频，判断其中实际呈现的内容是否支持食用热十字面包会影响呼气酒精检测读数，并说明视频证据所能支持的结论范围、测试条件及不确定性。必要时搜索外部证据。",
+   "materials": [
+    "C0",
+    "E1"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W1-1",
+    "status": "COMPLETED",
+    "finding_ids": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "selected_evidence_ids": [
+     "E21",
+     "E17",
+     "E4",
+     "E12",
+     "E20",
+     "E18"
+    ],
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F1",
+      "workspace_id": "W1-1",
+      "statement": "视频呈现了与声明相容的读数变化：23.001秒时仪器显示“.000”，50.002秒时显示“.018”。这为“读数可能受到影响”提供有限线索，但这两个显示结果本身不能证明变化由食用热十字面包造成。",
+      "evidence_ids": [
+       "E21",
+       "E17"
+      ],
+      "limitations": [
+       "数值按屏幕转录；单位及其与血液酒精浓度的换算未核实。",
+       "当前可见帧没有完整呈现进食与两次检测之间的操作链条，不能仅凭时间先后确定因果。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F2",
+      "workspace_id": "W1-1",
+      "statement": "可见测试场景是一名参与者持有带白色十字装饰的面包及手持呼气检测仪。19.001秒屏幕显示“Blow”，21.501秒显示“Sample”，随后23.001秒显示“.000”，说明画面展示了检测提示及结果，而非只有面包与仪器的静态合照。",
+      "evidence_ids": [
+       "E4",
+       "E12",
+       "E20",
+       "E21"
+      ],
+      "limitations": [
+       "这些画面不足以核实实际摄入量、进食到检测的等待时间、此前饮食饮酒情况、仪器校准及是否有重复或对照测试。",
+       "未核验语音内容，不能据此断言视频没有口头交代测试条件。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F3",
+      "workspace_id": "W1-1",
+      "statement": "视频证据所能支持的范围是这次演示中的仪器显示差异，不能据此证明食用热十字面包会普遍产生同样结果、导致醉酒，或确定影响机制与持续时间。54.002秒屏幕显示“Start”，不是后续归零的检测结果。",
+      "evidence_ids": [
+       "E21",
+       "E17",
+       "E18"
+      ],
+      "limitations": [
+       "未取得血液检测、独立重复实验或外部研究证据。",
+       "离散帧不等于连续核验整段视频，不能排除未查看区间中的操作变化。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E21",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在23.001秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":23.0,\"time_s\":23.000766692223074}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A20",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":23.0,\"time_s\":23.000766692223074}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E17",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在50.002秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":50.0,\"time_s\":50.00166672222407}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A16",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":50.0,\"time_s\":50.00166672222407}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E4",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在10.300秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":10.312843761458716,\"time_s\":10.30034334477816}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A3",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":10.312843761458716,\"time_s\":10.30034334477816}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E12",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在19.001秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":19.0,\"time_s\":19.00063335444515}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A11",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":19.0,\"time_s\":19.00063335444515}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E20",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在21.501秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":21.5,\"time_s\":21.500716690556352}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A19",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":21.5,\"time_s\":21.500716690556352}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E18",
+     "modalities": [
+      "image"
+     ],
+     "label": "视频E1在54.002秒的帧",
+     "content": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":54.0,\"time_s\":54.001800060002}",
+     "source_ref": null,
+     "derived_from": [
+      "E1"
+     ],
+     "artifact_ref": "A17",
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":54.0,\"time_s\":54.001800060002}",
+     "acquired_by": "INSPECT/get_frames",
+     "discovered_by": "W1-1",
+     "production_method": "derived_media",
+     "content_offset": 0,
+     "next_offset": null,
+     "content_notice": "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
+    }
+   ],
+   "image_inputs": [
+    {
+     "evidence_id": "E15",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":46.0,\"time_s\":46.00153338444615}"
+    },
+    {
+     "evidence_id": "E16",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":48.0,\"time_s\":48.00160005333511}"
+    },
+    {
+     "evidence_id": "E17",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":50.0,\"time_s\":50.00166672222407}"
+    },
+    {
+     "evidence_id": "E18",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":54.0,\"time_s\":54.001800060002}"
+    },
+    {
+     "evidence_id": "E19",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":20.0,\"time_s\":20.00066668888963}"
+    },
+    {
+     "evidence_id": "E20",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":21.5,\"time_s\":21.500716690556352}"
+    },
+    {
+     "evidence_id": "E21",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":23.0,\"time_s\":23.000766692223074}"
+    },
+    {
+     "evidence_id": "E22",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":27.0,\"time_s\":27.000900030001}"
+    },
+    {
+     "evidence_id": "E23",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":28.0,\"time_s\":28.00093336444548}"
+    },
+    {
+     "evidence_id": "E24",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":29.0,\"time_s\":29.000966698889965}"
+    },
+    {
+     "evidence_id": "E25",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":41.0,\"time_s\":41.00136671222374}"
+    },
+    {
+     "evidence_id": "E26",
+     "derived_from": [
+      "E1"
+     ],
+     "locator": "{\"frame_duration_s\":0.03333444448148272,\"requested_time_s\":44.0,\"time_s\":44.001466715557186}"
+    }
+   ],
+   "image_inputs_truncated": true,
+   "visual_observation_summary": {
+    "image_evidence_count": 24,
+    "videos": [
+     {
+      "evidence_id": "E1",
+      "observed_frame_count": 24,
+      "media_duration_s": 55.00183339444648,
+      "coverage_span_s": [
+       0.0,
+       55.00183339444648
+      ],
+      "observed_ranges_s": [
+       [
+        3.4334477815927196,
+        3.4667822260742023
+       ],
+       [
+        10.30034334477816,
+        10.333677789259642
+       ],
+       [
+        13.000433347778259,
+        13.033767792259741
+       ],
+       [
+        17.200573352445083,
+        17.233907796926566
+       ],
+       [
+        19.00063335444515,
+        19.033967798926632
+       ],
+       [
+        20.00066668888963,
+        20.034001133371113
+       ],
+       [
+        21.500716690556352,
+        21.534051135037835
+       ],
+       [
+        23.000766692223074,
+        23.034101136704557
+       ],
+       [
+        24.06746891563052,
+        24.100803360112003
+       ],
+       [
+        26.000866695556518,
+        26.034201140038
+       ],
+       [
+        27.000900030001,
+        27.03423447448248
+       ],
+       [
+        28.00093336444548,
+        28.034267808926963
+       ],
+       [
+        29.000966698889965,
+        29.034301143371447
+       ],
+       [
+        30.93436447881596,
+        30.967698923297444
+       ],
+       [
+        33.001100036667886,
+        33.03443448114937
+       ],
+       [
+        37.8012600420014,
+        37.834594486482885
+       ],
+       [
+        41.00136671222374,
+        41.034701156705225
+       ],
+       [
+        44.001466715557186,
+        44.03480116003867
+       ],
+       [
+        44.70149004966832,
+        44.734824494149805
+       ],
+       [
+        46.00153338444615,
+        46.03486782892763
+       ],
+       [
+        48.00160005333511,
+        48.03493449781659
+       ],
+       [
+        50.00166672222407,
+        50.035001166705555
+       ],
+       [
+        51.56838561285376,
+        51.60172005733524
+       ],
+       [
+        54.001800060002,
+        54.03513450448348
+       ]
+      ],
+      "unconfirmed_ranges_s": [
+       [
+        0.0,
+        3.4334477815927196
+       ],
+       [
+        3.4667822260742023,
+        10.30034334477816
+       ],
+       [
+        10.333677789259642,
+        13.000433347778259
+       ],
+       [
+        13.033767792259741,
+        17.200573352445083
+       ],
+       [
+        17.233907796926566,
+        19.00063335444515
+       ],
+       [
+        19.033967798926632,
+        20.00066668888963
+       ],
+       [
+        20.034001133371113,
+        21.500716690556352
+       ],
+       [
+        21.534051135037835,
+        23.000766692223074
+       ],
+       [
+        23.034101136704557,
+        24.06746891563052
+       ],
+       [
+        24.100803360112003,
+        26.000866695556518
+       ],
+       [
+        26.034201140038,
+        27.000900030001
+       ],
+       [
+        27.03423447448248,
+        28.00093336444548
+       ],
+       [
+        28.034267808926963,
+        29.000966698889965
+       ],
+       [
+        29.034301143371447,
+        30.93436447881596
+       ],
+       [
+        30.967698923297444,
+        33.001100036667886
+       ],
+       [
+        33.03443448114937,
+        37.8012600420014
+       ],
+       [
+        37.834594486482885,
+        41.00136671222374
+       ],
+       [
+        41.034701156705225,
+        44.001466715557186
+       ],
+       [
+        44.03480116003867,
+        44.70149004966832
+       ],
+       [
+        44.734824494149805,
+        46.00153338444615
+       ],
+       [
+        46.03486782892763,
+        48.00160005333511
+       ],
+       [
+        48.03493449781659,
+        50.00166672222407
+       ],
+       [
+        50.035001166705555,
+        51.56838561285376
+       ],
+       [
+        51.60172005733524,
+        54.001800060002
+       ],
+       [
+        54.03513450448348,
+        55.00183339444648
+       ]
+      ],
+      "unknown_duration_frame_times_s": []
+     }
+    ]
+   }
+  },
+  {
+   "task": "核查声明“The consumption of hot cross buns has the potential to affect breathalyzer readings.” 搜索独立外部证据，判断这种影响是否存在、在什么条件下发生，以及读数变化是否代表体内酒精水平变化。依据实际证据回答，说明结论范围与不确定性。",
+   "materials": [
+    "C0"
+   ],
+   "run_status": "reported",
+   "report": {
+    "record_type": "report",
+    "task_id": "W1-2",
+    "status": "COMPLETED",
+    "finding_ids": [
+     "F4",
+     "F5",
+     "F6"
+    ],
+    "selected_evidence_ids": [
+     "E29",
+     "E27",
+     "E33"
+    ],
+    "findings": [
+     {
+      "record_type": "finding",
+      "finding_id": "F4",
+      "workspace_id": "W1-2",
+      "statement": "该声明有条件成立：吃热十字面包后立即进行呼气酒精检测，可能出现短暂偏高的读数。Breathalyser公司发布的材料称，其另行测试得到了类似结果，并将原因解释为口腔酒精；Snopes的核查也支持即时测试可能受到这种干扰。",
+      "evidence_ids": [
+       "E29",
+       "E27"
+      ],
+      "limitations": [
+       "热十字面包的直接证据主要是公开测试报道，未提供完整实验方法、样本量或仪器校准数据，不能据此确定发生概率、读数增幅或所有产品的表现。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F5",
+      "workspace_id": "W1-2",
+      "statement": "这种读数变化不能直接解释为血液或全身性酒精水平相应升高。口腔残留酒精可以混入呼气样本，使本应用于估计血液酒精水平的读数偏高。美国FMCSA指南明确承认口腔酒精会造成人为偏高的检测结果，与上述解释一致。",
+      "evidence_ids": [
+       "E27",
+       "E33"
+      ],
+      "limitations": [
+       "已读材料没有提供食用热十字面包前后的配对血液检测，因而不能独立确认血液酒精浓度精确为零，也不能断言任何配方、任何食用量都绝不会产生可测的血液酒精变化。"
+      ]
+     },
+     {
+      "record_type": "finding",
+      "finding_id": "F6",
+      "workspace_id": "W1-2",
+      "statement": "关键条件是进食与测试的间隔，以及是否仍有口腔残留酒精。FMCSA商业驾驶员检测指南规定，在需要确认检测时，应于初筛结束至少15分钟、不超过30分钟后检测，等待期间不得吃喝或向口中放入物品，并明确说明等待是为防止口腔酒精造成读数偏高。Breathalyser的报道另转述西澳警方称，仅食用热十字面包者在20分钟后复测会归零。这些证据支持将影响理解为进食后即时检测的短暂干扰，而非持续的醉酒证据。",
+      "evidence_ids": [
+       "E33",
+       "E29"
+      ],
+      "limitations": [
+       "FMCSA指南对应特定检测制度，不能推广为所有地区的执法要求。西澳警方说法来自转述；15至20分钟也不是已对所有面包配方、受测者和仪器验证的统一消退时间。"
+      ]
+     }
+    ]
+   },
+   "supporting_records": [
+    {
+     "record_type": "evidence",
+     "evidence_id": "E29",
+     "modalities": [
+      "text"
+     ],
+     "label": "Hot Cross Bun breathalyser reading claim put to the test",
+     "content": "[1] Hot Cross Bun Breathalyser reading claim out to the test\n\n[2] Heather Jones produced a video that showed how one bite of a hot cross bun could get you in trouble with police. The video has been viewed almost four million times and attracted thousands of comments with some doubting the result.\n\n[3] “About 5000 people said it wasn’t true, I must have injected something into it and the rest of it, but I tell you what if you do it yourself you might blow numbers too,” Ms Jones said.\n\n[4] [Perth company Breathalyser](https://breathalyser.com.au/) put the that claim to the test today and came up with similar results. Mark Ridley, of Breathalyser, explains why.\n\n[5] “Ingesting food which has started to ferment, the raisins and fruit inside the buns, what it’s doing is creating mouth alcohol,” Mr Ridley said.\n\n[6] Orange juice, mouth wash and breakfast drink UP&GO can have the same results. WA Police says its officers are trained to re-test people 20 minutes after a positive breath test and if all you have had is a hot cross bun the second test will register as zero.\n\n[7] But if you have been drinking, best not to take the risk.\n\n[8] [{\"ariaLabel\":null,\"customQuery\":null,\"customText\":\"View Our Products\",\"target\":\"\",\"title\":null,\"type\":\"url\",\"value\":\"https:\\/\\/breathalyser.com.au\\/shop\"}](https://breathalyser.com.au/media/{\"ariaLabel\":null,\"customQuery\":null,\"customText\":\"View%20Our%20Products\",\"target\":\"\",\"title\":null,\"type\":\"url\",\"value\":\"https:\\/\\/breathalyser.com.au\\/shop\"})\n\n[9] [{\"ariaLabel\":null,\"customQuery\":null,\"customText\":\"Contact Us\",\"target\":\"\",\"title\":null,\"type\":\"url\",\"value\":\"https:\\/\\/breathalyser.com.au\\/contact\"}](https://breathalyser.com.au/media/{\"ariaLabel\":null,\"customQuery\":null,\"customText\":\"Contact%20Us\",\"target\":\"\",\"title\":null,\"type\":\"url\",\"value\":\"https:\\/\\/breathalyser.com.au\\/contact\"})",
+     "source_ref": "R2",
+     "derived_from": [],
+     "artifact_ref": "A29",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R2",
+      "source_url": "https://breathalyser.com.au/media/hot-cross-bun-breathalyser-reading-claim-put-to-the-test",
+      "final_url": "https://breathalyser.com.au/media/hot-cross-bun-breathalyser-reading-claim-put-to-the-test"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E27",
+     "modalities": [
+      "text"
+     ],
+     "label": "Can Eating Hot Cross Buns Trigger False Positive Breathalyzer Results? | Snopes.com",
+     "content": "[1] Blowing into a breathalyzer with food on your breath can result in inaccurate readings.\n\n[2] The ingestion of a hot cross bun would not trigger a false positive if the breathalyzer were used properly.\n\n[3] On 5 January 2018, the Facebook Page of the Australian trucking company “Pilbara Heavy Haulage Girls Inc.” posted a video alerting viewers that eating a hot cross bun (i.e., a spiced sweet bun made with currants or raisins) could affect the reading of a device commonly used by police to estimate blood alcohol content (BAC) from a breath sample:\n\n[4] To make this point, the trucker in the video blew into a breathalyzer to produce a 0.000 reading, demonstrating that she had not consumed any alcohol. Then, after taking a bite of the pastry, she blew into the machine again directly after swallowing the food, charting a 0.018 BAC reading.\n\n[5] Without undertaking any investigative efforts of their own, the UK tabloid The Sun made the unsupported [extrapolation](https://archive.fo/Yp610\") that “just two buns would probably produce a result of more than the UK legal limit of 0.08.” Taking this idea one step further, the Daily Mail [claimed](https://archive.fo/F58w2\") that “eating just one hot cross bun could get you ARRESTED this Easter.”\n\n[6] These claims were hogwash in the context of any properly performed breathalyzer test. Professional breathalyzer devices such as the one shown in the above video rely on the assumption that the material being blown through them is 100% alveolar air -- that is, respired air directly from the lungs. A well-established [relationship](https://www.sciencedirect.com/science/article/pii/S0925400516300624) exists between the amount of alcohol in one's blood and the amount of alcohol in respired air from the lungs. The relationship is simple, 1:2100 blood alcohol to breath alcohol content, but that ratio only holds up in the absence of any other source of alcohol that could be introduced into the air blown through the breathalyzer. Even trace amounts of alcohol in a subject's mouth would adversely affect accurate breathalyzer readings, because the machine uses the 1:2100 conversion ratio for any alcohol it detects.\n\n[7] “Mouth alcohol” is a well-known [complication](https://books.google.com/books?id=zTjcGQQtOGUC&printsec=frontcover&dq=breathalyzer+false+positive+dui&hl=en&sa=X&ved=0ahUKEwidjbyOrtzfAhVOS6wKHa_0BVgQ6AEIKjAA#v=onepage&q=observation%20period&f=false) for breathalyzer tests and can be easily avoided by not eating, smoking, or chewing on anything for 15 to 20 minutes before blowing into the breathalyzer. This is why instruction [manuals](https://www.breathalyzers.com/media/wysiwyg/typostores/typologancee/holland/product-manuals/AlcoHAWK-PT750-Manual.pdf) indicate that the tool should not be used on subjects for 15 to 20 minutes after they've eaten, and it is why law enforcement officers are [required](https://www.fmcsa.dot.gov/regulations/drug-alcohol-testing/implementation-guidelines-alcohol-and-drug-regulations-chapter-7), in [most jurisdiction](https://books.google.com/books?id=zTjcGQQtOGUC&printsec=frontcover&dq=breathalyzer+false+positive+dui&hl=en&sa=X&ved=0ahUKEwidjbyOrtzfAhVOS6wKHa_0BVgQ6AEIKjAA#v=onepage&q=observation%20period&f=false), to repeat any tests yielding positive readings again after a 15- to 20-minute waiting period.\n\n[8] The waiting period evident in this Pilbara Haulage video was roughly one second, meaning any alcohol existing in trace quantities in the food could have been caught up in the demonstrating woman’s breath. Pastries such as hot cross buns would likely have trace amounts of alcohol in them, as yeast [converts](https://books.google.com/books?id=HXtJivmeDfcC&pg=PA79#v=onepage&q&f=false) sugar into carbon dioxide and ethanol, the latter of which would be detected by a breathalyzer.\n\n[9] Because this alcohol was physically located in the woman’s mouth at the time of testing, however, it was not representative of her blood alcohol content, which would still accurately be described as zero. The addition of more hot cross buns, despite the claims from The Sun, would not increase her blood alcohol content in any way, and a properly administered test, following the appropriate waiting period, would demonstrate this reality.",
+     "source_ref": "R1",
+     "derived_from": [],
+     "artifact_ref": "A27",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": null,
+     "source": {
+      "candidate_id": "R1",
+      "source_url": "https://www.snopes.com/fact-check/hot-cross-bun-breathalyzer/",
+      "final_url": "https://www.snopes.com/fact-check/hot-cross-bun-breathalyzer/"
+     }
+    },
+    {
+     "record_type": "evidence",
+     "evidence_id": "E33",
+     "modalities": [
+      "text"
+     ],
+     "label": "Implementation Guidelines for Alcohol and Drug Regulations - Chapter 7 | FMCSA",
+     "content": "[1] Implementation Guidelines for Alcohol and Drug Regulations - Chapter 7\n\n[2] Alcohol Testing Procedures\n\n[3] Section 1. Obtaining Program Services\n\n[4] When establishing an effective alcohol testing program, you will need to perform certain specialized services. You will need someone to\n\n[5] - Operate the testing equipment\n\n[6] - Report the results\n\n[7] - Assess drivers who test positive (unlike the controlled substances testing requirements, the alcohol rule does not require the use of an MRO).\n\n[8] You will need to have access to equipment to perform the tests.\n\n[9] If you do not have qualified individuals on staff to perform these functions, or do not have the equipment available, you will need to identify qualified contractors to provide each of these services.\n\n[10] Alcohol Testing\n\n[11] The FMCSA regulation (49 CFR part 382) requires that you conduct alcohol testing on drivers performing safety-sensitive functions consistent with the provisions set forth in 49 CFR part 40. The initial sample must be collected through the use of a saliva device, a nonevidential breath test device [alcohol screening device (ASD)], or an evidential breath testing device (EBT) that is approved by the National Highway Traffic Safety Administration (NHTSA). All screening tests must be performed by a trained breath alcohol technician (BAT). Saliva and nonevidential breath testing must only be performed by a trained screening test technician (STT).\n\n[12] The confirmation sample must be conducted within 30 minutes of the completion of the screening test. The confirmation test must use an EBT that is approved by NHTSA. The test must be performed by a trained BAT.\n\n[13] The FMCSA regulation prohibits you from allowing a driver with an alcohol concentration of 0.04 or greater to perform any safety-sensitive functions until he/she has been evaluated by an SAP and has passed a return-to-duty test. A driver with an alcohol concentration of 0.02 or greater, but less than 0.04, must be removed from duty for 24 hours.\n\n[14] Evidential Breath Testing Device (§40.229).\n\n[15] An EBT is a breath testing device that is capable of measuring a driver’s blood alcohol concentration. It must be able to distinguish alcohol from acetone at the 0.02 alcohol concentration level. An EBT must be capable of conducting an air blank and performing an external calibration check. For confirmation tests (defined later), you must use EBTs that can\n\n[16] Produce a printed result in triplicate or three consecutive identical copies of each breath test\n\n[17] Print a unique and sequential number of each completed test, with the BAT and the driver being able to read the number before each test, and print the number on each copy of the result\n\n[18] Print, on each copy of the result, the manufacturer’s name for the device, the device’s serial number, and the time of the test\n\n[19] The EBT must have a manufacturer-developed quality assurance plan approved by NHTSA. The plan must include\n\n[20] A designated method or methods to be used to perform external calibration checks of the device\n\n[21] Specified minimum intervals for performing external calibration checks of the device that account for different frequencies of use, environmental conditions (e.g., temperature, altitude, humidity), and contexts of operation (e.g., stationary or mobile use)\n\n[22] Specified tolerances on an external calibration check within which the EBT is regarded to be in proper calibration\n\n[23] Specified inspection, maintenance, and calibration requirements and intervals for the device.\n\n[24] NHTSA will occasionally print updates to its Conforming Products List (CPL) of EBTs in the Federal Register.\n\n[25] The regulation specifically requires that you comply with the NHTSA-approved quality assurance plan by ensuring that the external calibration checks of each EBT are performed as described in the manufacturer’s plan and that the EBT will be taken out of service if any external calibration check results in a reading outside the tolerances for the EBT. The EBT cannot be returned to service until it has been recalibrated and has had an acceptable external calibration check. You must also ensure that the inspection, maintenance, and calibration of each EBT are performed by the manufacturer or a maintenance representative certified by the manufacturer or an appropriate State agency. You must also maintain records of the external calibration checks of the EBT and store the EBT in a secure place when not being used.\n\n[26] Provisions should be made for a back-up EBT for times when the primary EBT is unavailable, out of calibration, or being serviced. This could include acquiring a second instrument, arranging for a “loaner,” or arranging to use another employer’s EBT when necessary.\n\n[27] Breath Alcohol Technician (§40.213)\n\n[28] The alcohol tests must be performed by a BAT who is “trained to proficiency” in the operation of the EBT that he/she is using and in the alcohol testing procedures specified in the regulations. The BAT must successfully complete a DOT-approved course of instruction that provides training in the principles of EBT methodology, operation, and calibration checks. Information on these courses of instruction may be obtained from the Government Printing Office (GPO). See Chapter 4, “Education and Training.” In addition, the BAT must complete training on the fundamentals of breath analysis for alcohol content, the procedures required for obtaining a breath sample, and interpreting and recording EBT results.\n\n[29] The BAT must demonstrate competence in the operation of the specific EBT he/she will use. The BAT will be required to receive additional training as new or additional devices or technology are introduced.\n\n[30] You must identify the individual(s) who will serve as your BAT(s). If one BAT is selected as the primary EBT operator, provisions should be made for back-up services. You are required to document the training and proficiency testing of the BAT w",
+     "source_ref": "R18",
+     "derived_from": [],
+     "artifact_ref": "A37",
+     "locator": "paragraph numbers embedded in extracted text",
+     "acquired_by": "SEARCH/open/http+trafilatura",
+     "discovered_by": "W1-2",
+     "production_method": "source_excerpt",
+     "content_offset": 0,
+     "next_offset": 6000,
+     "source": {
+      "candidate_id": "R18",
+      "source_url": "https://www.fmcsa.dot.gov/regulations/drug-alcohol-testing/implementation-guidelines-alcohol-and-drug-regulations-chapter-7",
+      "final_url": "https://www.fmcsa.dot.gov/regulations/drug-alcohol-testing/implementation-guidelines-alcohol-and-drug-regulations-chapter-7"
+     }
+    }
+   ],
+   "image_inputs": [],
+   "visual_observation_summary": {
+    "image_evidence_count": 0,
+    "videos": []
+   }
+  }
+ ],
+ "current_materials": [
+  {
+   "evidence_id": "E2",
+   "reference_id": null,
+   "label": "媒体属性：video，55.002秒，720×1280，29.999fps，1条音轨；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。",
+   "acquired_by": "INSPECT/media_profile",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E3",
+   "reference_id": null,
+   "label": "视频E1在3.433秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E4",
+   "reference_id": null,
+   "label": "视频E1在10.300秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E5",
+   "reference_id": null,
+   "label": "视频E1在17.201秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E6",
+   "reference_id": null,
+   "label": "视频E1在24.067秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E7",
+   "reference_id": null,
+   "label": "视频E1在30.934秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E8",
+   "reference_id": null,
+   "label": "视频E1在37.801秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E9",
+   "reference_id": null,
+   "label": "视频E1在44.701秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E10",
+   "reference_id": null,
+   "label": "视频E1在51.568秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E11",
+   "reference_id": null,
+   "label": "视频E1在13.000秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E12",
+   "reference_id": null,
+   "label": "视频E1在19.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E13",
+   "reference_id": null,
+   "label": "视频E1在26.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E14",
+   "reference_id": null,
+   "label": "视频E1在33.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E15",
+   "reference_id": null,
+   "label": "视频E1在46.002秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E16",
+   "reference_id": null,
+   "label": "视频E1在48.002秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E17",
+   "reference_id": null,
+   "label": "视频E1在50.002秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E18",
+   "reference_id": null,
+   "label": "视频E1在54.002秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E19",
+   "reference_id": null,
+   "label": "视频E1在20.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E20",
+   "reference_id": null,
+   "label": "视频E1在21.501秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E21",
+   "reference_id": null,
+   "label": "视频E1在23.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E22",
+   "reference_id": null,
+   "label": "视频E1在27.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E23",
+   "reference_id": null,
+   "label": "视频E1在28.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E24",
+   "reference_id": null,
+   "label": "视频E1在29.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E25",
+   "reference_id": null,
+   "label": "视频E1在41.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E26",
+   "reference_id": null,
+   "label": "视频E1在44.001秒的帧",
+   "acquired_by": "INSPECT/get_frames",
+   "modalities": [
+    "image"
+   ],
+   "source_ref": null
+  },
+  {
+   "evidence_id": "E27",
+   "reference_id": null,
+   "label": "Can Eating Hot Cross Buns Trigger False Positive Breathalyzer Results? | Snopes.com",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R1"
+  },
+  {
+   "evidence_id": "E29",
+   "reference_id": null,
+   "label": "Hot Cross Bun breathalyser reading claim put to the test",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R2"
+  },
+  {
+   "evidence_id": "E28",
+   "reference_id": null,
+   "label": "Drivers warned of Easter treat that can trigger a false breathalyser test - Daily Record",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R3"
+  },
+  {
+   "evidence_id": "E30",
+   "reference_id": null,
+   "label": "Warning Easter food can trigger a false positive breathalyser test result | Lancs Live",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R4"
+  },
+  {
+   "evidence_id": "E31",
+   "reference_id": null,
+   "label": "Urgent warning as classic Easter treat could get you done for drink driving - Daily Star",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R6"
+  },
+  {
+   "evidence_id": "E32",
+   "reference_id": null,
+   "label": "Europe PMC Europe PMC",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R17"
+  },
+  {
+   "evidence_id": "E33",
+   "reference_id": null,
+   "label": "Implementation Guidelines for Alcohol and Drug Regulations - Chapter 7 | FMCSA",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "source_ref": "R18"
+  }
+ ],
+ "visual_observation_summary": {
+  "image_evidence_count": 24,
+  "videos": [
+   {
+    "evidence_id": "E1",
+    "observed_frame_count": 24,
+    "media_duration_s": 55.00183339444648,
+    "coverage_span_s": [
+     0.0,
+     55.00183339444648
+    ],
+    "observed_ranges_s": [
+     [
+      3.4334477815927196,
+      3.4667822260742023
+     ],
+     [
+      10.30034334477816,
+      10.333677789259642
+     ],
+     [
+      13.000433347778259,
+      13.033767792259741
+     ],
+     [
+      17.200573352445083,
+      17.233907796926566
+     ],
+     [
+      19.00063335444515,
+      19.033967798926632
+     ],
+     [
+      20.00066668888963,
+      20.034001133371113
+     ],
+     [
+      21.500716690556352,
+      21.534051135037835
+     ],
+     [
+      23.000766692223074,
+      23.034101136704557
+     ],
+     [
+      24.06746891563052,
+      24.100803360112003
+     ],
+     [
+      26.000866695556518,
+      26.034201140038
+     ],
+     [
+      27.000900030001,
+      27.03423447448248
+     ],
+     [
+      28.00093336444548,
+      28.034267808926963
+     ],
+     [
+      29.000966698889965,
+      29.034301143371447
+     ],
+     [
+      30.93436447881596,
+      30.967698923297444
+     ],
+     [
+      33.001100036667886,
+      33.03443448114937
+     ],
+     [
+      37.8012600420014,
+      37.834594486482885
+     ],
+     [
+      41.00136671222374,
+      41.034701156705225
+     ],
+     [
+      44.001466715557186,
+      44.03480116003867
+     ],
+     [
+      44.70149004966832,
+      44.734824494149805
+     ],
+     [
+      46.00153338444615,
+      46.03486782892763
+     ],
+     [
+      48.00160005333511,
+      48.03493449781659
+     ],
+     [
+      50.00166672222407,
+      50.035001166705555
+     ],
+     [
+      51.56838561285376,
+      51.60172005733524
+     ],
+     [
+      54.001800060002,
+      54.03513450448348
+     ]
+    ],
+    "unconfirmed_ranges_s": [
+     [
+      0.0,
+      3.4334477815927196
+     ],
+     [
+      3.4667822260742023,
+      10.30034334477816
+     ],
+     [
+      10.333677789259642,
+      13.000433347778259
+     ],
+     [
+      13.033767792259741,
+      17.200573352445083
+     ],
+     [
+      17.233907796926566,
+      19.00063335444515
+     ],
+     [
+      19.033967798926632,
+      20.00066668888963
+     ],
+     [
+      20.034001133371113,
+      21.500716690556352
+     ],
+     [
+      21.534051135037835,
+      23.000766692223074
+     ],
+     [
+      23.034101136704557,
+      24.06746891563052
+     ],
+     [
+      24.100803360112003,
+      26.000866695556518
+     ],
+     [
+      26.034201140038,
+      27.000900030001
+     ],
+     [
+      27.03423447448248,
+      28.00093336444548
+     ],
+     [
+      28.034267808926963,
+      29.000966698889965
+     ],
+     [
+      29.034301143371447,
+      30.93436447881596
+     ],
+     [
+      30.967698923297444,
+      33.001100036667886
+     ],
+     [
+      33.03443448114937,
+      37.8012600420014
+     ],
+     [
+      37.834594486482885,
+      41.00136671222374
+     ],
+     [
+      41.034701156705225,
+      44.001466715557186
+     ],
+     [
+      44.03480116003867,
+      44.70149004966832
+     ],
+     [
+      44.734824494149805,
+      46.00153338444615
+     ],
+     [
+      46.03486782892763,
+      48.00160005333511
+     ],
+     [
+      48.03493449781659,
+      50.00166672222407
+     ],
+     [
+      50.035001166705555,
+      51.56838561285376
+     ],
+     [
+      51.60172005733524,
+      54.001800060002
+     ],
+     [
+      54.03513450448348,
+      55.00183339444648
+     ]
+    ],
+    "unknown_duration_frame_times_s": []
+   }
+  ]
+ },
+ "run_config": {
+  "dataset": "true",
+  "case": "17838107",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "search": "ddgs_text",
+  "evidence_source_policy": null,
+  "source_policy": null,
+  "gia_output_source": "codex_cli"
+ }
+}

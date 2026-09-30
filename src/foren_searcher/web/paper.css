@@ -1,0 +1,86 @@
+/* 方法与进展 → 论文草稿。作用域限定在 .pp-* 与 .pf-*（图），不影响其他页签。 */
+.pp-shell{--pp-ink:#1f2d28;--pp-muted:#6f7b75;--pp-rule:#dfe6dc;--pp-card:#fffefa;--pp-soft:#f1f5ec;--pp-green:#355c46;--pp-gia:#886abe;--pp-hi:#427b68;--pp-tool:#bd8950;--pp-ev:#5b85b3;--pp-amber:#9d6929;
+  display:grid;grid-template-columns:212px minmax(0,1fr);gap:44px;align-items:start}
+.pp-lang-zh{--pp-serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",Georgia,serif}
+.pp-lang-en{--pp-serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,"Times New Roman",serif}
+.pp-side{position:sticky;top:24px;display:flex;flex-direction:column;gap:18px}
+.pp-switch{display:inline-flex;border:1px solid var(--pp-rule);border-radius:8px;padding:3px;background:var(--pp-card);width:max-content}
+.pp-switch button{background:none;color:var(--pp-muted);padding:6px 14px;border-radius:6px;font-size:13px}
+.pp-switch button[aria-pressed="true"]{background:var(--pp-green);color:#f3f7ec;font-weight:600}
+.pp-toc{display:flex;flex-direction:column;border-left:1px solid var(--pp-rule)}
+.pp-toc-k{font-size:10px;letter-spacing:1.4px;color:var(--pp-muted);text-transform:uppercase;padding:0 0 8px 14px}
+.pp-toc button{background:none;text-align:left;color:#55625c;font-size:13px;line-height:1.45;padding:5px 0 5px 14px;margin-left:-1px;border-left:2px solid transparent;display:flex;gap:8px}
+.pp-toc button span{color:#9aa59f;min-width:22px;font-variant-numeric:tabular-nums}
+.pp-toc button.pp-toc-3{padding-left:26px;font-size:12.5px;color:#6b7771}
+.pp-toc button:hover{color:var(--pp-green)}
+.pp-toc button.active{border-left-color:var(--pp-green);color:var(--pp-green);font-weight:600}
+.pp-paper{max-width:860px;background:var(--pp-card);border:1px solid var(--pp-rule);border-radius:14px;padding:56px 64px 64px;color:var(--pp-ink);font-family:var(--pp-serif);font-size:16.5px;line-height:1.78}
+.pp-lang-zh .pp-paper{font-size:16px;line-height:1.9;text-align:justify}
+.pp-paper p{margin:0 0 1em}
+.pp-draft{font-family:Inter,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif;font-size:12.5px;line-height:1.6;color:#6d5a37;background:#fbf4e6;border:1px solid #efdfbf;border-radius:8px;padding:9px 14px;margin:0 0 34px;text-align:left}
+.pp-head{text-align:center;margin-bottom:30px}
+.pp-head h1{font-family:var(--pp-serif);font-size:27px;line-height:1.35;font-weight:700;letter-spacing:-.2px;margin:0 auto 14px;max-width:720px;color:#18261f}
+.pp-lang-zh .pp-head h1{letter-spacing:.3px;font-size:26px}
+.pp-authors{font-size:14px;color:var(--pp-muted);font-style:italic}
+.pp-abs{margin:0 auto 34px;max-width:720px;font-size:15px;line-height:1.72}
+.pp-lang-zh .pp-abs{font-size:15px;line-height:1.85}
+.pp-abs h2{font-family:var(--pp-serif);text-align:center;font-size:16px;font-weight:700;margin:0 0 8px;letter-spacing:.5px}
+.pp-abs p{text-align:justify}
+.pp-h2{font-family:var(--pp-serif);font-size:21px;font-weight:700;margin:2.1em 0 .75em;display:flex;gap:14px;align-items:baseline;color:#18261f;scroll-margin-top:20px}
+.pp-h2 span{color:var(--pp-green);min-width:1em}
+.pp-h3{font-family:var(--pp-serif);font-size:17.5px;font-weight:700;margin:1.7em 0 .6em;display:flex;gap:12px;align-items:baseline;color:#223029;scroll-margin-top:20px}
+.pp-h3 span{color:var(--pp-green);font-weight:600}
+.pp-paper b{font-weight:700;color:#18261f}
+.pp-tt{font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;font-size:.84em;background:var(--pp-soft);border-radius:4px;padding:0 .3em;white-space:nowrap}
+.pp-cite{color:var(--pp-green);white-space:nowrap;font-size:.95em}
+.pp-cite span{cursor:help;border-bottom:1px dotted #9db79f}
+.pp-paper sup{font-size:.7em;color:var(--pp-amber)}
+.pp-contrib{margin:0 0 1.1em;padding-left:1.3em}
+.pp-contrib li{margin-bottom:.55em;padding-left:.2em}
+.pp-contrib li::marker{color:var(--pp-green)}
+.pp-list{margin:0 0 1.1em;padding-left:1.5em}.pp-list li{margin-bottom:.55em}
+.pp-eq{display:flex;align-items:center;gap:14px;margin:.6em 0 1.1em;overflow-x:auto;padding:4px 0}
+.pp-eq math{flex:1;font-size:1.02em;min-width:max-content}
+.pp-eqno{color:var(--pp-muted);font-family:var(--pp-serif);font-size:.92em;flex-shrink:0}
+.pp-paper math{font-family:"STIX Two Math","Cambria Math","Latin Modern Math",serif}
+.pp-sc{font-variant:small-caps;letter-spacing:.3px}
+.pp-fig{margin:1.6em -40px 1.8em;padding:16px 16px 14px;border:1px solid var(--pp-rule);border-radius:12px;background:#fbfcf8}
+.pp-fig figcaption{font-size:14px;line-height:1.62;color:#3b4943;margin-top:10px;text-align:left}
+.pp-lang-zh .pp-fig figcaption{line-height:1.75}
+.pp-svg{width:100%;height:auto;display:block;font-family:Inter,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif}
+.pp-table-wrap{overflow-x:auto;margin:1.4em 0 1.6em}
+.pp-table{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.5;font-family:Inter,"Segoe UI","Microsoft YaHei UI","PingFang SC",sans-serif}
+.pp-table caption{caption-side:top;text-align:left;font-family:var(--pp-serif);font-size:14px;line-height:1.6;color:#3b4943;margin-bottom:8px}
+.pp-table th,.pp-table td{padding:7px 10px;border-bottom:1px solid var(--pp-rule);text-align:left;vertical-align:top}
+.pp-table thead th{border-top:1.5px solid #3a4a42;border-bottom:1px solid #3a4a42;font-weight:600;color:#2c3a33;white-space:nowrap}
+.pp-table tbody tr:last-child td{border-bottom:1.5px solid #3a4a42}
+.pp-table td:nth-child(2),.pp-table td:nth-child(3),.pp-table th:nth-child(2),.pp-table th:nth-child(3){text-align:center}
+.pp-table .pp-ours td{background:#eef4e6}
+.pp-table .pp-cite{font-size:12px}
+.pp-algo{border-top:1.5px solid #3a4a42;border-bottom:1.5px solid #3a4a42;margin:1.4em 0 1.6em;font-size:14.5px;line-height:1.65}
+.pp-algo-h{border-bottom:1px solid #3a4a42;padding:7px 2px}
+.pp-algo ol{margin:8px 0 10px;padding-left:2em}.pp-algo li{margin-bottom:3px}
+.pp-refs{font-size:13.5px;line-height:1.6;padding-left:2.2em;color:#3b4943}
+.pp-refs li{margin-bottom:5px;padding-left:.3em}
+.pp-refs li::marker{color:var(--pp-muted);font-variant-numeric:tabular-nums}
+/* 图的配色（浅色站点，写死数值） */
+.pf-h{font-size:15px;font-weight:650;fill:#1f2d28}.pf-s{font-size:13px;fill:#3d4b45}.pf-m{font-size:12px;fill:#6f7b75}.pf-b{font-weight:600;fill:#2c3a33}
+.pf-tool{font-size:12px;font-weight:600;fill:#9a6a31;letter-spacing:.4px}
+.pf-gia-t{fill:#6d4fa6}.pf-hi-t{fill:#2f6553}
+.pf-in{fill:#f5f7f2;stroke:#c9d3c6}.pf-out{fill:#f6f2fb;stroke:#cbbbe4}
+.pf-gia{fill:#f3eefb;stroke:#a88fd3;stroke-width:1.3}
+.pf-hi{fill:#ecf5f1;stroke:#7fae9c;stroke-width:1.2}
+.pf-round{fill:none;stroke:#9fb3a6;stroke-dasharray:5 4}
+.pf-store{fill:#f7f9f4;stroke:#b9c6b5}
+.pf-r{fill:#fbf6ee;stroke:#dcc4a0}.pf-e{fill:#edf3fa;stroke:#8fb0d4;stroke-width:1.3}.pf-f{fill:#f3eefb;stroke:#b9a4dc}
+.pf-wall{stroke:#c77d6b;stroke-width:1.4;stroke-dasharray:3 3}
+.pf-arr{fill:none;stroke:#5f6f67;stroke-width:1.4}.pf-ahead{fill:#5f6f67}
+.pf-arr-gia{stroke:#8a6cc0}.pf-arr-hi{stroke:#427b68}.pf-arr-read{stroke:#5b85b3}.pf-arr-anc{stroke:#9d6929}
+.pf-arr-dash{stroke-dasharray:5 4}.pf-arr-next{stroke:#355c46;stroke-width:1.6;stroke-dasharray:2 4}
+.pf-alabel{font-size:12px;fill:#55625c;font-style:italic}.pf-wall-t{fill:#a8604f}
+.pf-anchor{fill:#fbf4e6;stroke:#e2c895}
+.pf-ver{fill:#edf3fa;stroke:#8fb0d4}.pf-led{fill:#f5f7f2;stroke:#b9c6b5}.pf-rou{fill:#fff8ec;stroke:#d9b27a;stroke-width:1.3}
+.pf-l1{fill:#fbf4e6;stroke:#e2c895}.pf-l2{fill:#edf3fa;stroke:#8fb0d4;stroke-width:1.2}.pf-l3{fill:#ecf5f1;stroke:#7fae9c;stroke-width:1.2}
+.pf-cf{fill:#f6f2fb;stroke:#cbbbe4}.pf-eval{fill:#f5f7f2;stroke:#b9c6b5}
+@media (max-width:1180px){.pp-shell{grid-template-columns:minmax(0,1fr);gap:18px}.pp-side{position:static;flex-direction:row;flex-wrap:wrap;align-items:center}.pp-toc{display:none}.pp-paper{max-width:none}}
+@media (max-width:760px){.pp-tt{white-space:normal;overflow-wrap:anywhere}.pp-paper{padding:28px 18px 36px;border-radius:10px;font-size:15.5px}.pp-lang-zh .pp-paper{font-size:15px;text-align:left}.pp-head h1{font-size:21px}.pp-lang-zh .pp-head h1{font-size:20px}.pp-abs{font-size:14px}.pp-h2{font-size:19px}.pp-h3{font-size:16px}.pp-fig{margin:1.4em -10px;padding:10px 6px 10px;overflow-x:auto}.pp-fig .pp-svg{min-width:640px}.pp-contrib,.pp-list{padding-left:1.1em}.pp-algo{font-size:13.5px}}

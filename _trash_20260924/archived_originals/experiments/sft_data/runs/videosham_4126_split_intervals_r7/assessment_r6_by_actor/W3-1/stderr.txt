@@ -1,0 +1,12 @@
+2026-09-12T16:19:55.366702Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:19:55.366730Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:19:55.374812Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-09-12T16:19:56.634398Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:19:56.634430Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T16:20:03.671033Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 192ms)... turn_id=01a0966b-1722-7800-b63a-83b826409e17 retries=1 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:20:09.895171Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 376ms)... turn_id=01a0966b-1722-7800-b63a-83b826409e17 retries=2 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:20:16.513301Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 872ms)... turn_id=01a0966b-1722-7800-b63a-83b826409e17 retries=3 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:20:25.295437Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.575s)... turn_id=01a0966b-1722-7800-b63a-83b826409e17 retries=4 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:20:35.740030Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.429s)... turn_id=01a0966b-1722-7800-b63a-83b826409e17 retries=5 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T16:20:45.619992Z  WARN codex_core::client: falling back to HTTP
+2026-09-12T16:26:36.666193Z  WARN codex_core::hook_runtime: after_agent hook failed; continuing turn_id=01a0966b-1722-7800-b63a-83b826409e17 hook_name=legacy_notify error=文件名或扩展名太长。 (os error 206)

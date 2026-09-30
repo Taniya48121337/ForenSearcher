@@ -1,0 +1,26 @@
+{
+  "returncode": 0,
+  "elapsed_s": 8.28100000001723,
+  "usage": {
+    "input_tokens": 28872,
+    "output_tokens": 186
+  },
+  "external_tool_items": [],
+  "transport": "openai_compatible",
+  "images": 8,
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "configured_model": {
+    "model": "qwen3vl-8b-32k:latest",
+    "model_provider": "openai_compatible",
+    "endpoint": "http://127.0.0.1:11434/v1",
+    "thinking": true,
+    "temperature": 0.6,
+    "max_tokens": 8192
+  },
+  "finish_reason": "stop"
+}

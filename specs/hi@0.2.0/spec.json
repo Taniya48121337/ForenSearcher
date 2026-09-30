@@ -1,0 +1,53 @@
+{
+  "spec_id": "hi",
+  "version": "0.2.0",
+  "parent": "0.1.0",
+  "harness_params": {
+    "image_input_limit": 8,
+    "max_workspace_turns": 12,
+    "read_page_chars": 6000,
+    "max_model_view_chars": 180000,
+    "max_evidence_cards": 12,
+    "max_candidate_cards": 8,
+    "state_renderer": "legacy"
+  },
+  "changelog": [
+    {
+      "targets": [
+        "unsupported_assertion",
+        "wrong_citation",
+        "fabricated_evidence_id",
+        "source_restriction_miss",
+        "attribution_drift",
+        "scope_overreach",
+        "misread_fine_text",
+        "sloppy_numeric",
+        "omitted_required_fact",
+        "completed_without_finishing",
+        "incomplete_though_answerable",
+        "empty_report",
+        "illegal_action",
+        "redundant_action",
+        "evidence_dropped",
+        "wrong_tool",
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "unnecessary_round",
+        "dependent_sibling_tasks"
+      ],
+      "rationale": "初始版本：收编运行时提示与试点指令，rubric 按 errors.py 逐类生成"
+    },
+    {
+      "targets": [
+        "completed_without_finishing",
+        "empty_report"
+      ],
+      "rationale": "minor 升版：把运行时 _hi_turn_prompt 附加的时间预算附注收编进 student_prompt，使导出的 system 与运行时逐字一致（第 0 轮导出 runtime_system_matches_spec 全为 False 的原因）；不改 rubric、teacher_instruction 与 harness_params"
+    }
+  ],
+  "output_schema": "contracts.parse_hi_decision",
+  "verifier": "verifier@0.2.0",
+  "notes": "student_prompt = hi@0.1.0 的 _HI_MULTIMODAL_SYSTEM_PROMPT + 运行时时间预算附注（runtime_constraints 含 remaining_seconds 时 _hi_turn_prompt 追加的那段）。",
+  "hash": "sha256:dad57a48f9a26ebd41c34c7a197b6a74f8c78256189ee4d31e8037247516751e"
+}

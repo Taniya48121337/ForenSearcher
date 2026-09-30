@@ -1,0 +1,57 @@
+[
+  {
+    "request_id": "request_0005",
+    "assessment": {
+      "request_id": "request_0005",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重新附上第4次决策已完整看过的E19–E26；读取E24返回的时间元数据也已知。此时主要空档在场景进入与退出附近，整组回切没有新增可区分边界的观察，宜保留为历史。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0007",
+    "assessment": {
+      "request_id": "request_0007",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "新观察已给出83秒人物及119秒远景，但该动作再次集中展示已多次看过的84–118秒内部人物帧，没有将新边界帧纳入同屏比较，也没有取得新的过渡观察。执行有效，新增判断价值不足。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0008",
+    "assessment": {
+      "request_id": "request_0008",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "回到第7次决策已看过的外围组，主要变化是以此前也已观察的120秒E18替换128秒帧。83秒的精确时间此前已有，新增组合不足以解决82–83秒或118–119秒的未观察变化。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0009",
+    "assessment": {
+      "request_id": "request_0009",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "行动前已知82秒车辆、83秒人物、116与118秒双人、119秒远景。新增81和117秒落在关键边界空档之外，虽合法且能增加两个观察点，却不能有效收紧当前边界。应从此状态重新选择能区分候选边界的采样位置并真实执行。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0011",
+    "assessment": {
+      "request_id": "request_0011",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "117秒E36已在第10次决策实际附图，其余所选人物帧也已多次观察。再次读取和展示基本相同的内部证据，没有新的细节问题或边界信息，并消耗最后一个可调查轮次，不适合作为正向行动目标。"
+    },
+    "execution_status": "executed"
+  }
+]

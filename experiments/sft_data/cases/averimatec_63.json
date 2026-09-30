@@ -1,0 +1,115 @@
+{
+  "case_id": "averimatec:63",
+  "dataset": "averimatec",
+  "source_id": "63",
+  "split": "dev_confirm",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Limes spiked with Cloves repel mosquitoes that carry the dengue virus.（声明日期：2023-05-25）",
+  "family_key": "averimatec:63",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/averimatec/63/inputs/image_0.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Limes spiked with Cloves repel mosquitoes that carry the dengue virus."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "factcheck.afp.com/doc.afp.com.33JQ83X"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "卫生主管机构（如斯里兰卡国家登革热控制中心）推荐的有效驱蚊方法",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "丁香或插丁香的青柠（原物形态）是否有驱蚊效果的科学依据",
+      "must_cite": true
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "ndcu_prevent",
+      "description": "斯里兰卡国家登革热控制中心的预防说明页（旧站地址已失效，只能经存档取到）",
+      "url_pattern": "*dengue.health.gov.lk/web/index.php/en/information/how-to-prevent*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "clove_review",
+      "description": "关于丁香油驱虫效果的研究（标注来源）",
+      "url_pattern": "sciencedirect.com/science/article/abs/pii/s0882596311001898*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "mnt_clove",
+      "description": "Medical News Today 关于天然驱蚊剂的文章（标注来源）",
+      "url_pattern": "medicalnewstoday.com/articles/325337*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ2"
+      ]
+    },
+    {
+      "key": "nea_repellent",
+      "description": "新加坡国家环境局关于驱蚊剂使用的说明（试点 run 取到）",
+      "url_pattern": "nea.gov.sg/dengue-zika/stop-dengue-now/use-of-mosquito-repellents*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    },
+    {
+      "key": "epa_repellent",
+      "description": "美国 EPA 驱蚊剂选择说明（试点 run 取到）",
+      "url_pattern": "epa.gov/insect-repellents/find-repellent-right-you*",
+      "acquired_by": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "any_one_of:ndcu_prevent,nea_repellent,epa_repellent; any_one_of:clove_review,mnt_clove",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "不实",
+        "aliases": [
+          "虚假",
+          "Refuted",
+          "False",
+          "不属实"
+        ]
+      },
+      "note": "数据集标签 Refuted",
+      "requirement": null
+    }
+  ],
+  "reference_path": "../data/averimatec/63/reference.json",
+  "used_for_revision": [],
+  "notes": "2026-09-28 第二批：总控依据数据集标注手写 requirements（不含答案），证据项取标注来源（must_cite=False）与试点 run 实际打开过的非原始来源（any_one_of，must_cite=True）。声明日期 2023-05-25，不按日期过滤来源（与试点一致）；排除原始核查文章 https://web.archive.org/web/20241008053206/https://factcheck.afp.com/doc.afp.com.33JQ83X。（已按 2026-09-28 独立审稿修改 5 处，见 cases_draft/r2_20260928/review_20260928.md）"
+}

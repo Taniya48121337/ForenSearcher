@@ -1,0 +1,24 @@
+[
+  {
+    "request_id": "request_0012",
+    "assessment": {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "E3早已看过，E3、E4也已多次与E17共同附图。本次复读元数据并重新组合旧帧，没有提出新的具体疑点，不能解决剩余的来源对应缺口。可保留为真实历史，不宜正向模仿；这不等于一律拒绝最后一次复看。"
+    },
+    "execution_status": "executed"
+  },
+  {
+    "request_id": "request_0013",
+    "assessment": {
+      "request_id": "request_0013",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": true,
+      "reason": "视觉和外部通报发现基本有据，来源候选限制也诚实；但本HI明确承担来源及事件对应核查，报告仍未确认这些必要部分却标为COMPLETED。应修正局部完成状态，或取得足够对应证据后重执行，不能依靠评审参考中的相同URL补齐演员证据。"
+    },
+    "execution_status": "report_committed"
+  }
+]

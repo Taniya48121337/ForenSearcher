@@ -1,0 +1,301 @@
+{
+  "seed": "forensearcher-splits-20260928",
+  "created": "2026-09-28",
+  "rule": "按 family 一次性分配五份划分（2026-09-28，案卷扩到 33 个后）。\n\n    python scripts/_assign_splits.py            # 预览，不改文件\n    python scripts/_assign_splits.py --apply    # 写回 cases/*.json 的 split，并写 experiments/sft_data/splits_manifest.json（不能放进 cases/，load_cases 会把它当案卷读）\n\n规矩：\n- 旧 11 个案卷（true 6 + videosham 5）固定 dev_train：它们已经用来改过核验器、规格和来源 D 的题，\n  不能再进参与决策的集合，更不能进 dev_eval。\n- 新 22 个案卷（20 个 family）按数据集分层配额分配。同一数据集内按 sha1(seed + family_key) 排序依次填配额，\n  可以复现；换 seed 就能得到另一种分法。\n- test 这里不分：按设计它是 EVID-Bench 与 TRUE test，锁定使用，不在当前案例池里。\n- 同一 family 只进一个划分，最后跑 check_split_leakage 确认。",
+  "quotas": {
+    "averitec": [
+      [
+        "dev_select",
+        2
+      ],
+      [
+        "dev_confirm",
+        1
+      ],
+      [
+        "dev_eval",
+        1
+      ],
+      [
+        "dev_train",
+        99
+      ]
+    ],
+    "averimatec": [
+      [
+        "dev_select",
+        2
+      ],
+      [
+        "dev_confirm",
+        1
+      ],
+      [
+        "dev_eval",
+        1
+      ],
+      [
+        "dev_train",
+        99
+      ]
+    ],
+    "qvhighlights": [
+      [
+        "dev_select",
+        1
+      ],
+      [
+        "dev_confirm",
+        1
+      ],
+      [
+        "dev_eval",
+        1
+      ],
+      [
+        "dev_train",
+        99
+      ]
+    ],
+    "vcsl": [
+      [
+        "dev_eval",
+        1
+      ],
+      [
+        "dev_train",
+        99
+      ]
+    ]
+  },
+  "fixed_dev_train_datasets": [
+    "true",
+    "videosham"
+  ],
+  "summary": {
+    "dev_train": {
+      "cases": 21,
+      "families": 19
+    },
+    "dev_select": {
+      "cases": 5,
+      "families": 5
+    },
+    "dev_confirm": {
+      "cases": 3,
+      "families": 3
+    },
+    "dev_eval": {
+      "cases": 4,
+      "families": 4
+    },
+    "test": {
+      "cases": 0,
+      "families": 0
+    },
+    "contrast_only": {
+      "cases": 0,
+      "families": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "averimatec:63",
+      "dataset": "averimatec",
+      "family_key": "averimatec:63",
+      "split": "dev_confirm"
+    },
+    {
+      "case_id": "averitec:2872",
+      "dataset": "averitec",
+      "family_key": "averitec:2872",
+      "split": "dev_confirm"
+    },
+    {
+      "case_id": "qvhighlights:0",
+      "dataset": "qvhighlights",
+      "family_key": "qvhighlights:ocUC_KlLFb4",
+      "split": "dev_confirm"
+    },
+    {
+      "case_id": "averimatec:441",
+      "dataset": "averimatec",
+      "family_key": "averimatec:441",
+      "split": "dev_eval"
+    },
+    {
+      "case_id": "averitec:2799",
+      "dataset": "averitec",
+      "family_key": "averitec:2799",
+      "split": "dev_eval"
+    },
+    {
+      "case_id": "qvhighlights:1",
+      "dataset": "qvhighlights",
+      "family_key": "qvhighlights:Q2TqU-Oh7KQ",
+      "split": "dev_eval"
+    },
+    {
+      "case_id": "vcsl:pair_4",
+      "dataset": "vcsl",
+      "family_key": "vcsl:pair_4",
+      "split": "dev_eval"
+    },
+    {
+      "case_id": "averimatec:652",
+      "dataset": "averimatec",
+      "family_key": "averimatec:652",
+      "split": "dev_select"
+    },
+    {
+      "case_id": "averimatec:98",
+      "dataset": "averimatec",
+      "family_key": "averimatec:98",
+      "split": "dev_select"
+    },
+    {
+      "case_id": "averitec:254",
+      "dataset": "averitec",
+      "family_key": "averitec:254",
+      "split": "dev_select"
+    },
+    {
+      "case_id": "averitec:2694",
+      "dataset": "averitec",
+      "family_key": "averitec:2694",
+      "split": "dev_select"
+    },
+    {
+      "case_id": "qvhighlights:2",
+      "dataset": "qvhighlights",
+      "family_key": "qvhighlights:OG0ZEQamfGs",
+      "split": "dev_select"
+    },
+    {
+      "case_id": "averimatec:423",
+      "dataset": "averimatec",
+      "family_key": "averimatec:423",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "averimatec:660",
+      "dataset": "averimatec",
+      "family_key": "averimatec:660",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "averimatec:699",
+      "dataset": "averimatec",
+      "family_key": "averimatec:699",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "averitec:1707",
+      "dataset": "averitec",
+      "family_key": "averitec:1707",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "averitec:1766",
+      "dataset": "averitec",
+      "family_key": "averitec:1766",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "averitec:392",
+      "dataset": "averitec",
+      "family_key": "averitec:392",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "qvhighlights:9167",
+      "dataset": "qvhighlights",
+      "family_key": "qvhighlights:VLHkdrM2NAg",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:17838107",
+      "dataset": "true",
+      "family_key": "true:17838107",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:20205316753904",
+      "dataset": "true",
+      "family_key": "true:20205316753904",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:20361105",
+      "dataset": "true",
+      "family_key": "true:20361105",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:24171541709824",
+      "dataset": "true",
+      "family_key": "true:24171541709824",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:39132300",
+      "dataset": "true",
+      "family_key": "true:39132300",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "true:4124903",
+      "dataset": "true",
+      "family_key": "true:4124903",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "vcsl:pair_1",
+      "dataset": "vcsl",
+      "family_key": "vcsl:snowman_song",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "vcsl:pair_5",
+      "dataset": "vcsl",
+      "family_key": "vcsl:snowman_song",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "vcsl:pair_6",
+      "dataset": "vcsl",
+      "family_key": "vcsl:snowman_song",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "videosham:0069",
+      "dataset": "videosham",
+      "family_key": "videosham:0069",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "videosham:1007",
+      "dataset": "videosham",
+      "family_key": "videosham:1007",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "videosham:1028",
+      "dataset": "videosham",
+      "family_key": "videosham:1028",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "videosham:2010",
+      "dataset": "videosham",
+      "family_key": "videosham:2010",
+      "split": "dev_train"
+    },
+    {
+      "case_id": "videosham:4126",
+      "dataset": "videosham",
+      "family_key": "videosham:4126",
+      "split": "dev_train"
+    }
+  ]
+}

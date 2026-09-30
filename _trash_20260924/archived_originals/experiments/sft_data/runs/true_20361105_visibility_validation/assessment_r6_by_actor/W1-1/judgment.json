@@ -1,0 +1,166 @@
+{
+  "assessment_scope": "仅依据所给 packet 与九张图片，递归解析对象引用，评估 steps 中 W1-1（HI）的 request_0002 至 request_0013，共12个目标。未调用工具、检查文件或引入独立人工真值。各目标只按其实际附图及当时文字判断；评审历史图片不补入后续会话。官方参考不作为演员已知事实或原声核验结果。本例不是 terminal_replay；仅该 HI 已报告，不评估未提供的 GIA 决策。七维评分覆盖率为100%，加权得分3.55/4（88.75/100）；这是可评审维度的评分，不表示视听任务已经完成，也不替代逐目标导出判定。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 3,
+          "reason": "request_0002至0011的十个工具请求均有原样接受及观察对应，0013有报告提交记录。0012明确未被接受，不能计为成功提交。其拒绝涉及校验器与原件引用说明的冲突，不能归为演员捏造证据。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012", "request_0013"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "未发现偷用官方参考或未来观察。终端实际仅附E4、E6，报告也只陈述这两个时刻的画面。历史八帧累计统计和E13封面均未被冒充为终端当前像素。E11、E14正文仍在当次文字历史中，相关引用有实际输入支持。",
+          "request_ids": ["request_0002", "request_0003", "request_0004", "request_0005", "request_0006", "request_0007", "request_0008", "request_0009", "request_0010", "request_0011", "request_0012", "request_0013"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E4、E6像素支持浅色宽檐帽、浅粉外套、讲台、多支话筒和旁侧女性的描述。E11确实包含被引用的嘲弄、追诉及恐吓表述，并提及私人Facebook群组。报告保留E11中的frighten，没有套用参考中的threaten冒充原声。E14已读部分确为评论性字幕；报告没有将其归为材料A转写，也没有断言发言者明确仅主张追诉威胁者。",
+          "request_ids": ["request_0012", "request_0013"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 3,
+          "reason": "已取得有用的视觉描述、报道引语和字幕来源辨别，但局部任务要求的给定视频原话、发言者对应及相关视听语境仍未核实。INCOMPLETE准确，不能算作原声明已经解决。实际动作目录没有直接听音或ASR能力；外部字幕检索可以尝试补充，但本次未取得经核实对应的字幕。",
+          "request_ids": ["request_0002", "request_0004", "request_0008", "request_0010", "request_0012", "request_0013"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 3,
+          "reason": "先取帧、读取报道、检查字幕及沿报道链接查CBS均有具体目的。较弱之处是已发现ProPublica和现场报道线索后，仍花费部分轮次检查索引转写和评论视频，原始发言来源搜索不够集中。不能用后来失败倒推页面视频请求必然错误：CBS正文有明确WATCH线索。提交前仍余一次机会，但没有已知能够直接补齐原声对应的行动，不能仅凭想象中的搜索命中判定停止错误。",
+          "request_ids": ["request_0003", "request_0005", "request_0006", "request_0007", "request_0009", "request_0011", "request_0012"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告区分静态帧与声音、报道引语与实际发言、评论字幕与对应转写，并准确限定E14仅读第一页。没有将八个采样点扩展为全视频核验，也没有将存在一条音轨等同于已经听取。案件仍有未知，但这些未知已被披露，不构成报告幻觉或评审材料的关键缺失。",
+          "request_ids": ["request_0012", "request_0013"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 3,
+          "reason": "未重复取同一批帧，也未重复读取成功的同一页。清空focus后出现八帧重新附带，是输入选择结果，不能算作八次重复调查。保留E4、E6足以支持最终有限视觉描述，未保留其余帧没有造成已证明的关键遗漏。不过一次低预期收益的记忆查询和较弱来源探索增加了成本，整体不宜评满分。",
+          "request_ids": ["request_0005", "request_0006", "request_0007", "request_0008", "request_0011", "request_0013"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "材料A原声及其与外部字幕的对应尚未核实；参考中的转录不能替代实际听音。",
+        "画面人物姓名与具体发言内容的独立对应尚未建立。",
+        "完整问答语境及群组背景未由该HI独立核实。这些是调查缺口，不是无法评判当前有限报告的关键未知。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次没有附图。针对可见材料E1请求八帧，参数合法且符合单次八图容量，是了解画面与发现线索的合理首步。后续观察确认请求执行，但不证明全片已检查或声音已核实。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附有E3至E10八帧。按任务给出的姓名和声明搜索转录及语境，直接对应声音和追诉对象缺口；查询中的姓名来自核查对象，不是仅凭人脸确认身份。保留E4、E6作为后续视觉依据合理。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6，其余帧只是历史材料。E11已作为取得的正文记录进入当前视图，读取它能核对候选摘要中的引语和背景。实际读取成功且无后续分页，是有价值的正文核查。"
+    },
+    {
+      "request_id": "request_0005",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6，E11正文已可见。查询可访问索引中是否存在材料A转写是合法的单次尝试；当前已有记录没有显示转写，预期增益较低，但索引可能包含当前视图之外的记录，不能因随后未命中而判为不可执行。"
+    },
+    {
+      "request_id": "request_0006",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次实际重新附有E10、E9、E8、E7、E6、E5、E4、E3。记忆查询没有找到转写后，尝试从已知R1取得视频字幕，参数符合目录。该页面尚无明确媒体线索，选择较弱；返回的是页面及not_requested媒体状态，不能计为取得视频或字幕。"
+    },
+    {
+      "request_id": "request_0007",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6；E13封面此时尚未提供。R1没有产出所需媒体，改查已知YouTube候选R2是合理恢复。摘要已表明它是喜剧评论，原始证据价值较低，但事前不能排除其中包含相关片段或引语。"
+    },
+    {
+      "request_id": "request_0008",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次实际附E4、E6、E13。E13是含人物照片和“She said WHAT?!”文字的拼接封面，不能证明与材料A存在影音对应。读取已取得的E14字幕，有助于辨别原话与评论；动作本身没有把封面或字幕预先认定为原始发言。"
+    },
+    {
+      "request_id": "request_0009",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6，E13只是历史图片；E14第一页正文及next_offset=6000实际可见。该页显示大量评论内容后，沿E11已经给出的CBS现场报道链接取证，比继续默认评论字幕就是原声更有针对性。不必为转向该线索先穷尽字幕，但也不能声称已读完整字幕。"
+    },
+    {
+      "request_id": "request_0010",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6。E15已取得且属于已追踪的CBS来源，读取正文可以核对现场报道内容及进一步媒体线索。该动作有实际信息增益；正文涉及关闭设施的言论，不能自动替代有关追诉对象的发言。"
+    },
+    {
+      "request_id": "request_0011",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6，E15完整正文可见。第19段明确提示观看巡访后的发言，支持尝试从R3取得视频字幕。此前R1同类请求无媒体产出降低了预期收益，但不足以证明另一网站必然不支持。该次返回仍为not_requested，不能描述成已下载或已核验。"
+    },
+    {
+      "request_id": "request_0012",
+      "disposition": "context_only",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "本次仅附E4、E6；报告的视觉范围、E11来源限定、E14首页限定及INCOMPLETE均有依据。但执行记录明确显示proposal_not_accepted，不能作为成功提交样本。校验器因正文提到E1而拒绝；原提示却允许以原件编号说明来源并引用派生帧，第一条正是引用E4、E6，因此不能把这次拒绝认定为未观察原视频内容的捏造。保留为真实修复前缀。"
+    },
+    {
+      "request_id": "request_0013",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "本次仍仅附E4、E6。输出按反馈使用材料名称，引用真实派生帧；E11引语与解释有正文支持，E14仍明确限于已读部分，未把累计图片数量冒充当前观察。INCOMPLETE准确且报告已实际提交。它是合格的有限报告与接口恢复目标，不证明原视频核查完成，也不是一次新的独立停止能力验证。"
+    }
+  ],
+  "construction_revisions": [
+    "修正原件引用校验与角色说明的冲突：区分原件来源指称、未完成事项说明和实质证据断言。E1作为E4、E6的来源出现，不应机械要求把未观察的原视频加入内容证据。",
+    "让视听任务与实际能力匹配：提供可用的听音、ASR或经对应验证的转写路径；如果保持现有能力，则将该任务明确作为允许部分报告的调查任务，不能以报告提交率衡量核验完成率。",
+    "明确SEARCH的视频输出实际能返回哪些材料，并保留not_requested、not_checked、failed与ready的区别。本例R1和R3只返回页面，不能包装成视频下载失败，更不能包装成成功取得媒体。",
+    "继续保存每次实际附图清单、文字正文及分页状态。累计观察统计不应替代当次像素；本例无需为了终端报告强制重新附带全部历史帧。",
+    "保留0012的真实拒绝记录与0013的实际恢复结果；修订接口或重生成目标时，不把改写输出直接接到不相容的旧执行后缀。"
+  ],
+  "rubric_revisions": [
+    "明确区分执行对应完整、接口接受成功和事实正确。校验器拒绝可以阻止样本导出，但不能在与角色说明冲突时自动归罪为演员幻觉。",
+    "继续分开评价局部报告质量、调查完成程度和任务可行性。准确INCOMPLETE可以是高质量报告目标，但不计为已完成声音核验或已解决全局声明。",
+    "停止扣分须给出当时可见、参数可执行、轮次足够且能实质补齐必要缺口的行动；剩余轮次本身或想象中的搜索命中不足以证明停止错误。",
+    "历史图片用于检查早期选择和信息保留；终端事实仅按其实际文字与附图判断。不得要求终端复述已经不在输入中的画面，也不得容许终端凭累计编号补写视觉事实。",
+    "将官方参考中的措辞与演员实际来源逐项核对。本例frighten与threaten、报道归属与原声核验必须区分；参考结论不能强制演员作出超出当前证据的追诉对象判断。",
+    "维持采样观察与连续覆盖的区别。本例不是完整剪辑定位任务，不追加全片差异普查或虚构区间指标，也不因未穷尽次要画面细节否定有依据的有限报告。"
+  ]
+}

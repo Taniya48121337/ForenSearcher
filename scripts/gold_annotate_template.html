@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>核验器金标标注</title>
+<style>
+:root{--bg:#f7f7f5;--panel:#fff;--ink:#1d1d1b;--muted:#6b6b66;--line:#e2e1dc;--accent:#2f5d8a;--ok:#2e7d4f;--warn:#b26a00;--bad:#b3261e;--chip:#eef2f6}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--ink:#ecebe6;--muted:#a3a29b;--line:#34332f;--accent:#8ab4df;--ok:#6cc08b;--warn:#e0a54a;--bad:#ef8a80;--chip:#28303a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+header{display:flex;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:2;flex-wrap:wrap}
+header h1{font-size:15px;margin:0 8px 0 0}
+header input{padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:110px}
+button{font:inherit;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.progress{color:var(--muted)}
+main{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 52px)}
+nav{border-right:1px solid var(--line);overflow:auto;max-height:calc(100vh - 52px);position:sticky;top:52px}
+nav .it{display:flex;justify-content:space-between;padding:6px 12px;cursor:pointer;border-bottom:1px solid var(--line);font-size:13px}
+nav .it.cur{background:var(--chip)}
+nav .dot{width:9px;height:9px;border-radius:50%;background:var(--line);margin-top:6px}
+nav .dot.done{background:var(--ok)}
+nav .filter{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;gap:4px;flex-wrap:wrap}
+nav .filter button{padding:2px 7px;white-space:nowrap;font-size:12.5px}
+section{padding:16px 22px 80px;max-width:1100px}
+.meta{color:var(--muted);font-size:12px;margin-bottom:6px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0}
+.box h3{margin:0 0 6px;font-size:13px;color:var(--muted);font-weight:600}
+.statement{font-size:15px}
+.ev{border-top:1px dashed var(--line);padding:8px 0}
+.ev:first-of-type{border-top:0}
+.ev .head{font-weight:600}
+.ev .url{font-size:12px;color:var(--accent);word-break:break-all}
+.ev pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);padding:8px;border-radius:6px;max-height:320px;overflow:auto;font:12.5px/1.55 ui-monospace,Consolas,monospace;margin:6px 0 0}
+.ev img{max-width:100%;max-height:420px;border:1px solid var(--line);border-radius:6px;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;cursor:pointer;user-select:none;background:var(--panel)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt{display:flex;gap:8px;flex-wrap:wrap}
+.opt label{border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer;background:var(--panel)}
+.opt input{margin-right:6px}
+.opt label.on{outline:2px solid var(--accent)}
+textarea{width:100%;min-height:54px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--bg);color:var(--ink);font:inherit}
+.help{color:var(--muted);font-size:12.5px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.req{padding:4px 0;border-bottom:1px dashed var(--line)}
+.kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-radius:4px;padding:0 4px}
+@media (max-width:760px){main{grid-template-columns:1fr}nav{position:static;max-height:220px}section{padding:12px 16px 80px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>核验器金标标注</h1>
+  <span class="progress" id="progress"></span>
+  <label>标注人 <input id="annotator" placeholder="姓名缩写"></label>
+  <button onclick="go(-1)">上一条 <span class="kbd">P</span></button>
+  <button onclick="go(1)">下一条 <span class="kbd">N</span></button>
+  <button class="primary" onclick="exportLabels()">导出标注</button>
+  <label><button onclick="document.getElementById('imp').click()">导入</button><input id="imp" type="file" accept=".json" style="display:none" onchange="importLabels(this.files[0])"></label>
+</header>
+<main>
+  <nav>
+    <div class="filter"><button onclick="setFilter('all')">全部</button><button onclick="setFilter('todo')">未标</button><button onclick="setFilter('finding')">F</button><button onclick="setFilter('answer')">A</button><button onclick="setFilter('plan')">P</button><button onclick="setFilter('plan_task')">T</button></div>
+    <div id="list"></div>
+  </nav>
+  <section id="view"></section>
+</main>
+<script>
+const DATA = /*__ITEMS__*/null;
+const ITEMS = DATA.items, BATCH = DATA.meta.batch;
+const KEY = 'gold_labels_' + BATCH;
+let labels = {}, cur = 0, filter = 'all', started = Date.now();
+try { labels = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { labels = {}; }
+try { document.getElementById('annotator').value = localStorage.getItem(KEY + '_who') || ''; } catch (e) {}
+document.getElementById('annotator').onchange = e => { try { localStorage.setItem(KEY + '_who', e.target.value); } catch (x) {} };
+
+const ERR = {
+  finding: [['unsupported_assertion','断言无证据支持'],['scope_overreach','说过头（超出证据范围）'],['wrong_citation','引错证据'],['attribution_drift','把来源的说法当成事实'],['sloppy_numeric','数字/单位/口径错'],['misread_fine_text','读错细节文字/画面'],['other','其他']],
+  answer: [['unsupported_assertion','断言无证据支持'],['scope_overreach','说过头'],['wrong_citation','引错'],['omitted_required_fact','漏了必须回答的要点'],['premature_finish','证据不足就结束'],['wrong_label','结论方向错'],['other','其他']],
+  plan_task: [['overlapping_sibling_tasks','与同轮其他任务重叠'],['dependent_sibling_tasks','依赖同轮其他任务结果'],['redundant_reinvestigation','重复调查已解决的问题'],['other','其他']],
+  plan: [['task_not_gap_driven','任务不针对未解决缺口'],['overlapping_sibling_tasks','同轮任务重叠'],['premise_smuggling','题面夹带未证实前提'],['dependent_sibling_tasks','依赖同轮其他任务结果'],['redundant_reinvestigation','重复调查已解决的问题'],['other','其他']],
+};
+const MAIN = {
+  finding: {q:'这条结论是否被它所引的证据支持？', opts:[['full','完全支持'],['partial','部分支持（有超出证据的部分）'],['none','不支持'],['cannot_tell','无法判断（证据看不全等）']]},
+  answer: {q:'这份最终答案整体是否可接受？', opts:[['acceptable','可接受'],['minor','有小问题，仍可接受'],['unacceptable','不可接受'],['cannot_tell','无法判断']]},
+  plan_task: {q:'这个任务该不该派？', opts:[['good','该派'],['minor','该派，题面有小问题'],['bad','不该派，或题面有实质问题'],['cannot_tell','无法判断']]},
+  plan: {q:'这轮派出的任务整体是否合理？', opts:[['good','合理'],['minor','基本合理，有小问题'],['bad','不合理'],['cannot_tell','无法判断']]},
+};
+function esc(s){return String(s ?? '').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(labels)); } catch (e) {} renderList(); }
+function lab(id){ return labels[id] || (labels[id] = {errors:[], seconds:0}); }
+function done(it){ const l = labels[it.id]; return l && l.main; }
+function visible(){ return ITEMS.map((it,i)=>[it,i]).filter(([it])=> filter==='all' || (filter==='todo' ? !done(it) : it.kind===filter)); }
+function setFilter(f){ filter=f; renderList(); }
+function renderList(){
+  const n = ITEMS.filter(done).length;
+  document.getElementById('progress').textContent = `${n} / ${ITEMS.length} 已标`;
+  document.getElementById('list').innerHTML = visible().map(([it,i]) =>
+    `<div class="it ${i===cur?'cur':''}" onclick="show(${i})"><span>${it.id} · ${esc(it.run).slice(0,22)}</span><span class="dot ${done(it)?'done':''}"></span></div>`).join('');
+}
+function tick(){ if (ITEMS[cur]) { const l = lab(ITEMS[cur].id); l.seconds += Math.round((Date.now()-started)/1000); started = Date.now(); } }
+function show(i){ tick(); cur = Math.max(0, Math.min(ITEMS.length-1, i)); started = Date.now(); render(); renderList(); window.scrollTo(0,0); }
+function go(d){ show(cur + d); }
+function evidenceHtml(list){
+  if (!list || !list.length) return '<div class="help">（没有引用证据）</div>';
+  return list.map(e => `<div class="ev"><div class="head">${esc(e.id)} · ${esc(e.label || '')}</div>
+    ${e.missing ? `<div class="help">${esc(e.missing)}</div>` : ''}
+    ${e.source_url ? `<div class="url">${esc(e.source_url)}</div>` : ''}
+    ${e.acquired_by ? `<div class="help">获取方式：${esc(e.acquired_by)}${e.provenance ? '；' + esc(e.provenance) : ''}</div>` : ''}
+    ${e.image ? `<img loading="lazy" src="${esc(e.image)}" alt="${esc(e.id)}">` : ''}
+    ${e.text ? `<pre>${esc(e.text)}</pre>` : ''}</div>`).join('');
+}
+function render(){
+  const it = ITEMS[cur], l = lab(it.id), m = MAIN[it.kind];
+  let body = `<div class="meta">${it.id} · ${it.kind} · ${esc(it.run)} ${it.workspace ? '· ' + esc(it.workspace) : ''} ${it.case_id ? '· ' + esc(it.case_id) : ''}</div>`;
+  if (it.kind === 'finding') {
+    body += `<div class="box"><h3>工作区接到的任务</h3>${esc(it.task)}</div>
+      <div class="box"><h3>待判结论（${esc(it.finding_id)}）</h3><div class="statement">${esc(it.statement)}</div>
+      ${it.limitations.length ? `<div class="help" style="margin-top:6px">报告自述的限制：${it.limitations.map(esc).join('；')}</div>` : ''}</div>
+      <div class="box"><h3>所引证据（只按这些判断，不用外部知识补）</h3>${evidenceHtml(it.evidence)}</div>`;
+  } else if (it.kind === 'answer') {
+    body += `<div class="box"><h3>总任务</h3>${esc(it.task)}</div>
+      <div class="box"><h3>最终答案</h3><div class="statement" style="white-space:pre-wrap">${esc(it.answer)}</div></div>
+      <div class="box"><h3>案卷要求（答案应覆盖）</h3>${it.requirements.map(r => `<div class="req">${esc(r.id)}${r.must_cite?'':'（可选）'}：${esc(r.text)}
+        <span class="opt" style="display:inline-flex;margin-left:8px">${[['yes','覆盖'],['no','未覆盖']].map(([v,t]) => `<label class="${(l.req||{})[r.id]===v?'on':''}"><input type="radio" name="req_${r.id}" ${(l.req||{})[r.id]===v?'checked':''} onchange="setReq('${r.id}','${v}')">${t}</label>`).join('')}</span></div>`).join('') || '<div class="help">（没有案卷）</div>'}</div>
+      <div class="box"><h3>答案引用的 Finding</h3>${it.findings.map(f => `<div class="ev"><div class="head">${esc(f.id)} ${f.workspace ? '· ' + esc(f.workspace) : ''}</div>${esc(f.statement || f.missing)}
+        ${(f.limitations||[]).length ? `<div class="help">限制：${f.limitations.map(esc).join('；')}</div>` : ''}${(f.evidence_ids||[]).length ? `<div class="help">引用 ${f.evidence_ids.join('、')}</div>` : ''}</div>`).join('') || '<div class="help">（无）</div>'}</div>
+      <div class="box"><h3>答案直接引用的证据</h3>${evidenceHtml(it.evidence)}</div>`;
+  } else if (it.kind === 'plan_task') {
+    const radio = (field, opts) => `<div class="opt" style="margin-top:4px">${opts.map(([v,tx]) => `<label class="${l[field]===v?'on':''}"><input type="radio" name="${field}" ${l[field]===v?'checked':''} onchange="setField('${field}','${v}')">${tx}</label>`).join('')}</div>`;
+    body += `<div class="box"><h3>总任务（第 ${esc(it.round)} 轮）</h3>${esc(it.task)}</div>
+      <div class="box"><h3>案卷要求</h3>${it.requirements.map(r => `<div class="req">${esc(r.id)}${r.must_cite?'':'（可选）'}：${esc(r.text)}</div>`).join('') || '<div class="help">（没有案卷）</div>'}</div>
+      <div class="box"><h3>此前已提交的报告（派任务时能看到的全部）</h3>${it.reports_so_far.map(r => `<div class="ev"><div class="head">${esc(r.task_id)} · ${esc(r.status)}</div><div class="help">${esc(r.task)}</div>
+        ${r.findings.map(f => `<div>· ${esc(f.id)}：${esc(f.statement)}${f.limitations.length ? `<span class="help">（限制：${f.limitations.map(esc).join('；')}）</span>` : ''}</div>`).join('')}</div>`).join('') || '<div class="help">（这是第一轮，还没有报告）</div>'}</div>
+      <div class="box"><h3>待判任务 ${esc(it.task_label)}</h3><div class="statement">${esc(it.target.task)}</div><div class="help">材料：${(it.target.materials||[]).join('、') || '（无）'}</div>
+        ${it.siblings.length ? `<div class="help" style="margin-top:6px">同轮其他任务：${it.siblings.map(t => esc(t.label) + ' ' + esc(t.task)).join('；')}</div>` : ''}</div>
+      <div class="box"><h3>A. 题面有没有把还没证实的说法当成事实写进去？</h3><div class="help">"证实"只看上面已提交的报告；题面说"核实某说法是否属实"不算夹带。</div>
+        ${radio('premise', [['clean','没有'],['smuggled','有'],['unsure','不确定']])}
+        <div class="help" style="margin-top:6px">若"有"：照抄夹带的片段（多段用 ｜ 分隔）</div><textarea oninput="setText('premise_span',this.value)">${esc(l.premise_span||'')}</textarea></div>
+      <div class="box"><h3>B. 这个任务是否针对此前报告还没解决的缺口？</h3>${radio('gap', [['gap','针对未解决的缺口'],['no_gap','不针对（要查的已解决，或与缺口无关）'],['unsure','不确定']])}</div>`;
+  } else {
+    body += `<div class="box"><h3>总任务（第 ${esc(it.round)} 轮）</h3>${esc(it.task)}</div>
+      <div class="box"><h3>此前已提交的报告</h3>${it.reports_so_far.map(r => `<div class="ev"><div class="head">${esc(r.task_id)} · ${esc(r.status)}</div><div class="help">${esc(r.task)}</div>
+        ${r.findings.map(f => `<div>· ${esc(f.id)}：${esc(f.statement)}${f.limitations.length ? `<span class="help">（限制：${f.limitations.map(esc).join('；')}）</span>` : ''}</div>`).join('')}</div>`).join('') || '<div class="help">（这是第一轮，还没有报告）</div>'}</div>
+      <div class="box"><h3>本轮派出的任务</h3>${it.proposed_tasks.map((t,k) => `<div class="req"><b>T${k+1}</b> ${esc(t.task)} <span class="help">${(t.materials||[]).join('、')}</span>
+        <div class="opt" style="margin-top:4px">${[['yes','针对未解决的缺口'],['no','不针对'],['unsure','不确定']].map(([v,tx]) => `<label class="${(l.tasks||{})['T'+(k+1)]===v?'on':''}"><input type="radio" name="t_${k}" ${(l.tasks||{})['T'+(k+1)]===v?'checked':''} onchange="setTask('T${k+1}','${v}')">${tx}</label>`).join('')}</div></div>`).join('')}</div>`;
+  }
+  body += `<div class="box"><h3>${m.q} <span class="help">键盘 1–4</span></h3><div class="opt">${m.opts.map(([v,t],k) => `<label class="${l.main===v?'on':''}"><input type="radio" name="main" ${l.main===v?'checked':''} onchange="setMain('${v}')">${k+1}. ${t}</label>`).join('')}</div></div>
+    <div class="box"><h3>具体问题（可多选）</h3><div class="chips">${ERR[it.kind].map(([v,t]) => `<span class="chip ${l.errors.includes(v)?'on':''}" onclick="toggleErr('${v}')">${t}</span>`).join('')}</div>
+      ${it.kind==='finding' ? `<div style="margin-top:8px"><div class="help">超出证据的具体片段（原文照抄，可多段用 ｜ 分隔）</div><textarea oninput="setText('span',this.value)">${esc(l.span||'')}</textarea></div>` : ''}
+      <div style="margin-top:8px"><div class="help">备注</div><textarea oninput="setText('note',this.value)">${esc(l.note||'')}</textarea></div></div>
+    <div class="row"><span class="help">本条累计用时 ${Math.round((l.seconds||0)/60*10)/10} 分钟（切换条目时累计）</span><button class="primary" onclick="go(1)">保存并下一条</button></div>`;
+  document.getElementById('view').innerHTML = body;
+}
+function setMain(v){ lab(ITEMS[cur].id).main = v; save(); render(); }
+function setReq(r,v){ const l = lab(ITEMS[cur].id); (l.req = l.req || {})[r] = v; save(); render(); }
+function setField(k,v){ lab(ITEMS[cur].id)[k] = v; save(); render(); }
+function setTask(t,v){ const l = lab(ITEMS[cur].id); (l.tasks = l.tasks || {})[t] = v; save(); render(); }
+function toggleErr(v){ const l = lab(ITEMS[cur].id); l.errors = l.errors.includes(v) ? l.errors.filter(x=>x!==v) : [...l.errors, v]; save(); render(); }
+function setText(k,v){ lab(ITEMS[cur].id)[k] = v; save(); }
+function exportLabels(){
+  tick();
+  const who = document.getElementById('annotator').value.trim() || 'anon';
+  const out = {batch: BATCH, annotator: who, exported_at: new Date().toISOString(),
+    labels: ITEMS.filter(it => labels[it.id]).map(it => ({id: it.id, kind: it.kind, run: it.run, ...labels[it.id]}))};
+  const blob = new Blob([JSON.stringify(out, null, 1)], {type: 'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `labels_${who}.json`; a.click();
+}
+function importLabels(file){
+  if (!file) return;
+  file.text().then(t => { const d = JSON.parse(t); if (d.batch !== BATCH && !confirm('批次名不一致，仍然导入？')) return;
+    for (const r of d.labels) { const {id, kind, run, ...rest} = r; labels[id] = rest; } save(); render(); });
+}
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+  const it = ITEMS[cur]; const opts = MAIN[it.kind].opts;
+  if (e.key === 'n' || e.key === 'N' || e.key === 'ArrowRight') go(1);
+  else if (e.key === 'p' || e.key === 'P' || e.key === 'ArrowLeft') go(-1);
+  else if (/^[1-4]$/.test(e.key)) setMain(opts[+e.key-1][0]);
+});
+window.addEventListener('beforeunload', () => { tick(); try { localStorage.setItem(KEY, JSON.stringify(labels)); } catch (e) {} });
+render(); renderList();
+</script>
+</body>
+</html>

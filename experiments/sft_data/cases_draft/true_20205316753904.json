@@ -1,0 +1,68 @@
+{
+  "case_id": "true:20205316753904",
+  "dataset": "true",
+  "source_id": "20205316753904",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A video shows a woman hanging by her hair in a train car.",
+  "family_key": "true:20205316753904",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../runs/true_20205316753904_validation/artifacts/952aefe19b5f494cb271dc7ceff6b83b.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "A video shows a woman hanging by her hair in a train car."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "crops",
+      "description": "从给定媒体 E3 经 INSPECT/crop 取得的派生证据（E11）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/crop"
+    },
+    {
+      "key": "frames",
+      "description": "从给定媒体 E1 经 INSPECT/get_frames 取得的派生证据（E3、E6、E10）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明“A video shows a woman hanging by her hair in a train car.”所述内容的记载",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "给定媒体实际显示了什么，能否支持声明“A video shows a woman hanging by her hair in a train car.”",
+      "must_cite": true
+    }
+  ],
+  "required_evidence_rule": "any_one_of:crops,frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 true_20205316753904_validation 起草，needs_review；requirements 取自首轮任务文字（模板：REQ1=claim_template、REQ2=claim_template），required_evidence 取自干净 Finding ∩ 答案引用（有降级项，见审核单 trace.origin）。",
+  "effective_split": "dev_train"
+}

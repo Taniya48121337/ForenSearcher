@@ -1,0 +1,228 @@
+{
+  "assessment_scope": "仅评估 steps 中 W2-1（HI）的 request_0020—request_0031，按对象表递归解析引用，以各动作执行前可见材料和所附14张图片为依据。不评分其他演员、脚本调度或 root.result 中的 GIA 结论，也不借其后续证据补强本演员。图片仅支持相应采样时刻；官方编辑描述不作为像素事实或完整定位的证明。七个维度均可评分，权重覆盖率100%，加权分为2.70/4（67.5/100）；评分覆盖率不代表视频观察覆盖率，整体分数不替代逐目标筛选。",
+  "roles": [
+    {
+      "actor": "W2-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "11次读取均有接受与执行链接，最终报告有提交链接。request_0031 的接受版本为第二条 finding 和 selected_evidence_ids 补入了 E13，原始与接受输出并非完全相同，但差异可核对，未改变陈述或状态。执行对应成立不代表行动有价值或报告完整。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "所选焦点可由当时材料、已有附图及记录支持。request_0023 读取 E5 前，已读 E13 明确提供其编号；该动作没有把仅在正文出现的 E5 直接塞入焦点，而是先读取，再由下一轮实际附图取得像素。未见使用官方标注、未来证据或兄弟报告的迹象。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 3,
+          "reason": "最终报告的主要事实有像素支持：E16/E19 为相符山湖构图；E26/E30 的人物服饰、抬手及左上桨叶相符；E27/E31 均有居中划船者和右侧另一条船。E5/E29 仅被描述为近似构图，没有冒充精确整帧匹配。1.320秒、约3.537秒及约2.217秒的计算正确。小缺陷是原始报告对 E13 中4.071秒候选的说明未在该 finding 的引用及所选证据中列入 E13，接受版本才补齐。",
+          "request_ids": [
+            "request_0031"
+          ]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 2,
+          "reason": "完成了具体帧对核对、锚点时距比较及划行情境的有限说明，但遗漏局部任务的核心差异：E24（A 1.320秒）仍是山湖风景，紧接的 E5（1.360秒）已出现右缘人物且山体构图明显左移；E20（B 2.703秒）可见右上桨叶，E21（3.971秒）已有人物入画。这些材料足以报告局部衔接突变及两侧采样状态差异，无需先证明完整编辑方式。报告只强调对应与未确定部分，未充分利用能够回答任务的证据。音频和全片来源核验不属于本局部任务，不据此扣分。",
+          "request_ids": [
+            "request_0023",
+            "request_0024",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 1,
+          "reason": "初读 E13、按新候选重新组织早期比较、读取此前未附的 E5 都能解决具体缺口；随后却持续切换已经显示过的帧组。尤其 request_0025—0029 没有取得新时刻，也没有形成新的关键比较。已知局部突变可以直接报告；若仍需要核验候选对应，目录中的 get_frames 也允许定点补查。最终剩余0轮时提交 INCOMPLETE 合理，主要问题在此前的行动选择。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030",
+            "request_0031"
+          ]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 3,
+          "reason": "正确区分采样对应、锚点时距差、删减量、真实速度及来源身份，也诚实提交 INCOMPLETE。没有把2.217秒称为已证实删减量。但边界未知的表述过宽：A 1.320秒帧时长为0.040秒，下一帧1.360秒的可见突变已经能够局部定位；应将这一已知事实与尚未知的完整编辑起止范围分开。",
+          "request_ids": [
+            "request_0031"
+          ]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 1,
+          "reason": "11次动作全部为 READ_RECORD。必要读取和重新附图之后，多次重复早期、后期两组图片及其已有时间元数据；request_0029 甚至完整重复 request_0023 的读取与焦点。request_0030 的四组配对集中展示有一定整理价值，但没有补齐核心缺口。低分依据是具体重复和信息增益不足，而非固定复看次数。",
+          "request_ids": [
+            "request_0020",
+            "request_0021",
+            "request_0022",
+            "request_0023",
+            "request_0024",
+            "request_0025",
+            "request_0026",
+            "request_0027",
+            "request_0028",
+            "request_0029",
+            "request_0030"
+          ]
+        }
+      ],
+      "critical_errors": [
+        "request_0031 遗漏已观察到的 E24→E5 相邻帧突变及 E20 的中间桨入画状态，未充分回答具体过渡差异。这是任务核心遗漏，不是要求穷尽次要像素差异。",
+        "request_0025—0029 持续重复已见材料，未推进关键缺口；不能因动作全部执行成功或最终措辞保守，将这些行动作为高质量正向目标。"
+      ],
+      "unknowns": [
+        "E13 中 B 4.070737秒的 E9 像素没有提供给本演员或本次评审；邻近的 E29（4.104104秒）不能替代精确候选核验。",
+        "离散帧不能证明两侧未观察区间的连续对应，也不足以确定完整删减范围、编辑机制或真实运动速度。",
+        "官方记录描述0—15秒处理成10秒，但本次媒体时长为A 8秒、B约20.053秒，二者的版本与时间轴关系未核实，不能据此计算可靠的官方区间定位成绩。",
+        "上述未知是证据支持范围的限制，不使已经发现的局部遗漏通过，也不意味着所有诚实的有限报告都存在关键评审缺件。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0020",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "首次读取任务明确提及的 E13，取得候选锚点及测量限制；焦点同时安排此前遗漏的 E26/E27/E29/E30/E31，符合图片容量并支持后续成对核验。依据动作前状态具有明确价值。"
+    },
+    {
+      "request_id": "request_0021",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "读完 E13 并看到后期配对后，重新附上早期 A 帧和 B 的中间状态，加入 E29 进行比较，有合理的过渡核查目的。E20 本身已见，读取元数据的新增价值有限，但此次重新组织比较不能仅因复看而否定。"
+    },
+    {
+      "request_id": "request_0022",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "重新显示与 request_0021 输入相同的后期八帧，读取 E26 仅补出已在附图定位中出现的时间元数据。可有一次往返比较的辅助价值，但没有新增证据或明确推进尚未核验的 E5/过渡位置，不宜作为优质行动目标。"
+    },
+    {
+      "request_id": "request_0023",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E13 已提供 E5 的编号及1.360秒位置，此时读取此前未附的 E5，并保留 E24/E25 和 B 中间帧，可直接填补 A 风景转人物的关键一帧。不能用后来确认的突变倒推行动正确，但该位置在执行前已明确值得检查。"
+    },
+    {
+      "request_id": "request_0024",
+      "disposition": "accept_candidate",
+      "target_rating": 3,
+      "critical_unknown": false,
+      "reason": "刚取得 E5 后，将其与 E29 及较后的举桨、居中人物配对帧共同附上，能够比较新观察和后续状态。读取 E30 本身有重复成分，因此不评满分；其焦点变化仍具有具体比较价值。"
+    },
+    {
+      "request_id": "request_0025",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "返回此前已显示的早期八帧组合，E24 的像素和0.040秒帧时长均已可见；焦点还未保留刚获得的相邻 E5。没有增加对局部突变或候选空档的有效核验。"
+    },
+    {
+      "request_id": "request_0026",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "再次切换至已多次完整显示的后期帧组。E25 及其时间定位早已提供，此次读取没有新观察，也没有针对尚未确认的时间位置。"
+    },
+    {
+      "request_id": "request_0027",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "读取初始即已显示的 E16，再次组合已见风景和右缘人物帧。所作焦点调整未形成新的关键配对，已有材料的核心差异仍未被利用。"
+    },
+    {
+      "request_id": "request_0028",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "E27/E31 已共同显示多次，E27 的时间元数据也已在附图中给出；此时仅余三次后续决定，返回同一后期组合不能推进具体未决问题。"
+    },
+    {
+      "request_id": "request_0029",
+      "disposition": "context_only",
+      "target_rating": 1,
+      "critical_unknown": false,
+      "reason": "完整重复 request_0023 的 READ_RECORD E5 和焦点配置。E5 此前已成功读取并参与比较，没有读取失败、图片缺失或新增问题支持此次重复。"
+    },
+    {
+      "request_id": "request_0030",
+      "disposition": "context_only",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "将四组配对锚点首次集中于一轮，构图安排比此前反复切换更有整理价值。但各组此前均已共同出现，E26 也已读取；动作没有补齐过渡差异，并在只剩一次后续决定时继续消耗预算。局部整理价值不足以使其成为合格正向目标。"
+    },
+    {
+      "request_id": "request_0031",
+      "disposition": "repair_reexecute",
+      "target_rating": 2,
+      "critical_unknown": false,
+      "reason": "三组画面对应、人物姿态及锚点时距计算可信，INCOMPLETE 状态诚实，不能按官方编辑注释强迫其确认删帧。但局部任务所需的 E24→E5 相邻帧突变和 E20 中间桨入画状态已可报告，却被遗漏；仅给出真实的对应子集不等于完成具体差异核查。应补充这些已有证据支持的有限结论，并补齐原始报告对 E13 的引用。当前0轮时提交报告本身合理，无需编造额外取证。"
+    }
+  ],
+  "construction_revisions": [
+    "按逐步结果筛选正向目标；保留必要读取和有具体比较价值的重新附图，重复切换步骤仅作为真实历史上下文，不整条打包为正向轨迹。",
+    "修复报告时使用已见的 E24、E5、E20、E21、E29，明确区分 A 相邻帧突变、B 离散中间状态和仍未知的连续编辑范围。若修改此前行动以补查候选或空档，应从对应状态重新执行，不能沿用不相容的旧后缀。",
+    "同时保留 request_0031 原始输出、接受输出及补入 E13 的明确差异，不把框架补齐的引用当作演员原生输出。",
+    "导出时保留对象引用解析结果、逐轮实际附图及其时间定位；累计已观察列表不能替代本轮附件清单。",
+    "核对官方10秒目标与本次8秒、20.053秒媒体之间的版本和时间轴关系；未核实前保留正式定位成绩未知，参考核对信息不进入演员输入。"
+  ],
+  "rubric_revisions": [
+    "补充核心遗漏的校准例：报告中的对应关系与计算可以准确，同时因遗漏任务要求的可见相邻帧突变而在 task 和目标可用性上不合格。",
+    "明确区分可定位的画面突变与完整编辑边界：相邻帧时间和帧时长能够支持前者，不能自动证明删减量、来源区间或编辑机制。",
+    "复看评分应检查新取得的证据、新的配对关系和未决问题；首次必要比较、有限整理价值及无增益循环分别评分，不按固定次数判定。",
+    "执行评分单独核对原始、接受和提交版本；已知的引用规范化不等于执行失败，也不能据此认定原始报告已具备完整引用。",
+    "将局部任务完成度与官方全局编辑指标分开：真实的锚点子集不能获得完整定位成绩，未要求的音频、来源和全片核验也不能反向扣减 HI 局部任务分。"
+  ]
+}

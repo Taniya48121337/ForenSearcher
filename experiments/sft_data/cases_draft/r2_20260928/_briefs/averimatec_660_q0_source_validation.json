@@ -1,0 +1,200 @@
+{
+ "run": "averimatec_660_q0_source_validation",
+ "config": {
+  "dataset": "averimatec",
+  "case": "660",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 7,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What does the image show?\n背景声明：A ram was sacrificed in a ritual to mark the crowning of King Charles III.\n声明日期（任务元数据）：2022-09-14\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网页的时间或出处正确，仍须按问题核对。\n附带图片是该局部问题的官方输入图片，问题中的图像指代以这些附件为准。",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "图中是一名红制服军人牵着白色长角山羊，带领军乐队经过城堡门洞。结合 The Independent 的相关视频封面与说明，及 Blackheritageradio 的报道，这一场景对应皇家威尔士团的吉祥物山羊 Shenkin IV 随队前往卡迪夫城堡，参加查尔斯三世即位宣告活动。The Independent 的视频发布于2022年9月11日，Blackheritageradio 报道活动日期为9月11日。",
+     "evidence_ids": [
+      "E1",
+      "E9",
+      "E8",
+      "E3"
+     ],
+     "limitations": [
+      "动物名称、部队身份和活动背景依据相关来源的说明；尚未确认输入图片与该视频某一帧的精确对应。"
+     ]
+    },
+    {
+     "statement": "图片展示的是山羊随军事队伍行进，没有展示宰杀或献祭行为。相关报道将活动描述为国王即位宣告，不能据此图支持“为查尔斯三世加冕而献祭公羊”的说法。",
+     "evidence_ids": [
+      "E1",
+      "E8",
+      "E3"
+     ],
+     "limitations": [
+      "静态图片不能证明动物在画面所示时刻之外的遭遇。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":26503}"
+  },
+  {
+   "id": "E2",
+   "label": "Photo shows Welsh battalion’s mascot goat, not a ‘ram’ sacrificed for King Charles III | Fact Check",
+   "source_url": "https://factcheck.afp.com/doc.afp.com.32JR6NT",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Photo shows Welsh battalion’s mascot goat, not a ‘ram’ sacrificed for King Charles III\n\n[2] - This article is more than three years old.\n\n[3] - Published on September 20, 2022 at 17:41\n\n[4] - Updated on September 21, 2022 at 14:57\n\n[5] - 3 min read\n\n[6] - By [Tonye BAKARE](https://factcheck.afp.com/tonye-bakare) ,[AFP Nigeria](https://factcheck.afp.com/afp-nigeria)\n\n[7] “This is the British carrying a white ram (intended for sacrifice) for the crowning and declaration of Prince Charles as King of England,” reads a [post](https://archive.ph/DB7kg) published on September 14, 2022, and shared…（共 5347 字）"
+  },
+  {
+   "id": "E3",
+   "label": "UK: Goat Leads Welsh Military parade @ King Charles III Proclamation Ceremony In Cardiff – Blackheritageradio",
+   "source_url": "https://blackheritageradio.com/uk-goat-leads-welsh-military-parade-king-charles-iii-proclamation-ceremony-in-cardiff/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The proclamation of King Charles III as head of state in ceremonies across the regions of the UK held during the week from Edinburgh, Cardiff and Belfast.\n\n[2] Viewers of the Proclamation at Cardiff Castle may have spotted a perhaps unexpected participant in proceedings – Shenkin the goat. The official Regimental Mascot of 3rd Battalion The Royal Welsh seen leading the historic proceedings on Sunday, September 11.\n\n[3] Prior to the Proclamation, 26 men from the regiment marched alongside Shenkin from City Hall to the Castle.\n\n[4] A goat, a traditional mascot for the Royal Welsh have a regi…（共 1823 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Goat seen at King Charles III's proclamation draws a salary, has a regimental rank",
+   "source_url": "https://www.moneycontrol.com/news/trends/goat-seen-at-king-charles-iiis-proclamation-draws-a-salary-has-a-regimental-rank-9192391.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Last week, at the proclamation of Charles as the king of the United Kingdom, a goat was seen in the midst of soldiers dressed in red uniforms.\n\n[2] The animal, it turns out, is the mascot of a decorated regiment -- the Royal Welsh. It has a regimental rank and even receives a salary.\n\n[3] The regiment has had [goats as mascots](https://royalwelshmuseum.wales/a-brief-history-of-the-regimental-mascot/) since 1775, with unique stories of how each of them was acquired.\n\n[4] The present mascot of the Royal Welsh regiment is Lance Corporal Shenkin IV -- a Kashmir goat chosen in 2018.\n\n[5] \"It wa…（共 2265 字）"
+  },
+  {
+   "id": "E5",
+   "label": "The Truth About The Royal Welsh Goat",
+   "source_url": "https://www.grunge.com/1009294/the-truth-about-the-royal-welsh-goat/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The Truth About The Royal Welsh Goat\n\n[2] A unique looking soldier took part in the [proclamation at Cardiff Castle](https://www.grunge.com/1002036/king-charles-proclamation-was-a-historic-event-for-this-unexpected-reason/) at which King Charles III was officially announced as monarch in Wales (via [itv](https://www.itv.com/news/wales/2022-09-11/why-a-goat-took-part-in-the-proclamation-at-cardiff-castle)). Anyone with an eye for ungulates probably spotted a ranked officer named Lance Corporal Shenkin IV (via [The Royal Welsh Museum](https://royalwelshmuseum.wales/a-brief-history-of-the-reg…（共 4975 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Goat leads Royal Welsh band honouring Queen Elizabeth II's death",
+   "source_url": "https://www.youtube.com/watch?v=7xEvsKvW6Kg",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Goat leads Royal Welsh band honouring Queen Elizabeth II's death\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=7xEvsKvW6Kg\",\n  \"channel\": \"Daily Mail World\",\n  \"upload_date\": \"20220911\",\n  \"duration\": 35,\n  \"description\": \"Queen Elizabeth dies: Goat leads Royal Welsh band through Wales | Twenty-six  men of the 3rd Battalion the Royal Welsh marching from City Hall along Duke Street and into Cardiff Castle. They are led by the regimental mascot, a Welsh billy goat called Lance Corporal Shenkin IV and Goat Major Sergeant Mark Jackson.\\n#queenelizabeth #queen #cardiff #dailymai…（共 1396 字）"
+  },
+  {
+   "id": "E7",
+   "label": "cover: Goat leads Royal Welsh band honouring Queen Elizabeth II's death",
+   "source_url": "https://www.youtube.com/watch?v=7xEvsKvW6Kg",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/7xEvsKvW6Kg/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E8",
+   "label": "Royal Welsh led by goat as they march through Cardiff for proclamation of the King",
+   "source_url": "https://www.youtube.com/watch?v=Hh63GweZXnI",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Royal Welsh led by goat as they march through Cardiff for proclamation of the King\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=Hh63GweZXnI\",\n  \"channel\": \"The Independent\",\n  \"upload_date\": \"20220911\",\n  \"duration\": 33,\n  \"description\": \"A goat has lead 26 men of the Third Battalion the Royal Welsh - supported by the Band of the Royal Welsh - marching from City Hall along Duke Street and into Cardiff Castle ahead of the proclamation of King Charles III.\\n\\nThe Welsh animal is the regimental mascot called Lance Corporal Shenkin IV and Goat Major Sergeant Mark Jackson.\\n\\nW…（共 1057 字）"
+  },
+  {
+   "id": "E9",
+   "label": "cover: Royal Welsh led by goat as they march through Cardiff for proclamation of the King",
+   "source_url": "https://www.youtube.com/watch?v=Hh63GweZXnI",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/Hh63GweZXnI/sddefault.jpg\", \"width\": 640, \"height\": 480, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E10",
+   "label": "BRICS Summit: Delhi Turns Into A Fortress As Putin Arrives, 500+ CCTVs Guard Summit; Airspace Shut",
+   "source_url": "https://www.youtube.com/watch?v=2CJfDGogBJY",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"BRICS Summit: Delhi Turns Into A Fortress As Putin Arrives, 500+ CCTVs Guard Summit; Airspace Shut\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=2CJfDGogBJY\",\n  \"channel\": \"Republic World\",\n  \"upload_date\": \"20260911\",\n  \"duration\": 259,\n  \"description\": \"BRICS Summit: Delhi Turns Into A Fortress As Putin Arrives, 500+ CCTVs Guard Summit; Airspace Shut \\n\\nRussian President Vladimir Putin has landed in New Delhi ahead of the 18th BRICS Summit, marking his first in-person appearance at a BRICS summit outside Russia since 2022. \\n\\nHis visit kicks off with a high-stakes bilat…（共 4262 字）"
+  },
+  {
+   "id": "E11",
+   "label": "cover: BRICS Summit: Delhi Turns Into A Fortress As Putin Arrives, 500+ CCTVs Guard Summit; Airspace Shut",
+   "source_url": "https://www.youtube.com/watch?v=2CJfDGogBJY",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/2CJfDGogBJY/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E12",
+   "label": "Cardiff Castle",
+   "source_url": "https://www.youtube.com/watch?v=MSGZhxRJs2o",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Cardiff Castle\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=MSGZhxRJs2o\",\n  \"channel\": \"Brass Band de Wâldsang - Topic\",\n  \"upload_date\": \"20200630\",\n  \"release_date\": \"20071130\",\n  \"duration\": 244,\n  \"description\": \"Provided to YouTube by The Orchard Enterprises\\n\\nCardiff Castle · Brass Band de Wâldsang · Rieks van der Velde · T.J. Powell\\n\\nBandstand - Famous Brass Band Marches\\n\\n℗ 2001 Mirasound BV\\n\\nReleased on: 2007-11-30\\n\\nAuto-generated by YouTube.\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"MSGZhxRJs2o\"\n}"
+  },
+  {
+   "id": "E13",
+   "label": "cover: Cardiff Castle",
+   "source_url": "https://www.youtube.com/watch?v=MSGZhxRJs2o",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/MSGZhxRJs2o/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  }
+ ]
+}

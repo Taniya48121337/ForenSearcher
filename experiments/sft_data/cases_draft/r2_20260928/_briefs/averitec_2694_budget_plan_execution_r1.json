@@ -1,0 +1,556 @@
+{
+ "run": "averitec_2694_budget_plan_execution_r1",
+ "config": {
+  "dataset": "averitec",
+  "case": "2694",
+  "question_index": null,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "task": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+ "first_plan": {
+  "decision": "INVESTIGATE",
+  "tasks": [
+   {
+    "task": "补齐两校首期校园项目的批准预算核验。已有Wits结项报告第14章表14.5、14.6确认：University of Mpumalanga的HETM001直接项目支出为R539,825,172，Sol Plaatje University的HETN001直接项目支出为R942,827,946，均为2012—2017年累计含税支出，PMIS数据截至2017年7月31日。尚未取得可与这些支出直接比较的批准预算。沿现有结项报告全文、预算审批及相关附件线索，查明两校对应首个交付阶段的批准预算及实际存在的调整，核对期间、费用范围和税额口径，分别判断最终支出是否与批准预算一致；有可比金额时计算差额。核查报告中“within budget”的适用范围，不能将其视为金额相等。保留无法确认的预算或对应关系，说明依据与具体缺口，无需重新调查已确认的直接支出。",
+    "materials": [
+     "E1",
+     "E10",
+     "E3",
+     "E4"
+    ]
+   },
+   {
+    "task": "补齐两校首期项目最终总支出的费用归属缺口。Wits结项报告已确认Sol Plaatje University直接项目支出R942,827,946、University of Mpumalanga直接项目支出R539,825,172，另列两校共同费用HETP001共R141,847,377；目前尚无共同费用分摊依据。核查现有结项报告及相关财务资料是否提供共同费用向两校归属的金额或规则，据此判断能否确定各校包含共同费用的最终实际总支出，不能自行假定分摊比例。同时直接对照Wits首个交付阶段（供2016学年使用的设施，2017年7月结项）与SPU校方2013—2018年首期改造建设约R1.4 billion资本支出的原始说明，查清后者能否提供该校所问首期的另一明确统计口径，以及是否有与Wits金额衔接的依据。保留两种阶段范围，不能用金额差异推定超支；说明实际取得的费用组成、时间和含税口径，无法确定的全口径金额明确保留未知。",
+    "materials": [
+     "E1",
+     "E2",
+     "E10"
+    ]
+   }
+  ]
+ },
+ "answer": "目前能确认两校首个交付阶段在Wits结项报告中的直接支出；包含共同费用的逐校最终总支出，以及各自与批准预算是否一致，仍无法确定。\n\n1. 项目阶段与支出口径\n这里采用Wits／NUPMT负责的首个交付阶段：2011年启动，建设供2016学年使用的设施，至2017年7月31日完成结项。支出表按2012—2017日历年／学年列示，金额均含增值税。这一范围涵盖筹建、规划、改造、新建及移交结算，不是第14章内部所称仅涵盖2012—2013年的可行性“Phase 1”。[E1][E10]\n\n2. 各校实际支出\n• Sol Plaatje University（SPU）：R942,827,946。出处为Wits《Close Out Report》第14章表14.6（印刷页256）。[E10]\n• University of Mpumalanga（UMP）：R539,825,172。出处为同章表14.5（印刷页255）。[E10]\n\n这些是PMIS截至2017年7月31日记录的直接项目支出，包括基础设施、顾问费、家具设备、规划及项目管理等；项目管理还包含后续项目的部分前期规划设计服务，不能全部视为首批新楼的纯施工费。另有两校共同项目费用R141,847,377，三项合计R1,624,500,495。尚未取得共同费用的按校归属依据，因此不能将上述逐校直接支出称为包含全部共同费用的总成本。[E10]\n\n3. 财务记录存在需要调节的分类差异\nKPMG于2017年8月出具的约定程序报告，累计总支出同为R1,624,500,495；但按其表内学校归属加总，UMP为R539,389,051.24，SPU为R942,968,460.56，General共同费用为R142,142,983.20，与PMIS的分类金额不同。现有证据未解释差异，不能混用两表或认定其中一套逐校金额已被另一套独立确认。KPMG也明确不对支出表的完整性提供保证。[E10][E13]\n\n4. 与批准预算是否一致\n两校均无法完成同口径的金额核对。结项报告表14.7称“16 new buildings delivered within budget”，支持的是报告对两校相关新楼交付作出的“预算内”陈述；它不证明全部逐校直接支出均在预算内，更不表示实际支出恰好等于批准预算。[E10]\n\nKPMG记载的R1,768,506,053是Wits管理的两校合并预算，不能充当任一学校的完整批准预算。尚缺逐校批准及修订预算、对应费用范围和税额口径，所以SPU、UMP各自的预算差额均未知，不能据此判断超支或金额相等。[E13]\n\n另须区分：SPU校方将2013—2018年的首期改造建设资本支出概述为约R1.4 billion；这一阶段范围与Wits首个交付阶段不同，相关税额口径及金额衔接尚未核实，不能替代上述结项直接支出，也不能用两者差额判断超支。[E12]",
+ "n_decisions": 89,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "查清 Sol Plaatje University 首期校园建设项目最终的实际总支出，并核对其与同阶段、同统计口径的批准预算是否一致，说明项目阶段、统计口径与出处。直接对照 Wits 首期项目结项报告、校方所述2013—2018年约R1.4 billion资本支出及相关预算资料，核实这些材料的阶段和费用范围是否对应。区分最终实际支出、合同金额与预算；“预算内”不能直接视为金额相等。无法取得的金额或对应关系明确保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "已取得Wits结项报告中的SPU直接项目支出，但尚未取得同阶段、同费用范围的批准预算，也未建立校方2013—2018年约R1.4 billion资本支出与该结项数字的对应关系。因此，全口径最终总支出及其是否与批准预算金额相等仍无法确认。",
+   "findings": [
+    {
+     "statement": "Wits结项报告第14章表14.6（印刷页256）记载：Sol Plaatje University的HETN001直接项目费用累计实际支出为R942,827,946，约R942.83 million。数据来自截至2017年7月31日的PMIS，按2012—2017日历／学年列示，金额含增值税。这是结项记录中的实际支出，不是批准预算或合同金额。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "该数值明确对应SPU直接项目费用，不能直接称为包含两校共同项目费用分摊后的全口径总成本。"
+     ]
+    },
+    {
+     "statement": "上述R942,827,946包含基础设施支出R837,127,471、家具设施设备等可移动资产支出R72,825,226、项目管理服务支出R23,735,245，以及学术与机构规划、可行性研究、一般办公室与管理费等项目。基础设施支出包含改造、新建及顾问费用；项目管理服务还包含后续新项目的前期规划和设计服务。表14.2另列两校共同的HETP001总体项目费用R141,847,377，并未并入SPU的HETN001金额。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "已读内容未提供两校共同费用向SPU分摊的依据，不能任意按比例分摊，也不能全部计入SPU。",
+      "HETN001含后续项目的部分前期服务费用，不能把其全部金额等同于首批新建筑的纯施工成本。"
+     ]
+    },
+    {
+     "statement": "两份材料的“首期”不能直接视为同一统计范围。Wits说明其首期交付对象是供2016学年使用的设施，结项至2017年7月；第14章还将由各大学管理、面向2017学年的建设称为第二期建设。校方infrastructure页面则称2013—2018年完成了首期改造与建设计划，资本支出约R1.4 billion，包含教学空间、教职工办公室和校内宿舍。两者时间范围与阶段划分不同，现有材料没有逐项对照表证明费用范围一致。",
+     "evidence_ids": [
+      "E1",
+      "E10",
+      "E2"
+     ],
+     "limitations": [
+      "约R1.4 billion是校方提供的近似资本支出，页面未给出精确结算额、完整费用组成或增值税口径。",
+      "不能仅凭两个金额不同判定超支，也不能将约R1.4 billion替代Wits结项报告的直接项目支出。"
+     ]
+    },
+    {
+     "statement": "Wits第14章表14.7称，两校共16栋新建筑于2016年交付且“within budget”。这一表述支持报告所称的预算内交付，但不证明实际支出与批准预算金额相等，也没有给出与SPU的R942,827,946直接项目支出或校方约R1.4 billion资本支出逐项对应的批准预算。已读内容中的框架合同与采购方式说明也不能提供可替代实际支出的合同总金额。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "同阶段、同费用口径的SPU批准预算金额及其调整记录尚未取得，预算差额无法计算，是否金额相等保留未知。",
+      "相应合同总金额尚未核实；预算、合同金额和最终实际支出须分别保留。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W1-2",
+   "task": "查清 University of Mpumalanga 首期校园建设项目最终的实际总支出，并核对其与同阶段、同统计口径的批准预算是否一致，说明项目阶段、统计口径与出处。核查 Wits 首期项目结项报告及相关预算资料，直接对照该校最终支出与批准预算，辨明两校合计金额与该校金额、合同金额与项目总支出的区别。NEC所述合同价格涨幅及“预算内”不能直接视为最终总支出与批准预算相等。无法取得的金额或对应关系明确保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "已确认 University of Mpumalanga 的结项直接项目支出，但尚缺同阶段、同统计口径的批准预算，以及两校共同费用的分摊依据，无法确定包含共同费用的该校总支出或判断其是否等于批准预算。",
+   "findings": [
+    {
+     "statement": "Wits 发布的《Close out Report》第14章表14.5列明：University of Mpumalanga（UMP）成本中心 HETM001 在2012—2017年的累计实际支出为 R539,825,172，含增值税，按日历年／学年记录；数据来自2017年7月31日提取的项目管理信息系统（PMIS）。这是该校直接项目成本的结项支出。其内含基础设施提供 R459,791,040、家具设备等动产 R53,547,965、项目管理服务 R18,559,797，以及规划、可行性等其他费用。基础设施项包括翻修、新建、顾问费和施工费，因此上述累计支出不能当作单纯施工合同金额。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "R539,825,172 不包含另列于 HETP001 的两校共同项目费用，不能直接表述为分摊全部共同费用后的 UMP 总成本。",
+      "项目管理服务还包含新项目的前期规划和设计管理，不能将整个成本中心支出等同于某几栋首期新建筑的施工费用。"
+     ]
+    },
+    {
+     "statement": "本次支出口径对应 NUPMT 负责的首个交付阶段，涵盖大学筹建、为2016学年提供设施及截至2017年7月的移交结项。第14章另将这段工作划为可行性与设立（2012—2013）、施工动员（2014）、施工交付（2015）和移交结项（2016—2017）四个管理阶段；其中称作“Phase 1”的可行性与设立阶段，并不等于整个首期校园交付项目。Wits 是报告发布及项目交付管理机构，建设对象是 UMP 和 Sol Plaatje University（SPU）。",
+     "evidence_ids": [
+      "E1",
+      "E10"
+     ],
+     "limitations": [
+      "报告说明管理阶段存在重叠，并不与各学年精确对应。"
+     ]
+    },
+    {
+     "statement": "第14章表14.2的总支出 R1,624,500,495 是两校项目合计，包含 UMP 直接项目成本 R539,825,172、SPU 直接项目成本 R942,827,946，以及共同项目费用 HETP001 的 R141,847,377，均含增值税。共同费用用于两校的规划、协调和交付管理等。R1,624,500,495 不是 UMP 单校支出；现有已读资料未给出共同费用在两校之间的分摊关系，不能任意按一半或其他比例加到 UMP 名下。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "UMP 包含共同费用分摊后的累计实际总支出仍未知。"
+     ]
+    },
+    {
+     "statement": "第14章表14.7对两校2016年设施交付使用了“16 new buildings delivered within budget”的表述，但现有已读内容没有提供与 UMP 的 R539,825,172 在期间、成本类别及含税口径上直接对应的批准预算。因此，目前既不能确认最终支出与批准预算相等，也不能确认两者不相等或计算差额。“预算内”本身不表示支出恰好等于预算；合同价格的涨幅也不能替代项目总支出与批准预算的直接比较。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "尚未取得 UMP 同阶段、同口径的批准预算及其调整资料。",
+      "NEC 来源的合同金额及涨幅未在本次已读内容中得到核实，不能据其填补预算或最终支出数值。",
+      "已读第14章内容并未覆盖该章全文，不能据此断言完整结项报告不存在相关预算资料。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W2-1",
+   "task": "补齐两校首期校园项目的批准预算核验。已有Wits结项报告第14章表14.5、14.6确认：University of Mpumalanga的HETM001直接项目支出为R539,825,172，Sol Plaatje University的HETN001直接项目支出为R942,827,946，均为2012—2017年累计含税支出，PMIS数据截至2017年7月31日。尚未取得可与这些支出直接比较的批准预算。沿现有结项报告全文、预算审批及相关附件线索，查明两校对应首个交付阶段的批准预算及实际存在的调整，核对期间、费用范围和税额口径，分别判断最终支出是否与批准预算一致；有可比金额时计算差额。核查报告中“within budget”的适用范围，不能将其视为金额相等。保留无法确认的预算或对应关系，说明依据与具体缺口，无需重新调查已确认的直接支出。",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未取得两校首个交付阶段各自的批准预算、可核实的预算调整金额及其期间、费用范围和含税口径；也未读到“within budget”的原文上下文。因此无法分别判断最终直接支出是否符合批准预算或计算可比差额。",
+   "findings": [
+    {
+     "statement": "结项报告覆盖首个交付阶段，至2017年7月完成为2016学年交付设施的结项。第14章还区分了由各大学自行管理、为2017学年开展的第二期建设，因此不能将后续建设预算直接作为本次首期支出的比较基准。",
+     "evidence_ids": [
+      "E1",
+      "E10"
+     ],
+     "limitations": [
+      "尚未取得与首期直接支出逐项对应的预算批准文件。"
+     ]
+    },
+    {
+     "statement": "第6章表6.1列示的是2013/14—2015/16年度两校合并的中期拨款，同时包含资本和运营费用；两校之间的分配由DHET根据实施计划、优先事项等决定。该表不能直接充当University of Mpumalanga或Sol Plaatje University各自2012—2017年累计直接项目支出的批准预算。",
+     "evidence_ids": [
+      "E11"
+     ],
+     "limitations": [
+      "已读表格未提供逐校分配金额或增值税口径；当前文本提取未明确金额数量级，不能据此换算或计算差额。",
+      "尚未建立中期拨款与HETM001、HETN001直接项目成本之间的对应关系。"
+     ]
+    },
+    {
+     "statement": "第6章明确记载，2014/15和2015/16年度获得的资金分配低于可行性研究中的预测，项目管理团队因此调整了计划实施进度。这支持资金安排影响建设分期的判断，但不足以确定任一学校首期批准预算发生了多少金额的正式调整。",
+     "evidence_ids": [
+      "E11"
+     ],
+     "limitations": [
+      "可行性预测金额与正式批准预算不能互换；尚未取得逐校初始批准金额、修订金额及相应审批记录。"
+     ]
+    },
+    {
+     "statement": "University of Mpumalanga和Sol Plaatje University的最终直接支出与各自批准预算是否一致，目前均无法确认，差额均无法计算。已读结项报告内容不足以确定“within budget”的具体适用范围；该表述本身也不能证明支出与预算金额相等。",
+     "evidence_ids": [
+      "E1",
+      "E10",
+      "E11"
+     ],
+     "limitations": [
+      "尚未读取“within budget”所在段落，不能确定其指向的学校、交付阶段、费用类别或预算版本。",
+      "结论反映当前取证缺口，不表示两校超预算，也不表示支出必然等于或不等于批准预算。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W2-2",
+   "task": "补齐两校首期项目最终总支出的费用归属缺口。Wits结项报告已确认Sol Plaatje University直接项目支出R942,827,946、University of Mpumalanga直接项目支出R539,825,172，另列两校共同费用HETP001共R141,847,377；目前尚无共同费用分摊依据。核查现有结项报告及相关财务资料是否提供共同费用向两校归属的金额或规则，据此判断能否确定各校包含共同费用的最终实际总支出，不能自行假定分摊比例。同时直接对照Wits首个交付阶段（供2016学年使用的设施，2017年7月结项）与SPU校方2013—2018年首期改造建设约R1.4 billion资本支出的原始说明，查清后者能否提供该校所问首期的另一明确统计口径，以及是否有与Wits金额衔接的依据。保留两种阶段范围，不能用金额差异推定超支；说明实际取得的费用组成、时间和含税口径，无法确…（共 414 字）",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未取得共同费用向两校归属的金额或规则，也未取得SPU约R1.4 billion资本支出与Wits结项金额的对账依据。两校包含共同费用的精确最终实际支出仍无法确定。",
+   "findings": [
+    {
+     "statement": "Wits结项报告的项目期间为2011年11月1日至2017年7月31日；支出表按2012—2017日历年／学年记录，PMIS数据提取日为2017年7月31日。其首个交付阶段包含前期设立、改造及为2016学年交付的新建设施，随后进行移交、最终结算和结项。报告另列由各大学管理、供2017学年使用的第二阶段建设，因此这一项目范围不能直接等同于SPU校方所称的2013—2018年首期建设。",
+     "evidence_ids": [
+      "E10",
+      "E2",
+      "E12"
+     ],
+     "limitations": [
+      "Wits直接项目支出还包括后续项目的前期规划设计服务，不能将其全部解释为2016年交付建筑的纯施工费。"
+     ]
+    },
+    {
+     "statement": "Wits表14.2、14.5和14.6记录：SPU直接项目支出R942,827,946，UMP直接项目支出R539,825,172，两校共同费用HETP001为R141,847,377，合计R1,624,500,495；这些表明确注明金额含VAT。SPU直接费用中，基础设施提供为R837,127,471，家具、装置及设备为R72,825,226，项目管理服务为R23,735,245；UMP对应金额分别为R459,791,040、R53,547,965和R18,559,797。直接费用还列有学术规划、机构规划、可行性研究、一般办公及管理费和DHET基础设施书籍费用。基础设施类别包含改造、新建及顾问费，设备类别包括ICT等设备。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "上述两校金额是各校直接项目费用，尚未包含另列共同费用的按校分摊；不能将其标为各校全口径最终总支出。"
+     ]
+    },
+    {
+     "statement": "Wits将HETP001定义为代表两校发生的规划、协调和交付管理费用，组成包括学术规划、可研、一般办公及管理费、基础设施规划、机构规划和交付管理。已读费用分类及明细未给出向SPU、UMP分配的金额或规则。KPMG于2017年8月出具的约定程序报告也将HETP001列为“General”，累计至2017年7月31日为R142,142,983.20，同时列示项目支出总额R1,624,500,495.00。该共同费用金额与Wits的PMIS分类金额不同，已读部分未解释差异。KPMG所述2.5%是Wits行政管理费的协议约定，不能作为两校共同费用分摊比例。因此，两校各自包含共同费用的最终实际总支出均保留未知。",
+     "evidence_ids": [
+      "E10",
+      "E13"
+     ],
+     "limitations": [
+      "未取得两种财务分类的调节表或共同费用分摊凭据，不能混用其分类金额。",
+      "结论限于已读取的报告部分，不能据此断言完整报告及全部相关财务资料均不存在分摊依据。"
+     ]
+    },
+    {
+     "statement": "SPU校方五周年原始说明提供了另一明确的阶段口径：2013—2018年完成的首期改造和建设计划，资本支出约R1.4 billion，包括教学空间、教职员工办公室和校内宿舍；原文还说明完成六栋新建筑及北校区主楼Luka Jantjie House的改造。这可以作为SPU校方所定义的2013—2018年首期资本支出的近似金额，须与Wits为2016学年交付、2017年7月结项的项目口径分别保留。",
+     "evidence_ids": [
+      "E2",
+      "E12"
+     ],
+     "limitations": [
+      "校方说明未交代该近似资本支出是否含VAT，也未列出费用类别明细、HETP001的纳入情况或与Wits支出的对账关系。",
+      "约R1.4 billion不能替代Wits项目范围下SPU包含共同费用的精确最终金额。"
+     ]
+    },
+    {
+     "statement": "已读材料没有建立SPU约R1.4 billion与Wits直接项目支出R942,827,946之间的金额衔接。KPMG背景说明记载，DHET批准2015／2016年度直接向SPU释放R83,000,000资本项目资金，并将两校直接拨款从Wits管理的预算中扣除；这说明存在由大学直接承接资本资金的安排，但该拨款金额不能当作SPU已经发生的支出，也不能直接加到Wits支出上以解释约R1.4 billion。两种金额的时间、项目范围和费用口径尚未调节一致，金额差异不能证明超支。",
+     "evidence_ids": [
+      "E10",
+      "E12",
+      "E13"
+     ],
+     "limitations": [
+      "仍缺SPU该阶段资本支出的财务明细、共同费用归属资料及跨阶段对账表，无法量化两种统计口径之间的衔接。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W3-1",
+   "task": "核实Sol Plaatje University与University of Mpumalanga在Wits负责的首个交付阶段各自的批准预算，并与结项直接支出比较。该阶段为2016学年交付设施，2017年7月结项；PMIS列示2012—2017年含VAT直接支出：SPU为R942,827,946，UMP为R539,825,172。新取得的KPMG报告记载：2016年3月23日第五份协议增补对应总预算R1,951,506,053，其中直接拨给UMP的R100,000,000和SPU的R83,000,000扣除后，Wits管理预算为R1,768,506,053。沿该协议增补及相关预算附件，查明是否有与两校直接支出对应的逐校批准金额及修订金额，核对阶段、费用范围和税额口径；不得将拨款直接视为支出或逐校完整预算。同时读取第14章表14.7关于“within budget”的上下文，确定其支持的范围…（共 460 字）",
+   "status": "INCOMPLETE",
+   "status_reason": "尚未取得第五份协议增补原件及可将逐校批准、修订预算与PMIS直接支出对应的预算附件；两校各自预算金额、费用范围及预算VAT口径仍无法核实。",
+   "findings": [
+    {
+     "statement": "本次首个交付阶段指为2016学年交付设施、于2017年7月结项的Wits项目，并非第14章内部划分的2012—2013年可行性阶段。表14.5及14.6列示2012—2017年含VAT直接支出：UMP为R539,825,172，SPU为R942,827,946。直接支出包括基础设施、顾问费用、家具设备、规划及项目管理等；共同项目成本R141,847,377另列，未计入上述逐校直接支出。",
+     "evidence_ids": [
+      "E1",
+      "E10"
+     ],
+     "limitations": [
+      "逐校直接支出中的项目管理费用还包括后续项目的前期规划与设计服务，不能将这些总额直接视为16栋新楼的建造支出。"
+     ]
+    },
+    {
+     "statement": "KPMG报告记载，2016年3月23日第五份协议增补覆盖2011年11月1日至2017年7月31日，总预算为R1,951,506,053；扣除DHET批准在2015/2016年度直接拨给UMP的R100,000,000及SPU的R83,000,000后，Wits管理预算为R1,768,506,053。这两笔逐校金额是资本项目直接拨款，不能据此认定为两校各自完整批准预算或实际支出。",
+     "evidence_ids": [
+      "E13"
+     ],
+     "limitations": [
+      "已读段落未列出与PMIS逐校直接支出对应的批准及修订预算，也未明确上述预算的VAT口径；KPMG的转述不能替代协议及预算附件的逐项核对。"
+     ]
+    },
+    {
+     "statement": "表14.7在“Feb 2016”一行写道：“16 new buildings delivered within budget, together with a range of renovated buildings”。上下文讨论两校为2016学年招生提供设施的交付进度，后文说明建设涉及两校各三个项目。因此，该表支持结项报告对两校相关新楼交付作出“预算内”的定性陈述；它没有提供逐校预算金额，也没有明确把这一判断扩展到2012—2017年全部直接支出。",
+     "evidence_ids": [
+      "E10"
+     ],
+     "limitations": [
+      "这是项目管理报告的陈述，尚未通过同口径逐校批准预算与结项支出独立复核；“within budget”不表示支出恰好等于预算。"
+     ]
+    },
+    {
+     "statement": "SPU：可确认PMIS记录的含VAT直接支出为R942,827,946。现有证据支持报告将相关新楼交付描述为预算内，但不足以确认SPU全部直接支出在其逐校批准预算内；也不能确认支出与批准预算金额相等。对应批准预算、修订预算及预算减支出的差额均保留未知。",
+     "evidence_ids": [
+      "E10",
+      "E13"
+     ],
+     "limitations": [
+      "缺少SPU同阶段、同费用范围、同税额口径的逐校批准及修订预算；不能由缺少相等证据推断二者必然不等。"
+     ]
+    },
+    {
+     "statement": "UMP：可确认PMIS记录的含VAT直接支出为R539,825,172。现有证据支持报告将相关新楼交付描述为预算内，但不足以确认UMP全部直接支出在其逐校批准预算内；也不能确认支出与批准预算金额相等。对应批准预算、修订预算及预算减支出的差额均保留未知。",
+     "evidence_ids": [
+      "E10",
+      "E13"
+     ],
+     "limitations": [
+      "缺少UMP同阶段、同费用范围、同税额口径的逐校批准及修订预算；不能由缺少相等证据推断二者必然不等。"
+     ]
+    },
+    {
+     "statement": "KPMG的资金余额表另列：收到资金R1,768,506,053，减向两校转拨R119,770,000，加水权退款R1,285,988及PI索赔款R2,684,269，调整后收入为R1,652,706,310；减总支出R1,624,500,495，余额为R28,205,815，之后另加利息。这是项目整体资金收支调节，不能把调整后收入当作修订批准预算，或把余额分配为两校各自的预算节余。",
+     "evidence_ids": [
+      "E13"
+     ],
+     "limitations": [
+      "已读资金调节表没有给出所需的逐校预算分配及修订对应关系。"
+     ]
+    }
+   ]
+  },
+  {
+   "workspace": "W3-2",
+   "task": "补查两校首个交付阶段最终支出的共同费用归属依据。Wits第14章PMIS表列示截至2017年7月31日的含VAT直接支出：SPU为R942,827,946、UMP为R539,825,172，另列共同费用HETP001为R141,847,377，合计R1,624,500,495。KPMG2017年8月约定程序报告列示相同累计总支出，但HETP001为R142,142,983.20，且将部分支出按建筑项目另列。直接对照两份报告的相关财务明细、KPMG附录及其所引资料，查明共同费用是否有按校归属金额或分配规则，以及分类差异是否影响按校金额的计算。仅在取得归属依据后计算各校包含共同费用的最终实际总支出；不能自行假设比例、混用分类金额或把资金转拨加作支出。明确所得金额的阶段和费用口径；未能确定的金额及缺少的依据保留未知。",
+   "status": "INCOMPLETE",
+   "status_reason": "未取得HETP001共同费用的按校归属金额或分配规则，也未取得两份报告分类差额的逐项调节依据。KPMG附录所指支出明细及相关底层资料尚未核实，因此不能确定两校各自包含共同费用的最终实际总支出。",
+   "findings": [
+    {
+     "statement": "可确认的费用范围是Wits/NUPMT负责的首个交付阶段，涵盖筹建、规划、建设及截至2017年7月31日的移交结算，不是两校所有后续建设的最终成本。Wits第14章表14.2、14.5及14.6列示含VAT累计直接支出：SPU为R942,827,946，UMP为R539,825,172；另列共同费用HETP001为R141,847,377，总计R1,624,500,495。",
+     "evidence_ids": [
+      "E1",
+      "E10"
+     ],
+     "limitations": [
+      "两校直接支出均未包含单独列示的HETP001共同费用。"
+     ]
+    },
+    {
+     "statement": "按KPMG表中University栏，将截至2017年7月31日归属同一学校的项目行相加，计算得到UMP为R539,389,051.24、SPU为R942,968,460.56；General项HETP001为R142,142,983.20，三项合计R1,624,500,495.00。相对PMIS，UMP少R436,120.76、SPU多R140,514.56、共同费用多R295,606.20，差额合计为零。因此，建筑项目另列后仍存在按校及共同费用分类金额的差异；合计一致不能保证按校金额一致，也不能将两表分类金额混合计算。",
+     "evidence_ids": [
+      "E10",
+      "E13"
+     ],
+     "limitations": [
+      "上述按校金额是对KPMG已列项目行的加总，不是包含共同费用的各校最终总支出。",
+      "现有材料未说明差额对应哪些交易，不能确定其属于重分类、调整还是其他原因。"
+     ]
+    },
+    {
+     "statement": "Wits第14章说明HETP001用于两校共同的规划、协调及交付管理，表14.3按费用性质分项，未在已读明细中给出按校金额或分摊比例。KPMG亦将HETP001列为General。报告所述2.5%是Wits行政管理费的计费规定，不能作为两校之间分配共同费用的比例。由此，SPU和UMP各自包含共同费用的最终实际总支出均保留未知。",
+     "evidence_ids": [
+      "E10",
+      "E13"
+     ],
+     "limitations": [
+      "KPMG附录1和附录2的已读提取文字仅提供支出明细及叙述报告的引介，未提供可核对的实际附表内容；不能据此断言原始附件没有分配依据。",
+      "仍缺共同费用按校归属清单或正式分配规则，以及其与PMIS、KPMG分类金额之间的调节资料。"
+     ]
+    },
+    {
+     "statement": "KPMG的余额计算将R119,770,000向两校转拨的资金与R1,624,500,495实际支出分别列示；背景部分另载DHET直接向两校拨付R183,000,000。因此，这些拨款或转拨金额不能直接加作本阶段实际支出，也不能用于补足共同费用的按校归属。",
+     "evidence_ids": [
+      "E13"
+     ],
+     "limitations": [
+      "已读材料没有提供这些转拨资金在收款学校端的实际支出明细。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "Close Out Report - Wits University",
+   "source_url": "https://www.wits.ac.za/ipdm/evidence-based-publications/close-out-report/",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] New Universities Case Study Close Out Report\n\n[2] Project overview\n\n[3] Towards the end of 2011, the University of the Witwatersrand (Wits) was approached by the Department of Higher Education and Training (DHET) to provide specialised delivery capacity for the implementation of government’s decision to establish new universities in the Mpumalanga and Northern Cape provinces of South Africa. A memorandum of agreement (MOA) between Wits and DHET established the New Universities Project Management Team (NUPMT) to direct academic and institutional planning as well as the planning, design, con…（共 17087 字）"
+  },
+  {
+   "id": "E2",
+   "label": "infrastructure Archives - Sol Plaatje University",
+   "source_url": "https://www.spu.ac.za/index.php/tag/infrastructure/",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2018 marks Sol Plaatjie University’s fifth year since its establishment, and of a period in which South Africa’s youngest university has made notable achievements. 1. Institutional development of a new Sol Plaatje University Sol Plaatje University was established by Government [Read More …](https://www.spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje/)\n\n[2] Tag: infrastructure\n\n[3] The past five years (2013-2018) have seen the completion of the first phase of the refurbishment and construction programme, representing a capital expenditure of approxi…（共 689 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Sol Plaatje University and University of Mpumalanga, South Africa | NEC Projects | NEC Contracts | NEC Contracts",
+   "source_url": "https://www.neccontract.com/projects/sol-plaatje-university-and-university-of-mpumalanga-south-africa",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The South African government has used NEC contracts to procure the first phase of its two newest universities. After a search for appropriate sites starting in 2011, Sol Plaatje University in Kimberley, Northern Cape Province and the University of Mpumalanga in Nelspruit, Mpumalanga Province were formally established in 2013.\n\n[2] Both universities have been developed on existing sites, so much of the initial work involved the refurbishment of existing buildings. Sol Plaatje includes the former Kimberley Civic Centre and National Institute for Higher Education, while University of Mpumalan…（共 4932 字）"
+  },
+  {
+   "id": "E4",
+   "label": "New SA universities named | SAnews",
+   "source_url": "https://www.sanews.gov.za/south-africa/new-sa-universities-named",
+   "acquired_by": "provided_saved_source",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Pretoria – President Jacob Zuma has announced the names of the two new universities government will be building in Mpumalanga and the Northern Cape.\n\n[2] The new university in the Northern Cape will be named Sol Plaatje University and the one in Mpumalanga will be called the University of Mpumalanga.\n\n[3] The announcement was made at the Union Buildings in Pretoria on Thursday.\n\n[4] Sol Plaatje was a famous writer, a South African intellectual, journalist, linguist, politician and translator. He was born just outside Boshof in the then Orange Free State.\n\n[5] Historically, Mpumalanga and t…（共 4701 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Compétitions – LIGUE DE FOOTBALL DES HAUTS-DE-France",
+   "source_url": "https://lfhf.fff.fr/competitions/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] LIGUE DE FOOTBALL DES HAUTS-DE-France\n\n[2] Bienvenue dans la section « Compétitions ». Retrouvez ici l’ensemble des résultats, classements, agendas et calendriers ainsi que les actualités des compétitions.\n\n[3] ActualitésChampionnatsFutsal\n\n[4] Afin de mieux répondre aux besoins des clubs et de favoriser le développement de la pratique, la Ligue de Football des Hauts-de-France fait évoluer l'organisation des compétitions jeunes futsal à compter de la saison 2026-2027. Cette réforme concerne uniquement les catégories d'âge : les formul...\n\n[5] ChampionnatsChampionnats régionaux\n\n[6] La Ligu…（共 3233 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Fédération Française de Football (FFF) | Site Officiel",
+   "source_url": "https://www.fff.fr/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] LIGUE 3 BETCLIC\n\n[2] Suivez la 6e journée en direct\n\n[3] Le choc entre Thionville Lusitanos, leader, et le FC Rouen, son dauphin, est au menu de la 6e journée de championnat, dont huit matches sont programmés à 14h45 (en direct sur Ligue 1+).\n\n[4] L'espace billetterie\n\n[5] vendredi 2 octobre 2026 à 20:45\n\n[6] Stade de France, Saint-Denis\n\n[7] Ligue des Nations de l'UEFA\n\n[8] samedi 3 octobre 2026 à 19:00\n\n[9] Stade de la Source, Orléans\n\n[10] Qualifications Euro U21 2027\n\n[11] lundi 5 octobre 2026 à 20:45"
+  },
+  {
+   "id": "E7",
+   "label": "Compétitions – LIGUE DU GRAND EST DE FOOTBALL",
+   "source_url": "https://lgef.fff.fr/competitions/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] LIGUE DU GRAND EST DE FOOTBALL\n\n[2] Bienvenue dans la section « Compétitions ». Retrouvez ici l’ensemble des résultats, classements, agendas et calendriers ainsi que les actualités des compétitions.\n\n[3] FMIInfos aux clubs\n\n[4] La LGEF tient à rappeler les modalités d'usage de la Feuille de Match Informatisée (FMI) avant la reprise des rencontres officielles. Pour rappel : une tablette de 10,4 pouces (minimum) permettant un affichage de 1920*1200 pixels (minimum) est nécessaire. Android 12 ou supérieur 1. TABLETTE PRÉCONIS...\n\n[5] Coupes nationalesInfos aux clubsSeniors\n\n[6] Place au 3e to…（共 3103 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Mon compte FFF | Fédération Française de Football (FFF) | Site Officiel",
+   "source_url": "https://www.fff.fr/439-mon-compte-fff.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Qu'est-ce que Mon Compte FFF ?\n\n[2] En rejoignant la communauté FFF, profite de l'outil personnalisé « Mon Compte FFF » qui regroupe la gestion de tes informations personnelles et de tes préférences.\n\n[3] Pour accéder à Mon Compte FFF, tu dois te créer un compte FFF. Si tu es licencié, il te faudra alors ajouter ta licence active sur la saison en cours pour accéder à tes statistiques individuelles.\n\n[4] Rends-toi dès maintenant sur Mon Compte FFF afin de retrouver toutes les informations essentielles de ta saison de football.\n\n[5] Les fonctionnalités de Mon Compte FFF\n\n[6] Comment accéder …（共 923 字）"
+  },
+  {
+   "id": "E9",
+   "label": "ノートン360を入れたら、YouTubeが見れなくなりました... - Yahoo!知恵袋",
+   "source_url": "https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1012485460",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2007/8/16 18:04\n\n[2] 1回答\n\n[3] ノートン360を入れたら、YouTubeが見れなくなりました･･･。 『JavaScript がオフになっているか、古いバージョンの Adobe Flash Player を使用しています。最新の Flash Player を入手してください。』 と表示されて、再生できません。 最新のFlash Playerはインストールしました。 それから、[ツール]→[インターネットオプション]→[セキュリティ]の[レベルのカスタマイズ]を見たら、スクリプトは有効になっていました。 ノートン360を一旦解除してみても同じでした。 他に変わってしまった設定があるのでしょうか？？ 解決方法を教えてください。 よろしくお願いします。\n\n[4] [ウイルス対策、セキュリティ対策](https://chiebukuro.yahoo.co.jp/category/2080401313/question/list)・4,998閲覧"
+  },
+  {
+   "id": "E10",
+   "label": "chapter14.pdf",
+   "source_url": "https://www.wits.ac.za/media/wits-university/faculties-and-schools/-engineering-and-the-built-environment/construction-economics-and-management/ipdm/documents/close-out-report/chapter14.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nClose out Report\nof the New Universities Project Management Team on the\nDevelopment of New Universities in\nMpumalanga and the Northern Cape\n01 NOVEMBER 2011 - 31 JULY 2017\n\n[page 2]\nChapter 14\nReview of expenditure and value for money\n\n[page 3]\n250 \n \n \n14. Review of Expenditure and Value for Money \nThis chapter provides a management review of project performance based on project \nrecords and the Programme Management Information System (PMIS) maintained by the \nNew Universities Project Management Team (NUPMT). All PMIS values were extracted from \nthe PMIS on 31 July 2017. \nThis manage…（共 85317 字）"
+  },
+  {
+   "id": "E11",
+   "label": "chapter6.pdf",
+   "source_url": "https://www.wits.ac.za/media/wits-university/faculties-and-schools/-engineering-and-the-built-environment/construction-economics-and-management/ipdm/documents/close-out-report/chapter6.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nClose out Report\nof the New Universities Project Management Team on the\nDevelopment of New Universities in\nMpumalanga and the Northern Cape\n01 NOVEMBER 2011 - 31 JULY 2017\n\n[page 2]\nChapter 6\nLand assembly, feasibility and early implementation\n\n[page 3]\n57 \n \n \n6. Land Assembly, Feasibility and Early Implementation \n \n6.1. S ELECTION OF THE SEATS OF THE NEW UNIVERSITIES \n6.1.1 Introduction \n \nIn 2010 the Minister of Higher Education and Training had appointed two task teams to \ninvestigate the potential to establish universities in the Northern Cape and Mpumalanga \nprovinces. The task…（共 80045 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Five-year milestones honour ethos of University’s namesake - Sol Plaatje University",
+   "source_url": "https://www.spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 2018 marks Sol Plaatjie University’s fifth year since its establishment, and of a period in which South Africa’s youngest university has made notable achievements.\n\n[2] 1. Institutional development of a new Sol Plaatje University\n\n[3] Sol Plaatje University was established by Government Gazette on 23 August 2013. The then Minister of Higher Education and Training, Dr Nzimande, appointed a five-person interim council in August 2013. This was made up of Ms Jenny Glennie (Chair), Mr Abel Madonsela, Prof Vishnu Padayachee, Dr Yvonne Muthien and Mr Maruping Lekwene.\n\n[4] The Interim Head, Prof …（共 6032 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Document Classification - KPMG Confidential University of the Witwatersrand",
+   "source_url": "https://www.sabeex.co.za/sites/default/files/nu/reports/chapter-4/4-8_KPMG_-_August_2017_final_report.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\nDocument Classification - KPMG Confidential \n \nUniversity of the \nWitwatersrand \n \nAgreed upon Procedures review \nDelivery for Two Universities in \nthe Northern Cape and \nMpumalanga \nDepartment of Higher Education \nand Training \n \nAugust 2017\n\n[page 2]\nDocument Classification - KPMG Confidential \nDistribution \n For information Discussed prior to \nrelease \nProfessor Adam Habib \nVice Chancellor \n \nFana Sibanyoni \nChief Operating Officer \n \nPrakash Desai \nChief Financial Officer \n \nCharles Matumba \nSenior Manager: Financial Control \n \nEmmanuel Prinsloo \nDirector: Campus Pla…（共 21880 字）"
+  },
+  {
+   "id": "E14",
+   "label": "1 SOL PLAATJE MUNICIPALITY BID DOCUMENT",
+   "source_url": "https://www.etenders.gov.za/home/Download/?blobName=37b4ca97-de93-44b6-958d-5721fac18290.pdf&downloadedFileName=MM+LS+01+2025+-+PANEL+OF+LEGAL+SERVICES+FOR+SOL+PLAATJE+LOCAL+MUNICIPALITY+(RE-ADVERT).pdf.pdf",
+   "acquired_by": "SEARCH/open/pdf+pypdf",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[page 1]\n1 \n \n \n \n \n \n \n \n \n                                       \nSOL PLAATJE MUNICIPALITY \nBID DOCUMENT \n \nLATE SUBMISSION OF BIDS WILL NOT BE ACCEPTED. \nOriginal bid documents must be submitted in a sealed envelope marked \n ” ENVELOPE 1 ORIGINAL” \nA duplicate of the Original Bid document must be submitted in a sealed separate envelope marked  \n ‘ENVELOPE 2 DUPLICATE”   \nIf bids are submitted in one envelope containing one original and one duplicate it must be clearly stated. \nThe duplicate must be a true reflection of the original Bid Document and supporting documents must be \ncertified. \n…（共 81325 字）"
+  },
+  {
+   "id": "E15",
+   "label": "Sol Plaatje University",
+   "source_url": "https://www.spu.ac.za/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] ABOUT US\n\n[2] As the region’s sole public Higher Education Institution, Sol Plaatje University (SPU) is committed to providing quality education and professional development opportunities that cater to the unique needs, competence, and characteristics of its community. Positioning itself as a niche university, SPU offers academic programmes of high intellectual nature in fields that align with the South African thrust to develop a nation that is proud of its heritage and roots. To this end, the university has honed its focus on areas such as teacher education, ICT and data science, heritag…（共 669 字）"
+  },
+  {
+   "id": "E16",
+   "label": "Sol Plaatje Municipality",
+   "source_url": "http://www.solplaatje.org.za/wordpress/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Notice\n\n[2] Contact Information\n\n[3] Sol Plaatje Municipality\n\n[4] Postal: Private Bag X5030, Kimberley, 8300, Physical: Sol Plaatje Drive, Kimberley, Tel: 053 830 6911/6100\n\n[5] Accounts@solplaatje.org.za\n\n[6] Recent Posts\n\n[7] Policy Reviews Public Participation Indigent Management Policy Review – 2026 Download SPM Policy Installation and Management Smart metering Solution Download SPM Standard document SSEG Requirements Download Final Draft Updated SPM…\n\n[8] Business Hours\n\n[9] Monday to Friday: 07:45 till 16:30\n\n[10] Saturday: 08:00 till 12:00\n\n[11] Lunch Time: 12:45 till 13:30\n\n[12] C…（共 677 字）"
+  },
+  {
+   "id": "E17",
+   "label": "Sol Plaatje University (SPU): Courses & Fees | FundiConnect",
+   "source_url": "https://fundiconnect.co.za/institutions/sol-plaatje-university-spu",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sol Plaatje University (SPU)\n\n[2] Sol Plaatje University (SPU) is the Northern Cape’s sole public Higher Education Institution, located in Kimberley. Operating under the motto “Light from Africa,” SPU offers quality tertiary education across multiple disciplines. The university serves as a beacon of academic excellence in the region, with a commitment to developing skilled professionals and leaders across various sectors of the economy.\n\n[3] SPU combines academic rigour with practical learning experiences, preparing students for meaningful careers and social impact. The university offers s…（共 5616 字）"
+  }
+ ]
+}

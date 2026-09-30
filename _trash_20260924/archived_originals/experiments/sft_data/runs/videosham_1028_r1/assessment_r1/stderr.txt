@@ -1,0 +1,13 @@
+Reading prompt from stdin...
+2026-09-12T06:45:18.706379Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T06:45:18.706454Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T06:45:18.715494Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-09-12T06:45:19.734230Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-12T06:45:19.734259Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-12T06:45:27.232920Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 182ms)... turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 retries=1 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T06:45:29.530673Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 410ms)... turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 retries=2 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T06:45:34.447985Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 769ms)... turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 retries=3 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T06:45:36.454512Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.658s)... turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 retries=4 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T06:45:39.665567Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 2.889s)... turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 retries=5 max_retries=5 sampling_error=stream disconnected before completion: websocket closed by server before response.completed
+2026-09-12T06:45:46.783034Z  WARN codex_core::client: falling back to HTTP
+2026-09-12T06:52:04.530270Z  WARN codex_core::hook_runtime: after_agent hook failed; continuing turn_id=01a0945d-0615-74a0-9272-288bfd6eec99 hook_name=legacy_notify error=文件名或扩展名太长。 (os error 206)

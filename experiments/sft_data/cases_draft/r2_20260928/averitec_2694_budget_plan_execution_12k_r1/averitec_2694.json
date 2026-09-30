@@ -1,0 +1,69 @@
+{
+  "case_id": "averitec:2694",
+  "dataset": "averitec",
+  "source_id": "2694",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "查清 Sol Plaatje University 与 University of Mpumalanga 各自首期校园建设项目最终的实际总支出，并核对各自最终支出与批准预算是否一致。说明项目阶段、统计口径与出处。",
+  "family_key": "averitec:2694",
+  "media": [],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "required_evidence": [
+    {
+      "key": "spu",
+      "description": "Five-year milestones honour ethos of University’s namesake - Sol Plaatje University（E6）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": "spu.ac.za/index.php/five-year-milestones-honour-ethos-of-universitys-namesake-sol-plaatje*",
+      "acquired_by": null
+    },
+    {
+      "key": "wits",
+      "description": "chapter14.pdf（E5、E1）",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": "wits.ac.za/*",
+      "acquired_by": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "补齐两校首期项目批准预算与结项实际支出的同口径对应；已有Wits结项报告第14章表14.2记载；截至2017年7月31日；SPU直接支出R942,827,946、UMP直接支出R539,825,172；另列两校共同费用R141,847,377；均含VAT；第14.9.1节所述施工控制预算为SPU R804 million、UMP R493.1 million；但尚未确认与上述直接支出的范围一致；沿E1所列完整结项报告、第4章及MOA增补协议线索；取得表4.4及相关预算组成、批准和调整依据；直接对照两校实际支出的阶段、费用范围和税务口径；分别判断是否在预算内、金额是否相等；以确定各校可报告的最终总支出口径；此前第4章附附件地址超时、另一地址404；应利用完整报告等现有替代线索补查；不要重复已完成的工程包调查；不能以局部工程包比较代替项目总额比较；无法对应的金额保留未知",
+      "must_cite": true
+    },
+    {
+      "id": "REQ2",
+      "text": "核实共同费用是否有单校归属或分摊依据；核清SPU校方2013—2018年“首期”资本支出约R1.4 billion与Wits首期交付结项支出之间的范围关系；E2称2013—2018年完成首期改造与建设、资本支出约R1.4 billion；E1及E5的Wits项目主要交付2016学年设施并于2017年7月结项；SPU直接支出为R942,827,946；沿校方原文及相应财务、建设资料核查两处首期的项目边界和费用组成；寻找校方口径的精确最终实际支出及同范围批准预算；直接判断两份材料是否覆盖同一项目阶段、能否衔接；在可对应时核对实际支出与预算是否一致；不要仅凭截止年份或金额差异推定差额属于后续建设；也不要将年度资本支出或拨款直接替代首期项目决算；说明出处及仍无法取得的必要对应关系（能确认则给出，不能确认须明确说明）",
+      "must_cite": false
+    }
+  ],
+  "required_evidence_rule": "any_one_of:spu,wits",
+  "checks": [
+    {
+      "kind": "entity_in_evidence",
+      "params": {
+        "text": "新大学"
+      },
+      "note": "答案中的地点实体（旁证：Finding 原文）；所引 E 可能是外文原文，程序只查结论出现，需人工确认"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "草稿：由 draft_case 从 averitec_2694_budget_plan_execution_12k_r1 起草，needs_review；requirements 取自首轮任务文字，required_evidence 取自干净 Finding ∩ 答案引用。",
+  "effective_split": "dev_train"
+}

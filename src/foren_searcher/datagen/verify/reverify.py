@@ -2,14 +2,15 @@
 
 用法：
     python -m foren_searcher.datagen.verify.reverify --runs experiments/sft_data/runs --out experiments/sft_data/verdicts_r0.jsonl
-    python -m foren_searcher.datagen.verify.reverify ... --judge openrouter --model qwen/qwen3.5-122b-a10b
+    python -m foren_searcher.datagen.verify.reverify --runs runs/a runs/b ... --judge local      # 本地 OpenAI 兼容服务（不花钱）
+    python -m foren_searcher.datagen.verify.reverify ... --judge openrouter --model qwen/qwen3.8-27b  # 付费 API
 
 --judge none（默认）只跑第一层，产物里所有处置都是 uncertain / negative，用来先看硬错分布；
 接上核验模型后重跑，同一文件被覆盖，summary 里的 layers 会显示三层都跑了。
 核验模型必须与教师模型不同（试点教师是 Codex CLI / gpt-6-astra）。
 
-来源限制：run_config.json 没有排除名单，这里从 trajectory / corpus 的 known_source_keys 读不到；先不带 Case，
-案卷化（cases/）落地后由 --cases 目录补上第一层的案卷断言。
+案卷：--cases 目录里有对应 case_id 的 run 走案卷断言与必需证据检查；0.3.0 起必需证据按工作区范围给（scope.py：
+plan 单元的 judge_targets → REQ → required_evidence.supports 反查，没有评判就按任务文字兜底），不再把整案清单压给单个工作区。
 """
 
 from __future__ import annotations
@@ -26,14 +27,32 @@ from typing import Any
 
 from ...store import GlobalStore
 from ..errors import tally
+from .anchored import BUDGET_EXIT_CODE, JudgeBudgetExhausted, budget_message
 from .context import StoreLookup
 from . import judges as judges_module
-from .judges import CachedJudge, build_judge
+from ..cases import Case, load_cases
+from .judges import CachedJudge, add_judge_arguments, judge_from_args, judge_summary
+from .scope import requirements_for_workspace
 from .verdict import Verdict, verify_report, write_verdicts
 
 
 def _run_dirs(root: Path) -> list[Path]:
     return sorted(p for p in root.iterdir() if p.is_dir() and (p / "store.sqlite3").is_file())
+
+
+def expand_runs(paths: list[str]) -> list[Path]:
+    """--runs 可以给一个 runs 根目录（跑其下全部 run，旧用法），也可以直接列若干个 run 目录（只跑这些）。"""
+
+    out: list[Path] = []
+    for raw in paths:
+        path = Path(raw)
+        if (path / "store.sqlite3").is_file():
+            out.append(path)
+        elif path.is_dir():
+            out.extend(_run_dirs(path))
+        else:
+            raise SystemExit(f"找不到 run 目录：{raw}")
+    return out
 
 
 _EVIDENCE_TOKEN = re.compile(r'"(E\d+)"')
@@ -68,7 +87,8 @@ def _visible_ids(run_dir: Path, task_id: str) -> set[str] | None:
     return ids if found else None
 
 
-async def reverify_run(run_dir: Path, judge: Any, judge_name: str | None, *, check_visibility: bool) -> list[Verdict]:
+async def reverify_run(run_dir: Path, judge: Any, judge_name: str | None, *, check_visibility: bool,
+                       cases: dict[str, Case] | None = None, units: list[Verdict] | None = None) -> list[Verdict]:
     # GlobalStore 打开时会执行建表脚本并切 WAL，会动原文件；核验只读，所以先复制一份再开（artifacts 仍指向原目录）。
     scratch = Path(tempfile.mkdtemp(prefix="reverify_"))
     shutil.copy2(run_dir / "store.sqlite3", scratch / "store.sqlite3")
@@ -77,6 +97,8 @@ async def reverify_run(run_dir: Path, judge: Any, judge_name: str | None, *, che
     config = {}
     if (run_dir / "run_config.json").is_file():
         config = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))
+    case_id = f"{str(config.get('dataset') or '').lower()}:{config.get('case')}" if config.get("case") else ""
+    case = (cases or {}).get(case_id)
     verdicts = []
     for report in store.workspace_report_records():
         try:
@@ -88,8 +110,11 @@ async def reverify_run(run_dir: Path, judge: Any, judge_name: str | None, *, che
                    "case_id": f"{str(config.get('dataset') or '').lower()}:{config.get('case')}" if config.get("case") else None,
                    "workspace_id": report.task_id, "teacher": (config.get("configured_model") or {}).get("model")}
         visible = _visible_ids(run_dir, report.task_id) if check_visibility else None
-        verdict = await verify_report(report.to_dict(), lookup, subject=subject, task_text=task_text or None,
-                                      judge=judge, visible_ids=visible, judge_model=judge_name)
+        req_ids, scope_note = requirements_for_workspace(case, task_text, run=run_dir.name, workspace_id=report.task_id, units=units)
+        verdict = await verify_report(report.to_dict(), lookup, subject=subject, task_text=task_text or None, case=case,
+                                      requirement_ids=req_ids, judge=judge, visible_ids=visible, judge_model=judge_name)
+        if case is not None:
+            verdict.extra["scope_note"] = scope_note
         verdicts.append(verdict)
     return verdicts
 
@@ -119,18 +144,29 @@ def _say(args: argparse.Namespace, line: str) -> None:
 
 
 async def main_async(args: argparse.Namespace) -> int:
-    root = Path(args.runs)
     if args.log:
         Path(args.log).write_text("", encoding="utf-8")
     judges_module.FAILURE_LOG = Path(args.out).with_name("verify_failures.jsonl")   # 模型坏输出原文留档，便于排查
-    judge = build_judge(args.judge, model=args.model, config_path=args.openrouter_config,
-                        reasoning_effort=args.reasoning, cache_path=args.cache)
+    judge = judge_from_args(args, cache_path=args.cache or None)
     judge_name = getattr(judge, "name", None) if judge else None
+    cases = load_cases(args.cases) if args.cases else {}
+    units: list[Verdict] = []
+    if args.units and Path(args.units).is_file():
+        units = [Verdict.from_dict(json.loads(line)) for line in Path(args.units).read_text(encoding="utf-8").splitlines() if line.strip()]
     verdicts: list[Verdict] = []
-    dirs = _run_dirs(root)[: args.limit] if args.limit else _run_dirs(root)
+    all_dirs = expand_runs(args.runs)
+    dirs = all_dirs[: args.limit] if args.limit else all_dirs
     for index, run_dir in enumerate(dirs, 1):
         try:
-            batch = await reverify_run(run_dir, judge, judge_name, check_visibility=not args.no_visibility)
+            batch = await reverify_run(run_dir, judge, judge_name, check_visibility=not args.no_visibility, cases=cases, units=units)
+        except JudgeBudgetExhausted as exc:     # 没钱了：已完成的 run 已落盘，醒目提示后退出码 3
+            write_verdicts(args.out, verdicts)
+            _say(args, f"[{index}/{len(dirs)}] {run_dir.name}: 中止（预算用尽），已完成 {len(verdicts)} 份报告 → {args.out}")
+            _say(args, budget_message(exc))
+            line = judge_summary(judge)
+            if line:
+                _say(args, line)
+            return BUDGET_EXIT_CODE
         except Exception as exc:  # noqa: BLE001 —— 单个 run 坏了不应中断全部
             _say(args, f"[{index}/{len(dirs)}] 跳过 {run_dir.name}: {type(exc).__name__}: {exc}")
             continue
@@ -144,23 +180,25 @@ async def main_async(args: argparse.Namespace) -> int:
         summary["judge_cache"] = {"hits": judge.hits, "misses": judge.misses}
     Path(str(out) + ".summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     _say(args, json.dumps(summary, ensure_ascii=False, indent=2))
+    line = judge_summary(judge)
+    if line:
+        _say(args, line)
     return 0
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="用三层核验器重核试点 runs 的已发布报告")
-    parser.add_argument("--runs", default="experiments/sft_data/runs")
+    parser.add_argument("--runs", nargs="+", default=["experiments/sft_data/runs"],
+                        help="runs 根目录（跑全部），或直接列出要跑的若干 run 目录")
     parser.add_argument("--out", default="experiments/sft_data/verdicts_r0.jsonl")
-    parser.add_argument("--judge", default="none", choices=["none", "openrouter"])
-    parser.add_argument("--model", default=None, help="核验模型名（必须与教师不同）")
-    parser.add_argument("--openrouter-config", default=None)
-    parser.add_argument("--reasoning", default="low", choices=["none", "minimal", "low", "medium", "high"],
-                        help="核验模型的推理力度；核验是对照题，low 足够，输出 token 少八成")
+    add_judge_arguments(parser, default="none")     # 核验模型必须与教师不同
     parser.add_argument("--cache", default="experiments/sft_data/verify_cache.jsonl",
                         help="核验模型回答的缓存文件；同样的问题不再重复付费（空字符串关闭）")
     parser.add_argument("--limit", type=int, default=0, help="只跑前 N 个 run（先小规模试）")
     parser.add_argument("--no-visibility", action="store_true", help="不从 trajectory 检查引用是否可见")
     parser.add_argument("--log", default=None, help="进度与汇总同时写到这个文件")
+    parser.add_argument("--cases", default="experiments/sft_data/cases", help="案卷目录（有案卷的 run 走案卷断言 + 按工作区范围的必需证据检查）；传空字符串关闭")
+    parser.add_argument("--units", default="experiments/sft_data/verdicts_units_judged.jsonl", help="plan 单元模型评判，用来定各工作区的要求范围")
     return asyncio.run(main_async(parser.parse_args(argv)))
 
 

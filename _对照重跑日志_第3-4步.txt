@@ -1,0 +1,882 @@
+==== 第 3-4 步：r0b 新 run 本地核验（Ollama gemma3-12b）+ 导出 + 对照表 周二 2026/09/29 19:46:51.31 
+Ollama 没在跑，启动中... 
+[3/4] 本地核验六步 + 导出（r0b，hi@0.3.0 + gia@0.4.0） 
+核验模型：local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1（本地，不花钱）；产物标签 .local-gemma3-12b-16k-latest
+run：11 个（集合 11runs-c7ba8bd2）；步骤 1–6
+
+[1/6] 三层核验工作区报告 → experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_17838107_r0b_1 experiments\sft_data\runs\true_20205316753904_r0b_1 experiments\sft_data\runs\true_20361105_r0b_1 experiments\sft_data\runs\true_24171541709824_r0b_1 experiments\sft_data\runs\true_39132300_r0b_1 experiments\sft_data\runs\true_4124903_r0b_1 experiments\sft_data\runs\videosham_0069_r0b_1 experiments\sft_data\runs\videosham_1007_r0b_1 experiments\sft_data\runs\videosham_1028_r0b_1 experiments\sft_data\runs\videosham_2010_r0b_1 experiments\sft_data\runs\videosham_4126_r0b_1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --units experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[judge] 13 calls (12 cached) | last 9.2s | avg 9.2s | total 9.2s | 3 in flight
+[judge] 15 calls (12 cached) | last 16.2s | avg 12.6s | total 16.2s | 3 in flight
+[judge] 17 calls (12 cached) | last 13.2s | avg 14.3s | total 22.4s | 3 in flight
+[judge] 21 calls (12 cached) | last 5.2s | avg 11.4s | total 27.6s
+[1/11] true_17838107_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[judge] 23 calls (12 cached) | last 4.0s | avg 10.1s | total 35.9s | 3 in flight
+[judge] 25 calls (12 cached) | last 9.1s | avg 9.8s | total 41.0s | 2 in flight
+[judge] 27 calls (12 cached) | last 11.1s | avg 10.0s | total 47.0s
+[judge] 29 calls (12 cached) | last 3.5s | avg 9.1s | total 52.2s
+[2/11] true_20205316753904_r0b_1: 1 份报告，W1-1=positive
+[judge] 31 calls (12 cached) | last 6.2s | avg 8.7s | total 58.5s | 3 in flight
+[judge] 33 calls (12 cached) | last 14.2s | avg 9.0s | total 1m06s | 2 in flight
+[judge] 37 calls (12 cached) | last 3.7s | avg 8.7s | total 1m13s
+[judge] 39 calls (12 cached) | last 8.7s | avg 8.5s | total 1m22s | 3 in flight
+[judge] 41 calls (12 cached) | last 14.3s | avg 8.8s | total 1m27s | 3 in flight
+[judge] 43 calls (12 cached) | last 12.6s | avg 9.1s | total 1m34s | 3 in flight
+[judge] 45 calls (12 cached) | last 16.9s | avg 9.5s | total 1m44s | 3 in flight
+[judge] 48 calls (12 cached) | last 12.0s | avg 9.9s | total 1m50s | 1 in flight
+[judge] 51 calls (12 cached) | last 4.1s | avg 9.4s | total 1m58s | 3 in flight
+[judge] 53 calls (12 cached) | last 11.5s | avg 9.4s | total 2m06s | 3 in flight
+[judge] 55 calls (12 cached) | last 16.3s | avg 9.7s | total 2m14s | 3 in flight
+[judge] 58 calls (12 cached) | last 10.9s | avg 9.9s | total 2m20s | 2 in flight
+[judge] 61 calls (12 cached) | last 4.8s | avg 9.6s | total 2m27s
+[3/11] true_20361105_r0b_1: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[judge] 63 calls (12 cached) | last 7.3s | avg 9.4s | total 2m34s | 1 in flight
+[4/11] true_24171541709824_r0b_1: 1 份报告，W1-1=positive
+[judge] 67 calls (12 cached) | last 6.2s | avg 9.0s | total 2m44s | 1 in flight
+[judge] 68 calls (12 cached, 1 failed) | last 46.0s | avg 9.6s | total 3m24s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 69 calls (12 cached, 2 failed) | last 38.9s | avg 10.2s | total 4m03s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[5/11] true_39132300_r0b_1: 1 份报告，W1-1=negative
+[judge] 71 calls (12 cached, 2 failed) | last 4.2s | avg 9.9s | total 4m10s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 73 calls (12 cached, 2 failed) | last 10.0s | avg 9.9s | total 4m15s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 75 calls (12 cached, 2 failed) | last 14.9s | avg 10.0s | total 4m24s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 78 calls (12 cached, 2 failed) | last 12.3s | avg 10.2s | total 4m31s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 80 calls (12 cached, 2 failed) | last 10.2s | avg 10.1s | total 4m37s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 84 calls (12 cached, 2 failed) | last 2.3s | avg 9.9s | total 4m43s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 86 calls (12 cached, 2 failed) | last 6.7s | avg 9.8s | total 4m50s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 88 calls (12 cached, 2 failed) | last 13.7s | avg 9.8s | total 4m57s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 90 calls (12 cached, 2 failed) | last 13.5s | avg 9.9s | total 5m04s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 92 calls (12 cached, 2 failed) | last 14.4s | avg 10.1s | total 5m11s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 96 calls (12 cached, 2 failed) | last 3.8s | avg 9.9s | total 5m18s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[6/11] true_4124903_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[judge] 99 calls (12 cached, 2 failed) | last 7.5s | avg 9.7s | total 5m26s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 101 calls (12 cached, 2 failed) | last 11.5s | avg 9.8s | total 5m32s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 104 calls (12 cached, 2 failed) | last 8.8s | avg 9.8s | total 5m38s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 106 calls (12 cached, 2 failed) | last 9.2s | avg 9.7s | total 5m43s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 107 calls (12 cached, 2 failed) | last 16.4s | avg 9.8s | total 5m52s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 110 calls (12 cached, 2 failed) | last 19.1s | avg 10.1s | total 6m02s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 112 calls (12 cached, 2 failed) | last 13.2s | avg 10.1s | total 6m08s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 116 calls (12 cached, 2 failed) | last 5.6s | avg 10.1s | total 6m14s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 119 calls (12 cached, 2 failed) | last 2.8s | avg 9.9s | total 6m21s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 124 calls (12 cached, 2 failed) | last 2.4s | avg 9.6s | total 6m28s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 127 calls (12 cached, 2 failed) | last 7.3s | avg 9.5s | total 6m36s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 130 calls (12 cached, 2 failed) | last 9.0s | avg 9.5s | total 6m42s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 132 calls (12 cached, 2 failed) | last 10.0s | avg 9.5s | total 6m48s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 135 calls (12 cached, 2 failed) | last 8.4s | avg 9.4s | total 6m53s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 139 calls (12 cached, 2 failed) | last 6.5s | avg 9.4s | total 7m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 144 calls (12 cached, 2 failed) | last 7.9s | avg 9.2s | total 7m12s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[7/11] videosham_0069_r0b_1: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[judge] 147 calls (12 cached, 2 failed) | last 8.4s | avg 9.1s | total 7m21s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 149 calls (12 cached, 2 failed) | last 11.4s | avg 9.2s | total 7m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 152 calls (12 cached, 2 failed) | last 9.5s | avg 9.2s | total 7m34s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 155 calls (12 cached, 2 failed) | last 7.6s | avg 9.2s | total 7m39s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 156 calls (12 cached, 2 failed) | last 20.4s | avg 9.3s | total 7m54s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 159 calls (12 cached, 2 failed) | last 20.5s | avg 9.5s | total 8m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 162 calls (12 cached, 2 failed) | last 9.2s | avg 9.5s | total 8m07s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 166 calls (12 cached, 2 failed) | last 5.3s | avg 9.4s | total 8m13s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 167 calls (12 cached, 2 failed) | last 5.3s | avg 9.4s | total 8m18s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 169 calls (12 cached, 2 failed) | last 6.4s | avg 9.3s | total 8m24s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 171 calls (12 cached, 2 failed) | last 12.8s | avg 9.4s | total 8m31s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 172 calls (12 cached, 2 failed) | last 15.1s | avg 9.4s | total 8m37s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 173 calls (12 cached, 2 failed) | last 20.3s | avg 9.5s | total 8m45s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 175 calls (12 cached, 2 failed) | last 21.4s | avg 9.6s | total 8m52s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 177 calls (12 cached, 2 failed) | last 12.8s | avg 9.7s | total 8m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 180 calls (12 cached, 2 failed) | last 8.3s | avg 9.7s | total 9m04s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 181 calls (12 cached, 2 failed) | last 15.3s | avg 9.7s | total 9m13s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 183 calls (12 cached, 2 failed) | last 16.5s | avg 9.8s | total 9m19s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 186 calls (12 cached, 2 failed) | last 7.1s | avg 9.8s | total 9m24s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 189 calls (12 cached, 2 failed) | last 7.9s | avg 9.8s | total 9m30s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 192 calls (12 cached, 2 failed) | last 8.0s | avg 9.8s | total 9m35s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 195 calls (12 cached, 2 failed) | last 4.8s | avg 9.7s | total 9m43s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 197 calls (12 cached, 2 failed) | last 6.0s | avg 9.6s | total 9m49s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 199 calls (12 cached, 2 failed) | last 11.2s | avg 9.6s | total 9m54s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 202 calls (12 cached, 2 failed) | last 7.7s | avg 9.6s | total 10m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 205 calls (12 cached, 2 failed) | last 9.2s | avg 9.6s | total 10m07s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 209 calls (12 cached, 2 failed) | last 3.5s | avg 9.5s | total 10m14s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 211 calls (12 cached, 2 failed) | last 1.1s | avg 9.4s | total 10m19s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[8/11] videosham_1007_r0b_1: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative
+[judge] 213 calls (12 cached, 2 failed) | last 3.0s | avg 9.4s | total 10m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 216 calls (12 cached, 2 failed) | last 10.6s | avg 9.4s | total 10m35s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 219 calls (12 cached, 2 failed) | last 10.9s | avg 9.4s | total 10m43s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 222 calls (12 cached, 2 failed) | last 10.2s | avg 9.4s | total 10m50s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 224 calls (12 cached, 2 failed) | last 13.4s | avg 9.4s | total 10m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 226 calls (12 cached, 2 failed) | last 18.9s | avg 9.5s | total 11m09s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 229 calls (12 cached, 2 failed) | last 15.3s | avg 9.6s | total 11m16s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 232 calls (12 cached, 2 failed) | last 9.1s | avg 9.6s | total 11m23s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 234 calls (12 cached, 2 failed) | last 11.9s | avg 9.6s | total 11m30s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 238 calls (12 cached, 2 failed) | last 3.7s | avg 9.5s | total 11m39s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 240 calls (12 cached, 2 failed) | last 6.3s | avg 9.5s | total 11m45s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 242 calls (12 cached, 2 failed) | last 12.3s | avg 9.5s | total 11m51s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 246 calls (12 cached, 2 failed) | last 3.8s | avg 9.5s | total 11m59s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[9/11] videosham_1028_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[judge] 248 calls (12 cached, 2 failed) | last 6.5s | avg 9.4s | total 12m06s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 250 calls (12 cached, 2 failed) | last 15.9s | avg 9.5s | total 12m15s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 252 calls (12 cached, 2 failed) | last 17.8s | avg 9.5s | total 12m23s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 254 calls (12 cached, 2 failed) | last 16.3s | avg 9.6s | total 12m31s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 255 calls (12 cached, 2 failed) | last 17.2s | avg 9.6s | total 12m37s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 257 calls (12 cached, 2 failed) | last 15.4s | avg 9.7s | total 12m43s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 259 calls (12 cached, 2 failed) | last 12.5s | avg 9.7s | total 12m49s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 261 calls (12 cached, 2 failed) | last 11.0s | avg 9.7s | total 12m54s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 264 calls (12 cached, 2 failed) | last 7.9s | avg 9.7s | total 13m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 266 calls (12 cached, 2 failed) | last 9.4s | avg 9.7s | total 13m06s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 269 calls (12 cached, 2 failed) | last 8.1s | avg 9.7s | total 13m12s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 272 calls (12 cached, 2 failed) | last 7.6s | avg 9.7s | total 13m18s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 275 calls (12 cached, 2 failed) | last 6.9s | avg 9.7s | total 13m23s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 277 calls (12 cached, 2 failed) | last 3.9s | avg 9.6s | total 13m28s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 278 calls (12 cached, 2 failed) | last 5.9s | avg 9.6s | total 13m34s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 280 calls (12 cached, 2 failed) | last 13.7s | avg 9.6s | total 13m42s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 282 calls (12 cached, 2 failed) | last 13.6s | avg 9.7s | total 13m48s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 284 calls (12 cached, 2 failed) | last 11.2s | avg 9.7s | total 13m53s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 286 calls (12 cached, 2 failed) | last 11.1s | avg 9.7s | total 13m59s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 289 calls (12 cached, 2 failed) | last 4.5s | avg 9.6s | total 14m05s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[10/11] videosham_2010_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[judge] 290 calls (12 cached, 2 failed) | last 9.8s | avg 9.6s | total 14m15s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 292 calls (12 cached, 2 failed) | last 15.4s | avg 9.7s | total 14m21s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 294 calls (12 cached, 2 failed) | last 11.1s | avg 9.7s | total 14m26s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 296 calls (12 cached, 2 failed) | last 11.5s | avg 9.7s | total 14m32s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 298 calls (12 cached, 2 failed) | last 11.6s | avg 9.7s | total 14m38s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 301 calls (12 cached, 2 failed) | last 9.2s | avg 9.7s | total 14m45s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 304 calls (12 cached, 2 failed) | last 9.9s | avg 9.7s | total 14m52s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 307 calls (12 cached, 2 failed) | last 7.6s | avg 9.7s | total 14m57s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 310 calls (12 cached, 2 failed) | last 2.9s | avg 9.7s | total 15m03s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 311 calls (12 cached, 2 failed) | last 15.1s | avg 9.7s | total 15m18s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 314 calls (12 cached, 2 failed) | last 23.8s | avg 9.8s | total 15m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 316 calls (12 cached, 2 failed) | last 11.2s | avg 9.8s | total 15m32s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 318 calls (12 cached, 2 failed) | last 11.0s | avg 9.8s | total 15m38s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 321 calls (12 cached, 2 failed) | last 10.4s | avg 9.8s | total 15m46s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 323 calls (12 cached, 2 failed) | last 10.0s | avg 9.8s | total 15m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 325 calls (12 cached, 2 failed) | last 10.4s | avg 9.8s | total 15m56s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 328 calls (12 cached, 2 failed) | last 9.6s | avg 9.8s | total 16m03s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 331 calls (12 cached, 2 failed) | last 9.5s | avg 9.8s | total 16m10s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 333 calls (12 cached, 2 failed) | last 10.5s | avg 9.8s | total 16m16s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 337 calls (12 cached, 2 failed) | last 3.9s | avg 9.8s | total 16m23s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 340 calls (12 cached, 2 failed) | last 6.8s | avg 9.7s | total 16m30s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 342 calls (12 cached, 2 failed) | last 9.6s | avg 9.7s | total 16m35s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 344 calls (12 cached, 2 failed) | last 12.3s | avg 9.7s | total 16m42s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 346 calls (12 cached, 2 failed) | last 13.6s | avg 9.8s | total 16m49s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 348 calls (12 cached, 2 failed) | last 13.8s | avg 9.8s | total 16m56s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 350 calls (12 cached, 2 failed) | last 12.8s | avg 9.8s | total 17m02s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 353 calls (12 cached, 2 failed) | last 7.8s | avg 9.8s | total 17m07s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 357 calls (12 cached, 2 failed) | last 5.5s | avg 9.8s | total 17m16s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 359 calls (12 cached, 2 failed) | last 6.3s | avg 9.7s | total 17m22s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 362 calls (12 cached, 2 failed) | last 9.4s | avg 9.7s | total 17m29s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 365 calls (12 cached, 2 failed) | last 9.4s | avg 9.7s | total 17m36s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 369 calls (12 cached, 2 failed) | last 4.3s | avg 9.7s | total 17m43s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[11/11] videosham_4126_r0b_1: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative
+{
+  "reports": 25,
+  "disposition": {
+    "negative": 23,
+    "positive": 2
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 25
+  },
+  "errors_total": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "errors_firm": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "reports_with_firm_error": 23,
+  "tainted_findings": 45,
+  "pending": {
+    "judge_output_invalid": 1
+  },
+  "judge_cache": {
+    "hits": 12,
+    "misses": 355
+  }
+}
+[judge] 369 calls (12 cached, 2 failed) | last 4.3s | avg 9.7s | total 17m43s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+
+[2/6] answer 逐句锚定 + plan 模型评判 → experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  > python -m foren_searcher.datagen.verify.complete_units --runs experiments\sft_data\runs\true_17838107_r0b_1 experiments\sft_data\runs\true_20205316753904_r0b_1 experiments\sft_data\runs\true_20361105_r0b_1 experiments\sft_data\runs\true_24171541709824_r0b_1 experiments\sft_data\runs\true_39132300_r0b_1 experiments\sft_data\runs\true_4124903_r0b_1 experiments\sft_data\runs\videosham_0069_r0b_1 experiments\sft_data\runs\videosham_1007_r0b_1 experiments\sft_data\runs\videosham_1028_r0b_1 experiments\sft_data\runs\videosham_2010_r0b_1 experiments\sft_data\runs\videosham_4126_r0b_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  核验并发 4；预计核验调用：约 339 次（含会命中缓存的）
+  true_17838107_r0b_1: ~31 次（answer 30，plan 1）
+  true_20205316753904_r0b_1: ~12 次（answer 11，plan 1）
+  true_20361105_r0b_1: ~30 次（answer 28，plan 2）
+  true_24171541709824_r0b_1: ~15 次（answer 14，plan 1）
+  true_39132300_r0b_1: ~11 次（answer 10，plan 1）
+  true_4124903_r0b_1: ~14 次（answer 13，plan 1）
+  videosham_0069_r0b_1: ~17 次（answer 15，plan 2）
+  videosham_1007_r0b_1: ~39 次（answer 37，plan 2）
+  videosham_1028_r0b_1: ~76 次（answer 75，plan 1）
+  videosham_2010_r0b_1: ~26 次（answer 25，plan 1）
+  videosham_4126_r0b_1: ~68 次（answer 66，plan 2）
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[judge] 1 calls (0 cached) | last 2.6s | avg 2.6s | total 2.6s
+[true_17838107_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1", "REQ3"]}, "hindsight_targets": {"T1": [], "T2": ["REQ1"]}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "The consumption of hot cross buns has the potential to affect breathalyzer readings.", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "视频中的实际证据是否支持食用热十字面包可能影响呼气酒精测试读数？", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "The consumption of hot cross buns has the potential to affect breathalyzer readings.", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "食用热十字面包是否可能影响呼气酒精测试读数", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "影响的条件、持续时间及其是否代表体内酒精水平变化", "status": "given_in_case", "why": "任务文字本身"}]}, "errors": []}
+[judge] 3 calls (0 cached) | last 6.0s | avg 3.9s | total 8.6s | 3 in flight
+[judge] 5 calls (0 cached) | last 11.8s | avg 6.4s | total 14.4s | 3 in flight
+[judge] 8 calls (0 cached) | last 9.3s | avg 7.9s | total 20.5s | 3 in flight
+[judge] 10 calls (0 cached) | last 11.2s | avg 8.4s | total 27.8s | 3 in flight
+[judge] 13 calls (0 cached) | last 8.5s | avg 8.8s | total 33.2s | 3 in flight
+[judge] 16 calls (0 cached) | last 8.1s | avg 8.6s | total 39.3s | 3 in flight
+[judge] 19 calls (0 cached) | last 7.3s | avg 8.4s | total 44.7s | 3 in flight
+[judge] 22 calls (0 cached) | last 8.2s | avg 8.4s | total 50.9s | 3 in flight
+[judge] 30 calls (0 cached) | last 2.2s | avg 7.1s | total 55.9s | 1 in flight
+[true_17838107_r0b_1] answer request_0017: {"method": "judge_sentences", "disposition": "negative", "sentences": 9, "uncited": 0, "unsupported": [], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish"], "severities": ["major", "critical"]}
+[true_20205316753904_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": ["REQ1"]}, "agreement": {"T1": true}, "premises": {"T1": [{"phrase": "A video shows a woman hanging by her hair in a train car.", "status": "given_in_case", "why": "任务文字直接陈述了视频内容，作为待核查的声明。"}]}, "errors": []}
+[judge] 34 calls (1 cached) | last 6.3s | avg 6.8s | total 1m03s | 3 in flight
+[judge] 36 calls (1 cached) | last 12.0s | avg 7.0s | total 1m09s | 3 in flight
+[judge] 38 calls (1 cached) | last 11.3s | avg 7.2s | total 1m14s | 3 in flight
+[judge] 42 calls (1 cached) | last 5.3s | avg 7.3s | total 1m20s | 1 in flight
+[true_20205316753904_r0b_1] answer request_0005: {"method": "judge_sentences", "disposition": "negative", "sentences": 3, "uncited": 0, "unsupported": ["A3"], "contradicted": [], "errors": ["unsupported_assertion", "unsupported_assertion"], "severities": ["critical", "critical"]}
+[true_20361105_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2", "REQ3"], "T2": ["REQ1", "REQ2"]}, "hindsight_targets": {"T1": [], "T2": ["REQ1", "REQ2"]}, "agreement": {"T1": false, "T2": true}, "premises": {"T1": [{"phrase": "Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online.", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "视频中的实际言论及上下文是否支持该声明？", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online.", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "核实相关言论的原始出处与完整语境，判断该声明是否准确表达她主张追诉的行为对象。", "status": "given_in_case", "why": "任务文字本身"}]}, "errors": []}
+[judge] 45 calls (1 cached) | last 2.6s | avg 7.0s | total 1m26s
+[true_20361105_r0b_1] plan request_0018: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "Those people who are online making fun of members of Congress", "status": "verified_earlier", "why": "Finding F1 & F4 已提及此话语"}, {"phrase": "they should be prosecuted", "status": "verified_earlier", "why": "Finding F1 & F4 已提及此话语"}, {"phrase": "frighten members of Congress", "status": "verified_earlier", "why": "Finding F2 已提及此话语"}, {"phrase": "threaten members of Congress", "status": "verified_earlier", "why": "Finding F4 已提及此话语"}, {"phrase": "边境巡逻人员秘密 Facebook 群组", "status": "verified_earlier", "why": "Finding F5 已提及此背景"}]}, "errors": ["unnecessary_round", "task_not_gap_driven"]}
+[judge] 47 calls (1 cached) | last 7.0s | avg 6.9s | total 1m33s | 3 in flight
+[judge] 51 calls (1 cached) | last 5.9s | avg 7.0s | total 1m38s | 3 in flight
+[judge] 54 calls (1 cached) | last 7.9s | avg 7.0s | total 1m45s | 3 in flight
+[judge] 56 calls (1 cached) | last 14.8s | avg 7.2s | total 1m55s | 3 in flight
+[judge] 58 calls (1 cached) | last 20.1s | avg 7.6s | total 2m05s | 3 in flight
+[judge] 62 calls (1 cached) | last 6.8s | avg 7.9s | total 2m12s | 3 in flight
+[judge] 63 calls (1 cached) | last 12.7s | avg 8.0s | total 2m20s | 3 in flight
+[judge] 67 calls (1 cached) | last 5.2s | avg 8.2s | total 2m25s | 3 in flight
+[true_20361105_r0b_1] answer request_0024: {"method": "judge_sentences", "disposition": "negative", "sentences": 10, "uncited": 1, "unsupported": ["A3"], "contradicted": [], "errors": ["omitted_required_fact", "unsupported_assertion", "attribution_drift"], "severities": ["major", "critical", "major"]}
+[judge] 74 calls (1 cached) | last 2.0s | avg 7.7s | total 2m32s
+[true_24171541709824_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"]}, "hindsight_targets": {"T1": ["REQ1", "REQ2", "REQ3"]}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "The state of Minnesota has refused multiple requests from the state of Virginia to return a Confederate battle flag captured during the U.S. Civil War.", "status": "given_in_case", "why": "任务文字本身陈述了明尼苏达州拒绝弗吉尼亚州请求的事实。"}, {"phrase": "captured during the U.S. Civil War", "status": "given_in_case", "why": "任务文字中描述战旗被捕获的时间点。"}]}, "errors": []}
+[judge] 77 calls (1 cached) | last 8.3s | avg 7.6s | total 2m40s | 3 in flight
+[judge] 80 calls (1 cached) | last 9.5s | avg 7.7s | total 2m46s | 3 in flight
+[judge] 86 calls (1 cached) | last 2.3s | avg 7.5s | total 2m51s | 2 in flight
+[true_24171541709824_r0b_1] answer request_0010: {"method": "judge_sentences", "disposition": "negative", "sentences": 8, "uncited": 1, "unsupported": ["A7"], "contradicted": [], "errors": ["unsupported_assertion", "unsupported_assertion"], "severities": ["critical", "critical"]}
+[true_39132300_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": ["REQ1"]}, "agreement": {"T1": true}, "premises": {"T1": [{"phrase": "The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.", "status": "given_in_case", "why": "任务文字本身陈述了该面具在《Scream》上映前可供购买的事实。"}, {"phrase": "1996 movie \"Scream.\",", "status": "given_in_case", "why": "任务文字中提及电影《Scream》的上映年份为 1996。"}]}, "errors": []}
+[judge] 90 calls (2 cached) | last 4.3s | avg 7.3s | total 2m57s | 3 in flight
+[judge] 92 calls (2 cached, 1 failed) | last 47.4s | avg 7.8s | total 3m40s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 93 calls (2 cached, 2 failed) | last 1m26s | avg 8.6s | total 4m18s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 95 calls (2 cached, 3 failed) | last 2m01s | avg 10.7s | total 5m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 97 calls (2 cached, 4 failed) | last 1m22s | avg 12.2s | total 5m40s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 98 calls (2 cached, 5 failed) | last 1m57s | avg 13.3s | total 6m18s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 99 calls (2 cached, 6 failed) | last 2m03s | avg 14.4s | total 7m03s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[true_39132300_r0b_1] answer request_0007: {"method": "judge_sentences", "disposition": "uncertain", "sentences": 6, "uncited": 2, "unsupported": [], "contradicted": [], "errors": [], "severities": []}
+[true_4124903_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"]}, "hindsight_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1"]}, "agreement": {"T1": true, "T2": false}, "premises": {"T1": [{"phrase": "埃菲尔铁塔附近升起的火焰和浓烟，是巴黎在法国国庆日遭受恐怖袭击的证据。", "status": "given_in_case", "why": "任务文字直接陈述了该声明"}, {"phrase": "法国国庆日", "status": "verified_earlier", "why": "案卷中提及“Bastille Day terrorist attack in Paris”暗示了与法国国庆日相关"}]}, "errors": ["overlapping_sibling_tasks"]}
+[judge] 102 calls (2 cached, 6 failed) | last 3.4s | avg 14.0s | total 7m09s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 105 calls (2 cached, 6 failed) | last 9.2s | avg 13.8s | total 7m16s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 108 calls (2 cached, 6 failed) | last 8.6s | avg 13.7s | total 7m22s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[true_4124903_r0b_1] answer request_0013: {"method": "judge_sentences", "disposition": "negative", "sentences": 7, "uncited": 1, "unsupported": ["A1", "A2", "A3", "A6"], "contradicted": ["A3"], "errors": ["omitted_required_fact", "unsupported_assertion", "unsupported_assertion", "wrong_citation", "unsupported_assertion", "unsupported_assertion"], "severities": ["major", "critical", "critical", "critical", "critical", "critical"]}
+[judge] 114 calls (2 cached, 6 failed) | last 2.7s | avg 13.2s | total 7m28s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_0069_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ3", "REQ4"], "T2": ["REQ2", "REQ3"]}, "hindsight_targets": {"T1": ["REQ1", "REQ2", "REQ3"], "T2": ["REQ1"]}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "也不要把无法取得音频视为视频本身无声", "status": "unverified", "why": "案卷中未提及，既有报告中亦无"}]}, "errors": ["overlapping_sibling_tasks", "premise_smuggling"]}
+[videosham_0069_r0b_1] plan request_0016: {"disposition": "uncertain", "judge_targets": {"T1": []}, "hindsight_targets": {"T1": ["REQ1", "REQ3"]}, "agreement": {"T1": false}, "premises": {"T1": []}, "errors": ["unnecessary_round", "task_not_gap_driven", "task_not_gap_driven"]}
+[judge] 116 calls (2 cached, 6 failed) | last 3.0s | avg 13.0s | total 7m34s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 119 calls (2 cached, 6 failed) | last 8.7s | avg 12.8s | total 7m40s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 122 calls (2 cached, 6 failed) | last 8.1s | avg 12.7s | total 7m46s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 125 calls (2 cached, 6 failed) | last 11.7s | avg 12.6s | total 7m55s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_0069_r0b_1] answer request_0029: {"method": "judge_sentences", "disposition": "negative", "sentences": 14, "uncited": 9, "unsupported": ["A3", "A4", "A6", "A9"], "contradicted": [], "errors": ["omitted_required_fact", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion"], "severities": ["major", "critical", "critical", "critical", "critical", "critical"]}
+[judge] 131 calls (2 cached, 6 failed) | last 2.5s | avg 12.3s | total 8m02s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_1007_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ3"], "T2": ["REQ2", "REQ3"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把无法检查或未检查的音频、区域或其他模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}]}, "errors": []}
+[judge] 132 calls (2 cached, 6 failed) | last 13.2s | avg 12.3s | total 8m16s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_1007_r0b_1] plan request_0017: {"disposition": "positive", "judge_targets": {"T1": ["REQ3"]}, "hindsight_targets": {"T1": ["REQ1", "REQ3"], "T2": []}, "agreement": {"T1": false, "T2": true}, "premises": {"T1": [{"phrase": "已确认 A 的7.960秒与 B 的10.677秒画面高度对应", "status": "verified_earlier", "why": "Finding F2 提到“材料A的1.360秒与材料B的4.071秒画面高度对应：左侧山壁、湖面倒影、远处山谷，以及右侧戴帽、穿橙色衣服和蓝色救生衣的人物，其位置与姿态均相符”"}, {"phrase": "这不是已确认的剪辑边界", "status": "given_in_case", "why": "任务文字中明确说明“已确认 A 的7.960秒与 B 的10.677秒画面高度对应，但这不是已确认的剪辑边界”"}, {"phrase": "不要推定 B 的来源身份", "status": "given_in_case", "why": "任务文字中明确说明“不要推定 B 的来源身份。”}]},{"}, {"phrase": "B 在约10.677秒之后至20.053秒结尾的内容", "status": "given_in_case", "why": "任务文字中明确说明“核查候选视频 B 在约10.677秒之后至20.053秒结尾的内容”}]},{"}, {"phrase": "A 全片", "status": "given_in_case", "why": "任务文字中明确说明“直接对照视频 A 全片”}]},{"}, {"phrase": "已有的末段画面记录", "status": "given_in_case", "why": "任务文字中明确说明“优先利用已有末段画面记录，补充必要观察”}]},{"}, {"phrase": "A 约1.3秒前后的声音衔接", "status": "given_in_case", "why": "任务文字中明确说明“核查视频 A 与候选视频 B 的声音内容差异及其对画面含义的影响，补足现有报告只有音频相关性候选、没有听辨或转写依据的缺口。重点核查 A 约1.3秒前后的声音”}]},{"}, {"phrase": "B 约1.7至4.0秒的声音", "status": "given_in_case", "why": "任务文字中明确说明“重点核查 A 约1.3秒前后的声音衔接、B 约1.7至4.0秒的声音”}]},{"}, {"phrase": "B 约10.7秒之后的声音", "status": "given_in_case", "why": "任务文字中明确说明“重点核查 A 约1.3秒前后的声音衔接、B 约1.7至4.0秒的声音，以及 B 约10.7秒之后的声音是否提供不同解释所需的信息”}]},{"}, {"phrase": "相关性匹配不能代替内容核验", "status": "given_in_case", "why": "任务文字中明确说明“相关性匹配不能代替内容核验。”}]}], "}, {"phrase": "若无法取得可听辨或可转写的内容，明确实际能力限制及仍未知的事项", "status": "given_in_case", "why": "任务文字中明确说明“若无法取得可听辨或可转写的内容，明确实际能力限制及仍未知的事项”}]}]} </tbody>"}, {"phrase": "不重复以对齐分数推断声音语义", "status": "given_in_case", "why": "任务文字中明确说明“不重复以对齐分数推断声音语义。”}],"}, {"phrase": "直接对照两份材料，引用实际取得的声音内容证据并标明时间", "status": "given_in_case", "why": "任务文字中明确说明“直接对照两份材料，引用实际取得的声音内容证据并标明时间”}]}]} </tbody>"}]}, "errors": []}
+[judge] 135 calls (2 cached, 6 failed) | last 6.2s | avg 12.1s | total 8m22s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 137 calls (2 cached, 6 failed) | last 9.8s | avg 12.1s | total 8m28s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 139 calls (2 cached, 6 failed) | last 11.9s | avg 12.1s | total 8m34s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 142 calls (2 cached, 6 failed) | last 14.4s | avg 12.1s | total 8m46s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 144 calls (2 cached, 6 failed) | last 14.6s | avg 12.1s | total 8m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 147 calls (2 cached, 6 failed) | last 9.5s | avg 12.1s | total 8m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 149 calls (2 cached, 6 failed) | last 10.3s | avg 12.1s | total 9m04s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 152 calls (2 cached, 6 failed) | last 9.2s | avg 12.0s | total 9m10s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 154 calls (2 cached, 6 failed) | last 12.0s | avg 12.0s | total 9m17s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 158 calls (2 cached, 6 failed) | last 5.6s | avg 12.0s | total 9m23s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 165 calls (2 cached, 6 failed) | last 3.0s | avg 11.6s | total 9m28s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_1007_r0b_1] answer request_0033: {"method": "judge_sentences", "disposition": "negative", "sentences": 19, "uncited": 5, "unsupported": ["A12", "A14", "A15", "A4", "A5", "A7", "A8"], "contradicted": [], "errors": ["premature_finish", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion"], "severities": ["critical", "critical", "critical", "critical", "critical", "critical", "critical", "critical", "critical", "critical"]}
+[judge] 170 calls (2 cached, 6 failed) | last 2.5s | avg 11.3s | total 9m34s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_1028_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ3", "REQ4"], "T2": ["REQ2", "REQ3"]}, "hindsight_targets": {"T1": ["REQ1", "REQ3"], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}]}, "errors": []}
+[judge] 172 calls (2 cached, 6 failed) | last 6.3s | avg 11.2s | total 9m40s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 174 calls (2 cached, 6 failed) | last 11.3s | avg 11.2s | total 9m45s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 176 calls (2 cached, 6 failed) | last 10.9s | avg 11.2s | total 9m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 178 calls (2 cached, 6 failed) | last 12.8s | avg 11.2s | total 9m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 181 calls (2 cached, 6 failed) | last 11.3s | avg 11.2s | total 10m05s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 184 calls (2 cached, 6 failed) | last 9.3s | avg 11.2s | total 10m12s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 187 calls (2 cached, 6 failed) | last 8.5s | avg 11.2s | total 10m19s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 190 calls (2 cached, 6 failed) | last 9.4s | avg 11.1s | total 10m26s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 193 calls (2 cached, 6 failed) | last 9.2s | avg 11.1s | total 10m33s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 196 calls (2 cached, 6 failed) | last 10.0s | avg 11.1s | total 10m40s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 198 calls (2 cached, 6 failed) | last 11.5s | avg 11.1s | total 10m46s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 201 calls (2 cached, 6 failed) | last 9.1s | avg 11.1s | total 10m52s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 204 calls (2 cached, 6 failed) | last 7.3s | avg 11.0s | total 10m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 207 calls (2 cached, 6 failed) | last 8.1s | avg 11.0s | total 11m04s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 210 calls (2 cached, 6 failed) | last 7.9s | avg 10.9s | total 11m10s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 213 calls (2 cached, 6 failed) | last 8.0s | avg 10.9s | total 11m16s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 215 calls (2 cached, 6 failed) | last 9.3s | avg 10.9s | total 11m21s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 218 calls (2 cached, 6 failed) | last 10.2s | avg 10.9s | total 11m29s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 221 calls (2 cached, 6 failed) | last 9.9s | avg 10.8s | total 11m36s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 224 calls (2 cached, 6 failed) | last 8.9s | avg 10.8s | total 11m42s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 227 calls (2 cached, 6 failed) | last 7.2s | avg 10.8s | total 11m48s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 230 calls (2 cached, 6 failed) | last 7.6s | avg 10.7s | total 11m54s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 232 calls (2 cached, 6 failed) | last 10.0s | avg 10.7s | total 12m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 235 calls (2 cached, 6 failed) | last 9.3s | avg 10.7s | total 12m05s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 241 calls (2 cached, 6 failed) | last 3.8s | avg 10.5s | total 12m11s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_1028_r0b_1] answer request_0011: {"method": "judge_sentences", "disposition": "negative", "sentences": 13, "uncited": 1, "unsupported": ["A1", "A12", "A7"], "contradicted": ["A1"], "errors": ["premature_finish", "wrong_citation", "wrong_citation", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion", "unsupported_assertion"], "severities": ["critical", "critical", "critical", "critical", "critical", "critical", "critical", "critical"]}
+[judge] 246 calls (2 cached, 6 failed) | last 2.5s | avg 10.4s | total 12m16s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_2010_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ3"], "T2": ["REQ2", "REQ3"]}, "hindsight_targets": {"T1": ["REQ1", "REQ3"], "T2": ["REQ1", "REQ2"]}, "agreement": {"T1": true, "T2": false}, "premises": {"T1": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}], "T2": [{"phrase": "给定候选不代表已经确认其来源身份", "status": "given_in_case", "why": "任务文字本身"}, {"phrase": "不要把未检查的区域或模态视为没有差异", "status": "given_in_case", "why": "任务文字本身"}]}, "errors": ["overlapping_sibling_tasks"]}
+[judge] 248 calls (2 cached, 6 failed) | last 6.7s | avg 10.4s | total 12m23s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 250 calls (2 cached, 6 failed) | last 13.7s | avg 10.4s | total 12m30s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 252 calls (2 cached, 6 failed) | last 13.0s | avg 10.4s | total 12m36s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 255 calls (2 cached, 6 failed) | last 10.5s | avg 10.4s | total 12m44s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 257 calls (2 cached, 6 failed) | last 13.5s | avg 10.4s | total 12m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 259 calls (2 cached, 6 failed) | last 16.1s | avg 10.5s | total 13m00s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 261 calls (2 cached, 6 failed) | last 15.5s | avg 10.5s | total 13m07s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 264 calls (2 cached, 6 failed) | last 10.9s | avg 10.5s | total 13m16s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 270 calls (2 cached, 6 failed) | last 3.5s | avg 10.4s | total 13m22s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_2010_r0b_1] answer request_0010: {"method": "judge_sentences", "disposition": "negative", "sentences": 16, "uncited": 9, "unsupported": ["A7"], "contradicted": [], "errors": ["unsupported_assertion"], "severities": ["critical"]}
+[videosham_4126_r0b_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": ["REQ1", "REQ2"]}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "给定两段6秒视频（E1为材料A，E2为材料B）", "status": "given_in_case", "why": "任务文字中直接提及了 E1 和 E2，并将其定义为材料 A 和 B。"}, {"phrase": "黑衣人物在B可见而在A对应位置不可见", "status": "verified_earlier", "why": "REQ1 描述了要查找的内容，该内容被当作既定事实。"}], "T2": [{"phrase": "给定两段6秒视频（E1为材料A，E2为材料B）", "status": "given_in_case", "why": "任务文字中直接提及了 E1 和 E2，并将其定义为材料 A 和 B。"}, {"phrase": "黑衣人物在B可见而在A对应位置不可见", "status": "verified_earlier", "why": "REQ1 描述了要查找的内容，该内容被当作既定事实。"}]}, "errors": []}
+[judge] 273 calls (2 cached, 6 failed) | last 5.9s | avg 10.4s | total 13m32s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_4126_r0b_1] plan request_0018: {"disposition": "negative", "judge_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1", "REQ2"]}, "hindsight_targets": {"T1": ["REQ1", "REQ2"], "T2": ["REQ1", "REQ2"]}, "agreement": {"T1": true, "T2": true}, "premises": {"T1": [{"phrase": "已有成对证据确认0.500秒存在差异", "status": "verified_earlier", "why": "F2 Finding 提到“已确认黑衣人物在材料B可见、在材料A对应位置不可见的三个帧呈现区间为[0.500000,0.533333…)秒”"}, {"phrase": "已有成对证据确认1.600秒两侧均未见该人物", "status": "verified_earlier", "why": "F6 Finding 提到“在1.600秒两侧画面均未见该黑衣人物，说明差异不能概括为全程存在。”"}], "T2": [{"phrase": "已有成对证据确认3.000、3.967、4.500、4.800秒存在差异", "status": "verified_earlier", "why": "F4 Finding 提到“材料A、B在已核对的1.600、3.000、3.967和4.800秒画面中...黑衣人物在B可见而在A对应位置不可见”；F2 Finding 提到“已确认黑衣人物在材料B可见、在材料A对应位置不可见的三个帧呈现区间为[3.000000,3.033333…)秒和[4.500000,4.533333…)秒”"}, {"phrase": "补查连续性", "status": "given_in_case", "why": "任务文字中明确要求“确定这些时刻之间的连续性”"}, {"phrase": "核清2.400秒右下边缘局部深色区域是否属于该人物及其对入画边界的影响", "status": "given_in_case", "why": "任务文字中明确要求“补查...并核清2.400秒右下边缘局部深色区域是否属于该人物”"}]}, "errors": ["overlapping_sibling_tasks", "unnecessary_round", "task_not_gap_driven", "task_not_gap_driven"]}
+[judge] 275 calls (2 cached, 6 failed) | last 6.7s | avg 10.3s | total 13m39s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 277 calls (2 cached, 6 failed) | last 12.6s | avg 10.3s | total 13m45s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 280 calls (2 cached, 6 failed) | last 8.6s | avg 10.3s | total 13m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 283 calls (2 cached, 6 failed) | last 6.9s | avg 10.3s | total 13m56s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 286 calls (2 cached, 6 failed) | last 7.3s | avg 10.2s | total 14m01s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 289 calls (2 cached, 6 failed) | last 8.1s | avg 10.2s | total 14m07s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 292 calls (2 cached, 6 failed) | last 6.7s | avg 10.2s | total 14m13s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 295 calls (2 cached, 6 failed) | last 10.7s | avg 10.2s | total 14m21s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 297 calls (2 cached, 6 failed) | last 13.1s | avg 10.2s | total 14m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 300 calls (2 cached, 6 failed) | last 9.7s | avg 10.2s | total 14m34s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 303 calls (2 cached, 6 failed) | last 8.0s | avg 10.2s | total 14m40s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 306 calls (2 cached, 6 failed) | last 9.5s | avg 10.2s | total 14m47s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 309 calls (2 cached, 6 failed) | last 8.9s | avg 10.2s | total 14m54s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 312 calls (2 cached, 6 failed) | last 7.7s | avg 10.1s | total 14m59s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 315 calls (2 cached, 6 failed) | last 6.9s | avg 10.1s | total 15m04s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 317 calls (2 cached, 6 failed) | last 8.6s | avg 10.1s | total 15m10s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 320 calls (2 cached, 6 failed) | last 10.1s | avg 10.1s | total 15m17s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 323 calls (2 cached, 6 failed) | last 7.8s | avg 10.1s | total 15m22s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 329 calls (2 cached, 6 failed) | last 2.7s | avg 10.0s | total 15m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 337 calls (2 cached, 6 failed) | last 2.7s | avg 9.8s | total 15m33s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[videosham_4126_r0b_1] answer request_0040: {"method": "judge_sentences", "disposition": "negative", "sentences": 22, "uncited": 7, "unsupported": [], "contradicted": ["A6"], "errors": ["wrong_citation", "scope_overreach"], "severities": ["critical", "minor"]}
+11 个单元 → experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+[judge] 339 calls (2 cached, 6 failed) | last 3.0s | avg 9.8s | total 15m35s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+
+[3/6] 三层核验按 plan 评判重定范围（没变的问题命中缓存）→ experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_17838107_r0b_1 experiments\sft_data\runs\true_20205316753904_r0b_1 experiments\sft_data\runs\true_20361105_r0b_1 experiments\sft_data\runs\true_24171541709824_r0b_1 experiments\sft_data\runs\true_39132300_r0b_1 experiments\sft_data\runs\true_4124903_r0b_1 experiments\sft_data\runs\videosham_0069_r0b_1 experiments\sft_data\runs\videosham_1007_r0b_1 experiments\sft_data\runs\videosham_1028_r0b_1 experiments\sft_data\runs\videosham_2010_r0b_1 experiments\sft_data\runs\videosham_4126_r0b_1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --units experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/11] true_17838107_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[2/11] true_20205316753904_r0b_1: 1 份报告，W1-1=positive
+[3/11] true_20361105_r0b_1: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[4/11] true_24171541709824_r0b_1: 1 份报告，W1-1=positive
+[judge] 68 calls (67 cached, 1 failed) | last 48.8s | avg 48.8s | total 49.2s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 69 calls (67 cached, 2 failed) | last 45.7s | avg 47.2s | total 1m35s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[5/11] true_39132300_r0b_1: 1 份报告，W1-1=negative
+[6/11] true_4124903_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[7/11] videosham_0069_r0b_1: 3 份报告，W1-1=negative, W1-2=negative, W2-1=negative
+[8/11] videosham_1007_r0b_1: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative
+[9/11] videosham_1028_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[10/11] videosham_2010_r0b_1: 2 份报告，W1-1=negative, W1-2=negative
+[11/11] videosham_4126_r0b_1: 4 份报告，W1-1=negative, W1-2=negative, W2-1=negative, W2-2=negative
+{
+  "reports": 25,
+  "disposition": {
+    "negative": 23,
+    "positive": 2
+  },
+  "layers": {
+    "exec,anchored,sufficiency": 25
+  },
+  "errors_total": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "errors_firm": {
+    "unsupported_assertion": 73,
+    "wrong_citation": 3,
+    "scope_overreach": 1,
+    "sloppy_numeric": 2,
+    "omitted_required_fact": 23,
+    "completed_without_finishing": 8
+  },
+  "reports_with_firm_error": 23,
+  "tainted_findings": 45,
+  "pending": {
+    "judge_output_invalid": 1
+  },
+  "judge_cache": {
+    "hits": 367,
+    "misses": 0
+  }
+}
+[judge] 369 calls (367 cached, 2 failed) | last 45.7s | avg 47.2s | total 1m36s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+
+[4/6] 核验器召回率校准（注入已知错误再核验）→ experiments\sft_data\calibration\recall_r0b.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.json
+  > python -m foren_searcher.datagen.verify.calibrate_recall --runs experiments\sft_data\runs\true_17838107_r0b_1 experiments\sft_data\runs\true_20205316753904_r0b_1 experiments\sft_data\runs\true_20361105_r0b_1 experiments\sft_data\runs\true_24171541709824_r0b_1 experiments\sft_data\runs\true_39132300_r0b_1 experiments\sft_data\runs\true_4124903_r0b_1 experiments\sft_data\runs\videosham_0069_r0b_1 experiments\sft_data\runs\videosham_1007_r0b_1 experiments\sft_data\runs\videosham_1028_r0b_1 experiments\sft_data\runs\videosham_2010_r0b_1 experiments\sft_data\runs\videosham_4126_r0b_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --units experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --per-kind 2 --out experiments\sft_data\calibration\recall_r0b.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.json
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[true_17838107_r0b_1] 7 处注入
+[judge] 25 calls (24 cached) | last 4.4s | avg 4.4s | total 4.5s
+[judge] 27 calls (24 cached) | last 4.3s | avg 3.4s | total 10.3s
+  swap_citation          W1-2 F4   命中 ['unsupported_assertion'] — 引用 ['E23', 'E26'] → ['E32']
+[judge] 40 calls (34 cached) | last 4.7s | avg 3.3s | total 19.9s
+  swap_citation          W1-2 F3   命中 ['unsupported_assertion'] — 引用 ['E23', 'E26'] → ['E32']
+  fabricate_id           W1-2 F5   命中 ['fabricated_evidence_id'] — 追加不存在的 E9596
+[judge] 68 calls (60 cached) | last 4.6s | avg 3.6s | total 28.8s
+  fabricate_id           W1-2 F3   命中 ['fabricated_evidence_id'] — 追加不存在的 E9059
+[judge] 79 calls (69 cached) | last 7.7s | avg 4.0s | total 36.5s | 1 in flight
+[judge] 80 calls (69 cached) | last 13.7s | avg 4.8s | total 42.6s
+[judge] 82 calls (69 cached) | last 4.0s | avg 4.5s | total 47.9s
+  append_clause          W1-2 F5   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 94 calls (79 cached) | last 9.1s | avg 4.7s | total 57.0s
+[judge] 96 calls (79 cached) | last 5.0s | avg 4.6s | total 1m04s
+  append_clause          W1-2 F3   命中 ['unsupported_assertion'] — 追加 “现场负责人姓名为 Laurent Mercier”
+[judge] 108 calls (89 cached) | last 6.6s | avg 4.6s | total 1m10s
+[judge] 110 calls (89 cached) | last 4.6s | avg 4.4s | total 1m16s
+  alter_number           W1-2 F4   漏报 [] — 15 → 28
+[true_20205316753904_r0b_1] 3 处注入
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9404
+[judge] 125 calls (102 cached) | last 3.6s | avg 4.4s | total 1m24s | 3 in flight
+[judge] 127 calls (102 cached) | last 9.5s | avg 4.7s | total 1m30s | 2 in flight
+[judge] 129 calls (102 cached) | last 12.2s | avg 5.3s | total 1m36s
+  append_clause          W1-1 F1   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 138 calls (108 cached) | last 2.3s | avg 5.0s | total 1m42s
+  flip_to_incomplete     W1-1 F1   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+[true_20361105_r0b_1] 2 处注入
+  fabricate_id           W1-2 F5   命中 ['fabricated_evidence_id'] — 追加不存在的 E9404
+[judge] 173 calls (141 cached) | last 4.8s | avg 4.9s | total 1m50s | 2 in flight
+[judge] 174 calls (141 cached) | last 10.2s | avg 5.0s | total 1m55s | 1 in flight
+[judge] 175 calls (141 cached) | last 21.1s | avg 5.5s | total 2m06s
+  append_clause          W1-2 F5   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[true_24171541709824_r0b_1] 11 处注入
+[judge] 185 calls (148 cached) | last 3.5s | avg 5.3s | total 2m14s
+  swap_citation          W1-1 F2   漏报 [] — 引用 ['E3'] → ['E6']
+[judge] 190 calls (150 cached) | last 2.6s | avg 5.0s | total 2m20s
+  swap_citation          W1-1 F1   命中 ['unsupported_assertion'] — 引用 ['E6'] → ['E3']
+[judge] 197 calls (154 cached) | last 3.2s | avg 4.9s | total 2m28s
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9374
+  fabricate_id           W1-1 F2   命中 ['fabricated_evidence_id'] — 追加不存在的 E9596
+[judge] 205 calls (160 cached) | last 4.6s | avg 4.8s | total 2m35s
+  append_clause          W1-1 F1   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 210 calls (162 cached) | last 3.7s | avg 4.7s | total 2m43s
+  append_clause          W1-1 F2   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 215 calls (164 cached) | last 3.3s | avg 4.5s | total 2m50s
+  alter_number           W1-1 F2   漏报 [] — 28 → 41
+[judge] 220 calls (166 cached) | last 4.0s | avg 4.4s | total 2m58s
+  alter_number           W1-1 F1   命中 ['unsupported_assertion'] — 2000 → 2013
+[judge] 225 calls (168 cached) | last 2.1s | avg 4.3s | total 3m04s
+  drop_required_finding  W1-1 F1   漏报 [] — 删除该 Finding，状态保持 COMPLETED
+  drop_required_finding  W1-1 F2   漏报 [] — 删除该 Finding，状态保持 COMPLETED
+[judge] 233 calls (174 cached) | last 3.1s | avg 4.2s | total 3m09s
+  flip_to_incomplete     W1-1 F1   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+[true_39132300_r0b_1] 5 处注入
+[judge] 235 calls (175 cached, 1 failed) | last 44.1s | avg 4.9s | total 3m54s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 236 calls (175 cached, 2 failed) | last 44.7s | avg 5.6s | total 4m38s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 239 calls (177 cached, 3 failed) | last 41.9s | avg 6.1s | total 5m20s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 240 calls (177 cached, 4 failed) | last 43.8s | avg 6.7s | total 6m04s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9404
+[judge] 242 calls (177 cached, 4 failed) | last 5.7s | avg 6.7s | total 6m12s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 243 calls (177 cached, 5 failed) | last 49.5s | avg 7.3s | total 6m56s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 244 calls (177 cached, 6 failed) | last 43.0s | avg 7.8s | total 7m39s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F1   未定 [] — 追加 “现场共有 37 人受伤”（pending {'judge_output_invalid': 1}：LocalModelOutputError: model output contained no JSON object forming a complete ）
+[judge] 246 calls (177 cached, 6 failed) | last 7.3s | avg 7.8s | total 7m49s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 247 calls (177 cached, 7 failed) | last 51.1s | avg 8.4s | total 8m32s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 248 calls (177 cached, 8 failed) | last 44.5s | avg 8.9s | total 9m17s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-1 F1   未定 [] — 1992 → 2005（pending {'judge_output_invalid': 1}：LocalModelOutputError: model output contained no JSON object forming a complete ）
+[judge] 250 calls (177 cached, 8 failed) | last 9.1s | avg 8.8s | total 9m29s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 251 calls (177 cached, 9 failed) | last 56.6s | avg 9.4s | total 10m16s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 252 calls (177 cached, 10 failed) | last 45.0s | avg 9.9s | total 11m01s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  drop_attribution       W1-1 F1   未定 [] — 删去 “据支持：后来被称”（pending {'judge_output_invalid': 1}：LocalModelOutputError: model output contained no JSON object forming a complete ）
+[judge] 255 calls (178 cached, 11 failed) | last 43.3s | avg 10.3s | total 11m47s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 256 calls (178 cached, 12 failed) | last 47.5s | avg 10.7s | total 12m35s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  flip_to_incomplete     W1-1 F1   未定 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛（pending {'judge_output_invalid': 1}：LocalModelOutputError: model output contained no JSON object forming a complete ）
+[true_4124903_r0b_1] 15 处注入
+[judge] 281 calls (201 cached, 12 failed) | last 3.2s | avg 10.5s | total 12m40s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 282 calls (201 cached, 12 failed) | last 12.1s | avg 10.6s | total 12m49s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W1-1 F1   漏报 [] — 引用 ['E3', 'E5', 'E8'] → ['E17', 'E15']
+[judge] 298 calls (214 cached, 12 failed) | last 2.7s | avg 10.3s | total 12m57s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9374
+  fabricate_id           W1-1 F2   命中 ['fabricated_evidence_id'] — 追加不存在的 E9596
+[judge] 322 calls (236 cached, 12 failed) | last 3.8s | avg 10.1s | total 13m03s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 324 calls (236 cached, 12 failed) | last 10.9s | avg 10.1s | total 13m10s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F1   漏报 [] — 追加 “现场共有 37 人受伤”
+[judge] 337 calls (246 cached, 12 failed) | last 3.5s | avg 9.8s | total 13m19s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 338 calls (246 cached, 12 failed) | last 9.2s | avg 9.8s | total 13m24s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F2   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 351 calls (256 cached, 12 failed) | last 3.3s | avg 9.6s | total 13m32s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 352 calls (256 cached, 12 failed) | last 10.9s | avg 9.6s | total 13m39s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-1 F2   命中 ['unsupported_assertion'] — 2016 → 2029
+[judge] 368 calls (269 cached, 12 failed) | last 2.8s | avg 9.4s | total 13m47s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  flip_to_incomplete     W1-1 F1   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+[judge] 391 calls (289 cached, 12 failed) | last 4.5s | avg 9.2s | total 13m55s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W1-2 F5   命中 ['unsupported_assertion'] — 引用 ['E17', 'E18'] → ['E15']
+  fabricate_id           W1-2 F4   命中 ['fabricated_evidence_id'] — 追加不存在的 E9570
+[judge] 415 calls (311 cached, 12 failed) | last 4.4s | avg 9.1s | total 14m04s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W1-2 F5   命中 ['fabricated_evidence_id'] — 追加不存在的 E9879
+[judge] 424 calls (318 cached, 12 failed) | last 9.7s | avg 9.1s | total 14m14s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 426 calls (318 cached, 12 failed) | last 1.6s | avg 9.0s | total 14m20s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 427 calls (318 cached, 12 failed) | last 5.2s | avg 9.0s | total 14m25s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F4   命中 ['unsupported_assertion'] — 追加 “现场负责人姓名为 Laurent Mercier”
+[judge] 436 calls (326 cached, 12 failed) | last 6.5s | avg 9.0s | total 14m31s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 437 calls (326 cached, 12 failed) | last 15.0s | avg 9.0s | total 14m40s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 439 calls (326 cached, 12 failed) | last 5.6s | avg 8.9s | total 14m47s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F5   漏报 [] — 追加 “事发时间为当地时间凌晨 2 点 40 分”
+[judge] 448 calls (333 cached, 12 failed) | last 10.2s | avg 8.9s | total 14m58s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 450 calls (333 cached, 12 failed) | last 1.4s | avg 8.9s | total 15m03s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 451 calls (333 cached, 12 failed) | last 5.2s | avg 8.9s | total 15m08s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-2 F4   命中 ['unsupported_assertion'] — 2016 → 2029
+[judge] 460 calls (341 cached, 12 failed) | last 6.2s | avg 8.8s | total 15m15s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 461 calls (341 cached, 12 failed) | last 13.5s | avg 8.9s | total 15m22s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 463 calls (341 cached, 12 failed) | last 5.1s | avg 8.8s | total 15m29s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-2 F5   命中 ['unsupported_assertion'] — 24 → 37
+  flip_to_incomplete     W1-2 F4   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+[videosham_0069_r0b_1] 8 处注入
+[judge] 519 calls (395 cached, 12 failed) | last 5.0s | avg 8.7s | total 15m39s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W1-1 F4   命中 ['fabricated_evidence_id'] — 追加不存在的 E9404
+[judge] 530 calls (405 cached, 12 failed) | last 14.3s | avg 8.8s | total 15m53s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 532 calls (405 cached, 12 failed) | last 19.5s | avg 8.9s | total 15m58s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 537 calls (408 cached, 12 failed) | last 10.3s | avg 9.0s | total 16m03s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 539 calls (408 cached, 12 failed) | last 10.4s | avg 9.1s | total 16m09s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 541 calls (408 cached, 12 failed) | last 3.7s | avg 9.0s | total 16m14s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F4   漏报 [] — 追加 “现场共有 37 人受伤”
+  drop_required_finding  W1-1 F4   漏报 [] — 删除该 Finding，状态保持 COMPLETED
+[judge] 565 calls (430 cached, 12 failed) | last 2.5s | avg 8.9s | total 16m21s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 568 calls (430 cached, 12 failed) | last 2.8s | avg 8.7s | total 16m27s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W1-2 F6   命中 ['unsupported_assertion'] — 引用 ['E5'] → ['E3', 'E4']
+  fabricate_id           W1-2 F6   命中 ['fabricated_evidence_id'] — 追加不存在的 E9071
+[judge] 579 calls (438 cached, 12 failed) | last 1.3s | avg 8.6s | total 16m33s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F6   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 620 calls (477 cached, 12 failed) | last 3.8s | avg 8.5s | total 16m40s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W2-1 F8   命中 ['fabricated_evidence_id'] — 追加不存在的 E9050
+[judge] 636 calls (490 cached, 12 failed) | last 6.0s | avg 8.4s | total 16m46s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 638 calls (490 cached, 12 failed) | last 10.5s | avg 8.5s | total 16m53s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 640 calls (490 cached, 12 failed) | last 4.0s | avg 8.4s | total 16m59s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W2-1 F8   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[videosham_1007_r0b_1] 3 处注入
+[judge] 664 calls (513 cached, 12 failed) | last 5.6s | avg 8.4s | total 17m05s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W2-1 F9   命中 ['unsupported_assertion'] — 引用 ['E23', 'E38', 'E41'] → ['E13']
+[judge] 680 calls (526 cached, 12 failed) | last 4.6s | avg 8.3s | total 17m13s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W2-1 F9   命中 ['fabricated_evidence_id'] — 追加不存在的 E9666
+[judge] 691 calls (535 cached, 12 failed) | last 7.8s | avg 8.2s | total 17m21s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 694 calls (535 cached, 12 failed) | last 3.6s | avg 8.2s | total 17m29s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W2-1 F9   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[videosham_1028_r0b_1] 3 处注入
+  fabricate_id           W1-1 F3   命中 ['fabricated_evidence_id'] — 追加不存在的 E9404
+[judge] 760 calls (599 cached, 12 failed) | last 5.0s | avg 8.1s | total 17m37s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 763 calls (599 cached, 12 failed) | last 13.0s | avg 8.2s | total 17m46s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 765 calls (599 cached, 12 failed) | last 11.1s | avg 8.2s | total 17m51s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 769 calls (601 cached, 12 failed) | last 12.4s | avg 8.2s | total 17m58s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 771 calls (601 cached, 12 failed) | last 1.7s | avg 8.2s | total 18m04s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F3   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 786 calls (614 cached, 12 failed) | last 12.2s | avg 8.2s | total 18m19s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 789 calls (614 cached, 12 failed) | last 19.3s | avg 8.4s | total 18m26s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 794 calls (616 cached, 12 failed) | last 10.0s | avg 8.4s | total 18m33s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 796 calls (616 cached, 12 failed) | last 11.9s | avg 8.4s | total 18m40s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 798 calls (616 cached, 12 failed) | last 3.6s | avg 8.4s | total 18m45s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-1 F3   命中 ['unsupported_assertion'] — 84 → 97
+[videosham_2010_r0b_1] 7 处注入
+[judge] 852 calls (668 cached, 12 failed) | last 7.4s | avg 8.3s | total 18m53s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 854 calls (668 cached, 12 failed) | last 4.8s | avg 8.3s | total 18m59s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W1-1 F1   命中 ['unsupported_assertion'] — 引用 ['E10', 'E11', 'E12', 'E13', 'E6', 'E7', 'E8', 'E9'] → ['E3', 'E4']
+[judge] 885 calls (698 cached, 12 failed) | last 7.7s | avg 8.3s | total 19m07s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W1-1 F1   命中 ['fabricated_evidence_id'] — 追加不存在的 E9074
+[judge] 887 calls (698 cached, 12 failed) | last 8.6s | avg 8.3s | total 19m16s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 889 calls (698 cached, 12 failed) | last 16.8s | avg 8.3s | total 19m24s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 912 calls (719 cached, 12 failed) | last 16.7s | avg 8.4s | total 19m32s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 913 calls (719 cached, 12 failed) | last 17.5s | avg 8.5s | total 19m37s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 915 calls (719 cached, 12 failed) | last 2.5s | avg 8.5s | total 19m43s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-1 F1   命中 ['unsupported_assertion', 'wrong_citation'] — 追加 “涉事车辆车牌尾号为 4471”
+[judge] 947 calls (749 cached, 12 failed) | last 4.4s | avg 8.4s | total 19m53s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  flip_to_incomplete     W1-1 F1   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+  fabricate_id           W1-2 F4   命中 ['fabricated_evidence_id'] — 追加不存在的 E9071
+[judge] 979 calls (779 cached, 12 failed) | last 4.8s | avg 8.4s | total 20m02s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 981 calls (779 cached, 12 failed) | last 13.0s | avg 8.4s | total 20m10s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 983 calls (779 cached, 12 failed) | last 5.7s | avg 8.4s | total 20m18s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F4   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 992 calls (786 cached, 12 failed) | last 10.4s | avg 8.4s | total 20m28s | 1 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 993 calls (786 cached, 12 failed) | last 17.0s | avg 8.4s | total 20m35s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 995 calls (786 cached, 12 failed) | last 6.3s | avg 8.4s | total 20m42s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  alter_number           W1-2 F4   漏报 [] — 96 → 109
+[videosham_4126_r0b_1] 10 处注入
+[judge] 1042 calls (832 cached, 12 failed) | last 7.4s | avg 8.4s | total 20m50s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1044 calls (832 cached, 12 failed) | last 4.6s | avg 8.3s | total 20m56s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  swap_citation          W1-2 F5   命中 ['unsupported_assertion'] — 引用 ['E31', 'E32', 'E36', 'E37', 'E38', 'E39'] → ['E9']
+  fabricate_id           W1-2 F4   命中 ['fabricated_evidence_id'] — 追加不存在的 E9840
+  fabricate_id           W1-2 F5   命中 ['fabricated_evidence_id'] — 追加不存在的 E9548
+[judge] 1099 calls (884 cached, 12 failed) | last 21.1s | avg 8.3s | total 21m21s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1101 calls (884 cached, 12 failed) | last 27.0s | avg 8.5s | total 21m27s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1103 calls (884 cached, 12 failed) | last 12.1s | avg 8.6s | total 21m33s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1121 calls (900 cached, 12 failed) | last 15.2s | avg 8.6s | total 21m42s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1123 calls (900 cached, 12 failed) | last 15.5s | avg 8.7s | total 21m49s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1125 calls (900 cached, 12 failed) | last 5.2s | avg 8.6s | total 21m56s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F4   命中 ['unsupported_assertion'] — 追加 “该说法此前已被路透社在 2014 年核实”
+[judge] 1136 calls (909 cached, 12 failed) | last 6.2s | avg 8.6s | total 22m03s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1148 calls (919 cached, 12 failed) | last 12.5s | avg 8.6s | total 22m09s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1150 calls (919 cached, 12 failed) | last 12.0s | avg 8.7s | total 22m14s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W1-2 F5   命中 ['unsupported_assertion'] — 追加 “现场共有 37 人受伤”
+[judge] 1179 calls (945 cached, 12 failed) | last 2.3s | avg 8.6s | total 22m20s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  flip_to_incomplete     W1-2 F4   漏报 [] — COMPLETED → INCOMPLETE，Finding 不变，status_reason 空泛
+[judge] 1219 calls (984 cached, 12 failed) | last 5.5s | avg 8.6s | total 22m26s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W2-1 F8   命中 ['fabricated_evidence_id'] — 追加不存在的 E9846
+[judge] 1225 calls (988 cached, 12 failed) | last 6.0s | avg 8.5s | total 22m32s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1227 calls (988 cached, 12 failed) | last 12.5s | avg 8.6s | total 22m38s | 3 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1235 calls (994 cached, 12 failed) | last 11.9s | avg 8.6s | total 22m44s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1237 calls (994 cached, 12 failed) | last 13.3s | avg 8.6s | total 22m52s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1239 calls (994 cached, 12 failed) | last 5.6s | avg 8.6s | total 22m59s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W2-1 F8   命中 ['unsupported_assertion'] — 追加 “事发时间为当地时间凌晨 2 点 40 分”
+[judge] 1263 calls (1017 cached, 12 failed) | last 5.7s | avg 8.6s | total 23m05s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  fabricate_id           W2-2 F10  命中 ['fabricated_evidence_id'] — 追加不存在的 E9296
+[judge] 1271 calls (1023 cached, 12 failed) | last 6.2s | avg 8.5s | total 23m11s | 2 in flight | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+[judge] 1274 calls (1023 cached, 12 failed) | last 1.3s | avg 8.5s | total 23m17s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  append_clause          W2-2 F10  命中 ['unsupported_assertion'] — 追加 “事发时间为当地时间凌晨 2 点 40 分”
+召回 0.716（74 处注入）；inconclusive 4，conclusive 召回 0.757 → experiments\sft_data\calibration\recall_r0b.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.json
+  swap_citation          8/10  inconclusive 0  conclusive 0.8
+  fabricate_id           22/22  inconclusive 0  conclusive 1.0
+  append_clause          18/22  inconclusive 1  conclusive 0.857
+  alter_number           5/9  inconclusive 1  conclusive 0.625
+  drop_attribution       0/1  inconclusive 1  conclusive None
+  drop_required_finding  0/3  inconclusive 0  conclusive 0.0
+  flip_to_incomplete     0/7  inconclusive 1  conclusive 0.0
+[judge] 1275 calls (1023 cached, 12 failed) | last 4.4s | avg 8.5s | total 23m21s | last fail: LocalModelOutputError: model output contained no JSON object forming a complete 
+  召回 0.716（74 处注入）；inconclusive 4；conclusive 召回 0.757
+  有 4 处注入因核验调用失败未判定：可重跑本步（--from 4），已判过的对会命中缓存。
+
+[5/6] 用 hi@0.3.0 + gia@0.4.0 规格 + 判定导出 → experiments\sft_data\export\r0b_11runs-c7ba8bd2_hi@0.3.0_gia@0.4.0_compact_16k.local-gemma3-12b-16k-latest
+  > python -m foren_searcher.datagen.export --runs experiments\sft_data\runs\true_17838107_r0b_1 experiments\sft_data\runs\true_20205316753904_r0b_1 experiments\sft_data\runs\true_20361105_r0b_1 experiments\sft_data\runs\true_24171541709824_r0b_1 experiments\sft_data\runs\true_39132300_r0b_1 experiments\sft_data\runs\true_4124903_r0b_1 experiments\sft_data\runs\videosham_0069_r0b_1 experiments\sft_data\runs\videosham_1007_r0b_1 experiments\sft_data\runs\videosham_1028_r0b_1 experiments\sft_data\runs\videosham_2010_r0b_1 experiments\sft_data\runs\videosham_4126_r0b_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --units experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl --hi-spec hi@0.3.0 --gia-spec gia@0.4.0 --renderer compact_16k --out experiments\sft_data\export\r0b_11runs-c7ba8bd2_hi@0.3.0_gia@0.4.0_compact_16k.local-gemma3-12b-16k-latest
+true_17838107_r0b_1: 17 行（case=有，report verdicts=2）
+true_20205316753904_r0b_1: 5 行（case=有，report verdicts=1）
+true_20361105_r0b_1: 24 行（case=有，report verdicts=3）
+true_24171541709824_r0b_1: 10 行（case=有，report verdicts=1）
+true_39132300_r0b_1: 7 行（case=有，report verdicts=1）
+true_4124903_r0b_1: 13 行（case=有，report verdicts=2）
+videosham_0069_r0b_1: 29 行（case=有，report verdicts=3）
+videosham_1007_r0b_1: 33 行（case=有，report verdicts=4）
+videosham_1028_r0b_1: 11 行（case=有，report verdicts=2）
+videosham_2010_r0b_1: 10 行（case=有，report verdicts=2）
+videosham_4126_r0b_1: 40 行（case=有，report verdicts=4）
+{
+  "counts": {
+    "hi_accepted": 105,
+    "hi_held": 31,
+    "hi_rejected": 23,
+    "gia_accepted": 15,
+    "gia_held": 21,
+    "gia_rejected": 4
+  },
+  "by_unit": {
+    "hi": {
+      "step": 103,
+      "report": 2
+    },
+    "gia": {
+      "plan": 15
+    }
+  },
+  "by_action": {
+    "hi": {
+      "INSPECT": 59,
+      "SEARCH": 10,
+      "READ_RECORD": 34,
+      "COMPLETED": 2
+    },
+    "gia": {
+      "INVESTIGATE": 15
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 239.75,
+    "gia": 15.0
+  },
+  "input_tokens_est": {
+    "max": 27875,
+    "p50": 14500
+  },
+  "fact_check_exposure": {
+    "rows_in_context": 0,
+    "rows_target_held": 0,
+    "accepted_in_context": 0
+  },
+  "weight_adjustments": {
+    "memory_action_gain0": 1,
+    "repetitive_run_middle": 27
+  },
+  "report_status": {
+    "hi": {
+      "COMPLETED": 2
+    }
+  },
+  "rationale_rows": {
+    "hi": 102,
+    "gia": 5
+  },
+  "supervised_tokens_est": {
+    "p50": 135
+  }
+}
+
+[6/6] Qwen3.5-9B processor 核对
+  > python -m foren_searcher.datagen.check_inputs --export experiments\sft_data\export\r0b_11runs-c7ba8bd2_hi@0.3.0_gia@0.4.0_compact_16k.local-gemma3-12b-16k-latest --model .models\Qwen3.5-9B --files hi_accepted.jsonl gia_accepted.jsonl hi_held.jsonl hi_rejected.jsonl
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "hi_accepted.jsonl": {
+      "rows": 105,
+      "input_tokens": {
+        "min": 2624,
+        "p50": 7687,
+        "p90": 12162,
+        "max": 14999
+      },
+      "supervised_tokens": {
+        "min": 42,
+        "p50": 86,
+        "p90": 129,
+        "max": 301
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 1440,
+        "p90": 4080,
+        "max": 7040
+      },
+      "above": {
+        "8192": 50,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "gia_accepted.jsonl": {
+      "rows": 15,
+      "input_tokens": {
+        "min": 1631,
+        "p50": 1818,
+        "p90": 19301,
+        "max": 19462
+      },
+      "supervised_tokens": {
+        "min": 58,
+        "p50": 175,
+        "p90": 359,
+        "max": 420
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 4080,
+        "max": 7040
+      },
+      "above": {
+        "8192": 4,
+        "16384": 3,
+        "32768": 0
+      }
+    },
+    "hi_held.jsonl": {
+      "rows": 31,
+      "input_tokens": {
+        "min": 2928,
+        "p50": 10985,
+        "p90": 14520,
+        "max": 15853
+      },
+      "supervised_tokens": {
+        "min": 61,
+        "p50": 87,
+        "p90": 108,
+        "max": 127
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 2880,
+        "p90": 7040,
+        "max": 7040
+      },
+      "above": {
+        "8192": 24,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "hi_rejected.jsonl": {
+      "rows": 23,
+      "input_tokens": {
+        "min": 5220,
+        "p50": 11841,
+        "p90": 14606,
+        "max": 15002
+      },
+      "supervised_tokens": {
+        "min": 229,
+        "p50": 507,
+        "p90": 736,
+        "max": 807
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 2688,
+        "p90": 6160,
+        "max": 7040
+      },
+      "above": {
+        "8192": 17,
+        "16384": 0,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}
+
+完成。产物：
+  experiments\sft_data\verdicts_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  experiments\sft_data\verdicts_units_r0b_judged.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.jsonl
+  experiments\sft_data\calibration\recall_r0b.local-gemma3-12b-16k-latest.11runs-c7ba8bd2.json
+  experiments\sft_data\export\r0b_11runs-c7ba8bd2_hi@0.3.0_gia@0.4.0_compact_16k.local-gemma3-12b-16k-latest\manifest.json
+VERIFY_EXIT 0 
+[4/4] 对照表 
+# 对照：r0 → r0b
+
+## 教师侧行为（只看 run，不依赖核验器）
+
+| 指标 | r0 | r0b |
+|---|---|---|
+| run 数 | 12 | 11 |
+| 每 run 教师调用 | 37.4 | 18.1 |
+| 每 run 输入 token | 1453971 | 629476 |
+| GIA 给出 FINISH 的比例 | 1 | 1 |
+| HI 动作步数 | 343 | 134 |
+| SEARCH 占步数 | 0.122 | 0.112 |
+| READ_RECORD 占步数 | 0.574 | 0.351 |
+| INSPECT 占步数 | 0.268 | 0.478 |
+| 报告 COMPLETED | 18 | 13 |
+| 报告 INCOMPLETE | 23 | 12 |
+| 最长同动作连击（最大） | 11 | 7 |
+| 最长同动作连击（中位） | 3.5 | 3 |
+| 带 rationale 的输出占比 | 0 | 0.759 |
+| 轨迹里出现的核查站点 URL 数 | 10 | 0 |
+| 实际打开的核查站点页面数 | 18 | 0 |
+| 护栏拦下的核查站点候选/打开 | 0 | 9 |
+| 护栏按日期拦下 | 0 | 0 |
+
+## 数据侧（导出；两边核验器：local-gemma3-12b-16k-latest / local-gemma3-12b-16k-latest）
+
+| 指标 | r0 | r0b |
+|---|---|---|
+| 行数 | hi_accepted 178; hi_held 165; hi_rejected 45; gia_accepted 22; gia_held 34; gia_rejected 3 | hi_accepted 105; hi_held 31; hi_rejected 23; gia_accepted 15; gia_held 21; gia_rejected 4 |
+| HI 权重和 | 468 | 239.75 |
+| GIA 权重和 | 22 | 15 |
+| GIA accepted 答案数 | 1 | 0 |
+| HI 权重份额（按动作） | INSPECT 0.5; READ_RECORD 0.404; SEARCH 0.088; COMPLETED 0.006; INCOMPLETE 0.002 | INSPECT 0.515; READ_RECORD 0.356; SEARCH 0.104; COMPLETED 0.025 |
+| HI 监督 token 中位 | 91 | 132 |
+| accepted 报告状态 | None | hi COMPLETED 2 |
+| 核查站点沾染 | None | rows_in_context 0; rows_target_held 0; accepted_in_context 0 |
+| 带 rationale 的 accepted 行 | None | hi 102; gia 5 |
+| 权重调整次数 | None | memory_action_gain0 1; repetitive_run_middle 27 |
+
+说明：教师侧指标不依赖核验器，可直接比；数据侧指标只有两边用同一个核验器时才可比。
+READ_RECORD 占比高本身不一定是坏事（读页面是取证的一部分），要看 SEARCH 是否上来、连击是否消失。
+
+写到 experiments\sft_data\compare_r0_vs_r0b.md / experiments\sft_data\compare_r0_vs_r0b.json

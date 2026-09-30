@@ -1,0 +1,331 @@
+{
+ "run": "averimatec_660_q0_source_bound_r1",
+ "config": {
+  "dataset": "averimatec",
+  "case": "660",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 11,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What does the image show?\n背景声明：A ram was sacrificed in a ritual to mark the crowning of King Charles III.\n声明日期（任务元数据）：2022-09-14\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网页的时间或出处正确，仍须按问题核对。\n附带图片是该局部问题的官方输入图片，问题中的图像指代以这些附件为准。",
+   "status": "COMPLETED",
+   "status_reason": null,
+   "findings": [
+    {
+     "statement": "The image shows a white, horned goat being led by a uniformed handler ahead of a military band through a castle gateway. The Independent’s visually corresponding video cover and accompanying description identify the procession as the Royal Welsh entering Cardiff Castle for the proclamation of King Charles III, with regimental mascot Lance Corporal Shenkin IV. The report was uploaded on 11 Septembe…（共 407 字）",
+     "evidence_ids": [
+      "E1",
+      "E18",
+      "E17"
+     ],
+     "limitations": [
+      "The event and mascot identification come from The Independent’s description, corroborated by the similar visible procession. The supplied image’s exact frame provenance and capture date were not established."
+     ]
+    },
+    {
+     "statement": "The images show a military procession, with no visible slaughter or sacrifice. They do not substantiate the claim that a ram was sacrificed during a crowning ritual; the accompanying report describes a proclamation procession.",
+     "evidence_ids": [
+      "E1",
+      "E18",
+      "E17"
+     ],
+     "limitations": [
+      "Still images cannot establish what happened outside the depicted moments."
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":26503}"
+  },
+  {
+   "id": "E2",
+   "label": "GOAT – Sneakers & Apparel - Apps on Google Play",
+   "source_url": "https://play.google.com/store/apps/details?id=com.airgoat.goat&hl=en-US",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Games\n\n[2] Apps\n\n[3] Books\n\n[4] Kids\n\n[5] google_logo Play\n\n[6] none\n\n[7] search\n\n[8] help_outline\n\n[9] Sign in with Google\n\n[10] play_apps\n\n[11] Library & devices\n\n[12] payment\n\n[13] Payments & subscriptions\n\n[14] reviews\n\n[15] My Play activity\n\n[16] redeem\n\n[17] Offers\n\n[18] Play Pass\n\n[19] Personalization in Play\n\n[20] settings\n\n[21] Settings\n\n[22] Privacy Policy\n\n[23] •\n\n[24] Terms of Service\n\n[25] play_arrow\n\n[26] Trailer\n\n[27] GOAT – Sneakers & Apparel\n\n[28] 3.9\n\n[29] star\n\n[30] 36.8K reviews\n\n[31] Rated for 12+\n\n[32] info\n\n[33] 10M+\n\n[34] Downloads\n\n[35] Install\n\n[36] Share\n\n[37] Ad…（共 4830 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Reset your PC | Microsoft Support",
+   "source_url": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/reset-your-pc",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Summary\n\n[2] Resetting your PC in Windows is a powerful feature that allows you to restore your device to its original state, which can be useful whether you're experiencing performance issues, software problems, or simply want a fresh start. This feature is designed to be user-friendly and provides several options to suit different needs.\n\n[3] Before you reset your PC\n\n[4] Resetting your PC reinstalls Windows. Depending on the option you choose, apps, settings, and personal files may be removed.\n\n[5] - Back up important files before you begin.\n\n[6] - If your device is encrypted, make sure…（共 3271 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Reset Your PC for a Fresh Start on Windows [Full Guide]",
+   "source_url": "https://gadgetsnurture.com/reset-your-pc-for-a-fresh-start-on-windows-full-guide/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Reset Your PC for a Fresh Start on Windows [Full Guide]\n\n[2] If your Windows computer has become slow, keeps crashing, shows unexpected errors, or simply does not perform the way it used to, performing a PC reset can be one of the best ways to restore its performance. Over time, your computer collects temporary files, unused apps, outdated settings, and software conflicts that can negatively affect its speed and stability. Resetting your PC gives Windows a clean start by reinstalling the operating system while giving you options to either keep your personal files or remove everything.\n\n[3]…（共 10072 字）"
+  },
+  {
+   "id": "E5",
+   "label": "Reset Your PC for a Fresh Start in Windows 11/10",
+   "source_url": "https://tech-tips-now.com/reset-your-pc-for-a-fresh-start-in-windows-11-or-10/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] If your Windows computer has become slow, unresponsive, cluttered with unnecessary apps, or is experiencing frequent errors, performing a PC reset can be one of the best ways to restore its performance. Both Windows 11 and Windows 10 include a built-in feature called [Reset this PC](https://tech-tips-now.com/reset-this-pc-to-factory-settings-windows-11-or-10/), which allows you to reinstall Windows without needing advanced technical skills.\n\n[2] Many people assume that resetting a computer is complicated or requires professional assistance. Whether you want to keep your personal files or c…（共 9181 字）"
+  },
+  {
+   "id": "E6",
+   "label": "作业帮客户端",
+   "source_url": "https://www.zybang.com/windows/download/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] PC客户端\n\n[2] 直播互动课堂\n\n[3] Windows版下载\n\n[4] 支持winXP、win7、win8、win10系统"
+  },
+  {
+   "id": "E7",
+   "label": "Google Classroom - Apps on Google Play",
+   "source_url": "https://play.google.com/store/apps/details?id=com.google.android.apps.classroom&hl=en-US",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Games\n\n[2] Apps\n\n[3] Books\n\n[4] Kids\n\n[5] google_logo Play\n\n[6] search\n\n[7] help_outline\n\n[8] Sign in with Google\n\n[9] play_apps\n\n[10] Library & devices\n\n[11] payment\n\n[12] Payments & subscriptions\n\n[13] reviews\n\n[14] My Play activity\n\n[15] redeem\n\n[16] Offers\n\n[17] Play Pass\n\n[18] Personalization in Play\n\n[19] settings\n\n[20] Settings\n\n[21] Privacy Policy\n\n[22] Terms of Service\n\n[23] Google Classroom\n\n[24] Google LLC\n\n[25] 3.1\n\n[26] 2.09M reviews\n\n[27] Rated for 3+\n\n[28] info\n\n[29] 100M+\n\n[30] Downloads\n\n[31] Install\n\n[32] Share\n\n[33] Add to wishlist\n\n[34] Users Interact\n\n[35] Learn more\n\n…（共 6385 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Made for Teaching - Google for Education",
+   "source_url": "https://edu.google.com/intl/ALL_us/workspace-for-education/products/classroom/made-for-teaching/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Google Classroom is made for teaching\n\n[2] Your all-in-one place for teaching and learning, Google Classroom is our easy-to-use and secure tool that helps educators manage, measure, and enrich learning experiences.\n\n[3] Made to work together\n\n[4] Use the tools you know and love\n\n[5] The seamless integration of Google Workspace allows you to work in familiar apps like Docs and Slides, plus the YouTube integration lets you search videos right in Classroom.\n\n[6] Connect face-to-face from anywhere\n\n[7] Google Meet video conferencing is accessible directly through Classroom and allows you to ea…（共 2679 字）"
+  },
+  {
+   "id": "E9",
+   "label": "Classroom Management Tools & Resources - Google for Education",
+   "source_url": "https://edu.google.com/intl/ALL_us/workspace-for-education/products/classroom/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Where teaching and learning come together\n\n[2] Google Classroom helps educators create engaging learning experiences they can personalize, manage, and measure. Part of Google Workspace for Education, it empowers educators to enhance their impact and prepare students for the future.\n\n[3] Introducing no-cost AI tools in Google Classroom\n\n[4] Amplify learning impact with [Gemini in Classroom](https://support.google.com/edu/classroom/answer/15410566?hl=en), a suite of AI tools for teaching and learning. Advanced capabilities available with [Education Plus](https://edu.google.com/intl/ALL_us/wo…（共 9452 字）"
+  },
+  {
+   "id": "E10",
+   "label": "All jobs | DAZN Careers",
+   "source_url": "https://careers.dazn.com/ja/all-jobs",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] 次でのキャリア\n\n[2] 求人を表示\n\n[3] All Available Jobs\n\n[4] 今すぐ応募を希望するポジションが表示さい場合でもご心配なく。興味があることを登録して、基準を満たすポジションが発生した場合に通知を受け取りましょう。\n\n[5] 関心があることを登録する"
+  },
+  {
+   "id": "E11",
+   "label": "DAZN (ダゾーン) 番組表 | DAZN JP",
+   "source_url": "https://www.dazn.com/ja-JP/schedule",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] ホーム\n\n[2] スポーツ一覧\n\n[3] All sports\n\n[4] サッカー\n\n[5] 野球\n\n[6] バスケットボール\n\n[7] ラグビー\n\n[8] ボクシング\n\n[9] モータースポーツ\n\n[10] NFL Game Pass\n\n[11] カレッジスポーツ\n\n[12] ゴルフ\n\n[13] ポーカー\n\n[14] 総合格闘技\n\n[15] FIFA+\n\n[16] 女子サッカー\n\n[17] フットサル\n\n[18] ビーチサッカー\n\n[19] アイスホッケー\n\n[20] eスポーツ\n\n[21] エクストリームスポーツ\n\n[22] カーリング\n\n[23] 競馬\n\n[24] 障害馬術\n\n[25] ソフトボール\n\n[26] チェス\n\n[27] トライアスロン\n\n[28] パデル\n\n[29] パワーボートレーシング\n\n[30] フェンシング\n\n[31] レスリング\n\n[32] ニュースポーツ\n\n[33] ライブTV\n\n[34] アメリカンフットボール\n\n[35] NHL\n\n[36] Courtside 1891\n\n[37] Enterprise National League\n\n[38] 番組表\n\n[39] ニュース\n\n[40] ようこそ\n\n[41] ヘルプ\n\n[42] 新規登録\n\n[43] ログイン\n\n[44] DAZNとは\n\n[45] プライバシーポリシーとクッキー通知\n\n[4…（共 1576 字）"
+  },
+  {
+   "id": "E12",
+   "label": "YouTube Creator Awards - YouTube Help",
+   "source_url": "https://support.google.com/youtube/answer/7682560?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] YouTube Creator Awards are our way of recognizing the extraordinary effort creators put into their growing channels and to build thriving communities, responsibly. To be eligible for a Creator Award, creators need to meet the eligibility criteria and must follow our policies.\n\n[2] [YouTube Creators channel](https://www.youtube.com/channel/UCkRfArvrzheW2E7b6SVT7vQ)for the latest news, updates, and tips.\n\n[3] Find out if your channel is eligible for a YouTube Creator Award, and get your award redemption code if you are:\n\n[4] [Check Your Creator Award Eligibility](https://support.google.com/y…（共 6030 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Get a Premium Lite membership on YouTube - YouTube Help",
+   "source_url": "https://support.google.com/youtube/answer/15968883?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Premium Lite is a new, lower-priced YouTube Premium membership that offers fewer interruptions so you can watch most YouTube and YouTube Kids videos ad-free, offline, and in the background.\n\n[2] Premium Lite memberships available locations\n\n[3] You can find a list of available locations for Premium Lite memberships [here](https://support.google.com/youtube/answer/6307365#zippy=%2Cpremium-lite-memberships-available-locations).\n\n[4] We may expand to more users in the future.\n\n[5] [Learn more about Premium Lite on YouTube](https://www.youtube.com/watch?v=-LOqfMrbnO4)\n\n[6] Sign up for Premium …（共 3348 字）"
+  },
+  {
+   "id": "E14",
+   "label": "An update to how we count public views across YouTube - YouTube Community",
+   "source_url": "https://support.google.com/youtube/thread/433409976/an-update-to-how-we-count-public-views-across-youtube?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to main content\n\n[2] YouTube Help\n\n[3] Sign in\n\n[4] Google Help\n\n[5] Help Center\n\n[6] Community\n\n[7] YouTube\n\n[8] Privacy Policy\n\n[9] YouTube Terms of Service\n\n[10] Submit feedback\n\n[11] Send feedback on...\n\n[12] This help content & information\n\n[13] General Help Center experience\n\n[14] Close\n\n[15] Next\n\n[16] Help Center\n\n[17] Community\n\n[18] Creator Tips\n\n[19] YouTube\n\n[20] Search\n\n[21] Clear search\n\n[22] Close search\n\n[23] Google apps\n\n[24] Main menu"
+  },
+  {
+   "id": "E15",
+   "label": "jable.tvって見れますか？ - みれません - Yahoo!知恵袋",
+   "source_url": "https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12243767447",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] popopopopopopopopopopopopopopopoさん2021/5/26 21:051回答jable.tv って見れますか？ …続きを読むインターネットサービス・18,671閲覧12人が共感しています共感した\n\n[2] ベストアンサーzvy********zvy********さん2021/5/27 20:02みれませんこの回答はいかがでしたか？ リアクションしてみようなるほど1そうだね0ありがとう0質問者からのお礼コメントありがとうございました。非常に残念ですお礼日時：2021/6/2 13:07\n\n[3] Tik Tokアカウントの削除について 昨日夜9時頃に息子から「紹介キャンペーンを利用したいから、お父さんが新規アカウントを作成して、息子アカウントのQRコードをスキャンして」主旨のお願いがあり、新規アカウントを作成してスキャンしたのですが、わたしのGmailに関係するグーグルアカウントが、アプリに連絡先や写真に対してアクセス権限を与えてないから、 このキャンペーンに参加できませんとはじかれました。 結局、Tik Tokがキャンペーンで情報を吸い上げたいだけじゃんと思い、キャンペーン利用ができないのね で新規アカウントを利用せずにアプリを閉じました。 こういう場合、新規アカウントを利用しないのなら、パスワードとかも流出したらいやですし、昨日夜に作った新規…（共 654 字）"
+  },
+  {
+   "id": "E16",
+   "label": "jable tv怎么在浏览器打开_百度问一问",
+   "source_url": "https://wen.baidu.com/question/1649124305691903580.html",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] jable tv怎么在浏览器打开\n\n[2] 1个回答\n\n[3] 关注\n\n[4] 展开全部\n\n[5] 咨询记录 · 回答于2023-05-23\n\n[6] jable tv怎么在浏览器打开\n\n[7] 亲您好如果您想在浏览器中打开Jable TV,请按照以下步骤操作：  1. 打开您的网络浏览器(例如Chrome、Firefox、Safari等)。  2. 在浏览器的地址栏中输入“[www.jabletv.com”。](\"http://www.jabletv.com%E3%80%82\")  3. 按下回车键或单击“前往”按钮。 4. 您应该会看到Jable TV的主页。现在，您可以开始浏览和观看视频了。请注意，这只是一个示例，因为我不知道您所在的地理位置和可用的网络连接。如果您无法访问Jable TV,是因为该网站在您所在的地区被封锁或不可用哦亲亲。"
+  },
+  {
+   "id": "E17",
+   "label": "Royal Welsh led by goat as they march through Cardiff for proclamation of the King",
+   "source_url": "https://www.youtube.com/watch?v=Hh63GweZXnI",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Royal Welsh led by goat as they march through Cardiff for proclamation of the King\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=Hh63GweZXnI\",\n  \"channel\": \"The Independent\",\n  \"upload_date\": \"20220911\",\n  \"duration\": 33,\n  \"description\": \"A goat has lead 26 men of the Third Battalion the Royal Welsh - supported by the Band of the Royal Welsh - marching from City Hall along Duke Street and into Cardiff Castle ahead of the proclamation of King Charles III.\\n\\nThe Welsh animal is the regimental mascot called Lance Corporal Shenkin IV and Goat Major Sergeant Mark Jackson.\\n\\nW…（共 1057 字）"
+  },
+  {
+   "id": "E18",
+   "label": "cover: Royal Welsh led by goat as they march through Cardiff for proclamation of the King",
+   "source_url": "https://www.youtube.com/watch?v=Hh63GweZXnI",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/Hh63GweZXnI/sddefault.jpg\", \"width\": 640, \"height\": 480, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E19",
+   "label": "Charles III Proclaimed King at Cardiff Castle",
+   "source_url": "https://www.youtube.com/watch?v=nC6brX3z98c",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Charles III Proclaimed King at Cardiff Castle\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=nC6brX3z98c\",\n  \"channel\": \"The Royal Family Channel\",\n  \"upload_date\": \"20220911\",\n  \"duration\": 256,\n  \"description\": \"'Charles III Proclaimed King at Cardiff Castle'\\n\\nCharles III is proclaimed King at Cardiff Castle, as crowds watch gun salutes and join in with the singing of the national anthem.\\n\\nReport by Rhys Nelson.\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"nC6brX3z98c\"\n}"
+  },
+  {
+   "id": "E20",
+   "label": "cover: Charles III Proclaimed King at Cardiff Castle",
+   "source_url": "https://www.youtube.com/watch?v=nC6brX3z98c",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/nC6brX3z98c/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E21",
+   "label": "The proclamation ceremony of the accession of His Majesty King Charles III, Sunday 11 September 2022",
+   "source_url": "https://www.youtube.com/watch?v=wfi1CpbX1y4",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"The proclamation ceremony of the accession of His Majesty King Charles III, Sunday 11 September 2022\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=wfi1CpbX1y4\",\n  \"channel\": \"Hertfordshire County Council\",\n  \"upload_date\": \"20221019\",\n  \"duration\": 1245,\n  \"description\": \"Ceremony held at County Hall, Hertford at 1pm on Sunday 11 September 2022.\\nThe High Sherriff of Hertfordshire reads the proclamation issued by the Accession Council, in the presence of the Lord Lieutenant and local civic leaders.\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"wfi1…（共 610 字）"
+  },
+  {
+   "id": "E22",
+   "label": "cover: The proclamation ceremony of the accession of His Majesty King Charles III, Sunday 11 September 2022",
+   "source_url": "https://www.youtube.com/watch?v=wfi1CpbX1y4",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/wfi1CpbX1y4/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E23",
+   "label": "Proclamation Ceremony for King Charles III, Sept 11 2022",
+   "source_url": "https://www.youtube.com/watch?v=mM92UVNkzeI",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"Proclamation Ceremony for King Charles III, Sept 11 2022\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=mM92UVNkzeI\",\n  \"channel\": \"bernewsdotcom\",\n  \"upload_date\": \"20220911\",\n  \"release_date\": \"20220911\",\n  \"duration\": 1200,\n  \"description\": \"Bermuda Proclamation Ceremony for King Charles III held in Hamilton, Bermuda - a British Overseas Territory\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"was_live\",\n  \"video_id\": \"mM92UVNkzeI\"\n}"
+  },
+  {
+   "id": "E24",
+   "label": "cover: Proclamation Ceremony for King Charles III, Sept 11 2022",
+   "source_url": "https://www.youtube.com/watch?v=mM92UVNkzeI",
+   "acquired_by": "SEARCH/open/yt-dlp+http",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"source_url\": \"https://i.ytimg.com/vi/mM92UVNkzeI/maxresdefault.jpg\", \"width\": 1280, \"height\": 720, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E25",
+   "label": "King Charles III's Proclamation of Accession | New Zealand Parliament",
+   "source_url": "https://www.youtube.com/watch?v=KXFa22hr0Co",
+   "acquired_by": "SEARCH/open/yt-dlp",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "{\n  \"title\": \"King Charles III's Proclamation of Accession | New Zealand Parliament\",\n  \"webpage_url\": \"https://www.youtube.com/watch?v=KXFa22hr0Co\",\n  \"channel\": \"NZ Parliament\",\n  \"upload_date\": \"20220911\",\n  \"duration\": 990,\n  \"description\": \"King Charles III's Proclamation of Accession ceremony on the steps of Parliament (Sunday 11 September 2022)\",\n  \"extractor\": \"Youtube\",\n  \"live_status\": \"not_live\",\n  \"video_id\": \"KXFa22hr0Co\"\n}"
+  }
+ ]
+}

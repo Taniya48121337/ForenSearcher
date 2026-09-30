@@ -1,0 +1,210 @@
+{
+  "states": [
+    {
+      "id": "state_01",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 的 o75 是尚未执行的离线决定，不评价实际执行或提交效果。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 使用本次实际附带的八张图片及其时间定位，未借用 reference 或未附带帧的像素。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "E10/E14、E12/E16、E13/E17 分别直接支持三个时刻右侧人物有无的差异；E11/E15 支持1.967秒两侧均未见该人物，引用与画面相符。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确回答并非所有已核对时刻都一致，并依据人物及滑板的可见差异解释可见人数和同场活动情境的变化。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "已有对应帧构成否定全称命题的直接反例，FINISH 合理；完整持续区间和制作来源不影响本题答案。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确区分并非全部一致与每个时刻均有差异，保留完整区间、人物关系及实际编辑方向的未知。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "直接使用足够的现有证据结束，没有追加边界定位、人物身份或版本溯源调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001/o75 的结论、引用和停止范围均有依据。适用维度加权分4.00/4，评分覆盖率100%（已评分权重90/适用权重90，占原总权重90%）。仅接受为离线候选，不表示执行对应检查已通过。"
+    },
+    {
+      "id": "state_02",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 的 o78 尚未下发执行，不能认定已获得完整区间或边界结果。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 两项任务均使用当前已有的E编号；所述命中时刻和未见人物时刻均有实际附图支持。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "任务准确沿用1.000、3.967、5.000秒的差异及1.967秒的非命中观察，没有把E9的0–6秒对齐候选当成连续人物差异区间。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项任务共同覆盖0–6秒，包含所有区间、起止边界、视频首尾、定位精度及不确定范围，符合原问题要求。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "按时间区段分工可独立启动，各自直接对照A/B；明确检查1.966667–2.000秒交界，并限制局部结论范围，未制造同轮依赖。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "明确指出离散命中尚不能确定连续性或排除其他区间，要求实际证据和定位精度，没有虚构边界误差。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "补查针对会影响完整区间答案的时间空档；有限交界复核有具体用途，未重复分配全片调查或夹带来源调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001/o78 不仅选择补查，还给出了覆盖完整、可独立启动且保留交界检查的任务。直接调查合理，无须强制先读取已有首末帧。适用维度加权分4.00/4，评分覆盖率100%（90/90，占原总权重90%）；执行效果未评价。"
+    },
+    {
+      "id": "state_03",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 的 o84 是未执行的离线最终决定，不评价真实提交效果。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 依据实际附图和已提供正文的E9作答，没有使用参考侧制作说明或其他不可见来源。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "附图支持对应位置的人物差异及A右侧背景异常；回答仅将异常视为移除解释的线索，未将视觉现象推成真实制作先后。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "直接回答现有材料不能确认B删人得到A，分别说明画面现象、可能解释和已证实内容，遵守仅依据已取得材料的限制。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "当前证据足以回答能否确认制作过程；有限结论可以结束，没有将任务改成必须完成外部溯源。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "添加人物及两版均经处理被明确列为未证实的可能；未把E9作为制作顺序证据，也未将B认定为原始版本。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "直接整理已有材料能支持的结论，没有追加不属于当前限定任务的发布记录或作者调查。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001/o84 对制作方向的不可确认判断有充分依据，案件中的制作过程未知不构成评审材料关键未知。适用维度加权分4.00/4，评分覆盖率100%（90/90，占原总权重90%）；未认证执行。"
+    },
+    {
+      "id": "state_04",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "request_0001 的 o86 尚未执行，不能声称已经找到来源、取得制作记录或完成版本匹配。"
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0001 仅指定当前可用的视频、帧及媒体属性记录；没有虚构上传页面、作者或现成制作记录。"
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "沿用现有画面对照不能确定编辑方向这一限制，将发布先后、制作顺序及派生关系保持为待调查问题，未凭A/B标签断定来源。"
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "第一项核查公开发布及上传者原始版本，第二项核查实际制作与派生关系，共同覆盖原题，且均要求说明材料不足。"
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "来源追溯与可取得的元数据、制作记录核查具有互补目标，均可从现有材料启动；第一项明确直接对照来源视频与A/B，未依赖摘要相似性确定版本。"
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "区分原始上传与转载、已找到最早记录与实际首次发布，以及制作、编码复制和公开时间；未预设可取得足够证据。"
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "两项调查分别服务于原题明确要求的发布和制作问题，未重复分配完整调查，也未增加人物身份、健康或住址等无关内容。"
+        }
+      ],
+      "target_rating": 4,
+      "disposition": "accept_candidate",
+      "critical_unknown": false,
+      "reason": "request_0001/o86 的补查必要性来自实际来源缺口，两项任务各有相关取证目标。来源是否最终可取得尚未知，不妨碍判断当前决定合理。适用维度加权分4.00/4，评分覆盖率100%（90/90，占原总权重90%）；尚无执行成功证据。"
+    }
+  ],
+  "construction_revisions": [],
+  "rubric_revisions": []
+}

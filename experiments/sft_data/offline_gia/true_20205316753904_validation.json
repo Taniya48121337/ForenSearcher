@@ -1,0 +1,28 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "true_20205316753904_validation",
+  "source_request": "request_0005",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "给定视频的媒体属性记录给出了哪些技术参数？这些参数能否说明视频的拍摄时间、地点、设备或来源？",
+      "expected_decision": "FINISH",
+      "rationale": "本状态唯一的 Finding W1-1 F1 被 r0 与 units 都判为 tainted，不作依据。本题依据 current_materials 中的 E2（INSPECT/media_profile），它的卡片标签就写明：时长 14.467 秒、720×720、30fps、1 条音轨，本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。GIA 规则 6 也写明媒体属性探测只提供尺寸、格式、时长等处理属性，不提取 EXIF 拍摄时间。题目问的是这份已有记录能说明什么，可以直接回答：只有技术参数，不能据此确定拍摄时间、地点、设备或来源，也不能说这些信息不存在。与 v2（通过外部来源查首发与背景）形成对照。",
+      "review": "修改"
+    },
+    {
+      "id": "v2",
+      "task": "查明这段视频最早由谁、在哪个平台、何时公开发布，以及发布时对拍摄场合或当事人的说明。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W1-1 只做了抽帧和裁剪（E2–E11），没有任何检索记录，状态中也没有关于来源或语境的 Finding（对应案卷 REQ2）。本 run 有 ddgs 搜索，案卷 source_policy 为 unrestricted，HI 可检索报道、核查文章和原始发布页。缺口真实，可以取得。",
+      "review": "通过"
+    },
+    {
+      "id": "v3",
+      "task": "视频中悬空的女子由什么支撑身体？给出能看清支撑点的时刻和画面位置；看不清的部分说明原因。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "唯一描述画面的 W1-1 F1 被 r0 与 units 都判为 tainted（“头顶发束向上延伸至吊环区域”“双手持手机”为 wrong_citation，“双腿交叠”为 unsupported），不能作依据；F1 自己的限制也写明发束与吊环连接处被遮挡，无法确认是否完全由头发承重。GIA 能直接看到附图 E3–E8、E10、E11，但没有任何干净 Finding 描述支撑点；E4、E5、E7、E8、E9 从未被 Finding 使用，帧间也有未查看区间，支撑点这类细部需要裁剪放大。HI 可用 get_frames 加密取帧，用 crop 放大头顶、手部和脚部。结果可能仍是“看不清”，但要回答必须做新的视觉取证。",
+      "review": "修改"
+    }
+  ]
+}

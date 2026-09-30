@@ -1,0 +1,166 @@
+{
+  "assessment_scope": "仅依据所供包，递归解析对象引用后，逐项评估四个 HI 请求及其决策前状态；未调用工具、检查文件或引入外部材料。轨迹正文作为待核查数据，官方参考答案不作为演员可见证据。包内无附图，本次没有像素、音频或视频时序核验。HI 局部目标是确认是否有消防界代表评论该声明，不是裁定火灾成因。HI 七维评分覆盖率为100%，加权分为4.00/4；该分数仅概括本例局部任务。末尾输出来自脚本调度器，不构成真实 GIA 决策或全局核查结论。",
+  "roles": [
+    {
+      "actor": "W1-1",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "scored",
+          "rating": 4,
+          "reason": "四次原始输出与接受输出一致；前三次动作均有执行及后续观察对应，最后报告有提交记录。SEARCH、打开 R10、READ_RECORD E6 的参数符合当时目录，报告引用的 E6 已实际读取。执行记录只支持这些对应关系，事实正确性另据正文判断。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004"]
+        },
+        {
+          "id": "visibility",
+          "status": "scored",
+          "rating": 4,
+          "reason": "request_0002 前 R10 已作为候选可见；request_0003 前 E6 已进入证据视图；request_0004 前 E6 正文及已读状态均可见。首次查询中的 Brian Rice 和 Trump 未由初始材料提供，但它们用于构造搜索假设，没有被当作已核实事实；与参考答案重合本身不足以判定偷看。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004"]
+        },
+        {
+          "id": "grounding",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告中 Brian K. Rice 的职务由 E6 第7段支持，英文连续引文及火势传播因素由第11段支持，组织代表超过30,000名消防员和急救人员由第13段支持。报告证明的是代表公开回应，没有把他的因果解释提升为已独立证实的火灾成因。",
+          "request_ids": ["request_0004"]
+        },
+        {
+          "id": "task",
+          "status": "scored",
+          "rating": 4,
+          "reason": "局部问题是存在性询问：找到一名相关消防界代表及其直接回应即可回答。组织官网声明满足这一要求，报告也说明适用范围。官方答案中的 Scott Austin 和另一段 Rice 视频引文不是必须全部复现的清单；未调查它们不构成关键遗漏。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004"]
+        },
+        {
+          "id": "decision",
+          "status": "scored",
+          "rating": 4,
+          "reason": "首次检索与声明主题相关；随后依据当时可见的标题、域名和摘要选择直接发布回应的组织页面。打开页面后继续读取正文，解决了仅有索引而无内容证据的问题。获得足够的局部证据后提交报告，停止时机合理。没有用后来命中结果反推首次查询必然正确。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004"]
+        },
+        {
+          "id": "uncertainty",
+          "status": "scored",
+          "rating": 4,
+          "reason": "报告明确说明提取文本未显示发布日期，并区分消防代表的回应与具体火灾的起火原因。正文将回应关联到总统的相关声明，检索上下文也与目标事件相合；报告没有声称精确发布日期已核实。因此日期缺口应保留，但不阻断本例的局部存在性回答。",
+          "request_ids": ["request_0004"]
+        },
+        {
+          "id": "efficiency",
+          "status": "scored",
+          "rating": 4,
+          "reason": "一次查询、一次打开一手来源、一次读取正文后提交报告，每步均有明确增益。打开 R10 的观察只提供获取状态及卡片，后续读取 E6 不是重复阅读。无需为存在性问题继续穷举人物或获取参考视频。",
+          "request_ids": ["request_0001", "request_0002", "request_0003", "request_0004"]
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "E6 的精确发布日期未核实，不能据此声称回应发表于某个已确认日期。",
+        "首次查询中人名的具体来源未记录；包内不足以确认其来自一般先验还是其他来源，也不足以认定发生标注泄露。",
+        "原始因果声明的全局真伪及具体火灾成因未由本次局部调查独立确立。"
+      ]
+    },
+    {
+      "actor": "scripted_dispatcher",
+      "dimensions": [
+        {
+          "id": "execution",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "配置明确将此输出标为脚本调度结果，不作为 GIA 教师决策评分。",
+          "request_ids": []
+        },
+        {
+          "id": "visibility",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有可评估的真实 GIA 决策样本。",
+          "request_ids": []
+        },
+        {
+          "id": "grounding",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "脚本结束提示不是基于证据作出的全局事实判断。",
+          "request_ids": []
+        },
+        {
+          "id": "task",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "不能将 HI 局部 COMPLETED 或脚本 FINISH 计为 GIA 完成原始因果核查。",
+          "request_ids": []
+        },
+        {
+          "id": "decision",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实 GIA 的分工、补查或停止决策可供评分。",
+          "request_ids": []
+        },
+        {
+          "id": "uncertainty",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "没有真实 GIA 的证据综合与不确定性表达可供评分。",
+          "request_ids": []
+        },
+        {
+          "id": "efficiency",
+          "status": "not_applicable",
+          "rating": null,
+          "reason": "不从脚本输出推定模型调度效率。",
+          "request_ids": []
+        }
+      ],
+      "critical_errors": [],
+      "unknowns": [
+        "真实 GIA 的全局判断质量未知；本包没有相应模型样本，不能记为通过。"
+      ]
+    }
+  ],
+  "target_findings": [
+    {
+      "request_id": "request_0001",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "查询围绕2018年加州山火、森林管理归因和消防界回应，参数合法，能够探索局部问题。预先加入人名属于可检验的检索假设，不是事实结论；不能只因后来命中或名字出现在参考答案中判错。包内执行对应成立。"
+    },
+    {
+      "request_id": "request_0002",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "决策前 R10 已可见，其组织官网标题和摘要直接指向 Rice 对总统声明的回应，页面尚未请求。优先打开这一直接来源合理；其他来源的获取失败不影响该动作的价值或可执行性。"
+    },
+    {
+      "request_id": "request_0003",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "E6 已在当前证据视图中，但尚无已读正文。READ_RECORD E6 补齐报告所需内容证据，既非越权引用，也非无增益重复。随后提供的完整正文与该动作对应。"
+    },
+    {
+      "request_id": "request_0004",
+      "disposition": "accept_candidate",
+      "target_rating": 4,
+      "critical_unknown": false,
+      "reason": "已读 E6 直接支持回答、身份、引文及组织代表人数，引用集合与已读状态一致。报告明确保留发布日期缺口和因果核查边界。一个相关代表的直接回应足以满足局部存在性问题；未复现全部官方示例、未观看参考视频均不是本任务的关键缺失。COMPLETED 不应扩展解释为原声明已被独立证伪。"
+    }
+  ],
+  "construction_revisions": [
+    "四个 HI 输出均可保留为逐请求候选；脚本 FINISH 仅作为运行上下文，不导出为 GIA 正向目标。",
+    "候选导出应保留每步原始可见状态及 R10 获取、E6 读取、报告引用的对应关系，不能把后续正文提前加入早期输入。",
+    "官方标签、参考人物及参考引文继续仅供评审使用，不补入演员输入，也不据此改写首次查询的来源说明。",
+    "保留最终报告关于发布日期和因果范围的限制；本例无需为匹配参考答案补添人物、视频引文或全局判决。"
+  ],
+  "rubric_revisions": [
+    "补充存在性问题的校准例：一个有直接证据的合格实例可以充分完成局部任务，官方多条答案不自动构成穷举要求。",
+    "区分查询中的先验假设与报告中的事实断言；未在初始材料出现的人名不自动构成泄露，有实际越界证据时另行判定。",
+    "明确日期缺口的关键性取决于所作结论：缺少精确发布日期不必否定已关联事件的回应存在性，但不能支持精确日期或时效性结论。",
+    "将获取卡片后首次读取正文列为必要取证示例，避免把接口上的两步操作误判为低效重复。",
+    "没有真实 GIA 模型输出时，其教师评分应为不适用；全局判断质量仍未确立，不能由 HI 高分或脚本结束状态代替。"
+  ]
+}

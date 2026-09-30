@@ -1,0 +1,266 @@
+本地成本实测：5 个案例，Ollama qwen3-vl 教师 + gemma3 核验，轮次 lcost 开始 周一 2026/09/28 18:01:54.92 
+计划：5 个 run（待跑 5，已完成 0，半截 0）；教师 endpoint；轮次 lcost
+  todo       true_17838107_lcost_1                         true:17838107（dev_train）
+  todo       true_20205316753904_lcost_1                   true:20205316753904（dev_train）
+  todo       true_20361105_lcost_1                         true:20361105（dev_train）
+  todo       true_24171541709824_lcost_1                   true:24171541709824（dev_train）
+  todo       true_39132300_lcost_1                         true:39132300（dev_train）
+教师：qwen3vl-8b-32k:latest @ http://127.0.0.1:11434/v1（思考开）；并行 1
+[1/5] 开跑 true_17838107_lcost_1（true:17838107，日志 experiments\sft_data\batch_logs\true_17838107_lcost_1.log）
+[1/5] true_17838107_lcost_1：完成；59s，教师 15 次，输入 194,117 / 输出 728 token
+[2/5] 开跑 true_20205316753904_lcost_1（true:20205316753904，日志 experiments\sft_data\batch_logs\true_20205316753904_lcost_1.log）
+[2/5] true_20205316753904_lcost_1：完成；129s，教师 31 次，输入 489,899 / 输出 3,495 token
+[3/5] 开跑 true_20361105_lcost_1（true:20361105，日志 experiments\sft_data\batch_logs\true_20361105_lcost_1.log）
+[3/5] true_20361105_lcost_1：完成；54s，教师 14 次，输入 217,841 / 输出 893 token
+[4/5] 开跑 true_24171541709824_lcost_1（true:24171541709824，日志 experiments\sft_data\batch_logs\true_24171541709824_lcost_1.log）
+[4/5] true_24171541709824_lcost_1：完成；54s，教师 12 次，输入 185,187 / 输出 1,170 token
+[5/5] 开跑 true_39132300_lcost_1（true:39132300，日志 experiments\sft_data\batch_logs\true_39132300_lcost_1.log）
+[5/5] true_39132300_lcost_1：完成；257s，教师 26 次，输入 360,797 / 输出 7,822 token
+
+成本记录追加到 experiments\sft_data\run_manifests\lcost.jsonl
+
+本批 5 个 run：完成 5，失败 0
+  每个 run 平均：墙钟 1.8 分钟，教师调用 20 次，输入 289,568 token，输出 2,822 token，附图 40 张
+
+接着核验与导出：python scripts\complete_verify_local.py --runs true_17838107_lcost_1 true_20205316753904_lcost_1 true_20361105_lcost_1 true_24171541709824_lcost_1 true_39132300_lcost_1 --endpoint http://127.0.0.1:11434/v1 --model gemma3-12b-16k:latest
+核验模型：local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1（本地，不花钱）；产物标签 .local-gemma3-12b-16k-latest
+run：5 个（集合 5runs-c18cb093）；步骤 1–6
+
+[1/6] 三层核验工作区报告 → experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_17838107_lcost_1 experiments\sft_data\runs\true_20205316753904_lcost_1 experiments\sft_data\runs\true_20361105_lcost_1 experiments\sft_data\runs\true_24171541709824_lcost_1 experiments\sft_data\runs\true_39132300_lcost_1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/5] true_17838107_lcost_1: 0 份报告，
+[2/5] true_20205316753904_lcost_1: 0 份报告，
+[3/5] true_20361105_lcost_1: 0 份报告，
+[4/5] true_24171541709824_lcost_1: 0 份报告，
+[5/5] true_39132300_lcost_1: 0 份报告，
+{
+  "reports": 0,
+  "disposition": {},
+  "layers": {},
+  "errors_total": {},
+  "errors_firm": {},
+  "reports_with_firm_error": 0,
+  "tainted_findings": 0,
+  "pending": {},
+  "judge_cache": {
+    "hits": 0,
+    "misses": 0
+  }
+}
+[judge] 0 calls (0 cached) | total 0.0s
+
+[2/6] answer 逐句锚定 + plan 模型评判 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  > python -m foren_searcher.datagen.verify.complete_units --runs experiments\sft_data\runs\true_17838107_lcost_1 experiments\sft_data\runs\true_20205316753904_lcost_1 experiments\sft_data\runs\true_20361105_lcost_1 experiments\sft_data\runs\true_24171541709824_lcost_1 experiments\sft_data\runs\true_39132300_lcost_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  核验并发 4；预计核验调用：约 23 次（含会命中缓存的）
+  true_17838107_lcost_1: ~3 次（answer 2，plan 1）
+  true_20205316753904_lcost_1: ~8 次（answer 6，plan 2）
+  true_20361105_lcost_1: ~5 次（answer 4，plan 1）
+  true_24171541709824_lcost_1: ~5 次（answer 4，plan 1）
+  true_39132300_lcost_1: ~2 次（answer 0，plan 2）
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[judge] 1 calls (0 cached) | last 4.4s | avg 4.4s | total 4.4s
+[true_17838107_lcost_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2", "REQ3"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": []}, "errors": []}
+[judge] 2 calls (0 cached) | last 5.2s | avg 4.8s | total 9.7s
+[true_17838107_lcost_1] answer request_0015: {"method": "judge_sentences", "disposition": "negative", "sentences": 2, "uncited": 1, "unsupported": ["A1"], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish", "unsupported_assertion", "unsupported_assertion"], "severities": ["major", "critical", "critical", "critical"]}
+[true_20205316753904_lcost_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "A video shows a woman hanging by her hair in a train car.", "status": "given_in_case", "why": "任务文字直接陈述了视频内容，作为待核查的声明。"}]}, "errors": []}
+[true_20205316753904_lcost_1] answer request_0011: {"method": "judge_sentences", "disposition": "negative", "sentences": 4, "uncited": 4, "unsupported": [], "contradicted": [], "errors": ["unsupported_assertion", "omitted_required_fact", "premature_finish"], "severities": ["critical", "major", "critical"]}
+[true_20205316753904_lcost_1] plan request_0012: {"disposition": "negative", "judge_targets": {"T1": ["REQ1"], "T2": ["REQ1"]}, "hindsight_targets": {"T1": [], "T2": []}, "agreement": {"T1": false, "T2": false}, "premises": {"T1": [{"phrase": "她是否仅用头发悬挂在车厢内？", "status": "given_in_case", "why": "任务文字直接陈述了女子悬挂的方式，将其作为待核查的事实。"}, {"phrase": "视频中女子悬挂方式", "status": "unverified", "why": "案卷未明确说明视频中女子悬挂方式的细节，既有报告也没有提供相关信息。"}], "T2": [{"phrase": "确认视频场景为地铁车厢", "status": "given_in_case", "why": "任务文字直接陈述了视频场景是地铁车厢。"}, {"phrase": "是否存在其他乘客或环境特征以支持该场景", "status": "unverified", "why": "案卷未明确说明是否有其他乘客或环境特征，既有报告也没有提供相关信息。"}]}, "errors": ["premise_smuggling", "premise_smuggling"]}
+[judge] 6 calls (1 cached) | last 3.1s | avg 3.4s | total 17.5s | 3 in flight
+[judge] 9 calls (1 cached) | last 10.4s | avg 5.1s | total 24.8s | 1 in flight
+[true_20205316753904_lcost_1] answer request_0031: {"method": "judge_sentences", "disposition": "negative", "sentences": 6, "uncited": 4, "unsupported": [], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish"], "severities": ["major", "critical"]}
+[true_20361105_lcost_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1", "REQ2", "REQ3"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "Rep. Frederica Wilson advocated prosecuting persons who \"make fun of Congress\" online.", "status": "given_in_case", "why": "任务文字本身就这么说，未在既有报告中验证。"}, {"phrase": "making fun of Congress", "status": "given_in_case", "why": "任务文字本身就这么说，未在既有报告中验证。"}]}, "errors": []}
+[judge] 13 calls (1 cached) | last 6.8s | avg 4.5s | total 35.0s | 2 in flight
+[judge] 14 calls (1 cached) | last 14.8s | avg 5.3s | total 43.0s | 1 in flight
+[judge] 15 calls (1 cached) | last 27.2s | avg 6.9s | total 55.4s
+[true_20361105_lcost_1] answer request_0014: {"method": "judge_sentences", "disposition": "negative", "sentences": 1, "uncited": 0, "unsupported": [], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish"], "severities": ["major", "critical"]}
+[judge] 17 calls (1 cached) | last 2.0s | avg 6.3s | total 1m00s
+[true_24171541709824_lcost_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "The state of Minnesota has refused multiple requests from the state of Virginia to return a Confederate battle flag captured during the U.S. Civil War.", "status": "given_in_case", "why": "任务文字本身陈述了明尼苏达州拒绝弗吉尼亚州请求的事实。"}]}, "errors": []}
+[judge] 19 calls (1 cached) | last 7.9s | avg 6.3s | total 1m08s | 1 in flight
+[true_24171541709824_lcost_1] answer request_0012: {"method": "judge_sentences", "disposition": "negative", "sentences": 2, "uncited": 0, "unsupported": ["A2"], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish", "unsupported_assertion"], "severities": ["major", "critical", "critical"]}
+[true_39132300_lcost_1] plan request_0001: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.", "status": "given_in_case", "why": "任务文字本身陈述了面具在《Scream》上映前可供购买的事实。"}, {"phrase": "1996 movie \"Scream.\"", "status": "given_in_case", "why": "任务文字中提及电影《Scream》的上映年份为 1996。"}]}, "errors": []}
+[judge] 23 calls (1 cached) | last 1.8s | avg 5.6s | total 1m14s
+[true_39132300_lcost_1] plan request_0012: {"disposition": "positive", "judge_targets": {"T1": ["REQ1"]}, "hindsight_targets": {"T1": []}, "agreement": {"T1": false}, "premises": {"T1": [{"phrase": "The infamous \"ghostface\" mask was available for purchase prior to the release of the 1996 movie \"Scream.", "status": "given_in_case", "why": "任务文字本身陈述了该面具在《Scream》上映前可供购买的事实。"}, {"phrase": "1996 movie \"Scream.\",", "status": "given_in_case", "why": "任务文字中提及了电影《Scream》的上映年份。"}]}, "errors": []}
+[true_39132300_lcost_1] answer request_0026: {"method": "judge_sentences", "disposition": "negative", "sentences": 1, "uncited": 1, "unsupported": [], "contradicted": [], "errors": ["omitted_required_fact", "premature_finish"], "severities": ["major", "critical"]}
+6 个单元 → experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+[judge] 23 calls (1 cached) | last 1.8s | avg 5.6s | total 1m14s
+
+[3/6] 三层核验按 plan 评判重定范围（没变的问题命中缓存）→ experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  > python -m foren_searcher.datagen.verify.reverify --runs experiments\sft_data\runs\true_17838107_lcost_1 experiments\sft_data\runs\true_20205316753904_lcost_1 experiments\sft_data\runs\true_20361105_lcost_1 experiments\sft_data\runs\true_24171541709824_lcost_1 experiments\sft_data\runs\true_39132300_lcost_1 --cases experiments\sft_data\cases --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --out experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[1/5] true_17838107_lcost_1: 0 份报告，
+[2/5] true_20205316753904_lcost_1: 0 份报告，
+[3/5] true_20361105_lcost_1: 0 份报告，
+[4/5] true_24171541709824_lcost_1: 0 份报告，
+[5/5] true_39132300_lcost_1: 0 份报告，
+{
+  "reports": 0,
+  "disposition": {},
+  "layers": {},
+  "errors_total": {},
+  "errors_firm": {},
+  "reports_with_firm_error": 0,
+  "tainted_findings": 0,
+  "pending": {},
+  "judge_cache": {
+    "hits": 0,
+    "misses": 0
+  }
+}
+[judge] 0 calls (0 cached) | total 0.0s
+
+[4/6] 核验器召回率校准（注入已知错误再核验）→ experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.5runs-c18cb093.json
+  > python -m foren_searcher.datagen.verify.calibrate_recall --runs experiments\sft_data\runs\true_17838107_lcost_1 experiments\sft_data\runs\true_20205316753904_lcost_1 experiments\sft_data\runs\true_20361105_lcost_1 experiments\sft_data\runs\true_24171541709824_lcost_1 experiments\sft_data\runs\true_39132300_lcost_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --cache experiments\sft_data\verify_cache.jsonl --judge local --model gemma3-12b-16k:latest --endpoint http://127.0.0.1:11434/v1 --per-kind 2 --out experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.5runs-c18cb093.json
+  核验并发 4
+[judge] 本地核验 local:gemma3-12b-16k:latest @ http://127.0.0.1:11434/v1；缓存 experiments\sft_data\verify_cache.local-gemma3-12b-16k-latest.jsonl
+[true_17838107_lcost_1] 0 处注入
+[true_20205316753904_lcost_1] 0 处注入
+[true_20361105_lcost_1] 0 处注入
+[true_24171541709824_lcost_1] 0 处注入
+[true_39132300_lcost_1] 0 处注入
+召回 None（0 处注入）；inconclusive 0，conclusive 召回 None → experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.5runs-c18cb093.json
+  swap_citation          0/0  inconclusive 0  conclusive None
+  fabricate_id           0/0  inconclusive 0  conclusive None
+  append_clause          0/0  inconclusive 0  conclusive None
+  alter_number           0/0  inconclusive 0  conclusive None
+  drop_attribution       0/0  inconclusive 0  conclusive None
+  drop_required_finding  0/0  inconclusive 0  conclusive None
+[judge] 0 calls (0 cached) | total 0.0s
+  召回 None（0 处注入）；inconclusive 0；conclusive 召回 None
+
+[5/6] 用 hi@0.2.0 + gia@0.3.0 规格 + 判定导出 → experiments\sft_data\export\r0_5runs-c18cb093_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest
+  > python -m foren_searcher.datagen.export --runs experiments\sft_data\runs\true_17838107_lcost_1 experiments\sft_data\runs\true_20205316753904_lcost_1 experiments\sft_data\runs\true_20361105_lcost_1 experiments\sft_data\runs\true_24171541709824_lcost_1 experiments\sft_data\runs\true_39132300_lcost_1 --cases experiments\sft_data\cases --verdicts experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --units experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl --hi-spec hi@0.2.0 --gia-spec gia@0.3.0 --renderer compact_16k --out experiments\sft_data\export\r0_5runs-c18cb093_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest
+true_17838107_lcost_1: 15 行（case=有，report verdicts=0）
+true_20205316753904_lcost_1: 30 行（case=有，report verdicts=0）
+true_20361105_lcost_1: 14 行（case=有，report verdicts=0）
+true_24171541709824_lcost_1: 10 行（case=有，report verdicts=0）
+true_39132300_lcost_1: 25 行（case=有，report verdicts=0）
+{
+  "counts": {
+    "hi_accepted": 0,
+    "hi_held": 28,
+    "hi_rejected": 53,
+    "gia_accepted": 7,
+    "gia_held": 0,
+    "gia_rejected": 6
+  },
+  "by_unit": {
+    "hi": {},
+    "gia": {
+      "plan": 7
+    }
+  },
+  "by_action": {
+    "hi": {},
+    "gia": {
+      "INVESTIGATE": 7
+    }
+  },
+  "sample_weight_sum": {
+    "hi": 0,
+    "gia": 7.0
+  },
+  "input_tokens_est": {
+    "max": 26097,
+    "p50": 11655
+  }
+}
+
+[6/6] Qwen3.5-9B processor 核对
+  > python -m foren_searcher.datagen.check_inputs --export experiments\sft_data\export\r0_5runs-c18cb093_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest --model .models\Qwen3.5-9B --files hi_accepted.jsonl gia_accepted.jsonl hi_held.jsonl hi_rejected.jsonl
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.5-9B",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "gia_accepted.jsonl": {
+      "rows": 7,
+      "input_tokens": {
+        "min": 1595,
+        "p50": 1651,
+        "p90": 18082,
+        "max": 24697
+      },
+      "supervised_tokens": {
+        "min": 58,
+        "p50": 66,
+        "p90": 72,
+        "max": 73
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 4608,
+        "max": 11832
+      },
+      "above": {
+        "8192": 2,
+        "16384": 2,
+        "32768": 0
+      }
+    },
+    "hi_held.jsonl": {
+      "rows": 28,
+      "input_tokens": {
+        "min": 2613,
+        "p50": 7369,
+        "p90": 11702,
+        "max": 19584
+      },
+      "supervised_tokens": {
+        "min": 21,
+        "p50": 36,
+        "p90": 76,
+        "max": 263
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 3456,
+        "max": 11832
+      },
+      "above": {
+        "8192": 7,
+        "16384": 1,
+        "32768": 0
+      }
+    },
+    "hi_rejected.jsonl": {
+      "rows": 53,
+      "input_tokens": {
+        "min": 5363,
+        "p50": 7260,
+        "p90": 12809,
+        "max": 14703
+      },
+      "supervised_tokens": {
+        "min": 20,
+        "p50": 27,
+        "p90": 76,
+        "max": 263
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 0,
+        "p90": 4608,
+        "max": 7040
+      },
+      "above": {
+        "8192": 17,
+        "16384": 0,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}
+
+完成。产物：
+  experiments\sft_data\verdicts_r0_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  experiments\sft_data\verdicts_units_judged.local-gemma3-12b-16k-latest.5runs-c18cb093.jsonl
+  experiments\sft_data\calibration\recall_r0.local-gemma3-12b-16k-latest.5runs-c18cb093.json
+  experiments\sft_data\export\r0_5runs-c18cb093_hi@0.2.0_gia@0.3.0_compact_16k.local-gemma3-12b-16k-latest\manifest.json
+EXIT 0 周一 2026/09/28 18:13:02.86 

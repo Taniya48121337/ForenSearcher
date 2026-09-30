@@ -1,0 +1,220 @@
+{
+ "run": "averimatec_63_q0_source_bound_r1",
+ "config": {
+  "dataset": "averimatec",
+  "case": "63",
+  "question_index": 0,
+  "evidence_source_policy": "exclude_known_original_article; publication_dates_not_filtered",
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n\n以下状态规则只适用于 HI 的局部报告；GIA 仍使用原有分工与结束接口。\n报告中的 status 只表示所接局部任务是否已经完成。提交前逐项核对任务要求，不把“已经调查过”与“已经取得所需依据”混为一谈。\n\n如果局部任务明确要求确认素材对应、来源、时间、声音内容或完整定位，而这项关键要求仍缺证据，即使其他 findings 真实、limitations 已解释缺口，也应使用 INCOMPLETE。没有剩余次数只意味着此时必须提交报告，不会使未完成的任务变成 COMPLETED。保留有证据的已完成部分，status_reason 直接指出缺少的必要依据。\n\n如果局部任务只要求说明已观察到的事实、概括某来源的说法，或判断当前材料能否证明某事，则在准确回答这个局部问题后可以使用 COMPLETED。不要因为还有未要求的背景信息、无法穷尽所有细节或证据存在已披露的适用边界，就机械改成 INCOMPLETE。状态判断取决于当前任务，不取决于报告是否写了 limitations。\n\n数量问题先对应“问的是什么量”和“证据里的数字表示什么量”。年度总额、某类支出、实际到账额、人数、记录数或比例的分母不能因名称相近而互换。若报告自己仍不清楚数字的统计对象或范围，而这个区别会改变所问答案，就尚未完成该数量问题。\n\n已有出处提到年度报告、预算表或统计表时，优先沿真实可见线索取得对应材料，核对表头、实体、年度、单位和组成项目。没有具体链接时，可以按已知机构、年份及缺少的口径定向搜索；不要为了填数值调用与缺口无关的资料。合理尝试失败后据实说明，不能把未取得的表格内容补进报告。\n\n精度要求由问题决定。询问大致规模时，可靠近似值可以足够；询问精确数值、明确预算口径或计算比例时，缺少必要的数值、类别或分母关系就不能用一个来源中的相近数字代替。仍有具体可行的必要取证时继续取证；必须提交报告时，保留已有事实并准确使用 INCOMPLETE。此规则只适用于 HI 局部任务，不新增 GIA 输出字段。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 11,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，给出直接支持回答的证据，并准确说明来源与适用范围。证据类型取决于问题本身：问题要求核验原站、原件或最早来源时需满足该要求；概括报道的说法时保留转述关系，不自动追加原站核验：What does the NDCU Ministry of Health list as effective natural repellents for mosquitos carrying the dengue virus?\n背景声明：Limes spiked with Cloves repel mosquitoes that carry the dengue virus.\n声明日期（任务元数据）：2023-05-25\n本次要求独立取得支持回答的资料；该案例原事实核查文章不作为证据来源。搜索环境排除其已知地址及跳转目标，但不保证其他网页的时间或出处正确，仍须按问题核对。",
+   "status": "INCOMPLETE",
+   "status_reason": "Searches returned errors or unrelated pages; no relevant NDCU Ministry of Health source was obtained. The supplied image cannot establish which natural repellents the Ministry lists as effective against dengue-carrying mosquitoes. The requested list remains unverified.",
+   "findings": []
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":27251}"
+  },
+  {
+   "id": "E2",
+   "label": "Login - IG UK",
+   "source_url": "https://www.ig.com/uk/login?msockid=1336c703bba26c1c11fbd0d1ba716d99",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Your email, username or password is incorrect. Please try again.\n\n[2] Please call us to activate your account.\n\n[3] We are available between 8am to 9pm Monday to Friday.\n\n[4] Freephone: 0800 195 3100\n\n[5] Access a wide range of cryptocurrencies, from big hitters like Bitcoin and Ethereum to emerging projects like Curve and Ondo.\n\n[6] With over 150+ assets to choose from and 24/7 trading, you can build your crypto portfolio how you want, when you want — with deposits starting from £1.\n\n[7] Don’t invest unless you’re prepared to lose all the money you invest. This is a high-risk investment, …（共 1703 字）"
+  },
+  {
+   "id": "E3",
+   "label": "Manage single sign-on (SSO) with Microsoft accounts - Google Workspace Learning Center",
+   "source_url": "https://support.google.com/a/users/answer/12498137?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] If you can't access the Team dashboard, your organization's domain was verified. You need to manage SSO settings in the Admin console. [Learn more](https://support.google.com/a/answer/12032922)\n\n[2] Team administrators can choose whether users can sign in to Google Workspace Essentials with their corporate credentials, using single sign-on (SSO) with Microsoft OpenID Connect (OIDC).\n\n[3] Before you begin\n\n[4] If you want to allow people to sign in with SSO:\n\n[5] Check if your organization's IT administrator has set up the following prerequisites for OIDC in your organization’s Microsoft En…（共 2828 字）"
+  },
+  {
+   "id": "E4",
+   "label": "Usar arquivos do Microsoft Office - Ajuda do Google Drive",
+   "source_url": "https://support.google.com/drive/answer/9406611?hl=pt-BR",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] - Você pode fazer upload e trabalhar em arquivos do Office com o Google Drive, Docs, Planilhas ou Slides na web.\n\n[2] - Você pode trabalhar em arquivos do Office com acesso em tempo real ao usar o Drive para computador. Os usuários do Windows com uma conta escolar ou de trabalho também podem enviar e salvar arquivos com o Microsoft Outlook.\n\n[3] Trabalhar com arquivos do Microsoft Office no Google Drive, Docs, Planilhas ou Slides na web\n\n[4] Com o Office, você pode fazer o seguinte:\n\n[5] - [Abrir, editar e salvar os arquivos do Microsoft Office no Google Drive](https://support.google.com/d…（共 8196 字）"
+  },
+  {
+   "id": "E5",
+   "label": "How do i identify national and state highway in google maps?? What are different icons used for them - Google Maps Community",
+   "source_url": "https://support.google.com/maps/thread/3612561/how-do-i-identify-national-and-state-highway-in-google-maps-what-are-different-icons-used-for-them?hl=en",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to main content\n\n[2] Google Maps Help\n\n[3] Sign in\n\n[4] Google Help\n\n[5] Help Center\n\n[6] Community\n\n[7] Google Maps\n\n[8] Privacy Policy\n\n[9] Terms of Service\n\n[10] Submit feedback\n\n[11] Send feedback on...\n\n[12] This help content & information\n\n[13] General Help Center experience\n\n[14] Close\n\n[15] Next\n\n[16] Help Center\n\n[17] Community\n\n[18] Google Maps\n\n[19] Search\n\n[20] Clear search\n\n[21] Close search\n\n[22] Google apps\n\n[23] Main menu"
+  },
+  {
+   "id": "E6",
+   "label": "Home page",
+   "source_url": "https://www.microsoft.com/en-us/investor/default?msockid=16afa1fbf28b65780c60b629f3c964a9",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Slide %{start} of %{total}. %{slideTitle}\n\n[2] [End of News section]\n\n[3] Microsoft Corp (MSFT)\n\n[4] Announcements\n\n[5] I want to...\n\n[6] -  The next earnings release will be announced soon.\n\n[7] -  Get the quarterly dividend amount, record date, ex-dividend date, payable date and history\n\n[8] -  Prices display split-adjusted cost basis per share on that date."
+  },
+  {
+   "id": "E7",
+   "label": "Microsoft Corporation (MSFT) Stock Price, News, Quote & History - Yahoo Finance",
+   "source_url": "https://finance.yahoo.com/quote/MSFT/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Microsoft Corporation (MSFT)\n\n[2] [Trade MSFT on Coinbase](https://www.coinbase.com/stock/MSFT?utm_source=yahoo_finance&utm_campaign=cx_o_m_w_m_m_yah_gro_dis_yf&utm_medium=display&utm_content=promo%3DYAHOO_1_MONTH)\n\n[3] Trading disclosure\n\n[4] The above button links to Coinbase. Yahoo Finance is not a broker-dealer or investment adviser and does not offer securities or cryptocurrencies for sale or facilitate trading. Coinbase pays us for certain activity generated through this link. Prices displayed are informational.\n\n[5] [Learn more](https://help.yahoo.com/kb/index?page=content&y=PROD_FI…（共 4691 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Microsoft Corp (MSFT) Stock Price & News - Google Finance",
+   "source_url": "https://www.google.com/finance/quote/MSFT:NASDAQ",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Home](https://www.google.com/finance/)MSFT • NASDAQ\n\n[2] Follow\n\n[3] Microsoft Corp\n\n[4] Previous close\n\n[5] $492.44\n\n[6] Day range\n\n[7] $492.58 - $498.97\n\n[8] Year range\n\n[9] $349.20 - $553.72\n\n[10] Market cap\n\n[11] 3.68T USD\n\n[12] Avg Volume\n\n[13] 29.82M\n\n[14] P/E ratio\n\n[15] 27.62\n\n[16] Dividend yield\n\n[17] 0.73%\n\n[18] Primary exchange\n\n[19] NASDAQ\n\n[20] In the news\n\n[21] Financials\n\n[22] Income Statement\n\n[23] Revenue\n\n[24] Net income\n\n[25] | (USD) | Jun 2026info | Y/Y change |\n\n[26] |---|---|---|\n\n[27] | Revenue | 90.01B | 17.75% |\n\n[28] | Operating expense | 19.88B | 9.80% |\n\n[29] |…（共 2810 字）"
+  },
+  {
+   "id": "E9",
+   "label": "MSFT News Today | Why did Microsoft stock go up today?",
+   "source_url": "https://www.marketbeat.com/stocks/NASDAQ/MSFT/news/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Extended trading is trading that happens on electronic markets outside of regular trading hours. This is a fair market value extended hours price provided by Massive. Learn more.\n\n[2] Microsoft Corporation (NASDAQ: MSFT) is trading higher as investors focus on strong artificial-intelligence demand and the company’s plan to expand its data-center infrastructure, although the required spending and execution risks are tempering the bullish outlook.\n\n[3] Positive Sentiment: Microsoft reportedly plans to more than triple global data-center capacity to approximately 38 gigawatts by 2032. The exp…（共 4968 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Microsoft (MSFT) Stock Price & Overview",
+   "source_url": "https://stockanalysis.com/stocks/msft/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Microsoft Corporation (MSFT)\n\n[2] | [Market Cap](https://stockanalysis.com/stocks/msft/market-cap/) | 3.68T -0.7% |\n\n[3] | [Revenue (ttm)](https://stockanalysis.com/stocks/msft/revenue/) | 331.84B +17.8% |\n\n[4] | Net Income | 133.75B +31.3% |\n\n[5] | EPS | 17.95 +31.6% |\n\n[6] | Shares Out | 7.43B |\n\n[7] | PE Ratio | 27.61 |\n\n[8] | Forward PE | 25.09 |\n\n[9] | [Dividend](https://stockanalysis.com/stocks/msft/dividend/) | $3.64 (0.73%) |\n\n[10] | Ex-Dividend Date | Aug 20, 2026 |\n\n[11] | Volume | 14,998,500 |\n\n[12] | Open | 495.65 |\n\n[13] | Previous Close | 492.44 |\n\n[14] | Day's Range | 492.58…（共 10696 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Geocoding Service | Maps JavaScript API | Google for Developers",
+   "source_url": "https://developers.google.com/maps/documentation/javascript/geocoding",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Page Summary\n\n[2] -  Google Maps Geocoding API enables converting addresses to coordinates (geocoding) and coordinates to addresses (reverse geocoding).\n\n[3] -  Geocoding requests are asynchronous and require enabling the Geocoding API in Google Cloud Console.\n\n[4] -  Usage is based on a pay-as-you-go model, and detailed pricing and policies are available in provided links.\n\n[5] -  Responses include address types, components, and status codes to interpret results.\n\n[6] -  Address descriptors provide additional context using landmarks and surrounding areas, enhancing location understanding.…（共 52315 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Overview | Maps JavaScript API | Google for Developers",
+   "source_url": "https://developers.google.com/maps/documentation/javascript/dds-boundaries/overview",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Page Summary\n\n[2] -  Data-driven styling for boundaries allows you to style Google's administrative boundary polygons and combine them with your own data to create customized maps, such as choropleth maps.\n\n[3] -  You can target specific regions using place IDs and apply custom styling to boundary polygons based on feature types like country, state, locality, and postal code.\n\n[4] -  Boundary coverage varies by country and feature type, allowing you to style polygons with fill and stroke properties for visualization.\n\n[5] -  To get started, configure your map style, obtain place IDs for re…（共 3599 字）"
+  },
+  {
+   "id": "E13",
+   "label": "Google Maps Help",
+   "source_url": "https://support.google.com/maps/?visit_id=639248077665050084-4109700949&hl=en&rd=3#topic=3092425",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Popular articlesGet started with Google MapsDownload areas & navigate offline in Google MapsFind & improve your location’s accuracy in Google MapsAdd, edit, or delete Google Maps reviews & ratingsManage your Google Maps TimelineDiscover helpful features in Google MapsContribute to Google Maps & earn pointsShare your real-time location with others in Google MapsGet directions & show routes in Google MapsAsk questions in Google MapsTaking actions within Ask Maps with third-partiesGenerative AI in Google MapsAsk questions in Google MapsTaking actions within Ask Maps with third-partiesHow AI-p…（共 6102 字）"
+  },
+  {
+   "id": "E14",
+   "label": "Gmail",
+   "source_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/?hl%3Dde&emr=1&hl=de&ltmpl=default&ltmplcache=2&osid=1&passive=true&scc=1&service=mail&ss=1&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S1060581220:1789211027140345",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Weiter zu Gmail\n\n[2] E-Mail-Adresse vergessen?\n\n[3] Nicht Ihr Computer? Dann können Sie für die Anmeldung ein Fenster zum privaten Surfen öffnen. Weitere Informationen zur Verwendung des Gastmodus"
+  },
+  {
+   "id": "E15",
+   "label": "YouTube - Apps on Google Play",
+   "source_url": "https://play.google.com/store/apps/details?id=com.google.android.youtube&hl=en-US",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Games\n\n[2] Apps\n\n[3] Books\n\n[4] google_logo Play\n\n[5] none\n\n[6] search\n\n[7] help_outline\n\n[8] Sign in with Google\n\n[9] play_apps\n\n[10] Library & devices\n\n[11] payment\n\n[12] Payments & subscriptions\n\n[13] reviews\n\n[14] My Play activity\n\n[15] redeem\n\n[16] Offers\n\n[17] Play Pass\n\n[18] Personalization in Play\n\n[19] settings\n\n[20] Settings\n\n[21] Privacy Policy\n\n[22] •\n\n[23] Terms of Service\n\n[24] play_arrow\n\n[25] Trailer\n\n[26] Google LLC\n\n[27] Contains ads\n\n[28] In-app purchases\n\n[29] 4.0\n\n[30] 172M reviews\n\n[31] Rated for 12+\n\n[32] 10B+\n\n[33] Downloads\n\n[34] Install\n\n[35] Share\n\n[36] Add to wi…（共 6402 字）"
+  },
+  {
+   "id": "E16",
+   "label": "Your browser is deprecated, please upgrade.",
+   "source_url": "https://music.youtube.com/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Sorry, YouTube Music is not optimised for your browser. Check for updates or try Google Chrome.\n\n[2] Get Chrome"
+  },
+  {
+   "id": "E17",
+   "label": "Microsoft Store - Download apps, games & more for your Windows PC",
+   "source_url": "https://apps.microsoft.com/home?hl=en-US&gl=SG",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] This page requires JavaScript."
+  }
+ ]
+}

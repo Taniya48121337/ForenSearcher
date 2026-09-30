@@ -1,0 +1,316 @@
+{
+ "run": "averimatec_98_q0_validation",
+ "config": {
+  "dataset": "averimatec",
+  "case": "98",
+  "question_index": 0,
+  "search": "ddgs_text",
+  "inspect_operations": [
+   "get_frames",
+   "get_pages",
+   "crop",
+   "ocr",
+   "align_media"
+  ],
+  "instruction": "每轮保持当前角色和现有输出格式，依据当前任务、实际可见证据和执行反馈作出一个决定。\n\nHI：选择能解决具体未决问题的取证或读取。允许必要的重新附图与比较，也允许依据当前线索进行未命中的合理搜索；已看清的相同材料不因“再确认一下”而反复切换。新观察应针对尚未解决的差异、边界、实体或出处。收到工具或引用错误后依据实际反馈调整，不原样重复已被拒绝的请求。\n\nfocus_evidence_ids 使用当前可见且可选择的 E，按本次判断所需保留图片、文字或工具结果。正文提到某编号不自动使其进入可选择集合。\n\n报告核对所接局部任务。准确陈述已经证明的内容，并检查必要要求是否遗漏；保守措辞不能代替完成能够完成的核查。区分局部观察、算法候选、测量范围和语义结论；准确转述“来源声称 X”不等于独立证实 X。未执行的检查保持未知。\n\n涉及时间定位时，区分已观察的命中点、候选事件范围与边界不确定区间。同一事件可能包含人物全景、目标近景与动作延续，不要求每帧同时出现描述的所有要素；也不能把少数对应点延伸成未核验的连续区间。用已取得的全部相关证据检查边界表述，不为追求精确而虚构中间画面。\n\nGIA：将每项拟议子任务分别对应到原问题中尚未解决且会影响答案的缺口。已经充分回答的问题作为现有依据，不追加全面普查；多个任务须有互补取证目标或必要依赖，不能因其中一项合理就保留其他无关任务。局部报告真实与全局证据充分分别判断。证据足以支持任务所需的有限答案时结束；仍有必要缺口时安排可执行的补查。\n"
+ },
+ "gia_task": null,
+ "first_plan": null,
+ "answer": null,
+ "n_decisions": 12,
+ "reports": [
+  {
+   "workspace": "W1-1",
+   "task": "完成以下局部调查问题，查找直接证据并说明适用范围：Which website has the earliest version of the 1-th image?\n背景声明：Images show an assortment of weapons that were found in the house of an Ethiopian Orthodox Church leader of a church in Jimma after the split of the Orthodox Church.\n声明日期（任务元数据）：2023-02-07\n附带图片是该局部问题的官方输入图片，问题中的图像指代以这些附件为准。",
+   "status": "INCOMPLETE",
+   "status_reason": "已找到有明确刊登日期的早期网页线索，但尚不能确认最早发布该图的网站。",
+   "findings": [
+    {
+     "statement": "现有证据中，最早有明确刊登日期的网页线索是 BBC News Afaan Oromoo：https://www.bbc.com/afaanoromoo/oduu-50219595 。HaqCheck 指出，第一张武器照片曾于2019年10月30日刊登在该页面。",
+     "evidence_ids": [
+      "E1",
+      "E3"
+     ],
+     "limitations": [
+      "图片对应关系与刊登日期依据HaqCheck的核查说明，尚未直接核对BBC页面原图及日期。"
+     ]
+    },
+    {
+     "statement": "AFP的核查文章将第一张照片追溯至AFP图片档案，并称其于2019年6月在法国波城拍摄。这提供了更早的照片来源线索，但拍摄日期不能直接视为网站发布日期。",
+     "evidence_ids": [
+      "E2"
+     ],
+     "limitations": [
+      "AFP图片档案链接访问受限，未能核对原图及首次上线时间，因此无法确定其是否早于BBC刊登。"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "E1",
+   "label": "材料 image_0",
+   "source_url": null,
+   "acquired_by": "HARNESS/ingest",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"original_filename\":\"image_0.jpg\",\"media_type\":\"image/jpeg\",\"byte_size\":21379}"
+  },
+  {
+   "id": "E2",
+   "label": "Old photos falsely linked to Ethiopia’s Orthodox Church rift | Fact Check",
+   "source_url": "https://factcheck.afp.com/doc.afp.com.339D4FH",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Old photos falsely linked to Ethiopia’s Orthodox Church rift\n\n[2] - This article is more than three years old.\n\n[3] - Published on February 24, 2023 at 11:46\n\n[4] - 3 min read\n\n[5] - By [James OKONG'O](https://factcheck.afp.com/james-okongo) ,[AFP Kenya](https://factcheck.afp.com/afp-kenya) ,[AFP Ethiopia](https://factcheck.afp.com/afp-ethiopia)\n\n[6] The post was published on [Facebook](https://perma.cc/32RX-URYF) on February 7, 2023, and has been shared nearly 60 times.\n\n[7] Written in Amharic, the post translates to: “These smuggled weapons were found in the house of an Ethiopian Orthodo…（共 5124 字）"
+  },
+  {
+   "id": "E3",
+   "label": "False: The image doesn't show weapons found at the house of an Ethiopian Orthodox Church leader in Jimma - HaqCheck",
+   "source_url": "https://haqcheck.org/false-the-image-doesnt-show-weapons-found-at-the-house-of-an-ethiopian-orthodox-church-leader-in-jimma/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] On Feb 7, 2023, a [Facebook page](https://www.facebook.com/FinfinneeFreePost53/posts/pfbid02kSuCS33CkZeWdL6K9VcAcjrki395j9c5wpTD3LhDKpnueP4GmwP1KtkyjdJGMAUfl) with over 290 thousand followers [shared](https://www.facebook.com/FinfinneeFreePost53/posts/pfbid02kSuCS33CkZeWdL6K9VcAcjrki395j9c5wpTD3LhDKpnueP4GmwP1KtkyjdJGMAUfl) three images with a claim that weapons were found in the house of an Ethiopian Orthodox Church leader in Jimma. The first image shows rifles, the second ammunition, and the third is a photo of a person.\n\n[2] The post claimed that the person in the photograph is the depu…（共 3497 字）"
+  },
+  {
+   "id": "E4",
+   "label": "February 2023: Monthly disinformation analysis - HaqCheck",
+   "source_url": "https://haqcheck.org/february-2023-monthly-disinformation-analysis/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The trend of disinformation across the Ethiopian media landscape\n\n[2] Incidents prompt disinformation\n\n[3] Controversial and false information circulation across the Ethiopian social media landscape follows the events that occurred in the country. Events prompt and provoke false information dissemination.\n\n[4] Most of the false claims that appeared and were debunked by HaqCheck were related to events.\n\n[5] The trend of disinformation across the Ethiopian social and mainstream media landscape increases when incidents related to political and socioeconomic issues happen.\n\n[6] Many false clai…（共 6134 字）"
+  },
+  {
+   "id": "E5",
+   "label": "February week two summary - HaqCheck",
+   "source_url": "https://haqcheck.org/february-week-two-summary/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] The false claims and controversies during the week were regarding the schism within the Ethiopian Orthodox Tewahedo Church and related conflict.\n\n[2] HaqCheck observed that the trend of disinformation had intensified during the week. Many false images were shared to support claims. Most of the claims accompanied by false images and debunked by HaqCheck were regarding the holding and discovery of smuggled weapons at Church leaders’ houses.\n\n[3] Below are the claims HaqCheck debunked in the second week of February 2023.\n\n[4] A church destroyed in Tigray during the war\n\n[5] On Feb 6, 2023, a …（共 5886 字）"
+  },
+  {
+   "id": "E6",
+   "label": "Tensions in Ethiopia’s Orthodox Church as demonstrations called for Sunday – Martin Plaut",
+   "source_url": "https://martinplaut.com/2023/02/11/tensions-in-ethiopias-orthodox-church-as-demonstrations-called-for-sunday/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Plans to hold demonstrations tomorrow have led to the authorities cutting social media links.\n\n[2] Below are three reports, which I am sharing them as background.\n\n[3] Martin\n\n[4] Social media restricted in Ethiopia after church rift turns violent\n\n[5] NAIROBI, Feb 10 (Reuters) – Access to social media platforms has been restricted in Ethiopia, Internet watchdog NetBlocks said, following violent protests sparked by a rift within the country’s Orthodox Church.\n\n[6] The protests broke out in the [Oromiya](https://www.reuters.com/world/africa/ethnic-attacks-kill-60-ethiopias-oromiya-says-huma…（共 27548 字）"
+  },
+  {
+   "id": "E7",
+   "label": "CircleCityCon 2019 | Hackaday",
+   "source_url": "https://hackaday.com/tag/circlecitycon-2019/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] You might think that tiny autonomous drones that can be fired out of a standard 40 mm grenade launcher for rapid deployment would be the kind of thing the military would love to get their hands on. Which is true, of course, and a number of companies are working on the idea for police and military applications. But [Glytch] thinks the technology could also be used for search and rescue operations, so he’s working on creating a version for us civilians.\n\n[2] During his presentation [“3D Printing Canister-Launchable Drones for City-Scale Wardriving” at the 2019 CircleCityCon](https://circleci…（共 3419 字）"
+  },
+  {
+   "id": "E8",
+   "label": "Fortnite patch v9.21 adds a new Grenade Launcher and the new Horde Rush mode",
+   "source_url": "https://www.polygon.com/battle-royale/2019/6/12/18662672/fortnite-patch-v9-21-notes-proximity-grenade-launcher-horde-rush-mode/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] [Fortnite](https://www.polygon.com/game/fortnite/2417) patch v9.21 is here and is bringing with it a new kind of Grenade Launcher. Epic’s also using this patch to add a new wave-based survival mode called Horde Rush.\n\n[2] The new Proximity Grenade Launcher is likely going to be one of [Fortnite](https://www.polygon.com/franchise/fortnite/40156)’s strangest weapons. While it may not seem odd on the surface, it fires grenades that detonate after a period of time, or when players get close to them, the gun has a few quirks. But these grenades are strange and extremely bouncy and often seem to…（共 5839 字）"
+  },
+  {
+   "id": "E9",
+   "label": "subfuz/subdomain_megalist.txt at master · netsecurity-as/subfuz · GitHub",
+   "source_url": "https://github.com/netsecurity-as/subfuz/blob/master/subdomain_megalist.txt",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to content\n\n[2] Navigation Menu\n\n[3] Sign in\n\n[4] Appearance settings\n\n[5] Platform\n\n[6] AI CODE CREATION\n\n[7] GitHub Copilot\n\n[8] Write better code with AI\n\n[9] GitHub Copilot app\n\n[10] Direct agents from issue to merge\n\n[11] MCP Registry\n\n[12] Integrate external tools\n\n[13] DEVELOPER WORKFLOWS\n\n[14] Actions\n\n[15] Automate any workflow\n\n[16] Codespaces\n\n[17] Instant dev environments\n\n[18] Issues\n\n[19] Plan and track work\n\n[20] Code Review\n\n[21] Manage code changes\n\n[22] Code Quality\n\n[23] Enforce quality at merge\n\n[24] APPLICATION SECURITY\n\n[25] GitHub Advanced Security\n\n[26] Find an…（共 3324 字）"
+  },
+  {
+   "id": "E10",
+   "label": "Wordlists/Common-Webfuzzing-list at main · Nexusss-ppatil/Wordlists · GitHub",
+   "source_url": "https://github.com/Nexusss-ppatil/Wordlists/blob/main/Common-Webfuzzing-list",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Skip to content\n\n[2] Navigation Menu\n\n[3] Sign in\n\n[4] Appearance settings\n\n[5] Platform\n\n[6] AI CODE CREATION\n\n[7] GitHub Copilot\n\n[8] Write better code with AI\n\n[9] GitHub Copilot app\n\n[10] Direct agents from issue to merge\n\n[11] MCP Registry\n\n[12] Integrate external tools\n\n[13] DEVELOPER WORKFLOWS\n\n[14] Actions\n\n[15] Automate any workflow\n\n[16] Codespaces\n\n[17] Instant dev environments\n\n[18] Issues\n\n[19] Plan and track work\n\n[20] Code Review\n\n[21] Manage code changes\n\n[22] Code Quality\n\n[23] Enforce quality at merge\n\n[24] APPLICATION SECURITY\n\n[25] GitHub Advanced Security\n\n[26] Find an…（共 3244 字）"
+  },
+  {
+   "id": "E11",
+   "label": "Meeshaa waraanaa seeraan ala daddabarsuun kun garam geessinna? - BBC News Afaan Oromoo",
+   "source_url": "https://www.bbc.com/afaanoromoo/oduu-50219595",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Meeshaa waraanaa seeraan ala daddabarsuun kun garam geessinna?\n\n[2] Ministeerrii galiiwwanii buufataalee gumruukaa sagal irrattii ji'oota 14 keeessatti meeshaalee waraanaa seeraa ala socho'an kuma 117 ol ta'an to'ate.\n\n[3] Onkololessa 24-30 saadarkaa idila-addunyaatti torbee dhabamsiisa meeshaalee waraanaa seeraan alaa '' disarmament week'' jedhamee beekama.\n\n[4] Kaayyoon isaa meeshaaleen waraanaa seeraan alaa nageenya addunyaarratti balaa isaan fidan irratti hubanno uumuun kanneen seeraan ala qabataman dhabamsiisuudha.\n\n[5] Daddabarsi meeshaalee waraanaa seeraan alaa addunyaarratti lubbuu…（共 6530 字）"
+  },
+  {
+   "id": "E12",
+   "label": "Rubiks Cube Wallpaper (76+ images)",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1920, \"height\": 1080, \"format\": \"JPEG\", \"source_url\": \"https://getwallpapers.com/wallpaper/full/0/7/4/338523.jpg\"}"
+  },
+  {
+   "id": "E13",
+   "label": "Rubiks Cube Wallpaper (76+ images)",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Looking for the best wallpapers? We have an extensive collection of amazing background images carefully chosen by our community. If you have one of your own you’d like to share, send it to us and we’ll be happy to include it on our website. Feel free to download, share, comment and discuss the wallpapers that inspire you!\n\n[2] [Upload image](https://getwallpapers.com/user/profile)\n\n[3] Please, create an account or sign in to submit an image\n\n[4] What is a desktop wallpaper? When you boot your computer, there is an initial screen that comes up, in which your folders, documents, and software…（共 2345 字）"
+  },
+  {
+   "id": "E14",
+   "label": "search result thumbnail",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E15",
+   "label": "Rubiks Cube Wallpaper (76+ images)",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 2560, \"height\": 1440, \"format\": \"JPEG\", \"source_url\": \"https://getwallpapers.com/wallpaper/full/5/9/c/338230.jpg\"}"
+  },
+  {
+   "id": "E16",
+   "label": "Rubiks Cube Wallpaper (76+ images)",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Looking for the best wallpapers? We have an extensive collection of amazing background images carefully chosen by our community. If you have one of your own you’d like to share, send it to us and we’ll be happy to include it on our website. Feel free to download, share, comment and discuss the wallpapers that inspire you!\n\n[2] [Upload image](https://getwallpapers.com/user/profile)\n\n[3] Please, create an account or sign in to submit an image\n\n[4] What is a desktop wallpaper? When you boot your computer, there is an initial screen that comes up, in which your folders, documents, and software…（共 2345 字）"
+  },
+  {
+   "id": "E17",
+   "label": "search result thumbnail",
+   "source_url": "https://getwallpapers.com/collection/rubiks-cube-wallpaper",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E18",
+   "label": "Rubik's Cube Wallpapers [35+ Free Background Images] - WallpaperGap",
+   "source_url": "https://www.wallpapergap.com/rubiks-cube-wallpapers/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 1920, \"height\": 1080, \"format\": \"JPEG\", \"source_url\": \"https://www.wallpapergap.com/cdn/24/413/rubiks-cube-wallpaper-hd-1920x1080.jpg\"}"
+  },
+  {
+   "id": "E19",
+   "label": "Rubik's Cube Wallpapers [35+ Free Background Images] - WallpaperGap",
+   "source_url": "https://www.wallpapergap.com/rubiks-cube-wallpapers/",
+   "acquired_by": "SEARCH/open/http+trafilatura",
+   "modalities": [
+    "text"
+   ],
+   "derived_from": [],
+   "content": "[1] Explore 35 vibrant Rubik’s Cube wallpapers, perfect for adding a splash of color and complexity to your screens. Each wallpaper is available in HD, Full HD, and stunning 4K resolutions to ensure sharp and vivid details, whether you’re viewing them on your computer, laptop, mobile, iPhone, or tablet. The intricate designs and bright colors of the Rubik’s Cube are perfectly captured, making each image a visual treat. Perfect for anyone who loves a mix of intellectual challenge and visual allure, these wallpapers are designed to enhance any device with their dynamic and colorful charm.\n\n[2] 2…（共 2209 字）"
+  },
+  {
+   "id": "E20",
+   "label": "search result thumbnail",
+   "source_url": "https://www.wallpapergap.com/rubiks-cube-wallpapers/",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E21",
+   "label": "Rubik Wallpapers - Top Free Rubik Backgrounds - WallpaperAccess",
+   "source_url": "https://wallpaperaccess.com/rubik",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 5312, \"height\": 2988, \"format\": \"JPEG\", \"source_url\": \"https://wallpaperaccess.com/full/1925863.jpg\"}"
+  },
+  {
+   "id": "E22",
+   "label": "search result thumbnail",
+   "source_url": "https://wallpaperaccess.com/rubik",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  },
+  {
+   "id": "E23",
+   "label": "Rubik Wallpapers - Top Free Rubik Backgrounds - WallpaperAccess",
+   "source_url": "https://wallpaperaccess.com/rubik",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 2560, \"height\": 1440, \"format\": \"JPEG\", \"source_url\": \"https://wallpaperaccess.com/full/1925843.jpg\"}"
+  },
+  {
+   "id": "E24",
+   "label": "search result thumbnail",
+   "source_url": "https://wallpaperaccess.com/rubik",
+   "acquired_by": "SEARCH/open/image+Pillow",
+   "modalities": [
+    "image"
+   ],
+   "derived_from": [],
+   "content": "{\"width\": 474, \"height\": 266, \"format\": \"JPEG\"}"
+  }
+ ]
+}

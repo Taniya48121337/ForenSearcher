@@ -1,0 +1,35 @@
+{
+  "_note": "来源 D 第二批（2026-09-29）：起草后经独立审稿修订（cases_draft/review_20260929_offline_batch2.md）；删除 1 题（4126 v1：离线态需要 READ_RECORD 才能作答，会被 offline_gate 判 held）。",
+  "source_run": "videosham_0069_r1",
+  "source_request": "request_0045",
+  "variants": [
+    {
+      "id": "v1",
+      "task": "视频 A 与 B 的声音是否存在差异？能确认到什么程度？",
+      "expected_decision": "FINISH",
+      "rationale": "W1-2（INCOMPLETE）F6（干净）引 E4：B 的文件有 1 条音轨，但没有试听或转写，其中是否有言语、音乐或环境声，以及与 A 的差异都未能确定。current_materials 里的 E3（A 的媒体属性）写明 A 为 0 条音轨。W1-2 status_reason 写明现有动作不支持独立播放、提取或转写；run_config 的 inspect_operations 确实没有 asr/audio_qa，A 没有音轨也做不了音频对齐。再派 HI 取不到声音内容，应 FINISH：能确认的只有音轨数量不同（A 0 条、B 1 条），B 的声音内容及其对画面理解的影响无法核验；限制取 F6：音轨数差异不能证明来源关系，也不能把 A 无音轨说成原始拍摄无声。W1-2 F5 被 r0 与 units 判为 tainted，不作依据。",
+      "review": "通过"
+    },
+    {
+      "id": "v2",
+      "task": "对 A 与 B 做的自动视觉对齐得到了什么结果？是否给出了时间对应？这一结果能说明什么、不能说明什么？",
+      "expected_decision": "FINISH",
+      "rationale": "W1-1 F4（干净，E5、E6、E14）：视觉对齐没有返回候选匹配，除 0 秒起始画面外没有可靠的成对时间锚点，无法确认截取、删减、重排或变速。W2-2 F12（干净，E5、E16、E53、E54、E55、E56）：对齐处理了 A 的 0–10.20 秒和 B 的 0–4.04 秒，没有返回候选。E5 本身记录 matches 为空、speed_ratio_range 为 0.5–2.0。限制取 F4、F12：对齐没有命中不等于没有对应内容。问题问的是已有测量结果本身，可直接回答。W2-1 F9 被判污染，不作依据。与 v4 形成对照。",
+      "review": "修改"
+    },
+    {
+      "id": "v3",
+      "task": "A 与 B 中骑行者的动作先后顺序是否一致？给出两侧能够对应的时刻，并说明无法对应的部分。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "W2-2 F12（干净）写明目前没有可靠的动作时间对应，限制要求检查 A 的帧间空档，并定位与 B 动作对应的画面。B 侧的姿态描述也不可靠：F10 在 r0 没有列入污染，但它说的“1.80 秒（E42）、2.68 秒（E16）抬头”正是 r0 对同工作区 F11 判 wrong_citation 的内容（核验模型读这两帧为低头前倾）；W2-1 F8 说 E24（1.60 秒）抬头，也被判 wrong_citation。所以现有记录连 B 的动作序列都不能直接采用。visual_observation_summary 显示两侧都有大量未确认区间。本 run 没有搜索，但 inspect_operations 有 get_frames、crop、align_media（可指定 range_a_s/range_b_s），HI 可以在两侧加密成对取帧，裁剪比对腿部、头盔、号码牌等可区分细节。W1-1 F1、F3，W2-1 F8，W2-2 F11 被判污染，F10 的抬头描述有争议，都不作依据。",
+      "review": "修改"
+    },
+    {
+      "id": "v4",
+      "task": "两段视频的时长是否相同？如不同，时长差在画面上是由什么造成的（例如多出或缺少的内容、速度变化或其他编排）？给出位置。",
+      "expected_decision": "INVESTIGATE",
+      "rationale": "时长已知：E3、E4（媒体属性）记 A 10.20 秒、B 4.04 秒，W1-1 F2 与 W2-1 F7 同（r0 判 minor 越界，recalibrate 后 clean）。成因未知：W1-1 F4（干净）写明无法确认截取、删减、重排或变速；F7 的限制写明约 2.525 的时长比不能当作播放倍速；E5 的对齐速度比范围只有 0.5–2.0，覆盖不到约 2.5 倍的关系。HI 可用 get_frames 在两侧成对加密取帧，用 crop 比对细节，定位 A 中与 B 对应的画面及其展开方式。与 v2（已有对齐结果能说明什么）形成 FINISH↔INVESTIGATE 对照。W2-1 F9 被判污染，不作依据。",
+      "review": "通过"
+    }
+  ]
+}
