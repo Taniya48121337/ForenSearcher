@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   const page = document.querySelector('#training-page');
-  const T = {data:null, section:'flow', stage:2, filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archNode:'gia', archZoom:1, archX:0, archY:0, cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
+  const T = {data:null, section:'flow', stage:2, walkerCase:'vs1007', filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archNode:'gia', archZoom:1, archX:0, archY:0, cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
   const labels = {SEARCH:'搜索与打开来源',INSPECT:'检查原始材料',READ_RECORD:'读取已有证据',QUERY_MEMORY:'查找调查记忆',SEARCH_MEMORY:'查找调查记忆',INVESTIGATE:'安排下一轮调查',FINISH:'结束并回答',REPORT:'提交局部报告'};
   const operations = {get_frames:'提取视频帧',align_media:'对齐视频片段',get_pages:'读取文档页面',crop:'裁剪局部画面',ocr:'读取图中文字',locate_frames:'定位视频片段'};
   const dispositions = {accept_candidate:'可作为候选',repair_reexecute:'需要重新执行',context_only:'仅保留为历史',exclude:'排除目标',unknown:'尚未判定'};
@@ -25,47 +25,97 @@
   window.stopTrainingPlayback = stop;
   async function get(path){if(T.cache.has(path))return T.cache.get(path);const value=await api(path);T.cache.set(path,value);return value;}
   function loading(){page.innerHTML='<div class="tr-loading" role="status"><span class="tr-loader"></span>正在读取实际训练记录…</div>';}
-  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['rubric','质量核验'],['samples','轨迹示例'],['paper','论文草稿']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,label,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')||section==='paper'?'':statusStrip(section)}`;}
+  function top(section){return `<div class="tr-top"><div><div class="eyebrow muted">METHOD &amp; PROGRESS</div><h1>方法与进展</h1></div><span class="tr-readonly"><i class="small-dot"></i> 已保存记录 · 浏览不调用模型</span></div><nav class="tr-tabs" aria-label="训练数据栏目">${[['roadmap','项目进展'],['architecture','系统架构'],['flow','生成流程'],['walker','轨迹生成'],['rubric','质量核验'],['samples','轨迹示例'],['paper','论文草稿']].map(([id,label])=>routeButton(`#training${id==='roadmap'?'':'/'+id}`,label,`tr-tab ${section===id?'active':''}`)).join('')}</nav>${page.classList.contains('tr-detail-page')||section==='paper'?'':statusStrip(section)}`;}
   function vs(){return (T.data&&T.data.verification)||{};}
   function num(v){return v===undefined||v===null?'—':format(v);}
-  function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">阶段 3 / 5 已完成</span><span>调查框架、数据流水线与质量核验体系均已就位</span><span>已完成三层核验：调查 <b>${num(vs().runs)}</b> 次 · 报告 <b>${num(vs().reports)}</b> 份 · 数据来源 <b>${num(vs().datasets)}</b> 个</span><span>正在进入首次模型训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
+  function statusStrip(section){return `<div class="tr-status-strip"><span class="tr-status-now">11 个阶段 · 1 个完成 · 5 个进行中</span><span>框架、流水线、核验、环境固化的代码已齐；等正式教师模型与人工金标</span><span>已完成三层核验：调查 <b>${num(vs().runs)}</b> 次 · 报告 <b>${num(vs().reports)}</b> 份 · 数据来源 <b>${num(vs().datasets)}</b> 个</span><span>下一步：正式第 0 轮与首次训练</span>${section==='roadmap'?'':routeButton('#training','看项目进展 →')}</div>`;}
   function renderFlow(){
     const v=vs(),d=stageData[T.stage];
     page.innerHTML=top('flow')+`<section class="tr-hero"><div><div class="eyebrow">FROM INVESTIGATION TO LEARNING</div><h2>把每一次真实调查，<br>沉淀为可复用的训练示范<span class="accent">。</span></h2><p>真实执行留下完整过程，逐单元核验决定去留。<br>GIA 学习判断与分工，HI 学习取证与报告。</p></div><div class="tr-hero-card"><span>已核验的工作区报告</span><strong>${num(v.reports)}<small>份</small></strong><div class="tr-role-split"><span class="tr-role-gia">调查 <b>${num(v.runs)}</b></span><span class="tr-role-hi">证据对照 <b>${num(v.pairs)}</b></span></div><div class="tr-stat-note">第 0 轮三层核验结果</div></div></section><div class="tr-stats"><div><b>${num(v.runs)}</b><span>真实调查</span></div><div><b>${num(v.reports)}</b><span>工作区报告</span></div><div><b>${num(v.pairs)}</b><span>结论–证据逐对核验</span></div><div><b>${num(v.datasets)}</b><span>数据来源</span></div></div><section class="tr-flow-section"><div class="tr-section-title"><div><div class="eyebrow muted">DATA GENERATION PIPELINE</div><h2>一条训练样本的产生过程</h2></div><span>选择步骤，查看输入与产物</span></div><div class="tr-flow-layout"><div class="tr-stages" aria-label="数据生成步骤">${stageData.map((v,i)=>`<button class="tr-stage ${i===T.stage?'active':''}" data-tr-stage="${i}" aria-pressed="${i===T.stage}"><span>${String(i+1).padStart(2,'0')}</span><div><strong>${v.short}</strong><small>${i===2?'模型与工具实际运行':i===3?'逐个决策独立判定':i===5?'GIA / HI 分开保存':i===0?'任务、来源与参考材料':i===1?'隔离参考答案与未来信息':'保留有据可依的示范'}</small></div><i>↗</i></button>`).join('')}</div><article class="tr-stage-detail" aria-live="polite"><div class="tr-panel-kicker">步骤 ${String(T.stage+1).padStart(2,'0')} / 06</div><h3>${d.title}</h3><p class="tr-subtitle">${d.subtitle}</p><div class="tr-transformation"><div><small>输入</small><strong>${d.input}</strong></div><span>→</span><div class="tr-transform-actor"><small>${d.actor}</small><strong>${d.output}</strong></div></div><ol class="tr-points">${d.points.map(p=>`<li>${p}</li>`).join('')}</ol><p class="tr-callout">${d.note}</p><p class="tr-upgrade"><b>本期升级</b>${d.upgrade}</p><div class="tr-stage-footer">${routeButton(`#training/samples/${d.example}`,`${d.exampleLabel} <span>→</span>`)}<div><button class="tr-round" data-tr-stage="${T.stage-1}" ${T.stage===0?'disabled':''} aria-label="上一步">←</button><button class="tr-round" data-tr-stage="${T.stage+1}" ${T.stage===5?'disabled':''} aria-label="下一步">→</button></div></div></article></div><div class="tr-return"><span>↶</span> 需要修复的动作回到对应状态重新执行，保留原来的真实历史。</div></section><section class="tr-supervision"><div><div class="eyebrow muted">WHAT THE MODEL LEARNS</div><h2>上下文用于理解，<br>目标输出才计入监督。</h2><p>一段完整调查被拆分为逐次决策的训练样本。</p></div><div class="tr-message-stack"><div><span>输入上下文</span><p>角色提示 · 当前任务 · 已有证据与报告</p><small>不计算目标损失</small></div><i>↓</i><div class="tr-target-message"><span>当前角色输出</span><p>GIA 的下一次决定 / HI 的下一次行动或报告</p><small>合格输出参与监督</small></div></div></section><div class="tr-footnote">第 0 轮数据已完成三层核验与学生模型处理器的逐行核对；首次模型训练正在准备中。</div><div class="tr-doc-links">${docLink('method','完整构造方法')} ${docLink('results','实际测量与结果')}</div>`;
   }
-  const planStates={done:['已完成','done'],doing:['进行中','doing'],todo:['下一阶段','todo']};
+  const planStates={done:['已完成','done'],doing:['进行中','doing'],todo:['未开始','todo'],later:['延后 / 备选','later']};
+  // 11 个阶段，按 2026-09-24 拍板后的口径与 10-01 总清单重排；状态截至 2026-10-01。
   const roadmap=[
     {id:'framework',kicker:'阶段 01 · 已完成',title:'调查框架与工具链',hint:'真实任务端到端验证',items:[
       {state:'done',name:'两级调查角色',text:'GIA 负责全局：拆解问题、并行派发调查任务、判断证据是否足以形成结论。HI 在各自独立的工作区内执行单项任务，取证后提交局部报告。'},
       {state:'done',name:'动态调查轮次',text:'轮内并行、轮间串行。证据全局共享，结论按工作区隔离，避免各工作区之间的判断相互干扰。'},
-      {state:'done',name:'检索与检查工具',text:'检索侧分为来源、打开、抽取三层；材料检查侧支持视频抽帧、片段对齐、文档读页、区域裁剪、图中文字识别、语音转写与片段定位。'},
+      {state:'done',name:'检索与检查工具',text:'检索侧分为来源、打开、抽取三层；材料检查侧支持视频抽帧、片段对齐、文档读页、区域裁剪、图中文字识别、语音转写与片段定位。语音转写、按文字找帧与图内定位自 9 月 30 日起在数据生成中启用。'},
       {state:'done',name:'可追溯的证据库',text:'全局证据持久化存储，具备读取审计与断点恢复。结论链条固定为：最终回答 → 发现 → 证据 → 来源。'},
-      {state:'done',name:'多模态输入',text:'GIA 与 HI 均可直接读取原始画面。视频类任务中，调度方若不接触原始材料则只能派发模板化任务，该路径现已打通。'},
-      {state:'done',name:'真实任务验证',text:'网页事实核查与视频比对任务均已通过真实接口端到端验证，全过程留有可回放的记录。'}]},
-    {id:'pipeline',kicker:'阶段 02 · 已完成',title:'训练数据流水线',hint:'49 次真实调查 · 6 个数据来源',items:[
-      {state:'done',name:'真实调查留档',text:'来自 6 个数据来源的 49 次真实调查全部留档，覆盖网页核查、视频比对、图表问答等多类任务；每次调查按角色、按决策拆分为训练行，首个案例已按新流程导出。'},
-      {state:'done',name:'完整过程留存',text:'每一步均保存当时的输入、图片附件、模型输出与工具真实返回，以及三者之间的对应关系，支持逐步回放。'},
-      {state:'done',name:'附件均为真实材料',text:'训练样本中出现的每一张图，均为调查过程中真实取得的材料，而非事后补配的示意图。'},
-      {state:'done',name:'划分与防泄漏',text:'开发集与保留检查集按案例家族划分，由程序核查两侧是否重叠；保留数据一旦被用于调整流程即自动降级。'},
-      {state:'done',name:'按角色导出',text:'两个角色分别导出，仅当前角色的目标输出参与训练，其余内容作为上下文；导出后逐条核对监督位置与截断情况。'}]},
-    {id:'quality',kicker:'阶段 03 · 已完成',title:'质量与核验体系',hint:'结论可回溯至原始证据',items:[
-      {state:'done',name:'版本化规格',text:'角色提示与生成指令分开管理，各自带版本号与内容哈希，并写入每一行数据，任一样本均可追溯到产生它的规格版本。'},
-      {state:'done',name:'状态渲染器',text:'长上下文分两档压缩，输入字符中位数降至原先的一半以下，证据编号全部保留；超出预算时明确标注，并保留读取全文的入口。'},
-      {state:'done',name:'三层核验',text:'第一层以程序核查引用与必需项，第二层逐条结论对照其引用的每一份证据原文或像素，第三层依据任务本身核查覆盖度与终止条件。'},
-      {state:'done',name:'统一的问题类型枚举',text:'核验结果归入统一定义的问题类型，共五个层级，每类标注角色、严重度与是否影响后续结论，使改进方向可量化。'},
-      {state:'done',name:'核验与生成分离',text:'核验所用模型与生成数据的模型相互独立，并要求给出引语、由程序回到证据原文中回查，以避免自评。'}]},
-    {id:'training',kicker:'阶段 04 · 进行中',title:'首次模型训练',hint:'本地链路 → 服务器 SFT',items:[
+      {state:'done',name:'两个角色都直接看图',text:'HI 直接接收图片像素；GIA 看到原始材料的关键帧，需要时按编号调取证据图片。'},
+      {state:'done',name:'真实任务验证',text:'网页事实核查与视频比对任务均已通过真实接口端到端验证，全过程留有可回放的记录。'},
+      {state:'later',name:'工作记忆的三项增强',text:'焦点证据分级淘汰、证据指纹去重、长文本句级压缩。暂不进入首次训练前的必做清单，移植后再纳入可调参数。'}]},
+    {id:'pipeline',kicker:'阶段 02 · 进行中',title:'训练数据流水线与案卷',hint:'33 个案例 · 五份划分',items:[
+      {state:'done',name:'运行记录 → 决策序列',text:'每一步保存当时的输入、附图、模型输出与工具真实返回，以及三者之间的对应关系，支持逐步回放。'},
+      {state:'done',name:'版本化规格',text:'角色提示、生成指令与运行参数分开管理，各自带版本号与内容哈希，并写入每一行数据；运行时提示与规格逐字一致由测试守卫。'},
+      {state:'done',name:'统一的状态渲染档位',text:'全项目统一使用 16K 档，实测含附图后最长输入远低于 32K 训练上限。'},
+      {state:'done',name:'按角色导出与核对',text:'两个角色分别导出，仅当前角色的目标输出参与训练；导出后用学生模型的处理器逐条核对监督位置与长度。'},
+      {state:'done',name:'案卷扩到 33 个',text:'每个案例一份案卷：正确的调查必须建立什么、必需的证据、程序化检查。新增 22 个覆盖文本声明、图文声明、片段定位与拷贝检测，经独立审稿后入库。'},
+      {state:'done',name:'五份数据划分',text:'训练 / 门控 / 确认 / 评测 / 测试五份，按事件家族一次性分配并校验无泄漏；评测与测试划分从不参与任何决策。'},
+      {state:'done',name:'批量调查驱动',text:'从案卷出发批量运行、断点续跑、自动记录每次调查的成本（墙钟、教师调用、token、附图数）。'},
+      {state:'doing',name:'离线换题的调度数据',text:'在已有调查状态上替换问题，为调度角色补充带标准答案的训练样本；45 道题已经独立审稿入库，等待重跑。'},
+      {state:'doing',name:'新增案例的首批轨迹',text:'新增案例中属于训练划分的 10 个已备好启动脚本，等待运行。'},
+      {state:'todo',name:'成本实测',text:'驱动与记录已就位；正式的单案例成本等正式教师模型部署后测定。'}]},
+    {id:'quality',kicker:'阶段 03 · 进行中',title:'核验体系（循环的地基）',hint:'核验器 0.3.3 · 等人工金标',items:[
+      {state:'done',name:'三层核验',text:'第一层以程序核查引用与必需项；第二层逐条结论对照其引用的每一份证据原文或像素，并由程序回查引语；第三层依据案卷核查覆盖度与终止条件。'},
+      {state:'done',name:'四类判定单元',text:'HI 的每一步动作、每一份报告，GIA 的每一次派工、每一个最终答案，都单独判定并归因到负责的角色。'},
+      {state:'done',name:'统一的问题类型枚举',text:'核验结果归入统一定义的问题类型，共五个层级，每类标注角色、严重度与是否影响后续结论。'},
+      {state:'done',name:'核验器逐版修正',text:'0.3.1 区分可选证据；0.3.2 修正覆盖汇总的记错规则；0.3.3 让核验模型看到帧时间与视频总长、多图比较附图、答案标签语义判定。重核后 8 份报告由不通过翻为通过。'},
+      {state:'done',name:'召回率校准工具',text:'向已核验的报告、派工与答案注入已知错误再核验，统计抓到的比例；试点的报告级注入召回 0.96。'},
+      {state:'done',name:'钻空子探针与钻空子率',text:'专测"少写含糊结论、堆引用、过度报未完成、派简单任务"四条路径；另有训练用核验器与参考核验器分歧的统计脚本。'},
+      {state:'doing',name:'人工金标集',text:'抽样脚本与离线标注页已备好（第一批 80 条，标注页看不到核验器结论）；目标 300 对结论–证据加 100 个单元、两人标注。等待人工标注。'},
+      {state:'doing',name:'核验模型选定',text:'本机可接任意 OpenAI 兼容服务或 Claude 命令行；服务器前先用 Sonnet 看数据。正式核验模型与冻结的参考核验器等服务器到位。'},
+      {state:'todo',name:'核验分层方案',text:'模型只回答两类原子问题（证据是否支持这句话、这段文字对准哪项要求），其余由程序推导；待拍板。'}]},
+    {id:'environment',kicker:'阶段 04 · 代码完成',title:'环境固化',hint:'回放 · 缓存 · 黑名单',items:[
+      {state:'done',name:'检索录制回放',text:'每个案例首次运行时录下搜索结果、打开的页面与下载的媒体；之后所有对照组与轮次回放同一份快照，跨轮曲线不再混入网络漂移。'},
+      {state:'done',name:'工具结果缓存',text:'文字识别、语音转写、媒体对齐的结果缓存，并可统计重跑方差。'},
+      {state:'done',name:'核查站点黑名单',text:'检索与打开两层拦截核查类站点（含二手核查栏目），拒绝与打标均留痕；对照 33 份案卷后，必需证据不可达的案例为 0。实测：教师打开的核查页面从 18 个降到 0。'},
+      {state:'done',name:'运行时按规格读取参数',text:'图片上限、读页长度等参数由规格驱动运行时，并记录生效值；这是后续自动修改规格的前提。'},
+      {state:'doing',name:'按声明日期截断检索',text:'机制已生效，但多数声明类案卷的必需证据发表于声明之后，是否启用、如何改案卷待定。'}]},
+    {id:'training',kicker:'阶段 05 · 进行中',title:'正式第 0 轮与首次训练',hint:'等正式教师模型',items:[
       {state:'done',name:'模型口径已确定',text:'学生模型 Qwen3.5-9B（原生支持图片与视频），教师模型 Qwen3.5-122B-A10B，本地调试采用同系列 4B，确保本地与服务器使用同一条多模态路径。'},
-      {state:'doing',name:'第 0 轮数据核验',text:'三层核验器已对 49 次调查的 80 份报告完成重核（641 组结论–证据逐对核验），形成按问题类型统计的质量基线；核验器自身的精确率与召回率校准正在进行。'},
-      {state:'doing',name:'本地训练链路',text:'在本地打通「取数据 → 训练一步 → 保存 LoRA → 加载推理 → 打分」的完整链路，确保上服务器前各环节均已验证。'},
-      {state:'todo',name:'服务器首次 SFT',text:'在 8×A100 上以开发集训练学生模型，标志项目由数据构造阶段进入模型能力验证阶段。'},
-      {state:'todo',name:'保留集对照评估',text:'在训练中未出现的数据集上做对照评估，检验所学为通用调查能力还是特定任务的固定模式。'}]},
-    {id:'loop',kicker:'阶段 05 · 下一阶段',title:'自我发展闭环',hint:'核验结果驱动迭代改进',items:[
-      {state:'todo',name:'质量诊断',text:'将核验结果汇总为问题类型分布与跨轮次曲线，明确下一轮的优先改进方向。'},
-      {state:'todo',name:'规格迭代',text:'每次修订绑定其拟消除的问题类型并记录变更，使改进可归因、可回滚。'},
-      {state:'todo',name:'对照轨迹',text:'自同一状态重新生成，得到改进前后成对的样本，用于验证本次修订是否确实消除了目标问题。'},
-      {state:'todo',name:'留出门控',text:'每一轮改动须在留出集上通过门控方予采纳，并记录核验分数与实际提升之间的相关性。'},
-      {state:'todo',name:'消融与迁移',text:'依据六次训练的比较计划，逐项验证架构中各项设计的实际收益，以及能力向新任务的迁移情况。'}]}
+      {state:'done',name:'训练链路冒烟',text:'本地打通「取数据 → 训练 → 保存 LoRA → 加载推理 → 前向」，并用真实导出的数据验证。'},
+      {state:'done',name:'流水线验证用的第 0 轮',text:'12 次试点调查完整走过核验与导出；按决定只作流水线验证，不进入正式训练。'},
+      {state:'done',name:'三轮对照改进',text:'同 11 个案例、同一教师、三版规格：核查站点沾染归零；每步输出带一句话理由，监督信号中位长度 91 → 132；声明类每次调查的检索查询 2 → 6.5，读过的独立来源 3.0 → 5.7。'},
+      {state:'todo',name:'部署正式教师模型',text:'122B FP8 占 4 张卡，与核验模型、学生采样分卡；接入代码已备好。'},
+      {state:'todo',name:'用正式教师重做第 0 轮',text:'在训练划分的 21 个案例上运行、核验、导出。'},
+      {state:'todo',name:'服务器首次 SFT',text:'HI、GIA 各一次，至少 2 个随机种子；在评测划分上与未训练底座比较，得到所有后续实验的起点。'},
+      {state:'todo',name:'留出数据集评估',text:'每个能力维度留出一个训练中完全不出现的数据集，检验学到的是通用调查能力还是固定模式。'}]},
+    {id:'loop',kicker:'阶段 06 · 未开始',title:'自我改进循环的骨架',hint:'诊断 · 路由 · 门控',items:[
+      {state:'todo',name:'错误账本与诊断表',text:'核验结果按「角色 × 单元 × 错误类型」汇总，附教师率、学生率、核验器在该类型上的召回与精确率、上游归因占比。'},
+      {state:'todo',name:'两问路由',text:'只对核验器已校准的错误类型做判断：这错是哪个角色的？教师也犯吗？教师也犯→改规格，只有学生犯→训权重。'},
+      {state:'todo',name:'规格修改的提议与门控',text:'按错误格逐个演化：每个被判为规格诱发的错误格给出最多四个候选，每个只改一个对象，按频次顺序对最新规格过门 A；每轮子步数设上限并按预先登记的条件停止，学生提示每轮最多改一处。门 B 在冻结规格下按角色比较权重。'},
+      {state:'doing',name:'教师侧的第一批规格改动',text:'已有人工版：搜索指令（不搜核查文章、找一手来源）、图片比容量多时的查看策略，并配同案例对照。自动化的 A/A 测试与修订日志未做。'},
+      {state:'todo',name:'双干预与剂量–反应工具',text:'对高频错误同时做一个规格候选与一次小规模增量训练，实测哪根杠杆更有效；冻结权重下批量生成扰动规格并评分。'}]},
+    {id:'inner',kicker:'阶段 07 · 未开始',title:'规格演化单独试跑',hint:'权重冻结',items:[
+      {state:'todo',name:'冻结第 0 轮学生，只改规格 2–3 轮',text:'不训练；记录每轮接受的改动数、门控效果、确认划分上的方向一致率。'},
+      {state:'todo',name:'判断点',text:'方向一致率明显低于文献报告的 53% 或几乎没有改动过门，则收窄到只改运行参数。'}]},
+    {id:'outer',kicker:'阶段 08 · 未开始',title:'两个角色交替训练',hint:'伙伴同步数据',items:[
+      {state:'todo',name:'伙伴同步数据',text:'训练 HI 时任务来自当前的学生 GIA；训练 GIA 时离线状态用当前学生 HI 的真实报告（含有缺陷的报告），并固定混入教师报告。'},
+      {state:'todo',name:'学生自采与教师桥接',text:'每个案例学生跑 4 次，通过核验的直接入选；没通过的由教师从首个错误步桥接一步、学生续跑。'},
+      {state:'todo',name:'教师依赖率',text:'入选数据中由教师产出的比例，逐轮下降。硬指标：第 2 轮起低于一半且留出集不降；达不到则论文改称"自我改进"。'},
+      {state:'todo',name:'交替更新与门 B',text:'固定 GIA 训 HI、过门；再固定新 HI 训 GIA、过门；不过只回滚那一个角色。'},
+      {state:'todo',name:'防钻空子监控',text:'必需要求被支持结论覆盖的比例、可回答案例的未完成率上限、校准规则反例的假接受率。'},
+      {state:'todo',name:'第一次交叉搭配',text:'新旧 GIA × 新旧 HI 四种组合，得到两个角色互相帮助的协同项第一个点。'}]},
+    {id:'experiments',kicker:'阶段 09 · 未开始',title:'完整循环与主实验',hint:'r2–r4 · 四臂同预算',items:[
+      {state:'todo',name:'每轮协议',text:'运行 → 核验 → 诊断 → 路由 → 逐格改规格（每格一次门 A，至停止条件）→ 训权重（门 B）→ 回滚 → 在评测划分上测一次 → 写修订日志。核验器只在轮间升版。'},
+      {state:'todo',name:'主曲线：四臂同预算',text:'完整循环 / 只训练 / 只改规格 / 纯蒸馏，至少四个轮次点，曲线只画在从不参与决策的评测划分上。'},
+      {state:'todo',name:'路由先验的反事实检验',text:'三轮合并约 9 格错误，加项目外人员盲设计的植入缺陷，报告先验预测最优杠杆的准确率。'},
+      {state:'todo',name:'核验分与提升的剂量–反应',text:'冻结权重生成 100–200 个随机或刻意变坏的规格改动，看核验分变化能否预测留出集变化。'},
+      {state:'later',name:'强化学习',text:'仅在 SFT 曲线走平且有剩余算力时作为附加组。'}]},
+    {id:'evidence',kicker:'阶段 10 · 未开始',title:'收尾证据',hint:'迁移 · 消融 · 测试集',items:[
+      {state:'todo',name:'规格改动的方向一致率',text:'从门控日志直接统计；另测改动在不同执行模型间是否保持方向。'},
+      {state:'todo',name:'完整交叉搭配矩阵',text:'GIA、HI 各取底座 / 训练后 / 教师三档，多种子，带置信区间。'},
+      {state:'todo',name:'核验器报告',text:'各错误类型的注入召回、人工精确率、标注一致性、钻空子率，逐轮报告。'},
+      {state:'todo',name:'迁移与快速适应',text:'留出数据集上用 0 / 20 / 50 条样例做短训练，比较循环后模型、只做第 0 轮训练的模型与原始底座。'},
+      {state:'todo',name:'架构消融',text:'去掉 GIA 只留单 HI / 两角色共用一套权重 / 只跑一轮 / 朴素单智能体基线。'},
+      {state:'todo',name:'测试集最终一次',text:'所有对照组的最终检查点在锁定的测试集上各测一次，带 / 不带核查站点黑名单两组。'}]},
+    {id:'paper',kicker:'阶段 11 · 进行中',title:'论文与演示',hint:'方法成稿 · 实验待写',items:[
+      {state:'done',name:'论文方法部分',text:'摘要、引言、相关工作（含定位表）、方法七节已成稿，中英双语，可在「论文草稿」页签查看；已按精简方案改为两根杠杆、两问路由。'},
+      {state:'done',name:'两张图',text:'系统架构图与核验路由循环图。'},
+      {state:'doing',name:'演示网页同步',text:'本页已按 10 月 1 日状态重写；质量核验页与样例页的版本号、链接随核验器升版更新。'},
+      {state:'todo',name:'实验章节',text:'等阶段 09、10 出数；实验开始前把各假设的通过阈值预先登记进文档。'},
+      {state:'todo',name:'参考文献与查新',text:'2026 年的 arXiv 条目逐条补全；两处引文回原文核对；架构层面补一次查新。'},
+      {state:'todo',name:'第二支点：数据集',text:'案卷 + 核验结果 + 轨迹，整理成带过程级核验标注的视频核查轨迹数据集。'}]}
   ];
   function planCount(state){return roadmap.reduce((n,b)=>n+b.items.filter(i=>i.state===state).length,0);}
   const archMap = {width:1600, height:1164,
@@ -351,12 +401,12 @@
     archFit();
   }
   function renderRoadmap(){
-    page.innerHTML=top('roadmap')+`<div class="tr-section-title tr-plan-title"><div><div class="eyebrow muted">PROJECT PROGRESS</div><h2>阶段进展与交付内容</h2><p>项目划分为五个阶段：前三个阶段已完成，第四阶段进行中。展开任一阶段可查看该阶段的具体交付内容。</p></div></div>
-      <div class="tr-plan"><div class="tr-plan-root"><div class="tr-panel-kicker">PROJECT GOAL</div><strong>面向异构核查任务的<br>自主调查 Agent</strong><p>覆盖视频、图像与网页混合的核查场景：模型自主拆解问题、决定检索方向并完成取证，最终给出的每一条结论均可沿证据链回溯至原始来源。</p><div class="tr-plan-tally">${[['done','已完成'],['doing','进行中'],['todo','下一阶段']].map(([k,l])=>`<span class="${k}"><b>${planCount(k)}</b>${l}</span>`).join('')}</div></div>
-      <div class="tr-plan-branches">${roadmap.map(b=>`<details class="tr-plan-branch" ${b.id==='quality'||b.id==='training'?'open':''}><summary class="tr-plan-head"><span class="tr-panel-kicker">${esc(b.kicker)}</span><strong>${esc(b.title)}</strong><small>${esc(b.hint)}</small><i class="tr-plan-chevron" aria-hidden="true"></i></summary><ul class="tr-plan-leaves">${b.items.map(i=>`<li class="${planStates[i.state][1]}"><div class="tr-plan-leaf-top"><b>${esc(i.name)}</b><span class="tr-plan-tag ${planStates[i.state][1]}">${planStates[i.state][0]}</span></div><p>${esc(i.text)}</p></li>`).join('')}</ul></details>`).join('')}</div></div>
+    page.innerHTML=top('roadmap')+`<div class="tr-section-title tr-plan-title"><div><div class="eyebrow muted">PROJECT PROGRESS</div><h2>阶段进展与交付内容</h2><p>项目按最终方案划分为 11 个阶段：前四个阶段的代码已就位，正式训练等教师模型部署，循环与实验尚未开始。展开任一阶段可查看具体交付内容与状态。</p></div></div>
+      <div class="tr-plan"><div class="tr-plan-root"><div class="tr-panel-kicker">PROJECT GOAL</div><strong>面向异构核查任务的<br>自主调查 Agent</strong><p>覆盖视频、图像与网页混合的核查场景：模型自主拆解问题、决定检索方向并完成取证，最终给出的每一条结论均可沿证据链回溯至原始来源。</p><div class="tr-plan-tally">${[['done','已完成'],['doing','进行中'],['todo','未开始'],['later','延后']].map(([k,l])=>`<span class="${k}"><b>${planCount(k)}</b>${l}</span>`).join('')}</div></div>
+      <div class="tr-plan-branches">${roadmap.map(b=>`<details class="tr-plan-branch" ${b.id==='quality'||b.id==='training'||b.id==='loop'?'open':''}><summary class="tr-plan-head"><span class="tr-panel-kicker">${esc(b.kicker)}</span><strong>${esc(b.title)}</strong><small>${esc(b.hint)}</small><i class="tr-plan-chevron" aria-hidden="true"></i></summary><ul class="tr-plan-leaves">${b.items.map(i=>`<li class="${planStates[i.state][1]}"><div class="tr-plan-leaf-top"><b>${esc(i.name)}</b><span class="tr-plan-tag ${planStates[i.state][1]}">${planStates[i.state][0]}</span></div><p>${esc(i.text)}</p></li>`).join('')}</ul></details>`).join('')}</div></div>
       <div class="tr-return"><span>⟲</span> 每完成一轮，核验结果将指出下一轮的改进方向，流程本身随之迭代。</div>
-      <div class="tr-plan-links">${routeButton('#training/architecture','系统架构 →')}${routeButton('#training/flow','数据生成流程 →')}${routeButton('#training/rubric','质量核验体系 →')}${routeButton('#training/samples','真实样例库 →')}</div>
-      <div class="tr-footnote">本页反映 2026 年 9 月的项目状态，随各阶段进展更新。</div>`;
+      <div class="tr-plan-links">${routeButton('#training/architecture','系统架构 →')}${routeButton('#training/flow','数据生成流程 →')}${routeButton('#training/walker','轨迹生成实测 →')}${routeButton('#training/rubric','质量核验体系 →')}${routeButton('#training/samples','真实样例库 →')}</div>
+      <div class="tr-footnote">本页反映 2026 年 10 月 1 日的项目状态，随各阶段进展更新。阶段 06–10 的实验设计以项目设计文档为准。</div>`;
   }
   function docLink(name,label){return `<a href="/api/training/documents/${name}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;}
   const verifyLayers=[
@@ -405,6 +455,181 @@
     ['03','贴问题类型','从统一定义的类型表里选，每个类型自带严重度与是否污染后续结论'],
     ['04','定去留','进入候选 / 暂缓 / 暂不使用，并给出这一行的权重']
   ];
+  // ---------------------------------------------------------------- 轨迹生成（walker）
+  const walkerFacts=[
+    ['9 个案例','videosham 5 · vcsl 3 · qvhighlights 1'],
+    ['2 次','每条轨迹的教师调用（r0e 是 26 次）'],
+    ['1.2 分钟','平均墙钟（r0e 是 9.4 分钟）'],
+    ['69 行','HI 进入训练候选（wk1 是 52 行）']
+  ];
+  const walkerChain=[
+    {name:'两段视频比对',who:'HI',steps:['抽 8 帧','视觉对齐','逐帧差分','回看差分图','未覆盖区间补帧','小框放大','音轨对齐 + 转写','提交报告'],note:'主干分支。本批 9 个案例里 4 条走到逐帧差分。'},
+    {name:'对齐太弱时',who:'HI',steps:['A 侧均匀取帧','逐帧以图在 B 定位','成对回看','提交报告'],note:'对齐信号不足时自动改走这条，vcsl_pair_1 / 5 用的就是它。'},
+    {name:'单段按描述定位',who:'HI',steps:['抽帧','按描述定位','两轮边界帧','提交报告'],note:'qvhighlights 这类"找片段"任务，3 步动作就能交报告。'},
+    {name:'全局调度',who:'GIA',steps:['第 1 轮派原任务','报告引用图不在附图就读记录','仅预算类缺口才派第 2 轮','结束并回答'],note:'派工与终止都由可见状态决定，不依赖任何答案信息。'}
+  ];
+  const walkerSlots=[
+    ['槽 1 · 检索词','工作区第一次要检索时','任务 + 8 帧 + 图中文字','3–4 条按优先序的检索词'],
+    ['槽 2 · 任务文本','第 1 轮 GIA 派工','总任务 + 原始材料卡片与关键帧','两个任务的文本'],
+    ['槽 3 · 报告','工作区走完链条','本工作区的全部证据，含差分图','findings[]（状态由程序定）'],
+    ['槽 4 · 答案','GIA 结束调查时','各工作区报告 + 证据','带证据编号的最终答案']
+  ];
+  const walkerSlotNote='教师拿到的输入就是学生在那一步看到的状态，案卷与标准答案都不传给它——这是代码层的无泄漏保证，不靠事后检查。报告状态由程序判定，教师只能把「完成」降为「未完成」，不能反过来。';
+  const walkerMetrics=[
+    ['每条轨迹的决策数','26.0','10.2','11.4',''],
+    ['教师（LLM）调用 / 条','26.0（最多 44）','2.0','2.0','win'],
+    ['每条输入 token','116 万','7.7 万','7.8 万','win'],
+    ['墙钟（平均 / 最长，分钟）','9.4 / 20.6','1.7 / 3.1','1.2 / 1.7','win'],
+    ['HI 动作步','16.8','6.2','7.4','','比 wk1 多出来的步，是补看缺口与转写音轨'],
+    ['重复步 / 格式拒','2 / 0','0 / 0','0 / 0','win'],
+    ['链条走到（对齐→差分→读差分，或定位→边界帧）','1 / 9','9 / 9','9 / 9','win'],
+    ['报告核验通过','19/22（86%）','7/9（78%）','7/9（78%）','miss','唯一没有达标的一项'],
+    ['报告错误 / 份','2.1','1.3','1.6',''],
+    ['答案核验通过','3/9','4/9','6/9','win'],
+    ['答案错误 / 条','6.8','3.2','3.1','win'],
+    ['导出 HI 进候选 / 暂缓 / 暂不用','—','52 / 11 / 2','69 / 5 / 2','win'],
+    ['可见性扣下的行（动作 / 报告）','—','7 / 4','2 / 3','win']
+  ];
+  const walkerCases=[
+    {id:'vs1007',name:'videosham_1007',kind:'两段时长差一倍',tag:'gain',
+     tagText:'报告转为通过',
+     rows:[['r0e',33,33,'11.7',23,'部分','COMPLETED · INCOMPLETE · COMPLETED','3/3（错 6）','0/1（错 9）','get_frames×10; READ_RECORD×6; diff_media×3; asr×2; align(visual)×1; align(audio)×1'],
+           ['wk1',12,2,'1.5',8,'全部','COMPLETED','0/1（错 2）','0/1（错 5）','get_frames×4; align(visual)×1; diff_media×1; READ_RECORD×1; align(audio)×1'],
+           ['wk2',13,2,'1.5',9,'全部','INCOMPLETE','1/1（错 3）','0/1（错 7）','get_frames×4; asr×2; align(visual)×1; diff_media×1; align(audio)×1']],
+     text:'wk1 的报告被判未通过：B 侧 20 秒、A 侧 8 秒，walker 只核了差分段，较长那一侧没有对应的部分根本没看。wk2 按 F1 补看了 B 的 0–2.71 秒与 10.68–20.0 秒，又按 F2 把两侧音轨都转写了；程序据此把状态定为 INCOMPLETE，报告转为通过。答案层还欠一句对音轨结果的交代。'},
+    {id:'vs1028',name:'videosham_1028',kind:'标题文字被替换',tag:'gain',
+     tagText:'答案转为通过 · 报告 0 错误',
+     rows:[['r0e',10,10,'3.7',6,'部分','COMPLETED · COMPLETED','2/2（错 6）','0/1（错 5）','asr×2; align(visual)×1; diff_media×1; align(audio)×1; READ_RECORD×1'],
+           ['wk1',11,2,'1.2',7,'全部','COMPLETED','1/1（错 1）','0/1（错 4）','get_frames×2; crop×2; align(visual)×1; diff_media×1; align(audio)×1'],
+           ['wk2',13,2,'1.3',9,'全部','COMPLETED','1/1（错 0）','1/1（错 2）','get_frames×2; asr×2; crop×2; align(visual)×1; diff_media×1; align(audio)×1']],
+     text:'放大标题区之后，两轮都准确指出 A 的蓝框里是 "lorem ipsum"、B 是 "A conversation about CRPS"。wk1 的答案只差音轨这一项没有被核实的结论覆盖；wk2 补了两次转写，答案不再有重要错误，报告做到 0 错误。'},
+    {id:'vs4126',name:'videosham_4126',kind:'画面中的人被移除',tag:'gain',
+     tagText:'答案转为通过 · 报告连续 0 错误',
+     rows:[['r0e',31,31,'9.5',19,'部分','COMPLETED · INCOMPLETE','1/2（错 4）','0/1（错 6）','get_frames×8; READ_RECORD×6; diff_media×2; crop×2; align(visual)×1'],
+           ['wk1',12,2,'1.4',8,'全部','INCOMPLETE','1/1（错 0）','0/1（错 2）','get_frames×4; align(visual)×1; diff_media×1; READ_RECORD×1; align(audio)×1'],
+           ['wk2',14,2,'1.2',10,'全部','INCOMPLETE','1/1（错 0）','1/1（错 3）','get_frames×4; asr×2; align(visual)×1; diff_media×1; READ_RECORD×1; align(audio)×1']],
+     text:'差异区间 [0.200, 1.367) 与 [2.300, 6.000) 以及边界帧的夹逼，两轮都对。教师两轮都自己把状态降为 INCOMPLETE——第二段入画的是不是人物没能确认，它如实说了。wk2 补上音轨后答案转为通过。'},
+    {id:'qv9167',name:'qvhighlights_9167',kind:'单段按描述定位',tag:'gain',
+     tagText:'答案转为通过 · 全批最快',
+     rows:[['r0e',18,18,'5.0',9,'部分','COMPLETED · COMPLETED','2/2（错 3）','1/1（错 2）','get_frames×7; locate_frames×1; READ_RECORD×1'],
+           ['wk1',7,2,'1.0',3,'全部','COMPLETED','1/1（错 2）','0/1（错 5）','get_frames×2; locate_frames×1'],
+           ['wk2',7,2,'0.6',3,'全部','COMPLETED','1/1（错 1）','1/1（错 2）','get_frames×2; locate_frames×1']],
+     text:'报告给出 84–119 秒，标注是 84–120 秒，交并比 0.89。wk1 的答案被扣在一句没带证据编号的方法说明上（"定位依据采样图像"）；wk2 按 F4 要求每句都带引用后转为通过。3 步动作、0.6 分钟，是这一批里最快的一条。'},
+    {id:'vcsl1',name:'vcsl_pair_1',kind:'对齐信号太弱',tag:'gain',
+     tagText:'答案 0 错误 · 墙钟减半',
+     rows:[['r0e',44,44,'20.6',33,'全部','INCOMPLETE ×3','3/3（错 5）','0/1（错 10）','get_frames×12; align(visual)×10; READ_RECORD×5; locate_frames×4; diff_media×2'],
+           ['wk1',11,2,'3.1',7,'全部','INCOMPLETE','1/1（错 0）','1/1（错 2）','locate_frames×4; align(visual)×1; get_frames×1; READ_RECORD×1'],
+           ['wk2',11,2,'1.2',7,'全部','INCOMPLETE','1/1（错 0）','1/1（错 0）','locate_frames×4; align(visual)×1; get_frames×1; READ_RECORD×1']],
+     text:'对齐信号不足，自动改走「以图定位 + 成对回看」分支。两轮报告与答案都通过，wk2 的答案做到 0 错误。r0e 在同一个案例上花了 20.6 分钟、44 次教师调用，答案仍未通过。'},
+    {id:'vcsl5',name:'vcsl_pair_5',kind:'对齐信号太弱',tag:'same',
+     tagText:'两轮均通过',
+     rows:[['r0e',34,34,'12.5',20,'部分','COMPLETED ×3','3/3（错 1）','1/1（错 6）','get_frames×10; READ_RECORD×7; align(visual)×3'],
+           ['wk1',11,2,'2.5',7,'全部','INCOMPLETE','1/1（错 0）','1/1（错 2）','locate_frames×4; align(visual)×1; get_frames×1; READ_RECORD×1'],
+           ['wk2',11,2,'1.1',7,'全部','INCOMPLETE','1/1（错 1）','1/1（错 2）','locate_frames×4; align(visual)×1; get_frames×1; READ_RECORD×1']],
+     text:'同样走以图定位分支，两轮报告与答案都通过。只给出采样时刻的对应、没有给完整区间，所以状态是 INCOMPLETE——这是如实的克制，不是缺陷。r0e 在这个案例上报了 COMPLETED。'},
+    {id:'vcsl6',name:'vcsl_pair_6',kind:'整段偏移约 5.1 秒',tag:'loss',
+     tagText:'答案由通过转为未通过',
+     rows:[['r0e',26,26,'9.1',16,'部分','COMPLETED · INCOMPLETE','2/2（错 5）','1/1（错 6）','READ_RECORD×8; get_frames×7; align(visual)×1'],
+           ['wk1',11,2,'1.7',7,'全部','INCOMPLETE','1/1（错 1）','1/1（错 1）','get_frames×4; align(visual)×1; diff_media×1; READ_RECORD×1'],
+           ['wk2',13,2,'1.7',9,'全部','INCOMPLETE','1/1（错 1）','0/1（错 2）','get_frames×6; align(visual)×1; diff_media×1; READ_RECORD×1']],
+     text:'A 与 B 的偏移约 5.1 秒，与标注（A 1–19 ↔ B 5–24）一致。但答案由通过转为未通过：两处数字口径错误——答案里写的 B 18.354–24.225 秒是由 mapping 换算出来的，与工具返回的原值 18.314–24.253 对不上。下一步要求区间端点一律引工具原值，就是冲着这一处去的。'},
+    {id:'vs2010',name:'videosham_2010',kind:'实拍换成插画背景',tag:'mixed',
+     tagText:'答案转为通过 · 报告转为未通过',
+     rows:[['r0e',13,13,'3.9',9,'部分','COMPLETED · INCOMPLETE','2/2（错 4）','0/1（错 2）','get_frames×2; asr×2; align(visual)×1; diff_media×1; ocr×1; align(audio)×1; READ_RECORD×1'],
+           ['wk1',9,2,'1.1',5,'全部','COMPLETED','1/1（错 4）','0/1（错 6）','get_frames×2; align(visual)×1; diff_media×1; align(audio)×1'],
+           ['wk2',11,2,'1.2',7,'全部','COMPLETED','0/1（错 4）','1/1（错 4）','get_frames×2; asr×2; align(visual)×1; diff_media×1; align(audio)×1']],
+     text:'答案转为通过：wk1 里有一句把 B 的实拍帧引作「动画驾驶场景」的依据，F4 之后不再出现。但报告反过来由通过转为未通过——程序在链条走完时把状态定成了 COMPLETED，而任务里「差异对画面含义的影响」这类解释性要求没有被逐条回应。这正是下一步 S4 要修的。'},
+    {id:'vs0069',name:'videosham_0069',kind:'片段重复 / 慢放',tag:'loss',
+     tagText:'报告仍未通过 · 答案由通过转为未通过',
+     rows:[['r0e',25,25,'8.6',16,'否','COMPLETED · INCOMPLETE ×2','1/3（错 13）','0/1（错 15）','diff_media×5; READ_RECORD×4; get_frames×3; asr×2; align(visual)×1; locate_frames×1'],
+           ['wk1',8,2,'1.4',4,'全部','COMPLETED','0/1（错 2）','1/1（错 2）','get_frames×2; align(visual)×1; diff_media×1'],
+           ['wk2',10,2,'1.3',6,'全部','COMPLETED','0/1（错 4）','0/1（错 6）','get_frames×3; align(visual)×1; diff_media×1; asr×1']],
+     text:'wk2 按 F1 补看了 A 的 4.04–10.15 秒，但报告仍报 COMPLETED，「差异对画面含义的影响」没有回应；答案也没点出「重复帧 / 慢放」，由通过转为未通过。根因是能力缺口而非语言槽：walker 目前没有「检查同一视频内相邻帧是否重复」这个动作，这一项本来就做不到，已记入待补的动作清单。'}
+  ];
+  const walkerFixes=[
+    ['F1 · 没覆盖的区间','按可见的时长和 mapping 算出两侧没被比对到的区间（≥ 1 秒且 ≥ 该侧时长 10%，最多 2 段），均匀取帧。仍没看完的，程序把状态定为 INCOMPLETE。','done'],
+    ['F2 · 语音','有音轨的一侧各做一次转写，不再只做音轨对齐；没转写的同样记为缺口。','done'],
+    ['F3 · 可见性','抄进参数的数按渲染视图的精度取 3 位小数；A 侧时刻由 history 里可见的 B 侧请求和 mapping 换算；后面段的起止看不见时分页重读结果记录（最多 3 页），仍看不见就放弃这一段。','done'],
+    ['F4 · 答案槽','每句单独带证据引用，局限句也要引；图只能引它自己画面里的内容；任务的每一部分（含声音）都要回应。','done'],
+    ['F5 · 第 2 轮','本轮只在报告写明「预算用尽」时才派。其他缺口派出去，第 2 轮工作区会把第 1 轮整条链重走一遍——要有针对性的第 2 轮规则才值得做。','todo']
+  ];
+  const walkerAcceptance=[
+    ['重复步 0','0','pass'],['格式拒 0','0','pass'],
+    ['9 条全部走到链条','9 / 9','pass'],['教师调用 ≤ 6 次','最多 2','pass'],
+    ['墙钟 ≤ 5 分钟','最长 1.7','pass'],['报告核验不低于 r0e','78% vs 86%','fail']
+  ];
+  const walkerNext=[
+    ['按任务逐条回应','程序从任务文字里拆出子要求（差异在哪、影响什么含义、什么不能确定），交给报告槽逐条写结论；程序判定「完成」的前提再加一条：每个子要求都要有对应的结论。'],
+    ['时刻一律引工具原值','区间端点直接引工具结果里的原数，不用换算值——vcsl_pair_6 的回退就出在这里。'],
+    ['同一视频内的重复帧检查','videosham_0069 要判断「重复帧 / 慢放」，需要一个新的检查动作（相邻帧差分）。这是能力缺口，已记入待补的动作清单。']
+  ];
+  const walkerNextNote='前两处不改动作，只改语言槽与状态判定，可以直接用 wk2 的状态重答，不必重跑轨迹。之后进入 D2：找原件族与声明核查族。';
+  const walkerHeldNote='被扣下的 2 行动作，都是换算出来的时刻恰好与工具原值相同（12.086、10.678），属于检查器的巧合误报；3 行报告里有 "This" 这类词触发的误报，另有一处确实把教师写的 "29.970" 当成了不可见内容。';
+  const walkerTags={gain:['改善','gain'],same:['保持','same'],mixed:['一升一降','mixed'],loss:['回退','loss']};
+  function walkerCase(){ return walkerCases.find(c=>c.id===T.walkerCase) || walkerCases[0]; }
+  function walkerCaseDetail(c){
+    const [tagLabel,tagCls]=walkerTags[c.tag];
+    return `<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(c.kind)}</span><h3>${esc(c.name)}</h3></div>
+        <span class="tr-wk-tag ${tagCls}">${esc(tagLabel)}</span></div>
+      <p class="tr-wk-tagline">${esc(c.tagText)}</p>
+      <div class="tr-matrix tr-wk-caseruns"><table>
+        <thead><tr><th>轮次</th><th>决策</th><th>教师调用</th><th>墙钟</th><th>HI 动作</th><th>链条</th><th>报告状态</th><th>报告核验</th><th>答案核验</th></tr></thead>
+        <tbody>${c.rows.map(r=>`<tr class="run-${r[0]}"><th scope="row">${esc(r[0])}</th><td>${r[1]}</td><td>${r[2]}</td><td>${esc(r[3])}</td><td>${r[4]}</td>
+          <td class="${r[5]==='全部'?'m-full':'m-none'}">${esc(r[5])}</td><td class="m-note">${esc(r[6])}</td>
+          <td class="${r[7].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[7])}</td><td class="${r[8].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[8])}</td></tr>`).join('')}</tbody></table></div>
+      <p class="tr-prose">${esc(c.text)}</p>
+      <div class="tr-wk-actions"><h4>这一轮实际走的动作</h4>
+        ${c.rows.map(r=>`<div><b>${esc(r[0])}</b><code>${esc(r[9])}</code></div>`).join('')}</div>`;
+  }
+  function renderWalker(){
+    const c=walkerCase();
+    page.innerHTML=top('walker')+`
+      <div class="tr-section-title"><div><div class="eyebrow muted">TRAJECTORY GENERATION</div>
+        <h2>程序走链条，教师只填语言</h2>
+        <p>把一条调查轨迹拆成两部分：结构（抽帧 → 对齐 → 差分 → 回看 → 交报告）由一个只读学生可见状态的程序策略走完，语言（任务文本、结论、最终答案）由教师模型分别填入。教师因此退出串行环，每条轨迹的调用从 26 次降到 2 次。</p></div>${pill('第二轮 wk2 · 2026-10-12')}</div>
+      <div class="tr-traj-facts">${walkerFacts.map(([n,t])=>`<div><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join('')}</div>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>程序走的四条链</h2>
+        <p>按学生当前可见的状态自上而下匹配，第一条命中的就是这一步的决定。停在哪里由比对结果决定，不依赖任何标准答案，所以这是一条学生能够模仿的合法路径。</p></div></div>
+        <div class="tr-wk-chains">${walkerChain.map(b=>`<article><div class="tr-wk-chain-head"><strong>${esc(b.name)}</strong>${pill(b.who,b.who.toLowerCase())}</div>
+          <ol class="tr-wk-steps">${b.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+          <p>${esc(b.note)}</p></article>`).join('')}</div></section>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>教师只填四个语言槽</h2>
+        <p>四次调用互不依赖，可以并行、可以批量。</p></div></div>
+        <div class="tr-matrix"><table>
+          <thead><tr><th>语言槽</th><th>何时调用</th><th>输入</th><th>输出</th></tr></thead>
+          <tbody>${walkerSlots.map(([a,b,d,e])=>`<tr><th scope="row">${esc(a)}</th><td class="m-note">${esc(b)}</td><td class="m-note">${esc(d)}</td><td class="m-note">${esc(e)}</td></tr>`).join('')}</tbody></table></div>
+        <p class="tr-callout">${esc(walkerSlotNote)}</p></section>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>三轮同案例对照</h2>
+        <p>同样 9 个案例、同一套核验器。r0e 是教师模型走完全程的旧做法，wk1 是 walker 第一轮，wk2 是补完规则后的第二轮。</p></div><span>绿色为本轮最好</span></div>
+        <div class="tr-matrix tr-wk-metrics"><table>
+          <thead><tr><th>指标</th><th>r0e<small>教师走全程</small></th><th>wk1<small>walker 第一轮</small></th><th>wk2<small>walker 第二轮</small></th></tr></thead>
+          <tbody>${walkerMetrics.map(([name,a,b,d,flag,note])=>`<tr><th scope="row">${esc(name)}${note?`<small>${esc(note)}</small>`:''}</th>
+            <td>${esc(a)}</td><td>${esc(b)}</td><td class="${flag==='win'?'m-win':flag==='miss'?'m-bad':''}">${esc(d)}</td></tr>`).join('')}</tbody></table></div>
+        <p class="tr-footnote">${esc(walkerHeldNote)}</p></section>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>逐案看这一轮的变化</h2>
+        <p>九个案例全部列出，包括两个回退的。点击左侧任一案例查看它三轮的数字、实际走过的动作，以及这一轮为什么变好或变差。</p></div></div>
+        <div class="tr-flow-layout"><div class="tr-cases" aria-label="案例列表">${walkerCases.map(v=>{
+          const [tl,tc]=walkerTags[v.tag];
+          return `<button class="tr-case ${v.id===c.id?'active':''}" data-wk-case="${esc(v.id)}" aria-pressed="${v.id===c.id}">
+            <span><strong>${esc(v.name)}</strong><small>${esc(v.kind)}</small></span><i class="tr-wk-dot ${tc}" title="${esc(tl)}"></i></button>`;}).join('')}</div>
+          <article class="tr-stage-detail" aria-live="polite">${walkerCaseDetail(c)}</article></div></section>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>这一轮修了什么</h2>
+        <p>第一轮暴露出的五处，四处已改，一处判断为暂时不值得做。</p></div></div>
+        <ul class="tr-traj-req tr-wk-fixes">${walkerFixes.map(([n,t,s])=>`<li class="${s}"><b>${esc(n)}</b><span class="tr-pill ${s==='done'?'':'amber'}">${s==='done'?'已改':'本轮未做'}</span><p>${esc(t)}</p></li>`).join('')}</ul></section>
+
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>验收与下一步</h2>
+        <p>第一阶段的六条验收标准，过了五条。</p></div></div>
+        <ul class="tr-wk-checks">${walkerAcceptance.map(([n,v,s])=>`<li class="${s}"><i aria-hidden="true">${s==='pass'?'✓':'✗'}</i><b>${esc(n)}</b><span>${esc(v)}</span></li>`).join('')}</ul>
+        <ul class="tr-traj-req">${walkerNext.map(([n,t])=>`<li><b>${esc(n)}</b><p>${esc(t)}</p></li>`).join('')}</ul>
+        <p class="tr-callout">${esc(walkerNextNote)}</p></section>
+
+      <div class="tr-footnote">数据来自 2026 年 10 月 12 日的两次实际运行（wk1、wk2），规格 hi@0.7.0 / gia@0.8.0，核验器与 r0e 同一套。本轮跳过了用学生模型处理器逐行核对这一步（该模型未在本机）。</div>`;
+  }
   function renderRubric(){
     page.innerHTML=top('rubric')+`
       <div class="tr-section-title tr-rubric-title"><div><div class="eyebrow muted">VERIFICATION AT EVERY DECISION</div>
@@ -780,8 +1005,8 @@
     if(!T.data){loading();try{T.data=await get('/api/training');}catch(e){if(serial===T.serial)page.innerHTML=`<div class="tr-empty"><strong>训练记录暂时不可用</strong><p>${esc(e.message)}</p><button class="secondary" data-tr="retry">重新读取</button></div>`;return;}}
     if(serial!==T.serial)return;
     const parts=hash.split('/');
-    T.section=['rubric','samples','flow','architecture','paper'].includes(parts[1])?parts[1]:'roadmap';
-    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderTrajectory();else if(T.section==='flow')renderFlow();
+    T.section=['rubric','samples','flow','architecture','walker','paper'].includes(parts[1])?parts[1]:'roadmap';
+    if(T.section==='rubric')renderRubric();else if(T.section==='samples')renderTrajectory();else if(T.section==='flow')renderFlow();else if(T.section==='walker')renderWalker();
     else if(T.section==='architecture')renderArchitecture();else if(T.section==='paper')renderPaper();else renderRoadmap();window.scrollTo({top:0});
   }
   window.openTraining=open;
@@ -790,6 +1015,7 @@
     if(b.dataset.trainingRoute){e.preventDefault();await open(b.dataset.trainingRoute);return;}
     if(b.dataset.archZoom){const m=b.dataset.archZoom;if(m==='fit')archFit();else archZoomAt(T.archZoom*(m==='in'?1.2:1/1.2));return;}
     if(b.dataset.archNode){T.archNode=b.dataset.archNode;renderArchStage();archFocus(T.archNode);page.querySelector(`[data-arch-node="${T.archNode}"]`)?.focus({preventScroll:true});return;}
+    if(b.dataset.wkCase){T.walkerCase=b.dataset.wkCase;renderWalker();page.querySelector(`[data-wk-case="${T.walkerCase}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.trStage!==undefined){T.stage=Number(b.dataset.trStage);renderFlow();page.querySelector(`[data-tr-stage="${T.stage}"]`)?.focus({preventScroll:true});return;}
     if(b.dataset.still){openStill(b.dataset.still);return;}
     if(b.dataset.stillStep){stepStill(Number(b.dataset.stillStep));return;}
