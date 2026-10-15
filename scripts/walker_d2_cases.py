@@ -54,6 +54,7 @@ AVM_SOCIAL = ("x.com", "twitter.com", "facebook.com", "instagram.com", "perma.cc
 # (编号, 实际地点, 来源/结论里的等价写法)
 L_PICKS = [(208, "Peru", ["Cusco", "Cuzco"]), (623, "Kansas", ["Topeka", "Battle of Mine Creek"]),
            (739, "Russia", ["Russian"]), (101, "Kolkata", ["Calcutta"])]
+L_INDICES = {i for i, *_ in L_PICKS}
 AVM_IMAGE_ZIP = "https://huggingface.co/datasets/Rui4416/AVerImaTeC/resolve/main/images.zip"
 N_A, N_C_FAKE, N_C_REAL = 3, 2, 1
 A_DURATION = (35.0, 300.0)          # 太短剪不出一段、太长下载与比对都慢
@@ -290,7 +291,7 @@ def averimatec_picks() -> list[tuple[int, dict[str, Any], dict[str, Any], str]]:
     pat = _re.compile(r"first|earliest|originally|when was (?:the|this) (?:image|photo|picture)", _re.I)
     out = []
     for index, row in enumerate(rows):
-        if index in AVM_USED or len(row.get("claim_images") or []) != 1 or row.get("label") not in ("Refuted", "Supported"):
+        if index in AVM_USED or index in L_INDICES or len(row.get("claim_images") or []) != 1                 or row.get("label") not in ("Refuted", "Supported"):
             continue
         for q in row.get("questions") or []:
             if not pat.search(q.get("question") or ""):
@@ -577,8 +578,482 @@ def expand_pools(rows: dict[str, dict[str, Any]]) -> None:
     log(f"[放量] 候选：A {len(A_POOL)}、C 假标题 {len(C_FAKE_POOL)}、C 真标题 {len(C_REAL_POOL)}（已下载的排前面；EVID test 编号已排除）")
 
 
+# ---------------------------------------------------------------------------- 10-15 r0g 扩案例（对话 7 前）：L 族程序筛、B 族、频道
+# L 族：AVerImaTeC 训练集里 单图、Refuted、问"图拍于哪里"、答案来源不是社交 / 存档 / 地图站、声明点名了国家（或其形容词）或
+# "in / at / near 地名" 的条目，按编号顺序取。地名照抄标注答案（与 L_PICKS 相同做法），表里没有的编号不建（打印出来补表）。
+L_QUESTION = re.compile(r"\bwhere(?: and when)? (?:was|were) (?:the|this|these) (?:\d+-th )?(?:image|photo|picture|photograph)s? "
+                        r"(?:taken|captured)\b", re.I)
+L_EXTRA_SKIP = ("google.com/maps", "maps.google", "goo.gl/maps")
+COUNTRY_WORDS = (
+    "Afghanistan Albania Algeria Argentina Armenia Australia Austria Bangladesh Belarus Belgium Bolivia Brazil Bulgaria Cambodia "
+    "Cameroon Canada Chile China Colombia Congo Croatia Cuba Denmark Egypt England Ethiopia Finland France Gaza Georgia Germany "
+    "Ghana Greece Haiti Hungary India Indonesia Iran Iraq Ireland Israel Italy Japan Jordan Kenya Korea Lebanon Libya Malaysia "
+    "Mexico Morocco Myanmar Nepal Netherlands Nigeria Norway Pakistan Palestine Peru Philippines Poland Portugal Qatar Romania "
+    "Russia Rwanda Scotland Serbia Somalia Spain Sudan Sweden Switzerland Syria Taiwan Thailand Turkey Uganda Ukraine Venezuela "
+    "Vietnam Wales Yemen Zimbabwe UK USA UAE "
+    "Afghan American Argentine Australian Austrian Brazilian British Canadian Chinese Dutch Egyptian English French German Greek "
+    "Indian Indonesian Iranian Iraqi Irish Israeli Italian Japanese Kenyan Mexican Nigerian Pakistani Palestinian Russian Spanish "
+    "Swedish Syrian Thai Turkish Ukrainian").split()
+L_PLACE_RE = re.compile(r"\b(?:" + "|".join(COUNTRY_WORDS) + r")\b|\b(?:in|at|near)\s+(?:the\s+)?[A-Z][a-z]{2,}")
+# 编号 → (实际地点, 等价写法)，取自标注答案原文
+L_PLACES = {124: ("Cannes", ["Cannes Film Festival"]), 167: ("Guizhou", ["Kaili", "Qiandongnan"]),
+            244: ("Somalia", ["Mogadishu", "Somali"]), 247: ("Congo", ["DRC", "Congolese"]),
+            249: ("Bolaang Mongondow", ["Indonesia", "Sulawesi", "Indonesian"]), 250: ("Thailand", ["Thai"]),
+            274: ("Kremlin", ["Moscow", "St. Alexander Hall"]), 313: ("Kryvyi Rih", ["Krivoy Rog", "Kryvyi Rig", "Ukraine"]),
+            316: ("Stone Mountain", ["Stone Mountain Park", "Confederate Memorial"]), 325: ("Japan", ["Japanese"]),
+            341: ("Mandera", ["Kenya", "Kenyan"])}
+N_L_AUTO = 0
+
+# B 族（VideoSham / QVHighlights / VCSL）
+VIDEOSHAM = Path(r"C:\Users\Zya\Documents\ChatGPT\ForenSearcher\claimunit_video_sham_1004\datasets\videosham")
+VCSL_DATA = ROOT / "external" / "VCSL" / "data"
+QVH_ARCHIVE = "https://nlp.cs.unc.edu/data/jielei/qvh/qvhilights_videos.tar.gz"
+N_VIDEOSHAM, N_QVH, N_VCSL = 0, 0, 0
+VIDEO_DIFF_EN = ("Compare the given video A with the candidate video B, and investigate the differences between them that the "
+                 "materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state "
+                 "where the differences are and what could not be determined. Being given as a candidate does not mean B's source "
+                 "identity has been confirmed; do not treat unexamined regions or modalities as having no difference.")
+VIDEO_DIFF_ZH = ("比较给定视频 A 与候选视频 B，调查两者可由材料确认的差异及其对画面含义的影响。引用具体证据，说明差异所在位置和未能确定的内容。"
+                 "给定候选不代表已经确认其来源身份；不要把未检查的区域或模态视为没有差异。")
+QVH_EN = ("Locate the segment of the given video that matches the following description; give its time range in seconds with "
+          "supporting evidence, and state the uncertainty of the localization: {query}")
+QVH_ZH = "在给定视频中定位符合以下描述的片段，给出秒数范围及证据；说明定位的不确定性：{query}"
+VCSL_EN = ("In the given videos A and B, find the segments that correspond to each other (identical or transformed), and give the "
+           "time ranges on both sides with supporting evidence. Do not infer original authorship from a content correspondence. "
+           "The input contains only the video track; do not assess audio.")
+VCSL_ZH = "在给定视频 A 与 B 中查找相同或经变换的对应片段，给出两侧时间范围及证据。不要把内容对应推断成原创归属。输入仅包含视频轨，不评估音频。"
+CHANNELS: dict[str, list[str]] = {}          # case_id → [频道名, 频道 ID]（新案卷建卷时取，写 train_channels.json）
+
+
+def _excluded_families() -> set[str]:
+    """dev_select / dev_confirm / dev_eval / test（及 contrast_only）案卷的 family：新案例不许落进去。"""
+
+    out = set()
+    for path in CASES.glob("*.json"):
+        try:
+            case = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if case.get("split") != "dev_train":
+            out.add(str(case.get("family_key")))
+    return out
+
+
+def _evid_channels() -> tuple[set[str], set[str]]:
+    """EVID 131–222 源视频的频道名（归一）与频道 ID（evid_channels_131_222.json 与 .detail.json）。"""
+
+    names, ids = set(), set()
+    table, detail = SFT / "evid_channels_131_222.json", SFT / "evid_channels_131_222.detail.json"
+    if table.is_file():
+        for value in json.loads(table.read_text(encoding="utf-8")).values():
+            for v in ([value] if isinstance(value, str) else value or []):
+                names.add(" ".join(str(v).casefold().split()))
+    if detail.is_file():
+        def walk(value: Any) -> None:
+            if isinstance(value, dict):
+                for key, sub in value.items():
+                    if key in ("channel_id", "uploader_id") and isinstance(sub, str) and sub:
+                        ids.add(sub.casefold())
+                    elif key in ("channel", "uploader") and isinstance(sub, str) and sub:
+                        names.add(" ".join(sub.casefold().split()))
+                    else:
+                        walk(sub)
+            elif isinstance(value, list):
+                for sub in value:
+                    walk(sub)
+        walk(json.loads(detail.read_text(encoding="utf-8")))
+    return names, ids
+
+
+_EVID_CH: tuple[set[str], set[str]] | None = None
+
+
+def channel_of(url: str) -> list[str] | None:
+    """yt-dlp 只取元数据（不下载）：[频道名, 频道 ID]；取不到（私有 / 下架）返回 None。"""
+
+    try:
+        from yt_dlp import YoutubeDL
+
+        with YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True, "noplaylist": True}) as ydl:
+            info = ydl.extract_info(url, download=False)
+    except Exception as exc:  # noqa: BLE001
+        if "vimeo.com" in url:           # Vimeo 网页端要登录：退到公开的 oEmbed（author_name / author_url）
+            try:
+                import httpx
+
+                data = httpx.get("https://vimeo.com/api/oembed.json", params={"url": url}, timeout=30).json()
+                got = [x for x in (data.get("author_name"), str(data.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1]) if x]
+                if got:
+                    return got
+            except Exception:  # noqa: BLE001
+                pass
+        log(f"    频道：{url} 取不到（{type(exc).__name__}: {str(exc)[:120]}）")
+        return None
+    name = info.get("channel") or info.get("uploader") or ""
+    cid = info.get("channel_id") or info.get("uploader_id") or ""
+    return [x for x in (name, cid) if x]
+
+
+def evid_channel_hit(channel: list[str] | None) -> bool:
+    global _EVID_CH
+    if not channel:
+        return False
+    if _EVID_CH is None:
+        _EVID_CH = _evid_channels()
+    names, ids = _EVID_CH
+    return any(" ".join(c.casefold().split()) in names or c.casefold() in ids for c in channel)
+
+
+def note_channel(case_id: str, url: str) -> bool:
+    """取频道并记进 CHANNELS；频道是 EVID 131–222 的频道就返回 False（调用方换下一个候选）。"""
+
+    channel = channel_of(url)
+    if evid_channel_hit(channel):
+        log(f"    频道 {channel} 在 EVID 131–222 频道表里，换下一个")
+        return False
+    if channel:
+        CHANNELS[case_id] = channel
+    return True
+
+
+def l_auto_picks(exclude: set[int]) -> list[int]:
+    rows = json.loads((SFT / "data" / "annotations" / "averimatec_train.json").read_text(encoding="utf-8"))
+    out = []
+    for index, row in enumerate(rows):
+        if index in exclude or index in AVM_USED or len(row.get("claim_images") or []) != 1 or row.get("label") != "Refuted":
+            continue
+        if not L_PLACE_RE.search(" ".join(str(row.get("claim_text") or "").split())):
+            continue
+        for q in row.get("questions") or []:
+            if not L_QUESTION.search(q.get("question") or ""):
+                continue
+            answer = (q.get("answers") or [{}])[0]
+            source = _strip_archive(answer.get("source_url") or "")
+            domain = source.split("/", 1)[0].lower()
+            if (answer.get("answer_text") or "").strip() and source and not any(s in source.lower() for s in L_EXTRA_SKIP) \
+                    and not any(domain == d or domain.endswith("." + d) for d in AVM_SOCIAL):
+                out.append(index)
+            break
+    return out
+
+
+def build_l_auto(made: list[str], e_indices: set[int]) -> None:
+    have = [i for i, *_ in L_PICKS]
+    picks = l_auto_picks(set(have) | e_indices)
+    todo = [i for i in picks if not (CASES / f"averimatec_l{i}.json").exists()]
+    existing = [i for i in picks if (CASES / f"averimatec_l{i}.json").exists()]
+    made += [f"averimatec_l{i}" for i in existing[:N_L_AUTO]]
+    need = N_L_AUTO - len(existing[:N_L_AUTO])
+    log(f"[L 程序筛] 候选 {len(picks)} 条（前 12：{picks[:12]}），已有 {len(existing)}，还要做 {max(0, need)}")
+    if need <= 0:
+        return
+    rows = json.loads((SFT / "data" / "annotations" / "averimatec_train.json").read_text(encoding="utf-8"))
+    sys.path.insert(0, str(SFT))
+    import zipfile
+    from collect_media import RangeReader  # type: ignore
+
+    with RangeReader(AVM_IMAGE_ZIP) as reader, zipfile.ZipFile(reader) as archive:
+        for index in todo:
+            if need <= 0:
+                break
+            if index not in L_PLACES:
+                log(f"  AVerImaTeC L{index}：L_PLACES 里没有它的地名（取自标注答案），先补表；跳过")
+                continue
+            place, aliases = L_PLACES[index]
+            try:
+                case = build_place(index, rows[index], place, aliases, archive)
+            except Exception as exc:  # noqa: BLE001
+                log(f"  AVerImaTeC L{index}：失败（{type(exc).__name__}: {str(exc)[:160]}）")
+                continue
+            case["notes"] += " r0g 扩案例：按 walker_d2_cases.l_auto_picks 的规则程序筛（编号顺序），地名取自标注答案。"
+            made.append(write_case(case).stem)
+            need -= 1
+
+
+def _hash_order(ids: list[str], seed: str) -> list[str]:
+    return _ordered(ids, seed)
+
+
+def videosham_picks() -> list[dict[str, str]]:
+    with (VIDEOSHAM / "VideoSourceandEdits.csv").open(encoding="utf-8-sig", newline="") as stream:
+        rows = {Path(r["Video-Name"]).stem: r for r in csv.DictReader(stream)}
+    evid = _evid_text()
+    used_groups = set()
+    for path in CASES.glob("videosham_*.json"):
+        sid = path.stem.split("_", 1)[1]
+        if sid in rows:
+            used_groups.add(rows[sid]["Name/Id in source dataset"].strip())
+    stems = [p.name.split("_")[0] for p in (VIDEOSHAM / "media" / "edited").glob("*_processed.mp4")]
+    out, groups = [], set(used_groups)
+    for sid in _hash_order([s for s in stems if s in rows], "r0g-videosham"):
+        row = rows[sid]
+        group = row["Name/Id in source dataset"].strip()
+        if (CASES / f"videosham_{sid}.json").exists() or group in groups or group in evid or f"videosham_{sid}" in evid:
+            continue
+        if not (VIDEOSHAM / "media" / "source" / f"{sid}_unedited.mp4").is_file():
+            continue
+        groups.add(group)
+        out.append({"id": sid, **row})
+    return out
+
+
+def build_videosham(row: dict[str, str]) -> dict[str, Any]:
+    import shutil
+
+    sid = row["id"]
+    folder = SFT / "data" / "cases" / f"videosham_{sid}"
+    (folder / "inputs").mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(VIDEOSHAM / "media" / "edited" / f"{sid}_processed.mp4", folder / "inputs" / "A.mp4")
+    shutil.copyfile(VIDEOSHAM / "media" / "source" / f"{sid}_unedited.mp4", folder / "inputs" / "B.mp4")
+    record = {k: v for k, v in row.items() if k != "id"}
+    (folder / "reference.json").write_text(json.dumps(
+        {"dataset": "VideoSham", "source_record": record, "input_assignment": {"A.mp4": "processed", "B.mp4": "unedited"},
+         "reference_status": "official_edit_description_requires_media_confirmation", "split": "development",
+         "condition": "provided_candidate_pair"}, ensure_ascii=False, indent=2), encoding="utf-8")
+    task, manip = " ".join(row["Task"].split()), " ".join(row["Manipulation"].split())
+    text_edit = "text" in manip.lower()
+    evidence = [
+        {"key": "frames", "description": "两段视频的抽帧（差异位置两侧的对应帧）", "url_pattern": None, "acquired_by": "INSPECT/get_frames",
+         "must_cite": True, "supports": ["REQ1", "REQ3"]},
+        {"key": "diff_images", "description": "diff_media 产出的逐帧差异图（差异时间线、差异框与成对放大），可替代成对抽帧作为差异位置的证据",
+         "url_pattern": None, "acquired_by": "INSPECT/diff_media", "must_cite": True, "supports": ["REQ1", "REQ3"]},
+        {"key": "media_profile", "description": "两段视频的媒体属性（时长、帧率、音轨数）", "url_pattern": None,
+         "acquired_by": "INSPECT/media_profile", "must_cite": True, "supports": ["REQ2"]},
+        {"key": "alignment", "description": "视觉或音频对齐结果（候选对应时间锚点，只作线索）", "url_pattern": None,
+         "acquired_by": "INSPECT/align_media", "must_cite": False, "supports": ["REQ1"]},
+    ]
+    if text_edit:     # 文字类改动：两侧画面文字的 OCR 是直接证据（可选）
+        evidence.append({"key": "ocr", "description": "两侧对应帧画面文字的 OCR", "url_pattern": None, "acquired_by": "INSPECT/ocr",
+                         "must_cite": False, "supports": ["REQ1"]})
+    log(f"  VideoSham {sid}：{manip}；{task[:90]}")
+    return {
+        "case_id": f"videosham:{sid}", "dataset": "videosham", "source_id": sid, "split": "dev_train", "task_kind": "video_diff",
+        "task_text": VIDEO_DIFF_ZH, "task_text_en": VIDEO_DIFF_EN, "family_key": f"videosham:{sid}",
+        "media": [{"ref": "I0", "path": f"../data/cases/videosham_{sid}/inputs/A.mp4", "media_type": "video/mp4"},
+                  {"ref": "I1", "path": f"../data/cases/videosham_{sid}/inputs/B.mp4", "media_type": "video/mp4"}],
+        "claims": [], "source_policy": {"mode": "provided_media", "excluded_keys": [], "date_cutoff": None},
+        "requirements": [
+            {"id": "REQ1", "text": f"A 是否有官方编辑描述所说的改动（{task}；须由画面确认），以及两侧对应位置", "must_cite": True,
+             "text_en": f"Whether A has the edit the official description gives (\"{task}\"; to be confirmed from the footage), "
+                        "and the corresponding positions on both sides"},
+            {"id": "REQ2", "text": "音轨是否可取得；可确认的声音差异或无法核验的说明", "must_cite": True,
+             "text_en": "Whether the audio tracks could be obtained; any confirmable audio difference, or a statement that it could not be verified"},
+            {"id": "REQ3", "text": "已确认的差异对画面含义的影响（不把未检查的区域或模态当作没有差异）", "must_cite": True,
+             "text_en": "How the confirmed differences affect what the footage means (unexamined regions or modalities are not treated as having no difference)"},
+            {"id": "REQ4", "text": "未能确定的内容；不预设候选视频 B 的来源身份或制作先后", "must_cite": False,
+             "text_en": "What could not be determined; the source identity or production order of candidate video B is not presupposed"},
+        ],
+        "required_evidence": evidence, "required_evidence_rule": "any_one_of:frames,diff_images", "checks": [],
+        "reference_path": f"../data/cases/videosham_{sid}/reference.json", "used_for_revision": [],
+        "notes": (f"官方编辑描述（reference_status: 需由画面确认）：{task}；Manipulation: {manip}；r0g 扩案例（{now()}，"
+                  f"walker_d2_cases.py 程序建卷）：A = {sid}_processed.mp4，B = {sid}_unedited.mp4；label_expected 不写（子串匹配表达不了官方描述）。"
+                  f"源：{row['Name/Id in source dataset'].strip()}"),
+    }
+
+
+def build_b(made: list[str]) -> None:
+    excluded = _excluded_families()
+    # VideoSham
+    got = 0
+    for row in videosham_picks() if N_VIDEOSHAM else []:
+        if got >= N_VIDEOSHAM:
+            break
+        url = row["Name/Id in source dataset"].strip()
+        cid = f"videosham:{row['id']}"
+        if url.startswith("http") and not note_channel(cid, url):
+            continue
+        made.append(write_case(build_videosham(row)).stem)
+        got += 1
+    if N_VIDEOSHAM:
+        log(f"[B VideoSham] 新做 {got}/{N_VIDEOSHAM}")
+    if N_QVH:
+        build_qvh(made, excluded)
+    if N_VCSL:
+        build_vcsl(made, excluded)
+
+
+def build_qvh(made: list[str], excluded: set[str]) -> None:
+    """QVHighlights：从官方视频归档流式读（只读前缀，≤1 GiB），取训练集里只有一个相关窗口（10–60 s）的片段，
+    源 YouTube 编号不在已有案卷 / 非 dev_train family / EVID 案卷里。"""
+
+    import tarfile
+
+    import httpx
+
+    sys.path.insert(0, str(SFT))
+    from fetch_qvhighlights import StreamReader  # type: ignore
+
+    rows: dict[str, list[dict[str, Any]]] = {}
+    for line in (SFT / "data" / "annotations" / "qvhighlights_train.jsonl").read_text(encoding="utf-8").splitlines():
+        row = json.loads(line)
+        rows.setdefault(row["vid"], []).append(row)
+    seen = set()
+    for path in CASES.glob("qvhighlights_*.json"):
+        seen.add(str(json.loads(path.read_text(encoding="utf-8")).get("family_key")).partition(":")[2])
+    evid = _evid_text()
+    need, got = N_QVH, 0
+    with httpx.Client(timeout=90, follow_redirects=True) as client, client.stream("GET", QVH_ARCHIVE) as response:
+        response.raise_for_status()
+        with tarfile.open(fileobj=StreamReader(response.iter_bytes(65536)), mode="r|gz") as archive:
+            for member in archive:
+                vid = Path(member.name).stem
+                source = vid.rsplit("_", 2)[0]
+                if not member.isfile() or vid not in rows or source in seen or f"qvhighlights:{source}" in excluded or source in evid:
+                    continue
+                pick = next((r for r in rows[vid] if len(r.get("relevant_windows") or []) == 1
+                             and 10 <= r["relevant_windows"][0][1] - r["relevant_windows"][0][0] <= 60), None)
+                if pick is None:
+                    continue
+                cid = f"qvhighlights:{pick['qid']}"
+                if not note_channel(cid, f"https://www.youtube.com/watch?v={source}"):
+                    seen.add(source)
+                    continue
+                folder = SFT / "data" / "qvhighlights" / str(pick["qid"])
+                (folder / "inputs").mkdir(parents=True, exist_ok=True)
+                data = archive.extractfile(member)
+                (folder / "inputs" / "A.mp4").write_bytes(data.read() if data else b"")
+                (folder / "reference.json").write_text(json.dumps(pick, ensure_ascii=False), encoding="utf-8")
+                seen.add(source)
+                start, end = pick["relevant_windows"][0]
+                query = " ".join(str(pick["query"]).split())
+                log(f"  QVHighlights {pick['qid']}（{vid}）：[{start}, {end}]；{query[:80]}")
+                case = {
+                    "case_id": cid, "dataset": "qvhighlights", "source_id": str(pick["qid"]), "split": "dev_train",
+                    "task_kind": "temporal_locate", "task_text": QVH_ZH.format(query=query), "task_text_en": QVH_EN.format(query=query),
+                    "family_key": f"qvhighlights:{source}",
+                    "media": [{"ref": "I0", "path": f"../data/qvhighlights/{pick['qid']}/inputs/A.mp4", "media_type": "video/mp4"}],
+                    "claims": [], "source_policy": {"mode": "provided_media", "excluded_keys": [], "date_cutoff": None},
+                    "requirements": [
+                        {"id": "REQ1", "text": "符合描述的片段在视频中的起止时间（秒）", "must_cite": True,
+                         "text_en": "Start and end time (seconds) of the segment in the video that matches the description"},
+                        {"id": "REQ2", "text": "支持定位的画面依据：片段内以及边界两侧的帧所显示的内容", "must_cite": True,
+                         "text_en": "Visual grounds for the localization: what the frames inside the segment and on both sides of its boundaries show"},
+                        {"id": "REQ3", "text": "定位精度与边界的不确定范围（未检查的区间不当作不符合）", "must_cite": False,
+                         "text_en": "Localization precision and the uncertain range of the boundaries (unexamined intervals are not treated as non-matching)"},
+                    ],
+                    "required_evidence": [{"key": "frames", "description": "给定视频的抽帧（片段内与边界两侧）", "url_pattern": None,
+                                           "acquired_by": "INSPECT/get_frames", "must_cite": True, "supports": ["REQ1", "REQ2"]}],
+                    "required_evidence_rule": "all",
+                    "checks": [{"kind": "interval_iou", "params": {"start": start, "end": end, "min_iou": 0.5},
+                                "note": "QVHighlights relevant_windows（片段内秒数）", "requirement": "REQ1"}],
+                    "reference_path": f"../data/qvhighlights/{pick['qid']}/reference.json", "used_for_revision": [],
+                    "notes": (f"r0g 扩案例（{now()}，walker_d2_cases.py）：标注片段 [[{start}, {end}]]（视频 {pick.get('duration')} 秒，"
+                              f"源 YouTube {source} 的 {vid.rsplit('_', 2)[1]}–{vid.rsplit('_', 2)[2]} s）；family 按源视频号分组。"),
+                }
+                made.append(write_case(case).stem)
+                got += 1
+                if got >= need:
+                    break
+    log(f"[B QVHighlights] 新做 {got}/{need}")
+
+
+def build_vcsl(made: list[str], excluded: set[str]) -> None:
+    """VCSL：训练集对，两侧都是 YouTube、各 15–120 s（frames_all 按 1 fps 计）、标注 1–3 段；query 视频不在已有 family。
+    下载只取视频轨（与任务"输入仅包含视频轨"一致）。"""
+
+    from foren_searcher.inspect.acquisition import ytdlp_download
+    from foren_searcher.inspect.policy import InspectPolicy
+
+    urls = {}
+    with (VCSL_DATA / "videos_url_uuid.csv").open(encoding="utf-8", newline="") as stream:
+        for row in csv.DictReader(stream):
+            urls[row["uuid"]] = row["url"]
+    frames = {}
+    with (VCSL_DATA / "frames_all.csv").open(encoding="utf-8", newline="") as stream:
+        for row in csv.DictReader(stream):
+            frames[row["uuid"]] = int(row["frame_count"])
+    labels = json.loads((VCSL_DATA / "label_file_uuid_total.json").read_text(encoding="utf-8"))
+    families = {str(json.loads(p.read_text(encoding="utf-8")).get("family_key")) for p in CASES.glob("vcsl_*.json")}
+    used_queries = set()
+    for ref in (SFT / "data" / "vcsl").glob("pair_*/reference.json"):
+        used_queries.add(json.loads(ref.read_text(encoding="utf-8")).get("query_id"))
+    pairs = []
+    with (VCSL_DATA / "pair_file_train.csv").open(encoding="utf-8", newline="") as stream:
+        for row in csv.DictReader(stream):
+            q, r = row["query_id"], row["reference_id"]
+            segs = labels.get(f"{q}-{r}") or []
+            if q in used_queries or not (1 <= len(segs) <= 3):
+                continue
+            if not all("youtube.com" in urls.get(u, "") for u in (q, r)) or not all(15 <= frames.get(u, 0) <= 120 for u in (q, r)):
+                continue
+            pairs.append((q, r, segs))
+    evid = _evid_text()
+    order = {f"{q}-{r}": i for i, (q, r, _) in enumerate(pairs)}
+    ranked = [p for key in _hash_order(list(order), "r0g-vcsl") for p in [pairs[order[key]]]]
+    n_pair = max([int(p.name.split("_")[1]) for p in (SFT / "data" / "vcsl").glob("pair_*") if p.name.split("_")[1].isdigit()] + [0])
+    got, tried_queries = 0, set()
+    for q, r, segs in ranked:
+        if got >= N_VCSL:
+            break
+        if q in tried_queries or f"vcsl:{q[:12]}" in families or f"vcsl:{q[:12]}" in excluded:
+            continue
+        ua, ub = urls[q], urls[r]
+        if any(u.split("v=")[-1] in evid for u in (ua, ub)):
+            continue
+        tried_queries.add(q)
+        name = f"pair_{n_pair + 1}"
+        folder = SFT / "data" / "vcsl" / name / "inputs"
+        folder.mkdir(parents=True, exist_ok=True)
+        cid = f"vcsl:{name}"
+        if not note_channel(cid, ua) or not note_channel(cid + "#B", ub):
+            CHANNELS.pop(cid, None), CHANNELS.pop(cid + "#B", None)
+            continue
+        try:
+            for side, url in (("A", ua), ("B", ub)):
+                if not (folder / f"{side}.mp4").is_file():
+                    media = ytdlp_download(url, folder / f"{side}.download", InspectPolicy(), video_only_height=480)
+                    Path(media.path).replace(folder / f"{side}.mp4")
+        except Exception as exc:  # noqa: BLE001
+            log(f"  VCSL {q[:8]}-{r[:8]}：下载失败（{type(exc).__name__}: {str(exc)[:160]}），换下一个")
+            CHANNELS.pop(cid, None), CHANNELS.pop(cid + "#B", None)
+            continue
+        if cid + "#B" in CHANNELS:
+            CHANNELS[cid] = CHANNELS.get(cid, []) + CHANNELS.pop(cid + "#B")
+        n_pair += 1
+        (folder.parent / "reference.json").write_text(json.dumps(
+            {"query_id": q, "reference_id": r, "urls": [ua, ub], "seconds_approx": [frames[q], frames[r]], "segments": segs,
+             "dataset": "VCSL", "split": "train", "usage": "r0g_expansion"}, ensure_ascii=False), encoding="utf-8")
+        seg_text = "；".join(f"A {a0}–{a1} 秒 ↔ B {b0}–{b1} 秒" for a0, b0, a1, b1 in segs)
+        log(f"  VCSL {name}：{ua} ↔ {ub}；{seg_text}")
+        case = {
+            "case_id": cid, "dataset": "vcsl", "source_id": name, "split": "dev_train", "task_kind": "copy_detect",
+            "task_text": VCSL_ZH, "task_text_en": VCSL_EN, "family_key": f"vcsl:{q[:12]}",
+            "media": [{"ref": "I0", "path": f"../data/vcsl/{name}/inputs/A.mp4", "media_type": "video/mp4"},
+                      {"ref": "I1", "path": f"../data/vcsl/{name}/inputs/B.mp4", "media_type": "video/mp4"}],
+            "claims": [], "source_policy": {"mode": "provided_media", "excluded_keys": [], "date_cutoff": None},
+            "requirements": [
+                {"id": "REQ1", "text": "A 与 B 中内容对应（相同或经变换）的片段，以及两侧各自的时间范围", "must_cite": True,
+                 "text_en": "Segments of A and B whose content corresponds (identical or transformed), with the time range on each side"},
+                {"id": "REQ2", "text": "对应关系的画面依据：两侧对应帧的内容，以及画面包装、裁剪、叠加等变换", "must_cite": True,
+                 "text_en": "Visual grounds for the correspondence: the content of corresponding frames on both sides, and transformations such as framing, cropping or overlays"},
+                {"id": "REQ3", "text": "未能确定的内容：边界精度、未检查的区间；不把内容对应推断为原创归属或传播先后", "must_cite": False,
+                 "text_en": "What could not be determined: boundary precision and unexamined intervals; a content correspondence is not taken as original authorship or order of spread"},
+            ],
+            "required_evidence": [{"key": "frames", "description": "两段视频的对应帧", "url_pattern": None, "acquired_by": "INSPECT/get_frames",
+                                   "must_cite": True, "supports": ["REQ1", "REQ2"]}],
+            "required_evidence_rule": "all", "checks": [],
+            "reference_path": f"../data/vcsl/{name}/reference.json", "used_for_revision": [],
+            "notes": (f"r0g 扩案例（{now()}，walker_d2_cases.py）：VCSL 训练对 {q} ↔ {r}，标注对应段 {seg_text}"
+                      "（格式按 [A起, B起, A止, B止] 解读）。与第二批相同，不写 interval_iou，由充分性层判。"),
+        }
+        made.append(write_case(case).stem)
+        got += 1
+    log(f"[B VCSL] 新做 {got}/{N_VCSL}")
+
+
+def write_channels() -> None:
+    """train_channels.json：{case_id: [频道名, 频道 ID]}，门的 --train-channels 读；已有的表合并，不覆盖旧项。"""
+
+    path = SFT / "train_channels.json"
+    table = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+    table.update({k: v for k, v in CHANNELS.items() if "#" not in k and (CASES / f"{k.replace(':', '_')}.json").exists()})
+    path.write_text(json.dumps(table, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"[频道] train_channels.json：{len(table)} 个案卷（本次新取 {len(CHANNELS)}）")
+
+
 def main() -> int:
     global N_A, N_C_FAKE, N_C_REAL, N_AVERIMATEC, N_G360_VIDEO_FAKE, N_G360_VIDEO_REAL
+    global N_L_AUTO, N_VIDEOSHAM, N_QVH, N_VCSL
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dry-run", action="store_true")
     # 10-14 晚：服务器放量。默认值 = 原来的手挑规模（3 / 2 / 1 / 6 / 2 / 1），清单写 walker_d2_cases.json
@@ -590,9 +1065,15 @@ def main() -> int:
     parser.add_argument("--n-g360-fake", type=int, default=N_G360_VIDEO_FAKE)
     parser.add_argument("--n-g360-real", type=int, default=N_G360_VIDEO_REAL)
     parser.add_argument("--list", default="walker_d2_cases.json", help="案例清单文件名（experiments/sft_data 下）")
+    # 10-15 r0g 扩案例：L 族程序筛、B 族三个数据集（默认 0 = 不做，行为与以前相同）
+    parser.add_argument("--n-l", type=int, default=0, help="L 族程序筛的条数（在 L_PICKS 4 条之外）")
+    parser.add_argument("--n-videosham", type=int, default=0)
+    parser.add_argument("--n-qvh", type=int, default=0)
+    parser.add_argument("--n-vcsl", type=int, default=0)
     args = parser.parse_args()
     N_A, N_C_FAKE, N_C_REAL, N_AVERIMATEC = args.n_a, args.n_c_fake, args.n_c_real, args.n_e
     N_G360_VIDEO_FAKE, N_G360_VIDEO_REAL = args.n_g360_fake, args.n_g360_real
+    N_L_AUTO, N_VIDEOSHAM, N_QVH, N_VCSL = args.n_l, args.n_videosham, args.n_qvh, args.n_vcsl
     MEDIA.mkdir(parents=True, exist_ok=True)
     log(f"==== walker D2 案卷 {now()}")
     rows = fmnv_rows()
@@ -622,6 +1103,8 @@ def main() -> int:
                 got += 1
                 continue
             log(f"[{name}] {vid}：{rows[vid]['title'][:80]}")
+            if args.pool == "all" and not name.startswith("A") and                     not note_channel(f"fmnv:{prefix}_{vid.replace('-', '_')}", f"https://www.youtube.com/watch?v={vid}"):
+                continue                     # 10-15：频道在 EVID 131–222 频道表里的不用
             try:
                 case = build(vid)
             except Exception as exc:  # noqa: BLE001 —— 下载 / 解码失败就换下一个候选
@@ -647,6 +1130,11 @@ def main() -> int:
         made.append(path.stem)
     if not args.dry_run:
         build_d3(made)
+        if N_L_AUTO:
+            build_l_auto(made, {int(m[len("averimatec_e"):]) for m in made if m.startswith("averimatec_e")})
+        build_b(made)
+        if CHANNELS:
+            write_channels()
     made = list(dict.fromkeys(made))
     (SFT / args.list).write_text(json.dumps(made, ensure_ascii=False, indent=2), encoding="utf-8")
     log(f"案卷 {len(made)} 个：{', '.join(made[:40])}{' …' if len(made) > 40 else ''}（清单 experiments\\sft_data\\{args.list}）")

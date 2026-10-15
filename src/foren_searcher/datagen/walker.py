@@ -49,6 +49,14 @@ _EID = re.compile(r"^E[1-9][0-9]*$")
 _NO_AUDIO_TASK = re.compile(r"do not assess audio|only the video track|video track only", re.I)
 _BOUNDARY_TASK = re.compile(r"time ranges?|ranges? on both sides|start and end|boundar|first and last|where (?:it|they|each) (?:starts?|begins?|ends?)"
                             r"|from when|how long", re.I)
+_VISUAL_TASK = re.compile(r"\b(?:visible|visibility|appears? (?:in|on) (?:the )?(?:frame|picture|screen))\b", re.I)
+_SOUND_WORDS = re.compile(r"\b(?:audio|sound|speech|spoken|says?|said|voice|narrat\w*|music)\b", re.I)
+
+
+def _visual_only(task: str) -> bool:
+    return bool(_VISUAL_TASK.search(task)) and not _SOUND_WORDS.search(task)
+
+
 _COPY_TASK = re.compile(r"segments?\s+(?:of\s+\w+\s+and\s+\w+\s+)?that\s+correspond|correspond(?:ing)?\s+to\s+each\s+other|copied\s+segment", re.I)
 _LOCATE_DESC = re.compile(r"(?:locate|find)[^:]*segment[^:]*:\s*(.+)$", re.I | re.S)
 
@@ -466,9 +474,43 @@ def _report(state: HiState, memory: dict[str, Any], rule: str, *, status: str, r
     if reason:
         skeleton["status_reason"] = reason
     family = task_family(state.task, "SEARCH" in state.actions)
+    # 10-15 对话 5''（追加 3 / 4）：可引 E 的来源与模态（S4 程序校验用：limitations 不得说已有的材料"不可用"、结论要引建立它的
+    # 工具记录）；检索候选页面 failed 的计数（≥ 1/3 时在 limitations 末尾自动加一句，不占教师槽）
+    kinds = {e: {"acquired_by": (state.cards.get(e) or {}).get("acquired_by"),
+                 "image": "image" in ((state.cards.get(e) or {}).get("modalities") or [])} for e in allowed}
     return Decision("report", rule, skeleton, branch=branch,
                     slot={"name": "S4_report", "status": status, "status_reason": reason, "allowed_evidence_ids": allowed,
-                          "notes": notes, "task_parts": task_parts(state.task), "family": family})
+                          "notes": notes, "task_parts": task_parts(state.task), "family": family, "evidence_kinds": kinds,
+                          "auto_limitations": _failed_page_limitation(state)})
+
+
+_PAGE_STATUS = re.compile(r"^\[(R\d+)\] (\S+?);? page=(ready|partial|failed)\b")
+
+
+def _failed_page_limitation(state: HiState) -> list[str]:
+    """10-15 对话 5''（追加 4）：检索候选里 page=failed 的占 ≥ 1/3（且至少 3 个候选有页面状态）→ 报告 limitations 末尾自动
+    加一句模板（不占教师槽）。r0a e12：9 个反搜命中 5 个 failed，报告仍称 DW 是 "the earliest publication located"。"""
+
+    if "SEARCH" not in state.actions:
+        return []
+    status: dict[str, str] = {}
+    for search in _search_obs(state):
+        lines = [str(x) for x in search.get("items") or []]
+        for line in lines:
+            m = _PAGE_STATUS.match(line)
+            if m:
+                status.setdefault(m.group(2).rstrip(";"), m.group(3))
+        if not lines:
+            for result in (search.get("details") or {}).get("results") or []:
+                for material in result.get("materials") or []:
+                    if material.get("kind") == "page" and material.get("status") in ("ready", "partial", "failed"):
+                        status.setdefault(str(result.get("source_url")), str(material["status"]))
+    total = len(status)
+    failed = sum(1 for v in status.values() if v == "failed")
+    if total >= 3 and failed * 3 >= total:
+        return [f"{failed} of {total} candidate pages failed to load and were not examined; an earlier or other copy may "
+                "exist among them."]
+    return []
 
 
 _PART_SPLIT = re.compile(r"(?<=[.;])\s+|,\s+and\s+(?=(?:state|give|check|cite|investigate|find|determine|describe|say|explain)\b)", re.I)
@@ -512,6 +554,9 @@ def decide_hi(payload: dict[str, Any], memory: dict[str, Any], rendered: dict[st
         if windows or audio or anchors:
             return _decide_followup(state, memory, windows, audio, anchors)
     family = task_family(state.task, "SEARCH" in state.actions)
+    # 10-15 对话 5''（追加 2）：检索类第 2 轮——任务的 Scope 写明了要打开再读的网址 / 要并排看的参考图，只补这些
+    if not state.task_id.startswith("W1-") and family in ("E", "L", "C") and _SEARCH_SCOPE.search(state.task):
+        return _before_report(state, memory, _decide_search_followup(state, memory, family))
     if family == "L" and _material_images(state):
         return _before_report(state, memory, _decide_place_check(state, memory))
     if family == "E":
@@ -874,8 +919,11 @@ def _events_from_compare(res: dict[str, Any], pa: dict[str, Any], pb: dict[str, 
             continue
         t = _r((float(ra[0]) + float(ra[1])) / 2, 2)         # 区间中点（摘要行里写的是区间与框，峰值时刻不在学生视图里）
         box2 = [_r(float(box[0]), 2), _r(float(box[1]), 2), _r(float(box[2]), 2), _r(float(box[3]), 2)]
-        events.append({"key": f"reg{i}", "what": f"the region that differs around A {t:.2f} s",
-                       "a_times": [t], "b_times": [t] if same_length else [], "images": imgs("region", i),
+        # 10-15 对话 5''（追加 2(c)）：区间两端外侧各取一对 A / B 帧（以前只取中点——r0a videosham_4126 的 A 3.3–4.3 s 从没在
+        # 区间外两侧取过配对帧，边界因此定不下来）
+        outside = [_r(float(ra[0]) - 0.3, 2), t, _r(float(ra[1]) + 0.3, 2)]
+        events.append({"key": f"reg{i}", "what": f"the region that differs around A {t:.2f} s and just outside its ends",
+                       "a_times": outside, "b_times": outside if same_length else [], "images": imgs("region", i),
                        "box": _pad_box(box2, 0.025), "basis": [float(ra[0]), float(ra[1])] + box2})
     return events[:2]
 
@@ -969,7 +1017,8 @@ def _decide_pair_merged(state: HiState, memory: dict[str, Any], pair: list[str])
 
     # M1b 等长的短视频、比对没给逐帧差异：限定 A 全长再比一次，拿到逐帧精确的差异段（4126 这类"何时可见"的题）
     da, db = pa.get("duration"), pb.get("duration")
-    if (ready and not copy_task and da and db and abs(da - db) < 0.1 and da <= 30 and not res.get("frame_diff")
+    # 10-15 对话 5''（追加 5）：整段比对一个对应段都没对上（0%）时不缩小范围重比（同一引擎缩窗也对不上）
+    if (ready and matched and not copy_task and da and db and abs(da - db) < 0.1 and da <= 30 and not res.get("frame_diff")
             and "compare_exact" not in issued and state.remaining >= 3):
         _mark(memory, "compare_exact")
         top = _r(da - 0.01, 3)
@@ -1041,8 +1090,9 @@ def _decide_pair_merged(state: HiState, memory: dict[str, Any], pair: list[str])
                                 f"The comparison found no consistent correspondence; sample {video} at the same relative positions "
                                 f"to compare the two pictures directly."), branch="INSPECT get_frames times_s" if d else "INSPECT get_frames count")
 
-    # M4 语音：任务没说只看画面时，有音轨的一侧各转写一次
-    if not _NO_AUDIO_TASK.search(state.task) and "asr" in state.inspect_ops:
+    # M4 语音：任务没说只看画面时，有音轨的一侧各转写一次。10-15 对话 5''（追加 5）：纯视觉任务（问"何时可见"、不提声音）
+    # 不自动跑 ASR（r0a videosham_4126 跑了两次）
+    if not _NO_AUDIO_TASK.search(state.task) and not _visual_only(state.task) and "asr" in state.inspect_ops:
         for side, video, prof in (("A", a, pa), ("B", b, pb)):
             if (prof.get("audio") or 0) > 0 and f"asr_{side}" not in issued and state.remaining >= 2:
                 _mark(memory, f"asr_{side}")
@@ -1783,8 +1833,57 @@ def _search_pages(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if page and page not in seen:
                 seen.add(page)
                 pages.append({"evidence_id": page, "candidate": result.get("candidate_id"), "url": result.get("source_url"),
-                              "title": result.get("search_title"), "content_match": result.get("content_match") or {}})
+                              "title": result.get("search_title"), "snippet": result.get("search_snippet"),
+                              "content_match": result.get("content_match") or {}})
     return pages
+
+
+# ---- 10-15 对话 5''（追加 2 / 5）：检索类（E / L / C）交报告前的程序前置条件与选页启发式
+_CLAIM_DATE_IN_TASK = re.compile(r"\((?:claim date|posted):\s*(\d{4}-\d{2}-\d{2})\)")
+_KW_STOP = frozenset(("that this with from were have been which there their does about into than them they these those such also "
+                      "image picture photo photograph video shows show showing claim claims circulated following given said says "
+                      "after before during while where when what being over under more most some many very just only other "
+                      "people person time year years date news report reports").split())
+
+
+def _claim_words(claim: str) -> set[str]:
+    return {w[:6] for w in re.findall(r"[a-z]{4,}", claim.lower()) if w not in _KW_STOP}
+
+
+def _claim_date(task: str) -> str | None:
+    m = _CLAIM_DATE_IN_TASK.search(task)
+    return m.group(1) if m else None
+
+
+def _page_text(page: dict[str, Any]) -> str:
+    url = str(page.get("url") or "")
+    slug = re.sub(r"[^a-z0-9]+", " ", url.lower().split("://", 1)[-1].split("?", 1)[0])
+    return f"{page.get('title') or ''} {page.get('snippet') or ''} {slug}"
+
+
+def _must_read(pages: list[dict[str, Any]], read_ids: set[str], claim: str, *, dated: dict[str, str] | None = None,
+               claim_date: str | None = None) -> list[dict[str, Any]]:
+    """还没读、页面已取得（page=ready）、且标题 / 摘要 / 网址命中声明关键词（≥2 个且不少于 1/3；短声明 ≥1 个）的页；E 族另加：日期查询给出
+    的日期 ≤ 声明日期的页。r0a e2：第 10 步搜到 2017 年 Kheer Bhawani 的原始报道（page=ready）就直接交报告。"""
+
+    words = _claim_words(claim)
+    need = max(2, -(-len(words) // 3)) if len(words) >= 4 else 1        # ≥2 个且不少于声明关键词的 1/3
+    out = []
+    for p in pages:
+        if p["evidence_id"] in read_ids:
+            continue
+        hits = len(words & _claim_words(_page_text(p)))
+        early = bool(dated and claim_date and p.get("candidate") in dated and dated[p["candidate"]] <= claim_date)
+        if hits >= need or early:
+            out.append({**p, "why": "dated on or before the claim date" if early else "its title matches the claim"})
+    return out
+
+
+def _open_gap_clause(must: list[dict[str, Any]]) -> str:
+    """交报告时还有未读命中页：status_reason 里写成"能补"的缺口（GIA 据此派第 2 轮，第 2 轮按网址打开再读）。"""
+
+    urls = [str(p.get("url")) for p in must if p.get("url")][:3]
+    return ("candidate pages that match the claim were not examined: " + ", ".join(urls)) if urls else ""
 
 
 def _query_text(request: dict[str, Any]) -> str:
@@ -2060,6 +2159,20 @@ def _decide_image_origin(state: HiState, memory: dict[str, Any]) -> Decision:
     dated_found = {c: _earliest_date(v) for c, v in dated.items() if _earliest_date(v)}
     # 有日期的结果按日期排（最早在前），读它的页面看它说图上是什么
     dated_pages = sorted(((d, by_cand[c]) for c, d in dated_found.items() if c in by_cand), key=lambda x: x[0])
+    # 10-15 对话 5''（追加 5）：找到最早副本（读过的有日期页里最早的那个）之后，比它晚的转载最多再读 1 页
+    m_claim = re.search(r'claim:\s*"(.*)"\s*\(claim date', state.task, re.S)
+    claim = m_claim.group(1) if m_claim else state.task.rsplit(":", 1)[-1]
+    claim_date = _claim_date(state.task)
+    read_dates = [d for d, pg in dated_pages if pg["evidence_id"] in read_ids]
+    later_ids: set[str] = set()
+    if read_dates:
+        earliest = min(read_dates)
+        later = {pg["evidence_id"] for d, pg in dated_pages if d > earliest}
+        if len(later & read_ids) >= 1:
+            later_ids = later - read_ids
+    # 追加 2(a)：还有未读的命中页（标题 / 摘要命中声明，或日期 ≤ 声明日期）时不许交报告
+    must = [p for p in _must_read(pages, read_ids, claim, dated=dated_found, claim_date=claim_date)
+            if p["evidence_id"] not in later_ids]
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         read_dated = [pg for _, pg in dated_pages if pg["evidence_id"] in read_ids]
@@ -2071,6 +2184,8 @@ def _decide_image_origin(state: HiState, memory: dict[str, Any]) -> Decision:
         else:
             status, reason = "INCOMPLETE", ("no date of any copy of the image was established"
                                             if queries else "no search was made")
+        if status == "INCOMPLETE" and _open_gap_clause(must):
+            reason = f"{reason}; {_open_gap_clause(must)}"
         if last_turn and status == "INCOMPLETE":
             reason = "turn budget exhausted: " + str(reason)
         notes = ["date lookups: " + ("; ".join(f"{k}: {v}" for k, v in dated.items()) or "none"),
@@ -2122,8 +2237,11 @@ def _decide_image_origin(state: HiState, memory: dict[str, Any]) -> Decision:
             "rationale": f"{first_dated.get('candidate')} is the earliest dated result; read its page {first_dated['evidence_id']} "
                          f"to see what it says the picture shows."}, branch="READ_RECORD text")
     dated_ids = [pg["evidence_id"] for _, pg in dated_pages]
-    unread = sorted((p for p in pages if p["evidence_id"] not in read_ids),
-                    key=lambda p: (p["evidence_id"] not in dated_ids, dated_ids.index(p["evidence_id"]) if p["evidence_id"] in dated_ids else 0))
+    # 追加 5：日期 ≤ 声明日期的页优先，其后按日期先后；最早副本找到后，后期转载只留 1 页的读额度
+    early_ids = {pg["evidence_id"] for d, pg in dated_pages if claim_date and d <= claim_date}
+    unread = sorted((p for p in pages if p["evidence_id"] not in read_ids and p["evidence_id"] not in later_ids),
+                    key=lambda p: (p["evidence_id"] not in early_ids, p["evidence_id"] not in dated_ids,
+                                   dated_ids.index(p["evidence_id"]) if p["evidence_id"] in dated_ids else 0))
     undated = [p for p in pages if p.get("candidate") and p["candidate"] not in dated and not _social(p.get("url"))]
     choices: list[str] = []
     if len(queries) < _MAX_CLAIM_SEARCHES:
@@ -2134,6 +2252,13 @@ def _decide_image_origin(state: HiState, memory: dict[str, Any]) -> Decision:
         choices.append("dates")
     if dated or reads:
         choices.append("report")
+    if must and state.remaining >= 2 and len(reads) < 6:
+        # 追加 2(a)：命中页没读完不许交报告；读额度为它们放宽 2 页；命中页排在未读清单最前
+        choices = [c for c in choices if c != "report"]
+        if "read" not in choices:
+            choices.append("read")
+        must_ids = [p["evidence_id"] for p in must]
+        unread = [p for p in must] + [p for p in unread if p["evidence_id"] not in must_ids]
     if state.remaining <= 1 or not choices or choices == ["report"]:
         return report("E9_report")
     return Decision("next_slot", "E4_next_step", {}, branch="S3",
@@ -2187,6 +2312,9 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
     read_ids = {str((r.get("request") or {}).get("record_id")) for r in reads}
     m = re.search(r'claim:\s*"(.*)"\s*\(claim date', state.task, re.S)
     claim = m.group(1) if m else state.task.rsplit(":", 1)[-1].strip()
+    # 10-15 对话 5''（追加 2）：未读命中页；参考图与给定照片的并排比对是交报告前的必经动作
+    must = _must_read(pages, read_ids, claim)
+    side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         compared = "compare_refs" in issued
@@ -2195,8 +2323,13 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
         elif not refs:
             status, reason = "INCOMPLETE", ("no reference photo of the place named in the claim was found"
                                             if ref_searches else "no reference photos were searched")
+        elif not compared:
+            status, reason = "INCOMPLETE", (f"the reference photos {', '.join(side or [r['evidence_id'] for r in refs[:3]])} of "
+                                            f"the claimed place were not viewed side by side with {image}")
         else:
             status, reason = "INCOMPLETE", "no page that carries the picture was read, so where it was actually taken is not established"
+        if status == "INCOMPLETE" and _open_gap_clause(must):
+            reason = f"{reason}; {_open_gap_clause(must)}"
         if last_turn and status == "INCOMPLETE":
             reason = "turn budget exhausted: " + str(reason)
         notes = [f"reference photos of the place named in the claim (text→image search): "
@@ -2222,16 +2355,15 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
         return Decision("query_slot", "L2_reference_images", {"action": "SEARCH"}, branch="SEARCH text image",
                         slot={"name": "S1_query", "purpose": "reference_images", "input_type": "text", "output_type": "image",
                               "previous": [], "focus": [image], "claim": claim[:400]})
-    # L3 参考照片与给定照片并排看
-    side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
+    # L3 参考照片与给定照片并排看。10-15 对话 5''：一定发一个真动作（以前两者已同时附上就只记一笔、不发动作——r0a l623
+    # 因此从没并排看过，报告里也没有这一步）
     if side and "compare_refs" not in issued and state.remaining >= 3:
-        _mark(memory, "compare_refs")          # 参考照片与给定照片已同时附上就算并排看过了
-        if not all(e in state.attached for e in [image, *side]):
-            return Decision("action", "L3_view_with_references", _read(side[0], [image, *side],
-                            f"View {image} next to the reference photos {', '.join(side)} of the place the claim names, to compare "
-                            f"landmarks and layout."), branch="READ_RECORD focus")
-    # L4 以图搜：哪些网页载有这张图、它们说拍于哪里
-    if not reverse and _image_search_allowed(state) and state.remaining >= 3:
+        _mark(memory, "compare_refs")
+        return Decision("action", "L3_view_with_references", _read(side[0], [image, *side],
+                        f"View {image} next to the reference photos {', '.join(side)} of the place the claim names, to compare "
+                        f"landmarks and layout."), branch="READ_RECORD focus")
+    # L4 以图搜：哪些网页载有这张图、它们说拍于哪里（第 2 轮跟进只补比对 / 读页时不再搜）
+    if not reverse and _image_search_allowed(state) and state.remaining >= 3 and "skip_reverse" not in issued:
         return Decision("action", "L4_reverse_image", {"action": "SEARCH", "arguments": {
             "input_type": "image", "query": image, "output_type": "text"}, "focus_evidence_ids": [image],
             "rationale": f"Find web pages that carry {image}; they may say where it was actually taken."},
@@ -2249,6 +2381,18 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
         choices.append("read")
     if reads or (refs and "compare_refs" in issued):
         choices.append("report")
+    if must and state.remaining >= 2 and len(reads) < 6:
+        choices = [c for c in choices if c != "report"]
+        if "read" not in choices:
+            choices.append("read")
+        must_ids = [p["evidence_id"] for p in must]
+        unread = list(must) + [p for p in unread if p["evidence_id"] not in must_ids]
+    if "report" in choices:
+        # 追加 2(b)：要交报告时给定照片与参考图得在附图里并排（读页之后它们会掉出附图——r0a l101 第 4 步并排看过，第 11 步
+        # 交报告时已看不到，报告反说 "reference photographs are not available"）；每个工作区最多补两次
+        step = _view_refs_before_report(state, memory, image, side)
+        if step is not None:
+            return step
     if state.remaining <= 1 or not choices or choices == ["report"]:
         return report("L9_report")
     return Decision("next_slot", "L5_next_step", {}, branch="S3",
@@ -2257,6 +2401,98 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                           "undated": [], "offsets": {}, "read": sorted(read_ids),
                           "previous": [_query_text(s.get("request") or {}) for s in text_queries],
                           "claim": claim[:400], "report_decision": report("L9_report").to_dict()})
+
+
+_SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos)", re.I)
+_SCOPE_URL = re.compile(r"open and read (https?://[^\s;]+?)(?=[;]|\.\s|\.$|\s|$)", re.I)
+
+
+def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str) -> Decision:
+    """检索类第 2 轮（追加 2）：第 1 轮报告写明了未读的命中页（网址）/ 没并排看的参考图，GIA 派的任务 Scope 里照列。
+    这里只补这些：逐个网址 SEARCH source=网址 打开 → READ_RECORD 读；L 族要并排看参考图时走 L2（S1 写参考图查询）→ L3 并排看；
+    然后交报告。不重走 OCR / 以图搜 / 日期查询。"""
+
+    issued = _issued(memory)
+    scope = state.task[state.task.rfind("Scope:"):]
+    urls = [u.rstrip(".") for u in _SCOPE_URL.findall(scope)][:3]
+    refs_wanted = family == "L" and bool(re.search(r"next to reference photos", scope, re.I))
+    searches = _search_obs(state)
+    reads = _read_records(state)
+    read_ids = {str((r.get("request") or {}).get("record_id")) for r in reads}
+    images = _material_images(state)
+    image = images[0] if images else None
+    opened: dict[str, str | None] = {}
+    for search in searches:
+        src = str((search.get("request") or {}).get("source") or "")
+        if src in urls:
+            pages = _search_pages([search])
+            opened[src] = pages[0]["evidence_id"] if pages else None
+    refs = _search_images(searches)
+    side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
+
+    def report(rule: str, last_turn: bool = False) -> Decision:
+        unread = [u for u in urls if not opened.get(u) or opened[u] not in read_ids]
+        missing = []
+        if unread:
+            missing.append("candidate pages that could not be opened or read: " + ", ".join(unread))
+        if refs_wanted and "compare_refs" not in issued:
+            missing.append("no reference photo of the claimed place was viewed side by side with the picture")
+        status = "INCOMPLETE" if missing and not (read_ids or "compare_refs" in issued) else "COMPLETED"
+        reason = "; ".join(missing) if status == "INCOMPLETE" else None
+        if last_turn and status == "INCOMPLETE":
+            reason = "turn budget exhausted: " + str(reason)
+        notes = ["this round only reads the pages the first round left unread and compares the picture with reference photos; "
+                 "say what each page that was read states about the picture (where / when it was published or taken) and "
+                 "whether that changes the first round's conclusion",
+                 "pages read: " + (", ".join(f"{e} ({u})" for u, e in opened.items() if e in read_ids) or "none"),
+                 "pages that could not be opened: " + (", ".join(u for u in urls if not opened.get(u)) or "none")]
+        if refs_wanted:
+            notes.append("reference photos: " + (", ".join(side) or "none") + "; compare them with the given picture feature by "
+                         "feature and say plainly whether they show the same place")
+        return _report(state, memory, rule, status=status, reason=reason, notes=notes + _ocr_notes(state),
+                       branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+
+    if state.remaining <= 0:
+        return report("G1_last_turn_report", last_turn=True)
+    for url in urls:
+        if url not in opened and f"open_{url}" not in issued and state.remaining >= 2:
+            _mark(memory, f"open_{url}")
+            return Decision("action", "S2f_open_page", {"action": "SEARCH", "arguments": {"source": url, "output_type": "text"},
+                            "focus_evidence_ids": [], "rationale": f"The first round found {url} but did not read it; open it."},
+                            branch="SEARCH open page")
+        page = opened.get(url)
+        if page and page not in read_ids and state.remaining >= 2:
+            return Decision("action", "S2f_read_page", {"action": "READ_RECORD", "arguments": {"record_id": page},
+                            "focus_evidence_ids": [], "rationale": f"Read {page}, the page at {url}."}, branch="READ_RECORD text")
+    if refs_wanted and image:
+        if not [s for s in _query_searches(searches) if (s.get("request") or {}).get("output_type") == "image"] \
+                and state.remaining >= 3:
+            m = re.search(r'claim:\s*"(.*)"\s*\(claim date', state.task, re.S)
+            claim = m.group(1) if m else state.task
+            return Decision("query_slot", "L2_reference_images", {"action": "SEARCH"}, branch="SEARCH text image",
+                            slot={"name": "S1_query", "purpose": "reference_images", "input_type": "text", "output_type": "image",
+                                  "previous": [], "focus": [image], "claim": claim[:400]})
+        if side and "compare_refs" not in issued and state.remaining >= 2:
+            _mark(memory, "compare_refs")
+            return Decision("action", "L3_view_with_references", _read(side[0], [image, *side],
+                            f"View {image} next to the reference photos {', '.join(side)} of the place the claim names, to compare "
+                            f"landmarks and layout."), branch="READ_RECORD focus")
+    return report({"E": "E9_report", "L": "L9_report"}.get(family, "C9_report"))
+
+
+def _view_refs_before_report(state: HiState, memory: dict[str, Any], image: str | None, side: list[str]) -> Decision | None:
+    issued = _issued(memory)
+    if not image or not side or "compare_refs" not in issued or state.remaining < 2:
+        return None
+    if all(e in state.attached for e in [image, *side]):
+        return None
+    n = int(memory.get("refs_reviewed") or 0)
+    if n >= 2:
+        return None
+    memory["refs_reviewed"] = n + 1
+    return Decision("action", "L3b_view_references_before_report", _read(side[0], [image, *side],
+                    f"Before reporting, view {image} again next to the reference photos {', '.join(side)} to state whether they "
+                    f"show the same place."), branch="READ_RECORD focus")
 
 
 def _read_records(state: HiState) -> list[dict[str, Any]]:
@@ -2343,6 +2579,9 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
     pages = _search_pages(searches)
     reads = _read_records(state)
     read_ids = {str((r.get("request") or {}).get("record_id")) for r in reads}
+    # 10-15 对话 5''（追加 2(a)）：标题 / 摘要命中声明的已取得页面没读完，不许交报告
+    claim_text = re.sub(r"\s*\((?:posted|claim date):[^)]*\)\s*$", "", state.task.split(":", 1)[-1])
+    must = _must_read(pages, read_ids, claim_text)
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         read_pages = [p for p in pages if p["evidence_id"] in read_ids]
@@ -2350,6 +2589,8 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
             status, reason = "COMPLETED", None
         else:
             status, reason = "INCOMPLETE", ("no external source was read" if searches else "no search was made")
+        if status == "INCOMPLETE" and _open_gap_clause(must):
+            reason = f"{reason}; {_open_gap_clause(must)}"
         if last_turn and status == "INCOMPLETE":
             reason = "turn budget exhausted: " + str(reason)
         notes = [f"searches made: {', '.join(repr(_query_text(s.get('request') or {})) for s in queries) or 'none'}",
@@ -2410,6 +2651,12 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
         choices.append("report")
     if not queries:
         choices = ["search"]
+    if must and state.remaining >= 2 and len(reads) < _MAX_CLAIM_READS + 2:
+        choices = [c for c in choices if c != "report"]
+        if "read" not in choices:
+            choices.append("read")
+        must_ids = [p["evidence_id"] for p in must]
+        unread = list(must) + [p for p in unread if p["evidence_id"] not in must_ids]
     if state.remaining <= 1 or not choices or choices == ["report"]:
         return report("C9_report")
     return Decision("next_slot", "C3_next_step", {}, branch="S3",
@@ -2421,6 +2668,11 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
                           "previous": [_query_text(s.get("request") or {}) for s in queries],
                           "claim": state.task.rsplit(":", 1)[-1].strip()[:400],
                           "report_decision": report("C9_report").to_dict()})
+
+
+def _substituted(decision: Decision) -> Decision:
+    decision.slot = {**decision.slot, "substituted": True}
+    return decision
 
 
 def resolve_slot_choice(decision: Decision, choice: dict[str, Any]) -> Decision:
@@ -2465,15 +2717,19 @@ def resolve_slot_choice(decision: Decision, choice: dict[str, Any]) -> Decision:
         if kind == "dates" and "dates" in choices:
             undated = [p.get("candidate") for p in slot.get("undated") or []]
             cand = str(choice.get("candidate") or "")
-            if cand in undated or undated:
-                cand = cand if cand in undated else undated[0]
+            if cand in undated:
                 return _dates_action(cand, "C7_dates", rationale or f"Check when {cand} was published or first archived.")
+            if undated:
+                # 10-15 对话 5''：选的候选不在清单里、换成第一个没查过的——S3 的理由讲的是它选的那个（r0a fmnv TIu R2 → R5），不沿用
+                return _substituted(_dates_action(undated[0], "C7_dates", f"Check when {undated[0]} was published or first archived."))
         if kind == "report" and "report" in choices:
             return report
-        # 选择不合法（编号不在未读清单、不许交报告时选了报告等）：退到"读第一篇未读"→"按声明原文搜"→ 报告
+        # 选择不合法（编号不在未读清单、不许交报告时选了报告等）：退到"读第一篇未读"→"按声明原文搜"→ 报告。
+        # 10-15 对话 5''：退选的动作不沿用 S3 的理由（它讲的是 S3 选的另一条记录：r0a fmnv RXR 读 E14 / E15 时理由讲 E11、
+        # e17 读 E4 时理由讲 E6）；标 substituted，由 S0 按实际动作重写
         if "read" in choices and unread:
-            return Decision("action", "C5_read_page", {"action": "READ_RECORD", "arguments": {"record_id": unread[0]},
-                            "focus_evidence_ids": [], "rationale": rationale or f"Read {unread[0]}."}, branch="READ_RECORD text")
+            return _substituted(Decision("action", "C5_read_page", {"action": "READ_RECORD", "arguments": {"record_id": unread[0]},
+                                "focus_evidence_ids": [], "rationale": f"Read {unread[0]}."}, branch="READ_RECORD text"))
         if "report" in choices and "search" not in choices:
             return report
         if "search" in choices:
@@ -2573,10 +2829,33 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
             durations[m.group(1).upper()] = float(card["duration_s"])
     gaps = classify_gaps(reported, durations, copy_task=bool(_COPY_TASK.search(state.task)))
     memory.setdefault("gaps", {})[f"r{state.round}"] = gaps
-    fixable = [g for g in gaps if g["fixable"]]
-    # A / C 族（检索类）的缺口是"原片没找到 / 没有来源"，按 B 族的时间窗缺口派第 2 轮没有意义：本版直接 FINISH
     family = ("L" if _PLACE_CHECK.search(state.task) else "E" if _EARLIEST.search(state.task)
               else "A" if _FIND_ORIGINAL.search(state.task) else "C" if _CLAIM_TASK.search(state.task) else "B")
+    # 10-15 对话 5''（追加 2）：检索类（E / L / C）的"不可修"程序化——工作区还有未读的命中页 / 没并排看的参考图时，walker 在
+    # status_reason 里写明（带网址 / E 编号），这类缺口能补：派第 2 轮按网址打开再读、并排看参考图。其余检索类缺口（原片没找到、
+    # 没有来源）仍按"补不了"直接 FINISH。A 族不变
+    if family in ("E", "L", "C"):
+        for g in gaps:
+            if g["kind"] == "unfixable" and not _SEARCH_GAP.search(g["reason"]):
+                continue
+            search_gap = _search_gap(g["reason"])
+            if search_gap:
+                g.update(search_gap)
+    fixable = [g for g in gaps if g["fixable"] and (family == "B" or g["kind"] in ("unread_pages", "references"))]
+    if family in ("E", "L", "C") and fixable and state.can_create and state.remaining >= 1 and "round2" not in issued             and rounds_done == 1:
+        _mark(memory, "round2")
+        urls: list[str] = []
+        for g in fixable:
+            urls += [u for u in g.get("urls") or [] if u not in urls]
+        refs = any(g["kind"] == "references" for g in fixable) and family == "L"
+        parts = [f"open and read {u}" for u in urls[:3]]
+        if refs:
+            parts.append("view the given picture next to reference photos of the place the claim names")
+        scope = "Scope: " + "; ".join(parts) + "." if parts else ""
+        return Decision("investigate_slot", "G2_round2_search_gap", {"decision": "INVESTIGATE"},
+                        branch="INVESTIGATE round2 " + "+".join(sorted({g["kind"] for g in fixable})),
+                        slot={"name": "S2_task", "gaps": [g["reason"] for g in fixable], "materials": state.originals(),
+                              "unfixable": [g["reason"] for g in gaps if not g["fixable"]], "scope": scope})
     if family != "B":
         fixable = []
     if fixable and state.can_create and state.remaining >= 1 and "round2" not in issued and rounds_done == 1:
@@ -2592,11 +2871,14 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
             cited += [e for e in g["cited"] if e not in cited]
         materials = state.originals() + [e for e in cited if state.is_image(e)][:6]
         kinds = sorted({g["kind"] for g in fixable})
+        scope = _scope_line(windows, audio, fixable, anchors, bool(_COPY_TASK.search(state.task)))
+        if scope and _NO_CORRESPONDENCE.search(json.dumps(reported, ensure_ascii=False)):
+            # 追加 5：第 1 轮整段比对一个对应段都没对上——第 2 轮在锚点附近缩小范围再比大概率也是 0%（r0a vcsl_pair_1），跟进时跳过
+            scope = scope.rstrip(".") + "; the whole-video comparison found no correspondence."
         return Decision("investigate_slot", "G2_round2_fixable_gap", {"decision": "INVESTIGATE"},
                         branch="INVESTIGATE round2 " + "+".join(kinds),
                         slot={"name": "S2_task", "gaps": [g["reason"] for g in fixable], "materials": materials,
-                              "unfixable": [g["reason"] for g in gaps if not g["fixable"]],
-                              "scope": _scope_line(windows, audio, fixable, anchors, bool(_COPY_TASK.search(state.task)))})
+                              "unfixable": [g["reason"] for g in gaps if not g["fixable"]], "scope": scope})
 
     # 第 2 轮之后：第 1 轮的报告不在 latest_reports 里，先用记忆查回来再写答案（G4 / QUERY_MEMORY）
     if rounds_done >= 2 and "memory_r1" not in issued and state.remaining >= 1:
@@ -2640,6 +2922,41 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
 
 
 # ---- 报告缺口的分类（GIA 只看报告里写出来的东西）
+
+_SEARCH_GAP = re.compile(r"candidate pages that match the claim were not examined|reference photos .{0,80}were not viewed side by side", re.I)
+_URL = re.compile(r"https?://[^\s,;]+")
+_NO_CORRESPONDENCE = re.compile(r"no consistent (?:frame-level )?correspondence|found no (?:consistent )?correspondence|"
+                                r"\b0% of (?:A|B|Material)", re.I)
+
+
+def _search_gap(reason: str) -> dict[str, Any] | None:
+    """walker 写进检索类报告 status_reason 的可修缺口（追加 2）：未读命中页（带网址）、参考图没并排看。"""
+
+    if re.search(r"candidate pages that match the claim were not examined", reason, re.I):
+        urls = [u.rstrip(".)") for u in _URL.findall(reason)]
+        if urls:
+            return {"kind": "unread_pages", "fixable": True, "urls": urls}
+    if re.search(r"reference photos .{0,80}were not viewed side by side", reason, re.I):
+        return {"kind": "references", "fixable": True, "urls": []}
+    return None
+
+
+_RESOLVED = re.compile(r"\b(?:match(?:es|ed)?|identical|the same|no (?:audible |audio |sound )?difference|consistent)\b", re.I)
+_NEGATED = re.compile(r"\b(?:not|no|never|cannot|could not|unverified|unclear)\b[^.;]{0,30}\b(?:match|identical|same|consistent)", re.I)
+
+
+def _resolved_in_findings(clause: str, findings: list[dict[str, Any]]) -> bool:
+    """追加 2：第 2 轮任务不针对报告自己已写明"已匹配 / 已解决"的点（r0a videosham_1028_v9：Finding 写了音频 8/8 匹配，
+    status_reason 却列了"音频没核实"，第 2 轮就去追这个缺口）。现在只认音频：缺口讲音频 / 语音，而某条 Finding 里讲音频的句子
+    写了匹配、没有否定。"""
+
+    if not re.search(r"\b(?:audio|sound|speech|spoken)\b", clause, re.I):
+        return False
+    for f in findings:
+        for sent in re.split(r"(?<=[.;])\s+", str(f.get("statement") or "")):
+            if re.search(r"\b(?:audio|sound)\b", sent, re.I) and _RESOLVED.search(sent) and not _NEGATED.search(sent):
+                return True
+    return False
 
 _SIDE_WINDOW = re.compile(r"(?:Material\s+)?\b([AB])\b(?:\s+at|\s+from|\s*:)?\s*(\d+(?:\.\d+)?)\s*(?:s|sec(?:onds)?)?\s*(?:–|—|-|to)\s*(\d+(?:\.\d+)?)\s*(?:s|sec|seconds)\b", re.I)
 # 对应锚点："A 5.900 s ↔ B 11.000 s"、"Material A at 15.349 s and Material B at 11.585 s"
@@ -2730,6 +3047,10 @@ def classify_gaps(reported: list[dict[str, Any]], durations: dict[str, float] | 
                                  | ({"A", "B"} if re.search(r"(?:audio|speech|sound)[^.;]{0,40}not (?:been )?transcribed", clause, re.I)
                                     and not re.search(r"audio of (?:Material\s+)?[AB]\b", clause, re.I) else set()))
             budget = bool(re.search(r"budget|exhausted", clause, re.I))
+            if _resolved_in_findings(clause, report.get("findings") or []):
+                gaps.append({"task_id": report.get("task_id"), "reason": clause, "kind": "resolved_in_findings", "fixable": False,
+                             "windows": [], "anchors": [], "audio_sides": [], "budget": budget, "cited": cited})
+                continue
             if _UNFIXABLE.search(clause):
                 kind, fixable = "unfixable", False
             elif anchors and (_EXTENT.search(clause) or _FIXABLE.search(clause)):
@@ -2987,6 +3308,11 @@ def _skip_compare(state: HiState, memory: dict[str, Any], job: dict[str, Any], e
 
     if not job["anchor"] or "align_media" in state.inspect_ops:
         return False
+    if re.search(r"whole-video comparison found no correspondence", state.task, re.I):
+        # 10-15 对话 5''（追加 5）：第 1 轮整段比对 0%，锚点附近缩窗再比大概率也是 0%（r0a vcsl_pair_1 两次都是）：直接以图找图
+        _mark(memory, f"fu_align_{job['id']}")
+        ext.update({"issued": True, "found": False, "compare_from": None, "skipped_no_correspondence": True})
+        return True
     cover = _empty_compare_cover(state, job["wa"])
     if cover is None:
         return False
@@ -3026,7 +3352,7 @@ def _extent_step(state: HiState, memory: dict[str, Any], job: dict[str, Any], a:
     align = next((o for o in reversed(state.observations) if o["operation"] in ("align_media", "compare_media")
                   and (o["params"] or {}).get("range_a_s") == (ext.get("compare_from") or wa)
                   and (o["operation"] == "compare_media" or (o["params"] or {}).get("range_b_s") == wb)), None)
-    if align is None:
+    if align is None and not ext.get("skipped_no_correspondence"):
         return None
     match = _consistent_match(align, anchor[0], anchor[1]) if anchor else (_range_matches(align) or [None])[0]
     if match is not None and match.get("range_a_s") and match.get("range_b_s"):

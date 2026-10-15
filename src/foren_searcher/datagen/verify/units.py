@@ -221,7 +221,10 @@ def check_answer(decision: Decision, log: RunLog, case: Case | None, useful: Use
             elif check.kind == "date_in_range":
                 found = dates_in(answer)
                 lo, hi = check.params.get("min"), check.params.get("max")
-                bad = [d for d in found if (lo and d < lo) or (hi and d > hi)]
+                # 10-15 对话 5''（追加 8）：出现在所引证据文本里的日期放行（r0a averimatec_e4 / e28：答案里的 2010-05-05、
+                # 2023-03-10 是所引 E 的 IA 抓取日期 / 文章声明日期，答案也写明了是什么日期，却被判 critical）
+                evidence_dates = set(dates_in(answer_pool))
+                bad = [d for d in found if ((lo and d < lo) or (hi and d > hi)) and d not in evidence_dates]
                 if found and bad and len(bad) == len(found):
                     errors.append(_err(ErrorType.UNSUPPORTED_ASSERTION, f"答案日期 {', '.join(bad)} 不在案卷范围内", extra={"check": "date_in_range"}))
     # 污染输入：答案是否复述了被污染 Finding 的出错片段

@@ -46,7 +46,7 @@
     "line_endings": "crlf_to_lf",
     "computed_at": "2026-10-15（freeze --write 于容器副本计算，写回前已核对本机 inspect/、search/ 64 个文件与 hi/workspace.py、state_render.py 和计算时一致）：A7（OCR 一次调用一个 E）+ A9（修复 5 结论式记录，含对应段结论行）之后",
     "status": "hash 已重算（对话 1，A7 + A9 落地后）；对话 5 于 2026-10-15 打 git tag r0-frozen（打 tag 前 walker_run.py freeze --round r0a 再核一次：0 项不一致）；之后训练前不再改工具措辞",
-    "tag": "r0-frozen-2"
+    "tag": "r0-frozen-3"
   },
   "teacher": {
     "mode": "slots",
@@ -180,8 +180,8 @@
       "datagen/verify",
       "datagen/errors.py"
     ],
-    "code_hash": "sha256:4a833c7a8e0d32900847674ce84d98779bb3642f73d6d7d64d5ba9acf922a915",
-    "code_hash_previous": "sha256:6e4eac1b07526c632f89b3634a9cd4d6261f8a4e39275d55c86238bc270b5a26",
+    "code_hash": "sha256:db5a4e8566129f754f9c5b2b124b89a7a724652ecb8bd14bd34a74ae1a51e941",
+    "code_hash_previous": "sha256:4a833c7a8e0d32900847674ce84d98779bb3642f73d6d7d64d5ba9acf922a915",
     "mode": "sync",
     "second_judge": {
       "model": "qwen/qwen3.5-122b-a10b",
@@ -305,6 +305,10 @@
     {
       "date": "2026-10-15",
       "change": "对话 5'（r0 门报告十一节第 3 条）：datagen/verify/complete_units.py 的 complete_run 在 plan 分支补 sink.append(unit)——以前 plan 单元判了但只进返回值、不进 main 写的 units 文件，export 拿不到 plan 的模型判定。核验提示、schema、判定逻辑都没变，只是 plan 判定现在写盘；verifier.code_hash 6e4eac1b…5a26 → 4a833c7a…a915（旧值记 code_hash_previous），verifier@0.3.6 不变。r0a 的 34 个 plan 单元已用修好的 complete_run 重判（answer 命中缓存）写进 units 文件。tool_layer、spec_hash、teacher 未变。见 claude/walker修复_S4降级与B族边界_20261015.md"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "对话 5''（r0b 前追加 10 项，git tag r0-frozen-2 之后）：核验器 datagen/verify/units.py 与 exec_checks.py 的 date_in_range——出现在所引证据文本里的日期放行（r0a e2 / e4 / e17 / e28 四条答案的\"日期不在案卷范围\"因此撤销）；verifier.code_hash 4a833c7a…a915 → db5a4e85…e941，verifier@0.3.6 与提示、schema 不变。export：理由与动作对象不符且 S0 重写后仍不符 → held rationale_target_mismatch；溯源类答案写\"未能确定\"而 GT=false → held provenance_unverified_vs_false（口径待负责人定）；hidden_context 专名按词形比（Russia↔Russian、Jul↔July）；HI 动作理由里的世界知识专名只记 metadata hidden_knowledge、不改桶。walker / S4（oracle_generator）的改动不在冻结 hash 里：S3 退选不沿用理由、检索类未读命中页与 L 族参考图并排是交报告前的前置条件、可修缺口派第 2 轮、failed 页模板句、S4 三条约束与程序校验、E 族选页启发式、B 族区域事件外侧配对帧 / 0% 后不缩窗 / 纯视觉不跑 ASR。tool_layer hash、spec_hash、teacher 未变；tool_layer.tag = r0-frozen-3。见 claude/r0b扩案例重跑与门报告_20261015.md"
     }
   ]
 }

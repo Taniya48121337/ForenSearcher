@@ -200,6 +200,30 @@ def decide_row(decision: Decision, unit: Verdict | None, report: Verdict | None)
     return "held", 0.0, "memory_action_follows_next_decision"
 
 
+_UNVERIFIED_ANSWER = re.compile(r"\bunverified\b|\b(?:could|can)\s*not\s+be\s+(?:verified|determined|established|confirmed)"
+                                r"|\bcannot\s+be\s+(?:verified|determined|established)|\bnot\s+(?:been\s+)?(?:verified|established|"
+                                r"determined)\b|\bundetermined\b|\binconclusive\b", re.I)
+
+
+def _provenance_unverified_vs_false(decision: Decision, unit: Verdict | None, case: Any) -> bool:
+    """10-15 对话 5''（追加 9）：溯源类（task_kind=provenance）答案判 negative，major / critical 错误只有"没给出应有标签"
+    （案卷 GT=false，label_expected），且答案写的是"未能核实 / 未能确定"。r0a 金标 A001 / A004 / A007：核验器按 GT 判
+    omitted_required_fact，Opus 按证据认为"未确定"是诚实的——口径问题，这类不进 accepted 也不进 rejected。"""
+
+    if decision.role != "GIA" or decision.kind != "answer" or unit is None or case is None:
+        return False
+    if getattr(case, "task_kind", None) != "provenance":
+        return False
+    label = next((c for c in case.checks if c.kind == "label_expected"), None)
+    if label is None or str(label.params.get("label")).lower() not in ("false", "misleading", "不实"):
+        return False
+    severe = [e for e in unit.errors if e.severity in (Severity.MAJOR, Severity.CRITICAL)]
+    if not severe or any((e.extra or {}).get("check") != "label_expected" for e in severe):
+        return False
+    answer = str((decision.output or {}).get("answer") or "") if isinstance(decision.output, dict) else ""
+    return bool(_UNVERIFIED_ANSWER.search(answer))
+
+
 def _terminal_major(verdict: Verdict) -> list[str]:
     """终端行（报告 / 答案）的严格入选（10-14 晚）：disposition=positive 允许带 1 个 major 错，审读发现 wk8 accepted 的
     答案 12 条里 7 条带核验错误。报告与答案是"结论对不对"的样本，带 major 的一律不进 accepted（记 held，原因写错误类型）。
@@ -341,6 +365,40 @@ def hidden_context(messages: list[dict[str, Any]], payload: Any, output: Any, li
     return found[:limit]
 
 
+_NATIONALITY = frozenset("""Afghan African American Arab Arabic Argentine Australian Austrian Bangla Bengali Brazilian British
+Burmese Canadian Chinese Cyrillic Dutch Egyptian English European Filipino French German Greek Guatemalan Gujarati Hebrew Hindi
+Honduran Indian Indonesian Iranian Iraqi Irish Israeli Italian Japanese Kenyan Korean Latin Malay Mexican Nepali Nigerian
+Pakistani Palestinian Persian Polish Portuguese Punjabi Russian Somali Spanish Swahili Swedish Syrian Tamil Telugu Thai Turkish
+Ukrainian Urdu Vietnamese""".split())
+
+
+def hidden_knowledge(messages: list[dict[str, Any]], payload: Any, output: Any, limit: int = 8) -> list[str]:
+    """10-15 对话 5''（追加 6）：HI 动作理由里的专名，学生输入和原始 payload 里都没有（含词形，学生输入按不分大小写比）——
+    教师的世界知识（r0a averimatec_l101 理由里的 "Kolkata"：两份里都 0 命中，是从 anandabazar 推出来的）。
+    hidden_context 只认"原始 payload 里有、学生输入里没有"的词，这类按设计漏掉。只查 rationale：报告 / 答案里教师
+    看图读出的专名（招牌、字幕）不在这里扣。放不放行同样由 release_by_evidence 决定。"""
+
+    rationale = output.get("rationale") if isinstance(output, dict) and output.get("action") else None
+    if not isinstance(rationale, str) or not rationale.strip():
+        return []
+    student = json.dumps(messages[:-1], ensure_ascii=False)
+    student_lower = student.lower()
+    raw = json.dumps(strip_tool_metadata(payload), ensure_ascii=False)
+    found: list[str] = []
+    # 句首词（Running / Reading / Need …）不是专名；月份名（日期在状态里是 ISO 写法）不算；国籍 / 语言词（看图说"Hindi 剪报"
+    # "Mexican 旗"）与引号里抄的画面文字（'Lost Hills Sheriff's Event'）是看图读出的，不算世界知识
+    initial = {m.group(1) for m in re.finditer(r"(?:^|[.!?;:]\s+|\(\s*)([A-Z][A-Za-z'\-]+)", rationale)}
+    quoted = " ".join(re.findall(r"['‘“\"]([^'’”\"]{2,120})['’”\"]", rationale))
+    for token in _HIDDEN_TOKEN.findall(rationale):
+        if not token.isalpha() or token in found or token.lower() in _COMMON_WORDS or token.isupper() or token[:-1].isupper() \
+                or token in initial or token[:3] in _MONTHS or token in _NATIONALITY or token in quoted:
+            continue
+        if _token_in(token, student) or _token_in(token, raw) or any(f.lower() in student_lower for f in _word_forms(token)):
+            continue
+        found.append(token)
+    return found[:limit]
+
+
 # =========================================================================== 10-15 质量门（清单 B2–B9、C3、C5）
 # 下面这些检查逐行算、逐行写进 metadata（无论最后进哪个桶），export_gate.py 只读导出目录就能出数；会改桶的规则只作用于
 # 本来要进 accepted 的行，原因写在 bucket_reason。
@@ -399,12 +457,32 @@ def _is_numeric(token: str) -> bool:
     return bool(_NUMERIC_TOKEN.fullmatch(token))
 
 
+_MONTHS = {m[:3]: m for m in ("January February March April May June July August September October November "
+                               "December").split()}
+_WORD_SUFFIXES = ("'s", "’s", "ians", "ian", "ans", "an", "ese", "ish", "es", "s", "n", "i")
+
+
+def _word_forms(token: str) -> set[str]:
+    """10-15 对话 5''（追加 6）：专名的词形——所有格 / 复数 / 国名与形容词（Russia ↔ Russian、Pakistan ↔ Pakistani）、
+    月份全称与缩写（Jul ↔ July）。以前只认原样子串，Russian / July 不在学生输入里就算"隐藏"，再由证据放行时出处标错。"""
+
+    forms = {token}
+    for suffix in _WORD_SUFFIXES:
+        if token.endswith(suffix) and len(token) - len(suffix) >= 4:
+            forms.add(token[: len(token) - len(suffix)])
+    if token[:3] in _MONTHS and (token == token[:3] or _MONTHS[token[:3]] == token):
+        forms |= {token[:3], _MONTHS[token[:3]]}
+    return forms
+
+
 def _token_in(token: str, text: str) -> bool:
-    """词：原样子串（专名）。数字：按数值整段比，不认子串（129 不能靠 129600 放行）；"3.500,4.100" 逐个比，3.500 = 3.5；
-    按 token 的小数位四舍五入后相等也算（112.6 ← 112.61）。"""
+    """词：原样子串（专名），或词形（_word_forms）作为词首出现。数字：按数值整段比，不认子串（129 不能靠 129600 放行）；
+    "3.500,4.100" 逐个比，3.500 = 3.5；按 token 的小数位四舍五入后相等也算（112.6 ← 112.61）。"""
 
     if not _is_numeric(token):
-        return token in text
+        if token in text:
+            return True
+        return any(re.search(r"(?<![A-Za-z])" + re.escape(form), text) for form in _word_forms(token) if form != token)
     parts = [p for p in re.split(r"[,:]", token) if p]
     numbers = [float(x) for x in re.findall(r"(?<![\d.])\d+(?:\.\d+)?(?![\d.])", text)]
 
@@ -732,6 +810,14 @@ def walker_slots(log: RunLog, decision: Decision) -> dict[str, Any]:
             slot = {}
         info["rationale_source"] = "s0_teacher" if slot.get("used") else "s0_template_fallback"
         info["rationale_template"] = slot.get("template")
+    target_file = rdir / "slot_rationale_target.json"
+    if target_file.is_file():
+        # 10-15 对话 5''（追加 1）：理由讲的不是这一步动作的对象，S0 重写一次后仍不符 → status=mismatch
+        try:
+            target = json.loads(target_file.read_text(encoding="utf-8"))
+        except ValueError:
+            target = {}
+        info["rationale_target"] = target.get("status")
     gt_file = rdir / "slot_S5_gt_check.json"
     if gt_file.is_file():
         try:
@@ -970,6 +1056,9 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
         unit = by_unit.get((unit_key, decision.request_id)) if unit_key else None
         report = report_by_ws.get(decision.actor_id) if decision.role == "HI" else None
         bucket, weight, reason = decide_row(decision, unit, report)
+        if bucket == "rejected" and _provenance_unverified_vs_false(decision, unit, case):
+            # 10-15 对话 5''（追加 9，口径待负责人定）：溯源类答案写"未能确定"、GT 是 false——证据没走到头，不当正例也不当反例
+            bucket, weight, reason = "held", 0.0, "provenance_unverified_vs_false"
         plan_copy = bucket == "accepted" and _plan_copies_task(decision)
         if plan_copy:
             if plan_copy_mode == "hold":
@@ -993,6 +1082,10 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
         if hidden_blocking and bucket == "accepted" and hidden_context_mode == "hold":
             # 教师据以决策的内容学生输入里没有、也不在本 run 学生够得着的证据里：不当正例教
             bucket, weight, reason = "held", 0.0, "hidden_context:" + ",".join(hidden_blocking[:5])
+        # 10-15 对话 5''（追加 6）：只记 metadata、不改桶——r0a 上命中的 3 处（l101 "Kolkata" 是把学生看得到的孟加拉文 কলকাতা
+        # 译出来的，e2 "Kheer Bhawani" 译自图上的印地文剪报）程序分不出"翻译 / 看图"与"世界知识"，交 B2 人工抽查
+        knowledge = hidden_knowledge(messages, decision.payload, decision.output) if decision.role == "HI" else []
+        knowledge_released = release_by_evidence(knowledge, decision, messages, corpus)
         if truncation and bucket == "accepted":
             bucket, weight, reason = "held", 0.0, f"tool_result_{truncation['kind']}:" + ",".join(truncation["items"][:5])
         outside = cited_ids_outside_view(messages, decision.output)                       # B3
@@ -1024,6 +1117,8 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
         slots = walker_slots(log, decision)
         if slots.get("s5_gt_review") and bucket == "accepted":                            # B5：S5 不用 GT
             bucket, weight, reason = "held", 0.0, "s5_used_gt"
+        if slots.get("rationale_target") == "mismatch" and bucket == "accepted":           # 10-15 对话 5''：理由与动作对象不符
+            bucket, weight, reason = "held", 0.0, "rationale_target_mismatch"
         verdict_src = unit if decision.kind in ("step", "plan", "answer") else report
         meta: dict[str, Any] = {
             "role": decision.role.lower(), "unit": decision.kind, "origin": origin_tag or log.origin, "source_kind": log.origin,
@@ -1048,6 +1143,7 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
             "bucket": bucket, "bucket_reason": reason, "sample_weight": weight,
             "fact_check_in_context": exposure["in_context"], "fact_check_in_target": exposure["in_target"],
             "hidden_context": hidden, "hidden_context_released": released,
+            "hidden_knowledge": knowledge, "hidden_knowledge_released": knowledge_released,
             "tool_result_truncation": truncation, "cited_outside_view": outside,
             "incomplete_reason_checks": report_checks, "compat_problems": compat,
             "branch": decision_branch(output_dict, decision.payload or {}) if output_dict else None,
@@ -1111,6 +1207,11 @@ def quality_summary(metas: list[dict[str, Any]]) -> dict[str, Any]:
         "incomplete_reason_mismatch_held": reasons("incomplete_reason_mismatch"),
         "plan_copies_task": {"rows": sum(1 for m in metas if m.get("plan_copies_task")), "held": reasons("plan_copies_task")},
         "compat_held": reasons("compat:"), "stale_verifier_held": reasons("stale_verifier"), "too_long_held": reasons("too_long"),
+        "rationale_target_mismatch_held": reasons("rationale_target_mismatch"),
+        "provenance_unverified_vs_false_held": reasons("provenance_unverified_vs_false"),
+        "hidden_knowledge_rows": sum(1 for m in metas if [t for t in m.get("hidden_knowledge") or []
+                                                         if t not in (m.get("hidden_knowledge_released") or {})]),
+        "rationale_target": dict(Counter(str(m["rationale_target"]) for m in metas if m.get("rationale_target"))),
         "origin": dict(Counter(f"{m['role']}:{m.get('origin')}:{m['bucket']}" for m in metas)),
         "rationale_source": dict(Counter(str(m.get("rationale_source")) for m in metas if m["bucket"] == "accepted")),
         "rationale_slot": dict(Counter(str(m["rationale_slot"]) for m in metas if m["bucket"] == "accepted" and m.get("rationale_slot"))),

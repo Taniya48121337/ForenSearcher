@@ -427,6 +427,9 @@ def main() -> int:
                         help="v1'：从 calibrate_precision 的 precision_*.json 的 hard_items 抽定向批次；可给多个版本（并集，各版判定都记进 strata）")
     parser.add_argument("--hard-total", type=int, default=65)
     parser.add_argument("--min-frames", type=int, default=20, help="--from-hard：视频帧单元至少这么多条")
+    parser.add_argument("--oversample-flagged", action="store_true",
+                        help="核验器标了 major/critical 的 Finding 全取，不足 --findings 再按原分层补（10-15 对话 5''）")
+    parser.add_argument("--only-cases", default=None, help="只抽这份案卷清单里的案例（experiments/sft_data 下的 JSON 列表）")
     args = parser.parse_args()
     if args.plan_tasks:
         return plan_tasks_batch(args)
@@ -443,9 +446,21 @@ def main() -> int:
     units = load_jsonl(Path(args.unit_verdicts))
 
     cands = [c for c in finding_candidates(reports) if run_dir(c["run"])]
-    half = args.findings // 2
-    picks = stratified([c for c in cands if c["verifier_flagged"]], half, args.seed)
-    picks += stratified([c for c in cands if not c["verifier_flagged"]], args.findings - len(picks), args.seed)
+    if args.only_cases:
+        # 10-15 对话 5''：只抽这些案卷的 run（r0g 补金标只抽新案例）；清单是 walker_d2_cases.py 写的案卷名列表
+        names = set(json.loads((SFT / args.only_cases).read_text(encoding="utf-8")))
+        keep = lambda run: any(run.startswith(n + "_") and run[len(n) + 1:].split("_")[0].startswith("r0") for n in names)  # noqa: E731
+        cands = [c for c in cands if keep(c["run"])]
+        units = [u for u in units if keep(u["subject"]["run"])]
+    if args.oversample_flagged:
+        # 10-15 对话 5''（追加 10）：核验器标了 major/critical 的 Finding 全取（r0a 只有 3 条，精确率测不出来），不足再按原分层补
+        flagged = [c for c in cands if c["verifier_flagged"]]
+        picks = stratified(flagged, len(flagged), args.seed, per_run=10 ** 6)
+        picks += stratified([c for c in cands if not c["verifier_flagged"]], max(0, args.findings - len(picks)), args.seed)
+    else:
+        half = args.findings // 2
+        picks = stratified([c for c in cands if c["verifier_flagged"]], half, args.seed)
+        picks += stratified([c for c in cands if not c["verifier_flagged"]], args.findings - len(picks), args.seed)
     answers = [u for u in units if u.get("unit") == "answer"]
     answers = sorted(answers, key=lambda u: h(args.seed, u["subject"]["run"], u["subject"].get("request")))[: args.answers]
     plans = [u for u in units if u.get("unit") == "plan"]

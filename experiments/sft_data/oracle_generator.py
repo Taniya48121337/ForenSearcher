@@ -120,6 +120,17 @@ MEDIA_RULES = (
             "footage, identify it as the source video found: give its title and address as its page record shows them, citing that "
             "page E, and cite the comparison result for the picture match. Whether it is the earliest upload is a separate question "
             "for limitations, not a reason to leave the source unidentified.\n"
+        ) + "%s"
+# 10-15 对话 5''（追加 3）：r0a l101 报告说 "reference photographs are not available"，E7 / E15 就在 state 里；1028_v9 关键的
+# compare_media / OCR 记录一个不引、只引采样帧；c_46581202 F3 把"未核实"的句子挂上 [E2, E3, E4]
+CONTRACT_RULES = (
+            "- A limitation must not say that a record or material is unavailable, missing, not attached or not provided when it is "
+            "among the observed E IDs above (for example reference photos that were retrieved, a transcript, an OCR or comparison "
+            "record); if such a record was not compared or examined, say that, naming it.\n"
+            "- Each statement cites the record that establishes it: the comparison result, the OCR or transcript record, the date "
+            "record or the page that states it — not only sampled frames when such a record exists.\n"
+            "- A statement asserts what the evidence establishes. What is not verified, not established or could not be determined "
+            "goes into limitations, not into a statement with evidence_ids.\n"
         )
 SEARCH_RULES = (
             "- If the status is INCOMPLETE, write status_reason as the missing facts separated by '; ', each naming what is "
@@ -138,7 +149,7 @@ SEARCH_RULES = (
             "be verified, and put what was not established into limitations.\n"
             "- Never write that a record, tool result, transcript or output is truncated, cut off or not fully shown; if a value is "
             "not visible in the state, simply do not state it.\n"
-        )
+        ) + "%s"
 
 
 class OracleGenerator(ModelImageInputs):
@@ -299,8 +310,15 @@ class OracleGenerator(ModelImageInputs):
                 output = self._slot_report(directory, actor_dir, base_prompt, image_paths, decision, payload, slots)
             else:
                 output = decision.output
+                if workspace and self.rationale_slot and decision.slot.get("substituted"):
+                    # 10-15 对话 5''：S3 选的编号不合法、walker 换成了别的一步——理由按实际动作由 S0 重写
+                    output = self._slot_rationale(directory, actor_dir, base_prompt, image_paths, output,
+                                                  rendered if render_info else payload, slots)
         else:
             raise RuntimeError(f"unknown walker decision kind {decision.kind}")
+        if workspace and isinstance(output, dict) and output.get("action"):
+            output = self._rationale_target_guard(directory, actor_dir, base_prompt, image_paths, output,
+                                                  rendered if render_info else payload, slots)
 
         raw = json.dumps(output, ensure_ascii=False)
         (directory / "response.json").write_text(raw, encoding="utf-8")
@@ -705,8 +723,32 @@ class OracleGenerator(ModelImageInputs):
             raise RuntimeError(f"oracle slot {name} failed: {directory}" + (f"；Codex 报错：{reason[:300]}" if reason else ""))
         return result_path.read_text(encoding="utf-8")
 
+    def _rationale_target_guard(self, directory: Path, actor_dir: Path, base_prompt: str, image_paths: list[Path],
+                                output: dict[str, Any], shown: dict[str, Any], slots: list[dict[str, Any]]) -> dict[str, Any]:
+        """10-15 对话 5''（追加 1）：理由里的 E / R 编号不含动作的对象、却含别的编号 → S0 按实际动作重写一次；仍不符 → 写
+        slot_rationale_target.json status=mismatch，export 把这一步放 held（rationale_target_mismatch）。"""
+
+        text = json.dumps(shown, ensure_ascii=False)
+        first = rationale_target_check(output, text)
+        if first["status"] != "mismatch":
+            return output
+        log: dict[str, Any] = {"first": {**first, "rationale": output.get("rationale")}}
+        retried = output
+        if self.rationale_slot:
+            feedback = (f"\nThe action's own record is {', '.join(first['targets'])}; a previous rationale talked about "
+                        f"{', '.join(first['mentioned'])} instead. The rationale must say why THIS record is the next step, "
+                        "naming it.")
+            retried = self._slot_rationale(directory, actor_dir, base_prompt, image_paths, output, shown, slots,
+                                           feedback=feedback, name="S0_rationale_retry", strict_target=True)
+        second = rationale_target_check(retried, text)
+        log["retry"] = {**second, "rationale": retried.get("rationale")}
+        log["status"] = "mismatch" if second["status"] == "mismatch" else "fixed"
+        (directory / "slot_rationale_target.json").write_text(json.dumps(log, ensure_ascii=False), encoding="utf-8")
+        return retried
+
     def _slot_rationale(self, directory: Path, actor_dir: Path, base_prompt: str, image_paths: list[Path], output: dict[str, Any],
-                        shown: dict[str, Any], slots: list[dict[str, Any]]) -> dict[str, Any]:
+                        shown: dict[str, Any], slots: list[dict[str, Any]], *, feedback: str = "", name: str = "S0_rationale",
+                        strict_target: bool = False) -> dict[str, Any]:
         """S0（10-14 晚）：程序定的 HI 动作，rationale 由教师按这一步学生看到的状态写（模板 rationale 在 wk8/wk9 里 328 行只有
         201 种，同一句出现 35 次）。动作本身不变；教师写的不合格（空、过长、引了状态里没有的编号）就保留模板。"""
 
@@ -719,10 +761,10 @@ class OracleGenerator(ModelImageInputs):
             "obtain. Refer to the concrete records (E / R IDs, times, names) that appear in the state; describe image content only "
             "where it is the reason for the step, and only what the attached images plainly show. Do not mention the host, rules or "
             "a plan, and do not state results this action has not produced yet. Write in English. "
-            'Return only {"rationale": "..."}.')
+            'Return only {"rationale": "..."}.') + feedback
         mock = {"rationale": str(output.get("rationale") or "")}
         try:
-            raw = self._codex(directory, actor_dir, "S0_rationale", base_prompt + suffix, image_paths, slots, mock)
+            raw = self._codex(directory, actor_dir, name, base_prompt + suffix, image_paths, slots, mock)
         except Exception:
             if self.slot_failed:
                 raise
@@ -732,9 +774,12 @@ class OracleGenerator(ModelImageInputs):
         cited = set(_EREF.findall(text)) | set(re.findall(r"\bR[1-9][0-9]*\b", text))
         bad = sorted(cited - visible)
         ok = 15 <= len(text) <= 480 and not bad
-        (directory / "slot_S0_rationale.json").write_text(json.dumps({"template": output.get("rationale"), "teacher": text,
-                                                                      "used": ok, "unknown_ids": bad}, ensure_ascii=False),
-                                                          encoding="utf-8")
+        if ok and strict_target and rationale_target_check({**output, "rationale": text}, json.dumps(shown, ensure_ascii=False))["status"] == "mismatch":
+            ok = False
+        record = {"template": output.get("rationale"), "teacher": text, "used": ok, "unknown_ids": bad}
+        if name != "S0_rationale":
+            record["slot"] = name
+        (directory / "slot_S0_rationale.json").write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
         return {**output, "rationale": text} if ok else output
 
     def _slot_report(self, directory: Path, actor_dir: Path, base_prompt: str, image_paths: list[Path], decision: Decision,
@@ -746,7 +791,7 @@ class OracleGenerator(ModelImageInputs):
         parts = list(slot.get("task_parts") or [])
         # 10-14：检索类任务（E 图片出处 / L 拍摄地 / C 核查声明）不用两段视频比对的那组要点（时间、边界、A/B 帧）
         search_task = slot.get("family") in ("E", "L", "C")
-        rules = (SEARCH_RULES if search_task else MEDIA_RULES) % (", ".join(allowed) or "(none)",)
+        rules = (SEARCH_RULES if search_task else MEDIA_RULES) % (", ".join(allowed) or "(none)", CONTRACT_RULES)
         suffix = (
             "\n\nHOST DECISION FOR THIS TURN (language slot S4): the host has already decided that this turn is the workspace "
             "REPORT, not a tool action. Write the report JSON exactly as the HI instructions define it: "
@@ -798,6 +843,40 @@ class OracleGenerator(ModelImageInputs):
             status = _final_status(slot["status"], retry_report, parts)
             status, reason = _coverage_status(status, reason, retry_report, parts)
             report, dropped = _clean_report(retry_report, task_id=task_id, status=status, reason=reason, allowed=set(allowed))
+        # 10-15 对话 5''（追加 3）：程序校验 CONTRACT_RULES，有问题就把问题反馈给教师重写一次；重写后问题更少（且有 Finding）才换
+        kinds = slot.get("evidence_kinds") or {}
+        problems = s4_contract_problems(report, kinds) if kinds else []
+        if problems:
+            contract: dict[str, Any] = {"first": problems}
+            retry = suffix + ("\nYour previous report has these problems; fix them and return the complete JSON object again:\n"
+                              + "".join(f"- {p}\n" for p in problems[:8]))
+            raw = self._codex(directory, actor_dir, "S4_report_contract", base_prompt + retry, image_paths, slots, mock)
+            try:
+                again = extract_json_object(raw)
+                status2 = _final_status(slot["status"], again, parts)
+                status2, reason2 = _coverage_status(status2, slot.get("status_reason"), again, parts)
+                report2, dropped2 = _clean_report(again, task_id=task_id, status=status2, reason=reason2, allowed=set(allowed))
+            except Exception as exc:  # noqa: BLE001
+                report2, dropped2 = None, []
+                contract["retry_error"] = f"{type(exc).__name__}: {exc}"[:300]
+            if report2 and report2["findings"]:
+                left = s4_contract_problems(report2, kinds)
+                contract["retry"] = left
+                if len(left) < len(problems):
+                    report, dropped = report2, dropped2
+                    contract["used"] = "retry"
+            contract.setdefault("used", "first")
+            (directory / "slot_S4_contract.json").write_text(json.dumps(contract, ensure_ascii=False, indent=1), encoding="utf-8")
+        # 10-15 对话 5''（追加 2）：walker 写进 status_reason 的可修缺口（未读命中页的网址、没并排看的参考图）教师可能改写掉，
+        # GIA 要靠原文认它派第 2 轮——报告仍是 INCOMPLETE 时原样补回
+        if report["status"] == "INCOMPLETE":
+            for piece in (x.strip() for x in str(slot.get("status_reason") or "").split(";")):
+                if _OPEN_GAP.search(piece) and piece not in str(report.get("status_reason") or ""):
+                    report["status_reason"] = (str(report.get("status_reason") or "").rstrip("; ") + "; " + piece).strip("; ")
+        # 10-15 对话 5''（追加 4）：候选页面 failed ≥ 1/3 时 walker 给的模板句，加在最后一条 Finding 的 limitations 末尾
+        for text in slot.get("auto_limitations") or []:
+            if report["findings"]:
+                _add_limitation(report, text, len(report["findings"]) - 1)
         if dropped:
             (directory / "slot_S4_dropped_ids.json").write_text(json.dumps(dropped), encoding="utf-8")
         return report
@@ -1762,6 +1841,117 @@ def _final_status(host_status: str, report: dict[str, Any], parts: list[str] | N
     report["status"] = host_status
     report.pop("status_reason", None)
     return host_status
+
+
+# 10-15 对话 5''（追加 3）：S4 报告的程序校验（提示词里的 CONTRACT_RULES 对应的三条）
+_UNAVAILABLE = re.compile(r"\b(?:not|n't|never)\s+(?:been\s+)?(?:available|attached|provided|supplied|included|shown|present)\b"
+                          r"|\bunavailable\b|\bno\s+(?:reference\s+)?(?:photo|image|picture|photograph|transcript|ocr)s?\s+(?:is|are|was|were)\s+"
+                          r"(?:available|attached|provided)", re.I)
+_UNESTABLISHED = re.compile(r"\bnot\s+(?:been\s+|yet\s+|independently\s+)?(?:verified|established|determined|confirmed)\b"
+                            r"|\b(?:could|can)\s*not\s+be\s+(?:determined|established|verified|confirmed)|\bcannot\s+be\s+"
+                            r"(?:determined|established|verified|confirmed)|\bunverified\b|\bundetermined\b"
+                            r"|\bremains?\s+(?:unknown|undetermined|unclear|unestablished)", re.I)
+_OPEN_GAP = re.compile(r"candidate pages that match the claim were not examined: https?://|reference photos .{0,80}were not viewed "
+                       r"side by side", re.I)
+_CLAIM_VERDICT = re.compile(r"^(?:therefore,?\s+|so\s+|overall,?\s+)?the claim(?:'s|’s)?\b", re.I)
+_KIND_WORDS = {
+    "reference": (re.compile(r"\breference\s+(?:photo|image|picture|photograph)s?|\bphotos?\s+of\s+the\s+(?:claimed|named)", re.I),
+                  lambda k: k.get("image") and str(k.get("acquired_by") or "").startswith("SEARCH")),
+    "transcript": (re.compile(r"\btranscri", re.I), lambda k: k.get("acquired_by") == "INSPECT/asr"),
+    "ocr": (re.compile(r"\bOCR\b|on-screen text|caption text", re.I), lambda k: k.get("acquired_by") == "INSPECT/ocr"),
+    "comparison": (re.compile(r"\bcompar(?:ison|e_media)\b", re.I), lambda k: k.get("acquired_by") == "INSPECT/compare_media"),
+}
+# 结论里提到这些，就该引对应的工具记录（有这种记录时），不能只引采样帧
+_ESTABLISH_BY = {
+    "INSPECT/compare_media": re.compile(r"\b(?:match(?:es|ed|ing)?|correspond\w*|identical|differ\w*|speed\w*|slow\w*|cut|"
+                                        r"segment|span|changed region|not in B|not in A)\b", re.I),
+    "INSPECT/ocr": re.compile(r"\b(?:reads?|text|caption|written|wording|lorem)\b", re.I),
+    "SEARCH/dates": re.compile(r"\b(?:archiv\w*|published|upload\w*|dated|no later than)\b", re.I),
+}
+
+
+def _sentences(text: str) -> list[str]:
+    return [x.strip() for x in re.split(r"(?<=[.;!?])\s+", text or "") if x.strip()]
+
+
+def s4_contract_problems(report: dict[str, Any], kinds: dict[str, dict[str, Any]]) -> list[str]:
+    """报告违反 CONTRACT_RULES 的地方（给教师的反馈句，空 = 没问题）：
+    (a) limitation 说某条已在可引 E 里的记录 / 某类已取得的材料"不可用 / 没附上"；
+    (b1) statement 里有"未核实 / 未确定"的句子（这类内容该进 limitations，不挂引用）；
+    (b2) statement 讲的是比对 / OCR / 日期这类工具结果，有这种记录却只引了采样帧。"""
+
+    problems: list[str] = []
+    have = {name: sorted(e for e, k in kinds.items() if test(k)) for name, (_, test) in _KIND_WORDS.items()}
+    for i, f in enumerate(report.get("findings") or [], 1):
+        if not isinstance(f, dict):
+            continue
+        for limit in f.get("limitations") or []:
+            for sent in _sentences(str(limit)):
+                if not _UNAVAILABLE.search(sent):
+                    continue
+                named = [e for e in _EREF.findall(sent) if e in kinds]
+                kind_hit = [name for name, (pat, _) in _KIND_WORDS.items() if pat.search(sent) and have[name]]
+                if named or kind_hit:
+                    ids = named or [e for name in kind_hit for e in have[name]][:4]
+                    problems.append(f"finding {i} limitation says {sent[:120]!r}, but {', '.join(ids)} "
+                                    f"{'is' if len(ids) == 1 else 'are'} in the observed records; say what was or was not "
+                                    "compared or examined instead")
+        statement = str(f.get("statement") or "")
+        for sent in _sentences(statement):
+            # 对声明本身的判词（"The claim … could not be verified"）是 SEARCH_RULES 要的回答形式，不算
+            if _UNESTABLISHED.search(sent) and not _CLAIM_VERDICT.match(sent):
+                problems.append(f"finding {i} statement contains {sent[:120]!r}: what is not established belongs in limitations, "
+                                "not in a cited statement")
+                break
+        cited = [e for e in f.get("evidence_ids") or [] if e in kinds]
+        if cited and all(str((kinds.get(e) or {}).get("acquired_by")) == "INSPECT/get_frames" for e in cited):
+            for source, pat in _ESTABLISH_BY.items():
+                records = [e for e, k in kinds.items() if k.get("acquired_by") == source]
+                if records and pat.search(statement):
+                    problems.append(f"finding {i} cites only sampled frames ({', '.join(cited)}) for what the "
+                                    f"{source.split('/')[-1]} record {', '.join(records[:3])} establishes; cite that record")
+                    break
+    return problems
+
+
+# 10-15 对话 5''（追加 1）：理由与动作对象一致性。r0a fmnv_c_RXR0B1SxiU0 request_0006/0007：动作读 E14 / E15，理由两次都说
+# "read the ASR transcript (E11)"；averimatec_e17 request_0009：动作读 E4，理由讲 E6。
+_RID = re.compile(r"\b[ER][1-9][0-9]*\b")
+_PAGE_OF = re.compile(r"\[(R[1-9][0-9]*)\][^\"\n]{0,600}?page=(?:ready|partial)\((E[1-9][0-9]*)")
+
+
+def action_targets(output: dict[str, Any]) -> set[str]:
+    """动作参数里指名的单条记录：READ_RECORD 的 record_id（focus 也算——L3 并排看：读参考图、同时附上给定照片）、
+    SEARCH 的 source（日期查询 / 打开某个候选）。INSPECT 的对象是整段素材（E1 / E2），理由引比对结果、帧来说明为什么取帧
+    是正常的（r0a 30 条这类"命中"全是误报），不判；文字查询、以图搜、QUERY_MEMORY 也不判。"""
+
+    args = output.get("arguments") or {}
+    out: set[str] = set()
+    if output.get("action") == "READ_RECORD":
+        out.add(str(args.get("record_id") or ""))
+        out |= {str(e) for e in output.get("focus_evidence_ids") or []}
+    elif output.get("action") == "SEARCH" and args.get("source"):
+        out.add(str(args["source"]))
+    return {x for x in out if _RID.fullmatch(x)}
+
+
+def rationale_target_check(output: dict[str, Any], shown_text: str) -> dict[str, Any]:
+    """理由里提到的 E / R 编号不含动作的对象、却含别的编号 → mismatch。检索结果里同一条的候选 R 与页面 E 视为同一对象
+    （读 E12 时理由说 R5 的页面、查 R5 的日期时理由说它的页面 E12，都算对）。没有对象的动作、理由里没提编号的不判。"""
+
+    targets = action_targets(output)
+    mentioned = set(_RID.findall(str(output.get("rationale") or "")))
+    if not targets or not mentioned:
+        return {"status": "skip", "targets": sorted(targets), "mentioned": sorted(mentioned)}
+    same: dict[str, set[str]] = {}
+    for r, e in _PAGE_OF.findall(shown_text.replace('\\"', '"')):
+        same.setdefault(r, set()).add(e)
+        same.setdefault(e, set()).add(r)
+    accepted = set(targets)
+    for t in targets:
+        accepted |= same.get(t, set())
+    status = "ok" if mentioned & accepted else "mismatch"
+    return {"status": status, "targets": sorted(targets), "accepted": sorted(accepted), "mentioned": sorted(mentioned)}
 
 
 def _clean_report(report: dict[str, Any], *, task_id: str, status: str, reason: str | None,

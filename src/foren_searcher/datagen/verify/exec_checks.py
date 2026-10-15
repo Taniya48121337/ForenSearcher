@@ -262,7 +262,9 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
             if not found:
                 hard(ErrorType.OMITTED_REQUIRED_FACT, "结论中没有给出日期", extra={"check": check.kind, "reference": True})
             else:
-                bad = [d for d in found if (lo and d < lo) or (hi and d > hi)]
+                # 10-15 对话 5''（追加 8）：出现在所引证据文本里的日期放行（文章声明日期、存档抓取日期，报告写明了是什么日期）
+                evidence_dates = set(dates_in(cited_text_pool))
+                bad = [d for d in found if ((lo and d < lo) or (hi and d > hi)) and d not in evidence_dates]
                 if bad and len(bad) == len(found):
                     hard(ErrorType.UNSUPPORTED_ASSERTION, f"结论日期 {', '.join(bad)} 不在案卷范围 [{lo}, {hi}] 内",
                          extra={"check": check.kind, "reference": True})
