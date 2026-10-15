@@ -15,7 +15,7 @@ import copy
 import json
 import logging
 import re
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Iterable
 from dataclasses import dataclass, field, replace
 from typing import Any
 
@@ -26,10 +26,12 @@ from ..contracts import (
     WorkspaceTask,
     parse_hi_decision,
 )
-from ..inspect.contracts import InspectCall, InspectResponse, inspect_action_schema
+from ..inspect.contracts import DEFAULT_OPERATIONS as DEFAULT_INSPECT_OPERATIONS, InspectCall, InspectResponse, OcrResult, inspect_action_schema, is_merged_catalog, ocr_summary_line
 from ..inspect.service import InspectService
 from .memory import EvidenceViewBuilder, MemoryPolicy, RecordAccess, compact_reference, trim_visual_observation_summaries
-from ..policies import HiPolicy, OutputRepairBudget, OutputRepairLimit, PolicyOutputError, output_repair_scope
+from ..store.records import _evidence_index_card
+from ..i18n import tr
+from ..policies import HiPolicy, OutputRepairBudget, OutputRepairLimit, PolicyOutputError, active_guards, guard_state, output_repair_scope
 from ..search.contracts import SearchRequest, SearchResponse
 from ..search.service import SearchService
 from ..store.global_store import GlobalStore
@@ -271,6 +273,14 @@ class WorkspaceMemory:
         )
 
 
+# 10-13：SEARCH 日期查询的说明（只在 search_service.date_lookup 打开时附在 SEARCH 的 description 后面）
+DATE_LOOKUP_NOTE = (" To check when a source appeared, SEARCH {\"source\": an R from earlier results or a URL, "
+                    "\"output_type\": \"text\", \"include\": [\"dates\"]} returns the publication date the page declares, the "
+                    "platform upload date for videos, and the earliest Internet Archive capture of the page and of its image "
+                    "file. A page's date is when that page was published, not when its picture or video first appeared; a "
+                    "capture date shows only that it was online by then; no date found does not mean it is new. To find the "
+                    "earliest copy, check the dates of several sources and compare them.")
+
 # 自定义动作处理器接收模型参数和 Workspace ID，异步返回 Harness Observation。
 CustomActionHandler = Callable[[dict[str, Any], str], Awaitable[ToolObservation]]
 
@@ -334,6 +344,26 @@ _SEARCH_SCHEMA: dict[str, Any] = {
     ]
 }
 _INSPECT_SCHEMA = inspect_action_schema()
+_INSPECT_SCHEMA_BY_LANGUAGE: dict[tuple[bool, bool, bool], dict[str, Any]] = {}
+
+# 10-13（规格 harness_params.compact_tool_params，hi@0.10.0 起）：打开视频时自动带原语言字幕，SEARCH 不再列
+# include=subtitles / subtitle_language（search_service.auto_subtitles 打开时）
+AUTO_SUBTITLES_NOTE = (" Opening a video source (output_type=video) also fetches its subtitles in the video's original "
+                       "language when the platform has them (subtitle=ready with an E you can READ_RECORD).")
+
+
+def _inspect_schema(merged: bool = False, compact: bool = False) -> dict[str, Any]:
+    """工具 schema 的说明文字随语言开关（10-05 晚，规格 language=en）；按语言缓存，中文仍是模块导入时那份。
+    10-12：merged=True 是合并目录（hi@0.8.0 起，compare_media 开着），get_frames / asr 的说明与参数不同。
+    10-13：compact=True（hi@0.10.0 起）compare_media 不列 mode。"""
+
+    english = active_guards().english
+    if not english and not merged and not compact:
+        return _INSPECT_SCHEMA
+    key = (bool(english), merged, compact)
+    if key not in _INSPECT_SCHEMA_BY_LANGUAGE:
+        _INSPECT_SCHEMA_BY_LANGUAGE[key] = inspect_action_schema(merged=merged, compact=compact)
+    return _INSPECT_SCHEMA_BY_LANGUAGE[key]
 
 
 class WorkspaceHarness:
@@ -410,7 +440,33 @@ class WorkspaceHarness:
                 reference_id=reference_id,
                 round_index=round_index,
             )
+        self._seed_candidate_materials()
         self.refresh_evidence_view()
+
+    def _seed_candidate_materials(self) -> None:
+        """P1.5①（10-05）：GIA 把上一轮找到的候选 R 交给本工作区时，R 进 candidate_sources，
+        它已打开的页面 / 封面 / 视频 E 进 materials（模型可直接对页面 E 取帧触发下载）。
+
+        只在 RuntimeGuards.cross_round_handoff 打开时 GIA 才能派 R（gia/runtime.py 校验），旧规格下 materials 里不会有 R。
+        """
+
+        for reference_id in self.explicit_material_ids:
+            if not (reference_id.startswith("R") and reference_id[1:].isdigit()):
+                continue
+            if reference_id not in self.memory.candidate_source_ids:
+                self.memory.candidate_source_ids.append(reference_id)
+            self._local_reference_ids.add(reference_id)
+            try:
+                linked = self.store.candidate_evidence(reference_id)
+            except KeyError:
+                continue
+            for kind, status, evidence in linked:
+                if status not in {"ready", "partial"} or evidence.evidence_id in self.memory.materials:
+                    continue
+                self.memory.materials[evidence.evidence_id] = compact_reference(self.store, evidence.evidence_id)
+                self._local_reference_ids.add(evidence.evidence_id)
+                self.store.record_read(actor_role="HI", actor_id=self.memory.task_id,
+                                       reference_id=evidence.evidence_id, round_index=self.round_index)
 
     def restore_working_memory(self) -> None:
         """从本工作区已提交的观察恢复记忆，不执行轨迹中的动作。"""
@@ -490,6 +546,7 @@ class WorkspaceHarness:
                     observation, tuple(self.memory.focus_evidence_ids)))
                 pending = None
         self._local_reference_ids.update(self.memory.candidate_source_ids)
+        self._seed_candidate_materials()
         self.refresh_evidence_view()
 
     def register_action(
@@ -515,21 +572,73 @@ class WorkspaceHarness:
         actions: list[dict[str, Any]] = []
         if self.search_service is not None:
             # 未配置 SearchService 时完全不暴露 SEARCH，模型不会调用一个占位动作。
+            search_schema = copy.deepcopy(_SEARCH_SCHEMA)
+            description = "Search external sources or open one known URL/R source."
+            if getattr(self.search_service, "local_image_search", False) is True:
+                # 10-06 找原片实验 imageclip（search/providers/thumbnail_clip.py）：以图搜视频在本机做，只能输出视频。
+                for branch in search_schema["oneOf"]:
+                    if branch["properties"].get("input_type", {}).get("const") in {"image", "text_image"}:
+                        branch["properties"]["output_type"] = {"const": "video"}
+                description += (" Image-input search (output_type=video only) runs locally: text_image searches"
+                                " YouTube with the text and ranks the results by how closely their thumbnail frames"
+                                " match the image; image ranks the video candidates already found. The image is not"
+                                " sent to any search engine.")
+            elif isinstance(getattr(self.search_service, "image_search_note", None), str):
+                # 10-12 gcvimage：真正的以图搜图（Google Cloud Vision Web Detection），说明它能做什么。
+                description += " " + self.search_service.image_search_note
+            elif not getattr(self.search_service, "allows_image_uploads", True):
+                # 10-05：部署不允许上传调查图片时，image / text_image 输入一定被拒（ACCESS_RESTRICTED）。
+                # 仍展示它们会让 HI 反复以图搜图（evidb3 video_151 七次全被拒、一次文字搜索都没做），所以直接不列。
+                search_schema["oneOf"] = [
+                    branch for branch in search_schema["oneOf"]
+                    if branch["properties"].get("input_type", {}).get("const") not in {"image", "text_image"}
+                ]
+                description += (" Image-input search is not available in this deployment;"
+                                " describe what the image shows in a text query instead.")
+            if getattr(self.search_service, "auto_subtitles", False) is True:
+                # 10-13 compact_tool_params：打开来源只剩 {source, output_type}，视频自动带原语言字幕
+                kept = []
+                for branch in search_schema["oneOf"]:
+                    props = branch["properties"]
+                    if "source" not in props:
+                        kept.append(branch)
+                    elif "minItems" not in props.get("include", {}):
+                        props.pop("include", None)
+                        props.pop("subtitle_language", None)
+                        kept.append(branch)
+                search_schema["oneOf"] = kept
+                description += AUTO_SUBTITLES_NOTE
+            if getattr(self.search_service, "date_lookup", False):
+                # 10-13（规格 harness_params.search_dates，hi@0.8.1 起）：日期查询，见 search/openers/dates.py
+                search_schema["oneOf"].append({
+                    "type": "object",
+                    "required": ["source", "output_type", "include"],
+                    "additionalProperties": False,
+                    "properties": {
+                        "source": {"type": "string"},
+                        "output_type": {"const": "text"},
+                        "include": {"type": "array", "items": {"const": "dates"}, "minItems": 1, "maxItems": 1},
+                    },
+                })
+                description += DATE_LOOKUP_NOTE
             actions.append(
                 {
                     "name": "SEARCH",
                     "kind": "tool",
-                    "description": "Search external sources or open one known URL/R source.",
-                    "schema": copy.deepcopy(_SEARCH_SCHEMA),
+                    "description": description,
+                    "schema": search_schema,
                 }
             )
         if self.inspect_service is not None:
             # INSPECT 采用同样原则：只有真实服务存在才加入动作列表。
-            inspect_schema = copy.deepcopy(_INSPECT_SCHEMA)
             enabled = getattr(self.inspect_service, "enabled_operations", None)
-            if enabled is not None:
-                inspect_schema["oneOf"] = [branch for branch in inspect_schema["oneOf"]
-                    if branch["properties"]["request"]["properties"]["operation"]["const"] in enabled]
+            if enabled is None:
+                # 未声明时只展示默认操作；diff_media 等需显式开启的操作不进入旧运行的工具目录。
+                enabled = DEFAULT_INSPECT_OPERATIONS
+            inspect_schema = copy.deepcopy(_inspect_schema(
+                merged=is_merged_catalog(enabled), compact=getattr(self.inspect_service, "compact_params", False) is True))
+            inspect_schema["oneOf"] = [branch for branch in inspect_schema["oneOf"]
+                if branch["properties"]["request"]["properties"]["operation"]["const"] in enabled]
             for branch in inspect_schema["oneOf"]:
                 if branch["properties"]["request"]["properties"]["operation"]["const"] == "visual_qa":
                     branch["properties"]["targets"]["maxItems"] = self.inspect_service.policy.maximum_visual_qa_images
@@ -594,13 +703,40 @@ class WorkspaceHarness:
             if source_ref and source_ref.startswith("R"):
                 # Evidence 指回的 R 也进入局部可读集合，使后续可按 R 重新打开来源。
                 self._local_reference_ids.add(source_ref)
-        self.memory.evidence_view = self.view_builder.build(
+        cards = self.view_builder.build(
             task=self.memory.task,
             workspace_id=self.memory.task_id,
             explicit_material_ids=self.explicit_material_ids,
             focus_evidence_ids=self.memory.focus_evidence_ids,
             records=records,
         )
+        slots = active_guards().workspace_original_slots
+        if slots:
+            cards = self._reserve_original_frames(cards, records, slots)
+        self.memory.evidence_view = cards
+
+    def _reserve_original_frames(self, cards: tuple[dict[str, Any], ...], records: Iterable[dict[str, Any]],
+                                 slots: int) -> tuple[dict[str, Any], ...]:
+        """P1.5②（10-05）：evidence_view 固定给原件派生帧留 slots 个名额（按时间均匀）。
+
+        审计：第二轮工作区的 12 张卡全被任务材料（别的视频的页面和封面）占满，第一轮取的 30 帧一张不见。
+        顺序：显式材料与焦点卡 → 预留的原件帧 → 其余按原排序；总数仍是 max_evidence_cards（预留帧在前，裁剪时最后才丢）。
+        """
+
+        from ..view_annotations import reserved_original_frames
+
+        reserved = reserved_original_frames(self.store, slots)
+        if not reserved:
+            return cards
+        by_id = {record["evidence_id"]: record for record in records}
+        pinned = set(self.explicit_material_ids) | set(self.memory.focus_evidence_ids)
+        head = [card for card in cards if card.get("evidence_id") in pinned]
+        frames = [next((card for card in cards if card.get("evidence_id") == eid), None)
+                  or (_evidence_index_card(by_id[eid]) if eid in by_id else None) for eid in reserved]
+        frames = [card for card in frames if card is not None and card not in head]
+        taken = {card.get("evidence_id") for card in head + frames}
+        rest = [card for card in cards if card.get("evidence_id") not in taken]
+        return tuple((head + frames + rest)[: max(self.memory_policy.max_evidence_cards, len(head) + len(frames))])
 
     def model_view(self, *, runtime_constraints: dict[str, Any] | None = None) -> dict[str, Any]:
         """刷新动态索引，再把整个 HI 输入裁剪到 max_model_view_chars 内。"""
@@ -785,12 +921,29 @@ class WorkspaceHarness:
                         "evidence cards also include source materials and metadata."]
         if execution and execution["reused"]:
             observations[0] += " Same completed request: reused its saved result; no new Evidence. Use focus_evidence_ids with READ_RECORD to review existing images; repeating extraction is unnecessary."
+        if result.result is not None and result.operation in {"compare_media", "video_structure"}:
+            # 10-12：比较 / 结构分析的结论逐行放进观察，模型不必先读结果 E 才看到差异
+            # 10-14：按 DETECT v2.4 的观察格式（图按 E 编号列出、结尾一句 Next），见 _report_observation_lines
+            observations.extend(self._report_observation_lines(result))
+        if isinstance(result.result, OcrResult):
+            # 10-15（A7）：一次 OCR = 一个结果 E。观察只给汇总（出现最多的若干条文字 + 总数），逐框结果在结果 E 里，
+            # READ_RECORD 读全；以前 details.result 带全部逐帧结果（fmnv_a_1Kk 31 万字），被截成 preview
+            summary = result.result.text_summary()
+            targets = action.targets if isinstance(action, InspectCall) else tuple((action or {}).get("targets") or ())
+            observations.append(ocr_summary_line(summary, result.result_evidence_id, ", ".join(str(t) for t in targets) or None))
+            compact = {"summary": summary}
+            if result.result.coverage is not None:
+                compact["coverage"] = result.result.coverage.to_dict()
+            response_value["result"] = compact
         if result.result_evidence_id is not None and result.status in {"ready", "partial"}:
             # 识别来源和算法适用范围与 result 一起可见，不能只标记结果已经读过。
             saved_result = json.loads(self.store.evidence(result.result_evidence_id).content)
+            # 10-14：compare_media / video_structure 的 limitations 不进观察（"字幕、台标也会造成差异"这类句子让 27B
+            # 把换物解释成字幕 / 台标；DETECT 的观察里也没有），仍保存在结果 E 里
+            skip = {"limitations"} if result.operation in {"compare_media", "video_structure"} else set()
             context = {key: saved_result[key] for key in
                        ("backend", "model", "provider", "sampling_interval_s", "boundary_uncertainty_s", "speed_ratio_range", "vad_filter", "speech_duration_s", "limitations")
-                       if key in saved_result and key not in (response_value.get("result") or {})}
+                       if key in saved_result and key not in (response_value.get("result") or {}) and key not in skip}
             if context:
                 observations.append(json.dumps(context, ensure_ascii=False))
             self._mark_content_observed(result.result_evidence_id)
@@ -827,6 +980,7 @@ class WorkspaceHarness:
         result = await self.search_service.execute(action, workspace_id=self.memory.task_id)
         observations: list[str] = []
         evidence_ids: list[str] = []
+        matched: list[tuple[float, str, str, str]] = []      # 10-14 --auto-tools：(fraction, R, 材料 E, 页面 E)
         for item in result.results:
             # 每个 SearchResult 对应一个候选来源 R；保持首次发现顺序。
             if item.candidate_id not in self.memory.candidate_source_ids:
@@ -844,12 +998,46 @@ class WorkspaceHarness:
             observations.append(
                 f"[{item.candidate_id}] {item.source_url}; " + ", ".join(material_states)
             )
+            for material in item.materials:
+                if material.kind == "dates" and material.status in {"ready", "partial"} and material.evidence:
+                    # 10-13 日期查询：把查到的日期写成一行（全文在该 E 里，可 READ_RECORD）
+                    from ..search.openers.dates import date_summary
+
+                    try:
+                        text = self.store.evidence(material.evidence[0].evidence_id).content or ""
+                    except Exception:  # noqa: BLE001
+                        text = ""
+                    observations.append(f"dates[{item.candidate_id}]: {date_summary(text)} "
+                                        f"(details and what each date means: {material.evidence[0].evidence_id})")
+                    # 10-14：这一行就是日期 E 的内容（各日期都在），算已看过、可以引用（wk8 E 族报告引用不了日期）
+                    self._mark_content_observed(material.evidence[0].evidence_id)
+            match = getattr(item, "content_match", None)
+            if isinstance(match, dict):
+                # 10-12：SEARCH 的画面比对结果（原 DETECT find_source）；对上的给出完整比对的调用
+                from ..search.source_match import content_match_line
+
+                observations.append(content_match_line(item.candidate_id, match))
+                page = next((m.evidence[0].evidence_id for m in item.materials
+                             if m.kind == "page" and m.status in {"ready", "partial"} and m.evidence), None)
+                if match.get("status") in {"source", "partial"} and page and match.get("material"):
+                    if match.get("status") == "source" and active_guards().auto_compare_on_match:
+                        matched.append((float(match.get("fraction") or 0.0), item.candidate_id, match["material"], page))
+                    call = {"action": "INSPECT", "arguments": {"targets": [match["material"], page], "request": {
+                        "operation": "compare_media", "params": {}}}, "focus_evidence_ids": []}
+                    observations.append(f"full_comparison[{item.candidate_id}]: " + json.dumps(call, ensure_ascii=False))
+            if active_guards().open_as_video_hint:
+                observations.extend(self._comparison_hints(item))
+        auto_compare = await self._auto_compare(matched) if matched else None
+        if auto_compare is not None:
+            observations.extend(auto_compare.pop("lines"))
         if result.error is not None:
             # 部分成功时仍可能带顶层错误，把它保留在摘要中供 HI 决定是否继续。
             observations.append(f"SEARCH {result.error.code}: {result.error.message}")
         observations.extend(self._search_excerpts(action, result))
         self._record_evidence_access(evidence_ids)
         response_value = result.to_dict()
+        if auto_compare is not None:
+            response_value["auto_compare"] = auto_compare
         observation = ToolObservation(
             "SEARCH",
             tuple(observations) or (f"SEARCH stopped with {result.stop_reason}; no results",),
@@ -866,6 +1054,129 @@ class WorkspaceHarness:
                                   tuple(self.memory.focus_evidence_ids))
         )
         return result
+
+    async def _auto_compare(self, matched: list[tuple[float, str, str, str]]) -> dict[str, Any] | None:
+        """10-14 评测协议 --auto-tools on：content_match 判为原片时，运行时替 HI 跑 compare_media [材料, 页面 E]。
+
+        恢复 DETECT 的自动比对（evidM27a–d：合并目录四轮平均 12.75/44，DETECT v2.4 两轮 19.5；找到原片却没比、
+        比了一半的 run 都有）。每次 SEARCH 只比匹配比例最高的一个；同一对在本调查里已比过时 INSPECT 直接复用结果。
+        结论逐行并进这次 SEARCH 的观察，结果 E 记为已看过，HI 可以直接引用。失败只记一行，不影响 SEARCH。"""
+
+        if self.inspect_service is None or not is_merged_catalog(getattr(self.inspect_service, "enabled_operations", None)):
+            return None
+        fraction, candidate_id, material, page = max(matched)
+        request = {"targets": [material, page], "request": {"operation": "compare_media", "params": {}}}
+        head = (f"auto_compare[{candidate_id}]: content_match found {material}'s footage in {candidate_id} "
+                f"({100 * fraction:.0f}% of its samples), so INSPECT compare_media on [{material}, {page}] was run automatically")
+        try:
+            response = await self.inspect_service.execute(request, workspace_id=self.memory.task_id)
+        except Exception as exc:  # noqa: BLE001 —— 自动比对失败不能拖垮 SEARCH
+            return {"candidate_id": candidate_id, "request": request, "status": "error",
+                    "lines": [f"{head}, but it failed ({type(exc).__name__}); you can run it yourself."]}
+        self._record_evidence_access([card.evidence_id for card in response.evidence])
+        for card in response.evidence:
+            if card.acquired_by == "INSPECT/media_profile":
+                self._mark_content_observed(card.evidence_id)
+        lines = [f"{head}: returned {response.status}; Result Evidence: {response.result_evidence_id or 'none'}."]
+        if response.result is not None:
+            lines.extend(self._report_observation_lines(response))
+        else:
+            lines.extend(f"{item.code}: {item.message}"[:300] for item in response.feedback[:2])
+        if response.result_evidence_id is not None and response.status in {"ready", "partial"}:
+            self._mark_content_observed(response.result_evidence_id)
+        return {"candidate_id": candidate_id, "request": request, "status": response.status,
+                "result_evidence_id": response.result_evidence_id, "lines": lines}
+
+    COMPARE_NEXT = ("Next: for each listed span, region and person, say what A shows and what B shows there (see images); "
+                    "report each as a separate forgery point with its time.")
+    STRUCTURE_NEXT = "Next: view the listed shots and judge whether they fit the rest of the footage; cues are not proof."
+
+    def _report_observation_lines(self, response: Any) -> list[str]:
+        """compare_media / video_structure 的观察行（10-14，恢复 DETECT v2.4 的观察格式）。
+
+        evidM27a–f 与 evidC27e 逐条对照：DETECT 的观察把每张对照图按 E 编号列出（"Image E44: …"，描述行写成
+        "Visual check of E44"），结尾一句 Next 让 HI 把每处差异写成一个伪造点；合并后只写"comparison image 2"，HI 在报告里
+        自己猜图的编号、引用没看过的 E，校验退回 4 次后整份报告作废（M27e/f 的 156、194、208）。对照图的内容已经由
+        描述模型写进这些行，记为已看过，可以引用。"""
+
+        result = response.result
+        images = list(getattr(result, "images", ()) or ())
+        ids = [getattr(img, "evidence_id", None) for img in images]
+
+        def name(match: re.Match[str]) -> str:
+            k = int(match.group(1))
+            return ids[k - 1] if 0 < k <= len(ids) and ids[k - 1] else match.group(0)
+
+        lines = [re.sub(r"comparison image (\d+)", name, str(x)) for x in (getattr(result, "summary_lines", ()) or ())[:20]]
+        for img in images[:8]:
+            if getattr(img, "evidence_id", None):
+                lines.append(f"Image {img.evidence_id}: {getattr(img, 'caption', '')}")
+                self._mark_content_observed(img.evidence_id)
+        report = getattr(result, "report", None) or {}
+        operation = getattr(response, "operation", None)
+        if operation == "compare_media" and report.get("source_match"):
+            lines.append(self.COMPARE_NEXT)
+        elif operation == "video_structure" and report.get("generator_length_shots"):
+            lines.append(self.STRUCTURE_NEXT)
+        return lines
+
+    def _comparison_hints(self, item: Any) -> list[str]:
+        """档 A（eval_plus / 规格 candidate_affordance，10-05）：把"怎么调"写进观察，不写"该做什么"。
+
+        视频候选的下载是 INSPECT 内部的事（inspect/service.py:_resolve_or_acquire）：对候选**页面 E** 做
+        get_frames / ocr / asr / align_media 才会下载源视频；SEARCH 的视频打开器 skip_download，再搜一次不会取得视频。
+        （10-05 早先的版本给的是 SEARCH source=R 的调用——那条路不下载，已改。）
+        - 还没有视频 E → 给出对页面 E 取帧的调用；
+        - 本工作区有材料视频 → 给出材料视频与候选（页面 E 或已下载的视频 E）align_media(visual) 的调用。
+        evidb4 里 136 个 run 一次都没下载过候选视频，14 次 get_frames 打在封面图 E 上。
+        """
+
+        hints: list[str] = []
+        video = next((m for m in item.materials if m.kind == "video"), None)
+        video_ids = [card.evidence_id for card in video.evidence] if video is not None and video.status in {"ready", "partial"} else []
+        page = next((m for m in item.materials if m.kind == "page" and m.status in {"ready", "partial"} and m.evidence), None)
+        try:
+            from ..platform_video import is_video_candidate
+
+            video_candidate = is_video_candidate(self.store.candidate(item.candidate_id))
+        except KeyError:
+            video_candidate = False
+        if not video_ids and (page is None or not video_candidate):
+            return hints
+        target = video_ids[0] if video_ids else page.evidence[0].evidence_id
+        if not video_ids:
+            call = {"action": "INSPECT", "arguments": {"targets": [target], "request": {
+                "operation": "get_frames", "params": {"times_s": [0, 15, 30, 60, 120, 240]}}}, "focus_evidence_ids": []}
+            ops = ("get_frames/ocr/asr/compare_media" if is_merged_catalog(getattr(self.inspect_service, "enabled_operations", None))
+                   else "get_frames/ocr/asr/align_media")
+            hints.append(f"open_as_video[{item.candidate_id}]: INSPECT {ops} on {target} "
+                         "downloads the source video, e.g. " + json.dumps(call, ensure_ascii=False))
+        material = self._material_video_id()
+        matched = getattr(item, "content_match", None)
+        if isinstance(matched, dict) and matched.get("status") in {"source", "partial"}:
+            material = None                  # 10-12：上面的 full_comparison 已给出比对调用
+        if material and material != target:
+            merged = is_merged_catalog(getattr(self.inspect_service, "enabled_operations", None))
+            request = ({"operation": "compare_media", "params": {}} if merged
+                       else {"operation": "align_media", "params": {"mode": "visual"}})
+            call = {"action": "INSPECT", "arguments": {"targets": [material, target], "request": request}, "focus_evidence_ids": []}
+            hints.append(f"compare_with_material[{item.candidate_id}]: " + json.dumps(call, ensure_ascii=False))
+        return hints
+
+    def _material_video_id(self) -> str | None:
+        from ..view_annotations import original_ids
+
+        # 显式材料优先；GIA 没把原件交给本工作区时退回调查的原始材料（P1.5 跨轮交接的工作区常只拿到 R）
+        for reference_id in (*self.explicit_material_ids, *original_ids(self.store)):
+            if not reference_id.startswith("E"):
+                continue
+            try:
+                evidence = self.store.evidence(reference_id)
+            except Exception:  # noqa: BLE001 —— 不存在的编号
+                continue
+            if "video" in evidence.modalities and not (evidence.source_ref or "").startswith("R"):
+                return reference_id
+        return None
 
     def _search_excerpts(self, action: Any, result: SearchResponse) -> list[str]:
         """harness 参数 search_excerpt_chars > 0 时（09-30 对照项）：SEARCH 自动打开的文本页各附一段与查询最相关的摘录。
@@ -893,7 +1204,8 @@ class WorkspaceHarness:
                         continue
                     excerpt = best_excerpt(text if isinstance(text, str) else str(text), str(query or ""), limit)
                     if excerpt:
-                        lines.append(f"{card.evidence_id} 摘录（与查询最相关的一段；完整正文用 READ_RECORD）：{excerpt}")
+                        lines.append(tr(f"{card.evidence_id} 摘录（与查询最相关的一段；完整正文用 READ_RECORD）：{excerpt}",
+                                        f"{card.evidence_id} excerpt (the passage most relevant to the query; READ_RECORD for the full text): {excerpt}"))
         return lines
 
     @staticmethod
@@ -994,6 +1306,21 @@ class WorkspaceHarness:
             self.memory.latest_observation["details"],
         )
 
+    def note_repeated_action(self, decision: HiActionDecision, previous: ToolObservation,
+                             first_turn: int) -> ToolObservation:
+        """评测兜底 3c：完全相同的调用不再执行，把上次的观察原样交回并加一句提示。"""
+
+        self.set_focus(decision.focus_evidence_ids)
+        note = (f"REPEATED_ACTION: this exact {decision.action} call already ran at turn {first_turn}; it was not "
+                "executed again and its earlier result is repeated below. Choose a different action or submit the "
+                "workspace report.")
+        observation = ToolObservation(previous.action, (note, *previous.items), copy.deepcopy(previous.details))
+        self.memory.latest_observation = observation.to_dict()
+        self.memory.history.append(WorkspaceHistoryEntry(
+            "REPEATED_ACTION", decision.to_dict(), {"first_turn": first_turn}, observation.to_dict(),
+            tuple(self.memory.focus_evidence_ids)))
+        return observation
+
     def reject(self, message: str) -> ToolObservation:
         """把可修复的模型/参数错误变成 HARNESS_REJECTION 交回下一轮 HI。"""
 
@@ -1061,6 +1388,16 @@ class WorkspaceTurnLimit(RuntimeError):
     pass
 
 
+AUTO_REPORT_PREFIX = "auto_report:"
+
+
+def _action_fingerprint(decision: HiActionDecision) -> str:
+    """动作 + 参数的规范化指纹（focus 不算在内：只换关注集合、请求完全相同，仍是重复调用）。"""
+
+    return json.dumps({"action": decision.action, "arguments": decision.arguments}, sort_keys=True,
+                      ensure_ascii=False, default=str)
+
+
 class WorkspaceRunner:
     """驱动一个 HI Workspace 的“模型—工具—观察”循环。"""
 
@@ -1085,6 +1422,37 @@ class WorkspaceRunner:
                     "content_observed_evidence_ids": list(memory.content_observed_evidence_ids),
                     "candidate_source_ids": list(memory.candidate_source_ids)}})
 
+    def _auto_incomplete(self, reason: str) -> WorkspaceReport | None:
+        """评测兜底 1c：工作区撞上限时自动提交一份 INCOMPLETE 报告，GIA 至少知道它看过哪些 E。
+
+        findings 为空、selected = 已观察内容的 E（取最近的、不超过 focus 上限），status_reason 以 auto_report: 开头，
+        SFT 导出据此识别（这不是模型写的报告，不能当教师样本）。没有打开评测兜底时返回 None，保持原来抛 WorkspaceTurnLimit。
+        """
+
+        if not active_guards().auto_incomplete_report:
+            return None
+        memory = self.harness.memory
+        observed = list(dict.fromkeys(memory.content_observed_evidence_ids))
+        limit = max(0, self.harness.memory_policy.max_focus_evidence_ids)
+        selected = tuple(observed[-limit:]) if limit else ()
+        draft = WorkspaceReportDraft(task_id=memory.task_id, status="INCOMPLETE", findings=(),
+                                     selected_evidence_ids=selected,
+                                     status_reason=f"{AUTO_REPORT_PREFIX} {reason}; the workspace produced no report of its own")
+        try:
+            report = self.harness.finish(draft)
+        except (KeyError, PermissionError, ValueError):
+            _LOGGER.exception("auto INCOMPLETE report was rejected", extra={"workspace_id": memory.task_id})
+            return None
+        state = guard_state()
+        if state is not None:
+            state.count("auto_incomplete_report")
+        try:
+            self.harness.store.record_event(actor_role="HI", actor_id=memory.task_id, event_type="auto_report",
+                                            payload={"reason": reason, "selected_evidence_ids": list(selected)})
+        except Exception:
+            _LOGGER.exception("could not record auto report event", extra={"workspace_id": memory.task_id})
+        return report
+
     async def run(self, *, deadline: float | None = None) -> WorkspaceReport:
         """运行到报告或轮数上限；deadline 提供外部 loop.time 预算，取消由调度器负责。"""
 
@@ -1096,7 +1464,22 @@ class WorkspaceRunner:
         self.harness.start_episode(self.max_turns)
         loop = asyncio.get_running_loop()
         last_model_call_seconds: float | None = None
-        for turn_index in range(1, self.max_turns + 1):
+        guards = active_guards()
+        # 3c（评测兜底）：已执行动作的指纹 → (首次轮次, 观察)；完全相同的调用不再执行、不消耗轮次，最多 repeat_budget 次。
+        executed: dict[str, tuple[int, ToolObservation]] = {}
+        repeats_left = guards.repeat_budget or 0
+        # 10-05（evidb7：27 个工作区里 26 个因重复用完而自动 INCOMPLETE，HI 一份自己的报告都没写，GIA 收不到任何判断）：
+        # 约束可见（state_dependent_actions）时，重复用完先给一个"只可交报告"的回合（不耗轮次，最多 2 次），交不出再自动 INCOMPLETE。
+        report_only: str | None = None
+        report_only_attempts = 0
+        turn_index = 0
+        while turn_index < self.max_turns:
+            turn_index += 1
+            if report_only is not None and report_only_attempts >= 2:
+                auto = self._auto_incomplete(f"{report_only}, and no valid report followed")
+                if auto is not None:
+                    return auto
+                break
             # 每轮重新生成视图和动作，确保新 Evidence 与服务状态及时生效。
             constraints: dict[str, Any] = {
                 "turn_index": turn_index,
@@ -1109,8 +1492,15 @@ class WorkspaceRunner:
                 constraints["remaining_seconds"] = max(0.0, deadline - loop.time())
                 if last_model_call_seconds is not None:
                     constraints["last_model_call_seconds"] = last_model_call_seconds
+            if guards.state_dependent_actions and turn_index == self.max_turns:
+                # 3b（eval_plus）：最后一轮动作目录清空，写明只能交报告；8B 不看 remaining_turns == 0（evidb4 139 次）
+                constraints["next_output"] = "WORKSPACE REPORT only: this is the last turn; tool actions will be rejected"
+            if report_only is not None:
+                constraints["next_output"] = (f"WORKSPACE REPORT only: {report_only}; tool actions will be rejected. "
+                                              "Report what the observations so far show and what is still missing.")
             model_view = self.harness.model_view(runtime_constraints=constraints)
-            actions = self.harness.eligible_actions()
+            actions = () if (guards.state_dependent_actions and turn_index == self.max_turns) or report_only is not None \
+                else self.harness.eligible_actions()
             prepare = getattr(self.policy, "prepare_model_view", None)
             if callable(prepare):
                 prepare(model_view)
@@ -1124,6 +1514,9 @@ class WorkspaceRunner:
                 event_type="model_input",
                 payload={"turn_index": turn_index, "model_view": model_view, "actions": list(actions)},
             )
+            if report_only is not None:
+                report_only_attempts += 1
+                turn_index -= 1                  # 只可交报告的回合不耗轮次
             failures_before = repairs.failures
             try:
                 # Policy 产生决策；模型适配器只读取可见材料，动作仍由 Harness 执行。
@@ -1188,7 +1581,41 @@ class WorkspaceRunner:
                 if isinstance(decision, WorkspaceReportDraft):
                     # Report 是终止输出；finish 成功后立即结束循环。
                     return await self.harness.submit_report(decision)
+                if report_only is not None:
+                    auto = self._auto_incomplete(f"{report_only}, and the report-only turn produced a tool action")
+                    if auto is not None:
+                        return auto
+                fingerprint = _action_fingerprint(decision) if guards.repeat_budget else None
+                if fingerprint is not None and fingerprint in executed:
+                    if repeats_left <= 0:
+                        if guards.state_dependent_actions and report_only is None:
+                            report_only = "identical actions were repeated until the repeat budget ran out"
+                            first_turn, previous = executed[fingerprint]
+                            observation = self.harness.note_repeated_action(decision, previous, first_turn)
+                            repairs.progress()
+                            self._record_observation(turn_index, observation)
+                            state = guard_state()
+                            if state is not None:
+                                state.count("report_only_after_repeats")
+                            turn_index -= 1      # 不执行、不消耗轮次
+                            continue
+                        auto = self._auto_incomplete("repeated identical actions exhausted the repeat budget")
+                        if auto is not None:
+                            return auto
+                    else:
+                        repeats_left -= 1
+                        first_turn, previous = executed[fingerprint]
+                        observation = self.harness.note_repeated_action(decision, previous, first_turn)
+                        repairs.progress()
+                        self._record_observation(turn_index, observation)
+                        state = guard_state()
+                        if state is not None:
+                            state.count("repeated_action_short_circuit")
+                        turn_index -= 1          # 不执行、不消耗轮次
+                        continue
                 observation = await self.harness.execute_action(decision)
+                if fingerprint is not None:
+                    executed.setdefault(fingerprint, (turn_index, observation))
             except (KeyError, PermissionError, ValueError) as exc:
                 repairs.reject(exc)
                 # 可修复错误不终止 Workspace，而是作为 Observation 反馈给 HI。
@@ -1196,7 +1623,10 @@ class WorkspaceRunner:
             else:
                 repairs.progress()
             self._record_observation(turn_index, observation)
-        # for 循环自然结束表示模型始终未提交有效报告。
+        # 循环自然结束表示模型始终未提交有效报告。
+        auto = self._auto_incomplete("turn limit reached")
+        if auto is not None:
+            return auto
         message = (
             f"Workspace {self.harness.memory.task_id} exceeded its configured turn limit"
         )

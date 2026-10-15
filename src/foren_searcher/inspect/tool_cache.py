@@ -67,6 +67,7 @@ _OPERATION_PACKAGES: dict[str, tuple[str, ...]] = {
     "locate_frames": ("transformers", "torch"),
     "locate_regions": ("transformers", "torch"),
     "align_media": ("scipy",),
+    "diff_media": (),          # 只用 PyAV / OpenCV / numpy（已在 _COMMON_PACKAGES）；阈值与配准都是确定性计算
 }
 # 只影响资源保护、不影响结果内容的策略字段：不进 key，改超时不该让缓存全部失效。
 _POLICY_IGNORED = frozenset({"backend_workers", "execution_timeout_s", "acquisition_timeout_s", "maximum_file_bytes",
@@ -288,7 +289,9 @@ class ToolCache:
                 handle=item["handle"], data=self.get_blob(item["sha256"]), media_type=item["media_type"],
                 suffix=item["suffix"], role=item["role"], parent_evidence_id=mapper.exact(item["parent_evidence_id"], False),
                 label=mapper.text(item["label"], False), locator=item["locator"], acquired_by=item["acquired_by"],
-                production_method=item["production_method"]) for item in entry["artifacts"])
+                production_method=item["production_method"],
+                extra_parent_evidence_ids=tuple(mapper.exact(list(item.get("extra_parent_evidence_ids", [])), False)))
+                for item in entry["artifacts"])
             issues = tuple(BackendFailure(item["code"], item["message"], stage=item["stage"], retryable=item["retryable"],
                                           locator=item.get("locator"), severity=item.get("severity", "error"))
                            for item in entry["issues"])
@@ -301,7 +304,9 @@ class ToolCache:
         artifacts = [{"handle": a.handle, "sha256": self.put_blob(a.data), "bytes": len(a.data), "media_type": a.media_type,
                       "suffix": a.suffix, "role": a.role, "parent_evidence_id": mapper.exact(a.parent_evidence_id, True),
                       "label": mapper.text(a.label, True), "locator": _jsonable(dict(a.locator)),
-                      "acquired_by": a.acquired_by, "production_method": a.production_method} for a in outcome.artifacts]
+                      "acquired_by": a.acquired_by, "production_method": a.production_method,
+                      **({"extra_parent_evidence_ids": mapper.exact(list(a.extra_parent_evidence_ids), True)}
+                         if a.extra_parent_evidence_ids else {})} for a in outcome.artifacts]
         issues = [{"code": i.code, "message": str(i), "stage": i.stage, "retryable": i.retryable,
                    "locator": _jsonable(i.locator) if i.locator is not None else None, "severity": i.severity}
                   for i in outcome.issues]

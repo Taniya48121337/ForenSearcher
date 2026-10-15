@@ -104,6 +104,11 @@ class SearchQueryRequest:
         return {"input_type": self.input_type, "query": self.query, "output_type": self.output_type}
 
 
+# 10-13（规格 compact_tool_params，hi@0.10.0 起）：SearchService.auto_subtitles 打开时，打开视频的请求自动带
+# include=("subtitles",) 与这个语言值：选原语言（平台标的原语言 / 自动字幕的 -orig / 唯一一种），选不出就不取字幕
+AUTO_SUBTITLE_LANGUAGE = "auto"
+
+
 @dataclass(frozen=True, slots=True)
 class OpenSourceRequest:
     """直接打开 URL 或已有 R 候选的请求。"""
@@ -121,8 +126,15 @@ class OpenSourceRequest:
             raise ValueError("source must be a URL or R identifier")
         if not (_is_http_url(self.source) or _is_candidate_id(self.source)):
             raise ValueError("source must be an HTTP(S) URL or R identifier")
-        if self.include != () and self.include != ("subtitles",):
-            raise ValueError("include must be empty or ('subtitles',)")
+        if self.include not in ((), ("subtitles",), ("dates",)):
+            raise ValueError("include must be empty, ('subtitles',) or ('dates',)")
+        if self.include == ("dates",):
+            # 10-13 日期查询（openers/dates.py）：只给文字结果；不带字幕语言
+            if self.output_type != "text":
+                raise ValueError("dates can only be requested with output_type text")
+            if self.subtitle_language is not None:
+                raise ValueError("subtitle_language requires include=('subtitles',)")
+            return
         if self.subtitle_language is not None:
             if self.include != ("subtitles",) or not isinstance(self.subtitle_language, str) or not self.subtitle_language.strip():
                 raise ValueError("subtitle_language requires include=('subtitles',)")
@@ -226,7 +238,7 @@ class CandidateBatch:
 class OpenedMaterial:
     """打开器产生、尚未写入 Global Store 的单份材料。"""
 
-    kind: Literal["page", "document", "image", "cover", "thumbnail", "subtitle"]
+    kind: Literal["page", "document", "image", "cover", "thumbnail", "subtitle", "dates"]
     status: MaterialStatus
     content: str = ""
     artifact_bytes: bytes = b""
@@ -242,7 +254,7 @@ class OpenedMaterial:
     def __post_init__(self) -> None:
         """保证 status 与内容、字节和 error 的组合不会自相矛盾。"""
 
-        if self.kind not in {"page", "document", "image", "cover", "thumbnail", "subtitle"}:
+        if self.kind not in {"page", "document", "image", "cover", "thumbnail", "subtitle", "dates"}:
             raise ValueError("invalid material kind")
         if self.status not in {"ready", "partial", "not_requested", "absent", "failed"}:
             raise ValueError("invalid material status")
@@ -277,7 +289,7 @@ class MaterialResult:
     def __post_init__(self) -> None:
         """校验状态、Evidence 和错误三者的合法组合。"""
 
-        if self.kind not in {"page", "document", "image", "cover", "thumbnail", "subtitle", "video"}:
+        if self.kind not in {"page", "document", "image", "cover", "thumbnail", "subtitle", "video", "dates"}:
             raise ValueError("invalid material kind")
         if self.status not in {"ready", "partial", "not_requested", "absent", "failed"}:
             raise ValueError("invalid material status")
@@ -300,6 +312,11 @@ class MaterialResult:
                 "error": self.error.to_dict() if self.error else None}
 
 
+# source = 材料的大部分画面在这段视频里；partial = 一部分画面在（多来源剪辑的来源之一）；none = 没对上；
+# download_failed = 低清画面下载失败；not_checked = 本次没比（超出每次 / 每个材料的比对名额，或时长差得太远）
+CONTENT_MATCH_STATUSES = frozenset({"source", "partial", "none", "download_failed", "not_checked"})
+
+
 @dataclass(frozen=True, slots=True)
 class SearchResult:
     """一个 Candidate 的最终搜索结果及其各类材料。"""
@@ -311,6 +328,8 @@ class SearchResult:
     materials: tuple[MaterialResult, ...]
     download_check: dict[str, Any] | None = None
     video_material: dict[str, Any] | None = None
+    # 10-12（DETECT find_source 并入 SEARCH）：视频结果与本调查材料视频的画面比对，见 search/source_match.py
+    content_match: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         """验证材料不重复，以及视频下载状态字段始终成对出现。"""
@@ -348,6 +367,13 @@ class SearchResult:
                 raise ValueError("non-ready video material cannot contain evidence_id")
             if status != "failed" and error is not None:
                 raise ValueError("non-failed video material cannot contain error")
+        if self.content_match is not None:
+            if self.video_material is None:
+                raise ValueError("content_match is only for video results")
+            if not {"material", "status"} <= set(self.content_match):
+                raise ValueError("content_match requires material and status")
+            if self.content_match["status"] not in CONTENT_MATCH_STATUSES:
+                raise ValueError("invalid content_match.status")
 
     def to_dict(self) -> dict[str, Any]:
         """序列化结果，并只在视频场景加入视频专属字段。"""
@@ -359,6 +385,8 @@ class SearchResult:
             value["download_check"] = self.download_check
         if self.video_material is not None:
             value["video_material"] = self.video_material
+        if self.content_match is not None:
+            value["content_match"] = self.content_match
         return value
 
 
@@ -390,7 +418,8 @@ class SearchResponse:
             "video": ("page", "cover", "subtitle"),
         }[self.output_type]
         for result in self.results:
-            if tuple(item.kind for item in result.materials) != expected:
+            kinds = tuple(item.kind for item in result.materials)
+            if kinds != expected and not (self.output_type == "text" and kinds == ("dates",)):
                 raise ValueError("result material kinds do not match output_type")
             has_video_fields = result.download_check is not None and result.video_material is not None
             if has_video_fields != (self.output_type == "video"):

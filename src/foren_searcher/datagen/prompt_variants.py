@@ -20,7 +20,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-VARIANT_MARKER = re.compile(r"\n*<!-- ===== 变体：([a-z_]+) ===== -->\n*")
+VARIANT_MARKER = re.compile(r"\n*<!-- ===== (?:变体：|variant: )([a-z_]+) ===== -->\n*")
 LEGACY_MARKER = "<!-- ===== 首轮派工变体（运行时在没有历史报告时使用） ===== -->"    # gia@0.1.0 / 0.2.0 的写法 = dispatch
 MAIN_VARIANT = "findings"
 GIA_VARIANTS = ("findings", "findings_budget_out", "budget_out", "wait", "dispatch", "dispatch_empty_material",
@@ -43,9 +43,41 @@ _COMPLETED = [{"run_status": "reported", "materials": ["E1"],
 _FAILED = [{"run_status": "failed", "materials": ["E1"]}]
 
 
-def runtime_gia_variants() -> dict[str, str]:
+def _language_scope(language: str | None, merged: bool | None = None):
+    """language="en" 时在英文开关下生成（规格 harness_params.language）；None 用当前开关（默认中文）。
+    merged（10-12）：规格 inspect_merged_catalog；None 用当前开关。"""
+
+    from contextlib import nullcontext
+    from dataclasses import replace
+
+    from ..policies import active_guards, runtime_guard_scope
+
+    current = active_guards()
+    changes: dict[str, Any] = {}
+    if language in ("en", "zh") and (language == "en") != current.english:
+        changes["english"] = language == "en"
+    if merged is not None and bool(merged) != current.merged_catalog:
+        changes["merged_catalog"] = bool(merged)
+    if not changes:
+        return nullcontext()
+    return runtime_guard_scope(replace(current, **changes))
+
+
+def spec_scope(spec: Any):
+    """按一份规格的 harness_params（language、inspect_merged_catalog）打开生成提示时的开关。"""
+
+    params = getattr(spec, "harness_params", {}) or {}
+    return _language_scope(params.get("language", "zh"), bool(params.get("inspect_merged_catalog", False)))
+
+
+def runtime_gia_variants(language: str | None = None, merged: bool | None = None) -> dict[str, str]:
     """调用运行时 _gia_turn_prompt，生成 8 个变体的确切文本。"""
 
+    with _language_scope(language, merged):
+        return _runtime_gia_variants()
+
+
+def _runtime_gia_variants() -> dict[str, str]:
     from ..local_models import _gia_turn_prompt
 
     views = {
@@ -61,12 +93,13 @@ def runtime_gia_variants() -> dict[str, str]:
     return {name: _gia_turn_prompt(view, history=()) for name, view in views.items()}
 
 
-def repair_suffix(role: str) -> str:
+def repair_suffix(role: str, language: str | None = None) -> str:
     """策略重试时拼在 system 末尾的修复附注（运行时 _repair_prompt 的增量部分）。"""
 
     from ..local_models import _repair_prompt
 
-    return _repair_prompt("", role)
+    with _language_scope(language):
+        return _repair_prompt("", role)
 
 
 def split_variants(student_prompt: str) -> dict[str, str]:
@@ -83,14 +116,15 @@ def split_variants(student_prompt: str) -> dict[str, str]:
     return variants
 
 
-def join_variants(variants: dict[str, str]) -> str:
+def join_variants(variants: dict[str, str], language: str | None = None) -> str:
     """{变体名: 文本} → 规格 student_prompt（主变体在前，其余按 GIA_VARIANTS 顺序，带命名分隔符）。"""
 
     ordered = [MAIN_VARIANT] + [n for n in GIA_VARIANTS if n != MAIN_VARIANT and n in variants]
     ordered += [n for n in variants if n not in ordered]
     chunks = [variants[MAIN_VARIANT].strip()]
     for name in ordered[1:]:
-        chunks.append(f"<!-- ===== 变体：{name} ===== -->\n\n{variants[name].strip()}")
+        marker = f"variant: {name}" if language == "en" else f"变体：{name}"
+        chunks.append(f"<!-- ===== {marker} ===== -->\n\n{variants[name].strip()}")
     return "\n\n".join(chunks) + "\n"
 
 
@@ -102,9 +136,12 @@ def match_runtime(student_prompt: str, runtime_system: str, role: str) -> tuple[
     """
 
     runtime = runtime_system.strip()
-    suffix = repair_suffix(role).strip()
-    repair = bool(suffix) and runtime.endswith(suffix)
-    core = runtime[: -len(suffix)].strip() if repair else runtime
+    repair, core = False, runtime
+    for language in ("zh", "en"):             # 修复附注随规格语言：两种都认
+        suffix = repair_suffix(role, language).strip()
+        if suffix and runtime.endswith(suffix):
+            repair, core = True, runtime[: -len(suffix)].strip()
+            break
     variants = split_variants(student_prompt)
     for name, text in variants.items():
         if core == text.strip():
@@ -115,4 +152,4 @@ def match_runtime(student_prompt: str, runtime_system: str, role: str) -> tuple[
 
 
 __all__ = ["GIA_VARIANTS", "LEGACY_MARKER", "MAIN_VARIANT", "VARIANT_MARKER", "join_variants", "match_runtime",
-           "repair_suffix", "runtime_gia_variants", "split_variants"]
+           "repair_suffix", "runtime_gia_variants", "spec_scope", "split_variants"]

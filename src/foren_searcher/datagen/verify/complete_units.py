@@ -24,7 +24,9 @@ from ..runlog import load_run
 from .answer_anchored import _WithRequestImages, anchor_answer, apply_answer_anchoring, as_report, request_images, split_answer, summarize_answer
 from .anchored import BUDGET_EXIT_CODE, JsonJudge, JudgeBudgetExhausted, budget_message, count_pair_calls
 from .calibrate import recalibrate
+from .label_judged import check_labels, label_checks
 from .judges import add_judge_arguments, judge_from_args, judge_summary
+from .semantic_coverage import apply_semantic_coverage
 from .plan_judged import apply_plan_judgment, judge_plan, summarize_plan
 from .units import verify_units
 from .verdict import Verdict
@@ -48,6 +50,9 @@ async def complete_run(run_dir: Path, case: Case | None, report_verdicts: list[V
             if unit.unit == "answer":
                 sentences, result = await anchor_answer(decision, log, useful, judge)
                 apply_answer_anchoring(unit, sentences, result, judge_model=judge_name)
+                # verifier@0.3.3：案卷标签改由核验模型做语义判定（等价说法算命中、反向结论记 critical），见 label_judged.py
+                await check_labels(unit, str(decision.output.get("answer") or ""), case, judge)
+                await apply_semantic_coverage(unit, case, [v.to_dict() for v in reports], judge)   # 默认关闭，见 semantic_coverage.py
                 say(f"[{log.name}] answer {decision.request_id}: {json.dumps(summarize_answer(unit), ensure_ascii=False)}")
                 out.append(unit)
                 if sink is not None:
@@ -64,7 +69,7 @@ async def complete_run(run_dir: Path, case: Case | None, report_verdicts: list[V
 
 
 def estimate_run_calls(run_dir: Path, case: Case | None, report_verdicts: list[Verdict]) -> dict[str, int]:
-    """不调模型，估算 complete_run 要发的核验调用数：answer 每句 × 所引可判 E 各一次 + 每句一次汇总；plan 每单元一次。
+    """不调模型，估算 complete_run 要发的核验调用数：answer 每句 × 所引可判 E 各一次 + 每句一次汇总 + 每个案卷标签一次；plan 每单元一次。
     （含会命中缓存的调用；坏 JSON 重试不计。）"""
 
     log = load_run(run_dir)
@@ -88,7 +93,7 @@ def estimate_run_calls(run_dir: Path, case: Case | None, report_verdicts: list[V
                 sentences = split_answer(str(decision.output.get("answer") or ""), finding_evidence)
                 skip = {e for s in sentences for e in s.evidence_ids if e not in decision.visible_ids}
                 lookup = _WithRequestImages(log.lookup, request_images(log))
-                answer_calls += count_pair_calls(as_report(sentences), lookup, skip_evidence_ids=skip)
+                answer_calls += count_pair_calls(as_report(sentences), lookup, skip_evidence_ids=skip) + len(label_checks(case))
         return {"answer": answer_calls, "plan": plan_calls, "total": answer_calls + plan_calls}
     finally:
         log.close()

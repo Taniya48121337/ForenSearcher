@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, Callable
@@ -31,6 +33,8 @@ class YtDlpSearchProvider:
         try:
             options = {"extract_flat": "in_playlist", "ignoreconfig": True, "playlistend": offset + limit,
                        "quiet": True, "skip_download": True, "socket_timeout": self._timeout_s, "no_warnings": True}
+            if os.environ.get("FOREN_HTTP_PROXY"):      # 10-12 服务器代理（见 openers/http.py）
+                options["proxy"] = os.environ["FOREN_HTTP_PROXY"]
             raw = await extract_metadata(http, policy, self._factory, options, f"ytsearch{offset + limit}:{request.query}")
         except SearchFailure:
             raise

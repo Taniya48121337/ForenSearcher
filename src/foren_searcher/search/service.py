@@ -23,14 +23,14 @@ from PIL import Image
 from ..store.resolver import EvidenceResolutionError, EvidenceResolver
 from ..store import GlobalStore
 from .contracts import (
-    CandidateBatch, CandidateSource, MaterialResult, OpenSourceRequest,
+    AUTO_SUBTITLE_LANGUAGE, CandidateBatch, CandidateSource, MaterialResult, OpenSourceRequest,
     OpenedSource, OutputType, SearchError, SearchFailure, SearchQueryRequest,
     SearchRequest, SearchResponse, SearchResult, parse_search_request,
 )
 from .identity import candidate_identity, normalize_url
 from .openers.dispatcher import SourceDispatcher
 from .policy import SearchPolicy
-from .providers.base import SearchProvider
+from .providers.base import QUERY_IMAGE_URL, SearchProvider
 
 
 # 只有瞬时网络类错误值得在同一次动作预算内重试。
@@ -52,9 +52,34 @@ class SearchService:
         self._allow_image_uploads = allow_image_uploads
         self.resolver = resolver or EvidenceResolver(store)
         self._closed = False
+        # 10-06 找原片实验（search/arms.py）：视频查询单独的预算（results10 / fanout5），None = 与其他查询相同；
+        # local_image_search = 以图搜视频在本机做（providers/thumbnail_clip.py），图片不出本机，所以不受上传开关限制。
+        self.video_policy: SearchPolicy | None = None
+        self.local_image_search = False
+        # 10-13 由 run_cases 按规格打开：date_lookup = 日期查询进 HI 工具目录（search_dates，hi@0.9.0 起）；
+        # auto_subtitles = 打开视频自动带原语言字幕，HI 目录不再列 include=subtitles（compact_tool_params，hi@0.10.0 起）
+        self.date_lookup = False
+        self.auto_subtitles = False
+        # 10-12（DETECT find_source 并入）：视频结果与调查材料视频的画面比对（search/source_match.SourceMatcher）；
+        # None = 不比对（旧行为）。由 run_cases 注入，SEARCH 本身不依赖 INSPECT。
+        self.matcher: Any | None = None
+        # 10-13：text_image 同时跑以图搜图与文字搜索时（ImageQueryRouter(text_also=True)，run_cases 打开），
+        # 打开的来源数与画面比对的候选数放到这个值；False = 与其他查询相同
+        self.text_image_wide = False
+        self.text_image_target_sources = 8
         # 关闭服务时要等正在执行的调用收尾，防止先关网络客户端。
         self._active_tasks: set[asyncio.Task[Any]] = set()
         self._close_task: asyncio.Task[None] | None = None
+
+    def _wide_text_image(self, request: Any) -> bool:
+        return bool(self.text_image_wide) and getattr(request, "input_type", None) == "text_image" \
+            and getattr(request, "output_type", None) == "video"
+
+    @property
+    def allows_image_uploads(self) -> bool:
+        """本部署是否允许把调查图片发给搜索后端（以图搜图 / 图文搜索）；Workspace 据此决定是否向 HI 展示这两种输入。"""
+
+        return self._allow_image_uploads
 
     async def __aenter__(self) -> SearchService:
         """进入异步上下文，并拒绝复用已关闭服务。"""
@@ -107,6 +132,9 @@ class SearchService:
             request = parse_search_request(call) if isinstance(call, dict) else call
             if not isinstance(request, (SearchQueryRequest, OpenSourceRequest)):
                 raise ValueError("unsupported SEARCH request")
+            if self.auto_subtitles and isinstance(request, OpenSourceRequest) and request.output_type == "video" \
+                    and request.include == () and request.subtitle_language is None:
+                request = OpenSourceRequest(request.source, "video", ("subtitles",), AUTO_SUBTITLE_LANGUAGE)
         except (TypeError, ValueError) as exc:
             # 请求尚未建审计记录；仍返回一个契约合法的 error 响应。
             output = call.get("output_type") if isinstance(call, dict) else "text"
@@ -133,9 +161,9 @@ class SearchService:
                 # 直接打开只处理一个来源，因此使用单来源总超时。
                 candidate, candidate_id = self._known_candidate(request, execution_id)
                 try:
-                    result, success, _links = await asyncio.wait_for(
+                    result, success, _links = await self._isolated_open(
                         self._open_candidate(candidate, candidate_id, request, workspace_id, execution_id),
-                        timeout=self.policy.single_source_total_s,
+                        self.policy.single_source_total_s, candidate, candidate_id, request,
                     )
                 except asyncio.TimeoutError:
                     timeout_error = SearchError("open", "TIMEOUT", "source opening reached its time limit")
@@ -195,6 +223,11 @@ class SearchService:
         if cancelled is not None:
             # 调用方仍需观察到 CancelledError，不能被普通响应吞掉。
             raise cancelled
+        if self.matcher is not None and response.output_type == "video" and response.results:
+            if self._wide_text_image(request):
+                response = await self.matcher.annotate(response, workspace_id, per_search=self.text_image_target_sources)
+            else:
+                response = await self.matcher.annotate(response, workspace_id)
         return response
 
     async def _execute_query(
@@ -211,26 +244,36 @@ class SearchService:
         candidates: list[tuple[CandidateSource, str]] = []
         image_temp: tempfile.TemporaryDirectory[str] | None = None
         image_path: Path | None = None
+        image_url_token = None
+        policy = self.video_policy if request.output_type == "video" and self.video_policy is not None else self.policy
+        if self._wide_text_image(request):
+            # 10-13：text_image 同时走以图搜图和文字搜索时结果翻倍，打开 / 比对的名额也放宽（evidM27b video_156：
+            # 原片是文字搜索第 5 条、合并后第 9 条，打开 5 个就停了，没轮到它）
+            from dataclasses import replace as _replace
+
+            policy = _replace(policy, target_sources=max(policy.target_sources, self.text_image_target_sources),
+                              maximum_candidates=max(policy.maximum_candidates, 2 * policy.initial_candidates + 2))
         try:
             if request.input_type in {"image", "text_image"}:
                 # 上传外部 Provider 前先检查部署策略并生成受控 JPEG 副本。
-                if not self._allow_image_uploads:
+                if not self._allow_image_uploads and not self.local_image_search:
                     raise SearchFailure(SearchError("upload", "ACCESS_RESTRICTED", "this deployment does not allow sending investigation images to a search provider"))
                 evidence_id = request.query if isinstance(request.query, str) else request.query["evidence_id"]
                 image_temp, image_path, adaptation = self._prepare_query_image(evidence_id)
+                image_url_token = QUERY_IMAGE_URL.set(self._public_image_url(evidence_id))
                 upload_artifact = self.store.save_artifact(image_path.read_bytes(), media_type="image/jpeg", suffix=".jpg", role="search_query_upload")
                 self.store.record_search_image_upload(execution_id, evidence_id, upload_artifact, adaptation)
-            while provider_requests < self.policy.maximum_provider_requests and len(candidates) < self.policy.maximum_candidates:
+            while provider_requests < policy.maximum_provider_requests and len(candidates) < policy.maximum_candidates:
                 # 每轮 Provider 请求获得下一批候选，直到命中任一预算。
                 try:
                     batch, used, raw_ref = await self._provider_batch(
-                        request, offset, self.policy.initial_candidates, image_path,
+                        request, offset, policy.initial_candidates, image_path,
                         execution_id, provider_requests, started,
                     )
                 except SearchFailure as exc:
                     if not output or exc.error.code == "SAVE_FAILED":
                         raise
-                    reason = "timeout" if time.monotonic() - started >= self.policy.search_total_s else "candidates_exhausted"
+                    reason = "timeout" if time.monotonic() - started >= policy.search_total_s else "candidates_exhausted"
                     return output, successes, provider_requests, reason
                 provider_requests += used
                 for candidate in batch.candidates:
@@ -256,15 +299,15 @@ class SearchService:
                         continue
                     seen.add(identity)
                     candidates.append((candidate, candidate_id))
-                    if len(candidates) >= self.policy.maximum_candidates:
+                    if len(candidates) >= policy.maximum_candidates:
                         break
                 while len(output) < len(candidates):
                     candidate, candidate_id = candidates[len(output)]
-                    if successes >= self.policy.target_sources:
+                    if successes >= policy.target_sources:
                         # 仍把剩余候选显式返回为 not_requested，响应形状可审计。
                         output.append(self._not_requested(candidate, candidate_id, request.output_type, request))
                         continue
-                    remaining = self.policy.search_total_s - (time.monotonic() - started)
+                    remaining = policy.search_total_s - (time.monotonic() - started)
                     if remaining <= 0:
                         output.extend(self._not_requested(item, item_id, request.output_type, request)
                                       for item, item_id in candidates[len(output):])
@@ -276,8 +319,8 @@ class SearchService:
                             candidate, candidate_id, request, workspace_id, execution_id, remaining)]
                     else:
                         # 普通候选可并发打开，但不超过剩余目标和并发预算。
-                        needed = self.policy.target_sources - successes
-                        width = min(max(1, self.policy.source_concurrency), needed, len(candidates) - len(output))
+                        needed = policy.target_sources - successes
+                        width = min(max(1, policy.source_concurrency), needed, len(candidates) - len(output))
                         selected = candidates[len(output):len(output) + width]
                         opened = list(await asyncio.gather(*(self._open_candidate_with_timeout(
                             item, item_id, request, workspace_id, execution_id, remaining)
@@ -294,7 +337,7 @@ class SearchService:
                             continue
                         for link in links:
                             # 仅跟随识别为视频的一跳链接，且仍受 maximum_candidates 约束。
-                            if _looks_like_video_url(link) and len(candidates) < self.policy.maximum_candidates:
+                            if _looks_like_video_url(link) and len(candidates) < policy.maximum_candidates:
                                 follow = CandidateSource(link, provider="one-hop", engine="page-link",
                                     provider_rank=len(candidates) + 1, candidate_type="video")
                                 identity = candidate_identity(follow)
@@ -308,16 +351,64 @@ class SearchService:
                                         provider_rank=len(candidates) + 1, raw_response_ref=None,
                                     )
                                     candidates.append((follow, follow_id))
-                if successes >= self.policy.target_sources:
+                if successes >= policy.target_sources:
                     return output, successes, provider_requests, "target_reached"
-                if not batch.candidates or provider_requests >= self.policy.maximum_provider_requests:
+                if not batch.candidates or provider_requests >= policy.maximum_provider_requests:
                     break
-                offset += self.policy.initial_candidates
-            return output, successes, provider_requests, "target_reached" if successes >= self.policy.target_sources else "candidates_exhausted"
+                offset += policy.initial_candidates
+            return output, successes, provider_requests, "target_reached" if successes >= policy.target_sources else "candidates_exhausted"
         finally:
             # 查询图片副本只用于本次 Provider 调用，结束后无条件清理。
             if image_temp is not None:
                 image_temp.cleanup()
+            if image_url_token is not None:
+                QUERY_IMAGE_URL.reset(image_url_token)
+
+    def _public_image_url(self, evidence_id: str) -> str | None:
+        """图片 Evidence 若来自 SEARCH 找到的网络图片（候选 R 的 image_url），返回该公开地址；否则 None。"""
+
+        try:
+            ref = self.store.evidence(evidence_id).source_ref or ""
+            if not ref.startswith("R"):
+                return None
+            url = self.store.candidate(ref).get("image_url")
+        except Exception:  # noqa: BLE001 - only an optional hint for URL-only engines
+            return None
+        return url if isinstance(url, str) and url.startswith(("https://", "http://")) else None
+
+    async def _isolated_open(
+        self, coro: Any, timeout: float, candidate: CandidateSource, candidate_id: str, request: SearchRequest,
+    ) -> tuple[SearchResult, bool, tuple[str, ...]]:
+        """在独立子任务里打开来源，把"传输层自己冒出的取消"和"调用方真的取消"分开（2026-10-04）。
+
+        httpx/httpcore 走 anyio，TLS 读超时等路径偶尔会把一个不属于任何 asyncio.timeout 的
+        CancelledError 漏到当前任务上（r0cn 的 averimatec_699 就是这样整条 run 崩掉的：
+        两层 wait_for 都没到时，异常却是 CancelledError 而不是 TimeoutError）。
+        放进子任务后：子任务被取消、而本任务没被取消 → 当作这一个来源的网络失败；
+        本任务被取消 → 取消子任务后照常向上抛，保持原来的取消语义。超时仍抛 TimeoutError。
+        """
+
+        task = asyncio.ensure_future(coro)
+        try:
+            done, _pending = await asyncio.wait({task}, timeout=timeout)
+        except asyncio.CancelledError:
+            task.cancel()
+            await asyncio.wait({task})
+            raise
+        if not done:
+            task.cancel()
+            await asyncio.wait({task})
+            raise asyncio.TimeoutError
+        if task.cancelled():
+            _LOGGER.warning("source opening was cancelled by the transport layer; treated as a network failure",
+                            extra={"search_candidate_id": candidate_id})
+            return (
+                self._failed_result(candidate, candidate_id, request.output_type,
+                    SearchError("fetch", "NETWORK_ERROR", "source connection was interrupted"), request),
+                False,
+                (),
+            )
+        return task.result()
 
     async def _open_candidate_with_timeout(
         self, candidate: CandidateSource, candidate_id: str, request: SearchRequest,
@@ -326,9 +417,9 @@ class SearchService:
         """用单来源预算和全局剩余预算的较小值打开候选。"""
 
         try:
-            return await asyncio.wait_for(
+            return await self._isolated_open(
                 self._open_candidate(candidate, candidate_id, request, workspace_id, execution_id),
-                timeout=min(self.policy.single_source_total_s, remaining_s),
+                min(self.policy.single_source_total_s, remaining_s), candidate, candidate_id, request,
             )
         except asyncio.TimeoutError:
             return (
@@ -344,17 +435,18 @@ class SearchService:
     ) -> tuple[CandidateBatch, int, str]:
         """在请求预算内调用 Provider、记录每次尝试并保存原始响应。"""
 
+        policy = self.video_policy if request.output_type == "video" and self.video_policy is not None else self.policy
         used = 0
         last: SearchFailure | None = None
-        while requests_used + used < self.policy.maximum_provider_requests:
+        while requests_used + used < policy.maximum_provider_requests:
             attempt = requests_used + used + 1
             before = time.monotonic()
             try:
                 # Provider 超时同时受单次上限和整个 SEARCH 剩余时间约束。
-                remaining = self.policy.search_total_s - (time.monotonic() - started)
+                remaining = policy.search_total_s - (time.monotonic() - started)
                 if remaining <= 0:
                     raise asyncio.TimeoutError
-                batch = await asyncio.wait_for(self.provider.search(request, offset=offset, limit=limit, image_path=image_path), timeout=min(self.policy.provider_timeout_s, remaining))
+                batch = await asyncio.wait_for(self.provider.search(request, offset=offset, limit=limit, image_path=image_path), timeout=min(policy.provider_timeout_s, remaining))
                 used += 1
                 raw_ref = self._save_provider_response(batch)
                 # 只有原始响应已经可靠保存后，这次调用才记作 success。
@@ -387,12 +479,12 @@ class SearchService:
             self.store.record_provider_call(execution_id, provider=type(self.provider).__name__, engine="unknown", attempt=attempt,
                 elapsed_ms=int((time.monotonic() - before) * 1000), outcome="error", error=failure.error.to_dict(),
                 request_metadata={"offset": offset, "limit": limit})
-            if failure.error.code not in _RETRYABLE or requests_used + used >= self.policy.maximum_provider_requests:
+            if failure.error.code not in _RETRYABLE or requests_used + used >= policy.maximum_provider_requests:
                 break
             if failure.error.code == "RATE_LIMITED":
                 # 仅当 Provider 给出等待时间且全局预算足够时才 sleep。
                 wait = failure.retry_after_s
-                remaining = self.policy.search_total_s - (time.monotonic() - started)
+                remaining = policy.search_total_s - (time.monotonic() - started)
                 if wait is None or wait > remaining:
                     break
                 await asyncio.sleep(wait)
@@ -606,6 +698,9 @@ class SearchService:
     ) -> bool:
         """依据输出类型判断这次来源打开是否计入 target_sources。"""
 
+        if _wants_dates(request):
+            dates = materials.get("dates")
+            return bool(dates and dates.status in {"ready", "partial"})
         if output_type == "text":
             # 仅元数据不能算作获得了正文证据。
             if opened is not None:
@@ -630,6 +725,9 @@ class SearchService:
     ) -> bool:
         """判断已有 Candidate Evidence 是否完整满足当前请求细节。"""
 
+        if _wants_dates(request):
+            dates = materials.get("dates")
+            return bool(dates and dates.status in {"ready", "partial"})
         if output_type == "text":
             return any(
                 material.status in {"ready", "partial"}
@@ -649,6 +747,8 @@ class SearchService:
         if isinstance(request, OpenSourceRequest) and request.include == ("subtitles",):
             # 请求了特定字幕时，任意旧字幕并不足够，语言也必须匹配。
             subtitle = materials.get("subtitle")
+            if request.subtitle_language == AUTO_SUBTITLE_LANGUAGE:
+                return bool(subtitle and subtitle.status in {"ready", "partial"})
             return bool(subtitle and subtitle.status in {"ready", "partial"}
                         and request.subtitle_language is not None
                         and self._cached_subtitle_has_language(subtitle, request.subtitle_language))
@@ -768,9 +868,17 @@ class SearchService:
             record.get("platform"), record.get("platform_video_id"), record.get("extra") or {})
 
 
+def _wants_dates(request: Any) -> bool:
+    """10-13：{"source": R/URL, "output_type": "text", "include": ["dates"]} 是日期查询（openers/dates.py）。"""
+
+    return isinstance(request, OpenSourceRequest) and request.include == ("dates",)
+
+
 def _expected_kinds(request: SearchRequest) -> tuple[str, ...]:
     """返回每种输出响应必须包含的固定材料槽位顺序。"""
 
+    if _wants_dates(request):
+        return ("dates",)
     if request.output_type == "image":
         return ("image", "page", "thumbnail")
     if request.output_type == "video":

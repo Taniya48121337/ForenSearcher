@@ -17,6 +17,7 @@ import re
 from typing import Any
 
 from ..cases import Case
+from .lang import content_words, is_cjk
 from .verdict import Verdict
 
 _WS_RE = re.compile(r"^W(\d+)-(\d+)$")
@@ -33,8 +34,18 @@ def overlap(requirement_text: str, task_text: str) -> float:
     return len(a & b) / len(a) if a else 0.0
 
 
+def requirement_overlap(requirement: Any, task_text: str) -> float:
+    """英文任务（英文规格，10-07）对 REQ 的英文表述 text_en 按实词比；中文任务照旧按字符二元组比中文表述。"""
+
+    text_en = getattr(requirement, "text_en", None)
+    if text_en and not is_cjk(task_text):
+        a, b = content_words(text_en), content_words(task_text)
+        return len(a & b) / len(a) if a else 0.0
+    return overlap(requirement.text, task_text)
+
+
 def targets_by_text(case: Case, task_text: str, threshold: float = FALLBACK_THRESHOLD) -> set[str]:
-    return {r.id for r in case.requirements if overlap(r.text, task_text) >= threshold}
+    return {r.id for r in case.requirements if requirement_overlap(r, task_text) >= threshold}
 
 
 def judge_targets_from_units(units: list[Verdict], run: str, workspace_id: str) -> set[str] | None:
@@ -65,7 +76,7 @@ def requirements_for_workspace(case: Case | None, task_text: str, *, run: str, w
         return judged, {"method": "judge_targets", "requirement_ids": sorted(judged)}
     by_text = targets_by_text(case, task_text)
     return by_text, {"method": "text_overlap", "requirement_ids": sorted(by_text),
-                     "scores": {r.id: round(overlap(r.text, task_text), 2) for r in case.requirements}}
+                     "scores": {r.id: round(requirement_overlap(r, task_text), 2) for r in case.requirements}}
 
 
-__all__ = ["FALLBACK_THRESHOLD", "judge_targets_from_units", "overlap", "requirements_for_workspace", "targets_by_text"]
+__all__ = ["FALLBACK_THRESHOLD", "judge_targets_from_units", "overlap", "requirement_overlap", "requirements_for_workspace", "targets_by_text"]

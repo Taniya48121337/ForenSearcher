@@ -171,3 +171,18 @@ def test_blocklist_covers_secondary_fact_check_sections():
     assert fact_check_match("https://thelogicalindian.com/pakistan-put-locks-daughters-graves") is None
     assert fact_check_match("https://timesofindia.indiatimes.com/city/delhi/x.cms") is None
     assert fact_check_match("https://www.newsmobile.in/articles/x") is None
+
+
+def test_fact_check_path_fallback_20261004():
+    """r0cx 漏过的 MinnPost Fact Briefs；以及名单外媒体的核查栏目按路径兜底，普通新闻不误拦。"""
+
+    from foren_searcher.search.retrieval_guard import fact_check_match
+
+    leaked = "https://www.minnpost.com/fact-briefs/2023/07/has-virginia-been-asking-minnesota-to-return-a-flag/"
+    assert fact_check_match(leaked)
+    assert fact_check_match("https://www.example-news.com/fact-check/2024/05/claim-about-x/") == "path:fact-check"
+    assert fact_check_match("https://news.example.org/politics/fact-check-did-the-senator-say-y") is not None
+    assert fact_check_match("https://www.cbs.com/news/factchecker/item") == "path:factchecker"
+    assert fact_check_match("https://www.minnpost.com/politics-policy/2023/07/virginia-flag-story/") is None
+    assert fact_check_match("https://www.reuters.com/world/europe/paris-fire-2016-07-14/") is None
+    assert fact_check_match("https://lis.virginia.gov/cgi-bin/legp604.exe?001+ful+SJ35") is None

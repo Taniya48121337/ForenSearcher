@@ -101,7 +101,29 @@ DEFAULT_HARNESS_PARAMS: dict[str, Any] = {
     "max_candidate_cards": 8,
     "state_renderer": "legacy",       # legacy | compact_8k | compact_16k（渲染器待实现）
     "search_excerpt_chars": 0,        # 09-30：SEARCH 打开网页后附相关摘录的字符数；0 = 不附
+    "inspect_diff_media": False,      # 10-04：开放 INSPECT diff_media（逐帧像素差异）；旧规格未写此键即不开放
+    "inspect_merged_catalog": False,  # 10-12：INSPECT 合并目录（DETECT 并入；compare_media / video_structure / locate）；hi@0.8.0 起
+    # 10-05 修正优化计划 P1（输入补全），hi@0.6.0 / gia@0.7.0 起打开；旧规格未写 = 关（datagen/harness_params.py）
+    "ingest_keyframes": 0,
+    "gia_original_frames_first": False,
+    "evidence_origin": False,
+    "candidate_affordance": False,
+    "cross_round_handoff": False,
+    "workspace_original_slots": 0,
+    "constraints_visible": False,
+    "language": "zh",                 # 10-05 晚：en = 模型读到的框架文字全用英文（hi@0.7.0 / gia@0.8.0 起）
+    "search_dates": False,            # 10-13：SEARCH 日期查询（include=["dates"]，页面元数据 + Wayback CDX）；hi@0.9.0 起
+    "compact_tool_params": False,     # 10-13：compare_media 去掉 mode（声音单比并入默认）、打开视频自动带字幕；hi@0.10.0 起
+    "max_history_entries": 32,        # 10-13：视图里保留的历史条数（= MemoryPolicy 默认）；规格不写，只给环境变体（walker V9）覆盖
 }
+
+# 改变模型输入分布的 harness 参数（卡片字段、附图、视图结构、渲染档位）：只改它们时也可以升 minor——
+# student_prompt 没变，但训练输入的分布变了，升 minor 才能和"只改教师指令 / 上限"的 patch 区分开。
+INPUT_SHAPING_PARAMS = frozenset({
+    "state_renderer", "ingest_keyframes", "gia_original_frames_first", "evidence_origin", "candidate_affordance",
+    "cross_round_handoff", "workspace_original_slots", "constraints_visible", "language", "inspect_merged_catalog",
+    "search_dates", "compact_tool_params",
+})
 
 
 @dataclass(frozen=True)
@@ -228,7 +250,9 @@ def validate_bump(parent: Spec, child: Spec) -> list[str]:
         problems.append("内容与父版本完全相同，不应发新版本")
     if student_changed and (c[0], c[1]) == (p[0], p[1]):
         problems.append("student_prompt 改动进入训练输入分布，必须升 minor 或 major")
-    if not student_changed and other_changed and (c[0], c[1]) != (p[0], p[1]):
+    input_shaping_changed = any(parent.harness_params.get(key) != child.harness_params.get(key)
+                                for key in INPUT_SHAPING_PARAMS)
+    if not student_changed and other_changed and (c[0], c[1]) != (p[0], p[1]) and not input_shaping_changed:
         problems.append("只改教师指令/参数/rubric 时应升 patch，不要升 minor（避免把训练分布变化和规格变化混淆）")
     if not child.changelog or not any(entry.get("targets") for entry in child.changelog):
         problems.append("新版本必须在 changelog 里写明针对哪些错误类型（targets）")
@@ -271,5 +295,5 @@ def latest(root: str | Path, spec_id: str) -> Spec | None:
     return Spec.load(Path(root) / f"{spec_id}@{versions[-1]}") if versions else None
 
 
-__all__ = ["DEFAULT_HARNESS_PARAMS", "RubricItem", "Spec", "SpecError", "diff", "latest", "list_versions",
+__all__ = ["DEFAULT_HARNESS_PARAMS", "INPUT_SHAPING_PARAMS", "RubricItem", "Spec", "SpecError", "diff", "latest", "list_versions",
            "parse_version", "validate_bump"]

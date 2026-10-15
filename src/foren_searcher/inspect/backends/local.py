@@ -28,16 +28,19 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 from scipy import signal
 
 from ..contracts import (
-    AlignMediaParams, AsrParams, AudioQaParams, CropParams, GetFramesParams,
+    AlignMediaParams, AsrParams, AudioQaParams, CropParams, DiffMediaParams, GetFramesParams,
     GetPagesParams, ImageFrameQuery, LocateFramesParams, LocateRegionsParams,
     OcrParams, TextFrameQuery, TextImageFrameQuery, VisualQaParams, _OCR_COVERAGE_NOTE,
-    _FRAME_RETRIEVAL_NOTE,
+    _FRAME_RETRIEVAL_NOTE, _OCR_COVERAGE_NOTE_EN, _FRAME_RETRIEVAL_NOTE_EN,
 )
 from ..policy import InspectPolicy
 from ..temporal import TemporalMatch, align_sequences, path_score, prune_dominated_paths
 from ..audio_alignment import spectral_matches
 from ..visual_alignment import AlignmentFrame, sample_alignment_frames, geometric_similarities
+from .. import media_diff
+from ...i18n import english, tr
 from .base import BackendFailure, BackendOutcome, MediaProfileData, PendingArtifact, PreparedMedia
+from .merged import MergedOperationsMixin
 
 
 _ALIGNMENT_COVERAGE_NOTE = (
@@ -60,6 +63,32 @@ _VISUAL_SOURCE_NOTE = (
     "需要回答时间或顺序问题时，只使用图注中的实际时间，并分别保持各来源的时间轴。"
     "不能把不同视频的相同时间戳视为内容对应关系。"
 )
+
+# 10-05：英文版（规格 language="en"；i18n.tr 选择）
+_ALIGNMENT_COVERAGE_NOTE_EN = (
+    "coverage is the processed range and sample count of each input; failed_ranges are only the intervals that failed to process; "
+    "neither indicates content matches or deletions. Correspondences are in matches; score only ranks candidates within the current mode of this call and is not the probability that a conclusion is correct. "
+    "matches lists candidate correspondences, not a list of editing events or a unique segmentation of either video. "
+    "Candidates may overlap and need not all hold at once; the number or overlap of candidates does not by itself prove deletion, repeated insertion or splicing. "
+    "range_a_s/range_b_s are intervals including the sampling boundary error; the difference of their endpoints is not an exact time offset. "
+    "time_b_minus_a_s of each anchor pair is time_b_s minus time_a_s; a/b follow the order of this call's targets."
+)
+_VISUAL_TEXT_OMISSION_NOTE_EN = (
+    "Some visual answers contained text descriptions not verified by OCR, and those sentences were not kept; "
+    "to verify text, numbers or written dates, call ocr on the corresponding images. "
+    "The rest of the answer may be incomplete; do not infer from it that unmentioned scenes or differences are absent."
+)
+_VISUAL_SOURCE_NOTE_EN = (
+    "Describe each image under its E ID; the tool already puts the source and time before the answer, so do not copy them into every description. "
+    "For questions about time or order, use only the actual times in the captions and keep each source's timeline separate. "
+    "The same timestamp in different videos is not a content correspondence."
+)
+_SEQUENCE_SCORE_NOTE = (
+    "序列分数按匹配量、相似度和时间步长惩罚排序，并按本次采样规模归一化；短片段分数较低不表示没有对应关系。",
+    "Sequence scores rank by matched amount, similarity and a time-step penalty, normalised by this call's sampling size; a low score for a short segment does not mean there is no correspondence.")
+_SAMPLING_INTERVAL_NOTE = (
+    "sampling_interval_s 是测量间隔，未估计边界误差上限（boundary_uncertainty_s=null）；不能换算成 ±误差或可排除的最短编辑长度。",
+    "sampling_interval_s is the measurement interval; no upper bound of the boundary error was estimated (boundary_uncertainty_s=null); it cannot be converted into a ± error or the shortest edit length that can be ruled out.")
 
 
 def _png(image: np.ndarray | Image.Image) -> bytes:
@@ -156,16 +185,20 @@ def _identical_visual_inputs(inputs: list[tuple[str, bytes]]) -> str:
                 break
         else:
             groups.append((value, [evidence_id]))
-    identical = ["、".join(ids) for _, ids in groups if len(ids) > 1]
+    identical = [(", " if english() else "、").join(ids) for _, ids in groups if len(ids) > 1]
     if not identical:
         return ""
+    if english():
+        return ("Visual input consistency check: " + "; ".join(group + " are identical input images" for group in identical)
+                + ". The check applies only to the scaled and converted model inputs of this call; it does not prove the original files' details are identical "
+                  "or that nothing changed between the sampled instants.")
     return ("本次视觉输入一致性检查：" + "；".join(group + " 的输入图像完全相同" for group in identical)
             + "。检查仅适用于本次缩放和转换后的模型输入，不证明原始文件细节一致，"
               "也不证明采样时刻之间没有变化。")
 
 
-class LocalInspectBackend:
-    """实现十种操作的默认本地媒体后端。"""
+class LocalInspectBackend(MergedOperationsMixin):
+    """实现全部 INSPECT 操作（十种默认操作与需显式开启的 diff_media）的默认本地媒体后端。"""
 
     def __init__(self) -> None:
         """创建模型和 OCR 锁；大型模型都延迟到首次使用才加载。"""
@@ -182,6 +215,11 @@ class LocalInspectBackend:
 
     def uses_gpu_model(self, operation: str) -> bool:
         """本地代理共用 GPU 时，仅协调会加载模型的操作。"""
+        if operation == "compare_media":
+            faces = self._face_identity()
+            return faces is not None and str(faces.device).startswith("cuda")
+        if operation == "locate":
+            return bool(os.environ.get("FOREN_CLIP_MODEL") or os.environ.get("FOREN_GROUNDING_MODEL"))
         variables = {"locate_frames": "FOREN_CLIP_MODEL", "locate_regions": "FOREN_GROUNDING_MODEL",
                      "visual_qa": "FOREN_VLM_MODEL", "audio_qa": "FOREN_AUDIO_MODEL"}
         if operation == "asr":
@@ -367,7 +405,7 @@ class LocalInspectBackend:
                         handle = f"frame:{index}"; height, width = frame.shape[:2]
                         duration = getattr(decoded, "duration", 0)
                         frame_duration = float(duration * decoded.time_base) if duration and duration > 0 and decoded.time_base else None
-                        artifacts.append(PendingArtifact(handle, _png(frame), "image/png", ".png", "video_frame", media.evidence_id, f"视频{media.evidence_id}在{actual:.3f}秒的帧", {"time_s": actual, "requested_time_s": requested, "frame_duration_s": frame_duration}, acquired_by))
+                        artifacts.append(PendingArtifact(handle, _png(frame), "image/png", ".png", "video_frame", media.evidence_id, tr(f"视频{media.evidence_id}在{actual:.3f}秒的帧", f"frame of video {media.evidence_id} at {actual:.3f} s"), {"time_s": actual, "requested_time_s": requested, "frame_duration_s": frame_duration}, acquired_by))
                         rows.append({"handle": handle, "time_s": actual, "width": width, "height": height, "frame_duration_s": frame_duration})
                         seen.add(pts_key)
                     except BackendFailure as issue:
@@ -393,7 +431,31 @@ class LocalInspectBackend:
         if len(outcome.result["frames"]) < requested_count and not outcome.issues:
             warning = BackendFailure("COUNT_REDUCED", f"requested {requested_count} frames; these selections returned {len(outcome.result['frames'])} distinct frames", stage="decode", severity="warning")
             outcome = BackendOutcome(outcome.result, outcome.artifacts, (warning,), outcome.details)
+        if getattr(params, "box", None) is not None:
+            outcome = self._crop_frames(outcome, params.box)
         return outcome
+
+    @staticmethod
+    def _crop_frames(outcome: BackendOutcome, box: tuple[float, float, float, float]) -> BackendOutcome:
+        """10-12 合并目录 get_frames + box：把每帧裁成局部（右下取整向上，保留边缘像素）。"""
+
+        artifacts, rows = [], []
+        by_handle = {x["handle"]: x for x in outcome.result["frames"]}
+        for artifact in outcome.artifacts:
+            with Image.open(io.BytesIO(artifact.data)) as raw:
+                image = raw.convert("RGB")
+            width, height = image.size
+            x1, y1, x2, y2 = box
+            box_px = (math.floor(x1 * width), math.floor(y1 * height), math.ceil(x2 * width), math.ceil(y2 * height))
+            cropped = image.crop(box_px)
+            locator = {**dict(artifact.locator), "box": _jsonable_box(box), "box_px": list(box_px)}
+            artifacts.append(replace(artifact, data=_png(cropped), role="video_frame_crop", locator=locator,
+                                     label=artifact.label + tr("（裁剪区域）", " (cropped region)")))
+            row = dict(by_handle.get(artifact.handle, {}))
+            if row:
+                row.update({"width": cropped.width, "height": cropped.height})
+                rows.append(row)
+        return BackendOutcome({"frames": rows}, tuple(artifacts), outcome.issues, {**dict(outcome.details), "crop_box": list(box)})
 
     async def get_pages(self, media: tuple[PreparedMedia, ...], params: GetPagesParams, policy: InspectPolicy) -> BackendOutcome:
         """均匀选择或按页码选择 PDF 页面，并以固定 DPI 渲染 PNG。"""
@@ -415,7 +477,7 @@ class LocalInspectBackend:
                 # 渲染后的像素数可能远大于 PDF 文件大小，需独立设上限。
                 if pixmap.width * pixmap.height > policy.maximum_page_pixels: raise BackendFailure("RESOURCE_LIMIT", "rendered page exceeds pixel limit", locator={"page_number": page_number})
                 handle = f"page:{index}"; data = pixmap.tobytes("png")
-                artifacts.append(PendingArtifact(handle, data, "image/png", ".png", "document_page", media[0].evidence_id, f"文档{media[0].evidence_id}第{page_number}页", {"page_number": page_number, "dpi": policy.pdf_dpi}, "INSPECT/get_pages"))
+                artifacts.append(PendingArtifact(handle, data, "image/png", ".png", "document_page", media[0].evidence_id, tr(f"文档{media[0].evidence_id}第{page_number}页", f"page {page_number} of document {media[0].evidence_id}"), {"page_number": page_number, "dpi": policy.pdf_dpi}, "INSPECT/get_pages"))
                 rows.append({"handle": handle, "page_number": page_number, "width": pixmap.width, "height": pixmap.height})
             except BackendFailure as issue: issues.append(issue)
             except Exception as exc: issues.append(BackendFailure("DECODE_FAILED", f"page {page_number} failed: {type(exc).__name__}", stage="decode", locator={"page_number": page_number}))
@@ -431,7 +493,7 @@ class LocalInspectBackend:
         width, height = image.size; x1, y1, x2, y2 = params.box
         # 左上向下取整、右下向上取整，避免丢掉边缘像素。
         box_px = (math.floor(x1 * width), math.floor(y1 * height), math.ceil(x2 * width), math.ceil(y2 * height)); cropped = image.crop(box_px)
-        artifact = PendingArtifact("crop:0", _png(cropped), "image/png", ".png", "image_crop", media[0].evidence_id, f"图片{media[0].evidence_id}裁剪区域", {"box": _jsonable_box(params.box), "box_px": list(box_px)}, "INSPECT/crop")
+        artifact = PendingArtifact("crop:0", _png(cropped), "image/png", ".png", "image_crop", media[0].evidence_id, tr(f"图片{media[0].evidence_id}裁剪区域", f"crop of image {media[0].evidence_id}"), {"box": _jsonable_box(params.box), "box_px": list(box_px)}, "INSPECT/crop")
         return BackendOutcome({"handle": "crop:0", "width": cropped.width, "height": cropped.height, "box_px": list(box_px)}, (artifact,), details={"backend": "Pillow"})
 
     def _configured_grounding(self) -> tuple[Any, Any, str, str] | None:
@@ -504,7 +566,7 @@ class LocalInspectBackend:
                 continue
             handle = f"region:{index}"
             box = (left / image.width, top / image.height, right / image.width, bottom / image.height)
-            artifacts.append(PendingArtifact(handle, _png(Image.fromarray(rgb[top:bottom, left:right])), "image/png", ".png", "region_crop", media.evidence_id, f"{params.query}候选区域", {"box": list(box), "box_px": [left, top, right, bottom]}, "INSPECT/locate_regions"))
+            artifacts.append(PendingArtifact(handle, _png(Image.fromarray(rgb[top:bottom, left:right])), "image/png", ".png", "region_crop", media.evidence_id, tr(f"{params.query}候选区域", f"candidate region: {params.query}"), {"box": list(box), "box_px": [left, top, right, bottom]}, "INSPECT/locate_regions"))
             rows.append({"handle": handle, "box": list(box), "box_px": [left, top, right, bottom], "matched_text": str(label), "score": float(score)})
         return BackendOutcome(
             {"image_evidence_id": media.evidence_id, "query": params.query, "regions": rows},
@@ -529,7 +591,7 @@ class LocalInspectBackend:
         artifacts, rows = [], []
         for index, (x, y, cw, ch) in enumerate(candidates):
             handle = f"region:{index}"; box = (x / w, y / h, (x + cw) / w, (y + ch) / h); score = min(1.0, cw * ch / (w * h))
-            artifacts.append(PendingArtifact(handle, _png(image[y:y+ch, x:x+cw]), "image/png", ".png", "region_crop", media[0].evidence_id, f"{params.query}候选区域", {"box": list(box), "box_px": [x, y, x+cw, y+ch]}, "INSPECT/locate_regions"))
+            artifacts.append(PendingArtifact(handle, _png(image[y:y+ch, x:x+cw]), "image/png", ".png", "region_crop", media[0].evidence_id, tr(f"{params.query}候选区域", f"candidate region: {params.query}"), {"box": list(box), "box_px": [x, y, x+cw, y+ch]}, "INSPECT/locate_regions"))
             rows.append({"handle": handle, "box": list(box), "box_px": [x, y, x+cw, y+ch], "matched_text": params.query, "score": score})
         return BackendOutcome({"image_evidence_id": media[0].evidence_id, "query": params.query, "regions": rows}, tuple(artifacts), details={"backend": "OpenCV color locator"})
 
@@ -605,7 +667,7 @@ class LocalInspectBackend:
                 results.append({"image_handle": None, "image_evidence_id": ref, "time_s": time_s, "items": items})
             coverage = None
             return BackendOutcome({"coverage": coverage, "results": results}, tuple(artifacts), tuple(issues),
-                                  {"backend": "RapidOCR", "limitations": [_OCR_COVERAGE_NOTE]})
+                                  {"backend": "RapidOCR", "limitations": [tr(_OCR_COVERAGE_NOTE, _OCR_COVERAGE_NOTE_EN)]})
 
         start, end = params.range_s or (0.0, media[0].profile.duration_s or 0.0)
         # 第一阶段按 ocr_base_fps 均匀覆盖完整范围。
@@ -663,7 +725,9 @@ class LocalInspectBackend:
                 source = io.BytesIO(artifact.data)
                 try:
                     with self._ocr_lock:
-                        output, _ = engine(source)
+                        # 10-05 晚：RapidOCR 只收 str / Path / bytes / ndarray，传 BytesIO 每帧都报 LoadImageError
+                        # （evidb11 的 151：对整段视频 OCR，1123 帧全失败）。传原始字节。
+                        output, _ = engine(bytes(artifact.data))
                 except Exception as exc:
                     add_failure_range(actual)
                     issues.append(BackendFailure(
@@ -680,8 +744,9 @@ class LocalInspectBackend:
                     items.append({"text": text, "box": [min(xs)/width, min(ys)/height, max(xs)/width, max(ys)/height], "confidence": float(confidence)})
                 if items:
                     text_times.append(actual)
-                artifacts.append(artifact)
-                results.append({"image_handle": handle, "image_evidence_id": None, "time_s": actual, "items": items})
+                # 10-15（A7）：采样帧只是识别的输入，不作为产出（以前每帧一个 Artifact → 一个帧 E，一次 500 多个）；
+                # 行只记时刻，InspectService 把它指向输入视频
+                results.append({"image_handle": None, "image_evidence_id": None, "time_s": actual, "items": items})
                 phase_counts[phase] += 1
                 added += 1
             return added
@@ -735,11 +800,18 @@ class LocalInspectBackend:
             # 输入已经按媒体时间裁切，模型时间相对该数组；不再按文件解码后的位置裁切。
             segments, info = model.transcribe(samples, language=params.language, vad_filter=True)
             rows = [{"start_s": max(start, start + float(s.start)), "end_s": min(end, start + float(s.end)), "text": s.text.strip()} for s in segments if s.end > 0 and s.start < end - start]
-        return BackendOutcome({"coverage": {"range_s": [start,end], "processed_ranges": [[start,end]], "failed_ranges": []}, "language": getattr(info, "language", params.language), "audio_track": audio_track, "segments": rows},
+        extra: dict[str, Any] = {}
+        if getattr(params, "sounds", None):
+            # 10-12 合并目录：语音之外的声音时间轴（音乐 / 其他声音 / 静音），取代从未开放的 audio_qa
+            sounds, method = self.sound_timeline(np.asarray(samples, dtype=np.float32), 16000, start, rows)
+            extra = {"sounds": sounds, "sound_method": method}
+        return BackendOutcome({"coverage": {"range_s": [start,end], "processed_ranges": [[start,end]], "failed_ranges": []}, "language": getattr(info, "language", params.language), "audio_track": audio_track, "segments": rows, **extra},
             details={"backend": "faster-whisper", "model": _model_reference(model_name), "device": device, "vad_filter": True,
                      "speech_duration_s": getattr(info, "duration_after_vad", None),
-                     "limitations": ["已启用讲话检测以过滤静音和非讲话片段；未检出可靠语音时 segments 可为空。检测可能漏掉较弱讲话，空转写不证明绝对无人声。",
-                                     "时间戳对应原音频位置；语音识别不核验说话人数量、身份、音乐、掌声或其他非语音声音，不能由转写未提及来判断这些内容不存在。"]})
+                     "limitations": [tr("已启用讲话检测以过滤静音和非讲话片段；未检出可靠语音时 segments 可为空。检测可能漏掉较弱讲话，空转写不证明绝对无人声。",
+                                        "Speech detection is enabled to filter silence and non-speech; segments may be empty when no reliable speech is detected. Detection may miss weak speech, so an empty transcript does not prove there is no voice at all."),
+                                     tr("时间戳对应原音频位置；语音识别不核验说话人数量、身份、音乐、掌声或其他非语音声音，不能由转写未提及来判断这些内容不存在。",
+                                        "Timestamps refer to positions in the original audio; speech recognition does not verify the number or identity of speakers, music, applause or other non-speech sounds, and their absence from the transcript does not mean they are absent.")]})
 
     @staticmethod
     def _wav_samples(path: Path, range_s: tuple[float, float] | None = None) -> tuple[np.ndarray, int, tuple[float,float]]:
@@ -972,7 +1044,7 @@ class LocalInspectBackend:
         except Exception as exc:
             raise BackendFailure("PROCESS_FAILED", f"audio question answering failed: {type(exc).__name__}", retryable=True) from exc
         return BackendOutcome(
-            {"range_s": list(actual), "audio_track": audio_track, "answer": answer, "limitations": ["回答仅基于所选音轨和时间范围。"]},
+            {"range_s": list(actual), "audio_track": audio_track, "answer": answer, "limitations": [tr("回答仅基于所选音轨和时间范围。", "The answer is based only on the selected audio track and time range.")]},
             details={"backend": family, "model": _model_reference(model_name), "question": params.question},
         )
 
@@ -985,14 +1057,15 @@ class LocalInspectBackend:
             audio_track = self._select_audio_track(container.streams.audio, params.audio_track)
         samples, rate, actual = self._audio_samples(media[0], params.range_s, audio_track); rms = float(np.sqrt(np.mean(samples*samples))) if len(samples) else 0.0
         # 轻量后备只做可测量结论，不假装理解声音语义。
-        if rms < 0.003: answer = "该范围基本静音。"
+        if rms < 0.003: answer = tr("该范围基本静音。", "The range is essentially silent.")
         else:
             spectrum = np.abs(np.fft.rfft(samples)); frequency = float(np.fft.rfftfreq(len(samples), 1/rate)[int(np.argmax(spectrum))]) if len(samples) else 0.0
-            answer = f"该范围存在可听信号；均方根电平约{rms:.3f}，最强频率约{frequency:.1f} Hz。"
+            answer = tr(f"该范围存在可听信号；均方根电平约{rms:.3f}，最强频率约{frequency:.1f} Hz。",
+                        f"The range contains an audible signal; RMS level about {rms:.3f}, strongest frequency about {frequency:.1f} Hz.")
         wav_path = (media[0].media_kind == "audio" and media[0].profile.format
                     and "wav" in media[0].profile.format.lower() and audio_track == 0)
         backend = "wave/numpy" if wav_path else "PyAV/numpy"
-        return BackendOutcome({"range_s": list(actual), "audio_track": audio_track, "answer": answer, "limitations": ["本地声学适配器只测量静音、能量和主频，不能识别开放式声音事件。"]}, details={"backend": backend})
+        return BackendOutcome({"range_s": list(actual), "audio_track": audio_track, "answer": answer, "limitations": [tr("本地声学适配器只测量静音、能量和主频，不能识别开放式声音事件。", "The local acoustic adapter measures only silence, energy and dominant frequency and cannot recognise open-ended sound events.")]}, details={"backend": backend})
 
     def _configured_vlm(self) -> tuple[Any, Any, str, str] | None:
         """按 FOREN_VLM_MODEL 延迟加载本地视觉语言模型。"""
@@ -1039,7 +1112,7 @@ class LocalInspectBackend:
             sampled_video_frames = False
             for index, image in enumerate(images):
                 item = media[index]
-                caption = f"图{index + 1}，Evidence {item.evidence_id}"
+                caption = tr(f"图{index + 1}，Evidence {item.evidence_id}", f"Image {index + 1}, Evidence {item.evidence_id}")
                 if item.source_context:
                     try:
                         context = json.loads(item.source_context)
@@ -1047,29 +1120,46 @@ class LocalInspectBackend:
                         context = {}
                     locator = context.get("locator") if isinstance(context,dict) else None
                     if isinstance(locator,dict) and isinstance(locator.get("time_s"), (int,float)):
-                        caption += f"，实际解码时间 {locator['time_s']} 秒"
+                        caption += tr(f"，实际解码时间 {locator['time_s']} 秒", f", actual decoded time {locator['time_s']} s")
                         sampled_video_frames = True
                     if isinstance(context,dict) and context.get("derived_from"):
-                        caption += "，来自 " + ", ".join(context["derived_from"])
+                        caption += tr("，来自 ", ", from ") + ", ".join(context["derived_from"])
                 content.append({"type": "text", "text": caption})
                 content.append({"type": "image", "image": image})
-            instruction = question + (
-                "\n本次实际提供的图片仅为 " + ", ".join(item.evidence_id for item in media)
+            ids_text = ", ".join(item.evidence_id for item in media)
+            instruction = question + tr(
+                "\n本次实际提供的图片仅为 " + ids_text
                 + f"，共 {len(images)} 张。问题提到的其他图片若不在此列表中，就没有提供给你。"
-                "不能把问题对其他图片的描述当作已观察事实；跨图比较仅限本次同时提供的图片。"
-            )
-            sampling_limit = (
+                "不能把问题对其他图片的描述当作已观察事实；跨图比较仅限本次同时提供的图片。",
+                f"\nThe images actually provided this time are only {ids_text}, {len(images)} in total. Other images mentioned in the question "
+                "were not provided to you if they are not in this list. Do not treat the question's descriptions of other images as observed facts; "
+                "cross-image comparison is limited to the images provided together this time.")
+            sampling_limit = tr(
                 "视频相关观察仅覆盖本次提供的离散帧，未连续检查视频；"
-                "最早和最晚的命中帧不能证明片段的起止边界。"
-            )
-            if sampled_video_frames:
+                "最早和最晚的命中帧不能证明片段的起止边界。",
+                "Video-related observations cover only the discrete frames provided this time; the video was not checked continuously; "
+                "the earliest and latest matching frames do not prove the start and end boundaries of a segment. ")
+            if sampled_video_frames and english():
+                instruction += (
+                    "\n" + sampling_limit + "To judge an approximate range, among the provided samples of the same video find the first matching time f, "
+                    "the last matching time l, the nearest earlier non-matching time p and the nearest later non-matching time n. "
+                    "The start can be bounded to (p, f] and the end to (l, n]. These are adjacent sampled times, "
+                    "not necessarily consecutive frames of the source video; state that a bound is unknown only when the non-matching sample on that side is missing."
+                )
+            elif sampled_video_frames:
                 instruction += (
                     "\n" + sampling_limit + "判断大致范围时，在同一视频的已提供采样中，"
                     "找首个命中时刻 f、最后命中时刻 l、之前最近的未命中时刻 p 和之后最近的未命中时刻 n。"
                     "起点可限定在 (p, f]，终点可限定在 (l, n]。这些是采样中的相邻时刻，"
                     "不要求源视频的连续两帧；只在缺少某一侧未命中样本时说明那一侧界限未知。"
                 )
-            if len(images) > 1:
+            if len(images) > 1 and english():
+                instruction += (
+                    f"\nThis input has {len(images)} images. First answer image by image under each Evidence ID, at most two sentences per image; "
+                    "then make the cross-image comparison the question asks for. A target present in one image does not mean it is in the others. "
+                    "For time relations use only the actual decoded times in the image labels, not the image order."
+                )
+            elif len(images) > 1:
                 instruction += (
                     f"\n本次输入有 {len(images)} 张图。请先按 Evidence 编号逐图回答，每图最多两句；"
                     "随后完成问题要求的跨图比较。某张图中存在目标，不代表其他图中也有。"
@@ -1085,6 +1175,20 @@ class LocalInspectBackend:
                         {
                             "type": "text",
                             "text": (
+                                "You are a forensic image content analyser. Answer only from the pixels directly observable in the current input images, "
+                                "and separate observation from inference clearly. Unless a name, place, organisation or brand is clearly legible in the image, "
+                                "do not give specific proper names, and do not identify people from face memory, file names or outside knowledge. "
+                                "When the image cannot confirm a specific identity, say so explicitly, but you may cautiously describe clothing, objects, "
+                                "the scene and a possible occupation. When clothing, equipment and environment together clearly indicate an occupation, give it as "
+                                "'very likely', keeping the specific name unknown. Do not invent badge text or "
+                                "illegible details. visual_qa does not transcribe text in images, so do not quote or guess "
+                                "the content of any name tag, badge or fine print; text content must be verified separately with OCR. "
+                                "With several input images, answer the question image by image by image number and Evidence ID, "
+                                "briefly describing each image before comparing and avoiding repeated sentences; do not apply observations of one image to another. "
+                                "The image number is only the input order; judge time by the actual decoded time in the labels. Preceding and following scenes of video frames "
+                                "mean the previous and next scenes in time, not the front and side of an object; do not guess scenes that were not provided. "
+                                + _VISUAL_SOURCE_NOTE_EN
+                            ) if english() else (
                                 "你是取证式图像内容分析器。只依据当前输入图像中可直接观察到的像素回答，"
                                 "把观察与推断明确区分。除非姓名、地点、组织或品牌在图中清晰可读，"
                                 "否则不得给出具体专名，也不得依靠人脸记忆、文件名或外部常识识别人。"
@@ -1133,12 +1237,14 @@ class LocalInspectBackend:
         return BackendOutcome(
             {
                 "image_evidence_ids": [item.evidence_id for item in media],
-                "answer": "\n".join(f"{item.evidence_id} 来源定位：{item.source_context or '未提供'}" for item in media)
-                          + ("\n" + identity_note if identity_note else "") + f"\n画面观察：{answer}",
+                "answer": "\n".join(tr(f"{item.evidence_id} 来源定位：{item.source_context or '未提供'}",
+                                        f"{item.evidence_id} source location: {item.source_context or 'not provided'}") for item in media)
+                          + ("\n" + identity_note if identity_note else "") + tr(f"\n画面观察：{answer}", f"\nVisual observation: {answer}"),
                 "limitations": [
-                    "回答仅基于本次提供的图像内容；具体人物身份需要可读标识或外部来源另行核验。",
+                    tr("回答仅基于本次提供的图像内容；具体人物身份需要可读标识或外部来源另行核验。",
+                       "The answer is based only on the image content provided this time; specific identities need legible labels or outside sources to verify."),
                     *([sampling_limit] if sampled_video_frames else []),
-                    *([_VISUAL_TEXT_OMISSION_NOTE] if answer != raw_answer else []),
+                    *([tr(_VISUAL_TEXT_OMISSION_NOTE, _VISUAL_TEXT_OMISSION_NOTE_EN)] if answer != raw_answer else []),
                 ],
             },
             details={"backend": "Qwen3-VL", "model": _model_reference(model_name), "question": question},
@@ -1152,11 +1258,11 @@ class LocalInspectBackend:
         summaries = []
         for item in media:
             with Image.open(item.path) as raw: image = np.asarray(ImageOps.exif_transpose(raw).convert("RGB").resize((64,64)), dtype=np.float32)
-            mean = image.mean(axis=(0,1)); summaries.append(f"{item.evidence_id}尺寸{item.profile.width}×{item.profile.height}，平均RGB约({mean[0]:.0f},{mean[1]:.0f},{mean[2]:.0f})")
-        answer = "；".join(summaries)
+            mean = image.mean(axis=(0,1)); summaries.append(tr(f"{item.evidence_id}尺寸{item.profile.width}×{item.profile.height}，平均RGB约({mean[0]:.0f},{mean[1]:.0f},{mean[2]:.0f})", f"{item.evidence_id} size {item.profile.width}×{item.profile.height}, mean RGB about ({mean[0]:.0f},{mean[1]:.0f},{mean[2]:.0f})"))
+        answer = tr("；", "; ").join(summaries)
         if len(media) > 1:
-            answer += "。输入图像的整体颜色统计" + ("接近。" if max(np.linalg.norm(np.asarray(Image.open(x.path).convert('RGB').resize((1,1)),dtype=float) - np.asarray(Image.open(media[0].path).convert('RGB').resize((1,1)),dtype=float)) for x in media[1:]) < 40 else "存在明显差异。")
-        return BackendOutcome({"image_evidence_ids": [x.evidence_id for x in media], "answer": answer, "limitations": ["本地视觉适配器只提供尺寸和整体颜色统计；开放式语义问答需注入VLM后端。"]}, details={"backend": "Pillow statistics", "question": params.question})
+            answer += tr("。输入图像的整体颜色统计", ". The overall colour statistics of the input images are ") + (tr("接近。", "close.") if max(np.linalg.norm(np.asarray(Image.open(x.path).convert('RGB').resize((1,1)),dtype=float) - np.asarray(Image.open(media[0].path).convert('RGB').resize((1,1)),dtype=float)) for x in media[1:]) < 40 else tr("存在明显差异。", "clearly different."))
+        return BackendOutcome({"image_evidence_ids": [x.evidence_id for x in media], "answer": answer, "limitations": [tr("本地视觉适配器只提供尺寸和整体颜色统计；开放式语义问答需注入VLM后端。", "The local visual adapter provides only size and overall colour statistics; open-ended semantic questions need a VLM backend.")]}, details={"backend": "Pillow statistics", "question": params.question})
 
     def _configured_clip(self) -> tuple[Any, Any, str, str] | None:
         """按 FOREN_CLIP_MODEL 延迟加载本地图文嵌入模型。"""
@@ -1305,10 +1411,12 @@ class LocalInspectBackend:
         backend_name = "CLIP semantic retrieval" if clip_scores is not None else "OpenCV spatial/color retrieval"
         details: dict[str, Any] = {"backend": backend_name, "query_type": params.query.type,
             "sampling_interval_s": (end - start) / count,
-            "limitations": [_FRAME_RETRIEVAL_NOTE,
-                "coverage 是工具内部的采样范围和数量，不表示 HI 已查看所有采样帧；候选时间不构成连续场景边界。"]}
+            "limitations": [tr(_FRAME_RETRIEVAL_NOTE, _FRAME_RETRIEVAL_NOTE_EN),
+                tr("coverage 是工具内部的采样范围和数量，不表示 HI 已查看所有采样帧；候选时间不构成连续场景边界。",
+                   "coverage is the tool's internal sampling range and count; it does not mean the HI has viewed all sampled frames; candidate times are not continuous scene boundaries.")]}
         if clip_scores is None and text_query:
-            details["limitations"].append("当前未配置语义模型，文本部分仅测量颜色覆盖比例，未识别文字中的对象、动作或其他语义。")
+            details["limitations"].append(tr("当前未配置语义模型，文本部分仅测量颜色覆盖比例，未识别文字中的对象、动作或其他语义。",
+                                             "No semantic model is configured; the text part only measures colour coverage and does not recognise objects, actions or other meaning in the text."))
         if clip_scores is not None and self._clip is not None:
             details["model"] = self._clip[3]
         radius = (end - start) / count / 2
@@ -1354,15 +1462,15 @@ class LocalInspectBackend:
                     "score": score,
                     "anchors": [{"time_a_s": overlap_a_start, "time_b_s": overlap_b_start, "image_a_handle": None, "image_b_handle": None}],
                 })
-            details: dict[str, Any] = {"backend":"numpy FFT correlation", "limitations":[_ALIGNMENT_COVERAGE_NOTE]}
+            details: dict[str, Any] = {"backend":"numpy FFT correlation", "limitations":[tr(_ALIGNMENT_COVERAGE_NOTE, _ALIGNMENT_COVERAGE_NOTE_EN)]}
             if not matches:
                 matches, step = spectral_matches(a_small, b_small, sample_rate, range_a, range_b,
                                                   params.top_k or policy.default_top_k)
                 details = {"backend":"local spectral sequence alignment", "sampling_interval_s":step,
                     "boundary_uncertainty_s":None,
-                    "limitations":[_ALIGNMENT_COVERAGE_NOTE,
-                                   "sampling_interval_s 是测量间隔，未估计边界误差上限（boundary_uncertainty_s=null）；不能换算成 ±误差或可排除的最短编辑长度。",
-                                   "序列分数按匹配量、相似度和时间步长惩罚排序，并按本次采样规模归一化；短片段分数较低不表示没有对应关系。",
+                    "limitations":[tr(_ALIGNMENT_COVERAGE_NOTE, _ALIGNMENT_COVERAGE_NOTE_EN),
+                                   tr(*_SAMPLING_INTERVAL_NOTE),
+                                   tr(*_SEQUENCE_SCORE_NOTE),
                                    "Approximate 0.5–2x tempo correspondence; pitch shifts and heavily altered audio may not match."]}
             return BackendOutcome({"mode":"audio","coverage":{"a":{"range_s":list(range_a),"processed":{"unit":"seconds","value":range_a[1]-range_a[0]},"failed_ranges":[]},"b":{"range_s":list(range_b),"processed":{"unit":"seconds","value":range_b[1]-range_b[0]},"failed_ranges":[]}},"matches":matches}, details=details)
         ranges = [params.range_a_s or (0.0, media[0].profile.duration_s or 0.0),
@@ -1485,8 +1593,299 @@ class LocalInspectBackend:
             resource_issues + tuple(issue for group in decode_issues for issue in group) + tuple(preview_issues),
             details={"backend": "SIFT/FLANN + RANSAC + local temporal alignment", "sampling_interval_s": steps,
                      "boundary_uncertainty_s": None, "speed_ratio_range": [0.5, 2.0],
-                     "limitations": [_ALIGNMENT_COVERAGE_NOTE,
-                                     "序列分数按匹配量、相似度和时间步长惩罚排序，并按本次采样规模归一化；短片段分数较低不表示没有对应关系。",
-                                     "按候选顺序在视觉输入容量内附首末锚点原帧，每对含A/B两帧；其余锚点只记录时间，可按对应源E和时间调用get_frames。帧对是待核对的对应候选，不能用同类场景任意重配时间。",
-                                     "sampling_interval_s 是取样间隔，候选范围在首末命中外扩一个间隔；未估计真实剪辑边界的误差上限（boundary_uncertainty_s=null），不能换算成 ±误差或可排除的最短编辑长度。低纹理、镜像、倒放或大幅编辑可能无法对齐。",
-                                     "静态或重复画面可能有多个对应位置；未匹配的空档不等于完整删减区间。"]})
+                     "limitations": [tr(_ALIGNMENT_COVERAGE_NOTE, _ALIGNMENT_COVERAGE_NOTE_EN),
+                                     tr(*_SEQUENCE_SCORE_NOTE),
+                                     tr("按候选顺序在视觉输入容量内附首末锚点原帧，每对含A/B两帧；其余锚点只记录时间，可按对应源E和时间调用get_frames。帧对是待核对的对应候选，不能用同类场景任意重配时间。",
+                                        "Within the visual input capacity, the original frames of the first and last anchors are attached in candidate order, two frames (A/B) per pair; other anchors record only times, and get_frames can be called with the corresponding source E and time. Frame pairs are correspondence candidates to check; do not re-pair times arbitrarily by similar scenes."),
+                                     tr("sampling_interval_s 是取样间隔，候选范围在首末命中外扩一个间隔；未估计真实剪辑边界的误差上限（boundary_uncertainty_s=null），不能换算成 ±误差或可排除的最短编辑长度。低纹理、镜像、倒放或大幅编辑可能无法对齐。",
+                                        "sampling_interval_s is the sampling interval; candidate ranges extend one interval beyond the first and last hits. No upper bound of the real cut boundary error was estimated (boundary_uncertainty_s=null); it cannot be converted into a ± error or the shortest edit length that can be ruled out. Low texture, mirroring, reversal or heavy editing may fail to align."),
+                                     tr("静态或重复画面可能有多个对应位置；未匹配的空档不等于完整删减区间。",
+                                        "Static or repeated pictures may have several corresponding positions; an unmatched gap is not a complete deleted interval.")]})
+
+    async def diff_media(self, media: tuple[PreparedMedia, ...], params: DiffMediaParams, policy: InspectPolicy) -> BackendOutcome:
+        """逐帧计算 A/B 像素差异，输出帧级差异片段、时间线和“A|B|差异”对照图。"""
+
+        if media[0].media_kind == "image":
+            return self._diff_images(media, params, policy)
+        return self._diff_videos(media, params, policy)
+
+    @staticmethod
+    def _diff_settings(params: DiffMediaParams, policy: InspectPolicy) -> tuple[float, bool, tuple[float, float, float, float] | None, int]:
+        min_area = params.min_area if params.min_area is not None else media_diff.DEFAULT_MIN_AREA
+        region = (params.region.x, params.region.y, params.region.w, params.region.h) if params.region else None
+        budget = max(1, min(media_diff.MAX_DIFF_IMAGES, policy.maximum_visual_qa_images))
+        return min_area, params.register is not False, region, budget
+
+    @staticmethod
+    def _diff_threshold_info(threshold: int, noise: float) -> dict[str, Any]:
+        return {"value": threshold, "scale": tr("0–255，逐像素取 B/G/R 三通道绝对差的最大值", "0–255, per pixel the maximum absolute difference over the B/G/R channels"), "method": media_diff.threshold_method(),
+                "noise_estimate": noise, "preprocessing": media_diff.preprocessing()}
+
+    @staticmethod
+    def _zoom_caption(zoom: dict[str, Any] | None) -> str:
+        if zoom is None:
+            return ""
+        x0, y0, x1, y1 = zoom["window"]
+        return tr(f"；差异范围较小，第二行把区域 x {x0:.2f}–{x1:.2f}、y {y0:.2f}–{y1:.2f} 放大 {zoom['factor']:.1f} 倍，"
+                  "左为A局部、右为对齐后的B局部，红线描出差异像素",
+                  f"; the difference is small, so the second row enlarges region x {x0:.2f}–{x1:.2f}, y {y0:.2f}–{y1:.2f} {zoom['factor']:.1f}x, "
+                  "left the A detail, right the aligned B detail, red lines outlining differing pixels")
+
+    @staticmethod
+    def _diff_artifact(index: int, image: np.ndarray, a: PreparedMedia, b: PreparedMedia, row: dict[str, Any],
+                       caption: str, locator: dict[str, Any]) -> PendingArtifact:
+        return PendingArtifact(f"diff:{index}", _png(image), "image/png", ".png", "diff_composite", a.evidence_id,
+                               caption, locator, "INSPECT/diff_media",
+                               extra_parent_evidence_ids=(b.evidence_id,) if b.evidence_id != a.evidence_id else ())
+
+    def _diff_images(self, media: tuple[PreparedMedia, ...], params: DiffMediaParams, policy: InspectPolicy) -> BackendOutcome:
+        """图片对只做一次比较，附一张三栏对照图。"""
+
+        min_area, register, region, _ = self._diff_settings(params, policy)
+        frames = []
+        for item in media:
+            try:
+                with Image.open(item.path) as raw:
+                    rgb = np.asarray(ImageOps.exif_transpose(raw).convert("RGB"))
+            except (OSError, UnidentifiedImageError, ValueError) as exc:
+                raise BackendFailure("DECODE_FAILED", f"image could not be read: {type(exc).__name__}", stage="decode") from exc
+            frames.append(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
+        a_native, b_native = frames
+        registration = media_diff.estimate_registration([(a_native, b_native)], (a_native.shape[1], a_native.shape[0]),
+                                                        (b_native.shape[1], b_native.shape[0]), register)
+        compare = media_diff.region_mask(registration.a_size, region) & registration.valid_mask()
+        if not compare.any():
+            raise BackendFailure("PROCESS_FAILED", "comparison region does not overlap the registered B image")
+        aligned, _ = registration.align(b_native)
+        diff = media_diff.difference(media_diff.blurred(media_diff.resize(a_native, registration.a_size)), media_diff.blurred(aligned))
+        threshold, noise = media_diff.estimate_threshold([(diff, compare)])
+        mask = media_diff.changed_mask(diff, compare, threshold)
+        area, bbox = media_diff.measure(mask, int(compare.sum()))
+        differs = area >= min_area
+        a, b = media
+        row = {"handle": "diff:0", "kind": "single", "segment_index": None, "frame_a": None, "time_a_s": None,
+               "frame_b": None, "time_b_s": None, "changed_area": round(area, 5)}
+        image, zoom = media_diff.composite(a_native, b_native, registration, mask, bbox, region,
+                                           ("A", "B", f"diff {area * 100:.2f}%  red=changed  green=bbox"))
+        caption = tr(f"差异对照图（图片）：左为A={a.evidence_id}，中为B={b.evidence_id}，右为对齐后的B，红色为差异像素、绿框为差异范围；"
+                     f"差异面积{area:.3%}",
+                     f"difference composite (images): left A={a.evidence_id}, middle B={b.evidence_id}, right the aligned B, red = differing pixels, green box = difference extent; "
+                     f"changed area {area:.3%}") + self._zoom_caption(zoom)
+        locator = {"operation": "diff_media", "panels": ["a_image", "b_image", "diff_overlay"], "kind": "single",
+                   "changed_area": round(area, 5), "bbox": list(bbox) if bbox else None, "threshold": threshold,
+                   "registration_mode": registration.mode, "zoom": zoom}
+        artifact = self._diff_artifact(0, image, a, b, row, caption, locator)
+        if differs:
+            summary = (tr(f"两张图片存在像素差异：差异面积 {area:.2%}（阈值 {threshold}），差异框 x {bbox[0]:.2f}–{bbox[2]:.2f}、"
+                          f"y {bbox[1]:.2f}–{bbox[3]:.2f}（相对 A 画面）。",
+                          f"The two images differ in pixels: changed area {area:.2%} (threshold {threshold}), difference box x {bbox[0]:.2f}–{bbox[2]:.2f}, "
+                          f"y {bbox[1]:.2f}–{bbox[3]:.2f} (relative to the A picture).") if bbox else "")
+        else:
+            summary = tr(f"两张图片在比较区域内未发现面积 ≥ min_area（{min_area:g}）的像素差异（测得 {area:.3%}）。",
+                         f"No pixel difference with area ≥ min_area ({min_area:g}) was found in the compared region of the two images (measured {area:.3%}).")
+        result = {"media_kind": "image", "differs": differs, "summary": summary, "segments": [],
+                  "image_comparison": {"differs": differs, "changed_area": round(area, 5), "bbox": list(bbox) if bbox else None},
+                  "timeline": None,
+                  "coverage": {"processed_frames": 1, "compared_frames": 1, "working_size": list(registration.a_size),
+                               "compared_pixels": int(compare.sum())},
+                  "frame_rate": None, "mapping": None, "threshold": self._diff_threshold_info(threshold, noise),
+                  "min_area": min_area, "region": list(region) if region else None,
+                  "registration": registration.public(), "segment_definition": None, "images": [row],
+                  "limitations": [x for x in media_diff.limitations() if "mapping" not in x]}
+        return BackendOutcome(result, (artifact,), (), {"backend": "OpenCV pixel difference", "threshold": threshold})
+
+    def _diff_videos(self, media: tuple[PreparedMedia, ...], params: DiffMediaParams, policy: InspectPolicy) -> BackendOutcome:
+        """逐帧解码 A 范围内每一帧，与映射时间最近的 B 帧比较。"""
+
+        a, b = media
+        min_area, register, region, budget = self._diff_settings(params, policy)
+        scale, offset = (params.mapping.scale, params.mapping.offset_s) if params.mapping else (1.0, 0.0)
+        duration_a = float(a.profile.duration_s or 0.0)
+        duration_b = float(b.profile.duration_s or 0.0)
+        start, end = params.range_a_s or (0.0, duration_a)
+        fps_a, fps_b = a.profile.fps, b.profile.fps
+        half_b = 0.5 / fps_b if fps_b else 0.0
+        # A 范围中映射后落在 B 内的部分：-半帧 <= time_b < B 时长。
+        overlap_start = max(start, (-half_b - offset) / scale)
+        overlap_end = min(end, (duration_b - offset) / scale)
+        if overlap_end <= overlap_start:
+            raise BackendFailure("OUT_OF_RANGE", "mapped A range does not overlap media B; check mapping and range_a_s",
+                                 stage="process", locator={"range_a_s": [start, end], "mapping": {"scale": scale, "offset_s": offset},
+                                                           "duration_b_s": duration_b})
+        cap = max(1, min(policy.maximum_frames, media_diff.MAX_DIFF_FRAMES))
+        if params.range_a_s is None and a.profile.frame_count:
+            estimated = a.profile.frame_count
+        else:
+            estimated = math.ceil((end - start) * fps_a) if fps_a else cap
+        stride = max(1, math.ceil(estimated / cap))
+
+        # 抽样帧对：估计全局配准与噪声阈值。
+        count = media_diff.REGISTRATION_SAMPLES
+        sample_times = [overlap_start + (i + 0.5) * (overlap_end - overlap_start) / count for i in range(count)]
+        a_samples = media_diff.frames_at(a.path, sample_times)
+        b_samples = media_diff.frames_at(b.path, [scale * t + offset for t in sample_times])
+        pairs = [(a_samples[t], b_samples[scale * t + offset]) for t in sample_times
+                 if t in a_samples and (scale * t + offset) in b_samples]
+        if not pairs:
+            raise BackendFailure("DECODE_FAILED", "no A/B frame pair could be decoded for comparison", stage="decode")
+        a_native_size = (pairs[0][0].shape[1], pairs[0][0].shape[0])
+        b_native_size = (pairs[0][1].shape[1], pairs[0][1].shape[0])
+        registration = media_diff.estimate_registration(pairs, a_native_size, b_native_size, register)
+        compare = media_diff.region_mask(registration.a_size, region) & registration.valid_mask()
+        compared_pixels = int(compare.sum())
+        if not compared_pixels:
+            raise BackendFailure("PROCESS_FAILED", "comparison region does not overlap the registered B frames")
+        sample_diffs = []
+        for a_frame, b_frame in pairs:
+            aligned, _ = registration.align(b_frame)
+            sample_diffs.append((media_diff.difference(media_diff.blurred(media_diff.resize(a_frame, registration.a_size)),
+                                                       media_diff.blurred(aligned)), compare))
+        threshold, noise = media_diff.estimate_threshold(sample_diffs)
+
+        records: list[dict[str, Any]] = []
+        in_range = 0
+        last_index: int | None = None
+        stream_a = media_diff.FrameStream(a.path, start, fps_a)
+        stream_b = None
+        try:
+            stream_b = media_diff.FrameStream(b.path, max(0.0, scale * start + offset), fps_b)
+            cursor = media_diff.NearestCursor(stream_b)
+            cached_b: tuple[float, np.ndarray] | None = None
+            while (frame := stream_a.next()) is not None:
+                if frame.time_s < start - 1e-9:
+                    continue
+                if frame.time_s >= end - 1e-9:
+                    break
+                position, in_range, last_index = in_range, in_range + 1, frame.index
+                if position % stride:
+                    continue
+                target = scale * frame.time_s + offset
+                record = {"frame_a": frame.index, "time_a": frame.time_s, "compared": False, "frame_b": None,
+                          "time_b": None, "area": 0.0, "bbox": None}
+                chosen = cursor.nearest(target) if -half_b <= target < duration_b else None
+                if chosen is not None:
+                    if cached_b is None or cached_b[0] != chosen.time_s:
+                        aligned, _ = registration.align(chosen.bgr())
+                        cached_b = (chosen.time_s, media_diff.blurred(aligned))
+                    a_blur = media_diff.blurred(media_diff.resize(frame.bgr(), registration.a_size))
+                    mask = media_diff.changed_mask(media_diff.difference(a_blur, cached_b[1]), compare, threshold)
+                    area, bbox = media_diff.measure(mask, compared_pixels)
+                    record.update(compared=True, frame_b=chosen.index, time_b=chosen.time_s, area=area, bbox=bbox)
+                records.append(record)
+            index_basis = {"a": stream_a.index_basis, "b": stream_b.index_basis}
+        finally:
+            stream_a.close()
+            if stream_b is not None:
+                stream_b.close()
+        compared = [r for r in records if r["compared"]]
+        if not compared:
+            raise BackendFailure("OUT_OF_RANGE", "no decoded A frame in range maps into media B", stage="process")
+        end_frame = (last_index + 1) if last_index is not None else 0
+        segments = media_diff.build_segments(records, min_area, end_frame, end, (scale, offset), duration_b)
+        issues: list[BackendFailure] = []
+        if stride > 1:
+            issues.append(BackendFailure("COUNT_REDUCED",
+                f"range_a_s holds about {estimated} A frames; compared every {stride}th frame ({len(records)} frames) within the "
+                f"{cap}-frame budget, so segment boundaries are accurate only to {stride} frames; narrow range_a_s for frame-accurate boundaries",
+                stage="process", severity="warning"))
+        total_segments = len(segments)
+        if total_segments > media_diff.MAX_SEGMENTS:
+            segments = segments[:media_diff.MAX_SEGMENTS]
+            issues.append(BackendFailure("COUNT_REDUCED",
+                f"{total_segments} difference segments found; only the first {media_diff.MAX_SEGMENTS} are listed; narrow range_a_s or raise min_area",
+                stage="process", severity="warning"))
+
+        # 对照图：先给每段首个差异帧，再给峰值帧，预算有余再给最后差异帧。
+        chosen_images: list[tuple[int, str, dict[str, Any]]] = []
+        for kind in ("first", "peak", "last"):
+            for segment_index, segment in enumerate(segments):
+                record = segment["_records"][kind]
+                if len(chosen_images) >= budget or any(item[2] is record for item in chosen_images):
+                    continue
+                chosen_images.append((segment_index, kind, record))
+        chosen_images.sort(key=lambda item: (item[2]["time_a"], item[0]))
+        a_frames = media_diff.frames_at(a.path, [item[2]["time_a"] for item in chosen_images])
+        b_frames = media_diff.frames_at(b.path, [item[2]["time_b"] for item in chosen_images])
+        kind_names = ({"first": "first differing frame", "peak": "frame of peak changed area", "last": "last differing frame"} if english()
+                      else {"first": "首个差异帧", "peak": "差异面积峰值帧", "last": "最后差异帧"})
+        artifacts: list[PendingArtifact] = []
+        rows: list[dict[str, Any]] = []
+        handles_by_segment: dict[int, list[str]] = {}
+        for number, (segment_index, kind, record) in enumerate(chosen_images):
+            a_native, b_native = a_frames.get(record["time_a"]), b_frames.get(record["time_b"])
+            if a_native is None or b_native is None:
+                issues.append(BackendFailure("DECODE_FAILED", "a comparison frame could not be decoded for the composite image",
+                                             stage="decode", retryable=True, locator={"time_a_s": record["time_a"]}))
+                continue
+            aligned, _ = registration.align(b_native)
+            mask = media_diff.changed_mask(media_diff.difference(
+                media_diff.blurred(media_diff.resize(a_native, registration.a_size)), media_diff.blurred(aligned)), compare, threshold)
+            time_a, time_b, area = record["time_a"], record["time_b"], record["area"]
+            labels = (f"A {time_a:.3f}s frame {record['frame_a']}", f"B {time_b:.3f}s frame {record['frame_b']}",
+                      f"diff {area * 100:.2f}%  red=changed  green=bbox")
+            image, zoom = media_diff.composite(a_native, b_native, registration, mask, record["bbox"], region, labels)
+            handle = f"diff:{number}"
+            caption = tr(f"差异对照图（片段{segment_index + 1}{kind_names[kind]}）：A={a.evidence_id} {time_a:.3f}秒 第{record['frame_a']}帧"
+                         f" | B={b.evidence_id} {time_b:.3f}秒 第{record['frame_b']}帧 | 差异面积{area:.3%}；"
+                         "三栏依次为A帧、B帧、对齐后的B帧（红色为差异像素，绿框为差异范围）",
+                         f"difference composite (segment {segment_index + 1}, {kind_names[kind]}): A={a.evidence_id} {time_a:.3f} s frame {record['frame_a']}"
+                         f" | B={b.evidence_id} {time_b:.3f} s frame {record['frame_b']} | changed area {area:.3%}; "
+                         "panels: A frame, B frame, aligned B frame (red = differing pixels, green box = difference extent)") + self._zoom_caption(zoom)
+            locator = {"operation": "diff_media", "panels": ["a_frame", "b_frame", "diff_overlay"], "kind": kind,
+                       "segment_index": segment_index, "frame_a": record["frame_a"], "time_a_s": round(time_a, 6),
+                       "frame_b": record["frame_b"], "time_b_s": round(time_b, 6), "changed_area": round(area, 5),
+                       "bbox": list(record["bbox"]) if record["bbox"] else None, "threshold": threshold,
+                       "mapping": {"scale": scale, "offset_s": offset}, "registration_mode": registration.mode, "zoom": zoom}
+            row = {"handle": handle, "kind": kind, "segment_index": segment_index, "frame_a": record["frame_a"],
+                   "time_a_s": round(time_a, 6), "frame_b": record["frame_b"], "time_b_s": round(time_b, 6),
+                   "changed_area": round(area, 5)}
+            artifacts.append(self._diff_artifact(number, image, a, b, row, caption, locator))
+            rows.append(row)
+            handles_by_segment.setdefault(segment_index, []).append(handle)
+        public_segments = []
+        for segment_index, segment in enumerate(segments):
+            item = {key: value for key, value in segment.items() if not key.startswith("_")}
+            item["union_bbox"] = list(item["union_bbox"])
+            item["image_handles"] = handles_by_segment.get(segment_index, [])
+            public_segments.append(item)
+        if segments:
+            if english():
+                parts = [f"A {s['start_s']:.3f}–{s['end_s']:.3f} s (frames {s['first_diff_frame_a']}–{s['last_diff_frame_a']}, "
+                         f"B {s['start_b_s']:.3f}–{s['end_b_s']:.3f} s, peak area {s['peak_area']:.2%}, "
+                         f"difference box x {s['union_bbox'][0]:.2f}–{s['union_bbox'][2]:.2f}, y {s['union_bbox'][1]:.2f}–{s['union_bbox'][3]:.2f})"
+                         for s in segments]
+                summary = (f"Under the current mapping there are {total_segments} segments of pixel difference "
+                           "(times half-open, frame numbers inclusive): " + "; ".join(parts) + ".")
+            else:
+                parts = [f"A {s['start_s']:.3f}–{s['end_s']:.3f} 秒（第 {s['first_diff_frame_a']}–{s['last_diff_frame_a']} 帧，"
+                         f"对应 B {s['start_b_s']:.3f}–{s['end_b_s']:.3f} 秒，峰值面积 {s['peak_area']:.2%}，"
+                         f"差异框 x {s['union_bbox'][0]:.2f}–{s['union_bbox'][2]:.2f}、y {s['union_bbox'][1]:.2f}–{s['union_bbox'][3]:.2f}）"
+                         for s in segments]
+                summary = (f"按当前 mapping 共有 {total_segments} 段像素差异（时间左闭右开，帧号含首尾）：" + "；".join(parts) + "。")
+        else:
+            summary = tr(f"在已比较的 {len(compared)} 帧中未发现面积 ≥ min_area（{min_area:g}）的像素差异。",
+                         f"No pixel difference with area ≥ min_area ({min_area:g}) was found in the {len(compared)} frames compared.")
+        limitations = list(media_diff.limitations())
+        if stride > 1:
+            limitations.append(tr(f"本次每 {stride} 帧比较 1 帧，片段边界最多偏差 {stride - 1} 帧；缩小 range_a_s 可逐帧比较。",
+                                  f"This call compared 1 of every {stride} frames, so segment boundaries may be off by up to {stride - 1} frames; narrow range_a_s to compare every frame."))
+        result = {
+            "media_kind": "video", "differs": bool(segments), "summary": summary, "segments": public_segments,
+            "image_comparison": None, "timeline": media_diff.timeline(records, stride, fps_a),
+            "coverage": {"range_a_s": [start, end], "a_frames_in_range": in_range, "processed_frames": len(records),
+                         "compared_frames": len(compared), "stride_frames": stride,
+                         "b_unavailable_frames": len(records) - len(compared),
+                         "b_unavailable_ranges_a_s": media_diff.unavailable_ranges(records, end),
+                         "segments_total": total_segments, "frame_index_basis": index_basis,
+                         "working_size": list(registration.a_size), "compared_pixels": compared_pixels,
+                         "failed_ranges": []},
+            "frame_rate": {"a": fps_a, "b": fps_b},
+            "mapping": {"formula": "time_b_s = scale * time_a_s + offset_s", "scale": scale, "offset_s": offset,
+                        "source": "params" if params.mapping else "default_identity",
+                        "b_frame_selection": tr("每个 A 帧取映射时间最近的 B 帧（等距取较早帧）", "for each A frame, the B frame nearest the mapped time (the earlier one on ties)")},
+            "threshold": self._diff_threshold_info(threshold, noise), "min_area": min_area,
+            "region": list(region) if region else None, "registration": registration.public(),
+            "segment_definition": media_diff.segment_definition(), "images": rows, "limitations": limitations,
+        }
+        return BackendOutcome(result, tuple(artifacts), tuple(issues),
+                              {"backend": "OpenCV per-frame pixel difference", "threshold": threshold, "stride_frames": stride})

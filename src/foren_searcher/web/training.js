@@ -3,7 +3,7 @@
   const page = document.querySelector('#training-page');
   const T = {data:null, section:'flow', stage:2, walkerCase:'vs1007', filter:'all', query:'', dataset:'all', sample:null, step:null, stepFilter:'all', tab:'overview', archNode:'gia', archZoom:1, archX:0, archY:0, cache:new Map(), serial:0, playing:false, timer:null, map:null, mobilePane:'map'};
   const labels = {SEARCH:'搜索与打开来源',INSPECT:'检查原始材料',READ_RECORD:'读取已有证据',QUERY_MEMORY:'查找调查记忆',SEARCH_MEMORY:'查找调查记忆',INVESTIGATE:'安排下一轮调查',FINISH:'结束并回答',REPORT:'提交局部报告'};
-  const operations = {get_frames:'提取视频帧',align_media:'对齐视频片段',get_pages:'读取文档页面',crop:'裁剪局部画面',ocr:'读取图中文字',locate_frames:'定位视频片段'};
+  const operations = {get_frames:'提取视频帧',align_media:'对齐视频片段',get_pages:'读取文档页面',crop:'裁剪局部画面',ocr:'读取图中文字',locate_frames:'定位视频片段',diff_media:'逐帧差分',asr:'语音转写',media_profile:'读取媒体属性'};
   const dispositions = {accept_candidate:'可作为候选',repair_reexecute:'需要重新执行',context_only:'仅保留为历史',exclude:'排除目标',unknown:'尚未判定'};
   const modes = {bridge:'GIA × HI 真实协作',hi_independent:'HI 独立调查',gia_offline:'GIA 离线决策'};
   const stageData = [
@@ -566,22 +566,70 @@
   const walkerNextNote='前两处不改动作，只改语言槽与状态判定，可以直接用 wk2 的状态重答，不必重跑轨迹。之后进入 D2：找原件族与声明核查族。';
   const walkerHeldNote='被扣下的 2 行动作，都是换算出来的时刻恰好与工具原值相同（12.086、10.678），属于检查器的巧合误报；3 行报告里有 "This" 这类词触发的误报，另有一处确实把教师写的 "29.970" 当成了不可见内容。';
   const walkerTags={gain:['改善','gain'],same:['保持','same'],mixed:['一升一降','mixed'],loss:['回退','loss']};
-  function walkerCase(){ return walkerCases.find(c=>c.id===T.walkerCase) || walkerCases[0]; }
-  function walkerCaseDetail(c){
-    const [tagLabel,tagCls]=walkerTags[c.tag];
-    return `<div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(c.kind)}</span><h3>${esc(c.name)}</h3></div>
-        <span class="tr-wk-tag ${tagCls}">${esc(tagLabel)}</span></div>
-      <p class="tr-wk-tagline">${esc(c.tagText)}</p>
-      <div class="tr-matrix tr-wk-caseruns"><table>
-        <thead><tr><th>轮次</th><th>决策</th><th>教师调用</th><th>墙钟</th><th>HI 动作</th><th>链条</th><th>报告状态</th><th>报告核验</th><th>答案核验</th></tr></thead>
-        <tbody>${c.rows.map(r=>`<tr class="run-${r[0]}"><th scope="row">${esc(r[0])}</th><td>${r[1]}</td><td>${r[2]}</td><td>${esc(r[3])}</td><td>${r[4]}</td>
-          <td class="${r[5]==='全部'?'m-full':'m-none'}">${esc(r[5])}</td><td class="m-note">${esc(r[6])}</td>
-          <td class="${r[7].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[7])}</td><td class="${r[8].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[8])}</td></tr>`).join('')}</tbody></table></div>
-      <p class="tr-prose">${esc(c.text)}</p>
-      <div class="tr-wk-actions"><h4>这一轮实际走的动作</h4>
-        ${c.rows.map(r=>`<div><b>${esc(r[0])}</b><code>${esc(r[9])}</code></div>`).join('')}</div>`;
+  let walkerData=null;
+  const walkerBuckets={accepted:['进入候选','accepted'],held:['暂缓','held'],rejected:['暂不使用','rejected']};
+  function walkerReason(raw){
+    if(!raw)return '';
+    if(raw.startsWith('hidden_context:'))return `参数里出现了当时视图中看不到的数（${raw.slice(15)}）——其中一部分是换算值恰好与工具原值相同，属检查器的巧合误报。`;
+    if(raw.startsWith('answer_errors:'))return `最终答案被记到这些问题：${raw.slice(14).split(',').join('、')}。`;
+    const map={gain_in_negative_ws:'所在工作区的报告未通过，而这一步本身没有带来新线索，先留着等核验器进一步校准。',
+      memory_action_follows_next_decision:'这一步的记忆动作要等下一次决策才能判定，本轮先不收。',
+      negative_report_until_recall_calibrated:'报告判定未通过。不进正例；在召回率校准完成之前，也不作为反例训练。'};
+    return map[raw]||raw;
   }
-  function renderWalker(){
+  function walkerSteps(id){ return (walkerData?.cases||[]).find(v=>v.id===id)?.steps || []; }
+  function walkerStepDetail(step){
+    const [bLabel,bCls]=walkerBuckets[step.bucket]||['未判定',''];
+    const turn=walkerStepsOf(step).indexOf(step)+1;
+    const gain=step.gain?`<ul class="tr-arch-facts"><li>新取得证据 ${step.gain.a} 条</li><li>首次读到正文 ${step.gain.o} 条</li><li>可引用的页面 ${step.gain.q} 条</li><li>合计 ${step.gain.t}</li></ul>`:'';
+    return `<div class="tr-step-content">
+      <div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(step.actor)} · ${step.role==='GIA'?'第 '+step.round_index+' 轮':'第 '+turn+' 步'}</span>
+        <h3>${esc(actionTitle(step))}</h3></div>${pill(step.role,step.role.toLowerCase())}</div>
+      <div class="tr-traj-verdict ${bCls}"><b>${esc(bLabel)}</b>${step.weight==null?'':`<span>权重 ${step.weight}</span>`}${step.image_count?`<span>${step.image_count} 张图</span>`:''}
+        ${step.bucketReason?`<p>${esc(walkerReason(step.bucketReason))}</p>`:''}
+        ${step.errors&&step.errors.length?`<p>核验记到的问题：${step.errors.map(esc).join('、')}</p>`:''}</div>
+      ${trajBlock('这一步做了什么',`<p class="tr-prose">${esc(step.preview)}</p>`)}
+      ${step.produced?trajBlock('新取得的证据',`<p class="tr-prose">${esc(step.produced)}</p>`):''}
+      ${gain?trajBlock('线索收益',gain):''}
+      ${step.report_status?trajBlock('报告状态',`<p class="tr-prose">${esc(step.report_status)}（由程序判定，教师只能把「完成」降为「未完成」）</p>`):''}
+      ${step.output?trajBlock('这一步的实际输出',`<pre class="tr-code">${esc(step.output)}</pre>`):''}
+      ${step.meta?trajBlock('数据行元信息',`<pre class="tr-code">${esc(step.meta)}</pre>`):''}</div>`;
+  }
+  function walkerStepsOf(step){ return walkerSteps(T.walkerCase).filter(v=>v.actor===step.actor&&v.role==='HI'); }
+  function walkerGroupDetail(node){
+    const steps=(node.steps||[]).filter(Boolean);
+    const c=steps.reduce((a,s)=>{a[s.bucket]=(a[s.bucket]||0)+1;return a;},{});
+    const rows=Object.entries(c).map(([k,v])=>`<li>${esc((walkerBuckets[k]||[k])[0])} ${v} 行</li>`).join('');
+    return `<div class="tr-step-content"><div class="tr-step-heading"><div><span class="tr-panel-kicker">${esc(node.badge||'分组')}</span><h3>${esc(node.label)}</h3></div></div>
+      <p class="tr-prose">${esc(node.subtitle||'')}</p>
+      ${rows?trajBlock('这一组的去向',`<ul class="tr-arch-facts">${rows}</ul>`):''}
+      <p class="tr-footnote">点击脑图里的任意一步，查看它实际输出了什么、核验怎么判、这一行进没进训练候选。</p></div>`;
+  }
+  function selectWalkerNode(id){
+    const node=T.map?.nodes.get(id); if(!node)return;
+    const main=page.querySelector('#tr-wk-step'); if(!main)return;
+    main.innerHTML=node.step?walkerStepDetail(node.step):walkerGroupDetail(node);
+  }
+  function mountWalkerMap(){
+    const meta=walkerCase(), steps=walkerSteps(meta.id);
+    const host=page.querySelector('#tr-wk-mappanel'); if(!host)return;
+    if(!steps.length){host.innerHTML='<div class="tr-empty"><strong>这一案例的逐步记录暂时不可用</strong></div>';return;}
+    T.map?.destroy();
+    const data=(walkerData?.cases||[]).find(v=>v.id===meta.id)||{};
+    T.map=new TrainingMindMap({mode:'bridge',task:`${meta.name} · ${meta.kind}`,description:meta.kind,steps,
+      step_count:data.step_count||steps.length,included_count:data.included_count},
+      {titleForStep:actionTitle,onStep:selectWalkerNode,onGroup:n=>selectWalkerNode(n.id),onFilter:v=>{T.map.setFilter(v);}});
+    T.map.filter='all';
+    T.map.expanded=new Set(['root','round-1','round-2']);
+    T.map.mount(host);
+    selectWalkerNode('root');
+  }
+
+  function walkerCase(){ return walkerCases.find(c=>c.id===T.walkerCase) || walkerCases[0]; }
+  async function renderWalker(){
+    const serial=T.serial;
+    if(!walkerData){try{walkerData=await fetch('/assets/walker/wk2.json',{cache:'no-cache'}).then(r=>r.json());}catch(e){walkerData={cases:[]};}}
+    if(serial!==T.serial)return;
     const c=walkerCase();
     page.innerHTML=top('walker')+`
       <div class="tr-section-title"><div><div class="eyebrow muted">TRAJECTORY GENERATION</div>
@@ -610,13 +658,21 @@
             <td>${esc(a)}</td><td>${esc(b)}</td><td class="${flag==='win'?'m-win':flag==='miss'?'m-bad':''}">${esc(d)}</td></tr>`).join('')}</tbody></table></div>
         <p class="tr-footnote">${esc(walkerHeldNote)}</p></section>
 
-      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>逐案看这一轮的变化</h2>
-        <p>九个案例全部列出，包括两个回退的。点击左侧任一案例查看它三轮的数字、实际走过的动作，以及这一轮为什么变好或变差。</p></div></div>
-        <div class="tr-flow-layout"><div class="tr-cases" aria-label="案例列表">${walkerCases.map(v=>{
+      <section class="tr-wk-section"><div class="tr-section-title"><div><h2>逐案展开：每一步都在脑图里</h2>
+        <p>九个案例全部列出，包括两个回退的。先选案例，再点脑图里的任意一步，看它实际输出了什么、核验怎么判、这一行进没进训练候选。脑图可拖动平移、缩放。</p></div></div>
+        <div class="tr-wk-picker" role="tablist" aria-label="案例">${walkerCases.map(v=>{
           const [tl,tc]=walkerTags[v.tag];
-          return `<button class="tr-case ${v.id===c.id?'active':''}" data-wk-case="${esc(v.id)}" aria-pressed="${v.id===c.id}">
+          return `<button class="tr-case ${v.id===c.id?'active':''}" data-wk-case="${esc(v.id)}" role="tab" aria-selected="${v.id===c.id}">
             <span><strong>${esc(v.name)}</strong><small>${esc(v.kind)}</small></span><i class="tr-wk-dot ${tc}" title="${esc(tl)}"></i></button>`;}).join('')}</div>
-          <article class="tr-stage-detail" aria-live="polite">${walkerCaseDetail(c)}</article></div></section>
+        <div class="tr-wk-caseline"><span class="tr-wk-tag ${walkerTags[c.tag][1]}">${esc(walkerTags[c.tag][0])}</span><b>${esc(c.tagText)}</b><p>${esc(c.text)}</p></div>
+        <div class="tr-wk-map"><section class="tr-map-panel" id="tr-wk-mappanel" aria-label="这一条轨迹的脑图"></section>
+          <section class="tr-step-main" id="tr-wk-step" aria-live="polite"></section></div>
+        <div class="tr-matrix tr-wk-caseruns"><table>
+          <thead><tr><th>轮次</th><th>决策</th><th>教师调用</th><th>墙钟</th><th>HI 动作</th><th>链条</th><th>报告状态</th><th>报告核验</th><th>答案核验</th></tr></thead>
+          <tbody>${c.rows.map(r=>`<tr class="run-${r[0]}"><th scope="row">${esc(r[0])}</th><td>${r[1]}</td><td>${r[2]}</td><td>${esc(r[3])}</td><td>${r[4]}</td>
+            <td class="${r[5]==='全部'?'m-full':'m-none'}">${esc(r[5])}</td><td class="m-note">${esc(r[6])}</td>
+            <td class="${r[7].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[7])}</td><td class="${r[8].startsWith('0/')?'m-bad':'m-ok'}">${esc(r[8])}</td></tr>`).join('')}</tbody></table>
+          <p class="tr-footnote">同案例三轮对照。上面的脑图只展示 wk2 这一轮——r0e 与 wk1 的逐步记录同样留存，需要时可以一并接进来。</p></div></section>
 
       <section class="tr-wk-section"><div class="tr-section-title"><div><h2>这一轮修了什么</h2>
         <p>第一轮暴露出的五处，四处已改，一处判断为暂时不值得做。</p></div></div>
@@ -628,7 +684,8 @@
         <ul class="tr-traj-req">${walkerNext.map(([n,t])=>`<li><b>${esc(n)}</b><p>${esc(t)}</p></li>`).join('')}</ul>
         <p class="tr-callout">${esc(walkerNextNote)}</p></section>
 
-      <div class="tr-footnote">数据来自 2026 年 10 月 12 日的两次实际运行（wk1、wk2），规格 hi@0.7.0 / gia@0.8.0，核验器与 r0e 同一套。本轮跳过了用学生模型处理器逐行核对这一步（该模型未在本机）。</div>`;
+      <div class="tr-footnote">数据来自 2026 年 10 月 12 日的两次实际运行（wk1、wk2），规格 hi@0.7.0 / gia@0.8.0，核验器与 r0e 同一套。脑图与逐步输出直接取自运行目录的执行记录与导出行，没有人工转写。本轮跳过了用学生模型处理器逐行核对这一步（该模型未在本机）。</div>`;
+    mountWalkerMap();
   }
   function renderRubric(){
     page.innerHTML=top('rubric')+`

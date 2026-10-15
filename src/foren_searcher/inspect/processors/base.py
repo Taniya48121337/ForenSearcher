@@ -69,6 +69,9 @@ _OPERATIONS: tuple[InspectOperation, ...] = (
     "visual_qa",
     "locate_frames",
     "align_media",
+    "diff_media",
+    "compare_media",
+    "video_structure",
 )
 
 

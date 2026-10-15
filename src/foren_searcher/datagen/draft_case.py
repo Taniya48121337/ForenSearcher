@@ -45,7 +45,7 @@ load_cases() 会报重复，审核时须二选一（或合并）后删掉另一�
    - 有 source_url 的按域名+路径生成 url_pattern（query 去掉；YouTube 等把视频号参数保留、问号写成 [?]；X/Twitter 写成
      *<账号>/status/<编号公共前缀>* 以覆盖 twitter.com 与 x.com）；派生 E（帧、裁剪、对齐、媒体属性…）按 acquired_by 归成一项。
      key 按站点命名（x/twitter → <账号>_tweets，youtube → youtube_upload，get_frames → frames，crop → crops，
-     align_media → alignment，media_profile → media_profile，其余取二级域名）。
+     align_media → alignment，diff_media → pixel_diff，media_profile → media_profile，其余取二级域名）。
    - supports：先按"答案里引用该 E 的句子"归类到 REQ；答案没引用的（补齐项）按类型给默认类（文本 → external，
      派生 → claim 的 media / media 类的 location）。再用 verdicts_units 里 plan 单元 extra.gap.judge_targets（工作区 W1-k ↔
      任务 Tk）交叉核对——judge 的 REQ 编号属于判定时所用的案卷，需 --cases 里有该案卷才能按类反查；两者有交集取交集，
@@ -301,7 +301,7 @@ def _slug(value: str) -> str:
 def _derived_key(acquired_by: str) -> str:
     op = acquired_by.split("/")[-1]
     return {"get_frames": "frames", "crop": "crops", "ocr": "ocr_text", "get_pages": "pages",
-            "align_media": "alignment"}.get(op, _slug(op))
+            "align_media": "alignment", "diff_media": "pixel_diff"}.get(op, _slug(op))
 
 
 def is_media_task(dataset: str, task_text: str, claims: list[str]) -> bool:

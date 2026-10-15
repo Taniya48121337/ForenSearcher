@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextvars
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Mapping
@@ -17,7 +18,7 @@ class InspectDispatcher:
     """把后端操作隔离到专用线程，保持主 asyncio 循环可响应。"""
 
     def __init__(self, probe_backend: Any, processors: Mapping[InspectOperation, InspectProcessor], *, maximum_workers: int = 4) -> None:
-        """创建有界线程池，并检查十个 operation 都有明确 Processor。"""
+        """创建有界线程池，并检查每个 operation（含需显式开启的 diff_media）都有明确 Processor。"""
 
         self.probe_backend = probe_backend
         self.processors = dict(processors)
@@ -26,7 +27,8 @@ class InspectDispatcher:
         self._local_model_lock: Any | None = None
         expected: tuple[InspectOperation, ...] = (
             "get_frames", "get_pages", "crop", "locate_regions", "ocr", "asr",
-            "audio_qa", "visual_qa", "locate_frames", "align_media",
+            "audio_qa", "visual_qa", "locate_frames", "align_media", "diff_media",
+            "compare_media", "video_structure",
         )
         missing = [name for name in expected if name not in self.processors]
         if missing:
@@ -59,8 +61,10 @@ class InspectDispatcher:
                         self.probe_backend.release_gpu_models()
             return asyncio.run(method(*args))
         loop = asyncio.get_running_loop()
+        # 带上调用方的 ContextVar（评测开关 / 语言开关）：run_in_executor 默认不复制上下文
+        context = contextvars.copy_context()
         try:
-            return await loop.run_in_executor(self._executor, invoke)
+            return await loop.run_in_executor(self._executor, context.run, invoke)
         except asyncio.CancelledError:
             cancelled.set()
             raise

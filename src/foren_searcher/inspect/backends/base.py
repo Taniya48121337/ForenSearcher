@@ -66,6 +66,8 @@ class PendingArtifact:
     locator: Mapping[str, Any]
     acquired_by: str
     production_method: str = "derived_media"
+    # 由多份输入共同派生时（如 diff_media 的 A|B 对照图）补充的其他来源 E；derived_from 依次为 parent 与这些 E。
+    extra_parent_evidence_ids: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

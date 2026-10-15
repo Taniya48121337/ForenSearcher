@@ -1,49 +1,635 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ForenSearcher · 调查工作台</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231a302c'/%3E%3Cpath d='M12 29V11h18M12 20h13' stroke='%23bbdf83' stroke-width='4' fill='none'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/assets/style.css"><link rel="stylesheet" href="/assets/training.css"><link rel="stylesheet" href="/assets/paper.css"><script src="/assets/app.js" defer></script><script src="/assets/training-map.js" defer></script><script src="/assets/paper.js" defer></script><script src="/assets/training.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForenSearcher 项目进展</title>
+<meta name="description" content="ForenSearcher 视频核查智能体：每一步做到哪里了（截至 2026-10-13）">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231a302c'/%3E%3Cpath d='M12 29V11h18M12 20h13' stroke='%23bbdf83' stroke-width='4' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/progress.css">
+<script src="/assets/progress.js" defer></script>
 </head>
 <body>
-<aside class="sidebar">
-  <a class="brand" href="#"><span class="brand-mark">F<span>·</span></span><span>ForenSearcher<small>调查工作台</small></span></a>
-  <button class="new-button" data-action="new"><span>＋</span> 新建调查 <kbd>N</kbd></button>
-  <div class="nav-label">工作空间</div>
-  <button class="nav-item active" data-action="library"><span data-icon="grid"></span> 案例库 <span class="nav-count" id="case-count">5</span></button>
-  <button class="nav-item" data-action="history"><span data-icon="history"></span> 调查记录 <span class="nav-count" id="history-count">0</span></button>
-  <button class="nav-item" data-action="training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg> 方法与进展</button>
-  <div class="nav-label recent-label">最近调查</div><div id="recent-runs" class="recent-runs"><p class="sidebar-empty">从一个案例开始探索</p></div>
-  <div class="sidebar-bottom"><div class="model-symbol">Q</div><div><strong>Qwen3.8-27B</strong><span>演示推理模型 · GIA 与 HI 共用</span></div><i class="online-dot" id="api-dot"></i></div>
-</aside>
-<div class="shell">
-  <header class="topbar"><div class="breadcrumb"><span class="small-logo">F</span><span>ForenSearcher</span><span class="slash">/</span><strong id="breadcrumb">案例库</strong></div><div class="topbar-right"><span id="api-status" class="connection">正在连接</span><span class="budget" id="budget" title="现有累计账本中扣除已用金额与未知费用预留后的可用额度">预算 —</span><button class="text-button" id="logout" data-action="logout" hidden>退出</button></div></header>
-  <main id="library" class="library">
-    <a class="tr-mobile-entry" href="#training" data-training-route="#training">查看项目进展 · 生成流程、质量核验与真实样例 ↗</a>
-    <section class="intro"><div class="eyebrow"><span></span> EVIDENCE-DRIVEN INVESTIGATION</div><h1>让每一步调查，<br>都有据可查<span class="accent">。</span></h1><p>从一个问题出发，观察模型如何拆解线索、调用工具、获取证据，<br class="desktop-break">直至形成可追溯的结论。</p><div class="intro-actions"><button class="primary" data-action="new">开始调查 <span>↗</span></button><span class="quiet"><i class="small-dot"></i> 真实 API · 真实材料 · 完整记录</span></div><div class="intro-map" aria-hidden="true"><div class="mini-root">调查问题</div><i class="mini-line l1"></i><div class="mini-gia">GIA <small>全局调度</small></div><i class="mini-line l2"></i><i class="mini-line l3"></i><div class="mini-hi hi-a">HI <small>工作区 A</small></div><div class="mini-hi hi-b">HI <small>工作区 B</small></div><div class="mini-evidence">共享证据 <b>E1 · E2 · E3</b></div></div></section>
-    <section class="cases-section"><div class="section-top"><div><div class="eyebrow muted">CASE LIBRARY</div><h2>演示案例</h2></div><p>查看历史记录不消耗额度；实时运行将调用 API</p></div><div class="filters" id="filters"><button class="active" data-filter="all">全部案例</button><button data-filter="video">视频调查</button><button data-filter="image">图表问答</button><button data-filter="web">开放搜索</button><button data-filter="mixed">并行调查</button></div><div id="case-grid" class="case-grid"><div class="loading-card">正在读取案例…</div></div></section>
-    <section class="guide-strip"><div><b class="guide-number">01</b><span><strong>选择调查问题</strong><small>使用演示案例，或上传自有材料</small></span></div><i>→</i><div><b class="guide-number">02</b><span><strong>展开调查脑图</strong><small>逐节点查看每一步行动与依据</small></span></div><i>→</i><div><b class="guide-number">03</b><span><strong>回溯原始证据</strong><small>核对结论与来源是否一致</small></span></div></section>
-    <footer>ForenSearcher <span>演示推理：GIA 与 HI 共用 Qwen3.8-27B，工作区上下文相互独立 · 训练口径：学生 Qwen3.5-9B / 教师 Qwen3.5-122B-A10B</span></footer>
-  </main>
-  <main id="training-page" class="training-page" hidden></main>
-  <main id="history-page" class="history-page" hidden><div class="eyebrow muted">INVESTIGATIONS</div><h1>调查记录</h1><p class="muted">保留真实运行中的分析、动作、材料与结果。</p><div id="history-list"></div></main>
-  <main id="workspace" class="workspace" hidden>
-    <section class="run-heading"><div class="run-heading-main"><button class="icon-button back-button" data-action="library" aria-label="返回案例库">←</button><div><div class="run-kicker"><span id="run-mode">真实运行</span><span id="run-status" class="status-pill">准备中</span></div><h1 id="run-title">调查</h1></div></div><div class="run-actions"><span id="run-time" class="run-metric">—</span><span id="run-cost" class="run-metric">—</span><button id="stop-run" class="danger-button" data-action="stop" hidden>停止调查</button><button id="rerun" class="secondary" data-action="rerun" hidden>重新运行 ↗</button></div></section>
-    <div id="run-notice" class="run-notice" hidden></div>
-    <div class="workspace-tabs"><button class="active" data-pane="map">调查脑图</button><button data-pane="inspector">步骤详情</button><button data-action="answer">最终结果</button></div>
-    <div class="investigation-layout">
-      <section class="map-panel" aria-label="调查脑图">
-        <div class="map-toolbar"><div><span class="map-live-dot"></span><strong>调查脑图</strong><span id="map-count">0 步</span></div><div><button class="text-button" data-action="expand">展开步骤</button><button class="text-button" data-action="evidence-nodes" id="evidence-toggle">显示证据</button></div></div>
-        <div class="map-legend"><span><i class="legend-dot gia"></i>GIA 全局调度</span><span><i class="legend-dot hi"></i>HI 局部调查</span><span><i class="legend-dot tool"></i>工具行动</span><span><i class="legend-dot evidence"></i>共享证据</span></div>
-        <div id="graph-viewport" class="graph-viewport" tabindex="0" aria-label="可拖动和缩放的调查脑图"><div id="graph-stage" class="graph-stage"><svg id="graph-lines" class="graph-lines" aria-hidden="true"></svg><div id="graph-nodes"></div></div><div id="graph-empty" class="graph-empty">正在连接调查记录…</div></div>
-        <div class="map-bottom"><span id="map-hint">拖动平移 · 点击节点查看详情</span><div class="zoom-tools"><button data-action="zoom-out" aria-label="缩小">−</button><span id="zoom-level">100%</span><button data-action="zoom-in" aria-label="放大">＋</button><button data-action="fit" aria-label="适应画布" title="适应画布">⊡</button></div></div>
-        <div id="replay-bar" class="replay-bar" hidden><button class="icon-button" data-action="play" id="play-button" aria-label="播放已有记录">▷</button><span>记录回放</span><input id="replay-slider" type="range" min="0" max="1" value="1" aria-label="回放到指定步骤"><span id="replay-position">全部</span><button class="text-button" data-action="latest">完整记录</button></div>
-      </section>
-      <aside id="inspector" class="inspector"><div class="inspector-tabs"><button class="active" data-tab="detail">步骤详情</button><button data-tab="evidence">证据库 <span id="evidence-count">0</span></button><button data-tab="answer">结果</button></div><div id="inspector-content" class="inspector-content"><div class="detail-empty"><div>⌁</div><h3>选择节点查看详情</h3><p>点击脑图中的任意节点，可查看该步的分析、工具调用与返回证据。</p></div></div></aside>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#top"><span class="brand-mark">F</span><span>ForenSearcher<small>项目进展</small></span></a>
+    <nav class="nav" id="nav">
+      <a href="#overview">总览</a>
+      <a href="#task"><i style="background:var(--done)"></i>① 任务</a>
+      <a href="#agent"><i style="background:var(--doing)"></i>② 智能体</a>
+      <a href="#score"><i style="background:var(--doing)"></i>③ 成绩</a>
+      <a href="#data"><i style="background:var(--doing)"></i>④ 训练数据</a>
+      <a href="#verify"><i style="background:var(--doing)"></i>⑤ 判对错</a>
+      <a href="#loop"><i style="background:var(--todo)"></i>⑥ 训练与进化</a>
+      <a href="#next">下一步</a>
+      <a href="#glossary">名词</a>
+      <a href="/assets/walker.html" style="font-weight:700">轨迹生成详解 →</a>
+    </nav>
+    <span class="asof">截至 10-14 白天</span>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="切换深浅色">◐</button>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<!-- ============ 总览 ============ -->
+<section class="ch" id="overview" style="border-bottom:0;padding-top:0">
+  <div class="hero">
+    <h1>我们在做一个<span>会查视频的 AI 调查员</span></h1>
+    <p class="big">拿到一段可疑视频，它不靠"看一眼猜真假"，而是像人一样：<b>上网找原片 → 逐帧对比 → 把每处改动和证据写清楚</b>。最终目标是让一个小模型（9B）学会这套本事，并能通过"自己查 → 自动判对错 → 找出错在哪 → 针对性改进"的循环越变越强。</p>
+  </div>
+
+  <div class="pipeline" id="pipeline"></div>
+  <p class="tiny muted">点上面任一格，跳到对应章节。进度条是粗略估计，只表示"这一块离可用还有多远"。</p>
+
+  <div class="card changelog">
+    <h4>这次更新了什么（相对 10-13 15:05 那版）</h4>
+    <ul class="small">
+      <li><b>新页面：</b><a class="jump" href="/assets/walker.html">轨迹生成详解</a>——walker 每一步怎么定、一条真实轨迹逐步拆开、发给教师的<b>每一条 prompt 的中文版</b>（附英文原文）。</li>
+      <li><b>wk8 跑完、wk9 修了检索类：</b>18 个上网案例的答案通过 5/18 → 12/18（图片最早出处 0/6 → 5/6，核查说法 3/3）。找原片仍 0/3，wk10 在修。见 <a class="jump" href="#data-wk8">④</a>。</li>
+      <li><b>更正：</b>上一版说"合并后新比对工具一次都没被调用"，那是计数脚本的 bug（按带空格的字符串数紧凑 JSON，永远数到 0）。真实原因已查清，见 <a class="jump" href="#agent-merge">② 智能体</a>。</li>
+      <li><b>训练数据跑到第 9 轮：</b>"两段视频比对"这类已经稳定（wk6、wk8 答案通过都是 8/9）；wk8 第一次扩到另外 4 类题。见 <a class="jump" href="#data">④</a>。</li>
+      <li><b>新工具：</b>SEARCH 能查日期（页面发布、视频上传、最早存档）；比对画面对不上时自动改比声音；打开视频自动带字幕。</li>
+      <li><b>数据集：</b>FMNV 下好 281 个视频；GroundLie360 的 vid.zip 本身没下完（20 GB 处截断），截断前的 1314 个视频已解出。</li>
+    </ul>
+  </div>
+
+  <h3 class="sub">最近 24 小时发生的四件事</h3>
+  <div class="grid g4 news">
+    <div class="card doing">
+      <div class="when">10-13 → 10-14 凌晨</div>
+      <h4>合并后掉分：原因查清、修了两轮 <span class="st doing">复测中</span></h4>
+      <p class="small">不是"不调用"，而是三处衔接问题。修复 1 后原片比对 0/14 → 6/14，但总分 12/44 没涨（另 3 题在别处失分）。修复 2 在复测（evidM27c / d）。</p>
+      <a class="jump" href="#agent-merge">看这件事 →</a>
     </div>
-  </main>
-</div>
-<dialog id="new-dialog"><form id="new-form"><div class="dialog-top"><div><div class="eyebrow muted">NEW INVESTIGATION</div><h2>输入调查问题</h2></div><button type="button" class="icon-button" data-action="close-dialog" aria-label="关闭">×</button></div><label for="task-input">调查问题</label><textarea id="task-input" name="task" rows="5" maxlength="16000" placeholder="例如：这两段视频是否存在内容省略？请对比实际画面，并给出支持结论的证据。" required></textarea><label for="file-input" class="upload-zone"><span data-icon="upload"></span><strong>添加图片、PDF、视频或音频</strong><small>最多8份材料，每份不超过64 MB</small><input type="file" id="file-input" multiple accept="image/*,video/*,audio/*,.pdf"></label><div id="upload-list"></div><div id="form-error" role="alert"></div><div class="dialog-footer"><span>演示推理 Qwen3.8-27B · 使用现有累计预算<br><small>仅在点击开始后调用 API</small></span><button type="submit" class="primary" id="submit-run">开始调查 ↗</button></div></form></dialog>
-<div id="toast" class="toast" role="status" hidden></div>
-</body></html>
+    <div class="card done">
+      <div class="when">10-13 20:59</div>
+      <h4>答案"核验后重写"：4/9 → 8/9 <span class="st done">已默认开启</span></h4>
+      <p class="small">核验判错的答案，把错误清单交给教师改一次再核验。每条只多 1 次调用。B 族 9 个案例的走法和内容已稳定。</p>
+      <a class="jump" href="#data">看造数据 →</a>
+    </div>
+    <div class="card doing">
+      <div class="when">10-14 00:50 → 白天</div>
+      <h4>wk8 → wk9：5 类题 <span class="st doing">wk10 在修找原片</span></h4>
+      <p class="small">wk8 跑完 29 个：B 族仍 8/9，上网的几类大多不过。wk9 修了日期引用、先读有日期的页面、C 族要求给结论后，18 个上网案例答案通过 5 → 12。找原片 0/3，原因已查清（wk10）。</p>
+      <a class="jump" href="#data-wk8">看 wk8 / wk9 →</a>
+    </div>
+    <div class="card todo">
+      <div class="when">10-14</div>
+      <h4>数据集准备 <span class="st doing">部分完成</span></h4>
+      <p class="small">FMNV 用 yt-dlp 下了 307 个、成功 281 个（真新闻 202、只换标题 79）。GroundLie360 的 vid.zip 本身没下完（20 GB 处截断），截断前 1314 个视频完整可用；要全部得重下。</p>
+      <a class="jump" href="#score">看考场 →</a>
+    </div>
+  </div>
+
+  <h3 class="sub">全景脑图：每一块做到哪了</h3>
+  <div class="legend">
+    <span class="st done">已完成</span><span class="st doing">进行中</span><span class="st warn">有问题 / 退步</span><span class="st todo">没开始 / 在等</span><span class="st drop">已放弃</span>
+  </div>
+  <div class="mm-shell wide" data-map="overview">
+    <div class="mm-box"><div class="mm-bar"><span>①–③ 会不会查、考得怎样 · ④–⑥ 训练路线。点任一节点，下方显示说明。</span><div class="tools"><button type="button" data-mm="expand">全部展开</button><button type="button" data-mm="collapse">只看主干</button></div></div><div class="mm-scroll"></div></div>
+    <aside class="mm-detail"><p class="hint">点脑图里的任意节点，这里会显示它是什么、做到哪、证据在哪份文档。</p></aside>
+  </div>
+
+  <h3 class="sub">现在卡在哪</h3>
+  <ul class="block-list">
+    <li><span class="k srv">等服务器</span><span><b>服务器还没开跑。</b>正式教师模型（122B）、正式核验模型、第一次训练、服务器上的基线，全部在等它。这仍是最大的瓶颈。</span></li>
+    <li><span class="k fix">在复测</span><span><b>工具合并后的分数还没回到合并前。</b>两轮修复后要看 evidM27c / d 两次的平均能否 ≥ 17.5/44。在那之前，正式成绩仍用合并前的 33.6%（v2.4）。</span></li>
+    <li><span class="k fix">要看结果</span><span><b>新 4 类题第一次跑（wk8）。</b>A / C / E / L 族的规则只在云端用模拟状态验证过，真实检索能不能找到原片、日期查询在真实网络上灵不灵，要等这轮结果。</span></li>
+    <li><span class="k you">需要你</span><span>GroundLie360 解压（这次是 0 个视频，可能是空间检查没过）；以图搜图的 API key（Google Vision、SerpAPI、TinEye）；人工标 80 条金标。</span></li>
+  </ul>
+</section>
+
+<!-- ============ ① 任务 ============ -->
+<section class="ch" id="task">
+  <div class="ch-head">
+    <div class="ch-num">1</div>
+    <div class="ch-title"><h2>任务：它要解决什么问题</h2><span class="st done">任务定义已定</span></div>
+    <div class="ch-q">用一道真实考题说明：输入是什么、要输出什么、怎么打分。</div>
+  </div>
+
+  <p class="lead">一句话：给一段被做过手脚的视频，要求 AI <b>找到原片、对比出改了哪里、说清楚这样改想骗人相信什么</b>，而且每句话都要指向它找到的证据。</p>
+
+  <div class="casebadge"><b>案例 A</b> EVID-Bench 第 205 题 · 舞蹈合集里的冰箱变成了售货机</div>
+  <div class="case">
+    <figure class="fig">
+      <img src="/assets/progress/c205_frame.jpg" alt="材料 A 的一帧：左右分屏的舞蹈合集，两侧有 ONE Challenge 的彩色边框" data-cap="案例 A 的材料：一段 525 秒的 TikTok 舞蹈合集（左右分屏，两侧是 ONE Challenge 的彩色边框）。这是模型拿到的唯一材料。">
+      <figcaption><b>模型拿到的材料：</b>一段 525 秒的 TikTok 舞蹈合集（这一帧在 131 秒）。只看这段视频，几乎看不出哪里被改过。</figcaption>
+    </figure>
+    <div class="case-meta">
+      <div class="qbox">
+        <div class="lab">题目（大意）</div>
+        <p class="small" style="margin:0">这段视频被篡改过，可能是剪辑、拼接，也可能是 AI 生成或改动。请上网找原片并对比，列出 3–5 个"伪造点"：原片是什么样、改了什么、想让观众误以为什么。</p>
+      </div>
+      <div class="qbox">
+        <div class="lab">标准答案（3 个伪造点，模型看不到）</div>
+        <ol class="small">
+          <li>走廊群舞那段：左侧桌上的<b>背包</b>被换成 AI 生成的<b>白纸箱</b>。</li>
+          <li>室内斗舞那段：右侧背景的<b>冰箱</b>被改成<b>饮料售货机</b>。</li>
+          <li>超市那段：货架顶上的<b>零食</b>被换成<b>灭火器</b>。</li>
+        </ol>
+      </div>
+      <div class="qbox">
+        <div class="lab">怎么打分</div>
+        <p class="small" style="margin:0">评委模型（Claude Sonnet）逐条看标准答案的每一点，模型的回答里说中了就得 1 分。这题满分 3 分。全卷的"点级得分" = 说中的点 ÷ 全部点。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">为什么难：改动小到肉眼几乎看不见</h3>
+  <p class="muted small">下面三张是系统<b>找到原片之后</b>自动生成的对照图：上排左边是被改的视频 A，右边是原片 B，红框是两者不同的地方；下排是放大。点图看大图。</p>
+  <div class="grid g3">
+    <figure class="fig"><img src="/assets/progress/c205_fridge.jpg" alt="A 中的售货机与原片中的冰箱对比" data-cap="A 308–320 秒：原片里是白色冰箱，A 里变成了饮料售货机。改动只占画面 3.8%。"><figcaption><span class="tag ok">说中</span><b>冰箱 → 售货机</b><br>A 的 308–320 秒，占画面 3.8%</figcaption></figure>
+    <figure class="fig"><img src="/assets/progress/c205_bag.jpg" alt="A 中的白纸箱与原片中的黑包对比" data-cap="A 189–208 秒：原片桌上是黑色背包，A 里变成了白纸箱。改动只占画面 0.5%。"><figcaption><span class="tag ok">说中</span><b>黑包 → 白纸箱</b><br>A 的 189–208 秒，占画面 0.5%</figcaption></figure>
+    <figure class="fig"><img src="/assets/progress/c205_shelf.jpg" alt="A 货架上的灭火器与原片中的零食对比" data-cap="A 469–479 秒：原片货架顶上是零食，A 里多了红色灭火器。改动只占画面 0.1%。系统位置找对了，但看图描述写成了“红盒 → 蓝盒”。"><figcaption><span class="tag bad">位置对、东西说错</span><b>零食 → 灭火器</b><br>只占画面 0.1%。系统写成了"红盒 → 蓝盒"，评委仍给了分</figcaption></figure>
+  </div>
+  <p class="small muted" style="margin-top:12px">所以这类题的关键不是"盯着看"，而是<b>先找到原片，再让程序逐帧比对</b>。这也是后面所有工作的主线。</p>
+
+  <h3 class="sub">题目从哪来</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>考试用 <span class="st done">已接入</span></h4>
+      <p class="small"><b>EVID-Bench</b>：222 个被篡改的视频，分三类——AI 生成/改动、单来源剪辑、多来源拼接，每题 3–5 个标准伪造点。正式报分只用第 131–222 题（91 题，其中 71 题是 AI 类）。</p>
+      <p class="small muted">另有 GroundLie360、FMNV 两个数据集代码已接好，等下载视频。</p>
+    </div>
+    <div class="card">
+      <h4>练习用（造训练数据）<span class="st done">33 个案例</span></h4>
+      <p class="small">来自 6 个数据集：TRUE（新闻核查）、AVeriTeC / AVerImaTeC（说法核查）、VideoSham（两段视频找不同）、VCSL（找相同片段）、QVHighlights（按描述找片段）。分成训练 21 个、选择 5 个、确认 3 个、评估 4 个，互不泄漏。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ② 智能体 ============ -->
+<section class="ch" id="agent">
+  <div class="ch-head">
+    <div class="ch-num">2</div>
+    <div class="ch-title"><h2>智能体：它是怎么查的</h2><span class="st done">框架完成</span><span class="st doing">合并后掉分已修、在复测</span></div>
+    <div class="ch-q">还是案例 A，把它真实的调查过程画成脑图。</div>
+  </div>
+
+  <p class="lead">一句话：一个<b>"项目经理"（GIA）</b>决定查什么、开几个工作区；每个工作区里有一个<b>"调查员"（HI）</b>一步一步用工具查；查到的东西都编号存进共享证据库（E1、E2…），最后答案里每句话都要带编号。</p>
+
+  <h3 class="sub">案例 A 的真实调查过程（DETECT v2.4 那一轮，得 3/3 分）</h3>
+  <div class="mm-legend" style="margin-bottom:10px">
+    <span><i style="border-color:var(--gia)"></i>GIA 项目经理</span>
+    <span><i style="border-color:var(--hi)"></i>HI 调查员</span>
+    <span><i style="border-color:var(--warn);background:var(--warn-bg)"></i>走了弯路</span>
+    <span><i style="border-color:var(--accent-ink)"></i>结果</span>
+  </div>
+  <div class="mm-shell" data-map="case205">
+    <div class="mm-box"><div class="mm-bar"><span>共 22 步 · 一个工作区 · 运行 evid_video_205_evidC27e_1</span><div class="tools"><button type="button" data-mm="expand">全部展开</button><button type="button" data-mm="collapse">收起</button></div></div><div class="mm-scroll v"></div></div>
+    <aside class="mm-detail"><p class="hint">← 点任一步，看它做了什么、拿到了什么。带缩略图的节点可以点开看原图。</p></aside>
+  </div>
+
+  <h3 class="sub">调查员手里的工具（最新版本）</h3>
+  <div class="grid g4">
+    <div class="card"><h4>SEARCH 上网搜</h4><p class="small">用文字或图片搜视频、网页、图片，打开候选。搜到视频后程序自动和材料粗对，标出"像不像同一来源"。图文一起搜时，文字搜索和以图搜图两路合并。<b>新：</b>可以<b>查日期</b>（页面发布、视频上传、最早存档）；打开视频自动带原语言字幕。</p></div>
+    <div class="card"><h4>INSPECT 看材料</h4><p class="small">6 项：取帧/取页/裁剪、读画面文字、听写语音、按描述找画面、看视频结构（镜头、定格、重复、黑场）、两段对比 compare_media。<b>新：</b>画面对不上而两边都有声音时，自动改成只比声音。</p></div>
+    <div class="card"><h4>READ_RECORD 翻记录</h4><p class="small">把之前的工具结果、长网页按页翻出来再看，或者回看某张图。</p></div>
+    <div class="card"><h4>QUERY_MEMORY 查记忆</h4><p class="small">在证据库里按关键词找以前查到的东西。证据多到视图放不下时才需要（wk8 专门造了这种情形）。</p></div>
+  </div>
+  <p class="tiny muted" style="margin-top:8px">规则版本：EVID 复测用调查员 hi@0.8.0；造训练数据的 wk8 用 hi@0.10.0（= 0.8.0 + 日期查询 + 精简参数）；项目经理 gia@0.9.0。基线模型是本机 Qwen3.8-27B（关思考）。</p>
+
+  <h3 class="sub" id="agent-merge">工具合并之后：掉分、查原因、修复</h3>
+  <div class="vs">
+    <div class="card">
+      <h4>合并前（DETECT v2.4，10-11）</h4>
+      <div class="flow"><span>HI 搜索</span><em>→</em><span class="auto">程序自动挑候选、下载、比对</span><em>→</em><span class="auto">差异图直接交给 HI</span><em>→</em><span>HI 写报告</span></div>
+      <p class="small">找原片和比对是程序<b>替调查员做完</b>的。案例 A 的 R11 就是这样被自动比出来的。</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="card">
+      <h4>合并后（10-12）</h4>
+      <div class="flow"><span>HI 搜索</span><em>→</em><span>程序标"像不像同源"并给调用建议</span><em>→</em><span>HI 自己决定调 compare_media</span><em>→</em><span>写报告</span></div>
+      <p class="small">设计意图是"工具只陈述事实，决定交给模型"，这样训练出的学生才学得到"该比对了"。</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;border-left:4px solid var(--doing)">
+    <h4>掉分的真实原因（10-13 诊断）<span class="st doing">已修</span></h4>
+    <p class="small muted">更正：上一版写的"比对零调用"是计数脚本的 bug。读证据库后，208 号调了 4 次、154 和 194 号各 1 次。真正的问题是下面三处衔接：</p>
+    <div class="tbl-wrap" style="box-shadow:none">
+    <table>
+      <thead><tr><th>#</th><th>问题</th><th>具体例子</th><th>怎么修的</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>以图搜图找到的是<b>嵌着原片的文章页</b>，程序只认"视频类候选"，拒绝下载</td><td>194 号：第 1 条结果的页面里就是原片，却报"不是视频候选"；HI 转去比一个无关舞蹈视频（0%）</td><td>页面最终跳到 YouTube 视频页的，也算视频候选</td></tr>
+        <tr><td>2</td><td>图文一起搜时，<b>文字那半被丢了</b>，YouTube 文字搜索整个没跑</td><td>候选视频数：172 号 20 → 0，205 号 12 → 2；205 的原片本来是文字搜索第 2 条</td><td>图文搜索两路都跑、交错合并；名额从 5 放宽到 8</td></tr>
+        <tr><td>3</td><td>比对摘要<b>先列一堆琐碎的"倒放 / 变速"</b>，真正的改动区域和看图描述排到第 17 行以后，HI 只看得到前 16 行</td><td>208 号：HI 把 8 条 1.5 秒的"倒放"写成伪造点，"扳手 → 锤子""扫帚"那几行没看到</td><td>改动区域、人脸、新增片段排前面；≤2 秒的倒放 / 变速合成一行</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h4>同样 14 个视频，各轮得分（Sonnet 评分）</h4>
+      <div class="tbl-wrap" style="box-shadow:none;border:0">
+      <table>
+        <thead><tr><th>版本</th><th class="num">得分</th><th class="num">案例 A</th></tr></thead>
+        <tbody>
+          <tr><td>原版（不找原片）F27</td><td class="num">5/44</td><td class="num">0/3</td></tr>
+          <tr><td>DETECT v2.4 · C27e</td><td class="num good">23/44</td><td class="num good">3/3</td></tr>
+          <tr><td>DETECT v2.4 · C27G（同设置再跑）</td><td class="num">16/44</td><td class="num">0/3</td></tr>
+          <tr><td>合并后 M27a</td><td class="num bad">13/44</td><td class="num bad">0/3</td></tr>
+          <tr><td>修复 1 · M27b</td><td class="num bad">12/44</td><td class="num">1/3</td></tr>
+          <tr><td>修复 2 · M27c / M27d</td><td class="num pending">运行中</td><td class="num pending">—</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="small" style="margin-top:8px"><b>注意波动：</b>同一套 v2.4 跑两次就差 7 分（23 vs 16），一轮 14 题的总分判断不了好坏。所以修复 2 连跑两次取平均，验收线是<b>平均 ≥ 17.5/44</b>（v2.4 两次平均 19.5 减 2）。</p>
+    </div>
+    <div class="card">
+      <h4>修复 1 生效了，但被别处抵消</h4>
+      <ul class="small" style="margin:0 0 8px;padding-left:1.2em">
+        <li>原片被比对到：<b>0/14 → 6/14</b>；这 6 题拿了 11/18 分，其余 8 题只拿 1/26。</li>
+        <li>案例 A（205）：文字搜索回来后原片进池并比对，报出"冰箱 → 售货机"，0 → 1/3。</li>
+        <li>抵消：138 号项目经理收尾时写了一段不编号的话，还说"没找原片"（4/5 → 0/5）；175、186 两道换脸题这轮原片没搜进来。</li>
+      </ul>
+      <p class="small"><b>修复 2：</b>① 收尾检查——题目要编号列表而答案不是，就退回让项目经理按已有发现重写一次；② 图文搜索名额 5 → 8。还没覆盖：换脸题里 HI 认出人名却只用长描述词搜。</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h4>给定两段视频时，新比对确实更准</h4>
+    <p class="small" style="margin:0">VideoSham 4126（第 ④ 章案例 B）的标准差异段是 0.200–1.367 秒：旧工具答 0.767–1.5 秒（起点差 17 帧），新 compare_media 答 0.233–1.3 秒（起点差 1 帧）。</p>
+  </div>
+</section>
+
+<!-- ============ ③ 成绩</section>
+
+<!-- ============ ③ 成绩 ============ -->
+<section class="ch" id="score">
+  <div class="ch-head">
+    <div class="ch-num">3</div>
+    <div class="ch-title"><h2>成绩：现在考多少分</h2><span class="st done">本机基线已出</span><span class="st todo">服务器基线未跑</span></div>
+    <div class="ch-q">EVID-Bench 正式 91 题（第 131–222 题），点级得分。</div>
+  </div>
+
+  <p class="lead">一句话：27B 模型原本只有 <b>15.9%</b>；加上"找原片 + 逐帧比对"后到 <b>33.6%</b>，和论文里最好的闭源大模型按同样题目构成折算的分数（约 33%）相当。进步几乎全来自 AI 改动类；剪辑类仍落后论文。</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>总分（91 题，295 个标准点）</h4>
+      <div class="bars" id="bars-total"></div>
+      <p class="tiny muted" style="margin-top:10px">斜纹 = 论文数字按我们这 91 题的构成折算的估计值，不是原文直接给的数。</p>
+    </div>
+    <div class="card">
+      <h4>分两类看</h4>
+      <div class="bars" id="bars-cat"></div>
+      <p class="tiny muted" style="margin-top:10px">AI 类：论文最高是 Gemini-3.1-Pro 18.1%。剪辑类：论文 Qwen3-VL-235B 约 66%、GPT-5.5 约 82%。</p>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h4>拿案例 A 说：分数从哪来</h4>
+      <p class="small">原版 27B 在案例 A 上是 0/3：它搜不到原片，只能盯着视频猜。加了找原片比对后 3/3：第三次搜索找到 R11，97% 画面重合，程序逐帧比出 4 处改动区域。</p>
+      <p class="small">全卷 71 道 AI 题里，<b>原片进了候选池的 22 题拿了 62% 的分</b>，没进池的 49 题只拿了 11 分。所以剩下最大的空间在"搜得到原片"：约七成 AI 题的原片根本没搜到。</p>
+    </div>
+    <div class="card">
+      <h4>读这些数要注意</h4>
+      <ul class="small" style="margin:0;padding-left:1.2em">
+        <li>评委只用 Sonnet 一个（论文三个评委投票）；只跑一次、温度 0.6（论文三次取平均）。<b>所以只能粗比，不能严格对比。</b></li>
+        <li>91 题里 78% 是 AI 类，全卷 222 题里只占三分之一，总分主要反映 AI 类。</li>
+        <li>v2.2–v2.4 是在读过的 14 题上调的，干净子集（没读过的 54 题）上：原版 21.4% → v2.4 33.0%。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub">其他考场</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>考场</th><th>内容</th><th>状态</th><th>卡在哪</th></tr></thead>
+      <tbody>
+        <tr><td>EVID 本机</td><td>Ollama 27B（Q4 量化）</td><td><span class="st done">已出分</span></td><td class="muted">—</td></tr>
+        <tr><td>EVID 服务器</td><td>vLLM 27B（bf16），原版 + 找原片两组</td><td><span class="st todo">已打包</span></td><td>还没上服务器</td></tr>
+        <tr><td>GroundLie360</td><td>Snopes 核查过的真实帖子，判真假 + 类型 + 定位</td><td><span class="st doing">部分可用</span></td><td>vid.zip 没下完（20 GB 处截断）；截断前 1314 个视频已解出、建好索引；要全部需重下</td></tr>
+        <tr><td>FMNV</td><td>新闻视频，判真假 + 4 类伪造</td><td><span class="st doing">部分已下</span></td><td>YouTube 上还在的：真新闻 202、只换标题 79 个已下好；加工过的假视频只在网盘</td></tr>
+        <tr><td>FakeSV / FakeTT / WildFakeBench</td><td>短视频真假</td><td><span class="st todo">申请文字已备</span></td><td>要发邮件 / 填表申请</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">顺带试过、没用上的</h3>
+  <div class="grid g3">
+    <div class="card"><h4>现成的 AI 图像检测器 <span class="st drop">无效</span></h4><p class="small">DDA、TruFor、CommFor 在标准测试集上正常，但在 EVID 视频上没有信号。早期"通用生成检测"版 DETECT 在 27B 上也无效。</p></div>
+    <div class="card"><h4>Skyra（AI 视频检测）<span class="st todo">有信号，未接入</span></h4><p class="small">6 个"插入 AI 片段"的视频里 5 个能抓到一段；真实视频 0 误报。但每段 9 秒、要 17GB 显存，还没接进系统。</p></div>
+    <div class="card"><h4>Yandex 以图搜图 <span class="st drop">召回太低</span></h4><p class="small">拿原片自己的帧去搜，48 次只搜回 3 次。改接 Google Vision / Lens / TinEye，等 key 再量。</p></div>
+  </div>
+</section>
+
+<!-- ============ ④ 训练数据 ============ -->
+<section class="ch" id="data">
+  <div class="ch-head">
+    <div class="ch-num">4</div>
+    <div class="ch-title"><h2>训练数据：怎么造"示范教材"</h2><span class="st done">B 族已稳定</span><span class="st doing">wk8 扩到 5 类题，运行中</span></div>
+    <div class="ch-q">换一个更小的案例 B，看一条训练轨迹是怎么造出来的。</div>
+  </div>
+
+  <p class="lead">一句话：小模型要靠"示范"学。现在的做法叫 <b>walker（程序走、教师填）</b>：每一步做什么<b>由程序按规则决定</b>（保证不乱走、不重复），只有写报告、写答案这类需要语言的地方才请大模型（教师）来填空。</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>一条"训练样本"长什么样</h4>
+      <p class="small">某一刻学生能看到的东西（任务、已有证据、附图）→ 它该做的<b>一个决定</b>（一段 JSON，比如"对这两段视频做对齐"）。一次完整调查能切出 10–25 条样本，项目经理和调查员分开训。</p>
+    </div>
+    <div class="card">
+      <h4>为什么不让大模型自己走完</h4>
+      <p class="small">以前（r0–r0e）是教师大模型一步步走完整个调查：每个案例要 26–40 次调用、9 分多钟，还会重复调用、乱跑。学生学到的就是这些坏习惯。而学生的实际问题恰恰是<b>"链条不会走"</b>：原片进了候选池 10 次、一次都没打开。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">案例 B：滑板场里被抹掉的黑衣人（VideoSham 4126）</h3>
+  <div class="casebadge"><b>案例 B</b> 两段 6 秒视频，B 是原版，A 把一个从镜头前走过的黑衣人抹掉了</div>
+  <div class="grid g2 pair">
+    <figure class="fig"><img src="/assets/progress/c4126_A.jpg" alt="视频 A 0.733 秒：只有滑板少年" data-cap="视频 A 在 0.733 秒：只有远处的滑板少年，前景没有人（黑衣人被抹掉了）。"><figcaption><b>A（被改的）</b> 0.733 秒：前景空空</figcaption></figure>
+    <figure class="fig"><img src="/assets/progress/c4126_B.jpg" alt="视频 B 0.733 秒：前景有一个黑衣人" data-cap="视频 B 在 0.733 秒：一个黑衣人从镜头前走过。"><figcaption><b>B（原版）</b> 0.733 秒：黑衣人从镜头前走过</figcaption></figure>
+  </div>
+  <div class="qbox" style="margin-top:14px">
+    <div class="lab">题目与标准答案</div>
+    <p class="small" style="margin:0">找出黑衣人"在 B 里看得见、在 A 对应位置看不见"的全部时间段，并核对每段的起止边界。<b>标准答案：0.200–1.367 秒、2.300–6.000 秒</b>（逐帧比对得出）。</p>
+  </div>
+
+  <h3 class="sub">这条轨迹的脑图（wk4 轮：还有毛病的版本，24 步，大模型只被叫了 4 次）</h3>
+  <div class="mm-legend" style="margin-bottom:10px">
+    <span><i style="border-color:var(--gia)"></i>项目经理</span>
+    <span><i style="border-color:var(--hi)"></i>调查员</span>
+    <span><span class="nb prog" style="font-size:11px;font-weight:700;padding:0 6px;border-radius:5px">程序</span>规则决定的步</span>
+    <span><span class="nb llm" style="font-size:11px;font-weight:700;padding:0 6px;border-radius:5px">教师</span>大模型写的</span>
+  </div>
+  <div class="mm-shell" data-map="case4126">
+    <div class="mm-box"><div class="mm-bar"><span>运行 videosham_4126_wk4_1 · 两轮 · 两个工作区</span><div class="tools"><button type="button" data-mm="expand">全部展开</button><button type="button" data-mm="collapse">收起</button></div></div><div class="mm-scroll v"></div></div>
+    <aside class="mm-detail"><p class="hint">← 点任一步看细节。重点看第 2 步（找对了区间）和最后的答案（写得太保守）。</p></aside>
+  </div>
+
+  <h3 class="sub">程序在第 2 步就找对了区间</h3>
+  <figure class="fig">
+    <img src="/assets/progress/c4126_diff.jpg" alt="逐帧差异图：A、B 和标红的差异区域" data-cap="diff_media 在 0.667 秒的差异图：左 A、中 B、右边红色是不同的像素（黑衣人）。程序报出的两段差异 0.200–1.367 秒、2.300–5.99 秒，与标准答案一致到帧。">
+    <figcaption>逐帧找不同（0.667 秒）：左 A、中 B、右边红色 = 不同的像素，正好是黑衣人。程序报出的两段差异和标准答案<b>一致到帧</b>。问题出在后面：教师写报告时说"像素不同不等于确认是这个人"，把状态降成了"未完成"，答案也写成"无法确认"。</figcaption>
+  </figure>
+
+  <div class="card" style="margin-top:16px;border-left:4px solid var(--done)">
+    <h4>后来怎么修好的：wk4 → wk6 <span class="st done">wk6 这道题全对</span></h4>
+    <ul class="small" style="margin:0;padding-left:1.2em">
+      <li><b>wk5：</b>换成合并后的 compare_media；报告和答案必须逐字用题目里的"the person in black"；"内侧帧有、外侧帧无"就算边界答到了。</li>
+      <li><b>wk6：</b>程序取帧只用学生视图里看得见的数；两段等长短视频再补一次逐帧比对。</li>
+      <li><b>结果：</b>4126 报告 0 个错误、答案核验通过，一轮就完成，不再派第 2 轮。</li>
+    </ul>
+  </div>
+
+  <h3 class="sub">walker 在同样 9 个"两段视频"案例上跑了 6 轮</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>指标</th><th class="num">教师自己走 r0e</th><th class="num">wk1</th><th class="num">wk2</th><th class="num">wk3</th><th class="num">wk4</th><th class="num">wk5</th><th class="num colnow">wk6</th></tr></thead>
+      <tbody>
+        <tr><td>每个案例的大模型调用</td><td class="num">26</td><td class="num">2.0</td><td class="num">2</td><td class="num">2.9</td><td class="num">3.3</td><td class="num">2.8</td><td class="num colnow">2.6</td></tr>
+        <tr><td>每个案例耗时（分钟）</td><td class="num">9.4</td><td class="num">1.7</td><td class="num">1.2</td><td class="num">1.9</td><td class="num">2.5</td><td class="num">2.4</td><td class="num colnow good">1.6</td></tr>
+        <tr><td>调查员步数（平均）</td><td class="num">16.8</td><td class="num">6.2</td><td class="num">—</td><td class="num">8.9</td><td class="num">11.2</td><td class="num">6.2</td><td class="num colnow">6.0</td></tr>
+        <tr><td>报告核验通过</td><td class="num">19/22</td><td class="num">7/9</td><td class="num">7/9</td><td class="num">9/13</td><td class="num">13/15</td><td class="num">8/11</td><td class="num colnow">8/10</td></tr>
+        <tr><td>答案核验通过</td><td class="num">3/9</td><td class="num">4/9</td><td class="num">6/9</td><td class="num">4/9</td><td class="num">3/9</td><td class="num">4/9</td><td class="num colnow good">4/9 → 重写后 8/9</td></tr>
+        <tr><td>答案里的错误数</td><td class="num">61</td><td class="num">—</td><td class="num">28</td><td class="num">34</td><td class="num">32</td><td class="num">22</td><td class="num colnow good">25 → 重写后 15</td></tr>
+        <tr><td>调查员可用训练行</td><td class="num">—</td><td class="num">52</td><td class="num">69</td><td class="num">76</td><td class="num">98</td><td class="num">44</td><td class="num colnow">47 → 重写后 53</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted" style="margin-top:8px">每轮改了什么：wk1 跑通链条；wk2 补"没看的区间要取帧"；wk3 加第 2 轮；wk4 按缺口类型补查；wk5 换合并后的 compare_media，并让答案对着可核的标准答案自查一次；wk6 只用看得见的数 + 引用规则 + <b>核验后重写</b>。wk5 起训练行变少，是因为一次比对顶替了原来好几步，步数从 11 降到 6。</p>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <h4>答案内容已经对上标准答案</h4>
+      <p class="small">wk5 起，标准答案能程序核对的 6 条全部对上（倍速、跳过的片段、标题被换成 lorem ipsum、对应段、区间）。剩下判错的<b>全是某一句的措辞或引用</b>，每轮约一半答案有一处，而且每轮不是同几条——这是教师写答案的随机误差。</p>
+    </div>
+    <div class="card">
+      <h4>新机制：核验后重写（已默认开启）</h4>
+      <p class="small">答案是轨迹最后一步，后面没有决策依赖它，所以可以事后改：核验判错时，把"哪句、为什么错"交给教师改一次再核验。wk6 的 5 条错答案改对 4 条，每条只多 1 次调用。报告不能这样改，因为项目经理已经按原报告做了决定。</p>
+    </div>
+  </div>
+
+  <h3 class="sub" id="data-wk8">wk7 / wk8：从 1 类题扩到 5 类 <span class="st doing">wk8 运行中</span></h3>
+  <p class="small muted">之前只做了"给两段视频找不同"。负责人要求每个工具都要被合理地用到，所以从别的数据集挑案例，补上需要上网的几类。wk7 的案例并进了 wk8 一起跑（hi@0.10.0，共 29 个运行），已跑完；wk9 只重跑 18 个上网案例。每一步具体怎么走、发给教师的 prompt 是什么，见 <a class="jump" href="/assets/walker.html">轨迹生成详解</a>。</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>族</th><th>题型</th><th class="num">案例</th><th>来源与标准答案</th><th>程序怎么走</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td><b>B</b></td><td>两段视频找不同</td><td class="num">9</td><td>VideoSham / VCSL / QVHighlights</td><td>比对 → 两侧取帧 → 放大 → 横条区域读字（wk7 新加）→ 报告</td><td><span class="st done">已稳定</span></td></tr>
+        <tr><td><b>A</b></td><td>上网找原片</td><td class="num">3</td><td>FMNV 真新闻：下载原片后程序删掉一段，删了哪段天然已知</td><td>读字 → 听写 → 文字搜 → 图文搜 → 对上就比对 → 查原片日期</td><td><span class="st doing">首跑</span></td></tr>
+        <tr><td><b>C</b></td><td>核实一句说法</td><td class="num">5</td><td>FMNV（真视频配假标题 2、真标题 1）+ GroundLie360 纯文字 2</td><td>听写 / 读字 → 每步由教师在"再搜 / 读一页 / 查日期 / 交报告"里选（限 3 搜 5 读）</td><td><span class="st doing">首跑</span></td></tr>
+        <tr><td><b>E</b></td><td>图片最早出处</td><td class="num">6</td><td>AVerImaTeC：标注了最早发布的网站和日期</td><td>读图上文字 → 以图搜网页 → 查前 3 个结果的日期 → 教师选下一步</td><td><span class="st doing">首跑</span></td></tr>
+        <tr><td><b>L</b></td><td>照片真拍于那里吗</td><td class="num">4</td><td>AVerImaTeC：声明说的地点 vs 实际地点（秘鲁、堪萨斯、俄罗斯、加尔各答）</td><td>按地名搜参考照片 → 和给定照片并排看 → 以图搜网页</td><td><span class="st doing">首跑</span></td></tr>
+        <tr><td>V9</td><td>视图压缩变体</td><td class="num">2</td><td>B 族案例把证据卡片和历史条数调小</td><td>交报告前要引的结果掉出视图 → 先 QUERY_MEMORY 查回来</td><td><span class="st doing">首跑</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="sub">wk8 跑完、wk9 修了一轮：答案通过多少（核验后重写之后）</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>组</th><th class="num">案例</th><th class="num">wk8</th><th class="num">wk9</th><th>主要原因 / 改了什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>B</b> 两段视频找不同</td><td class="num">9</td><td class="num">8/9</td><td class="num">不重跑</td><td>与 wk6 同档；加了横条读字后 1028 答案不再错</td></tr>
+        <tr><td><b>A</b> 找原片</td><td class="num">3</td><td class="num">0/3</td><td class="num">0/3</td><td>wk9 修了"选的帧已掉出视图"。仍 0/3：一条其实找到了原片（画面 100% 对上），但搜索结果太长被截断，程序读不到；一条拿 38% 对上的另一个上传当了原片；一条搜索服务出错占了名额 → <b>wk10 已改</b></td></tr>
+        <tr><td><b>C</b> 核实说法（FMNV）</td><td class="num">3</td><td class="num">1/3</td><td class="num"><b>3/3</b></td><td>wk8 把"视频和报道都说是部署"写成"无法核实"；wk9 要求一条 Finding 写视频本身说了什么，并给出明确结论</td></tr>
+        <tr><td><b>C</b> 纯文字（GroundLie360）</td><td class="num">2</td><td class="num">2/2</td><td class="num">2/2</td><td></td></tr>
+        <tr><td><b>E</b> 图片最早出处</td><td class="num">6</td><td class="num">0/6</td><td class="num"><b>5/6</b></td><td>wk8 查到了对的日期却引用不了、有日期的页面也没读；wk9 让日期记录可引用、交报告前先读最早有日期的页面、不再查社交站日期。剩下 1 条以图搜没搜到更早的副本</td></tr>
+        <tr><td><b>L</b> 照片拍摄地</td><td class="num">4</td><td class="num">2/4</td><td class="num">2/4</td><td>参考照片并排看是对的；没过的两条，以图搜都没给出实际地点（引擎问题）</td></tr>
+        <tr><td colspan="2"><b>上网的 18 个合计</b></td><td class="num">5/18</td><td class="num"><b>12/18</b></td><td>以图搜引擎质量是剩下的主要问题，考虑接 Google Lens / TinEye</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" style="margin-top:14px;border-left:4px solid var(--accent)">
+    <h4>想看一条轨迹到底怎么造出来的？</h4>
+    <p class="small">新页面 <a class="jump" href="/assets/walker.html">轨迹生成详解 →</a> 把案例 B 的 wk8 run 逐步拆开（16 个决策里哪几步是教师写的），列出 walker 的全部规则，以及发给教师的每一条 prompt（中文译文 + 英文原文）。</p>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <h4>怎么保证每个工具都被"合理地"用到</h4>
+      <ol class="small" style="margin:0;padding-left:1.3em">
+        <li>每个工具 / 参数写清：解决什么证据需求、学生视图里什么情况下该用、哪类题会自然出现。</li>
+        <li>按这张表挑案例，让每个工具至少有一类题会自然触发。</li>
+        <li>程序只在触发条件成立时用它，不硬塞（硬塞会教出"乱用工具"）。</li>
+        <li>跑完按实际动作计数，不够的只能靠加案例或变体补。</li>
+      </ol>
+      <p class="small muted" style="margin-top:6px">同时删繁：compare_media 的 mode、打开视频的字幕参数并入默认（hi@0.10.0），调查员要学的参数更少。</p>
+    </div>
+    <div class="card">
+      <h4>跑完要看什么</h4>
+      <ul class="small" style="margin:0;padding-left:1.2em">
+        <li>A 族：原片有没有被搜到、比对后报出的被删区间对不对。</li>
+        <li>C 族：读的是不是报道该事件的页面，结论和标签是否一致。</li>
+        <li>E 族：找到的最早日期是否落在标准日期附近。</li>
+        <li>工具覆盖表 <code>walker_wk8_coverage.md</code>：哪些工具次数不够。</li>
+      </ul>
+      <p class="small muted" style="margin-top:6px">已看到的：C 族每个案例要 8–11 次教师调用（每步都要教师选），A 族单个 5–10 分钟，都比 B 族慢得多。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">为什么项目里有那么多"轨迹生成方案"文档：方法演变</h3>
+  <div class="grid g2">
+    <ol class="tl">
+      <li><span class="d">9 月–10-05</span><span class="dot done"></span><span class="c"><b>教师自己走完整调查（r0 → r0e）</b><span>流水线跑通了，但慢、贵、学生学到重复调用。现在作为混合数据保留。</span></span></li>
+      <li><span class="d">10-11</span><span class="dot drop"></span><span class="c"><b>分叉续跑（tp0–tp2）</b><span>从中途换一步再续跑、比好坏。续跑结果本身的随机波动比信号还大 → 放弃。</span></span></li>
+      <li><span class="d">10-12 上午</span><span class="dot drop"></span><span class="c"><b>四个替代提案</b><span>学生先走教师批改、整条批阅、教师宏动作、教师走提速。都没解决"大模型卡在一步一步的串行环里" → 没采用。</span></span></li>
+      <li><span class="d">10-12</span><span class="dot done"></span><span class="c"><b>定方案：程序走、教师填（walker）</b><span>先做"两段视频比对"这类（B 族）9 个案例。</span></span></li>
+      <li><span class="d">10-12 → 13</span><span class="dot done"></span><span class="c"><b>wk1 → wk6 逐轮修规则</b><span>B 族走法和答案内容稳定；加上核验后重写，答案通过 8/9。</span></span></li>
+      <li><span class="d">10-13 → 14</span><span class="dot doing"></span><span class="c"><b>wk7 / wk8 扩到 5 类题</b><span>加 A / C / E / L 四族和视图压缩变体；新工具：日期查询。正在跑。</span></span></li>
+    </ol>
+    <div class="card">
+      <h4>接下来的计划</h4>
+      <ul class="small" style="margin:0;padding-left:1.2em">
+        <li><span class="st done">D1</span> 两段视频比对（B 族 9 个）：已稳定。</li>
+        <li><span class="st doing">D2</span> 上网找原片（A）、核实说法（C），另加图片最早出处（E）、照片拍摄地（L）：wk8 首跑。</li>
+        <li><span class="st doing">D3</span> 变体与工具覆盖：已有视图压缩变体和覆盖表；原片被屏蔽、下载失败、预算很紧等变体还没做。</li>
+        <li><span class="st todo">D4</span> 全量：所有族 × 原样 + 变体，混入旧教师数据，作为第一次训练的数据包。</li>
+        <li><span class="st todo">扩案例</span> 9 个案例上波动约 ±2 条，结论要靠更多案例：FMNV 已下好 281 个视频可用，GroundLie360 待解压。</li>
+        <li><span class="st todo">提案</span> 程序化造题：用 ffmpeg 自己改视频，答案天然已知，可造几百题（A 族的"删一段"已经是这个思路）。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ⑤ 判对错</section>
+
+<!-- ============ ⑤ 判对错 ============ -->
+<section class="ch" id="verify">
+  <div class="ch-head">
+    <div class="ch-num">5</div>
+    <div class="ch-title"><h2>核验器：自动判对错</h2><span class="st done">三层核验可用</span><span class="st todo">正式核验模型、人工金标未做</span></div>
+    <div class="ch-q">几千步没人看得过来，靠它决定哪些步骤能进教材，也是后面"自我进化"的依据。</div>
+  </div>
+
+  <p class="lead">一句话：核验器把报告和答案<b>拆成一句一句</b>，拿每句引用的证据原文 / 原图去对，判"有证据支持 / 没支持 / 证据说的正相反"；只有过关的步骤才进训练集。</p>
+
+  <div class="grid g3">
+    <div class="card"><h4>第 1 层：程序检查</h4><p class="small">引用的证据编号存在吗？参数合法吗？有没有重复调用？参数里的数是不是学生当时看得见的？</p></div>
+    <div class="card"><h4>第 2 层：逐句对证据</h4><p class="small">每句话拿它引用的证据去对。由核验模型判。现在用的是 Claude Sonnet（本机，只在服务器到位前用来看数据）。</p></div>
+    <div class="card"><h4>第 3 层：够不够</h4><p class="small">题目要求的每一项，是否都被有证据的结论覆盖了？没覆盖却说"完成了"会被抓出来。</p></div>
+  </div>
+
+  <h3 class="sub">拿案例说：它抓到了什么</h3>
+  <div class="grid g2">
+    <div class="card" style="border-left:4px solid var(--warn)">
+      <h4><span class="tag">案例 B</span> 指代不清被判"引用相反"</h4>
+      <div class="quote">"…when part of the person remains visible in B but absent in A…" [E33][E34]</div>
+      <p class="small">答案里写的是"the person"，而画面里还有个滑板少年。核验模型对着图判断时以为说的是滑板少年 → 判为证据相反。<b>教训：</b>答案要逐字用题目原话"the person in black"。wk5 起提示里要求逐字用原话，wk6 这道题的答案通过了。</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--warn)">
+      <h4><span class="tag">案例 B</span> 参数里出现"看不见的数"被扣下</h4>
+      <p class="small">程序有时直接用了工具原始结果里的数（比如对齐偏移 2.709973 秒），而这个数在学生当时的视图里被截断了、看不见。学生不可能学会凭空写出它，所以这种步骤标为"暂缓"，不进训练。wk4 有 16 行被扣；wk6 改成"程序只用看得见的数"后降到 10 行，剩下的主要是检查器把句首的 "These" 误当专名（已修）。</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--doing)">
+      <h4><span class="tag">案例 A</span> 评委偏宽</h4>
+      <p class="small">第 3 个伪造点，标准答案是"零食 → 灭火器"，系统写的是"红盒 → 蓝盒"，EVID 评委还是给了分。说明评委口径偏宽，这也是为什么需要<b>人工金标</b>来量一量核验到底准不准。</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--done)">
+      <h4><span class="tag">新</span> 核验结果反过来用于改答案</h4>
+      <p class="small">wk6 起，答案被判错时把核验器的错误清单（哪句、为什么）交回给教师改一次、再核验。5 条错答案改对 4 条；剩下那条（vcsl1）是句子用词正好撞上了工具结果里的字段名，核验器仍判矛盾。</p>
+    </div>
+    <div class="card">
+      <h4>每一步的去留</h4>
+      <p class="small"><span class="tag ok">进候选</span>有证据、合规，按权重进训练集 <span class="tag">暂缓</span>有小问题，先放着 <span class="tag bad">不收</span>错了。错误类型统一成 26 种、分 5 层（结论级、状态级、动作级、调度级、环境级），后面诊断"错在哪"就靠它。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">核验器做到哪了</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>部件</th><th>状态</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>三层核验 + 报告/步骤/计划/答案四类单元</td><td><span class="st done">完成</span></td><td>当前版本 verifier 0.3.6；答案 GT 核对新增日期、地点两项（E / L 族用）</td></tr>
+        <tr><td>核验后重写（答案）</td><td><span class="st done">默认开启</span></td><td>wk6：答案通过 4/9 → 8/9，每条多 1 次教师调用 + 1 次核验</td></tr>
+        <tr><td>召回测试（故意注入错误看能不能抓到）</td><td><span class="st done">报告级完成</span></td><td>12 个运行上总召回 0.96；计划 / 答案级代码好了，真实数字等正式核验模型</td></tr>
+        <tr><td>核验模型</td><td><span class="st doing">临时用 Sonnet</span></td><td>本机 12B 太差（把人工核过的正例也判错）；正式模型等服务器</td></tr>
+        <tr><td>人工金标（80 条）</td><td><span class="st todo">等人标</span></td><td>抽样和离线标注页已做好；目标 ≥300 对，最好两人各标一遍</td></tr>
+        <tr><td>冻结一个"参考核验器"</td><td><span class="st todo">没开始</span></td><td>和教师、训练用核验器不同家族，用来防止系统"钻核验器的空子"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ ⑥ 训练与进化 ============ -->
+<section class="ch" id="loop">
+  <div class="ch-head">
+    <div class="ch-num">6</div>
+    <div class="ch-title"><h2>训练与自我进化</h2><span class="st done">设计定稿、脚本就绪</span><span class="st todo">一次真实训练都没跑</span></div>
+    <div class="ch-q">这是论文的主线。现在只有设计和脚本，核心代码还没写。</div>
+  </div>
+
+  <p class="lead">一句话：先用示范数据给 9B 学生上<b>第一课（SFT）</b>；之后进入循环——学生自己查 → 核验器判 → 统计"哪个角色、哪类错" → 决定是<b>改提示规则（内环）</b>还是<b>重新训练（外环）</b> → 每个改动都要在没见过的题上真的变好才保留。</p>
+
+  <div class="loop-wrap">
+    <div class="card" style="padding:10px">
+      <svg class="loop-svg" id="loop-svg" viewBox="0 0 600 580" role="img" aria-label="自我进化循环示意图"></svg>
+    </div>
+    <div>
+      <div class="mm-detail" id="loop-detail" style="position:static;max-height:none"><p class="hint">点左边循环里的任一环节，看它是什么、做到哪了。下面用案例 B 走一遍。</p></div>
+      <div class="card" style="margin-top:14px">
+        <h4>用案例 B 走一遍循环</h4>
+        <ol class="small" style="margin:0;padding-left:1.3em">
+          <li><b>核验</b>：答案里"the person"被判引用相反。</li>
+          <li><b>记账</b>：账本里记一格：项目经理 × 答案 × 引用错误。</li>
+          <li><b>问一：是谁的错？</b>上游调查员的报告用的是"the person in black"，没错 → 错在项目经理这一步。</li>
+          <li><b>问二：教师也犯吗？</b>wk4 里这句答案就是教师写的 → 教师也犯 → 说明是<b>提示 / 规则没写清</b>，不是学生没学会。</li>
+          <li><b>内环</b>：给项目经理的提示加一句"逐字使用题目里的指代"，在验证题上跑，引用错误真的降了才保留（门 A）。</li>
+          <li>如果只有学生犯、教师不犯 → 走<b>外环</b>：多给这类正确示范，重训 LoRA，过门 B 才换上新模型。</li>
+        </ol>
+        <p class="small muted" style="margin:8px 0 0">这一步其实已经人工做过：wk5 在提示里加了"逐字用题目里的指代"，wk6 这道题答案通过。循环要做的，就是把这种"发现 → 归因 → 改规则 → 验证"自动化。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">做到哪了</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>部件</th><th>状态</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>模型选定</td><td><span class="st done">已定</span></td><td>学生 Qwen3.5-9B（项目经理、调查员各一套 LoRA）；教师 Qwen3.5-122B-A10B</td></tr>
+        <tr><td>训练脚本 sft_lora.py</td><td><span class="st done">本机冒烟通过</span></td><td>用 12 个运行的真实导出跑通了"训练 → 存 → 加载 → 前向"</td></tr>
+        <tr><td>8 卡 A100 分配与一键脚本</td><td><span class="st done">写好，未实测</span></td><td>推理布局（教师 4 卡 / 学生 2 卡 / 核验 1 卡 / 工具 1 卡）和训练布局来回切</td></tr>
+        <tr><td>部署 122B 教师</td><td><span class="st todo">没开始</span></td><td>A100 没有 FP8 计算单元，能不能起来要先上机试；备选 Int4 版</td></tr>
+        <tr><td>第一次 SFT</td><td><span class="st todo">没开始</span></td><td>等训练数据包（第 ④ 章 D4）和服务器</td></tr>
+        <tr><td>诊断 / 路由 / 门控代码</td><td><span class="st todo">一行没写</span></td><td>diagnose.py、route.py、gate.py、revise/</td></tr>
+        <tr><td>内环（人工版）</td><td><span class="st doing">人工在做</span></td><td>规则版本 hi@0.2 → 0.8、gia@0.3 → 0.9 都是人工改的，相当于内环的手工预演</td></tr>
+        <tr><td>实验 E1–E7、论文实验章</td><td><span class="st todo">没开始</span></td><td>论文方法部分已写完（中英）；实验部分为零</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tiny muted" style="margin-top:8px">循环只保留 7 个零件（09-28 精简）：1 个核验账本 + 2 根杠杆（改规则 / 改权重）+ 1 个两问路由 + 2 道门（A / B）+ 1 条数据原则（两个角色用对方的真实产出互相训练）。内环 10-06 改为"按格逐个进化"。</p>
+</section>
+
+<!-- ============ 下一步 ============ -->
+<section class="ch" id="next">
+  <div class="ch-head">
+    <div class="ch-num">→</div>
+    <div class="ch-title"><h2>下一步：按先后顺序</h2></div>
+    <div class="ch-q">标签说明：<span class="k fix" style="font-size:12px;font-weight:700;padding:1px 7px;border-radius:6px">本机能做</span> <span class="k srv" style="font-size:12px;font-weight:700;padding:1px 7px;border-radius:6px">需要服务器</span> <span class="k you" style="font-size:12px;font-weight:700;padding:1px 7px;border-radius:6px">需要你</span></div>
+  </div>
+  <ul class="block-list">
+    <li><span class="k fix">1 本机</span><span><b>看合并修复 2 的两次复测</b>（evidM27c / d，在跑）：平均 ≥ 17.5/44 就算回到合并前水平；不够的话，下一个候选是换脸题的"认出人名后自动补搜"。<a class="jump" href="#agent-merge">背景</a></span></li>
+    <li><span class="k fix">2 本机</span><span><b>看 wk8 结果</b>（在跑）：新 4 类题是否走得通、工具覆盖表里哪些不够。<a class="jump" href="#data-wk8">背景</a></span></li>
+    <li><span class="k fix">3 本机</span><span><b>扩案例</b>：用已下好的 FMNV 281 个视频（和解压后的 GroundLie360）把每族从几个扩到几十个，结论才站得住。</span></li>
+    <li><span class="k srv">4 服务器</span><span><b>上机跑基线</b>：按 00 → 06 步执行（环境、模型下载、vLLM、预检、四组基线）。顺便试起 122B 教师。</span></li>
+    <li><span class="k srv">5 服务器</span><span><b>第一次 SFT</b>：walker 数据 + 旧教师数据，项目经理和调查员各训一次、至少 2 个随机种子，在评估题上对比"没训 vs 训过"。</span></li>
+    <li><span class="k fix">6 本机</span><span><b>写循环骨架</b>：诊断（谁错、什么错）→ 路由（改规则还是改权重）→ 门控（真变好才保留）。</span></li>
+    <li><span class="k you">需要你</span><span>GroundLie360 解压（这次 0 个视频）；申请 Google Vision / SerpAPI / TinEye 的 key；标金标 80 条（标注页已备好）。</span></li>
+    <li><span class="k fix">注意</span><span>两个会话同时改 <code>search/service.py</code>、<code>run_cases.py</code> 时互相覆盖过一次（日期查询代码被冲掉后已补回）。以后改同一文件前先取本机最新版。</span></li>
+    <li><span class="k fix">论文</span><span>方法部分"按格逐个进化"还有 4 处旧说法要改；实验章节等上面的数据。</span></li>
+  </ul>
+</section>
+
+<!-- ============ 名词 ============ -->
+<section class="ch" id="glossary">
+  <div class="ch-head">
+    <div class="ch-num">?</div>
+    <div class="ch-title"><h2>名词速查</h2></div>
+    <div class="ch-q">文档里常见的缩写，用一句话解释。</div>
+  </div>
+  <div class="gloss" id="gloss"></div>
+</section>
+
+<footer class="foot">
+  依据：项目文档（截至 10-12 的《EVID baseline 效果总表》《DETECT 合并实施记录》《walker wk4 结果》《自进化循环 8 卡分配》《论文实现总 TodoList》等）+ 10-13 的 6 份新文档（合并后掉分诊断与两轮修复、walker wk5 / wk6 / wk7 / wk8）+ 本机日志（_合并AB日志、_walker_wk8日志、_数据集准备日志，截至 10-14 02:07）+ 10-14 的《walker wk8 结果与 wk9 修复》。图片均取自真实运行目录。<br>
+  旧的案例库、实时调查工作台、调查记录、论文草稿等页面已从网站移除。
+</footer>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="查看大图"><button type="button" id="lb-close">关闭 Esc</button><img id="lb-img" alt=""><p id="lb-cap"></p></div>
+</body>
+</html>

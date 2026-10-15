@@ -374,16 +374,35 @@ def _evidence_page(value: Evidence, max_chars: int, offset: int = 0) -> dict[str
         value.acquired_by == "HARNESS/ingest"
         or ("text" not in value.modalities and set(value.modalities) & {"image", "audio", "video"})
     ):
-        payload["content_notice"] = (
+        payload["content_notice"] = _media_notice("image" in value.modalities)
+    return payload
+
+
+def _media_notice(image: bool) -> str:
+    """READ_RECORD 媒体记录的说明；规格 language="en"（10-05）时给英文。"""
+
+    from ..i18n import english
+
+    if english():
+        return ((
+            "The body of this record is image metadata, not pixels. When direct_visual_input=true, "
+            "READ_RECORD on this E can request the image for later decisions to view; image_inputs shows what was actually attached. "
+            "Without direct visual input, check the image with an available visual INSPECT operation."
+        ) if image else (
+            "This contains only the text or metadata of a media record, not the file body, pixels or sound. "
+            "Reading the record again does not obtain the media content. Images must actually be provided to multimodal input "
+            "or a suitable INSPECT operation; for a PDF get page images first, for a video extract frames first; text and speech "
+            "can be read with OCR and ASR respectively."
+        ))
+    return (
             "本记录正文是图片元数据，不是像素。direct_visual_input=true 时，"
             "READ_RECORD 本 E 可请求这张图片供后续决策查看，实际附图以 image_inputs 为准。"
             "不支持直接视觉输入时，使用可用的视觉 INSPECT 操作核查图片。"
-        ) if "image" in value.modalities else (
+        ) if image else (
             "这里只包含媒体记录的文字或元数据，不包含文件正文、像素或声音内容。"
             "重复读取记录不会取得媒体内容。图片须实际提供给多模态输入或适用的 INSPECT 操作；"
             "PDF 先获取页面图片，视频先提取帧；文字和语音可分别使用 OCR 与 ASR。"
         )
-    return payload
 
 
 def compact_reference(store: GlobalStore, reference_id: str) -> dict[str, Any]:

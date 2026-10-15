@@ -233,6 +233,185 @@ def plan_tasks_batch(args: argparse.Namespace) -> int:
     return 0
 
 
+HARD_MUST = ("verbatim_but_unsupported", "repair_failed", "rubber_stamp")     # 方案 §2：全收
+HARD_FILL = ("disagree", "unstable", "gold_conflict", "repair_fixed")       # 按模态分层补满
+
+
+def from_hard_batch(args: argparse.Namespace) -> int:
+    """v1' 定向批次（2026-10-02 方案 §2）：从 calibrate_precision 的 hard_items 抽。
+
+    构成（总数 = --hard-total + --controls，默认 65 + 15）：
+      1. 全部 verbatim_but_unsupported / repair_failed / rubber_stamp；
+      2. 全部 firm_error（核验器对该单元记了 major/critical 错误）——这是"核验器说错"的总体，全标就是普查，Finding 精确率直接可算；
+      3. 其余疑难原因（disagree / unstable / gold_conflict / repair_fixed）按 图片 / 文本 轮转补到 --hard-total；
+      4. 视频帧单元不足 --min-frames 时，用含视频帧的疑难件 / 对照替换文本对照；
+      5. 对照：四层全通过的单元按 seed 抽 --controls 条；全部按 seed 打乱，ID 一律 H001…，标注页看不出来源层。
+    单元 = 报告 Finding 或答案句（答案句的条目带 context：整段答案，只帮助理解指代）；rubber_stamp 条目展示的是**替换后的**证据。
+    核验结论与原因只进 strata.json。
+    """
+
+    sys.path.insert(0, str(ROOT / "src"))
+    from foren_searcher.datagen.verify.calibrate_precision import open_run  # noqa: E402
+
+    out = Path(args.out)
+    if (out / "items.json").exists():
+        raise SystemExit(f"{out} 已有 items.json，换一个 --out（不覆盖已开始标注的批次）")
+    # 可以给多个 precision 文件（同一批 run、不同核验器版本）：疑难件取并集、对照取"各版都全通过"的交集，
+    # 每条记下各版核验器的判定（strata.verifier_flags），标一次就能同时评几个版本。
+    precs = [json.loads(Path(p).read_text(encoding="utf-8")) for p in args.from_hard]
+    merged: dict[tuple[str, str], dict[str, Any]] = {}
+    for prec in precs:
+        tag = (prec.get("meta") or {}).get("verifier") or "?"
+        for x in prec["hard_items"]:
+            k = (x["unit"], x["kind"])
+            if k not in merged:
+                merged[k] = {**x, "reasons": [], "details": {}}
+            m = merged[k]
+            m["reasons"] += [f"{r}@{tag}" for r in x["reasons"] if f"{r}@{tag}" not in m["reasons"]]
+            for r, d in (x.get("details") or {}).items():
+                m["details"][f"{r}@{tag}"] = d
+            m["video_frames"] = m["video_frames"] or x["video_frames"]
+    hard = list(merged.values())
+    for x in hard:
+        x["base_reasons"] = sorted({r.split("@")[0] for r in x["reasons"]})
+    prec = precs[0]
+    units_meta = {u["unit"]: u for p in precs for u in p.get("units") or []}
+    common_ctrl = set(precs[0].get("controls") or [])
+    for p in precs[1:]:
+        common_ctrl &= set(p.get("controls") or [])
+    prec = {**prec, "controls": [k for k in prec.get("controls") or [] if k in common_ctrl]}
+    versions = []
+    for p in precs:
+        meta_p = p.get("meta") or {}
+        versions.append((meta_p.get("verifier") or "?",
+                         {(r["subject"]["run"], r["subject"].get("workspace_id")): r for r in load_jsonl(SFT / meta_p["report_verdicts"])},
+                         {(u["subject"]["run"], u["subject"].get("request")): u for u in load_jsonl(SFT / meta_p["unit_verdicts"]) if u.get("unit") == "answer"}))
+
+    def order(x: dict[str, Any]) -> str:
+        return h(args.seed, x["unit"], x["kind"])
+
+    must = [x for x in hard if set(x["base_reasons"]) & set(HARD_MUST) or "firm_error" in x["base_reasons"]]
+    rest = sorted((x for x in hard if x not in must), key=order)
+    by_mod: dict[str, list[dict[str, Any]]] = {"image": [x for x in rest if x["image"]], "text": [x for x in rest if not x["image"]]}
+    picked = sorted(must, key=order)
+    while len(picked) < args.hard_total and any(by_mod.values()):
+        for m in ("image", "text"):
+            if by_mod[m] and len(picked) < args.hard_total:
+                picked.append(by_mod[m].pop(0))
+    hard_keys = {x["unit"] for x in hard}
+    ctrl_pool = sorted((k for k in prec.get("controls") or [] if k not in hard_keys), key=lambda k: h(args.seed, "ctrl", k))
+    frames_ctrl = [k for k in ctrl_pool if (units_meta.get(k) or {}).get("video_frames")]
+    other_ctrl = [k for k in ctrl_pool if k not in frames_ctrl]
+    frames_now = sum(1 for x in picked if x["video_frames"])
+    need_frames = max(0, args.min_frames - frames_now)
+    ctrls = frames_ctrl[:min(need_frames, args.controls)]
+    ctrls += [k for k in (other_ctrl + frames_ctrl[len(ctrls):]) if k not in ctrls][: args.controls - len(ctrls)]
+
+    out.mkdir(parents=True, exist_ok=True)
+    media = Media(out)
+    reports = {(r["subject"]["run"], r["subject"].get("workspace_id")): r for r in load_jsonl(Path(args.report_verdicts))}
+    answers = {(u["subject"]["run"], u["subject"].get("request")): u for u in load_jsonl(Path(args.unit_verdicts)) if u.get("unit") == "answer"}
+    runs: dict[str, Any] = {}
+
+    def ctx(run: str) -> Any:
+        if run not in runs:
+            runs[run] = open_run(run_dir(run))
+        return runs[run]
+
+    def card(c: Any, eid: str, *, override: dict[str, Any] | None = None) -> dict[str, Any]:
+        try:
+            t = c.lookup.get(eid)
+        except KeyError as exc:
+            return {"id": eid, "missing": f"KeyError: {exc}"}
+        content = t.content or ""
+        out_card = {"id": eid, "label": t.label, "source_url": t.source_url, "acquired_by": t.acquired_by,
+                    "provenance": t.provenance or None, "modalities": list(t.modalities),
+                    "text": content[:TEXT_LIMIT] + (f"\n…（原文共 {len(content)} 字，只显示前 {TEXT_LIMIT} 字）" if len(content) > TEXT_LIMIT else "")
+                    if t.is_text else (t.media_note or "")}
+        if t.image_path:
+            out_card["image"] = media.copy(t.image_path, f"{c.name}_{eid}")
+        if override:
+            if override.get("donor_image"):
+                out_card["image"] = media.copy(Path(override["donor_image"]), f"swap_{Path(override['donor_image']).stem}")
+                out_card["text"] = ""
+                out_card["provenance"] = None
+            if override.get("donor_text"):
+                out_card["text"] = override["donor_text"][:TEXT_LIMIT]
+                out_card["label"], out_card["source_url"] = "（来源）", None
+        return out_card
+
+    def build(entry: dict[str, Any] | None, unit_key: str, item_id: str) -> tuple[dict[str, Any], dict[str, Any]]:
+        run, scope_part, fid = unit_key.split("|")
+        kind, scope = scope_part.split(":", 1)
+        c = ctx(run)
+        if kind == "report":
+            row = reports[(run, scope)]
+            f = c.store.finding(fid)
+            try:
+                task = str(c.store.workspace_task_record(scope).get("task") or "")
+            except KeyError:
+                task = ""
+            statement, limitations, context = f.statement, list(f.limitations), None
+            judged = [j["evidence_id"] for j in row.get("judgments") or [] if j["finding_id"] == fid]
+        else:
+            row = answers[(run, scope)]
+            sents = ((row.get("extra") or {}).get("anchored") or {}).get("sentences") or []
+            s = next(x for x in sents if x["id"] == fid)
+            statement, limitations, task = s["text"], [], str(c.config.get("task") or "")
+            context = "".join(x["text"] for x in sents)
+            judged = [j["evidence_id"] for j in row.get("judgments") or [] if j["finding_id"] == fid]
+        swap = entry is not None and entry["kind"] == "swap"
+        if swap:
+            d = next(v for k, v in entry["details"].items() if k.split("@")[0] == "rubber_stamp")[0]
+            evidence = [card(c, d["evidence_id"], override={"donor_image": d.get("donor_image"), "donor_text": d.get("donor_text_head")})]
+        else:
+            evidence = [card(c, e) for e in judged]
+        item = {"id": item_id, "kind": "finding", "run": run, "case_id": c.case_id, "workspace": scope if kind == "report" else None,
+                "finding_id": fid, "task": task, "statement": statement, "limitations": limitations, "evidence": evidence}
+        if context:
+            item["context"] = context
+        def firm_of(r: dict[str, Any]) -> list[str]:
+            return [e["type"] for e in r.get("errors") or [] if e.get("severity") in ("major", "critical")
+                    and ((e.get("extra") or {}).get("finding") == fid or (e.get("extra") or {}).get("sentence") == fid)]
+
+        firm = firm_of(row)
+        flags = {}
+        for tag, reps, ans in versions:
+            r = reps.get((run, scope)) if kind == "report" else ans.get((run, scope))
+            if r is not None:
+                flags[tag] = {"flagged": False if swap else bool(firm_of(r)), "errors": [] if swap else firm_of(r)}
+        stratum = {"id": item_id, "kind": "finding", "unit": unit_key, "unit_kind": kind, "run": run, "dataset": c.dataset,
+                   "workspace": scope if kind == "report" else None, "request": scope if kind == "answer" else None,
+                   "finding": fid, "case_id": c.case_id, "stratum": "swap" if swap else ("hard" if entry else "control"),
+                   "reasons": entry["reasons"] if entry else [], "details": entry["details"] if entry else {},
+                   # swap 条目：核验器在替换后的证据上判了 supported（= 没标错）；人工判"不支持"即证实盖章
+                   "verifier_flagged": False if swap else bool(firm), "verifier_errors": [] if swap else firm,
+                   "video_frames": bool(entry["video_frames"]) if entry else bool((units_meta.get(unit_key) or {}).get("video_frames")),
+                   "verifier_flags": flags, "verifier": row.get("verifier"), "judge_model": row.get("judge_model")}
+        return item, stratum
+
+    rows = [(x, x["unit"]) for x in picked] + [(None, k) for k in ctrls]
+    rows = sorted(rows, key=lambda r: h(args.seed, "mix", r[1], r[0]["kind"] if r[0] else "ctrl"))
+    items, strata = [], []
+    try:
+        for i, (entry, key) in enumerate(rows):
+            item, stratum = build(entry, key, f"H{i + 1:03d}")
+            items.append(item)
+            strata.append(stratum)
+    finally:
+        for c in runs.values():
+            c.close()
+    reasons = Counter(r for st_ in strata for r in st_["reasons"])
+    meta = {"batch": out.name, "seed": args.seed, "mode": "from_hard", "precision_files": [Path(p).name for p in args.from_hard],
+            "report_verdicts": Path(args.report_verdicts).name, "unit_verdicts": Path(args.unit_verdicts).name,
+            "counts": {"finding": len(items)}}
+    write_batch(out, meta, items, strata)
+    print(json.dumps(meta, ensure_ascii=False))
+    print(f"疑难 {sum(s['stratum'] != 'control' for s in strata)}（原因 {dict(reasons)}）+ 对照 {sum(s['stratum'] == 'control' for s in strata)}；"
+          f"核验器标错 {sum(s['verifier_flagged'] for s in strata)}；含视频帧 {sum(s['video_frames'] for s in strata)}；标注页：{out / '标注.html'}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--findings", type=int, default=60)
@@ -243,10 +422,17 @@ def main() -> int:
     parser.add_argument("--unit-verdicts", default=str(SFT / "verdicts_units_judged.jsonl"))
     parser.add_argument("--out", default=str(SFT / "gold_set" / "v1"))
     parser.add_argument("--plan-tasks", action="store_true", help="v2：按任务抽，专核 premise_smuggling / task_not_gap_driven")
-    parser.add_argument("--controls", type=int, default=None, help="--plan-tasks 的对照任务数（默认与被标任务数相同）")
+    parser.add_argument("--controls", type=int, default=None, help="--plan-tasks 的对照任务数（默认与被标任务数相同）；--from-hard 默认 15")
+    parser.add_argument("--from-hard", nargs="+", default=None,
+                        help="v1'：从 calibrate_precision 的 precision_*.json 的 hard_items 抽定向批次；可给多个版本（并集，各版判定都记进 strata）")
+    parser.add_argument("--hard-total", type=int, default=65)
+    parser.add_argument("--min-frames", type=int, default=20, help="--from-hard：视频帧单元至少这么多条")
     args = parser.parse_args()
     if args.plan_tasks:
         return plan_tasks_batch(args)
+    if args.from_hard:
+        args.controls = 15 if args.controls is None else args.controls
+        return from_hard_batch(args)
     out = Path(args.out)
     if (out / "items.json").exists():
         raise SystemExit(f"{out} 已有 items.json，换一个 --out（不覆盖已开始标注的批次）")

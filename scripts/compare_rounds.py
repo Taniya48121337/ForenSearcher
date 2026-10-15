@@ -47,8 +47,31 @@ def _json(text: str) -> dict[str, Any] | None:
         return None
 
 
+def _image_evidence(run: Path) -> set[str] | None:
+    """run 的 store 里哪些 E 是图片（只读打开；没有 store 时 None）。"""
+
+    import sqlite3
+
+    path = run / "store.sqlite3"
+    if not path.is_file():
+        return None
+    try:
+        con = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True)
+        try:
+            rows = con.execute("select id, modalities_json from evidence").fetchall()
+        finally:
+            con.close()
+    except sqlite3.Error:
+        return None
+    return {f"E{i}" for i, m in rows if "image" in str(m)}
+
+
 def run_metrics(run: Path) -> dict[str, Any]:
     events = _events(run)
+    images = _image_evidence(run)
+    inspect_ops: Counter[str] = Counter()
+    read_focus: list[int] = []              # 每次 READ_RECORD 带的 focus 数（09-30：hi@0.4.1 要求回看多张图一次带齐）
+    image_rereads = 0                       # READ_RECORD 的目标本身是图片 E（逐张回看）
     actions: Counter[str] = Counter()
     per_ws: dict[str, list[str]] = defaultdict(list)
     reports: Counter[str] = Counter()
@@ -70,6 +93,13 @@ def run_metrics(run: Path) -> dict[str, Any]:
                     actions[name] += 1
                     if out.get("action"):
                         per_ws[str(e.get("actor_id"))].append(str(out["action"]))
+                        args = out.get("arguments") or {}
+                        if out["action"] == "INSPECT":
+                            inspect_ops[str((args.get("request") or {}).get("operation"))] += 1
+                        elif out["action"] == "READ_RECORD":
+                            read_focus.append(len(out.get("focus_evidence_ids") or []))
+                            if images is not None and args.get("record_id") in images:
+                                image_rereads += 1
                     else:
                         reports[str(out.get("status"))] += 1
             else:
@@ -116,6 +146,8 @@ def run_metrics(run: Path) -> dict[str, Any]:
         "run": run.name, "teacher_calls": len(requests), "input_tokens": tokens_in, "decision": decision,
         "hi_steps": hi_steps, "search": actions.get("SEARCH", 0), "read_record": actions.get("READ_RECORD", 0),
         "inspect": actions.get("INSPECT", 0), "query_memory": actions.get("QUERY_MEMORY", 0),
+        "inspect_ops": dict(inspect_ops), "read_record_focus": read_focus,
+        "image_rereads": image_rereads if images is not None else None,
         "reports_completed": reports.get("COMPLETED", 0), "reports_incomplete": reports.get("INCOMPLETE", 0),
         "longest_same_action_run": longest, "outputs": outputs, "outputs_with_rationale": with_rationale,
         "fact_check_urls_seen": len(fc_urls), "fact_check_pages_opened": opened_fc,
@@ -220,7 +252,23 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "fact_check_urls_seen": total("fact_check_urls_seen"), "fact_check_pages_opened": total("fact_check_pages_opened"),
         "guard_fact_check_excluded": total("guard_fact_check_excluded"), "guard_after_cutoff": total("guard_after_cutoff"),
         **claim_aggregate([r["claim_sources"] for r in rows if r.get("claim_sources")]),
+        **review_aggregate(rows),
     }
+
+
+def review_aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """回看图片与模型工具（09-30）：hi@0.4.1 是否把逐张 READ_RECORD 合成一次；asr / locate_* 有没有被用上。"""
+
+    ops: Counter[str] = Counter()
+    for r in rows:
+        ops.update(r.get("inspect_ops") or {})
+    focus = [n for r in rows for n in (r.get("read_record_focus") or [])]
+    known = [r for r in rows if r.get("image_rereads") is not None]
+    return {"inspect_ops": dict(ops.most_common()),
+            "model_tool_calls": sum(ops.get(k, 0) for k in ("asr", "locate_frames", "locate_regions")),
+            "read_record_focus_mean": round(sum(focus) / len(focus), 2) if focus else None,
+            "read_record_multi_focus_share": round(sum(1 for n in focus if n >= 2) / len(focus), 3) if focus else None,
+            "image_rereads_per_run": round(sum(int(r["image_rereads"]) for r in known) / len(known), 1) if known else None}
 
 
 def claim_aggregate(items: list[dict[str, Any]]) -> dict[str, Any]:
@@ -285,7 +333,11 @@ def markdown(before: dict[str, Any], after: dict[str, Any], eb: dict[str, Any], 
             ("claim_pages_opened_per_run", "声明类：每 run 打开页面数"), ("claim_domains_opened_per_run", "声明类：每 run 打开的非核查域名数"),
             ("claim_domains_read_per_run", "声明类：每 run 实际读过的非核查域名数"),
             ("claim_domains_cited_per_run", "声明类：每 run 报告引用的非核查域名数"),
-            ("claim_fact_check_pages_used", "声明类：读过或引用的核查类页面（域名）")]
+            ("claim_fact_check_pages_used", "声明类：读过或引用的核查类页面（域名）"),
+            ("inspect_ops", "INSPECT 各操作次数"), ("model_tool_calls", "语音转写 / 按文字找帧 / 图内定位 调用数"),
+            ("image_rereads_per_run", "每 run 逐张回看图片的 READ_RECORD"),
+            ("read_record_focus_mean", "READ_RECORD 平均带图（focus）数"),
+            ("read_record_multi_focus_share", "READ_RECORD 一次带 ≥2 个 focus 的占比")]
     for key, label in keys:
         lines.append(f"| {label} | {_fmt(before.get(key, '—'))} | {_fmt(after.get(key, '—'))} |")
     if eb or ea:

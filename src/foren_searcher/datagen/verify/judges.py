@@ -186,7 +186,9 @@ def list_local_models(endpoint: str | None = None, *, timeout: float = 5.0, api_
     key = api_key if api_key is not None else os.environ.get(LOCAL_API_KEY_ENV)
     headers = {"Authorization": f"Bearer {key}"} if key else {}
     try:
-        with httpx.Client(timeout=timeout, transport=transport, trust_env=False) as client:
+        # 10-14 晚：OpenRouter（服务器核验器的线上替身，用来量 Qwen 当核验器的一致性）走系统代理，超时放宽
+        remote = "openrouter.ai" in url
+        with httpx.Client(timeout=max(timeout, 30.0) if remote else timeout, transport=transport, trust_env=remote) as client:
             response = client.get(url + "/models", headers=headers)
             response.raise_for_status()
             data = response.json()
@@ -237,15 +239,18 @@ class OpenAICompatJudge:
         self.name = f"local:{model}" + ("+think" if thinking else "")
         key = api_key if api_key is not None else os.environ.get(LOCAL_API_KEY_ENV)
         self._headers = {"Authorization": f"Bearer {key}"} if key else {}
-        # trust_env=False：不走系统代理（本机 127.0.0.1 / 内网服务器）
-        self._client = httpx.Client(timeout=httpx.Timeout(timeout, connect=10.0), transport=transport, trust_env=False)
+        # trust_env=False：不走系统代理（本机 127.0.0.1 / 内网服务器）；OpenRouter 例外（10-14 晚，量 Qwen 当核验器用）
+        self.openrouter = "openrouter.ai" in self.endpoint
+        self._client = httpx.Client(timeout=httpx.Timeout(timeout, connect=20.0), transport=transport, trust_env=self.openrouter)
         self._dropped: set[str] = set()
         self._drop_lock = threading.Lock()
 
     def _body(self, messages: list[dict[str, Any]], schema: dict[str, Any] | None) -> dict[str, Any]:
         body: dict[str, Any] = {"model": self.model, "messages": messages, "temperature": self.temperature,
                                 "max_tokens": self.max_tokens}
-        if not self.thinking:
+        if self.openrouter:
+            body["reasoning"] = {"enabled": bool(self.thinking)}
+        elif not self.thinking:
             body["chat_template_kwargs"] = {"enable_thinking": False}
         if schema is not None:
             body["response_format"] = {"type": "json_schema", "json_schema": {"name": "verdict", "schema": schema}}
@@ -275,6 +280,8 @@ class OpenAICompatJudge:
                     continue
             if response.status_code >= 400:
                 raise LocalJudgeError(f"HTTP {response.status_code}: {response.text[:300]}", status_code=response.status_code)
+            if self.openrouter and '"error"' in response.text[:400] and '"choices"' not in response.text[:4000]:
+                raise LocalJudgeError(f"OpenRouter 上游出错：{response.text[:300]}", status_code=502)
             data = response.json()
             try:
                 message = data["choices"][0]["message"]

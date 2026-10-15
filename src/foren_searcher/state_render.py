@@ -23,8 +23,11 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 from dataclasses import dataclass
 from typing import Any
+
+from .i18n import tr
 
 RENDERER_VERSION = "1"
 
@@ -50,6 +53,9 @@ TIERS: dict[str, Tier | None] = {
 
 TRUNCATION_MARK = "…[已截断 {n} 字符；READ_RECORD 可读全文]"
 LIST_MARK = "…（另有 {n} 条未展示）"
+# 10-05：规格 language="en" 时的英文标记（i18n.tr 选择）
+TRUNCATION_MARK_EN = "…[truncated {n} chars; READ_RECORD reads the full text]"
+LIST_MARK_EN = "…({n} more not shown)"
 _NOTICE_KEYS = ("content_notice",)   # 长段固定说明文字：压缩档只保留一个短标记
 _DROP_KEYS = ("record_type", "artifact_ref", "production_method")   # 卡片里对决策无用的常量字段
 
@@ -80,13 +86,13 @@ def payload_chars(payload: Any) -> int:
 def cut_text(text: str, limit: int) -> str:
     if len(text) <= limit:
         return text
-    return text[:limit] + TRUNCATION_MARK.format(n=len(text) - limit)
+    return text[:limit] + tr(TRUNCATION_MARK, TRUNCATION_MARK_EN).format(n=len(text) - limit)
 
 
 def cut_list(items: list[Any], limit: int) -> list[Any]:
     if len(items) <= limit:
         return items
-    return [*items[:limit], LIST_MARK.format(n=len(items) - limit)]
+    return [*items[:limit], tr(LIST_MARK, LIST_MARK_EN).format(n=len(items) - limit)]
 
 
 def shrink(value: Any, *, text_chars: int, list_cap: int, snippet_chars: int) -> Any:
@@ -111,7 +117,7 @@ def shrink(value: Any, *, text_chars: int, list_cap: int, snippet_chars: int) ->
             if key in _DROP_KEYS or item is None or item == [] or item == {}:
                 continue
             if key in _NOTICE_KEYS and isinstance(item, str):
-                out[key] = "media_metadata_not_pixels" if "像素" in item else cut_text(item, snippet_chars)
+                out[key] = "media_metadata_not_pixels" if ("像素" in item or "pixels" in item) else cut_text(item, snippet_chars)
             elif key in ("search_snippet", "label", "search_title", "message") and isinstance(item, str):
                 out[key] = cut_text(item, snippet_chars)
             else:
@@ -121,6 +127,8 @@ def shrink(value: Any, *, text_chars: int, list_cap: int, snippet_chars: int) ->
 
 
 _MEDIA_PROFILE_BOILERPLATE = "；本记录未核验日期、地点或作者等来源元数据，不能据此判断这些信息不存在。"
+_MEDIA_PROFILE_BOILERPLATE_EN = ("; this record does not verify date, place, author or other source metadata "
+                                 "and cannot show that such information is absent.")   # = inspect.service 的英文标签尾巴
 
 
 def card_line(card: Any, tier: Tier) -> Any:
@@ -145,12 +153,21 @@ def card_line(card: Any, tier: Tier) -> Any:
             parts.append(str(card["source_url"]))
         if card.get("snippet") and tier.support_text_chars > 0:
             parts.append(cut_text(str(card["snippet"]), tier.snippet_chars))
+        # 10-05 P1.4：annotate_view 补的页面 / 封面 / 视频 E 与"怎么取得视频"（旧卡片没有这些键，输出不变）
+        linked = [f"{kind}={card[f'{kind}_evidence_id']}" for kind in ("page", "cover", "video")
+                  if isinstance(card.get(f"{kind}_evidence_id"), str)]
+        if linked:
+            parts.append(" ".join(linked))
+        if isinstance(card.get("video_access"), str):
+            parts.append("video_access: " + card["video_access"])
         return " — ".join(parts)
     if not isinstance(eid, str):
         return shrink(card, text_chars=tier.latest_text_chars, list_cap=64, snippet_chars=tier.snippet_chars)
     label = str(card.get("label") or "")
     if label.startswith("媒体属性：") and label.endswith(_MEDIA_PROFILE_BOILERPLATE):
         label = label[: -len(_MEDIA_PROFILE_BOILERPLATE)]
+    elif label.startswith("media profile: ") and label.endswith(_MEDIA_PROFILE_BOILERPLATE_EN):
+        label = label[: -len(_MEDIA_PROFILE_BOILERPLATE_EN)]
     modalities = card.get("modalities") or []
     line = eid
     if modalities:
@@ -170,6 +187,13 @@ def card_line(card: Any, tier: Tier) -> Any:
     if extra:
         line += " " + json.dumps(shrink(extra, text_chars=tier.snippet_chars, list_cap=8, snippet_chars=tier.snippet_chars),
                                  ensure_ascii=False, separators=(",", ":"))
+    # 10-05 P1.3 / P1.4：annotate_view 补的字段（旧卡片没有这些键，输出逐字不变）
+    if isinstance(card.get("origin"), str):
+        line += f" origin={card['origin']}"
+    if isinstance(card.get("duration_s"), (int, float)) and not isinstance(card.get("duration_s"), bool):
+        line += f" duration_s={card['duration_s']:g}"
+    if isinstance(card.get("video_access"), str):
+        line += " | video_access: " + card["video_access"]
     return line
 
 
@@ -271,13 +295,47 @@ def _digest_observation(observation: Any, tier: Tier) -> Any:
                 summary["feedback"] = [cut_text(str(f.get("message", f)), tier.snippet_chars) if isinstance(f, dict) else cut_text(str(f), tier.snippet_chars)
                                        for f in cut_list(feedback, 3)]
             result = details.get("result")
-            if isinstance(result, (str, int, float)):
+            if isinstance(result, dict) and isinstance(result.get("summary_lines"), list) and details.get("operation") in {"compare_media", "video_structure"}:
+                # 10-12：compare_media / video_structure 的结论就在 summary_lines 里，历史步保留前 8 行和图片编号
+                image_ids = [x.get("evidence_id") for x in result.get("images", []) if isinstance(x, dict)]
+
+                def _name(match: "re.Match[str]") -> str:      # 10-14：对照图写成 E 编号，与观察一致
+                    k = int(match.group(1))
+                    return image_ids[k - 1] if 0 < k <= len(image_ids) and image_ids[k - 1] else match.group(0)
+
+                summary["summary_lines"] = [cut_text(re.sub(r"comparison image (\d+)", _name, str(x)), tier.snippet_chars)
+                                            for x in cut_list(result["summary_lines"], 8)]
+                summary["images"] = image_ids[:8]
+            elif details.get("operation") == "ocr" and isinstance(result, dict) and isinstance(result.get("summary"), dict):
+                # 10-15（A7）：OCR 的历史步保留识别出的文字（出现最多的若干条，带首末时刻）和总数；逐框结果在结果 E 里
+                ocr = result["summary"]
+                summary["ocr_texts"] = [cut_text(_ocr_text_entry(x), tier.snippet_chars)
+                                        for x in cut_list(list(ocr.get("texts") or []), tier.history_items)]
+                summary["ocr_counts"] = {k: ocr.get(k) for k in ("text_boxes", "distinct_texts", "frames")}
+            elif isinstance(result, (str, int, float)):
                 summary["result"] = cut_text(str(result), tier.history_excerpt_chars)
             elif isinstance(result, (dict, list)):
                 summary["result"] = cut_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")), tier.history_excerpt_chars)
             digest["details"] = summary
         elif action == "SEARCH":
             summary = {k: details.get(k) for k in ("output_type", "stop_reason") if k in details}
+            digest["details"] = summary
+        elif action == "DETECT":
+            # 10-08：历史步只留状态、结果 E 和报警区间（items 里已有一句话摘要）
+            summary = {k: details.get(k) for k in ("operation", "status", "result_evidence_id") if k in details}
+            result = details.get("result")
+            if isinstance(result, dict) and isinstance(result.get("summary_lines"), list) and result.get("operation") in {"compare_source", "generation_scan_v2"}:
+                # 10-10：compare_source / generation_scan v2 的结论就在 summary_lines 里，历史步保留前 8 行和证据图编号
+                summary["summary_lines"] = [cut_text(str(x), tier.snippet_chars) for x in cut_list(result["summary_lines"], 8)]
+                if isinstance(details.get("images"), list):
+                    summary["images"] = [i.get("evidence_id") for i in details["images"] if isinstance(i, dict)]
+            if isinstance(result, dict) and isinstance(result.get("flagged_spans"), list):
+                summary["flagged_spans"] = [
+                    {k: span.get(k) for k in ("rule", "range_s", "face_box_rel_xywh") if span.get(k) is not None}
+                    for span in cut_list(result["flagged_spans"], 4) if isinstance(span, dict)]
+            feedback = details.get("feedback")
+            if isinstance(feedback, dict):
+                summary["feedback"] = cut_text(str(feedback.get("message", "")), tier.snippet_chars)
             digest["details"] = summary
         elif action == "HARNESS_REJECTION":
             digest["details"] = shrink(details, text_chars=tier.snippet_chars * 2, list_cap=3, snippet_chars=tier.snippet_chars)
@@ -289,6 +347,32 @@ def _digest_observation(observation: Any, tier: Tier) -> Any:
         if key in observation:
             digest[key] = observation[key]
     return digest
+
+
+def _ocr_text_entry(entry: Any) -> str:
+    """OCR 汇总里的一条文字 → '文字 (首–末 s)'；图片 OCR 没有时刻。"""
+
+    if not isinstance(entry, dict):
+        return str(entry)
+    text = str(entry.get("text") or "")
+    first, last = entry.get("first_s"), entry.get("last_s")
+    if isinstance(first, (int, float)) and isinstance(last, (int, float)):
+        return f"{text} ({first:.1f} s)" if abs(last - first) < 0.05 else f"{text} ({first:.1f}–{last:.1f} s)"
+    return text
+
+
+def _compact_ocr(observation: dict[str, Any]) -> dict[str, Any]:
+    """最新一步的 OCR：文字已在观察行里列出（ocr_summary_line），details 只留计数与覆盖，不重复列表。"""
+
+    observation = dict(observation)
+    details = dict(observation["details"])
+    result = details.get("result")
+    if isinstance(result, dict) and isinstance(result.get("summary"), dict):
+        counts = {k: v for k, v in result["summary"].items() if k != "texts"}
+        details["result"] = {"summary": counts, **({"coverage": result["coverage"]} if result.get("coverage") else {})}
+    details.pop("evidence", None)
+    observation["details"] = details
+    return observation
 
 
 def _compact_search_result(result: Any, tier: Tier) -> Any:
@@ -312,10 +396,95 @@ def _compact_search_result(result: Any, tier: Tier) -> Any:
         out["evidence"] = evidence
     if errors:
         out["failed"] = errors
+    match = result.get("content_match")
+    if isinstance(match, dict):          # 10-12：与材料视频的画面比对（观察行里有完整一句）
+        out["content_match"] = {k: match[k] for k in ("material", "status", "fraction") if k in match}
     return shrink(out, text_chars=tier.latest_text_chars, list_cap=tier.list_cap, snippet_chars=tier.snippet_chars)
 
 
+def _compact_detect(observation: dict[str, Any]) -> dict[str, Any]:
+    """（10-12 以前的轨迹）最新一步的 DETECT：完整结果在结果 E 里，这里去掉逐窗口表、模型身份与耗时，留覆盖、报警区间和限制。"""
+
+    observation = dict(observation)
+    details = dict(observation["details"])
+    result = details.get("result")
+    if isinstance(result, dict):
+        keep = ("operation", "summary_lines", "match", "segments_not_in_b", "changed_regions", "faces",
+                "generator_length_shots", "coverage", "flagged_spans", "most_generation_like_windows", "limitations",
+                "calibrated", "raw_score", "generated_score", "higher_means")
+        details["result"] = {k: result[k] for k in keep if k in result}
+    for key in ("evidence", "call_timings_ms"):
+        details.pop(key, None)
+    observation["details"] = details
+    return observation
+
+
+CORRESPONDING_SPAN_MIN_S = 3.0
+CORRESPONDING_SPANS_SHOWN = 6
+
+
+def corresponding_spans(correspondences: Any, limit: int = CORRESPONDING_SPANS_SHOWN) -> list[str]:
+    """compare_media 的对应段 → 结论行 "A 2.3-10.8 s = B 3.4-8.6 s (sped_up)"。
+
+    10-15（A9 回放）：只留 A 上 ≥ 3 s 的段（与 content_match 同一条线，更短的多是剪辑点附近的对齐误差），取最长的
+    ``limit`` 段、按 A 起点排。白名单只留 summary_lines 后，摘要行里没有正常速度的对应段，"找出两段视频的对应片段、给出
+    两侧时间"这类任务（VCSL）的学生视图里就没有答案要的区间，walker 也就看不见它要取帧的区间（vcsl_pair_5/6 回放变了）。"""
+
+    rows = []
+    for c in correspondences if isinstance(correspondences, (list, tuple)) else ():
+        ra, rb = (c.get("a_range_s"), c.get("b_range_s")) if isinstance(c, dict) else (None, None)
+        if not (isinstance(ra, (list, tuple)) and isinstance(rb, (list, tuple)) and len(ra) == 2 and len(rb) == 2):
+            continue
+        try:
+            a0, a1 = float(ra[0]), float(ra[1])
+        except (TypeError, ValueError):
+            continue
+        if a1 - a0 >= CORRESPONDING_SPAN_MIN_S:
+            rows.append((a1 - a0, a0, c))
+    rows = sorted(rows, key=lambda x: (-x[0], x[1]))[:limit]
+    out = []
+    for _, _, c in sorted(rows, key=lambda x: x[1]):
+        tags = [str(c["kind"])] if c.get("kind") not in (None, "normal") else []
+        if c.get("mirrored"):
+            tags.append("mirrored")
+        if c.get("picture_differs"):
+            tags.append("picture differs")
+        ra, rb = c["a_range_s"], c["b_range_s"]
+        out.append(f"A {ra[0]}-{ra[1]} s = B {rb[0]}-{rb[1]} s" + (f" ({', '.join(tags)})" if tags else ""))
+    return out
+
+
+def _compact_report(observation: dict[str, Any]) -> dict[str, Any]:
+    """最新一步的 compare_media / video_structure：完整结果在结果 E 里，这里去掉耗时、模型身份和逐窗口数据。"""
+
+    observation = dict(observation)
+    details = dict(observation["details"])
+    result = details.get("result")
+    if isinstance(result, dict):
+        # 10-14：与 DETECT 一样只留结论（白名单）。过去只去掉耗时 / 镜头表，HI 仍看到逐段对齐表（含 1.5 s 的
+        # reversed / sped_up 段）和静止段列表，答案照着它们写（evidM27h video_154 / 209）
+        # 10-15：对应段只以结论行给出（≥ 3 s，最多 6 段），见 corresponding_spans
+        spans = corresponding_spans(result.get("correspondences"))
+        compact = {k: result[k] for k in ("summary_lines",) if k in result}
+        if spans:
+            compact["corresponding_spans"] = spans
+        compact.update({k: result[k] for k in ("images", "limitations") if k in result})
+        details["result"] = compact
+    for key in ("evidence", "call_timings_ms"):
+        details.pop(key, None)
+    observation["details"] = details
+    return observation
+
+
 def _latest_observation(observation: Any, tier: Tier) -> Any:
+    if isinstance(observation, dict) and observation.get("action") == "DETECT" and isinstance(observation.get("details"), dict):
+        observation = _compact_detect(observation)
+    if (isinstance(observation, dict) and observation.get("action") == "INSPECT" and isinstance(observation.get("details"), dict)
+            and observation["details"].get("operation") in {"compare_media", "video_structure"}):
+        observation = _compact_report(observation)
+    if (isinstance(observation, dict) and observation.get("action") == "INSPECT" and isinstance(observation.get("details"), dict)
+            and observation["details"].get("operation") == "ocr"):
+        observation = _compact_ocr(observation)
     if isinstance(observation, dict) and observation.get("action") == "SEARCH" and isinstance(observation.get("details"), dict):
         observation = dict(observation)
         details = dict(observation["details"])
@@ -457,7 +626,7 @@ def _compact_supporting_record(record: Any, tier: Tier) -> Any:
         out.pop("next_offset", None)
         out.pop("acquired_by", None)
     elif isinstance(record.get("content_notice"), str):
-        out["content_notice"] = "media_metadata_not_pixels" if "像素" in record["content_notice"] else cut_text(record["content_notice"], tier.snippet_chars)
+        out["content_notice"] = "media_metadata_not_pixels" if ("像素" in record["content_notice"] or "pixels" in record["content_notice"]) else cut_text(record["content_notice"], tier.snippet_chars)
     return shrink(out, text_chars=max(tier.support_text_chars, tier.snippet_chars) + len(TRUNCATION_MARK) + 8,
                   list_cap=64, snippet_chars=tier.snippet_chars)
 
@@ -495,7 +664,7 @@ def render_gia_payload(payload: dict[str, Any], renderer: str | None) -> dict[st
                         {k: v for k, v in item.items() if k in ("evidence_id", "locator", "source_ref")} if isinstance(item, dict) else item
                         for item in report["image_inputs"]
                     ]
-    for key in ("current_materials", "original_materials"):
+    for key in ("current_materials", "original_materials", "candidate_materials"):
         if key in view:
             view[key] = compact_cards(view[key], tier)
     if "history_index" in view:
@@ -538,6 +707,12 @@ def _fit_gia(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
     if history and payload_chars(payload) > tier.budget_chars:
         history.clear()
         truncated = True
+    # 10-14：长视频的证据清单（compare_media 半秒取样、检索候选）能上百张卡片，过去占满预算后整行渲染失败——
+    # 教师拿到原始视图（学生没有）、导出把整条 FINISH 行丢掉（wk12：21 个答案丢 7 个，全是视频任务）。
+    # 卡片清单只留报告 / 附图 / 原始材料引到的与最近的，其余记个数，GIA 可用 READ_RECORD / QUERY_MEMORY 取回
+    if payload_chars(payload) > tier.budget_chars:
+        if _cap_materials(view, tier):
+            truncated = True
     # 兜底：报告附图只留编号、去掉各报告的视觉摘要、旧轮次索引只留最近 12 条
     if payload_chars(payload) > tier.budget_chars:
         for report in view.get("latest_reports") or []:
@@ -546,7 +721,7 @@ def _fit_gia(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
                 report.pop("visual_observation_summary", None)
         index = view.get("history_index")
         if isinstance(index, list) and len(index) > 12:
-            view["history_index"] = [LIST_MARK.format(n=len(index) - 12), *index[-12:]]
+            view["history_index"] = [tr(LIST_MARK, LIST_MARK_EN).format(n=len(index) - 12), *index[-12:]]
         truncated = True
     if payload_chars(payload) > tier.budget_chars:
         _ids_only(view, "image_inputs")
@@ -560,6 +735,41 @@ def _fit_gia(payload: dict[str, Any], view: dict[str, Any], tier: Tier) -> None:
     if payload_chars(payload) > tier.budget_chars:
         n = payload_chars(payload)
         raise RenderError(f"总任务、材料与最新报告本身超过 {tier.name} 的预算（{n} > {tier.budget_chars} 字符）", chars=n, budget=tier.budget_chars)
+
+
+_CARD_ID = re.compile(r"\s*\"?([ERC][1-9][0-9]*)\b")
+_ANY_ID = re.compile(r"\b[ER][1-9][0-9]*\b")
+
+
+def _card_id(item: Any) -> str | None:
+    if isinstance(item, dict):
+        value = item.get("evidence_id") or item.get("candidate_id")
+        return value if isinstance(value, str) else None
+    if isinstance(item, str):
+        m = _CARD_ID.match(item)
+        return m.group(1) if m else None
+    return None
+
+
+def _cap_materials(view: dict[str, Any], tier: Tier) -> bool:
+    """current_materials / candidate_materials 超过 list_cap 时：留被报告、附图、原始材料引到的卡片，再留最近的
+    list_cap 张，其余换成"另有 N 条"标记。返回是否动过。"""
+
+    keep = set(_ANY_ID.findall(json.dumps({k: view.get(k) for k in ("latest_reports", "image_inputs", "original_materials", "task")},
+                                          ensure_ascii=False, default=str)))
+    changed = False
+    for key in ("current_materials", "candidate_materials"):
+        items = view.get(key)
+        if not isinstance(items, list) or len(items) <= tier.list_cap:
+            continue
+        recent = {id(x) for x in items[-tier.list_cap:]}
+        kept = [x for x in items if id(x) in recent or _card_id(x) in keep]
+        dropped = len(items) - len(kept)
+        if dropped <= 0:
+            continue
+        view[key] = [tr(LIST_MARK, LIST_MARK_EN).format(n=dropped), *kept]
+        changed = True
+    return changed
 
 
 REPORT_STATEMENT_STEPS = (600, 400, 250, 150)   # 最后一级：Finding 陈述逐级收缩的上限

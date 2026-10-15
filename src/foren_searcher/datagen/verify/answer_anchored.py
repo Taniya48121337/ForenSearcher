@@ -22,6 +22,7 @@ from ..errors import ErrorRecord, ErrorType
 from .anchored import AnchoredResult, JsonJudge, verify_anchored
 from .context import EvidenceLookup, EvidenceText
 from .hindsight import UsefulEvidence
+from .lang import split_sentences
 from .verdict import Verdict, decide
 
 if TYPE_CHECKING:
@@ -32,8 +33,8 @@ if TYPE_CHECKING:
 _ONE_CITE = r"[（(\[【]\s*(?:[EF]\d+\s*[、,，;；\s]*)+[）)\]】]"
 _CITE_GROUP = re.compile(rf"({_ONE_CITE}(?:\s*{_ONE_CITE})*)")
 _ID = re.compile(r"[EF]\d+")
-_TERMINATOR = re.compile(r"(?<=[。！？!?；;])")
-_SKIP = re.compile(r"^(结论|判定|标签|总结)[:：]?", re.I)
+_TERMINATOR = re.compile(r"(?<=[。！？!?；;])")       # 中文切句（lang.split_sentences 对中文段落仍用它）
+_SKIP = re.compile(r"^(结论|判定|标签|总结|conclusion|verdict|rating|label|summary)[:：]?", re.I)
 
 
 @dataclass
@@ -62,7 +63,7 @@ def split_answer(answer: str, finding_evidence: dict[str, list[str]] | None = No
     for p_index, paragraph in enumerate(re.split(r"\n+", answer)):
         if not paragraph.strip():
             continue
-        pieces = [s for s in _TERMINATOR.split(paragraph) if s.strip()]
+        pieces = split_sentences(paragraph)          # 10-07：英文答案按 ". " 等切句（以前整段算一句）
         # 段内：句子 → 引用组附着；"（E…）"在句首时属于上一句
         pending: list[AnswerSentence] = []           # 尚未拿到引用的句子（等着被后面的引用组"回溯覆盖"）
         for piece in pieces:
@@ -147,7 +148,8 @@ async def anchor_answer(decision: Decision, log: RunLog, useful: UsefulEvidence,
     sentences = split_answer(str(decision.output.get("answer") or ""), finding_evidence)
     skip = {e for s in sentences for e in s.evidence_ids if e not in decision.visible_ids}
     lookup = _WithRequestImages(log.lookup, request_images(log))
-    result = await verify_anchored(as_report(sentences), lookup, judge, skip_evidence_ids=skip)
+    task = str(log.config.get("task") or "") or None      # 总任务：只随输入材料的图片对进 payload（verifier@0.3.3）
+    result = await verify_anchored(as_report(sentences), lookup, judge, skip_evidence_ids=skip, task=task, answer=True)
     return sentences, result
 
 

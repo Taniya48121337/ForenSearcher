@@ -11,6 +11,7 @@ from typing import Literal
 from ..store.resolver import EvidenceResolver
 from ..store import GlobalStore
 from .openers.browser import PlaywrightRenderer
+from .openers.dates import DateSourceOpener
 from .openers.dispatcher import SourceDispatcher
 from .openers.document import DocumentSourceOpener
 from .openers.http import SafeHttpClient
@@ -40,7 +41,9 @@ def create_search_service(
     http = SafeHttpClient(policy, allow_private_network=allow_private_network)
     renderer = PlaywrightRenderer(http, policy) if enable_dynamic_pages else None
     document = DocumentSourceOpener(http, policy, renderer)
-    dispatcher = SourceDispatcher(document, ImageSourceOpener(http, document, policy), VideoSourceOpener(http, policy))
+    video = VideoSourceOpener(http, policy)
+    dispatcher = SourceDispatcher(document, ImageSourceOpener(http, document, policy), video,
+                                  DateSourceOpener(http, policy, video))      # 10-13 日期查询（免费：页面元数据 + Wayback CDX）
 
     async def close_all() -> None:
         """先关闭 HTTP，再按所有权约定关闭 Provider。"""

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import ipaddress
+import os
 import re
 import socket
 import ssl
@@ -22,6 +23,9 @@ import httpx
 
 from ..contracts import SearchError, SearchFailure
 from ..policy import SearchPolicy
+
+# 下载媒体时允许带上的平台请求头（yt-dlp 格式的 http_headers）；不含 Cookie / Authorization 等凭据。
+DOWNLOAD_HEADER_ALLOWLIST = frozenset({"user-agent", "accept", "accept-language", "sec-fetch-mode", "referer", "origin"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,9 +61,13 @@ class SafeHttpClient:
 
         self.policy = policy or SearchPolicy()
         self.allow_private_network = allow_private_network
+        # 10-12 服务器：FOREN_HTTP_PROXY（如 http://10.0.0.1:7890）设了才走代理。经代理时连接对端是代理本身，
+        # 所以不再核对"实际连接 IP 是公网"，DNS 解析不了也放行（由代理解析）；URL 里的字面 IP 仍须是公网。
+        self.proxy = os.environ.get("FOREN_HTTP_PROXY") or None
         timeout = httpx.Timeout(self.policy.source_timeout_s, connect=min(10.0, self.policy.source_timeout_s))
         self._client = httpx.AsyncClient(timeout=timeout, follow_redirects=False,
-            headers={"User-Agent": self.policy.user_agent}, transport=transport, trust_env=False)
+            headers={"User-Agent": self.policy.user_agent}, transport=transport, trust_env=False,
+            **({"proxy": self.proxy} if self.proxy and transport is None else {}))
 
     async def aclose(self) -> None:
         """释放连接池。"""
@@ -84,6 +92,8 @@ class SafeHttpClient:
                 rows = await asyncio.to_thread(socket.getaddrinfo, parsed.hostname, parsed.port or (443 if parsed.scheme == "https" else 80), type=socket.SOCK_STREAM)
                 addresses = {ipaddress.ip_address(row[4][0]) for row in rows}
             except socket.gaierror as exc:
+                if self.proxy:
+                    return                      # 经代理：本机解析不了的域名交给代理
                 raise SearchFailure(SearchError("fetch", "NETWORK_ERROR", "source hostname could not be resolved")) from exc
         # 只要某个解析结果不是公网就拒绝，避免客户端随机命中内网地址。
         if not addresses or any(not address.is_global for address in addresses):
@@ -97,7 +107,7 @@ class SafeHttpClient:
             await self.validate_url(current)
             try:
                 async with self._client.stream("GET", current) as response:
-                    if not self.allow_private_network:
+                    if not self.allow_private_network and not self.proxy:
                         # 请求建立后核对实际连接 IP，补上 DNS 校验与连接间的竞态窗口。
                         network_stream = response.extensions.get("network_stream")
                         server_addr = network_stream.get_extra_info("server_addr") if network_stream is not None else None
@@ -166,7 +176,7 @@ class SafeHttpClient:
             for _ in range(self.policy.maximum_redirects + 1):
                 await self.validate_url(current)
                 async with self._client.stream(method, current, headers=forwarded, content=data) as response:
-                    if not self.allow_private_network:
+                    if not self.allow_private_network and not self.proxy:
                         network = response.extensions.get("network_stream")
                         address = network.get_extra_info("server_addr") if network is not None else None
                         if address:
@@ -206,10 +216,15 @@ class SafeHttpClient:
 
     async def download_to_file(self, url: str, *, destination: Path, maximum_bytes: int,
                                byte_range: tuple[int, int] | None = None,
-                               on_chunk: Callable[[int], None] | None = None) -> DownloadedResource:
-        """把公网资源流式写入一个必须尚不存在的目标文件。"""
+                               on_chunk: Callable[[int], None] | None = None,
+                               extra_headers: Mapping[str, str] | None = None) -> DownloadedResource:
+        """把公网资源流式写入一个必须尚不存在的目标文件。
+
+        extra_headers（10-05）：平台元数据给出的请求头（yt-dlp 格式的 http_headers，如 User-Agent），
+        只收 DOWNLOAD_HEADER_ALLOWLIST 里的键（都是无凭据的普通请求头，跳转时照常带上）。"""
         current = url
-        headers = {}
+        headers = {key: value for key, value in (extra_headers or {}).items()
+                   if isinstance(key, str) and isinstance(value, str) and key.lower() in DOWNLOAD_HEADER_ALLOWLIST}
         created_destination = False
         if byte_range is not None:
             start, length = byte_range
@@ -221,7 +236,7 @@ class SafeHttpClient:
                 await self.validate_url(current)
                 try:
                     async with self._client.stream("GET", current, headers=headers) as response:
-                        if not self.allow_private_network:
+                        if not self.allow_private_network and not self.proxy:
                             network_stream = response.extensions.get("network_stream")
                             server_addr = network_stream.get_extra_info("server_addr") if network_stream is not None else None
                             if server_addr:

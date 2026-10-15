@@ -9,7 +9,7 @@ from typing import Any, Callable, cast
 
 from PIL import Image, UnidentifiedImageError
 
-from ..contracts import CandidateSource, OpenSourceRequest, OpenedMaterial, OpenedSource, SearchError, SearchFailure, SearchRequest
+from ..contracts import AUTO_SUBTITLE_LANGUAGE, CandidateSource, OpenSourceRequest, OpenedMaterial, OpenedSource, SearchError, SearchFailure, SearchRequest
 from ..policy import SearchPolicy
 from .http import SafeHttpClient
 from .ytdlp_http import extract_metadata
@@ -100,7 +100,22 @@ class VideoSourceOpener:
         automatic = cast(Mapping[str, Any], automatic_value) if isinstance(automatic_value, Mapping) else {}
         # 保留 Provider 顺序，同时合并人工字幕与自动字幕语言并去重。
         languages = list(dict.fromkeys([*manual.keys(), *automatic.keys()]))
-        if language is not None:
+        if language == AUTO_SUBTITLE_LANGUAGE:
+            # 10-13 compact_tool_params：自动带的字幕只取原语言；选不出就当没有（不报错，HI 没有要字幕）
+            original = info.get("language")
+            manual_langs = list(manual.keys())
+            orig = [x for x in automatic.keys() if isinstance(x, str) and x.endswith("-orig")]
+            if isinstance(original, str) and original in languages:
+                chosen = original
+            elif len(orig) == 1:
+                chosen = orig[0]
+            elif len(manual_langs) == 1:
+                chosen = manual_langs[0]
+            elif len(languages) == 1:
+                chosen = languages[0]
+            else:
+                return OpenedMaterial("subtitle", "absent")
+        elif language is not None:
             if language not in languages:
                 return OpenedMaterial("subtitle", "absent")
             chosen = language

@@ -127,6 +127,11 @@ CREATE TABLE IF NOT EXISTS source_open_attempts (
  attempt INTEGER NOT NULL, elapsed_ms INTEGER NOT NULL,
  outcome TEXT NOT NULL, error_json TEXT,
  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS candidate_matches (
+ material_id TEXT NOT NULL, candidate_id TEXT NOT NULL,
+ status TEXT NOT NULL, fraction REAL, attempts INTEGER NOT NULL DEFAULT 0,
+ details_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (material_id, candidate_id));
 CREATE TABLE IF NOT EXISTS inspect_executions (
  id INTEGER PRIMARY KEY AUTOINCREMENT, request_json TEXT NOT NULL,
  workspace_id TEXT NOT NULL, started_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1512,6 +1517,42 @@ class GlobalStore:
                 (execution_id,),
             ).fetchall()
         return [dict(row) for row in rows]
+
+    def record_candidate_match(self, material_id: str, candidate_id: str, *, status: str,
+                               fraction: float | None = None, details: dict[str, Any] | None = None) -> dict[str, Any]:
+        """10-12（原 DETECT find_source 的 _find_states，移进 Store 以便断点续跑）：材料 E 与视频候选 R 的内容比对结果。
+
+        status：source / partial / none / download_failed。每记一次 attempts + 1（下载失败的再给一次机会靠它判断）。"""
+
+        if status not in {"source", "partial", "none", "download_failed"}:
+            raise ValueError(f"invalid candidate match status: {status!r}")
+        payload = json.dumps(details or {}, ensure_ascii=False, sort_keys=True, default=str)
+        with self._lock, self._connect() as connection:
+            connection.execute(
+                """INSERT INTO candidate_matches (material_id,candidate_id,status,fraction,attempts,details_json)
+                VALUES (?,?,?,?,1,?)
+                ON CONFLICT(material_id,candidate_id) DO UPDATE SET status=excluded.status, fraction=excluded.fraction,
+                attempts=candidate_matches.attempts+1, details_json=excluded.details_json, updated_at=CURRENT_TIMESTAMP""",
+                (material_id, candidate_id, status, fraction, payload))
+        return self.candidate_matches(material_id)[candidate_id]
+
+    def candidate_matches(self, material_id: str) -> dict[str, dict[str, Any]]:
+        """某材料 E 已比对过的候选：{R: {status, fraction, attempts, details}}。"""
+
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT * FROM candidate_matches WHERE material_id=? ORDER BY rowid", (material_id,)).fetchall()
+        return {row["candidate_id"]: {"status": row["status"], "fraction": row["fraction"], "attempts": int(row["attempts"]),
+                                      "details": json.loads(row["details_json"] or "{}")} for row in rows}
+
+    def candidate_discovery_stats(self) -> dict[str, tuple[int | None, int]]:
+        """每个 Candidate 的最佳检索排名与被检索到的次数（10-11：find_source 排序用）。"""
+
+        with self._connect() as connection:
+            rows = connection.execute(
+                """SELECT candidate_id, MIN(provider_rank) AS best, COUNT(*) AS n
+                FROM candidate_discoveries GROUP BY candidate_id""").fetchall()
+        return {f"R{int(row['candidate_id'])}": (row["best"], int(row["n"])) for row in rows}
 
     def provider_call_count(self, execution_id: int) -> int:
         """返回某次 SEARCH 实际消耗的 Provider 请求次数。"""

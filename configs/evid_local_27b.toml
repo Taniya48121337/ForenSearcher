@@ -1,0 +1,39 @@
+# EVID-Bench baseline × Qwen3.8-27B（10-05）：与 evid_local.toml 只差两个超时（GIA 单步 300 → 900 秒，工作区 1800 → 3600 秒），
+# 27B 比 8B 慢 2–3 倍，防止被超时误杀。由 scripts\_launch_evid.py 的 evid27_* 任务经 FOREN_CONFIG 指定。
+# 切换方式：默认就是这份；或 set FOREN_CONFIG=configs\server.toml
+profile = "evid_local_27b"
+
+[models]
+model_root = ".models"          # 权重目录，相对项目根目录
+student = "Qwen3.5-4B"          # 与服务器同系列、同样带视觉，只是更小；正式训练用 9B
+teacher = "api"                 # 本地调试期教师走 API / Codex CLI；服务器上换成本地 122B
+teacher_endpoint = ""
+max_input_tokens = 8000         # 本地显存有限，截短输入
+max_new_tokens = 1024
+
+[paths]
+outputs = "outputs"
+sft_data = "experiments/sft_data"
+datasets = "external"
+harness_root = ""               # 留空 = 不用 Harness-1（已剥离）
+
+[runtime]
+max_rounds = 3                            # 10-05 修正计划 P1.7：2 → 3（首轮有画面后仍可能用于提取线索，第三轮才比对）；P0 的 A/B 用 --max-rounds 2
+max_gia_turns = 6
+gia_turn_timeout_s = 900
+max_workspace_turns = 8
+workspace_timeout_s = 3600
+max_concurrency = 1
+state_renderer = "compact_16k"
+max_workspaces_per_round = 3              # EVID baseline：与 server.toml 和内置默认一致（local.toml 的 2 是调试用；GIA 提示里没写这个上限，8B 底座常一次派 3 个，超了会被拒到 run 崩溃）
+
+[training]
+lora_rank = 8
+lora_alpha = 16
+batch_size = 1
+gradient_accumulation = 2
+max_seq_len = 4096              # 本地只截到 4K，验证反向传播能跑
+learning_rate = 1e-4
+max_steps = 5                   # 跑几步就停，只看链路
+device_map = "auto"
+bf16 = true

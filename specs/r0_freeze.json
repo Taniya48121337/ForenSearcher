@@ -1,0 +1,294 @@
+{
+  "freeze_id": "r0",
+  "frozen_at": "2026-10-15",
+  "doc": "claude/r0冻结口径_20261015.md",
+  "note": "第一次 SFT（r0）的环境冻结值。run_cases.run_one 在 run 的 hi / gia 规格与这里的 specs 一致时逐项核对（spec_hash、tool_layer.hash、checks），结果写进 run_config.freeze；walker_run.py 的预检开跑前再比一次（FOREN_FREEZE_STRICT=1 时不一致就不开跑），并核对教师与核验器。改这里的任何值 = 换冻结口径，混有新旧口径的批次按清单 A8 作废。",
+  "specs": {
+    "hi": "hi@0.10.0",
+    "gia": "gia@0.9.0"
+  },
+  "spec_hash": {
+    "hi": "sha256:2705c52e575b6e87c3335c2d03da01c63292cc3649dd8e3f6b0bdc7eefb56437",
+    "gia": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033"
+  },
+  "checks": {
+    "state_renderer": "compact_16k",
+    "image_input_limit": 8,
+    "gia_report_review_delay_s": null,
+    "harness_params_mode": "apply",
+    "harness_overrides": [],
+    "state_renderer_override": null,
+    "auto_tools": "off",
+    "instruction_mode": "teacher"
+  },
+  "tool_layer": {
+    "hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4",
+    "paths": [
+      "hi/workspace.py",
+      "inspect",
+      "search",
+      "state_render.py"
+    ],
+    "files": 66,
+    "groups": {
+      "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+      "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+      "search": "sha256:7561e5239ccc2b9cf0f5a012c0e55ccf525b21e78bf33ab3f884c76ac3603764",
+      "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+    },
+    "line_endings": "crlf_to_lf",
+    "computed_at": "2026-10-15（freeze --write 于容器副本计算，写回前已核对本机 inspect/、search/ 64 个文件与 hi/workspace.py、state_render.py 和计算时一致）：A7（OCR 一次调用一个 E）+ A9（修复 5 结论式记录，含对应段结论行）之后",
+    "status": "hash 已重算（对话 1，A7 + A9 落地后）；对话 5 于 2026-10-15 打 git tag r0-frozen（打 tag 前 walker_run.py freeze --round r0a 再核一次：0 项不一致）；之后训练前不再改工具措辞",
+    "tag": "r0-frozen"
+  },
+  "teacher": {
+    "mode": "slots",
+    "decided": "2026-10-15 负责人（清单第〇节\"教师与核验器\"）；实现 = 对话 5a（claude/教师分槽与核验器API化_20261015.md）",
+    "slots": {
+      "S0": "qwen",
+      "S1": "qwen",
+      "S2": "qwen",
+      "S3": "qwen",
+      "S4": "strong",
+      "S5": "strong"
+    },
+    "slot_meaning": {
+      "S0": "HI 动作的 rationale",
+      "S1": "检索查询词",
+      "S2": "GIA 第 2 轮任务文本",
+      "S3": "检索类下一步 / 充分性",
+      "S4": "HI 报告",
+      "S5": "GIA 答案（含 S5_answer_revise：核验后只按证据重写）"
+    },
+    "slot_name_rule": "槽调用名按前缀归槽：S4_report_retry → S4，S1_query_retry → S1，S5_answer_revise / _review / _gate / _bon<k> → S5（oracle_generator.slot_key）",
+    "backends": {
+      "qwen": {
+        "model": "qwen/qwen3.5-397b-a17b",
+        "endpoint": "https://openrouter.ai/api/v1",
+        "endpoint_env": "FOREN_TEACHER_QWEN_ENDPOINT",
+        "model_env": "FOREN_TEACHER_QWEN_MODEL",
+        "api_key_env": "FOREN_TEACHER_QWEN_API_KEY",
+        "server": "H20 自部署 vLLM（Qwen3.5-397B-A17B FP8 放得进 8×H20）：设 FOREN_TEACHER_QWEN_ENDPOINT=http://<H20>:<端口>/v1、FOREN_TEACHER_QWEN_MODEL=<served name>；预检按模型身份核对（去 org 前缀、大小写、点/横线，允许 -FP8 之类后缀）",
+        "thinking": true,
+        "thinking_off_slots": [
+          "S0"
+        ],
+        "reasoning_effort": null,
+        "temperature": 0.3,
+        "max_tokens": 16384,
+        "attempts": 5,
+        "timeout_s": 900,
+        "providers": null
+      },
+      "strong": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "medium",
+        "serial": true,
+        "timeout_s": 900,
+        "retry_max_s": 900,
+        "server": "Codex CLI（ChatGPT 订阅，不按 token 计费）：本机已登录；服务器按 server/15_walker.sh 末尾的步骤装 Codex CLI 并登录（复制 ~/.codex/auth.json 或 codex login --device-auth），出口走 FS_PROXY。调用 = codex exec --ephemeral --sandbox read-only --json -m gpt-6-astra -c model_reasoning_effort=\"medium\" --image …（无工具、只读）；跨进程串行锁，--jobs 2；429 / usage limit 按 30/60/120/240/480 s 退避，总等待 ≤ FOREN_ORACLE_RETRY_MAX_S（900 s）",
+        "endpoint_alternative": "将来换 CLIProxyAPI 之类 OpenAI 兼容代理：type 改为 endpoint，填 endpoint（如 http://127.0.0.1:8317/v1）、model、endpoint_env / model_env / api_key_env，其余字段同 qwen 后端；只改本节并记 changelog，代码不动"
+      }
+    },
+    "backup_switch": "FOREN_TEACHER_BACKUP=qwen | strong | all（或 walker_run --teacher-backup）：该后端整条 run 换成 backup_backends 的配置；类型相同时其余字段继承 backends.<名>，类型不同（strong：codex → OpenRouter 端点）时只用 backup_backends.<名> 自己的字段",
+    "backup_only_when": "该后端连续 429 / 402 / 余额不足；换的单位是整条 run（不在一条 run 里混用），run_config.walker.slot_teachers 记每个槽的 model 与 role；批处理自动换备用归对话 5",
+    "strong_model_choice": "S4 / S5 仍是 gpt-6-astra，10-15 r0 成本压缩起走 Codex CLI（ChatGPT 订阅）而非 OpenRouter API（5a 实测 strong 约 $1 / 案例）。Sonnet（anthropic/claude-sonnet-5.5，OpenRouter）只作 strong 的备用：S5 若用 Sonnet 就与核验器同家族（漏洞审查 F1），靠金标 D1 兜底",
+    "qwen_choice": "S0–S3 用 Qwen3.5-397B-A17B：wk14（397B）在 30 案例上各列都不差于 wk13（122B）——报告 positive 7 对 4、HI accepted 207 对 120、跑成 30/30 对 27/30；27B（wk15）未跑。S1 / S3 槽的单独质量对比没有做（见 walker_teachers_wk12_wk13_wk14.md）",
+    "per_row_fields": [
+      "metadata.slot_teacher（S0–S3 用的模型）",
+      "metadata.terminal_teacher（S4 / S5 用的模型，含核验后重写）",
+      "metadata.teacher_model（run 级摘要：<S0–S3 模型>+<S4/S5 模型>）"
+    ],
+    "primary": "qwen/qwen3.5-397b-a17b+gpt-6-astra",
+    "backup_summary": "qwen/qwen3.5-122b-a10b+anthropic/claude-sonnet-5.5",
+    "compat_note": "primary / backup 是 run 级 teacher_model 摘要，只覆盖\"全主\"\"全备\"；pack_r0.py 的 teacher 检查（10-15 r0 成本压缩起）按 run_config.walker.slot_models 逐槽核对：每个槽的 model 必须等于该槽后端的主模型或备用模型，只换一个后端的 run 也认",
+    "previous": {
+      "primary": "gpt-6-astra",
+      "primary_backend": "codex",
+      "primary_slot_effort": "medium",
+      "backup": "qwen/qwen3.5-397b-a17b",
+      "backup_backend": "openrouter",
+      "basis": "同 18 个检索类案例（wk11/wk12/wk13 共有、wk13 跑成的）Sonnet 严格通过（positive 且无 major/critical）：报告 Codex wk12 8/18、Sonnet wk11 3/18、Qwen 122B wk13 0/13；答案 1/18、4/18、3/19（wk13 为核验后重写版）。HI accepted：wk12 166 行 / 21 案例，wk13 120 行 / 27 案例。wk13 另有 3 个 fmnv_c 案例没跑成。 10-15 按判定规则复核（wk14 397B，同 18 个检索类案例，Sonnet 严格判）：① HI accepted 行 / 案例 397B 7.5、Codex 7.5（100%）；② 报告严格通过 397B 2/18、Codex 8/18（25%，未达 90%）；③ GIA FINISH 严格入选 397B 3/18、Codex 1/18；④ 跑成率 397B 30/30。②不达标 → Codex 维持主教师，备用由 122B 换成 397B（397B 每列都不差于 122B：报告 positive 7 对 4、HI accepted 207 对 120、跑成 30/30 对 27/30）。27B（wk15）未跑。见 walker_teachers_wk12_wk13_wk14.md。",
+      "decision_rule": "wk14（397B）/ wk15（27B）跑完、walker_teachers_wk13_wk14_wk15.md 出来后：在同 30 案例上比 ① HI accepted 行 / 案例，② 报告严格通过率，③ GIA FINISH accepted 数，④ 跑成率。某个 Qwen 在 ①② 都不低于 Codex wk12 的 90%，且跑成率 ≥ 90% → 改为主教师（服务器 H20 自部署），Codex 降为备用；否则维持 Codex 主、该 Qwen 中最好的一个作备用。改动只改本节并在 changelog 记一条，已产出的行按 teacher_model 区分，不混批。",
+      "server_note": "Codex 不能在服务器上跑；维持 Codex 为主教师时，r0 重跑（A8）在本机做。"
+    },
+    "backup_backends": {
+      "qwen": {
+        "model": "qwen/qwen3.5-122b-a10b"
+      },
+      "strong": {
+        "type": "endpoint",
+        "model": "anthropic/claude-sonnet-5.5",
+        "endpoint": "https://openrouter.ai/api/v1",
+        "endpoint_env": "FOREN_TEACHER_STRONG_ENDPOINT",
+        "model_env": "FOREN_TEACHER_STRONG_MODEL",
+        "api_key_env": "FOREN_TEACHER_STRONG_API_KEY",
+        "thinking": true,
+        "thinking_off_slots": [],
+        "reasoning_effort": "medium",
+        "temperature": null,
+        "max_tokens": 16384,
+        "attempts": 5,
+        "timeout_s": 900,
+        "providers": null
+      }
+    },
+    "backup": "qwen/qwen3.5-122b-a10b+anthropic/claude-sonnet-5.5",
+    "previous_strong_5a": {
+      "model": "openai/gpt-6-astra",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "endpoint_env": "FOREN_TEACHER_STRONG_ENDPOINT",
+      "model_env": "FOREN_TEACHER_STRONG_MODEL",
+      "api_key_env": "FOREN_TEACHER_STRONG_API_KEY",
+      "server": "服务器同样调 API（OpenRouter，OpenAI 兼容）；需要出口代理时走系统代理",
+      "thinking": true,
+      "thinking_off_slots": [],
+      "reasoning_effort": "medium",
+      "temperature": null,
+      "max_tokens": 16384,
+      "attempts": 5,
+      "timeout_s": 900,
+      "providers": null
+    },
+    "per_slot_record": "每次槽调用记 backend（codex / endpoint）、slot_backend、backend_role、model（请求的）、model_served（Codex 输出里能找到的模型名，找不到为 null；端点为返回的 model 字段）、codex_version、lock_wait_s、usage"
+  },
+  "verifier": {
+    "version": "verifier@0.3.6",
+    "judge": "claude-cli",
+    "model": "claude-sonnet-5-5",
+    "model_alias": "sonnet",
+    "model_family": "claude-sonnet-5-5",
+    "settings": {
+      "cli": "本机 Claude Code CLI（claude -p，订阅登录 claude.ai / OAuth，不按 token 计费）；--model sonnet，开跑前用一道小题把别名解析成实际模型名，judge_model 记 claude-cli:<实际模型名>",
+      "reasoning_effort": "medium（Claude Code 对 Sonnet 5.5 的默认 effort；不另设）",
+      "temperature": null,
+      "tools": null,
+      "images": "base64 图（与 API 核验器同一 payload 渲染）",
+      "structured_output": "--json-schema",
+      "limit": "订阅额度 / 限流 → ClaudeCliLimit：本步退出，已判的在缓存（verify_cache.claude-cli-claude-sonnet-5-5.jsonl），walker 批处理记断点停批，下次双击续跑"
+    },
+    "concurrency": 3,
+    "code_paths": [
+      "datagen/verify",
+      "datagen/errors.py"
+    ],
+    "code_hash": "sha256:6e4eac1b07526c632f89b3634a9cd4d6261f8a4e39275d55c86238bc270b5a26",
+    "mode": "sync",
+    "second_judge": {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "path": "--judge local（OpenRouter，服务器同一条路径）",
+      "use": "只记录逐单元一致率，不设门槛，不参与入选",
+      "default": "off（10-15 r0 成本压缩）；walker_run --second-judge 时只抽 --second-judge-sample 个 run（默认 20，按 run 名哈希定序，可复现）"
+    },
+    "step_sampled_judge": "off（步级抽样评判在 r0 关掉；complete_verify_local 的 --skip 4 6 保持，本来就不跑）",
+    "previous": {
+      "judge": "api",
+      "model": "claude-sonnet-5-5",
+      "mode": "batch",
+      "note": "5b（10-15 r0 成本压缩）的 Anthropic 直连 + 批量；完整配置见 verifier.server"
+    },
+    "cli_api_agreement": {
+      "status": "未量",
+      "consequence": "r0 全部重跑并由 Claude CLI（Sonnet）核验；5a r0s1 冒烟（API 判）的数字与本轮不保证可比；精度由金标 D1 直接校准",
+      "how_to_measure_later": "scripts\\_teacher_slots_5a.cmd wk13（按 r0s1 冒烟实测每案例约 $0.85 的核验费，27 个 run 约 $20–25）→ experiments/sft_data/walker_wk13_cli_vs_api.md"
+    },
+    "server": {
+      "judge": "api",
+      "model": "claude-sonnet-5-5",
+      "model_family": "claude-sonnet-5-5",
+      "endpoint": "https://api.anthropic.com/v1",
+      "endpoint_env": "FOREN_JUDGE_API_ENDPOINT",
+      "model_env": "FOREN_JUDGE_API_MODEL",
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "direct_alternative": "OpenRouter（5a 的冻结设置）：FOREN_JUDGE_API_ENDPOINT=https://openrouter.ai/api/v1、FOREN_JUDGE_API_MODEL=anthropic/claude-sonnet-5.5、--judge api；核验提示、schema、图片完全相同，只差传输与价格（无缓存、无批量折扣）",
+      "settings": {
+        "api": "Anthropic Messages API（x-api-key，anthropic-version 2023-06-01）；批量 = Message Batches（50% 价），--judge api 为同步直连",
+        "reasoning_effort": "medium（output_config.effort）",
+        "temperature": null,
+        "max_tokens": 32000,
+        "tools": null,
+        "images": "base64 image 块",
+        "structured_output": "output_config.format=json_schema（类型数组改写成 anyOf；被拒时降级为提示词出 JSON）",
+        "attempts": 6,
+        "timeout_s": 600,
+        "prompt_caching": "system（核验提示 + rubric，cache_control）+ user 前缀（\"以下为待核数据…\" + payload 里问题字段之前的共享证据 + 图，cache_control）+ 尾部（statement / span / claims / label 等问题字段，不缓存）；批量 TTL 1h（FOREN_JUDGE_CACHE_TTL=5m 可改），同一前缀 ≥2 条才打前缀断点；批量分两段：每个前缀一个 leader 先写缓存，其余后读",
+        "payload_order": "payload 字段顺序只影响渲染，不影响缓存键（键用 sort_keys），判定与 5a 的 OpenRouter 判定同提示同内容"
+      },
+      "settings_match_cli": "与 --judge claude-cli 逐项对齐：system = 核验代码给的 system_prompt；user = 同样的\"以下为待核数据…\" + 同一个 payload 渲染 + base64 图；无工具；有 schema 时结构化输出（CLI 是 --json-schema）；Sonnet 5.5 只有自适应思考，Claude Code 对它的默认 effort 是 medium，API 同样 medium；不设温度",
+      "concurrency": 6,
+      "transport": {
+        "path": "datagen/api_judge.py",
+        "hash": "sha256:7a9be8f2d377b4d84d3188cdd315755912a426c2b8b4cfaa31b577d9588bb3bd",
+        "note": "传输层（不含任何提示），不进 code_hash；walker_run 预检单独核对。10-15 r0 成本压缩：加 Anthropic 直连 / Message Batches / prompt caching 后重算"
+      },
+      "mode": "batch",
+      "batch": {
+        "how": "complete_verify_local.py --judge api-batch：收集轮（不发请求，记下要判的单元）→ Message Batches 提交、20 s 轮询、取回写缓存 → 再收集，直到没有新单元（≤10 轮）→ 最后一遍同步跑（全中缓存，是权威结果；漏的少量单元同步补判）",
+        "cache_file": "verify_cache.api-claude-sonnet-5-5.jsonl（按模型分开；OpenRouter 的是 verify_cache.api-anthropic-claude-sonnet-5.5.jsonl）",
+        "usage_log": "experiments/sft_data/judge_usage/<轮次>.<api|api-batch>.jsonl，每次调用记 uncached / cache_read / cache_write_5m / cache_write_1h / output token 与 cost_usd；<verdicts>.usage.json 汇总每 run 费用",
+        "after_revise": "重写后只复核改动过的 Finding / 答案：未改的单元缓存键不变，直接沿用；改过的才进批"
+      },
+      "previous_5a": {
+        "judge": "api",
+        "model": "anthropic/claude-sonnet-5.5",
+        "endpoint": "https://openrouter.ai/api/v1",
+        "cost_per_case_usd": 0.85,
+        "note": "r0s1 冒烟实测"
+      },
+      "smoke_r0s1": "2026-10-15 本机冒烟 2 个案例（videosham_4126、fmnv_c_RXR0B1SxiU0）：166 次核验调用全部 api:anthropic/claude-sonnet-5.5、Anthropic 供应商，9 个 schema 全部 strict 通过；审计 0 条问题（teacher_slots_audit_r0s1.md）",
+      "cli_api_agreement": {
+        "status": "未量（2026-10-15 负责人：本机与服务器都走同一个 API 核验器，不再和 CLI 比）",
+        "consequence": "wk8–wk14 用 Claude CLI 判出的数字（教师对比、通过率）与 API 核验器下的数字不保证可比；r0 全部重跑并由 API 核验器判，精度由金标 D1 直接校准这个核验器",
+        "how_to_measure_later": "scripts\\_teacher_slots_5a.cmd wk13（按 r0s1 冒烟实测每案例约 $0.85 的核验费，27 个 run 约 $20–25）→ experiments/sft_data/walker_wk13_cli_vs_api.md"
+      },
+      "note": "10-15 对话 5 起 r0 本机核验改回 Claude CLI 订阅；以下是 5a（OpenRouter）/ 5b（Anthropic 直连 + Message Batches）的 API 核验器配置，留作服务器 / 将来备用（walker_run 设 FOREN_WALKER_JUDGE=api-batch 或 api 时用）。transport.hash 只在走 API 时有意义，冻结预检不再核对"
+    }
+  },
+  "gia_data": {
+    "include": [
+      "r0e 42 行（用当前规格与核验器重导出、仍 positive 的）",
+      "walker 的 FINISH 行"
+    ],
+    "walker_investigate_copying_task": "不进；若要保留则 sample_weight ×0.3（plan_copies_task）",
+    "exclude": [
+      "system_variant=wait 的行（定时复核；r0 口径下不应出现，出现即剔除）"
+    ],
+    "implemented_by": "对话 2（export）"
+  },
+  "gia_report_review_note": "GIA 定时复核已关：run_cases 构造 InvestigationRuntime 时写死 report_review_delay_s=None（walker 也走这条），r0e 4 个抽查 run 与 wk13 轨迹里 round_review_* 事件为 0。规格没有表示这个开关的参数，gia@0.9.0 原样再发会被 validate_bump 拒，所以不升版，冻结 gia@0.9.0，由 checks.gia_report_review_delay_s 守卫（10-15 负责人确认）。",
+  "changelog": [
+    {
+      "date": "2026-10-15",
+      "change": "初版：hi@0.10.0 / gia@0.9.0、compact_16k、附图上限 8、定时复核关、工具层 hash、教师 Codex 主 / Qwen 122B 备（暂定）、核验器 verifier@0.3.6 + Sonnet（claude-cli），第二核验 Qwen 122B 只量一致率"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "工具层重算（对话 1）：A7 OCR 一次调用 = 一个 E（kind=ocr），A9 修复 5 结论式记录（含 compare_media 对应段 ≥3 s 的结论行 corresponding_spans）。tool_layer.hash 1785ceb7…ee05 → 2916c648…14a4，四组全变；verifier.code_hash 不变；checks.auto_tools 仍为 off（r0 轮次不传 --auto-tools，run_cases 默认 off）。按清单 A8，此前用旧 hash 跑的 run 不进 r0。见 claude/工具层定稿_OCR粒度与结论式记录_20261015.md"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "教师复核（walker 批处理）：按 teacher.decision_rule 比 wk14（Qwen3.5-397B）与 Codex wk12，② 报告严格通过 2/18 对 8/18 不达标，Codex 维持主教师、provisional 取消；备用 qwen/qwen3.5-122b-a10b → qwen/qwen3.5-397b-a17b。只改 teacher 一节。见 claude/walker全面整改_可直接训练的数据与Qwen教师实测_20261014.md 第五节"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "对话 5a 教师分槽 + 核验器 API 化（负责人 10-15 口径）：teacher 改为分槽表——S0 rationale / S1 查询 / S2 任务文本 / S3 充分性 → qwen 后端 qwen/qwen3.5-397b-a17b（服务器 H20 自部署，本机 OpenRouter），S4 报告 / S5 答案（含核验后重写）→ strong 后端 openai/gpt-6-astra（OpenRouter API）；备用 qwen → qwen/qwen3.5-122b-a10b、strong → anthropic/claude-sonnet-5.5；Codex 主教师作废（记在 teacher.previous）。verifier 改为 judge=api、anthropic/claude-sonnet-5.5（OpenRouter，effort medium，与 claude-cli 相同的无工具 / base64 图 / 结构化输出），verifier@0.3.6 与 code_hash 不变，传输层 datagen/api_judge.py 的 hash 记 verifier.transport.hash。见 claude/教师分槽与核验器API化_20261015.md"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "对话 5a 冒烟（r0s1）后：strong 后端 max_tokens 32768 → 16384（OpenRouter 按 max_tokens 预占余额，并发时 gpt-6-astra 的 S4 回 402 in-flight）；402 in-flight 改为按限流退避重试（教师端点与 API 核验器）；API 核验器送 schema 前把类型数组改写成等价 anyOf，结构化输出被拒时按 schema 逐个降级。传输层 hash 重算。"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "r0 成本压缩（对话 5b）：teacher.backends.strong 改为 type=codex（Codex CLI，ChatGPT 订阅，gpt-6-astra，effort medium，跨进程串行，429 / usage limit 退避 30–480 s 总 ≤900 s），备用 strong = anthropic/claude-sonnet-5.5（OpenRouter 端点，整条 run 切换）；后端类型允许 endpoint / codex（换 CLIProxyAPI 只改本文件）；primary 摘要 qwen/qwen3.5-397b-a17b+gpt-6-astra。verifier 改为 Anthropic 直连 claude-sonnet-5-5、mode=batch（Message Batches + prompt caching），核验提示与 code_hash 不变，传输层 datagen/api_judge.py hash 重算；second_judge 默认关、抽样 20；步级抽样评判关。见 claude/r0成本压缩_20261015.md"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "对话 5（清单 A5）：核验器改回 Claude CLI 订阅——verifier.judge api → claude-cli、模型 claude-sonnet-5-5（别名 sonnet）、并发 3、mode sync；verifier@0.3.6 与 code_hash 不变；5a / 5b 的 API 配置（OpenRouter / Anthropic 直连 + Message Batches、传输层 hash）整体挪到 verifier.server 备用。口径：本机、全部订阅（S0–S3 OpenRouter Qwen 397B，S4 / S5 Codex CLI，核验 Claude CLI），不申请 Anthropic 直连 key。pack_r0 / walker_run 预检 / teacher_slots_audit 相应改认 claude-cli: 与 S4/S5 backend=codex"
+    },
+    {
+      "date": "2026-10-15",
+      "change": "对话 5（清单 A3）：git tag r0-frozen（提交含 src/ scripts/ specs/ tests/ configs/ training/ server/ 与 oracle_generator.py）；tool_layer.tag 记 tag 名；hash 未变"
+    }
+  ]
+}

@@ -51,7 +51,15 @@ FACT_CHECK_DOMAINS: tuple[str, ...] = (
     "newsmobile.in/nm-fact-checker", "telugupost.com/english-factcheck", "telugupost.com/fact-check",
     "timesofindia.indiatimes.com/times-fact-check", "indiatoday.in/fact-check", "newsmeter.in/fact-check",
     "thelogicalindian.com/fact-check", "rappler.com/newsbreak/fact-check",
+    # 2026-10-04 补：机制对照 r0cx 里 MinnPost 的 Fact Briefs 栏目（对同一声明的二手核查）漏过了域名名单。
+    "minnpost.com/fact-briefs",
 )
+# 2026-10-04：综合媒体的核查栏目很多（名单永远列不全），再按路径兜底——某一段路径就是核查栏目名，
+# 或文章 slug 以 fact-check 开头，就当核查页。只看路径不看域名，普通新闻不受影响。命中时返回 "path:<那一段>"。
+_FACT_CHECK_SEGMENT = re.compile(
+    r"^(?:fact[-_]?checks?|fact[-_]?checkers?|factcheck(?:s|er|ers|ing)?|fact[-_]?briefs?|reality[-_]?check|"
+    r"faktencheck|faktisk|verificacion|verificação|hoax[-_]?check|viral[-_]?check|ap[-_]fact[-_]check|"
+    r"times[-_]fact[-_]check|webqoof)$|^fact[-_]?check[-_]", re.I)
 
 _META_DATE = re.compile(
     r"""<meta[^>]+(?:property|name|itemprop)\s*=\s*["'](?:article:published_time|og:article:published_time|"""
@@ -130,6 +138,10 @@ def fact_check_match(url: str | None, domains: tuple[str, ...] = FACT_CHECK_DOMA
             return entry
         if path == "/" + entry_path or path.startswith("/" + entry_path + "/"):
             return entry
+    if domains is FACT_CHECK_DOMAINS:          # 调用方自带名单时只按名单判（测试 / 特殊用途）
+        for segment in path.split("/"):
+            if segment and _FACT_CHECK_SEGMENT.search(segment):
+                return f"path:{segment}"
     return None
 
 

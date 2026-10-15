@@ -1,0 +1,40 @@
+# r0 评测（清单 E2 训前基线 / 训后评测）专用运行配置，2026-10-15。由 scripts/eval_r0.py 经 FOREN_CONFIG 指定，训前训后同一份。
+# 回合上限与 EVID 历次基线（evid_local / evid_server_27b：对照 20 个的 8B 29.6%、27B 49.4% 就是这组上限）和 walker 造数据
+# （configs/local.toml）一致：工作区 8 回合、GIA 6 回合；轮数 3、每轮最多 3 个工作区同 EVID 基线。
+# 时限按服务器放宽（同 evid_server_27b），避免慢服务把工作区截断；时限不改模型输入。
+profile = "eval_r0"
+
+[models]
+model_root = ".models"
+student = "Qwen3.5-9B"          # 训练底座；被测服务名由 eval_r0.py --model 给
+teacher = "api"
+teacher_endpoint = ""
+max_input_tokens = 24000
+max_new_tokens = 4096
+
+[paths]
+outputs = "outputs"
+sft_data = "experiments/sft_data"
+datasets = "external"
+harness_root = ""
+
+[runtime]
+max_rounds = 3
+max_gia_turns = 6
+gia_turn_timeout_s = 900
+max_workspace_turns = 8
+workspace_timeout_s = 3600
+max_concurrency = 1
+state_renderer = "compact_16k"
+max_workspaces_per_round = 3
+
+[training]                      # 评测不训练；这一段只为让配置加载器通过，数值同 server.toml
+lora_rank = 32
+lora_alpha = 64
+batch_size = 1
+gradient_accumulation = 8
+max_seq_len = 32768
+learning_rate = 1e-4
+max_steps = 2000
+device_map = "auto"
+bf16 = true

@@ -28,12 +28,14 @@ import os
 import random
 import re
 import weakref
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Protocol
 
 from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText
+from .lang import (BACKREF, CONCRETE_ZH, DATE_NUMERIC, LIMITATION, TASK_WORDS, VERDICT, dates_in, grams, has_concrete,
+                   strip_dates)
 
 MAX_SOURCE_CHARS = 120_000   # 第一次全量 20K 把 85K 字符的 PDF 章节截掉了大半，表格数字全判成无支持；27b 有 262K 上下文，放宽
 
@@ -66,7 +68,28 @@ PAIR_SYSTEM_PROMPT = PAIR_SYSTEM_PROMPT.replace(
     "- 只判断这条来源能覆盖的内容。待核句里讲别的材料、别的时刻、别的页面的部分，不写进 supported 也不写进 contradicted。\n",
     "- 只判断这条来源能覆盖的内容。待核句里讲别的材料、别的时刻、别的页面的部分，不写进 supported 也不写进 contradicted。\n"
     + _PROVENANCE_RULE)
-PAIR_SYSTEM_PROMPTS = (PAIR_SYSTEM_PROMPT, _PAIR_SYSTEM_PROMPT_LEGACY)     # 识别"这是一次 pair 调用"时用（假核验模型、统计）
+# verifier@0.3.3（r0c 发现）：图片对带两样新东西时才换提示词，其余对照旧（缓存继续命中）——
+# - media_note：帧的取帧时间、单帧时长、视频总长（"结尾帧""视频共 6 秒"以前因核验模型不知道总长被判无支持）；
+# - task：本报告所接的调查任务，只用来理解"材料A""给定视频""该人物"指什么（4126 里核验模型把两段视频的指代弄反）。
+_MEDIA_RULE = ("- 图片来源带 media_note（程序记录的取帧时间、单帧时长、所属视频总长）时，待核句里关于这一帧在第几秒、"
+               "是不是第一帧 / 最后一帧、视频总长的部分可以据此判断：写进 supported，quote 写 media_note 里的相应内容。\n")
+_TASK_RULE = ("- payload 带 task（这份报告所接的调查任务）时，只用它理解待核句里的指代（“材料A”“给定视频”“该人物”分别指什么）；"
+              "task 里的说法不是证据，不能据此支持或反驳任何部分。\n")
+
+
+def pair_system_prompt(*, provenance: bool, media_note: bool = False, task: bool = False) -> str:
+    """按 payload 实际带的字段选提示词：没有新字段时与旧版逐字相同（保住缓存）。"""
+
+    prompt = PAIR_SYSTEM_PROMPT if provenance else _PAIR_SYSTEM_PROMPT_LEGACY
+    extra = (_MEDIA_RULE if media_note else "") + (_TASK_RULE if task else "")
+    if not extra:
+        return prompt
+    return prompt.replace("- 两个列表都可以为空。", extra + "- 两个列表都可以为空。")
+
+
+PAIR_SYSTEM_PROMPTS = tuple(dict.fromkeys(
+    pair_system_prompt(provenance=p, media_note=m, task=t) for m in (False, True) for t in (False, True) for p in (True, False)))
+# 识别"这是一次 pair 调用"时用（假核验模型、统计）；前两项仍是 PAIR_SYSTEM_PROMPT / 旧提示词
 
 COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（待核句）和它引用的各条来源已经核实的支持片段。
 判断待核句里还有哪些**实质性的可核部分**没有任何来源支持。输出 JSON（字符串里的双引号用“”）：
@@ -83,7 +106,62 @@ COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（�
 _COVERAGE_SYSTEM_PROMPT_LEGACY = COVERAGE_SYSTEM_PROMPT
 COVERAGE_SYSTEM_PROMPT = COVERAGE_SYSTEM_PROMPT + (
     "\n- 支持片段旁标注了来源材料；一句话同时讲 A 和 B 时，A 的部分由 A 的来源支持、B 的部分由 B 的来源支持即算覆盖。")
-COVERAGE_SYSTEM_PROMPTS = (COVERAGE_SYSTEM_PROMPT, _COVERAGE_SYSTEM_PROMPT_LEGACY)
+# verifier@0.3.3：一句话引了两张以上图片时，汇总也附上这些图片——"前后两帧画面相同""B 比 A 多出一段"这类跨帧比较
+# 不在任何单帧的支持片段里，只看片段必然判无支持。只有附图时才换提示词。
+_COVERAGE_IMAGE_RULE = ("\n- 附了图片时（attached_images 按顺序对应附图，带来源材料与取帧时间）：待核句里的跨帧比较"
+                        "（前后变化、两段画面是否相同、是否重复、先后顺序）可以直接看附图判断；附图能看出的部分不算没有支持，看不出的照常列出。")
+
+
+# verifier@0.3.4（2026-10-02，四层精确率实测发现）：
+#   1. 限制句：答案 / 报告里交代调查自身范围的句子（"画面直接核查仅覆盖上述四个时刻""未核验作者"）被汇总判成无据断言、
+#      记 critical；Opus 整条重判不认、Sonnet 重采样也不稳。只在待核句命中 _LIMITATION 时加 _COVERAGE_LIMITATION_RULE
+#      （其余句子提示词不变、缓存照常命中）；规则要求句中夹带的具体事实照常核对——召回守门实验专门测"限制语包着编造事实"。
+#   2. 实锤复核：第一遍产生 major/critical 的模型层错误时，同一核验模型独立再判一遍（payload 加 resample，缓存键随之不同）；
+#      第二遍没有复现同组错误的，降为 minor 并记 extra.unconfirmed（不计入处置）。r0c 上 23 个实锤单元原样重采样只复现 18 个。
+FEATURES: dict[str, bool] = {"limitation_rule": True, "confirm_firm": True}
+# 候选程序规则（2026-10-04，金标 v1p2_hard 复核前默认关闭；人工标注确认后再开，届时版本记 verifier@0.3.6）。
+# 都只作用于模型层"所引 E 均未支持这一部分"的 critical/major，命中就降为 minor 并在 extra 里记规则名；不调模型。
+#   task_given       片段只是复述任务给出的信息（声明原文、声明日期）——392 W1-2、660 A8；
+#   back_reference   片段回指本报告/本答案已由其他干净 Finding 建立的内容（"上述差异""已确认的局部对应"）——0069、2010、H020/H050/H051；
+#   verdict_sentence 答案里对声明下的总结论（"该声明错误""该声明有证据支持……"），依据在同一答案的其他干净句子里——699、4124903。
+def candidate_enabled(name: str) -> bool:
+    """verifier@0.3.6 起三项默认打开（10-05 金标采纳后）。环境变量 FOREN_VERIFIER_CANDIDATES 可只开其中几项：
+    逗号分隔的 rules / infer / semcov；设成 none 全关（= 0.3.5 行为）。"""
+
+    raw = os.environ.get("FOREN_VERIFIER_CANDIDATES")
+    return True if raw is None else name in {x.strip() for x in raw.split(",")}
+
+
+PROGRAM_RULES: dict[str, bool] = {k: candidate_enabled("rules") for k in ("task_given", "back_reference", "verdict_sentence")}
+
+_LIMITATION = LIMITATION          # 10-07：中英双语（lang.py），中文部分与以前逐字相同
+# 程序兜底（0.3.4）：覆盖汇总列出的"无支持部分"本身就是限制语、且不夹带具体事实时，降为 minor（extra.limitation_part）。
+# "具体事实"按保守口径：含数字、拉丁字母词、或转折连词（"尚不能确定，但警方已逮捕嫌疑人"这类包装）一律不降。
+# 英文（10-07）：拉丁字母词不能再一律算"具体事实"，改看数字、数词、转折连词与句中大写专名（lang.has_concrete）
+_CONCRETE = CONCRETE_ZH
+
+
+def is_limitation_part(part: str) -> bool:
+    return bool(_LIMITATION.search(part or "")) and not has_concrete(part or "")
+_COVERAGE_LIMITATION_RULE = (
+    "\n- 待核句里交代调查自身范围或局限的部分（“仅核查了……”“未能取得……”“不能据此断言……”“尚不能确定……”）不是关于来源内容的事实断言，"
+    "不列入 unsupported_parts；但这些部分里夹带的具体事实（数字、时间、地点、谁说了什么、画面里有什么）照常核对，没有支持就列出。")
+
+
+def is_limitation_statement(statement: str) -> bool:
+    return bool(_LIMITATION.search(statement or ""))
+
+
+def coverage_system_prompt(*, provenance: bool, images: bool = False, limitation: bool = False) -> str:
+    prompt = COVERAGE_SYSTEM_PROMPT if provenance else _COVERAGE_SYSTEM_PROMPT_LEGACY
+    prompt = prompt + _COVERAGE_IMAGE_RULE if images else prompt
+    return prompt + _COVERAGE_LIMITATION_RULE if limitation else prompt
+
+
+COVERAGE_SYSTEM_PROMPTS = tuple(coverage_system_prompt(provenance=p, images=i, limitation=l)
+                                for l in (False, True) for i in (False, True) for p in (True, False))
+COVERAGE_MAX_IMAGES = 8
+MAX_TASK_CHARS = 1_500
 
 
 def _obj(properties: dict[str, Any]) -> dict[str, Any]:
@@ -167,6 +245,8 @@ class Judgment:
     notes: str = ""
     source_label: str = ""            # 来源标签 + URL，汇总时让模型知道"E14 就是 WFAA 那篇报道"
     provenance: str = ""              # 来源归属（材料 A/B 或外部网页），仅当它进了 pair payload 时才有值；汇总时带给模型
+    media_note: str = ""              # 图片帧的时间说明（verifier@0.3.3）；汇总附图时带给模型
+    image_path: Path | None = None    # 图片来源的像素文件；汇总附图用，不进 to_dict
     raw: dict[str, Any] = field(default_factory=dict)
     call_error: dict[str, str] = field(default_factory=dict)   # verdict=failed 时的异常（并发下不能靠全局 LAST_CALL_ERROR）；不进 to_dict
     call_failure: CallFailure | None = None                    # verdict=failed 时的完整失败记录（尝试次数、最后错误）；不进 to_dict
@@ -244,6 +324,8 @@ def _source_payload(text: EvidenceText) -> dict[str, Any]:
                "content": shown, "content_truncated": truncated}
     if provenance:
         payload["provenance"] = provenance
+    if text.is_image and text.media_note:
+        payload["media_note"] = text.media_note
     return payload
 
 
@@ -369,14 +451,26 @@ def _parts(items: Any, text: EvidenceText) -> list[Part]:
     return out
 
 
-async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: EvidenceText) -> Judgment:
+def _wants_task(text: EvidenceText) -> bool:
+    """只有来自输入材料的图片（视频帧、页面图）带任务上下文：它们的待核句最常用"材料A""给定视频"指代。"""
+
+    return text.is_image and text.provenance.startswith("来源材料")
+
+
+async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: EvidenceText, *, task: str | None = None,
+                     sample: int = 0) -> Judgment:
     images = [text.image_path] if text.is_image and text.image_path else []
     if text.is_image and not images:
         return Judgment(finding_id, text.evidence_id, "needs_pixels", is_image=True)
     source = _source_payload(text)
     provenance = str(source.get("provenance") or "")
     payload = {"statement": statement, "source": source, "image_attached": bool(images)}
-    system_prompt = PAIR_SYSTEM_PROMPT if provenance else _PAIR_SYSTEM_PROMPT_LEGACY
+    if sample:
+        payload["resample"] = sample          # 0.3.4 实锤复核：独立重采样（缓存键不同）；sample=0 时 payload 与旧版逐字相同
+    with_task = bool(task and task.strip()) and _wants_task(text)
+    if with_task:
+        payload["task"] = task.strip()[:MAX_TASK_CHARS]  # type: ignore[union-attr]
+    system_prompt = pair_system_prompt(provenance=bool(provenance), media_note="media_note" in source, task=with_task)
     raw, failure = await _call_checked(judge, system_prompt, payload, images, PAIR_SCHEMA)
     if raw is None:
         return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image, call_error=dict(failure.errors),
@@ -389,7 +483,8 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     verdict = "contradicted" if contradicted else "supported" if supported else "not_found"
     label = " ".join(x for x in (text.label, text.source_url) if x)
     return Judgment(finding_id, text.evidence_id, verdict, supported=supported, contradicted=contradicted, rejected=rejected,
-                    source_label=label, provenance=provenance,
+                    source_label=label, provenance=provenance, media_note=text.media_note if text.is_image else "",
+                    image_path=images[0] if images else None,
                     source_reports_claim=bool(raw.get("source_reports_claim")),
                     statement_asserts_fact=bool(raw.get("statement_asserts_fact", True)),
                     scope_overreach=bool(raw.get("scope_overreach")), is_image=text.is_image,
@@ -401,8 +496,15 @@ async def judge_coverage(judge: JsonJudge, finding_id: str, statement: str, judg
     return coverage
 
 
+def _coverage_images(judgments: list[Judgment]) -> list[Judgment]:
+    """引了两张以上有像素的图片时，汇总附上它们（按引用顺序，最多 COVERAGE_MAX_IMAGES 张）；只有一张时单帧判定已经看过，不附。"""
+
+    with_pixels = [j for j in judgments if j.is_image and j.image_path is not None]
+    return with_pixels[:COVERAGE_MAX_IMAGES] if len(with_pixels) >= 2 else []
+
+
 async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: str,
-                                  judgments: list[Judgment]) -> tuple[dict[str, Any] | None, CallFailure]:
+                                  judgments: list[Judgment], *, sample: int = 0) -> tuple[dict[str, Any] | None, CallFailure]:
     support: list[dict[str, Any]] = []
     for j in judgments:
         for p in j.supported:
@@ -410,9 +512,16 @@ async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: 
             if j.provenance:          # 没有归属的（外部网页）不加键，保持旧 payload / 旧缓存
                 item["provenance"] = j.provenance
             support.append(item)
-    payload = {"statement": statement, "supported_parts": support}
-    system_prompt = COVERAGE_SYSTEM_PROMPT if any("provenance" in item for item in support) else _COVERAGE_SYSTEM_PROMPT_LEGACY
-    raw, failure = await _call_checked(judge, system_prompt, payload, [], COVERAGE_SCHEMA)
+    payload: dict[str, Any] = {"statement": statement, "supported_parts": support}
+    attached = _coverage_images(judgments)
+    if attached:
+        payload["attached_images"] = [{"evidence_id": j.evidence_id, **({"provenance": j.provenance} if j.provenance else {}),
+                                       **({"media_note": j.media_note} if j.media_note else {})} for j in attached]
+    if sample:
+        payload["resample"] = sample
+    system_prompt = coverage_system_prompt(provenance=any("provenance" in item for item in support), images=bool(attached),
+                                           limitation=FEATURES["limitation_rule"] and is_limitation_statement(statement))
+    raw, failure = await _call_checked(judge, system_prompt, payload, [j.image_path for j in attached if j.image_path], COVERAGE_SCHEMA)
     if raw is None:
         return None, failure
     parts = [str(p).strip() for p in (raw.get("unsupported_parts") or []) if isinstance(p, (str, int, float)) and str(p).strip()]
@@ -443,6 +552,11 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
         cited = [j.evidence_id for j in judgments]
         uncertain = coverage.get("model_grounded") is True
         for part in coverage["unsupported_parts"]:
+            if not uncertain and FEATURES["limitation_rule"] and is_limitation_part(part) and is_limitation_statement(statement):
+                out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "限制语（交代调查范围、不含具体事实），仅备注", span=part,
+                                 evidence_ids=cited, method="model", severity=Severity.MINOR,
+                                 extra={**base_extra, "notes": coverage.get("notes", ""), "limitation_part": True}))
+                continue
             if uncertain:
                 out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准、但整句判为有支持（仅备注）", span=part,
                                  evidence_ids=cited, method="model", severity=Severity.MINOR,
@@ -456,7 +570,8 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
                          evidence_ids=[j.evidence_id for j in judgments], method="model", extra=base_extra))
     supporting = [j for j in judgments if j.supported]
     hedged = re.search(r"据|称|报道|引述|表示|声称|According to|reported|said|claims?", statement) is not None
-    if not hedged and any(j.source_reports_claim and j.statement_asserts_fact for j in supporting):
+    meta = FEATURES["limitation_rule"] and is_limitation_statement(statement)    # 交代调查范围的句子不是在转述来源
+    if not hedged and not meta and any(j.source_reports_claim and j.statement_asserts_fact for j in supporting):
         out.append(error(ErrorType.ATTRIBUTION_DRIFT, "来源只是转述说法，该句却写成了事实", span=statement,
                          evidence_ids=[j.evidence_id for j in supporting if j.source_reports_claim], method="model", extra=base_extra))
     if any(j.scope_overreach for j in supporting):
@@ -474,11 +589,48 @@ class _FindingOutcome:
     errors: list[ErrorRecord] = field(default_factory=list)
 
 
-async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceText], judge: JsonJudge) -> _FindingOutcome:
+_FIRM = (Severity.CRITICAL, Severity.MAJOR)
+_CONFIRM_GROUP = {ErrorType.WRONG_CITATION: "contra", ErrorType.SLOPPY_NUMERIC: "contra", ErrorType.MISREAD_FINE_TEXT: "contra"}
+
+
+def _group(e: ErrorRecord) -> str:
+    return _CONFIRM_GROUP.get(e.type, e.type.value)
+
+
+def _needs_confirm(e: ErrorRecord) -> bool:
+    return e.severity in _FIRM and e.method in ("model", "pixels")
+
+
+async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceText], judge: JsonJudge, *,
+                          task: str | None = None) -> _FindingOutcome:
+    """一条 Finding 的第二层核验；0.3.4 起，第一遍出了模型层实锤错误就独立复核一遍，没复现的降为 minor。"""
+
+    outcome = await _verify_finding_once(finding_id, statement, texts, judge, task=task)
+    firm = [e for e in outcome.errors if _needs_confirm(e)]
+    if not (FEATURES["confirm_firm"] and firm):
+        return outcome
+    second = await _verify_finding_once(finding_id, statement, texts, judge, task=task, sample=1)
+    if second.pending and not second.errors:
+        return outcome                      # 复核没跑成：保留第一遍（不因调用失败放过错误）
+    again = {_group(e) for e in second.errors if e.severity in _FIRM}
+    kept: list[ErrorRecord] = []
+    for e in outcome.errors:
+        if _needs_confirm(e) and _group(e) not in again:
+            e = replace(e, severity=Severity.MINOR, detail="（复核未复现，仅备注）" + e.detail,
+                        extra={**e.extra, "unconfirmed": True, "original_severity": e.severity.value})
+        elif _needs_confirm(e):
+            e = replace(e, extra={**e.extra, "confirmed": True})
+        kept.append(e)
+    outcome.errors = kept
+    return outcome
+
+
+async def _verify_finding_once(finding_id: str, statement: str, texts: list[EvidenceText], judge: JsonJudge, *,
+                               task: str | None = None, sample: int = 0) -> _FindingOutcome:
     """一条 Finding：各 E 的 judge_pair 并发（按 texts 顺序收集），全部完成后再汇总覆盖。"""
 
     outcome = _FindingOutcome()
-    judgments = list(await asyncio.gather(*(judge_pair(judge, finding_id, statement, text) for text in texts)))
+    judgments = list(await asyncio.gather(*(judge_pair(judge, finding_id, statement, text, task=task, sample=sample) for text in texts)))
     outcome.judgments = judgments
     for judgment in judgments:
         if judgment.verdict == "needs_pixels":
@@ -494,7 +646,7 @@ async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceT
         # 有一条 E 没判成，就说不清"没被支持的部分"是真没支持还是那条 E 没看；只报反驳，不报无据
         outcome.errors = _errors_for_finding(finding_id, statement, usable, None, allow_unsupported=False)
         return outcome
-    coverage, failure = await _judge_coverage_checked(judge, finding_id, statement, usable)
+    coverage, failure = await _judge_coverage_checked(judge, finding_id, statement, usable, sample=sample)
     if coverage is None:
         outcome.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", **failure.pending_fields()})
     outcome.coverage = coverage
@@ -502,9 +654,120 @@ async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceT
     return outcome
 
 
+# ---------------------------------------------------------------- 程序规则（候选，见 PROGRAM_RULES）
+
+_PUNCT = re.compile(r"[\s\u3000，。、；：:,.;!?！？（）()\[\]【】“”\"'‘’《》<>—–\-·…]+")
+_DATE = DATE_NUMERIC             # 10-07 起日期、套话、回指、结论句都是中英双语（lang.py）；中文部分与以前逐字相同
+_TASK_WORDS = TASK_WORDS
+_BACKREF = BACKREF
+_VERDICT = VERDICT
+
+
+def _norm(text: str) -> str:
+    return _PUNCT.sub("", text or "").lower()
+
+
+def _dates(text: str) -> set[str]:
+    return set(dates_in(text or ""))
+
+
+def is_task_given(span: str, task: str | None) -> bool:
+    """片段是否只是复述任务文字里已给出的信息：整段出现在任务里；或所含日期都在任务里、去掉日期和套话后几乎不剩内容。"""
+
+    if not task or not span:
+        return False
+    ns, nt = _norm(span), _norm(task)
+    if len(ns) >= 4 and ns in nt:
+        return True
+    dates = _dates(span)
+    if not dates or not dates <= _dates(task):
+        return False
+    residue = _norm(_TASK_WORDS.sub("", strip_dates(span)))
+    return len(residue) <= 2
+
+
+def _bigrams(text: str) -> set[str]:
+    """中文：字符二元组（同以前）；纯英文：实词（英文字母二元组几乎处处重合）。"""
+
+    return grams(text, _norm)
+
+
+def back_reference_support(span: str, others: dict[str, str]) -> list[str]:
+    """片段含回指标记，且去掉标记后的内容大半能在其他干净 Finding / 答案句里找到 → 返回这些编号；否则空表。"""
+
+    if not span or not _BACKREF.search(span) or not others:
+        return []
+    content = _BACKREF.sub("", span)
+    grams = _bigrams(content)
+    if not grams:
+        return list(others)
+    hits = [fid for fid, text in others.items() if grams & _bigrams(text)]
+    covered = set().union(*(_bigrams(others[f]) for f in hits)) & grams if hits else set()
+    return hits if len(covered) / len(grams) >= 0.5 else []
+
+
+def is_verdict_sentence(span: str) -> bool:
+    return bool(span) and _VERDICT.search(span.strip()) is not None
+
+
+def apply_program_rules(errors: list[ErrorRecord], statements: dict[str, str], task: str | None, *, answer: bool,
+                        key: str = "finding") -> list[ErrorRecord]:
+    """候选程序规则：把命中规则的模型层"无支持"实锤降为 minor。statements 是同一单元全部 Finding / 答案句。"""
+
+    if not any(PROGRAM_RULES.values()):
+        return errors
+    firm_by = {}
+    for e in errors:
+        if e.severity in _FIRM:
+            firm_by.setdefault(str(e.extra.get(key) or e.extra.get("finding")), []).append(e)
+    out: list[ErrorRecord] = []
+    for e in errors:
+        if not (e.type is ErrorType.UNSUPPORTED_ASSERTION and e.severity in _FIRM and e.method == "model" and isinstance(e.span, str)
+                and not e.extra.get("check")):           # 案卷断言（标签 / 日期等）不归第二层规则管
+            out.append(e)
+            continue
+        fid = str(e.extra.get(key) or e.extra.get("finding"))
+        clean = {f: t for f, t in statements.items() if f != fid and not firm_by.get(f)}
+        rule, info = None, {}
+        if PROGRAM_RULES["task_given"] and is_task_given(e.span, task):
+            rule = "task_given"
+        elif PROGRAM_RULES["back_reference"]:
+            refs = back_reference_support(e.span, clean)
+            if refs:
+                rule, info = "back_reference", {"refers_to": refs[:6]}
+        if rule is None and PROGRAM_RULES["verdict_sentence"] and answer and is_verdict_sentence(e.span) and len(clean) >= 2:
+            rule, info = "verdict_sentence", {"supported_by": list(clean)[:6]}
+        if rule is None:
+            out.append(e)
+            continue
+        note = {"task_given": "复述任务给出的信息", "back_reference": "回指同单元已建立的内容",
+                "verdict_sentence": "对声明的总结论，依据在同一答案的其他句子"}[rule]
+        out.append(replace(e, severity=Severity.MINOR, detail=f"（程序规则：{note}，仅备注）" + e.detail,
+                           extra={**e.extra, "program_rule": rule, "original_severity": e.severity.value, **info}))
+    return out
+
+
+def feature_version() -> str:
+    """当前开关组合对应的版本标签（reanchor 用）。"""
+
+    from .inference import INFERENCE_CHECK
+    from .semantic_coverage import SEMANTIC_COVERAGE
+    from .verdict import VERIFIER_VERSION
+    if not (FEATURES["limitation_rule"] and FEATURES["confirm_firm"]):
+        return "verifier@0.3.3"
+    flags = (("rules", all(PROGRAM_RULES.values())), ("infer", INFERENCE_CHECK["enabled"]), ("semcov", SEMANTIC_COVERAGE["enabled"]))
+    from .joint_sources import JOINT_SOURCES
+    tags = [t for t, on in flags if on]
+    joint = "+joint" if JOINT_SOURCES["enabled"] else ""          # 候选：多来源合并复核（默认关闭，不进正式版本号）
+    if len(tags) == len(flags):
+        return VERIFIER_VERSION + joint
+    return ("verifier@0.3.6-partial:" + "+".join(tags) if tags else "verifier@0.3.5") + joint
+
+
 async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge: JsonJudge, *,
-                          skip_evidence_ids: set[str] | None = None) -> AnchoredResult:
+                          skip_evidence_ids: set[str] | None = None, task: str | None = None, answer: bool = False) -> AnchoredResult:
     """对每条 Finding：逐条可读 E 判"部分"，再汇总覆盖。skip_evidence_ids 是第一层已判为不存在/不可见的 E。
+    task：报告所接的任务文字（answer 单元是总任务）；只随来自输入材料的图片对进 payload，用来理解指代（verifier@0.3.3）。
 
     各 Finding、各 (Finding, E) 并发跑（上限见 judge_concurrency）；产物顺序与串行一致。
     """
@@ -512,11 +775,13 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
     result = AnchoredResult()
     skip = skip_evidence_ids or set()
     jobs = []
+    statements: dict[str, str] = {}
     for index, finding in enumerate(report.get("findings") or []):
         if not isinstance(finding, dict):
             continue
         finding_id = str(finding.get("finding_id") or f"finding[{index}]")
         statement = str(finding.get("statement") or "")
+        statements[finding_id] = statement
         texts: list[EvidenceText] = []
         for eid in finding.get("evidence_ids") or []:
             if not isinstance(eid, str) or eid in skip or not lookup.has(eid):
@@ -525,13 +790,20 @@ async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge:
             if not text.is_text and not text.is_image:
                 continue                         # 视频/音频原件：本层不判，靠派生的帧/转写
             texts.append(text)
-        jobs.append(_verify_finding(finding_id, statement, texts, judge))
+        jobs.append(_verify_finding(finding_id, statement, texts, judge, task=task))
     for outcome in await asyncio.gather(*jobs):
         result.judgments.extend(outcome.judgments)
         result.pending.extend(outcome.pending)
         if outcome.coverage is not None:
             result.coverage.append(outcome.coverage)
         result.errors.extend(outcome.errors)
+    result.errors = apply_program_rules(result.errors, statements, task, answer=answer)
+    from .inference import INFERENCE_CHECK, apply_inference_check     # 循环引用：inference 依赖本模块
+    if INFERENCE_CHECK["enabled"]:
+        result.errors = await apply_inference_check(result.errors, statements, [j.to_dict() for j in result.judgments], judge)
+    from .joint_sources import JOINT_SOURCES, apply_joint_check       # 候选（默认关闭）：多来源合并复核
+    if JOINT_SOURCES["enabled"]:
+        result.errors = await apply_joint_check(result.errors, statements, lookup, judge)
     return result
 
 
@@ -554,7 +826,7 @@ def count_pair_calls(report: dict[str, Any], lookup: EvidenceLookup, *, skip_evi
     return total
 
 
-__all__ = ["COVERAGE_SCHEMA", "COVERAGE_SYSTEM_PROMPT", "COVERAGE_SYSTEM_PROMPTS", "BUDGET_EXIT_CODE", "DEFAULT_CONCURRENCY", "JudgeBudgetExhausted", "budget_message", "PAIR_SCHEMA", "PAIR_SYSTEM_PROMPT",
+__all__ = ["COVERAGE_MAX_IMAGES", "coverage_system_prompt", "pair_system_prompt", "COVERAGE_SCHEMA", "COVERAGE_SYSTEM_PROMPT", "COVERAGE_SYSTEM_PROMPTS", "BUDGET_EXIT_CODE", "DEFAULT_CONCURRENCY", "JudgeBudgetExhausted", "budget_message", "PAIR_SCHEMA", "PAIR_SYSTEM_PROMPT",
            "PAIR_SYSTEM_PROMPTS", "AnchoredResult", "CALL_ATTEMPTS", "CallFailure", "JsonJudge",
            "Judgment", "Part", "count_pair_calls", "judge_concurrency", "judge_coverage", "judge_pair", "judge_semaphore", "quote_in_source",
-           "verify_anchored"]
+           "verify_anchored", "PROGRAM_RULES", "apply_program_rules", "is_task_given", "back_reference_support", "is_verdict_sentence"]

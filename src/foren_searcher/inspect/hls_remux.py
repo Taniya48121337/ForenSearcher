@@ -13,6 +13,17 @@ import av
 from yt_dlp.utils import parse_m3u8_attributes
 
 
+def copy_stream_template(output: Any, stream: Any) -> Any:
+    """只拷贝码流参数的输出流（与 acquisition.copy_stream_template 相同；本文件可能单独作为子进程运行，故不互相导入）。
+
+    PyAV 默认按解码器名字找同名编码器，AV1（解码器 libdav1d）会报 UnknownCodecError；opaque=True 直接拷贝参数。"""
+
+    try:
+        return output.add_stream_from_template(stream, opaque=True)
+    except TypeError:
+        return output.add_stream_from_template(stream)
+
+
 def _epochs(playlist: Path) -> list[tuple[Path, Fraction]]:
     root = playlist.resolve().parent
     original_files = {path.resolve() for path in root.iterdir() if path.is_file()}
@@ -106,7 +117,7 @@ def remux(playlist: Path, destination: Path, maximum_bytes: int) -> None:
                             getattr(stream.codec_context, "width", None), getattr(stream.codec_context, "height", None),
                             getattr(stream.codec_context, "sample_rate", None)) for stream in streams]
                 if not target_streams:
-                    target_streams = [output.add_stream_from_template(stream) for stream in streams]
+                    target_streams = [copy_stream_template(output, stream) for stream in streams]   # 10-05：AV1 等无同名编码器的流也能封装
                     descriptions = current
                 elif current != descriptions:
                     raise ValueError("HLS codec parameters change across discontinuities")

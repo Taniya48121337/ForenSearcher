@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import math
+import os
 import re
 import time
 from dataclasses import replace
@@ -47,7 +48,8 @@ class DdgsProvider:
             if remaining <= 0:
                 break
             try:
-                client = factory(timeout=max(1, math.ceil(min(6, remaining))))
+                proxy = os.environ.get("FOREN_HTTP_PROXY") if self._client_factory is None else None
+                client = factory(timeout=max(1, math.ceil(min(6, remaining))), **({"proxy": proxy} if proxy else {}))
                 values = getattr(client, method)(str(request.query), region=region, safesearch="moderate",
                                                 backend=engine, max_results=offset + limit)
                 if not isinstance(values, list):

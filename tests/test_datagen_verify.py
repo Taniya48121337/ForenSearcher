@@ -404,4 +404,14 @@ def test_coverage_parts_listed_but_grounded_are_minor_notes():
     strict = FakeJudge(table, coverage={"海得拉巴": {"unsupported_parts": ["尚不能确认拍摄者身份"], "grounded": False, "notes": "缺"}})
     result = run(verify_anchored(report(findings=[{"finding_id": "F1", "statement": stmt, "evidence_ids": ["E3"]}]), lookup(), strict))
     [err] = result.errors
+    # verifier@0.3.4：列出的部分本身是不含具体事实的限制语 → minor（limitation_part）；0.3.3 行为见 FEATURES 关掉时
+    assert err.severity is Severity.MINOR and err.extra.get("limitation_part") and not err.extra.get("uncertain")
+    from foren_searcher.datagen.verify import anchored as _a
+    saved = dict(_a.FEATURES)
+    _a.FEATURES.update(limitation_rule=False, confirm_firm=False)
+    try:
+        result = run(verify_anchored(report(findings=[{"finding_id": "F1", "statement": stmt, "evidence_ids": ["E3"]}]), lookup(), strict))
+    finally:
+        _a.FEATURES.update(saved)
+    [err] = result.errors
     assert err.severity is Severity.CRITICAL and not err.extra.get("uncertain")

@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any, Iterable
 
 from ..contracts import WorkspaceReport
+from ..policies import active_guards
 from ..store.global_store import GlobalStore
 from ..store.records import (
     MemoryPolicy,
@@ -41,6 +42,9 @@ class GlobalView:
     latest_reports: tuple[dict[str, Any], ...]
     history_index: tuple[dict[str, Any], ...]
     context_truncated: bool = False
+    # P1.3（10-05）：候选来源的素材（搜索打开的页面文本、封面、下载的候选视频及其帧）单列，不与原件派生帧混排。
+    # 只在 RuntimeGuards.evidence_origin 打开时有内容；为空时 to_dict 不出这个键（旧视图逐字不变）。
+    candidate_materials: tuple[dict[str, Any], ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         """复制为 JSON 兼容结构，避免模型适配器修改内部 tuple。"""
@@ -49,6 +53,7 @@ class GlobalView:
             "task": self.task,
             "original_materials": list(self.original_materials),
             "current_materials": list(self.current_materials),
+            **({"candidate_materials": list(self.candidate_materials)} if self.candidate_materials else {}),
             "latest_reports": list(self.latest_reports),
             "history_index": list(self.history_index),
             **({"context_truncated": True} if self.context_truncated else {}),
@@ -61,7 +66,7 @@ def bound_global_view(value: dict[str, Any], max_chars: int) -> dict[str, Any]:
     value = json.loads(json.dumps(value, ensure_ascii=False))
     def oversized() -> bool:
         return len(json.dumps(value, ensure_ascii=False)) > max_chars
-    for key in ("history_index", "current_materials"):
+    for key in ("history_index", "candidate_materials", "current_materials"):
         while value.get(key) and oversized():
             value[key].pop(0)
             value["context_truncated"] = True
@@ -259,6 +264,32 @@ class GlobalViewBuilder:
                 if profile.evidence_id not in current_ids:
                     current_ids.add(profile.evidence_id)
                     current.append(_evidence_card(profile))
+            if active_guards().auto_video_structure:
+                # 10-14 --auto-tools on：运行时自动跑的 video_structure，摘要行直接给 GIA（不必先 READ_RECORD）
+                for structure in self.store.find_derived_evidence(
+                        derived_from=(reference_id,), acquired_by="INSPECT/video_structure"):
+                    if structure.discovered_by != "HARNESS" or structure.evidence_id in current_ids:
+                        continue
+                    current_ids.add(structure.evidence_id)
+                    card = _evidence_card(structure)
+                    try:
+                        lines = json.loads(structure.content).get("summary_lines") or []
+                    except (TypeError, ValueError, AttributeError):
+                        lines = []
+                    card["summary_lines"] = [_clip_text(str(x), 300) for x in lines[:8]]
+                    card["note"] = "run automatically on the questioned video when the investigation started"
+                    current.append(card)
+        candidate_materials: list[dict[str, Any]] = []
+        if active_guards().evidence_origin and current:
+            # P1.3：按派生链定性，候选来源的素材移到 candidate_materials（卡片上的 origin 由 annotate_view 补）
+            from ..view_annotations import OriginResolver
+
+            resolver = OriginResolver(self.store, original_values)
+            kept: list[dict[str, Any]] = []
+            for card in current:
+                eid = card.get("evidence_id")
+                (candidate_materials if isinstance(eid, str) and resolver(eid) == "candidate_source" else kept).append(card)
+            current = kept
         history: list[dict[str, Any]] = []
         # 历史 Evidence 排除原始输入、当前轮已读内容和当前轮刚生成的内容。
         for evidence in self.store.evidence_index_records():
@@ -296,10 +327,12 @@ class GlobalViewBuilder:
             latest_reports=tuple(latest),
             history_index=tuple(history),
             context_truncated=history_truncated,
+            candidate_materials=tuple(candidate_materials),
         )
         bounded = bound_global_view(view.to_dict(), self.policy.max_model_view_chars)
         return GlobalView(task=bounded["task"], original_materials=tuple(bounded["original_materials"]),
             current_materials=tuple(bounded["current_materials"]),
             latest_reports=tuple(bounded["latest_reports"]), history_index=tuple(bounded["history_index"]),
-            context_truncated=bounded.get("context_truncated", False))
+            context_truncated=bounded.get("context_truncated", False),
+            candidate_materials=tuple(bounded.get("candidate_materials", ())))
 

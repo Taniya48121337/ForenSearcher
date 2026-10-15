@@ -1,0 +1,39 @@
+# Self-improvement loop on the server (8×A100 80GB, 2026-10-12). server/loop_env.sh sets FOREN_CONFIG to this file.
+# Same runtime and training settings as server.toml; differences: model_root points at the unpacked package's .models
+# (the INSPECT tool weights from server/02_download_models.sh live in .models/inspect), and the endpoints match loop_env.sh.
+profile = "loop_server"
+
+[models]
+model_root = ".models"
+student = "Qwen3.5-9B"                      # GIA 与 HI 共用底座，各挂一套 LoRA；vLLM 上的名字是 student，LoRA 名见 server_logs/loras.tsv
+teacher = "Qwen3.5-122B-A10B"               # FP8，GPU 0-3，张量并行 4
+teacher_endpoint = "http://127.0.0.1:8000/v1"
+max_input_tokens = 24000
+max_new_tokens = 4096
+
+[paths]
+outputs = "outputs"
+sft_data = "experiments/sft_data"
+datasets = "external"
+harness_root = ""
+
+[runtime]
+max_rounds = 3
+max_gia_turns = 8
+gia_turn_timeout_s = 660
+max_workspace_turns = 12
+workspace_timeout_s = 3600
+max_concurrency = 4
+state_renderer = "compact_16k"
+max_workspaces_per_round = 3
+
+[training]
+lora_rank = 32
+lora_alpha = 64
+batch_size = 1
+gradient_accumulation = 8
+max_seq_len = 32768
+learning_rate = 1e-4
+max_steps = 2000
+device_map = "auto"
+bf16 = true

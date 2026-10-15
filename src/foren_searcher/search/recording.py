@@ -166,10 +166,16 @@ def open_request_view(candidate: CandidateSource, request: Any) -> dict[str, Any
     return view
 
 
-def acquire_request_view(source_url: str) -> dict[str, Any]:
-    """INSPECT 受控获取视频 → 规范化请求。签名直链只要来自回放的元数据，就与录制时逐字相同。"""
+def acquire_request_view(source_url: str, video_only_height: int | None = None) -> dict[str, Any]:
+    """INSPECT 受控获取视频 → 规范化请求。签名直链只要来自回放的元数据，就与录制时逐字相同。
 
-    return {"kind": "acquire", "source_url": snapshot_url(source_url)}
+    10-05 起带 "acquirer": 2（直链加平台请求头、失败再走 yt-dlp）：之前录下的 403 失败不再回放。
+    10-07 起 3（yt-dlp 被 403 时换客户端重试）：同理，之前录下的 403 与"只剩画面"的下载不再回放。"""
+
+    view = {"kind": "acquire", "source_url": snapshot_url(source_url), "acquirer": 3}
+    if video_only_height:          # 10-12：低清纯画面下载（SEARCH 内容比对 / INSPECT 兜底）单独成键，不与整片下载混用
+        view["video_only_height"] = int(video_only_height)
+    return view
 
 
 def case_key(case_id: str) -> str:
@@ -208,6 +214,7 @@ class SnapshotStore:
         self.index_path = self.directory / "index.jsonl"
         self.blob_dir = self.directory / "blobs"
         self.entries: dict[str, dict[str, Any]] = {}
+        self.history: dict[str, list[dict[str, Any]]] = {}     # 同 key 的全部记录（按写入先后），分叉回放按时间点取
         self._offset = 0
         self.refresh()
 
@@ -232,10 +239,21 @@ class SnapshotStore:
                 continue
             if isinstance(entry, dict) and isinstance(entry.get("key"), str):
                 self.entries[entry["key"]] = entry           # 同 key 后写覆盖先写
+                self.history.setdefault(entry["key"], []).append(entry)
         self._offset += end
 
     def get(self, key: str) -> dict[str, Any] | None:
         return self.entries.get(key)
+
+    def get_as_of(self, key: str, cutoff: str, run_name: str = "") -> dict[str, Any] | None:
+        """分叉回放用：本 run 自己补录过的优先；否则取 recorded_at ≤ cutoff 的最后一条（源轨迹当时看到的那份）。"""
+
+        items = self.history.get(key) or []
+        own = [e for e in items if run_name and e.get("run") == run_name]
+        if own:
+            return own[-1]
+        earlier = [e for e in items if str(e.get("recorded_at") or "") <= cutoff]
+        return earlier[-1] if earlier else None
 
     def append(self, entry: dict[str, Any]) -> None:
         self.directory.mkdir(parents=True, exist_ok=True)
@@ -248,6 +266,7 @@ class SnapshotStore:
             finally:
                 _unlock(stream)
         self.entries[entry["key"]] = entry
+        self.history.setdefault(entry["key"], []).append(entry)
 
     # ---- blob
     def blob_path(self, sha: str) -> Path:
@@ -436,6 +455,15 @@ class SearchRecording:
 
         assert self.store is not None
         key = request_key(request)
+        as_of = os.environ.get("FOREN_SNAPSHOT_AS_OF", "").strip()
+        if as_of and self.mode in {"replay", "replay_or_record"}:
+            # 10-12 分叉回放：要复现源轨迹当时看到的结果。之后别的 run 补录的新结果不用；瞬时失败（超时等）也照原样回放——
+            # tp1 里源轨迹一次打开超时、分叉支重开成功，状态就对不上了（true s18 / s42 的分支因此悄悄走偏）。
+            entry = self.store.get_as_of(key, as_of, self.run_name)
+            if entry is None:
+                self.store.refresh()
+                entry = self.store.get_as_of(key, as_of, self.run_name)
+            return key, entry
         entry = self.store.get(key)
         if entry is None and self.mode in {"replay", "replay_or_record"}:
             self.store.refresh()
@@ -573,12 +601,12 @@ class RecordingAcquirer:
         if callable(close):
             await close()
 
-    async def acquire(self, source_url: str, *, destination: Path, policy: Any) -> Any:
+    async def acquire(self, source_url: str, *, destination: Path, policy: Any, **hints: Any) -> Any:
         from ..inspect.acquisition import AcquiredMedia
         from ..inspect.backends.base import BackendFailure
 
         rec = self.recording
-        view = acquire_request_view(source_url)
+        view = acquire_request_view(source_url, hints.get("video_only_height"))
         key, entry = (request_key(view), None) if rec.mode == "record" else rec.lookup("acquire", view)
         if entry is not None:
             rec.hit("acquire")
@@ -600,7 +628,7 @@ class RecordingAcquirer:
             rec.miss("acquire", key, view)
         rec.counts["live_calls"] += 1
         try:
-            acquired = await self.acquirer.acquire(source_url, destination=destination, policy=policy)
+            acquired = await self.acquirer.acquire(source_url, destination=destination, policy=policy, **hints)
         except BackendFailure as exc:
             rec.record("acquire", key, view, "failure", {"code": exc.code, "message": str(exc), "stage": exc.stage,
                                                          "retryable": exc.retryable},

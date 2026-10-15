@@ -8,10 +8,12 @@ from typing import Any
 from ..cases import Case, Check
 from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText, normalize_source_key
+from .lang import INTERVAL_ZH, intervals_in
+from .lang import dates_in as _lang_dates_in
 
 _NUMBER = re.compile(r"(?<![A-Za-z])[-+]?\d[\d,]*(?:\.\d+)?%?")
 _ISO_DATE = re.compile(r"(\d{4})[-/年.](\d{1,2})[-/月.](\d{1,2})日?")
-_INTERVAL = re.compile(r"(\d+(?:\.\d+)?)\s*(?:秒|s)?\s*[–\-~至到]\s*(\d+(?:\.\d+)?)\s*(?:秒|s)")
+_INTERVAL = INTERVAL_ZH          # 10-07：区间与日期另认英文写法（lang.intervals_in / lang.dates_in）
 
 
 def _norm_number(token: str) -> str | None:
@@ -61,7 +63,9 @@ def numbers_missing(statement: str, pool: str) -> list[str]:
 
 
 def dates_in(text: str) -> list[str]:
-    return [f"{y}-{int(m):02d}-{int(d):02d}" for y, m, d in _ISO_DATE.findall(text)]
+    """数字日期（2016-07-14 / 2016年7月14日）+ 英文月份日期（July 14, 2016 / 14 July 2016），10-07 起。"""
+
+    return _lang_dates_in(text)
 
 
 def _finding_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -104,7 +108,10 @@ def fact_check_errors(check: Check, statements: str, cited_text_pool: str) -> li
         needle = str(params["text"])
         # params.aliases（可选）：所引 E 原文里的等价写法（如 耶拿桥 ↔ pont d'Iéna），只用于"在所引 E 文本中"这一步
         forms = [needle, *(str(a) for a in params.get("aliases") or [])]
-        if needle.lower() not in statements.lower():
+        # params.statement_aliases（可选，10-07）：结论里可接受的等价写法（英文规格下结论写 Pont d'Iéna，不写 耶拿桥）；
+        # aliases 仍只用于"在所引 E 文本中"这一步——只写了 E 原文写法而没写出实体本身的结论，照旧记 omitted
+        said = [needle, *(str(a) for a in params.get("statement_aliases") or [])]
+        if not any(form.lower() in statements.lower() for form in said):
             hard(ErrorType.OMITTED_REQUIRED_FACT, f"结论中没有出现应有的实体 {needle!r}", {"check": check.kind, "reference": True, **scope})
         elif not any(form.lower() in cited_text_pool.lower() for form in forms):
             flag(ErrorType.UNSUPPORTED_ASSERTION, f"实体 {needle!r} 出现在结论里，但不在所引 E 的文本中", {"check": check.kind, **scope})
@@ -261,7 +268,7 @@ def exec_checks(report: dict[str, Any], lookup: EvidenceLookup, *, case: Case | 
                          extra={"check": check.kind, "reference": True})
         elif check.kind == "interval_iou":
             want = (float(params["start"]), float(params["end"]))
-            got = [(float(a), float(b)) for a, b in _INTERVAL.findall(statements) if float(a) <= float(b)]
+            got = intervals_in(statements)
             if not got:
                 hard(ErrorType.OMITTED_REQUIRED_FACT, "结论中没有给出时间区间", extra={"check": check.kind, "reference": True})
             elif max(_iou(want, g) for g in got) < float(params["min_iou"]):

@@ -1,0 +1,109 @@
+{
+  "spec_id": "gia",
+  "version": "0.8.0",
+  "parent": "0.7.0",
+  "harness_params": {
+    "image_input_limit": 8,
+    "max_workspace_turns": 12,
+    "read_page_chars": 6000,
+    "max_model_view_chars": 180000,
+    "max_evidence_cards": 12,
+    "max_candidate_cards": 8,
+    "state_renderer": "compact_16k",
+    "ingest_keyframes": 8,
+    "evidence_origin": true,
+    "candidate_affordance": true,
+    "constraints_visible": true,
+    "gia_original_frames_first": true,
+    "cross_round_handoff": true,
+    "language": "en"
+  },
+  "changelog": [
+    {
+      "targets": [
+        "unsupported_assertion",
+        "wrong_citation",
+        "fabricated_evidence_id",
+        "source_restriction_miss",
+        "attribution_drift",
+        "scope_overreach",
+        "misread_fine_text",
+        "sloppy_numeric",
+        "omitted_required_fact",
+        "completed_without_finishing",
+        "incomplete_though_answerable",
+        "empty_report",
+        "illegal_action",
+        "redundant_action",
+        "evidence_dropped",
+        "wrong_tool",
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "unnecessary_round",
+        "dependent_sibling_tasks"
+      ],
+      "rationale": "初始版本：收编运行时提示与试点指令，rubric 按 errors.py 逐类生成"
+    },
+    {
+      "targets": [
+        "premature_finish",
+        "unnecessary_round",
+        "task_not_gap_driven"
+      ],
+      "rationale": "minor 升版：把运行时 _gia_turn_prompt 在存在可汇总 Finding 且可再开轮次时追加于 _GIA_SYSTEM_PROMPT 之后的两段附注（“当前或历史轮次存在可汇总的 Finding……缺少必要部分时只调查该缺口。”）收编进 student_prompt 主提示段，使导出的 system 与运行时逐字一致；首轮变体段原样保留；只收编运行时文本、不改行为；不改 rubric、teacher_instruction 与 harness_params"
+    },
+    {
+      "targets": [
+        "premature_finish",
+        "unnecessary_round",
+        "task_not_gap_driven"
+      ],
+      "rationale": "minor 升版：收编运行时 _gia_turn_prompt 的全部 8 个固定变体（findings / findings_budget_out / budget_out / wait / dispatch / dispatch_empty_material / default / default_empty_material），以命名分隔注释区分；导出按运行时实际用的那一段取 system，12 个 bridge run 中 gia@0.2.0 对不上的 24 行（轮次预算用完 18、无 Finding 默认 6）由此对上；只收编运行时文本、不改行为；不改 rubric、teacher_instruction 与 harness_params"
+    },
+    {
+      "targets": [
+        "premature_finish",
+        "task_not_gap_driven",
+        "premise_smuggling"
+      ],
+      "rationale": "minor 升版：8 个变体都加一句\"可带可选 rationale 字段\"（≤40 词一句话理由；运行时 strip_rationale 在校验前剥掉，不进接口契约）。目的与 hi@0.3.0 相同：让派工/结束决定带上可学的理由。不改 rubric、teacher_instruction 与 harness_params。"
+    },
+    {
+      "targets": [
+        "task_not_gap_driven",
+        "premature_finish"
+      ],
+      "rationale": "student_prompt（minor）：INVESTIGATE / FINISH 的输出格式示例带上 rationale 字段（r0b 里 GIA 决定只有 5/15 带理由）；教师指令：声明核查任务写要建立的事实本身，不写\"查找核查文章\"。"
+    },
+    {
+      "targets": [
+        "task_not_gap_driven",
+        "premature_finish"
+      ],
+      "rationale": "minor 升版（10-05）：主提示与首轮派工提示各加一条通用分工规则——用户要求判断材料是否被剪辑、拼接、改字幕或用 AI 改动，或要求找原始来源时，至少一项任务负责寻找原始素材，写明从材料中观察到的可检索线索（没有线索时让 HI 先提取），取得候选原件后对照。起因：EVID 冒烟里 GIA 首轮照抄总任务、第二轮只派“观察画面找痕迹”，从不派找原片。8 个变体重新由运行时生成；wait 变体不含派工内容，未变。teacher_instruction、harness_params、rubric 与 0.5.0 相同。"
+    },
+    {
+      "targets": [
+        "evidence_dropped",
+        "wrong_tool",
+        "task_not_gap_driven",
+        "premature_finish"
+      ],
+      "rationale": "minor 升版（10-05 修正优化计划 P1，依据 claude/EVID_GIA-HI逐步输入输出审计_20261005.md）：student_prompt、teacher_instruction、rubric 与父版本逐字相同，只改 harness_params——但这些参数改变模型输入分布（卡片字段、首轮附图、视图结构、渲染档位），所以升 minor（specs.INPUT_SHAPING_PARAMS）。state_renderer legacy → compact_16k（DESIGN §7 [09-24] 的统一档位；legacy 在 EVID 12 轮循环里顶过 32K，evidb4 ≥346 个回合被削附图）；ingest_keyframes=8（GIA 首轮与 HI 首轮看得到画面与时长）；evidence_origin（证据卡 origin、原件卡 duration_s、GIA 视图 candidate_materials 单列）；candidate_affordance（候选页面 E / R 卡写明对页面 E 取帧会下载源视频）；constraints_visible（任务数 / 材料数上限可见、预算耗尽只留 FINISH、HI 最后一轮只交报告）。GIA 专属：gia_original_frames_first（附图里原件帧绝对优先、至少占一半名额，报告引用只填余量）；cross_round_handoff（INVESTIGATE materials 可带 R，运行时把 R 及其页面/封面 E 种进新工作区）。针对：task_not_gap_driven（首轮盲派、照抄总任务）、evidence_dropped（FINISH 附图是别的视频封面）、premature_finish。"
+    },
+    {
+      "targets": [
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "wrong_tool"
+      ],
+      "rationale": "minor 升版（10-05 晚，“所有的输入或输出应该是英文（除了外部找到的信息）”）：模型读到的框架文字全部换成英文——student_prompt 是运行时提示在 language=en 下的忠实英译（调查方法内容不变，逐条对应父版本），teacher_instruction 同样忠实英译；harness_params 只新增 language=\"en\"（INPUT_SHAPING_PARAMS），由它打开 RuntimeGuards.english：卡片与工具标签（帧/页/裁剪/候选区域、媒体属性、INSPECT 结果）、工具目录与参数说明、工具结果的 limitations / 解释、harness 附注（轮次 / 任务 / 修复 / JSON 重试）、附图说明、截断标记、READ_RECORD 媒体说明、SEARCH 摘录行、材料标签（Material A/B）都给英文；外部取得的内容（网页正文、标题、摘要、字幕、转写）原样不译。rubric 不变（核验器侧，另行处理）。起因：evidb6 的 20 个样本里 5 个答案仍是中文，EVID 的题目与金标是英文；中英混杂的输入让底座在两种语言之间切换。"
+    }
+  ],
+  "output_schema": "contracts.parse_gia_decision",
+  "verifier": "verifier@0.3.2",
+  "notes": "student_prompt 含运行时 GIA 提示的全部 8 个固定变体，第一段为主变体 findings（与 gia@0.2.0 主提示逐字相同），其余以 <!-- ===== 变体：名字 ===== --> 分隔；文本由 datagen.prompt_variants.runtime_gia_variants() 直接调用运行时 _gia_turn_prompt 生成，tests/test_datagen_prompt_variants.py 断言两边逐字一致。策略重试时的修复附注属于 harness，不收编，导出时按 repair_turn 标记。 0.4.0：同 0.3.0 的生成方式（runtime_gia_variants），文本差异只有各变体末尾的 rationale 一句。 0.5.0：8 个变体重新由运行时生成（格式示例带 rationale）；teacher_instruction 加声明核查任务的写法。 0.6.0：含派工内容的 7 个变体加\"出处/改动类任务至少一项找原始素材\"一条，wait 不变，其余同 0.5.0。 0.7.0：只改 harness_params（见 changelog 末条），8 个变体、teacher_instruction、rubric 同 0.6.0。 0.8.0：language=en；8 个变体由 runtime_gia_variants(\"en\") 生成，分隔符改为 <!-- ===== variant: 名字 ===== -->（split_variants 两种都认）；teacher_instruction 为 0.7.0 的忠实英译，rubric 同 0.7.0。",
+  "hash": "sha256:4454aca9754ff32a48ebc4b4fd293904035ad378df0aa9bb8fcf5c7356eb7af1"
+}

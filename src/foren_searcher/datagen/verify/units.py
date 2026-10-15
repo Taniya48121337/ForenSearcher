@@ -19,6 +19,9 @@ from ..cases import Case
 from ..errors import ErrorRecord, ErrorType, Severity, error
 from .exec_checks import dates_in, fact_check_errors
 from .hindsight import UsefulEvidence, build_useful_evidence, clue_gain, produced_evidence
+from .lang import HEDGE, LABEL_NEGATORS_ZH, SIBLING_DEP, content_words, is_cjk
+from .lang import grams as _lang_grams
+from .lang import label_hit as _lang_label_hit
 from .verdict import Verdict, decide
 
 if TYPE_CHECKING:  # runlog 引用 verify.context，这里只作类型引用，避免循环导入
@@ -26,8 +29,8 @@ if TYPE_CHECKING:  # runlog 引用 verify.context，这里只作类型引用，�
 
 _E = re.compile(r"\bE\d+\b")
 _F = re.compile(r"\bF\d+\b")
-_SIBLING_DEP = re.compile(r"(W\d+-\d+|上一(个)?任务|另一(个)?任务|兄弟|待.{0,12}(确认|完成|结果)后|根据.{0,12}的?结果|依据.{0,8}报告)")
-_HEDGE = re.compile(r"(尚未|未能|未经|未独立|无法确认|不能确认|未核实|未确认|仍未)")
+_SIBLING_DEP = SIBLING_DEP       # 10-07：中英双语（lang.py）
+_HEDGE = HEDGE
 _EXEC_OK = {"executed", "report_committed", "gia_decision_accepted"}
 
 
@@ -162,13 +165,18 @@ def check_plan(decision: Decision, log: RunLog, case: Case | None, useful: Usefu
 def _overlap_ratio(a: str, b: str) -> float:
     """两段短文本的字符二元组重合率（中文友好）。"""
 
-    def grams(s: str) -> set[str]:
-        s = re.sub(r"\s+", "", s)
-        return {s[i:i + 2] for i in range(len(s) - 1)}
-    ga, gb = grams(a), grams(b)
+    # 10-07：纯英文用实词（英文字母二元组几乎处处重合，会把无关答案判成复述了污染片段）
+    english = not (is_cjk(a) or is_cjk(b))
+    ga, gb = (content_words(a), content_words(b)) if english else (_lang_grams(a), _lang_grams(b))
     if not ga or not gb:
         return 0.0
     return len(ga & gb) / min(len(ga), len(gb))
+
+
+# verifier@0.3.3：标签子串匹配排除否定 / 限定前缀。"属实"不能算进"不属实""部分属实"里，"不实"不能算进"并非不实"里。
+# 只挡明显的假阳性；等价说法（"现有证据支持该声明"）和反向结论由核验模型的语义判定处理（label_judged.py）。
+_LABEL_NEGATORS = LABEL_NEGATORS_ZH
+label_hit = _lang_label_hit     # 10-07：英文另看前一个词（not / partly / mostly …）与词边界（untrue 不算 true），见 lang.label_hit
 
 
 def check_answer(decision: Decision, log: RunLog, case: Case | None, useful: UsefulEvidence, report_verdicts: list[Verdict], *,
@@ -206,7 +214,7 @@ def check_answer(decision: Decision, log: RunLog, case: Case | None, useful: Use
             if check.kind == "label_expected":
                 # params.aliases（可选）：答案里可接受的等价措辞（数据集标签 True → 答案可能写"属实""支持该声明"）
                 forms = [str(check.params["label"]), *(str(a) for a in check.params.get("aliases") or [])]
-                label_match = any(f.lower() in answer.lower() for f in forms if f)
+                label_match = any(label_hit(f, answer) for f in forms if f)
                 if not label_match:
                     errors.append(_err(ErrorType.OMITTED_REQUIRED_FACT, f"答案没有出现应有的标签 {check.params['label']!r}（含等价措辞）",
                                        extra={"check": "label_expected", "forms": forms}))

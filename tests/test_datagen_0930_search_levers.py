@@ -32,7 +32,7 @@ def test_new_specs_bump_cleanly_and_carry_search_guidance():
 def test_run_cases_defaults_point_at_latest_specs():
     from foren_searcher.datagen import run_cases
 
-    assert run_cases.DEFAULT_SPECS == ("hi@0.4.0", "gia@0.5.0")
+    assert run_cases.DEFAULT_SPECS == ("hi@0.5.0", "gia@0.6.0")     # 10-05 晚：学生提示加找原件规则（hi@0.5.0 仍开 diff_media）
 
 
 def test_overrides_parse_validate_and_take_precedence():
@@ -150,3 +150,61 @@ def test_execute_search_appends_excerpt_only_when_enabled(chars):
         assert len(excerpts) == 1 and "Ventura refused" in excerpts[0] and "Museum" not in excerpts[0]
     else:
         assert excerpts == []
+
+
+def test_hi_041_is_teacher_only_patch_with_batch_review_guidance():
+    hi0, hi1 = Spec.load(SPECS / "hi@0.4.0"), Spec.load(SPECS / "hi@0.4.1")
+    assert validate_bump(hi0, hi1) == []
+    assert hi0.student_prompt == hi1.student_prompt          # 学生输入分布不变，r0c 与新 run 的 system 可混用
+    assert "轮换不同的图片组合" in hi1.teacher_instruction and hi1.verifier == "verifier@0.3.3"
+    assert "asr" in hi1.teacher_instruction and "locate_frames" in hi1.teacher_instruction
+
+
+def test_inspect_ops_auto_enables_only_with_weights_and_packages(tmp_path, monkeypatch):
+    from foren_searcher.datagen import run_cases
+
+    for variable, _, _ in run_cases.MODEL_INSPECT_OPERATIONS.values():
+        monkeypatch.delenv(variable, raising=False)
+    base, detail = run_cases.resolve_inspect_operations("base", tmp_path)
+    assert base == run_cases.INSPECT_OPERATIONS and detail["model_ops"] == {}
+    none, detail = run_cases.resolve_inspect_operations("auto", tmp_path)
+    assert none == run_cases.INSPECT_OPERATIONS
+    assert all(not item["enabled"] and "缺权重" in item["reason"] for item in detail["model_ops"].values())
+    (tmp_path / "inspect" / "faster-whisper-small").mkdir(parents=True)
+    real_find = importlib.util.find_spec
+    monkeypatch.setattr(importlib.util, "find_spec", lambda name, *a: None if name == "faster_whisper" else real_find(name, *a))
+    ops, detail = run_cases.resolve_inspect_operations("auto", tmp_path)
+    assert "asr" not in ops and "缺包 faster_whisper" in detail["model_ops"]["asr"]["reason"]
+    monkeypatch.setattr(importlib.util, "find_spec", lambda name, *a: object())
+    ops, detail = run_cases.resolve_inspect_operations("auto", tmp_path)
+    assert "asr" in ops and detail["model_ops"]["asr"]["enabled"]
+    with pytest.raises(ValueError):
+        run_cases.resolve_inspect_operations("all", tmp_path)
+
+
+def test_review_metrics_count_image_rereads_and_model_tools(tmp_path):
+    import sqlite3
+
+    cr = _compare_rounds()
+    run = tmp_path / "videosham_1_r0c_1"
+    run.mkdir()
+    con = sqlite3.connect(run / "store.sqlite3")
+    con.execute("create table evidence (id integer primary key, modalities_json text)")
+    con.executemany("insert into evidence values (?, ?)", [(1, '["video"]'), (5, '["image"]'), (6, '["image"]'), (7, '["text"]')])
+    con.commit()
+    con.close()
+
+    def hi(action, args, focus=()):
+        return {"actor_role": "HI", "actor_id": "W1-1", "event_type": "model_output",
+                "payload": {"output": {"action": action, "arguments": args, "focus_evidence_ids": list(focus)}}}
+
+    events = [hi("INSPECT", {"targets": ["E1"], "request": {"operation": "asr", "params": {}}}),
+              hi("INSPECT", {"targets": ["E1"], "request": {"operation": "get_frames", "params": {}}}),
+              hi("READ_RECORD", {"record_id": "E5"}, ["E5", "E6"]),
+              hi("READ_RECORD", {"record_id": "E6"}, ["E6"]),
+              hi("READ_RECORD", {"record_id": "E7"})]
+    (run / "trajectory.jsonl").write_text("\n".join(json.dumps(e) for e in events), encoding="utf-8")
+    m = cr.run_metrics(run)
+    assert m["inspect_ops"] == {"asr": 1, "get_frames": 1} and m["image_rereads"] == 2 and m["read_record_focus"] == [2, 1, 0]
+    agg = cr.aggregate([m])
+    assert agg["model_tool_calls"] == 1 and agg["image_rereads_per_run"] == 2.0 and agg["read_record_multi_focus_share"] == 0.333

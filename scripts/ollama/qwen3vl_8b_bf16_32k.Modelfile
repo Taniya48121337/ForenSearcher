@@ -1,0 +1,3 @@
+FROM qwen3-vl:8b-instruct-bf16
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.6

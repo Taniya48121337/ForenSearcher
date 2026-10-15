@@ -52,6 +52,10 @@ class ParamBinding:
         elif self.kind is str:
             if not isinstance(value, str):
                 raise HarnessParamError(f"{source}.harness_params.{self.key} 应为字符串，得到 {value!r}")
+        elif self.kind is bool:
+            if not isinstance(value, bool):
+                raise HarnessParamError(f"{source}.harness_params.{self.key} 应为 true / false，得到 {value!r}")
+            return value
         if self.choices and value not in self.choices:
             raise HarnessParamError(f"{source}.harness_params.{self.key} 只能是 {' / '.join(self.choices)}，得到 {value!r}")
         if isinstance(value, (int, float)) and not isinstance(value, bool):
@@ -87,6 +91,10 @@ HARNESS_PARAM_MAP: dict[str, ParamBinding] = {
         note="GIA 全局视图与 HI 输入的总字符上限"),
     "max_evidence_cards": ParamBinding(
         "max_evidence_cards", "memory_policy.max_evidence_cards", int, "shared", True, 1, 1_000),
+    "max_history_entries": ParamBinding(
+        "max_history_entries", "memory_policy.max_history_entries", int, "shared", True, 1, 1_000,
+        note="10-13：HI 工作区 / GIA 视图里保留的历史条数（默认 MemoryPolicy 的 32）；只用于环境变体（walker V9："
+             "max_evidence_cards=6 + max_history_entries=4，早先的结果掉出视图，要 QUERY_MEMORY 查回来），规格里不写"),
     "max_candidate_cards": ParamBinding(
         "max_candidate_cards", "memory_policy.max_candidate_cards", int, "shared", True, 1, 1_000),
     "search_excerpt_chars": ParamBinding(
@@ -96,7 +104,88 @@ HARNESS_PARAM_MAP: dict[str, ParamBinding] = {
         "state_renderer", "memory_policy.state_renderer", str, "shared", True, choices=(),
         note="部分生效：写入 MemoryPolicy → runtime_constraints.state_renderer，本地学生（local_models）与导出据此渲染；"
              "EndpointTeacher / Codex 教师不按档位渲染输入（教师看的始终是 legacy 全量视图）"),
+    "inspect_diff_media": ParamBinding(
+        "inspect_diff_media", "inspect_operations.diff_media", bool, "hi", True,
+        note="10-04：true 时 run_cases 在 --inspect-ops 解析出的操作集上加开 INSPECT diff_media（逐帧像素差异），"
+             "HI 的工具目录随之出现该操作；未写或 false 时不开放（hi@0.4.1 及以前的行为）"),
+    "inspect_merged_catalog": ParamBinding(
+        "inspect_merged_catalog", "inspect_operations.merged_catalog", bool, "shared", True,
+        note="10-12 DETECT 并入 INSPECT：true 时 HI 的 INSPECT 目录换成合并后的六项 get_frames / ocr / asr / locate / "
+             "video_structure / compare_media（get_pages、crop、align_media、diff_media、locate_frames、locate_regions 由服务"
+             "内部翻译，不再单列；asr 带声音时间线；比对图由固定描述模型逐张描述）。asr / locate 仍要权重在。"
+             "GIA 提示随之加比对说明（RuntimeGuards.merged_catalog），所以两份规格都写（hi@0.8.0 / gia@0.9.0 起）；"
+             "未写或 false = 旧目录"),
+    "search_dates": ParamBinding(
+        "search_dates", "input_features.search_dates", bool, "hi", True,
+        note="10-13：true 时 HI 的 SEARCH 多一种请求 {source: R/URL, output_type: text, include: [\"dates\"]}：页面声明的发布 / 修改"
+             "日期、视频平台上传日期、Wayback Machine 最早存档（页面与原图地址），全部免费（search/openers/dates.py）；"
+             "观察里多一行 dates[R]。只作用于 HI 的 SEARCH；未写或 false = 没有这种请求（hi@0.8.0 及以前）"),
+    "compact_tool_params": ParamBinding(
+        "compact_tool_params", "input_features.compact_tool_params", bool, "hi", True,
+        note="10-13：true 时 HI 工具目录少两组参数，功能并入默认：INSPECT compare_media 不列 mode——画面对不上且两边都有"
+             "声音时自动只比声音（原 mode=audio），InspectService._translate 写入内部的 auto_fallback；SEARCH 打开来源只剩"
+             " {source, output_type}——打开视频自动带原语言字幕（原 include=[\"subtitles\"] / subtitle_language）。"
+             "未写或 false = 旧参数（hi@0.9.0 及以前）"),
+    # ---- 10-05 修正优化计划 P1（输入补全）：hi@0.6.0 / gia@0.7.0 起打开；旧规格不写 = 全关。
+    #      运行时经 policies.RuntimeGuards（run_cases 合并进 runtime_guard_scope）生效，见 policies.FEATURE_GUARD_FIELDS
+    "ingest_keyframes": ParamBinding(
+        "ingest_keyframes", "input_features.ingest_keyframes", int, "shared", True, 0, 16,
+        note="P1.1：登记原件视频后立刻产出媒体属性 E 与 N 张均匀关键帧（INSPECT get_frames，discovered_by=HARNESS），"
+             "GIA 首轮与 HI 首轮就看得到画面与时长；0 = 不做"),
+    "gia_original_frames_first": ParamBinding(
+        "gia_original_frames_first", "input_features.gia_original_frames_first", bool, "gia", True,
+        note="P1.2：GIA 附图里原件派生帧绝对优先（按时间均匀抽，至少占一半名额），报告引用只填余量"),
+    "evidence_origin": ParamBinding(
+        "evidence_origin", "input_features.evidence_origin", bool, "shared", True,
+        note="P1.3：证据卡加 origin（original / derived_from_original / candidate_source / tool_result），原件卡带 duration_s；"
+             "GIA 视图把候选来源的素材单列为 candidate_materials"),
+    "candidate_affordance": ParamBinding(
+        "candidate_affordance", "input_features.candidate_affordance", bool, "shared", True,
+        note="P1.4：候选页面 E / R 卡写明对页面 E 做 get_frames/ocr/asr/align_media 会下载源视频；SEARCH 观察给出调用示例"),
+    "cross_round_handoff": ParamBinding(
+        "cross_round_handoff", "input_features.cross_round_handoff", bool, "gia", True,
+        note="P1.5①：GIA 的 INVESTIGATE materials 可带 R；运行时把 R 及其页面/封面 E 种进新工作区"),
+    "workspace_original_slots": ParamBinding(
+        "workspace_original_slots", "input_features.workspace_original_slots", int, "hi", True, 0, 8,
+        note="P1.5②：工作区 evidence_view 给原件派生帧预留的名额（按时间均匀）；首轮附图也带这几帧；0 = 不预留"),
+    "constraints_visible": ParamBinding(
+        "constraints_visible", "input_features.constraints_visible", bool, "shared", True,
+        note="P1.6：每轮任务数 / 每任务材料数上限进 GIA runtime_constraints，预算耗尽只留 FINISH，HI 最后一轮只能交报告"),
+    "language": ParamBinding(
+        "language", "input_features.language", str, "shared", True, choices=("zh", "en"),
+        note="10-05 晚：模型读到的框架文字的语言（角色提示、卡片标签、工具说明、观察与修复附注）；en 自 hi@0.7.0 / gia@0.8.0 起。"
+             "外部取得的内容（网页、字幕、转写、搜索标题）不翻译"),
 }
+
+
+@dataclass(frozen=True)
+class InspectOperationSwitches:
+    """规格控制的 INSPECT 可选操作开关（默认全关，与旧规格一致）。"""
+
+    diff_media: bool = False
+    merged_catalog: bool = False        # 10-12：合并目录（见 inspect.contracts.MERGED_OPERATIONS）
+
+    def operations(self) -> tuple[str, ...]:
+        return ("diff_media",) if self.diff_media and not self.merged_catalog else ()
+
+
+@dataclass(frozen=True)
+class InputFeatures:
+    """规格控制的模型输入补全特性（10-05 修正优化计划 P1；默认全关，与旧规格一致）。"""
+
+    ingest_keyframes: int = 0
+    gia_original_frames_first: bool = False
+    evidence_origin: bool = False
+    candidate_affordance: bool = False
+    cross_round_handoff: bool = False
+    workspace_original_slots: int = 0
+    constraints_visible: bool = False
+    language: str = "zh"
+    search_dates: bool = False          # 10-13：SEARCH 日期查询（只在 run_cases 里打开 search_service.date_lookup）
+    compact_tool_params: bool = False   # 10-13：compare_media 无 mode、打开视频自动带字幕（run_cases 打开两个服务的开关）
+
+    def enabled(self) -> dict[str, Any]:
+        return {key: value for key, value in asdict(self).items() if value and not (key == "language" and value == "zh")}
 
 
 def binding(key: str) -> ParamBinding:
@@ -164,6 +253,8 @@ class HarnessSettings:
     runtime: Any                    # config.RuntimeConfig
     memory_policy: Any              # store.records.MemoryPolicy
     inspect_policy: Any             # inspect.policy.InspectPolicy
+    inspect_operations: InspectOperationSwitches = field(default_factory=InspectOperationSwitches)
+    input_features: InputFeatures = field(default_factory=InputFeatures)
     applied: dict[str, dict[str, Any]] = field(default_factory=dict)
     not_applicable: dict[str, dict[str, Any]] = field(default_factory=dict)
     differences: dict[str, dict[str, Any]] = field(default_factory=dict)
@@ -188,7 +279,12 @@ def parse_overrides(items: list[str] | None) -> dict[str, Any]:
             raise HarnessParamError(f"--harness-override 应写成 键=值，得到 {item!r}")
         b = binding(key)
         value: Any = raw.strip()
-        if b.kind is int:
+        if b.kind is bool:
+            lowered = value.lower()
+            if lowered not in {"true", "false", "1", "0"}:
+                raise HarnessParamError(f"--harness-override {key} 应为 true / false，得到 {raw!r}")
+            value = lowered in {"true", "1"}
+        elif b.kind is int:
             try:
                 value = int(value)
             except ValueError as exc:
@@ -214,7 +310,8 @@ def build_harness_settings(config: Any, hi: Spec, gia: Spec, *, mode: HarnessMod
     for key, value in (overrides or {}).items():
         b = binding(key)
         specified[key] = {"value": b.validate(value, "override"), "source": "override", "target": b.target}
-    defaults = {"runtime": config.runtime, "memory_policy": MemoryPolicy(), "inspect_policy": InspectPolicy()}
+    defaults = {"runtime": config.runtime, "memory_policy": MemoryPolicy(), "inspect_policy": InspectPolicy(),
+                "inspect_operations": InspectOperationSwitches(), "input_features": InputFeatures()}
     targets: dict[str, dict[str, Any]] = {name: {} for name in defaults}
     for key, item in specified.items():
         section, attribute = item["target"].split(".", 1)
@@ -235,7 +332,8 @@ def build_harness_settings(config: Any, hi: Spec, gia: Spec, *, mode: HarnessMod
             except (TypeError, ValueError) as exc:     # Policy 自己的 __post_init__ 校验兜底
                 raise HarnessParamError(f"harness_params 覆盖 {section} 失败：{exc}") from exc
     return HarnessSettings(mode=mode, runtime=built["runtime"], memory_policy=built["memory_policy"],
-                           inspect_policy=built["inspect_policy"],
+                           inspect_policy=built["inspect_policy"], inspect_operations=built["inspect_operations"],
+                           input_features=built["input_features"],
                            applied=dict(specified) if mode == "apply" else {},
                            not_applicable=not_applicable, differences=differences, specified=specified)
 
@@ -244,8 +342,11 @@ def settings_snapshot(settings: HarnessSettings) -> dict[str, Any]:
     """运行时实际用的三样配置的字典形态（写 run_config 用，便于事后核对"到底跑的是什么参数"）。"""
 
     return {"runtime": asdict(settings.runtime), "memory_policy": asdict(settings.memory_policy),
-            "inspect_policy": settings.inspect_policy.to_dict()}
+            "inspect_policy": settings.inspect_policy.to_dict(),
+            "inspect_operations": asdict(settings.inspect_operations),
+            "input_features": asdict(settings.input_features)}
 
 
-__all__ = ["HARNESS_MODES", "HARNESS_PARAM_MAP", "HarnessParamError", "HarnessSettings", "ParamBinding", "binding",
+__all__ = ["HARNESS_MODES", "HARNESS_PARAM_MAP", "HarnessParamError", "HarnessSettings", "InputFeatures", "InspectOperationSwitches",
+           "ParamBinding", "binding",
            "build_harness_settings", "mapping_table", "resolve_harness_params", "settings_snapshot", "unwired_keys"]

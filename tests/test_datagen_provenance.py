@@ -9,7 +9,7 @@ from typing import Any
 import pytest
 
 from foren_searcher.datagen.verify.anchored import (
-    _COVERAGE_SYSTEM_PROMPT_LEGACY, _PAIR_SYSTEM_PROMPT_LEGACY, COVERAGE_SYSTEM_PROMPT, PAIR_SYSTEM_PROMPT, PAIR_SYSTEM_PROMPTS,
+    _COVERAGE_SYSTEM_PROMPT_LEGACY, _PAIR_SYSTEM_PROMPT_LEGACY, COVERAGE_SYSTEM_PROMPT, coverage_system_prompt, PAIR_SYSTEM_PROMPT, PAIR_SYSTEM_PROMPTS,
     _source_payload, verify_anchored,
 )
 from foren_searcher.datagen.verify.context import DictLookup, EvidenceText
@@ -118,7 +118,9 @@ def test_pair_and_coverage_payloads_show_provenance(tmp_path: Path):
 
     coverage = {p["statement"][:2]: (prompt, p) for prompt, p in judge.calls if "supported_parts" in p}
     prompt_f1, payload_f1 = coverage["A显"]
-    assert prompt_f1 == COVERAGE_SYSTEM_PROMPT
+    # verifier@0.3.3：引了两张图的句子，汇总附图并换带附图规则的提示词
+    assert prompt_f1 == coverage_system_prompt(provenance=True, images=True) and prompt_f1.startswith(COVERAGE_SYSTEM_PROMPT)
+    assert [i["evidence_id"] for i in payload_f1["attached_images"]] == ["E5", "E7"]
     assert [item["provenance"][:6] for item in payload_f1["supported_parts"]] == ["来源材料：A", "来源材料：B"]
     prompt_f2, payload_f2 = coverage["Ei"]
     assert prompt_f2 == _COVERAGE_SYSTEM_PROMPT_LEGACY and all("provenance" not in i for i in payload_f2["supported_parts"])

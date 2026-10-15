@@ -90,7 +90,8 @@ def main(argv: list[str] | None = None) -> int:
                     continue
                 row = json.loads(line)
                 m = row["metadata"]
-                identity = {"file": name, "role": m["role"], "unit": m["unit"], "workspace": m.get("workspace"), "turn": m.get("turn"), "request": m.get("request")}
+                identity = {"file": name, "run": m.get("run"), "role": m["role"], "unit": m["unit"], "workspace": m.get("workspace"),
+                            "turn": m.get("turn"), "request": m.get("request")}
                 try:
                     batch, stats = encode_row(row, export_dir, processor)
                     del batch

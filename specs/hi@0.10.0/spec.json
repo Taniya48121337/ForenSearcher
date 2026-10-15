@@ -1,0 +1,156 @@
+{
+  "spec_id": "hi",
+  "version": "0.10.0",
+  "parent": "0.9.0",
+  "harness_params": {
+    "image_input_limit": 8,
+    "max_workspace_turns": 12,
+    "read_page_chars": 6000,
+    "max_model_view_chars": 180000,
+    "max_evidence_cards": 12,
+    "max_candidate_cards": 8,
+    "state_renderer": "compact_16k",
+    "ingest_keyframes": 8,
+    "evidence_origin": true,
+    "candidate_affordance": true,
+    "constraints_visible": true,
+    "workspace_original_slots": 4,
+    "language": "en",
+    "inspect_merged_catalog": true,
+    "search_dates": true,
+    "compact_tool_params": true
+  },
+  "changelog": [
+    {
+      "targets": [
+        "unsupported_assertion",
+        "wrong_citation",
+        "fabricated_evidence_id",
+        "source_restriction_miss",
+        "attribution_drift",
+        "scope_overreach",
+        "misread_fine_text",
+        "sloppy_numeric",
+        "omitted_required_fact",
+        "completed_without_finishing",
+        "incomplete_though_answerable",
+        "empty_report",
+        "illegal_action",
+        "redundant_action",
+        "evidence_dropped",
+        "wrong_tool",
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "unnecessary_round",
+        "dependent_sibling_tasks"
+      ],
+      "rationale": "初始版本：收编运行时提示与试点指令，rubric 按 errors.py 逐类生成"
+    },
+    {
+      "targets": [
+        "completed_without_finishing",
+        "empty_report"
+      ],
+      "rationale": "minor 升版：把运行时 _hi_turn_prompt 附加的时间预算附注收编进 student_prompt，使导出的 system 与运行时逐字一致（第 0 轮导出 runtime_system_matches_spec 全为 False 的原因）；不改 rubric、teacher_instruction 与 harness_params"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "redundant_action",
+        "ignored_feedback"
+      ],
+      "rationale": "minor 升版：动作与报告可带可选 rationale 字段（≤40 词一句话理由，只引用已有编号；运行时 strip_rationale 在校验前剥掉，不进接口契约，原文留在 raw_output 供导出作监督目标）。目的：第 0 轮 HI 监督目标中位只有 53 token，学生只学到\"选哪个动作\"而学不到\"为什么\"。"
+    },
+    {
+      "targets": [
+        "redundant_action",
+        "wrong_tool"
+      ],
+      "rationale": "教师侧内环第 1 个改动（patch 部分）：教师指令加\"候选未打开时优先 SEARCH、不重复 READ_RECORD\"。诊断依据：r0_bridge12 导出的 246 个 accepted step 里 READ_RECORD 117（48%）、SEARCH 只有 38；4126 两个工作区各连续 8 个 INSPECT。"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "omitted_required_fact",
+        "incomplete_though_answerable"
+      ],
+      "rationale": "教师指令：声明核查搜事件本身、不搜核查文章；每项要求至少一个一手来源或两个独立报道，只有转载时换关键词再搜。诊断依据：r0b 对照里黑名单挡住核查站点后，每 run SEARCH 从 3.5 次降到 1.4 次，查询仍带 fact check，教师拿到一两个来源就收工。"
+    },
+    {
+      "targets": [
+        "completed_without_finishing"
+      ],
+      "rationale": "student_prompt（minor）：报告输出格式示例里带上 rationale 字段。r0b 里 HI 动作 97% 带 rationale，报告大多没有——那句说明写在格式示例之后，模型照示例输出时漏掉。"
+    },
+    {
+      "targets": [
+        "redundant_action",
+        "wrong_tool"
+      ],
+      "rationale": "教师指令（patch）：图片多于容量时不靠连续 READ_RECORD 轮换图片组合回看，先挑出真正要比的几张，范围大时先用 align_media / locate_frames 缩小；available_actions 里有 asr / locate_frames / locate_regions 时说明何时用。诊断依据：r0c 的 VideoSham 里 READ_RECORD 平均已带 6.8 个 focus（容量 8），浪费在轮换组合：videosham_1007 有 18 次、4126 有 10 次以图片为目标的 READ_RECORD；1007 的 W1-2 想做语音转写却没有 asr 工具，只能交 INCOMPLETE。run_cases 09-30 起按本机权重开放这三项模型工具。"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "unsupported_assertion",
+        "sloppy_numeric"
+      ],
+      "rationale": "patch：harness_params 新增 inspect_diff_media=true，run_cases 据此加开 INSPECT diff_media（逐帧像素差异，输出帧级差异片段、差异框与 A|B|差异对照图），HI 工具目录随之出现该操作；教师指令加一节：确定差异起止帧或位置时用 diff_media 计算，时间轴不同步时先取 align_media 的 time_mapping 填入 mapping。student_prompt 与 rubric 不变。诊断依据：videosham_4126 里 HI 逐张取帧目测，声称 2.466667 秒两侧都没有人物、变化从 2.5 秒那帧开始，而逐帧像素差显示 B 在第 6–40 帧（0.200–1.367 秒）与第 69–179 帧（2.300–6.000 秒）与 A 不同。"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "redundant_action",
+        "incomplete_though_answerable"
+      ],
+      "rationale": "minor 升版（10-05）：student_prompt 的工具选择加两条通用规则——①查询词不写 E/R/F/W/C 编号与“材料A/给定视频”等代称，只写画面字幕原文、台标、账号、人物、地点、事件等外部可识别线索；②任务涉及出处、原始版本或是否被剪辑/拼接/改字幕/AI 改动时，先从帧与转写挑线索，用 SEARCH（视频用 output_type=video）找候选原件并对照；找不到原件时需原件对照的改动写明未验证。起因：EVID 冒烟（video_001/027/151，已降级出 test）里底座的查询是 'original source of video E1'，从未取得原片。配套工具层：search/query_guard.py 拒收这类查询。teacher_instruction、harness_params、rubric 与 0.4.2 相同。"
+    },
+    {
+      "targets": [
+        "evidence_dropped",
+        "wrong_tool",
+        "task_not_gap_driven",
+        "premature_finish"
+      ],
+      "rationale": "minor 升版（10-05 修正优化计划 P1，依据 claude/EVID_GIA-HI逐步输入输出审计_20261005.md）：student_prompt、teacher_instruction、rubric 与父版本逐字相同，只改 harness_params——但这些参数改变模型输入分布（卡片字段、首轮附图、视图结构、渲染档位），所以升 minor（specs.INPUT_SHAPING_PARAMS）。state_renderer legacy → compact_16k（DESIGN §7 [09-24] 的统一档位；legacy 在 EVID 12 轮循环里顶过 32K，evidb4 ≥346 个回合被削附图）；ingest_keyframes=8（GIA 首轮与 HI 首轮看得到画面与时长）；evidence_origin（证据卡 origin、原件卡 duration_s、GIA 视图 candidate_materials 单列）；candidate_affordance（候选页面 E / R 卡写明对页面 E 取帧会下载源视频）；constraints_visible（任务数 / 材料数上限可见、预算耗尽只留 FINISH、HI 最后一轮只交报告）。HI 专属：workspace_original_slots=4（evidence_view 给原件派生帧留 4 个名额，首轮附图带这几帧）。针对：evidence_dropped（第二轮工作区看不到第一轮的 30 帧）、wrong_tool（对封面图 get_frames）、premature_finish（覆盖率中位 19% 就交报告）。"
+    },
+    {
+      "targets": [
+        "ignored_feedback",
+        "task_not_gap_driven",
+        "premature_finish",
+        "wrong_tool"
+      ],
+      "rationale": "minor 升版（10-05 晚，“所有的输入或输出应该是英文（除了外部找到的信息）”）：模型读到的框架文字全部换成英文——student_prompt 是运行时提示在 language=en 下的忠实英译（调查方法内容不变，逐条对应父版本），teacher_instruction 同样忠实英译；harness_params 只新增 language=\"en\"（INPUT_SHAPING_PARAMS），由它打开 RuntimeGuards.english：卡片与工具标签（帧/页/裁剪/候选区域、媒体属性、INSPECT 结果）、工具目录与参数说明、工具结果的 limitations / 解释、harness 附注（轮次 / 任务 / 修复 / JSON 重试）、附图说明、截断标记、READ_RECORD 媒体说明、SEARCH 摘录行、材料标签（Material A/B）都给英文；外部取得的内容（网页正文、标题、摘要、字幕、转写）原样不译。rubric 不变（核验器侧，另行处理）。起因：evidb6 的 20 个样本里 5 个答案仍是中文，EVID 的题目与金标是英文；中英混杂的输入让底座在两种语言之间切换。"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "omitted_required_fact",
+        "redundant_action"
+      ],
+      "rationale": "minor 升版（10-12，DETECT 并入 SEARCH 与 INSPECT，见 claude/DETECT并入SEARCH与INSPECT_合并方案_20261012.md 第 7 节）：harness_params 新增 inspect_merged_catalog=true（去掉 inspect_diff_media）：INSPECT 目录换成 get_frames / ocr / asr / locate / video_structure / compare_media 六项（get_pages、crop 并进 get_frames，locate_frames、locate_regions 并成 locate，align_media、diff_media、DETECT compare_source 并成 compare_media；asr 另给声音时间线）；SEARCH 视频结果带 content_match（与材料视频的画面比对，原 DETECT find_source）。student_prompt = 合并目录开关下的运行时 _hi_turn_prompt：讲 get_pages / locate_frames / align_media 及其输出字段的几句换成合并目录的写法，加 compare_media 结果的读法（原 DETECT 结果里的归因句移到这里，工具结果只陈述事实）与 content_match 一句。teacher_instruction 的逐帧差异一节换成 compare_media / video_structure；rubric 不变。"
+    },
+    {
+      "targets": [
+        "omitted_required_fact",
+        "unsupported_assertion",
+        "wrong_tool"
+      ],
+      "rationale": "minor 升版（10-13，claude/walker_wk8_日期查询与工具覆盖_20261013.md）：harness_params 新增 search_dates=true：HI 的 SEARCH 多一种请求 {source: R/URL, output_type: text, include: [\"dates\"]}，返回页面声明的发布 / 修改日期、视频平台上传日期、Wayback Machine 最早存档（页面与原图地址），全部免费（search/openers/dates.py）；用法与每种日期的含义写在 SEARCH 的 description 里（只在打开时出现），观察多一行 dates[R]。student_prompt、teacher_instruction、rubric 与 0.8.0 相同。起因：AVerImaTeC 类题目要回答“图片最早何时何地发布”，以前日期只在检索内部用于截断过滤，模型看不到。"
+    },
+    {
+      "targets": [
+        "wrong_tool",
+        "redundant_action",
+        "illegal_action"
+      ],
+      "rationale": "minor 升版（10-13，claude/walker_wk8_日期查询与工具覆盖_20261013.md §7）：harness_params 新增 compact_tool_params=true，两组参数并入默认、HI 工具目录变小：INSPECT compare_media 不再列 mode——默认就比画面与声音，画面对不上且两边都有声音时自动只比声音（原 mode=audio）；SEARCH 打开来源只剩 {source, output_type}——打开视频自动带原语言字幕（原 include=[\"subtitles\"] / subtitle_language）。teacher_instruction 相应把“Use mode audio …”改成自动退到声音比对、并说明打开视频带字幕；student_prompt、rubric 与 0.9.0 相同。起因：工具覆盖表里这两项在 walker 案例中没有合理用途（auto 已比声音；asr 已覆盖语音），留着只会多出可选错的参数。"
+    }
+  ],
+  "output_schema": "contracts.parse_hi_decision",
+  "verifier": "verifier@0.3.3",
+  "notes": "student_prompt = hi@0.1.0 的 _HI_MULTIMODAL_SYSTEM_PROMPT + 运行时时间预算附注（runtime_constraints 含 remaining_seconds 时 _hi_turn_prompt 追加的那段）。 0.3.0：student_prompt = 运行时 _hi_turn_prompt(direct_visual_input, 含 remaining_seconds) 的原文，新增 rationale 一句；teacher_instruction 末尾新增\"优先 SEARCH、不重复 READ_RECORD\"一段。 0.4.0：student_prompt = 运行时 _hi_turn_prompt（报告格式示例带 rationale）；teacher_instruction 加\"声明核查的搜索\"一节。 0.4.2：只改 teacher_instruction（新增“逐帧差异工具”一节）与 harness_params（inspect_diff_media=true，开放 INSPECT diff_media）；student_prompt、rubric 与 0.4.1 相同。 0.5.0：student_prompt 加\"查询词不写内部编号\"与\"出处/改动类任务先找原件\"两条（运行时 _HI_MULTIMODAL_SYSTEM_PROMPT 同步），其余同 0.4.2。 0.6.0：只改 harness_params（见 changelog 末条），student_prompt / teacher_instruction / rubric 同 0.5.0。 0.7.0：language=en；student_prompt = 英文开关下的运行时 _hi_turn_prompt（direct_visual_input，含 remaining_seconds），teacher_instruction 为 0.6.0 的忠实英译，rubric 同 0.6.0。 0.8.0：inspect_merged_catalog=true；student_prompt = 合并目录开关下的运行时 _hi_turn_prompt（direct_visual_input，含 remaining_seconds）；teacher_instruction 的逐帧差异一节换成 compare_media / video_structure。 0.9.0：harness_params.search_dates=true（SEARCH 日期查询），其余同 0.8.0。",
+  "hash": "sha256:2705c52e575b6e87c3335c2d03da01c63292cc3649dd8e3f6b0bdc7eefb56437"
+}

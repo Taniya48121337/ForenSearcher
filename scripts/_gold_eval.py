@@ -85,6 +85,11 @@ def main() -> int:
             if fid and err.get("severity") in ("major", "critical"):
                 flagged.setdefault((run, fid), []).append(err["type"])
     unit_disp = {(u["subject"]["run"], u["subject"].get("request"), u.get("unit")): u for u in load_jsonl(Path(args.unit_verdicts))}
+    # --from-hard 批次（v1'）：条目里有答案句、替换后的证据，核验器结论按抽样时记进 strata.json 的为准
+    strata_path = batch / "strata.json"
+    strata_doc = json.loads(strata_path.read_text(encoding="utf-8")) if strata_path.is_file() else {}
+    from_hard = (strata_doc.get("meta") or {}).get("mode") == "from_hard"
+    strata = {s["id"]: s for s in strata_doc.get("strata") or []}
 
     lines = [f"# 金标对照：{batch.name} × {Path(args.report_verdicts).name} / {Path(args.unit_verdicts).name}", ""]
     for ann in annotations:
@@ -92,6 +97,10 @@ def main() -> int:
         rows: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
         type_rows: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
         type_hits, missing, skipped = Counter(), 0, Counter()
+        by_stratum: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
+        by_reason: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
+        by_version: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
+        by_version_ctx: dict[str, list[tuple[bool, bool]]] = defaultdict(list)   # 宽口径：允许依据同单元已核实句子（10-04）
         minutes: dict[str, list[float]] = defaultdict(list)
         for lab in ann["labels"]:
             it = items.get(lab["id"])
@@ -110,7 +119,26 @@ def main() -> int:
                 skipped[kind] += 1
                 continue
             human_bad = lab["main"] in NEG[kind]
-            if kind == "finding":
+            if kind == "finding" and from_hard and lab["id"] in strata:
+                st = strata[lab["id"]]
+                ver_types = list(st.get("verifier_errors") or [])
+                pair = (human_bad, bool(st.get("verifier_flagged")))
+                rows[kind].append(pair)
+                by_stratum[st.get("stratum", "?")].append(pair)
+                for reason in st.get("reasons") or ["(对照)"]:
+                    by_reason[reason].append(pair)
+                if st.get("video_frames"):
+                    by_reason["含视频帧"].append(pair)
+                ctx_label = lab.get("context_label")
+                human_bad_ctx = (ctx_label == "bad") if ctx_label in ("ok", "bad") else human_bad
+                for tag, f in (st.get("verifier_flags") or {}).items():
+                    by_version[tag].append((human_bad, bool(f.get("flagged"))))
+                    if ctx_label != "cannot_tell":
+                        by_version_ctx[tag].append((human_bad_ctx, bool(f.get("flagged"))))
+                if human_bad and ver_types:
+                    for t in lab.get("errors") or []:
+                        type_hits["同类" if t in ver_types else "异类"] += 1
+            elif kind == "finding":
                 key = (it["run"], it["finding_id"])
                 if key not in flagged:
                     missing += 1
@@ -137,6 +165,32 @@ def main() -> int:
             med = round(statistics.median(minutes[kind]), 1) if minutes[kind] else "—"
             lines.append(f"| {kind} | {m['n']} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | {m['precision']} | {m['recall']} | {m['agreement']} | {m['kappa']} | {skipped[kind]} | {med} |")
         lines.append("")
+        if by_version:
+            lines.append("| 核验器版本（同一批人工标签） | n | 人工有问题且核验器标出 | 核验器误报 | 核验器漏报 | 都认为没问题 | 精确率 | 召回 | κ |")
+            lines.append("|---|---|---|---|---|---|---|---|---|")
+            for tag, prs in sorted(by_version.items()):
+                m = pr(prs)
+                lines.append(f"| {tag} | {m['n']} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | {m['precision']} | {m['recall']} | {m['kappa']} |")
+            lines.append("")
+            n_ctx = sum(1 for x in ann["labels"] if x.get("context_label")) + len(ann.get("context_only") or [])
+            if n_ctx:
+                lines.append(f"宽口径（{n_ctx} 条答了宽口径题，其余沿用主判定）：回指 / 综合句允许依据同一报告或答案里已核实的句子。")
+                lines.append("")
+                lines.append("| 核验器版本 · 宽口径 | n | 人工有问题且核验器标出 | 核验器误报 | 核验器漏报 | 都认为没问题 | 精确率 | 召回 | κ |")
+                lines.append("|---|---|---|---|---|---|---|---|---|")
+                for tag, prs in sorted(by_version_ctx.items()):
+                    m = pr(prs)
+                    lines.append(f"| {tag} | {m['n']} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | {m['precision']} | {m['recall']} | {m['kappa']} |")
+                lines.append("")
+        if by_stratum:
+            lines.append("| v1' 分层 / 原因 | n | 人工有问题且核验器标出 | 核验器误报 | 核验器漏报 | 都认为没问题 | 精确率 | 召回 |")
+            lines.append("|---|---|---|---|---|---|---|---|")
+            for name, prs in [*sorted(by_stratum.items()), *sorted(by_reason.items())]:
+                m = pr(prs)
+                lines.append(f"| {name} | {m['n']} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | {m['precision']} | {m['recall']} |")
+            lines.append("")
+            lines.append("swap 层：核验器在替换后的无关证据上判了支持；人工判\"不支持\" = 盖章属实（记在核验器漏报一栏）。")
+            lines.append("")
         if type_rows:
             lines.append("| 任务级错误类型 | n | 双方都认为有 | 核验器误报 | 核验器漏报 | 都认为没有 | 精确率 | 召回 | κ |")
             lines.append("|---|---|---|---|---|---|---|---|---|")
@@ -144,6 +198,21 @@ def main() -> int:
                 m = pr(trs)
                 lines.append(f"| {etype} | {m['n']} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | {m['precision']} | {m['recall']} | {m['kappa']} |")
             lines.append("")
+        extra_labels = ann.get("extra_labels") or []
+        sem = [x for x in extra_labels if x.get("kind") == "semcov" and x.get("choice") in ("yes", "no")]
+        if sem:
+            agree = sum((x["choice"] == "yes") == bool(x.get("candidate_covered")) for x in sem)
+            fp = [x for x in sem if x.get("candidate_covered") and x["choice"] == "no"]
+            fn = [x for x in sem if not x.get("candidate_covered") and x["choice"] == "yes"]
+            lines.append(f"语义覆盖抽查（F 组）：{len(sem)} 条，与核验器一致 {agree} 条；核验器判已建立而人判未建立 {len(fp)} 条"
+                         + (f"（{'、'.join(x['id'] for x in fp)}）" if fp else "") + f"；核验器判未建立而人判已建立 {len(fn)} 条"
+                         + (f"（{'、'.join(x['id'] for x in fn)}）" if fn else "") + "。")
+            lines.append("")
+        for x in extra_labels:
+            if x.get("kind") == "label":
+                lines.append(f"标签口径 {x['id']}（{x.get('run')}）：{ {'accept': '算一致', 'reject': '不算一致', 'cannot_tell': '无法判断'}.get(x.get('choice'), x.get('choice')) }"
+                             + (f"；备注：{x['note']}" if x.get("note") else ""))
+                lines.append("")
         if type_hits:
             lines.append(f"双方都认为有问题的 Finding 里，人工勾选的错误类型与核验器同类 {type_hits['同类']} 次、异类 {type_hits['异类']} 次。")
         if missing:

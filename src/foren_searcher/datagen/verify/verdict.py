@@ -15,7 +15,27 @@ from .exec_checks import exec_checks
 from .sufficiency import verify_sufficiency
 
 Disposition = Literal["positive", "negative", "uncertain"]
-VERIFIER_VERSION = "verifier@0.3.2"
+VERIFIER_VERSION = "verifier@0.3.6"
+# 0.3.5 → 0.3.6（2026-10-05，v1p2_hard 金标采纳后默认打开，见 claude/程序规则与逐帧差异对照_20261004.md）：
+#   ① 第二层程序规则 task_given / back_reference / verdict_sentence（anchored.PROGRAM_RULES）；
+#   ② 推理核对（inference.py）：实锤"无支持"片段若能由同单元已核实句子直接推出、或只是被反驳的引述，降为 minor；
+#   ③ 语义覆盖（semantic_coverage.py）：答案 premature_finish 与报告"必需证据没取到"类错误，要求若已由已核验片段建立则不再计。
+#   都只把错误降为 minor 并留痕（extra.program_rule），不删错误。FOREN_VERIFIER_CANDIDATES=none 可回到 0.3.5 行为。
+# 0.3.4 → 0.3.5（2026-10-04，r0cn 的 averimatec_699 发现）：第一、三层缺项去重按证据组算。第一层对 any_one_of 组只记一条
+#   "必需证据 a / b / c 未被任何 Finding 引用"（extra.keys 是整组），旧去重只认组里第一个 key，第三层对同组其余 key 各记一条
+#   "任务要求 'b' 未被回答"（major），一组没取到就变成 2–5 个 major → negative。同样只缺一组的工作区，第三层碰巧没逐项列出的
+#   就是 positive（r0c 的 true_20361105 W1-1/W1-2 负、W2-1 正）。只改合并规则，不调模型；第二层（anchored.FEATURES）不变。
+# 0.3.3 → 0.3.4（2026-10-02，四层精确率实测 precision_r0c 发现）：第二层两处，见 anchored.FEATURES——
+#   1. 交代调查范围 / 局限的句子不再被覆盖汇总记成无据断言（句中夹带的具体事实照常核）；只对命中 _LIMITATION 的句子换提示词；
+#   2. 模型层 major/critical 错误独立复核一遍，没复现的降为 minor（extra.unconfirmed）。只给出了实锤错误的 Finding 多花调用。
+#   把 anchored.FEATURES 两项都关掉 = 0.3.3 的行为（缓存键也与 0.3.3 逐字相同）。
+# 0.3.2 → 0.3.3（2026-09-30，r0c 用 Sonnet 核验后发现的四处）：
+#   1. 视频帧的图片对带 media_note（取帧时间、单帧时长、视频总长、首尾帧），"结尾帧""视频共 6 秒"不再因核验模型不知道总长被判无支持；
+#   2. 来自输入材料的图片对带任务文字（只用来理解"材料A""给定视频"的指代），4126 里两段视频指代弄反的误判；
+#   3. 一句话引了两张以上图片时，覆盖汇总附上这些图片（最多 8 张），跨帧比较（前后相同、B 比 A 多一段）不再必然判无支持；
+#   4. answer 单元的案卷标签改为语义判定（label_judged.py）：等价说法算命中，反向结论记 critical；程序层子串匹配排除否定前缀
+#      （"属实"不再命中"不属实""部分属实"）。
+#   只在 payload 带新字段时换提示词：外部网页的文本对、单图汇总与旧版逐字相同，缓存照常命中；视频帧对与多图汇总会重判。
 # 0.3.1 → 0.3.2（2026-09-30，Claude Sonnet 5.5 重判 r0b 时发现）：覆盖汇总的提示词让模型"拿不准的部分也列出来，但 grounded 只在确实
 #   缺少支持时才为 false"，代码却把列出的每一部分都记成 critical 的 unsupported_assertion。模型列了部分但 grounded=true 时，
 #   这些部分改记 minor（extra.uncertain=True），不计入处置。r0b 上 158 次覆盖汇总里 13 次属于这种情况，涉及 7 条错误、4 份报告。
@@ -78,6 +98,29 @@ class Verdict:
                    spec_hash=value.get("spec_hash"), state_renderer=value.get("state_renderer"), extra=dict(value.get("extra", {})))
 
 
+def merge_sufficiency_errors(errors: list[ErrorRecord], extra: list[ErrorRecord]) -> list[ErrorRecord]:
+    """第三层错误并进第一、二层：状态级错误按类型去重，缺项按 (类型, key) 去重。
+
+    verifier@0.3.5：第一层的必需证据错误带 extra.keys（整组 key），组里每个 key 都算已记过——any_one_of 组没取到只算一条缺项。
+    """
+
+    def key_of(e: ErrorRecord) -> tuple[Any, ...]:
+        if SPECS[e.type].level.value == "status":
+            return (e.type,)
+        return (e.type, e.extra.get("key") or e.extra.get("requirement"))
+
+    out = list(errors)
+    seen = {key_of(e) for e in out}
+    for e in out:
+        for k in e.extra.get("keys") or ():
+            seen.add((e.type, k))
+    for e in extra:
+        if key_of(e) not in seen:
+            out.append(e)
+            seen.add(key_of(e))
+    return out
+
+
 def decide(errors: list[ErrorRecord], pending: list[dict[str, Any]]) -> Disposition:
     """处置规则：任一 critical 定错 → negative；≥2 个 major 定错 → negative；有未决项或仅有 flag → uncertain；否则 positive。"""
 
@@ -121,7 +164,8 @@ async def verify_report(report: dict[str, Any], lookup: EvidenceLookup, *, subje
     errors: list[ErrorRecord] = list(first)
     if judge is not None:
         skip = {eid for e in first for eid in e.evidence_ids if e.type.value == "fabricated_evidence_id"}
-        anchored = await verify_anchored(report, lookup, judge, skip_evidence_ids=skip)
+        text = task_text if task_text is not None else (case.task_text if case else None)
+        anchored = await verify_anchored(report, lookup, judge, skip_evidence_ids=skip, task=text)
         verdict.layers_run.append("anchored")
         judged = {j.finding_id for j in anchored.judgments}
         # 第二层看过的 Finding，第一层的 flag 由模型判定取代
@@ -130,27 +174,19 @@ async def verify_report(report: dict[str, Any], lookup: EvidenceLookup, *, subje
         verdict.pending.extend(anchored.pending)
         verdict.judgments = [j.to_dict() for j in anchored.judgments]
         verdict.coverage = anchored.coverage
-        text = task_text if task_text is not None else (case.task_text if case else None)
         if text:
             sufficiency = await verify_sufficiency(report, text, judge, case=case, requirement_ids=requirement_ids)
             verdict.layers_run.append("sufficiency")
-            # 第三层与第一层可能重复：状态级错误按类型去重，缺项按 (类型, key) 去重
-            def dedup_key(e: ErrorRecord) -> tuple[Any, ...]:
-                if SPECS[e.type].level.value == "status":
-                    return (e.type,)
-                return (e.type, e.extra.get("key") or e.extra.get("requirement"))
-
-            seen = {dedup_key(e) for e in errors}
-            for e in sufficiency.errors:
-                if dedup_key(e) not in seen:
-                    errors.append(e)
-                    seen.add(dedup_key(e))
+            errors = merge_sufficiency_errors(errors, sufficiency.errors)
             verdict.sufficiency = sufficiency.raw
     else:
         verdict.pending.append({"reason": "no_judge", "note": "第二、三层未运行"})
     verdict.errors = errors
     verdict.tainted_findings = tainted(errors)
     verdict.disposition = decide(errors, verdict.pending)
+    if judge is not None and case is not None:
+        from .semantic_coverage import apply_report_semantic_coverage    # 候选，默认关闭；循环引用所以局部导入
+        await apply_report_semantic_coverage(verdict, case, judge)
     return verdict
 
 

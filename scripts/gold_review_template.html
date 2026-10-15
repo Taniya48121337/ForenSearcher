@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>金标复核</title>
+<style>
+:root{
+  --bg:#f6f5f1;--panel:#fff;--ink:#1d1d1b;--muted:#6b6b66;--faint:#9a9993;--line:#e3e1db;--soft:#f0eee8;
+  --accent:#2f5d8a;--accent-soft:#e7eef6;--ok:#2e7d4f;--ok-soft:#e5f2ea;--warn:#a86400;--warn-soft:#fbf0de;
+  --bad:#b3261e;--bad-soft:#fbe7e5;--mark:#fff1a8;--mark-ink:#3a3000;--span:#f7d4cf;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1e1b;--ink:#ecebe6;--muted:#a6a59e;--faint:#7c7b75;--line:#33322e;--soft:#252521;
+  --accent:#8ab4df;--accent-soft:#1f2b38;--ok:#6cc08b;--ok-soft:#1c2c22;--warn:#e3a94f;--warn-soft:#30261a;
+  --bad:#ef8a80;--bad-soft:#3a201d;--mark:#5a4d10;--mark-ink:#fff4c2;--span:#5a2a25;--shadow:none}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1e1b;--ink:#ecebe6;--muted:#a6a59e;--faint:#7c7b75;--line:#33322e;--soft:#252521;
+  --accent:#8ab4df;--accent-soft:#1f2b38;--ok:#6cc08b;--ok-soft:#1c2c22;--warn:#e3a94f;--warn-soft:#30261a;
+  --bad:#ef8a80;--bad-soft:#3a201d;--mark:#5a4d10;--mark-ink:#fff4c2;--span:#5a2a25;--shadow:none}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 system-ui,-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.kbd{display:inline-block;min-width:18px;padding:0 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;font:11px/16px ui-monospace,Consolas,monospace;color:var(--muted);text-align:center;background:var(--panel)}
+/* header */
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:15px;margin:0;font-weight:650}
+.bar{flex:1;min-width:160px;max-width:360px;height:8px;border-radius:99px;background:var(--soft);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .agree{background:var(--ok)}.bar .change{background:var(--warn)}
+.stat{color:var(--muted);font-size:13px;white-space:nowrap}
+.stat b{color:var(--ink)}
+.hdr-r{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hdr-r input{width:96px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.btn{padding:5px 11px;border:1px solid var(--line);border-radius:7px;background:var(--panel)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary,.btn.primary{color:#fff}
+/* layout */
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:calc(100vh - 53px)}
+nav{border-right:1px solid var(--line);position:sticky;top:53px;height:calc(100vh - 53px);overflow:auto;background:var(--panel)}
+.grp{padding:12px 14px 4px;font-size:12px;color:var(--muted);font-weight:600;display:flex;justify-content:space-between}
+.nit{display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;font-size:13px;border-left:3px solid transparent}
+.nit:hover{background:var(--soft)}
+.nit.cur{background:var(--accent-soft);border-left-color:var(--accent)}
+.nit .id{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;width:40px}
+.nit .lab{flex:1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+.st{width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;border:1.5px solid var(--line);color:transparent}
+.st.agree{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.change{background:var(--warn);border-color:var(--warn);color:#fff}
+.quick-link{margin:10px 14px 16px;display:block;text-align:center}
+main{padding:20px 28px 150px;max-width:1180px;width:100%}
+/* cards */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px;font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;margin-bottom:14px;align-items:start}
+.top .card{margin:0}
+.q{border-left:4px solid var(--accent);background:var(--accent-soft)}
+.q .qt{font-size:15px;font-weight:600;line-height:1.6}
+.meta{font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;gap:10px;flex-wrap:wrap}
+.meta code{font-size:11.5px}
+.verdict{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:99px;font-size:12.5px;font-weight:600}
+.b-full{background:var(--ok-soft);color:var(--ok)}.b-partial{background:var(--warn-soft);color:var(--warn)}
+.b-none{background:var(--bad-soft);color:var(--bad)}.b-cannot_tell{background:var(--soft);color:var(--muted)}
+.conf{font-size:12px;color:var(--muted)}
+.why{font-size:13.5px}
+.vbox{margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--soft);font-size:13px}
+.vbox .vt{font-weight:600;color:var(--bad)}
+.statement{font-size:16px;line-height:1.75}
+mark{background:var(--mark);color:var(--mark-ink);border-radius:3px;padding:0 1px}
+.span-c{background:var(--span);border-radius:3px;box-shadow:inset 0 -2px 0 var(--bad)}
+.span-v{text-decoration:underline wavy var(--warn);text-underline-offset:4px}
+.legend{font-size:12px;color:var(--muted);margin-top:6px;display:flex;gap:14px;flex-wrap:wrap}
+.legend span{display:inline-flex;gap:5px;align-items:center}
+.sw{display:inline-block;width:22px;height:12px;border-radius:3px}
+.lim{margin-top:8px;font-size:13px;color:var(--muted)}
+details.ctx{margin-top:10px;font-size:13.5px}
+details.ctx summary{cursor:pointer;color:var(--accent)}
+details.ctx div{margin-top:6px;padding:8px 10px;background:var(--soft);border-radius:8px}
+.cur-sent{background:var(--accent-soft);box-shadow:inset 0 -2px 0 var(--accent)}
+/* evidence */
+.ev{border-top:1px solid var(--line);padding:12px 0 4px}
+.ev:first-of-type{border-top:0;padding-top:2px}
+.evh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.evh .eid{font:600 12.5px ui-monospace,Consolas,monospace;padding:0 6px;border-radius:4px;background:var(--soft)}
+.evh .lbl{font-weight:600}
+.evh a{font-size:12px;color:var(--accent);word-break:break-all}
+.para{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:6px 0;padding:6px 10px;border-radius:6px}
+.para.hit{background:var(--soft)}
+.gap{display:block;width:100%;text-align:left;border:1px dashed var(--line);background:transparent;color:var(--muted);font-size:12px;border-radius:6px;padding:3px 10px;margin:4px 0}
+.gap:hover{border-color:var(--accent);color:var(--accent)}
+.json{white-space:pre-wrap;word-break:break-all;font:12px/1.55 ui-monospace,Consolas,monospace;background:var(--soft);padding:8px 10px;border-radius:6px;max-height:260px;overflow:auto;margin-top:6px}
+.json.open{max-height:none}
+.recov{margin:8px 0 2px;padding:8px 10px;border-radius:8px;border:1px solid var(--warn);background:var(--warn-soft);font-size:13px}
+.recov b{color:var(--warn)}
+.imgs{display:grid;gap:10px;margin-top:8px}
+.imgs.two{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.imgs img{width:100%;border:1px solid var(--line);border-radius:8px;cursor:zoom-in;display:block;background:var(--soft)}
+.imgs figure{margin:0}
+.imgs figcaption{font-size:12px;color:var(--muted);margin-top:3px}
+.zoomset img{width:auto;max-width:100%;max-height:440px}
+/* video */
+.vcard .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.vcard figure{margin:0}
+.vcard video{width:100%;max-height:420px;background:#000;border-radius:8px;display:block;cursor:pointer}
+.vgrid.big{grid-template-columns:1fr}
+.vgrid.big video{max-height:none}
+.vscrub{width:100%;margin:6px 0 0;accent-color:var(--accent)}
+.vcard figcaption{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);margin-top:4px;flex-wrap:wrap}
+.vcard figcaption b{color:var(--ink)}
+.vctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.vctl .btn{padding:3px 9px;font-size:13px}
+.vctl .btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.tchip{border:1px solid var(--line);border-radius:7px;padding:2px 9px;font:12.5px ui-monospace,Consolas,monospace;cursor:pointer;background:var(--panel)}
+.tchip:hover{border-color:var(--accent);color:var(--accent)}
+.tchip .sd{font-family:system-ui,sans-serif;font-weight:700;margin-right:4px}
+.tchip.stmt{border-style:dashed}
+.vnote{font-size:12px;color:var(--muted);margin-top:6px}
+.vbadge{font-size:11.5px;border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:6px;color:var(--muted)}
+.vwrap{position:relative}
+.dbox{position:absolute;border:2px solid #ff3b30;box-shadow:0 0 0 1px rgba(0,0,0,.5);pointer-events:none;display:none}
+.dline{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.dline h4{margin:0 0 6px;font-size:12.5px;color:var(--muted);font-weight:600}
+.dsvg{width:100%;height:64px;display:block;cursor:pointer;background:var(--soft);border-radius:6px}
+.dread{font-size:12.5px;margin-top:4px;color:var(--muted)}
+.dread b{color:var(--ink)}
+.dread .hit{color:var(--bad);font-weight:700}
+.segchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.seg{border:1px solid var(--bad);border-radius:7px;padding:3px 9px;font-size:12.5px;background:var(--bad-soft)}
+.seg button{border:0;background:transparent;color:var(--accent);padding:0 3px;font:inherit;text-decoration:underline;cursor:pointer}
+/* decision bar */
+.dock{position:fixed;left:250px;right:0;bottom:0;z-index:15;background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(0,0,0,.06);padding:10px 22px}
+.dock-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:1180px}
+.agree-btn{padding:9px 16px;border-radius:9px;border:0;background:var(--ok);color:#fff;font-weight:650;font-size:14.5px;display:flex;gap:8px;align-items:center}
+.agree-btn .kbd{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35);color:#fff}
+.opt{padding:8px 12px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel);display:flex;gap:6px;align-items:center}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.opt.claude::after{content:"Claude";font-size:10.5px;color:var(--muted);margin-left:2px;border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.sep{width:1px;height:28px;background:var(--line);margin:0 4px}
+.dock .nav{margin-left:auto;display:flex;gap:6px}
+.edit{display:none;margin-top:10px;gap:10px;max-width:1180px}
+.edit.show{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.edit textarea{width:100%;min-height:58px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:13px;resize:vertical}
+.edit .lbl2{font-size:12px;color:var(--muted);margin-bottom:3px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12.5px;cursor:pointer;user-select:none;background:var(--panel)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.save-btn{margin-top:8px}
+.state-line{font-size:12.5px;color:var(--muted);margin-left:6px}
+.state-line b{color:var(--ok)}
+.state-line b.chg{color:var(--warn)}
+/* toast */
+.toast{position:fixed;left:50%;bottom:118px;transform:translateX(-50%) translateY(10px);opacity:0;background:var(--ink);color:var(--bg);padding:7px 14px;border-radius:99px;font-size:13px;transition:.18s;z-index:40;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.lb.on{display:flex}
+.lb .frame{max-width:96vw;max-height:88vh;overflow:auto}
+.lb img{display:block;max-width:96vw;max-height:88vh;cursor:zoom-in}
+.lb img.full{max-width:none;max-height:none;cursor:zoom-out}
+.lb .cap{color:#ddd;font-size:13px}
+/* quick */
+.qgrid{display:grid;gap:10px}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:start}
+.qcard.done-agree{border-left:4px solid var(--ok)}.qcard.done-change{border-left:4px solid var(--warn)}
+.qcard .qid{font:600 13px ui-monospace,Consolas,monospace;padding-top:2px}
+.qcard .qs{font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.qcard .qn{font-size:12.5px;color:var(--muted);margin-top:4px}
+.qcard .qbtn{display:flex;flex-direction:column;gap:6px}
+.qthumbs{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.qthumbs img{height:46px;border-radius:4px;border:1px solid var(--line);cursor:zoom-in}
+.done-view{text-align:center;padding:30px 10px}
+.done-view h2{margin:0 0 6px}
+table.sum{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;text-align:left}
+table.sum td,table.sum th{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top}
+/* context (宽口径) + extra items */
+.ctxcard{border-left:4px solid var(--accent)}
+.prem{border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-top:8px;background:var(--soft)}
+.prem .pid{font:600 12px ui-monospace,Consolas,monospace;color:var(--accent);margin-right:6px}
+.prem .pq{font-size:12.5px;color:var(--muted);margin-top:4px}
+.prem .pq mark{background:var(--mark);color:var(--mark-ink)}
+.cand{font-size:12.5px;color:var(--muted);margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
+.dock-row.ctxrow{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px}
+.ctxrow .lbl3{font-size:12.5px;color:var(--accent);font-weight:600;margin-right:4px}
+.frag{border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-top:8px}
+.frag .fh{font-size:12px;color:var(--muted)}
+.frag mark{background:var(--mark);color:var(--mark-ink)}
+.req{font-size:15px;font-weight:600;margin:4px 0}
+details.peek{margin-top:10px;font-size:13px;color:var(--muted)}
+.help-k{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}
+@media (max-width:900px){.top{grid-template-columns:1fr}.edit.show{grid-template-columns:1fr}}
+@media (max-width:760px){.wrap{grid-template-columns:minmax(0,1fr)}nav{position:static;height:auto;max-height:240px}.dock{left:0;padding:8px 12px}main{padding:14px 16px 210px}.qcard{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>金标复核 · <span id="batchName"></span></h1>
+  <div class="bar" title="绿=同意 Claude，橙=改判"><i class="agree" id="barA"></i><i class="change" id="barC"></i></div>
+  <span class="stat" id="stat"></span>
+  <div class="hdr-r">
+    <label class="stat">标注人 <input id="who" placeholder="你的缩写"></label>
+    <button class="btn" onclick="showHelp()">快捷键 <span class="kbd">?</span></button>
+    <button class="btn" onclick="document.getElementById('imp').click()">导入</button>
+    <input id="imp" type="file" accept=".json" hidden onchange="importFile(this.files[0])">
+    <button class="btn primary" onclick="exportLabels()">导出标注</button>
+  </div>
+</header>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+<div class="dock" id="dock"></div>
+<div class="toast" id="toast"></div>
+<div class="lb" id="lb" onclick="if(event.target===this)closeLb()"><div class="frame"><img id="lbImg" onclick="this.classList.toggle('full')"></div><div class="cap" id="lbCap"></div></div>
+<script>
+const DATA = /*__DATA__*/null;
+const ITEMS = DATA.items, SPEC = DATA.spec.items, GROUPS = DATA.spec.groups, BATCH = DATA.meta.batch;
+const KEY = 'gold_review_' + BATCH;
+const MAIN = {full:'完全支持', partial:'部分支持', none:'不支持', cannot_tell:'无法判断'};
+const OPTS = ['full','partial','none','cannot_tell'];
+const ERRS = [['unsupported_assertion','断言无证据支持'],['scope_overreach','说过头'],['wrong_citation','引错证据'],['attribution_drift','把来源说法当事实'],['sloppy_numeric','数字/口径错'],['misread_fine_text','读错细节/画面'],['other','其他']];
+const ORDER = ['A','B','C','D'];
+const byId = Object.fromEntries(ITEMS.map(it => [it.id, it]));
+const EXTRA = DATA.spec.extra_items || [], exById = Object.fromEntries(EXTRA.map(x => [x.id, x])), EXTRA_IDS = EXTRA.map(x => x.id);
+const CTX = {ok:'成立', bad:'不成立', cannot_tell:'无法判断'}, CTXO = ['ok','bad','cannot_tell'];
+const XOPT = {semcov: {yes:'已建立', no:'未建立', cannot_tell:'无法判断'}};
+const PRIORITY = ORDER.flatMap(g => ITEMS.filter(it => SPEC[it.id].group === g).sort((a, b) => (SPEC[a.id].order ?? 99) - (SPEC[b.id].order ?? 99)).map(it => it.id));
+const REST = ITEMS.filter(it => SPEC[it.id].group === 'E').map(it => it.id);
+let st = {decisions:{}, who:'', ctx:{}, extra:{}}, view = {mode:'item', id: PRIORITY[0]}, draft = null, started = Date.now();
+try { st = Object.assign(st, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+st.ctx = st.ctx || {}; st.extra = st.extra || {};
+function xopts(x){ return x.options || XOPT[x.kind] || {}; }
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 1300); }
+function dec(id){ return st.decisions[id]; }
+function stateOf(id){ const d = dec(id); return !d ? '' : (d.agreed ? 'agree' : 'change'); }
+
+/* ---------- highlight helpers ---------- */
+function markAll(html, needles, cls){
+  let out = html;
+  for (const n of needles) {
+    if (!n) continue;
+    const e = esc(n);
+    if (!e.trim()) continue;
+    const i = out.indexOf(e);
+    if (i < 0) continue;
+    out = out.slice(0, i) + `<span class="${cls}">` + e + '</span>' + out.slice(i + e.length);
+  }
+  return out;
+}
+function markQuotes(text, quotes){
+  let html = esc(text);
+  for (const q of quotes || []) { const e = esc(q); if (e && html.includes(e)) html = html.split(e).join('<mark>' + e + '</mark>'); }
+  return html;
+}
+function spans(s){ return String(s || '').split(/[｜|]/).map(x => x.trim()).filter(Boolean); }
+
+/* ---------- nav ---------- */
+function renderNav(){
+  let h = '';
+  for (const g of ORDER) {
+    const ids = PRIORITY.filter(id => SPEC[id].group === g);
+    const done = ids.filter(id => dec(id)).length;
+    h += `<div class="grp"><span>${esc(GROUPS[g])}</span><span>${done}/${ids.length}</span></div>`;
+    for (const id of ids) {
+      const c = SPEC[id].claude, s = stateOf(id);
+      h += `<div class="nit ${view.mode==='item'&&view.id===id?'cur':''}" onclick="openItem('${id}')"><span class="st ${s}">${s==='agree'?'✓':s==='change'?'↺':''}</span><span class="id">${id}</span><span class="lab">${MAIN[c.main]}${c.conf==='中'?' · 中':''}</span></div>`;
+    }
+  }
+  if (EXTRA.length) {
+    const xd = EXTRA_IDS.filter(id => st.extra[id]).length;
+    h += `<div class="grp"><span>${esc(GROUPS.F || 'F')}</span><span>${xd}/${EXTRA.length}</span></div>`;
+    for (const x of EXTRA) {
+      const a = st.extra[x.id];
+      h += `<div class="nit ${view.mode==='extra'&&view.id===x.id?'cur':''}" onclick="openExtra('${x.id}')"><span class="st ${a?'agree':''}">${a?'✓':''}</span><span class="id">${x.id}</span><span class="lab">${esc(x.kind==='label' ? '标签口径' : x.requirement + ' · ' + x.run.split('_r0')[0])}</span></div>`;
+    }
+  }
+  const rd = REST.filter(id => dec(id)).length;
+  h += `<div class="grp"><span>${esc(GROUPS.E)}</span><span>${rd}/${REST.length}</span></div>`;
+  h += `<button class="btn quick-link ${view.mode==='quick'?'primary':''}" onclick="openQuick()">快速确认其余 ${REST.length} 条</button>`;
+  h += `<button class="btn quick-link" style="margin-top:-6px" onclick="openSummary()">汇总与导出</button>`;
+  $('nav').innerHTML = h;
+  const cur = $('nav').querySelector('.cur'); if (cur) cur.scrollIntoView({block:'nearest'});
+}
+function renderStat(){
+  const all = Object.keys(st.decisions).length, pri = PRIORITY.filter(id => dec(id)).length;
+  const ag = Object.values(st.decisions).filter(d => d.agreed).length;
+  const cx = PRIORITY.filter(id => SPEC[id].context), cxd = cx.filter(id => st.ctx[id]).length, xd = EXTRA_IDS.filter(id => st.extra[id]).length;
+  $('stat').innerHTML = `重点 <b>${pri}/${PRIORITY.length}</b>${cx.length ? ` · 宽口径 <b>${cxd}/${cx.length}</b>` : ''}${EXTRA.length ? ` · F 组 <b>${xd}/${EXTRA.length}</b>` : ''} · 全部 <b>${all}/${ITEMS.length}</b> · 同意 ${ag} · 改判 ${all - ag}`;
+  $('barA').style.width = (ag / ITEMS.length * 100) + '%';
+  $('barC').style.width = ((all - ag) / ITEMS.length * 100) + '%';
+}
+
+/* ---------- video ---------- */
+const VIDEOS = DATA.spec.videos || {};
+let vsync = true;
+function videoMarks(it){
+  const marks = [], seen = new Set();
+  for (const ev of it.evidence) {
+    const m = String(ev.label || '').match(/视频E\d+在([\d.]+)秒的帧/);
+    if (!m) continue;
+    const en = (String(ev.label).match(/视频E(\d+)在/) || [])[1];
+    const side = ((ev.provenance || '').match(/来源材料：([A-Z])(?![、,])/) || [])[1] || (en === '2' ? 'B' : 'A');
+    const k = side + m[1]; if (seen.has(k)) continue; seen.add(k);
+    marks.push({side, t: parseFloat(m[1]), eid: ev.id});
+  }
+  const maxDur = Math.max(0, ...(VIDEOS[it.case_id] || []).map(v => v.duration));
+  for (const m of String(it.statement).matchAll(/(\d+(?:\.\d+)?)\s*秒/g)) {
+    const t = parseFloat(m[1]); const k = '*' + t;
+    const before = String(it.statement).slice(Math.max(0, m.index - 10), m.index);
+    const after = String(it.statement).slice(m.index + m[0].length, m.index + m[0].length + 6);
+    if (/(隔|跨度|多出|偏移|差|分辨率|时长|经过|单帧|精度|共|长约|总长)/.test(before) || /(约|长)$/.test(before) || /^(的?状态跨度|的?跨度|的?差|的?时长)/.test(after) || t > maxDur) continue;
+    if (seen.has(k) || marks.some(x => Math.abs(x.t - t) < 0.002)) continue; seen.add(k);
+    marks.push({side: '*', t, stmt: true});
+  }
+  return marks.sort((a, b) => a.t - b.t || a.side.localeCompare(b.side));
+}
+function vEl(side){ return document.getElementById('v' + side); }
+function vInfo(side){ return (VIDEOS[byId[view.id].case_id] || []).find(v => v.side === side); }
+function vSides(){ return (VIDEOS[byId[view.id].case_id] || []).map(v => v.side); }
+function targets(side){ return (side === '*' || (vsync && vSides().length > 1)) ? vSides() : [side]; }
+function vSeek(side, t){
+  for (const s of targets(side)) { const v = vEl(s), inf = vInfo(s); if (!v) continue;
+    v.pause(); v.currentTime = Math.max(0, Math.min(t + 0.5 / inf.fps, inf.duration - 0.001)); }
+}
+function vStep(k){
+  for (const s of vSides()) { const v = vEl(s), inf = vInfo(s); if (!v || (!vsync && s !== lastSide)) continue;
+    v.pause(); const f = Math.round(v.currentTime * inf.fps - 0.5) + k; v.currentTime = Math.max(0, Math.min((f + 0.5) / inf.fps, inf.duration - 0.001)); }
+}
+let lastSide = 'A';
+function vPlay(){ const vs = vSides().map(vEl).filter(Boolean); const anyPaused = vs.some(v => v.paused);
+  for (const s of vSides()) { const v = vEl(s); if (!v || (!vsync && s !== lastSide)) continue; anyPaused ? v.play() : v.pause(); } }
+function vRate(r){ for (const s of vSides()) { const v = vEl(s); if (v) v.playbackRate = r; } document.querySelectorAll('.rate').forEach(b => b.classList.toggle('on', +b.dataset.r === r)); }
+function vScrub(side, f){ lastSide = side; const inf = vInfo(side); const t = (+f + 0.5) / inf.fps;
+  for (const sd of (vsync && vSides().length > 1 ? vSides() : [side])) { const v = vEl(sd), i2 = vInfo(sd); if (v) { v.pause(); v.currentTime = Math.min(t, i2.duration - 0.001); } } }
+let vbig = false;
+function vToggleBig(){ vbig = !vbig; const g = document.querySelector('.vgrid'); if (g) g.classList.toggle('big', vbig); renderVideoCtl(); }
+function vToggleSync(){ vsync = !vsync; renderVideoCtl(); }
+function vLabel(side){ const v = vEl(side), inf = vInfo(side), el = document.getElementById('vt' + side); if (!v || !el) return; setTimeout(dUpdate, 0);
+  const f = Math.floor(v.currentTime * inf.fps + 1e-6); const sc = document.getElementById('vs' + side); if (sc && document.activeElement !== sc) sc.value = f; el.innerHTML = `<b>${(f / inf.fps).toFixed(3)} 秒</b> · 第 ${f} 帧 / 共 ${Math.round(inf.duration * inf.fps)} 帧`; }
+function renderVideoCtl(){
+  const el = document.getElementById('vctl'); if (!el) return;
+  const two = vSides().length > 1;
+  el.innerHTML = `<button class="btn" onclick="vPlay()">播放 / 暂停 <span class="kbd">K</span></button>
+    <button class="btn" onclick="vStep(-1)">◀ 上一帧 <span class="kbd">,</span></button><button class="btn" onclick="vStep(1)">下一帧 ▶ <span class="kbd">.</span></button>
+    ${[0.25, 0.5, 1].map(r => `<button class="btn rate ${r===1?'on':''}" data-r="${r}" onclick="vRate(${r})">${r}×</button>`).join('')}
+    <button class="btn ${vbig?'on':''}" onclick="vToggleBig()">${vbig?'并排显示':'单列放大'}</button>
+    ${two ? `<button class="btn ${vsync?'on':''}" onclick="vToggleSync()" title="开：跳转、逐帧、播放同时作用于 A 和 B">A/B 同步${vsync?'：开':'：关'}</button>` : ''}`;
+}
+function videoCard(it){
+  const vids = VIDEOS[it.case_id] || [];
+  if (!vids.length || !it.evidence.some(e => /来源材料|视频E\d+在/.test((e.provenance || '') + (e.label || '')))) return '';
+  const marks = videoMarks(it), two = vids.length > 1;
+  vsync = two && Math.abs(vids[0].duration - vids[1].duration) < 0.1 && Math.abs(vids[0].fps - vids[1].fps) < 0.01;
+  const chips = marks.map(m => `<span class="tchip ${m.stmt?'stmt':''}" onclick="vSeek('${m.side}',${m.t})" title="${m.stmt?'句中提到的时刻（两侧同时跳）':'所引帧 ' + (m.eid||'')}"><span class="sd">${m.side==='*'?(two?'A+B':''):(two?m.side:'')}</span>${m.t.toFixed(3)}s</span>`).join('');
+  return `<div class="card vcard"><h3>原视频（点时间跳到那一帧，逐帧核对）</h3>
+    <div class="vgrid">${vids.map(v => `<figure><div class="vwrap"><video id="v${v.side}" src="${esc(v.src)}" preload="auto" playsinline onplay="lastSide='${v.side}'" onseeked="vLabel('${v.side}')" ontimeupdate="vLabel('${v.side}')" onloadedmetadata="vLabel('${v.side}')" onclick="lastSide='${v.side}';this.paused?this.play():this.pause()" title="点击播放/暂停（画面上不叠加控件，边缘细节不会被挡住）"></video><div class="dbox" id="db${v.side}"></div></div>
+      <input type="range" class="vscrub" id="vs${v.side}" min="0" max="${Math.round(v.duration * v.fps) - 1}" step="1" value="0" oninput="vScrub('${v.side}', this.value)">
+      <figcaption><span><b>${two ? '材料 ' + v.side : '材料 A'}</b>${v.audio ? '' : '<span class="vbadge">无音轨</span>'}<span class="vbadge">${v.fps} fps · ${v.duration}s</span></span><span id="vt${v.side}"></span></figcaption></figure>`).join('')}</div>
+    ${marks.length ? `<div class="tchips"><span class="conf">跳到：</span>${chips}</div>` : ''}
+    ${diffBlock(it)}
+    <div class="vctl" id="vctl"></div>
+    <div class="vnote">实线框 = 这条所引的帧；虚线框 = 句子里提到的时刻。滑条按帧拖动；点画面播放/暂停。跳转落在该帧中间，避免停在上一帧。${two && !vsync ? 'A、B 时间轴不一致（时长或帧率不同），默认不同步，各跳各的。' : ''}视频读自本机 runs 目录，复核页需留在原位置打开。</div></div>`;
+}
+
+
+const DIFFS = DATA.spec.diffs || {};
+let showBox = true;
+function diffBlock(it){
+  const d = DIFFS[it.case_id]; if (!d) return '';
+  const n = d.per_frame.length, W = 1000, H = 60;
+  const ys = d.per_frame.map(p => p[0] > 0 ? Math.max(3, Math.sqrt(p[0] / 0.35) * H) : 0);
+  let bars = '';
+  d.per_frame.forEach((p, i) => { if (ys[i]) bars += `<rect x="${(i / n * W).toFixed(2)}" y="${(H - Math.min(H, ys[i])).toFixed(2)}" width="${Math.max(0.8, W / n - 0.3).toFixed(2)}" height="${Math.min(H, ys[i]).toFixed(2)}" fill="${p[0] >= d.min_area ? 'var(--bad)' : 'var(--faint)'}"/>`; });
+  const segs = d.segments.map(sg => `<rect x="${(sg.start_frame / n * W).toFixed(2)}" y="0" width="${((sg.end_frame - sg.start_frame) / n * W).toFixed(2)}" height="${H}" fill="var(--bad)" opacity=".08"/>`).join('');
+  const chips = d.segments.map((sg, k) => `<span class="seg">差异段 ${k + 1}：<b>${sg.start_s.toFixed(3)}–${sg.end_s.toFixed(3)}s</b>（帧 ${sg.start_frame}–${sg.end_frame - 1}，峰值 ${(sg.peak * 100).toFixed(1)}%）
+      跳到 <button onclick="dSeek(${sg.start_frame - 1})" ${sg.start_frame ? '' : 'disabled'}>前一帧</button><button onclick="dSeek(${sg.start_frame})">首帧</button><button onclick="dSeek(${sg.end_frame - 1})">末帧</button>${sg.end_frame < n ? `<button onclick="dSeek(${sg.end_frame})">后一帧</button>` : ''}</span>`).join('');
+  return `<div class="dline"><h4>工具实算：A/B 逐帧像素差异（共 ${n} 帧；红色 = 差异面积 ≥ ${(d.min_area * 100).toFixed(2)}%；点时间线跳转）</h4>
+    <svg class="dsvg" id="dsvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" onclick="dClick(event)">${segs}${bars}<line id="dhead" x1="0" x2="0" y1="0" y2="${H}" stroke="var(--accent)" stroke-width="3"/></svg>
+    <div class="dread" id="dread"></div>
+    <div class="segchips">${chips || '<span class="conf">两段全程无差异</span>'}</div>
+    <div class="vnote">${esc(DATA.spec.diffs_note || '')} 视频上的红框 = 当前帧的差异范围。<label><input type="checkbox" ${showBox ? 'checked' : ''} onchange="showBox=this.checked;dUpdate()"> 显示差异框</label></div></div>`;
+}
+function dSeek(f){ const d = DIFFS[byId[view.id].case_id]; if (!d || f < 0) return; vSeekBoth((f + 0.5) / d.fps); }
+function vSeekBoth(t){ for (const s of vSides()) { const v = vEl(s), inf = vInfo(s); if (v) { v.pause(); v.currentTime = Math.min(t, inf.duration - 0.001); } } }
+function dClick(e){ const r = e.currentTarget.getBoundingClientRect(); const d = DIFFS[byId[view.id].case_id]; dSeek(Math.floor((e.clientX - r.left) / r.width * d.per_frame.length)); }
+function dUpdate(){
+  const it = byId[view.id]; const d = it && DIFFS[it.case_id]; if (!d) return;
+  const v = vEl('B') || vEl('A'); if (!v) return;
+  const f = Math.min(d.per_frame.length - 1, Math.floor(v.currentTime * d.fps + 1e-6));
+  const [area, box] = d.per_frame[f] || [0, null];
+  const head = document.getElementById('dhead'); if (head) { const x = (f + 0.5) / d.per_frame.length * 1000; head.setAttribute('x1', x); head.setAttribute('x2', x); }
+  const rd = document.getElementById('dread');
+  if (rd) rd.innerHTML = `当前 B 第 <b>${f}</b> 帧（${(f / d.fps).toFixed(3)} 秒）：差异面积 <span class="${area >= d.min_area ? 'hit' : ''}">${(area * 100).toFixed(3)}%</span>${box ? ` · 范围 x ${box[0].toFixed(2)}–${box[2].toFixed(2)}，y ${box[1].toFixed(2)}–${box[3].toFixed(2)}` : ' · 无差异像素'}${area > 0 && area < d.min_area ? '（低于 min_area，不计为差异）' : ''}`;
+  for (const s of vSides()) {
+    const el = document.getElementById('db' + s), vid = vEl(s); if (!el || !vid) continue;
+    if (!showBox || !box || area < d.min_area || !vid.videoWidth) { el.style.display = 'none'; continue; }
+    const cw = vid.clientWidth, ch = vid.clientHeight, ar = vid.videoWidth / vid.videoHeight;
+    let w = cw, h = cw / ar; if (h > ch) { h = ch; w = ch * ar; }
+    const ox = (cw - w) / 2, oy = (ch - h) / 2;
+    Object.assign(el.style, {display: 'block', left: (ox + box[0] * w - 2) + 'px', top: (oy + box[1] * h - 2) + 'px', width: ((box[2] - box[0]) * w + 4) + 'px', height: ((box[3] - box[1]) * h + 4) + 'px'});
+  }
+}
+
+/* ---------- item view ---------- */
+function openItem(id){ tick(); view = {mode:'item', id}; started = Date.now(); draft = null; render(); window.scrollTo(0, 0); }
+function evidenceHtml(it){
+  const sp = SPEC[it.id], hl = sp.highlights || {};
+  let h = '';
+  const imgs = [];
+  for (const ev of it.evidence) {
+    const q = hl[ev.id] || [];
+    h += `<div class="ev"><div class="evh"><span class="eid">${esc(ev.id)}</span><span class="lbl">${esc(ev.label)}</span>${ev.source_url ? `<a href="${esc(ev.source_url)}" target="_blank" rel="noopener">${esc(ev.source_url)}</a>` : ''}</div>`;
+    if (ev.image) { imgs.push([ev.image, ev.id + ' · ' + ev.label]); h += `<div class="imgs two"><figure><img loading="lazy" src="${esc(ev.image)}" data-cap="${esc(ev.id + ' · ' + ev.label)}" onclick="openLb(this)"><figcaption>${esc((ev.text || '').split('\n').pop())}</figcaption></figure></div>`; }
+    else if (ev.text) {
+      const t = ev.text.trim();
+      if (t.startsWith('{') || t.startsWith('<?xml') || t.startsWith('{"language')) {
+        h += `<div class="json" onclick="this.classList.add('open')" title="点击展开">${markQuotes(t, q)}</div>`;
+      } else if (!q.length && Object.keys(hl).length) {
+        const paras = t.split(/\n\s*\n/);
+        h += `<button class="gap" onclick="expandGap(this)">展开全文（${paras.length} 段 · 本条判断主要不靠这份证据）</button><div hidden>${paras.map(p => `<div class="para">${esc(p)}</div>`).join('')}</div>`;
+      } else {
+        const paras = t.split(/\n\s*\n/);
+        const hit = paras.map(p => q.some(x => p.includes(x)));
+        const show = paras.map((_, i) => !q.length || hit[i] || hit[i-1] || hit[i+1]);
+        let hidden = 0, gid = 0;
+        const flush = () => { if (hidden) { h += `<button class="gap" onclick="expandGap(this)">… 省略 ${hidden} 段，点击展开</button><div hidden>`+ pendingHidden +`</div>`; } hidden = 0; pendingHidden = ''; };
+        let pendingHidden = '';
+        paras.forEach((p, i) => {
+          const block = `<div class="para ${hit[i]?'hit':''}">${markQuotes(p, q)}</div>`;
+          if (show[i]) { flush(); h += block; } else { hidden++; pendingHidden += block; }
+        });
+        flush();
+      }
+    }
+    for (const r of sp.recovered.filter(r => r.evidence_id === ev.id)) h += `<div class="recov"><b>截断后补录</b> · ${esc(r.where)}<br><mark>${esc(r.text)}</mark><div class="conf" style="margin-top:3px">出处：核验器缓存里的原文引语（程序回查过原文）。标注页正文只显示前 2500 字。</div></div>`;
+    h += '</div>';
+  }
+  return h;
+}
+function contextCard(it){
+  const c = SPEC[it.id].context; if (!c) return '';
+  const prem = c.premises.map(p => `<div class="prem"><span class="pid">${esc(p.id)}</span>${esc(p.text)}${p.quotes.map(q => `<div class="pq">${esc(q.evidence_id)} · ${esc(q.source)}：<mark>${esc(q.quote)}</mark></div>`).join('')}</div>`).join('');
+  return `<div class="card ctxcard"><h3>宽口径题 · ${esc(c.where)}里的相关句子（都已核实，附来源引语）</h3><div class="qt">${esc(c.question)}</div>${prem || '<div class="conf">没有找到可作依据的同单元句子。</div>'}<div class="cand">${esc(c.candidate)}</div></div>`;
+}
+function setCtx(v){ const id = view.id; st.ctx[id] = v; save(); renderDock(); renderStat(); toast(`${id} 宽口径 · ${CTX[v]}`); if (dec(id) && !draft) advance(); }
+function expandGap(b){ const d = b.nextElementSibling; d.hidden = false; b.remove(); }
+function render(){
+  renderNav(); renderStat();
+  if (view.mode === 'quick') return renderQuick();
+  if (view.mode === 'summary') return renderSummary();
+  if (view.mode === 'extra') return renderExtra();
+  const it = byId[view.id], sp = SPEC[it.id], c = sp.claude, d = dec(it.id);
+  const vSpans = (sp.verifier || []).map(v => v.span).filter(Boolean);
+  let stmt = esc(it.statement);
+  stmt = markAll(stmt, spans(c.span), 'span-c');
+  stmt = markAll(stmt, vSpans, 'span-v');
+  const where = it.workspace ? `报告 ${it.workspace} · ${it.finding_id}` : `最终答案 · ${it.finding_id}`;
+  let ctx = '';
+  if (it.context && it.context !== it.statement) {
+    const cx = esc(it.context).replace(esc(it.statement), `<span class="cur-sent">${esc(it.statement)}</span>`);
+    ctx = `<details class="ctx"><summary>这句所在的最终答案（只用来理解指代，不算证据）</summary><div>${cx}</div></details>`;
+  }
+  const vbox = (sp.verifier || []).length ? `<div class="vbox"><div class="vt">核验器 0.3.4 判错</div>${sp.verifier.map(v => `<div>· <b>${esc(v.type)}</b>（${esc(v.severity)}）：「${esc(v.span || '')}」<br><span class="conf">${esc(v.notes || v.detail || '')}</span></div>`).join('')}</div>` : '';
+  const zoom = sp.images.length ? `<div class="card"><h3>放大与对照（Claude 准备的辅助图，点击看大图）</h3><div class="imgs zoomset">${sp.images.map(src => `<figure><img loading="lazy" src="media/${esc(src)}" data-cap="${esc(src)}" onclick="openLb(this)"></figure>`).join('')}</div></div>` : '';
+  $('main').innerHTML = `
+    <div class="meta"><span><b>${it.id}</b></span><span>${esc(it.run)}</span><span>${esc(where)}</span><span>${esc(GROUPS[sp.group])}</span>${d ? `<span style="color:var(--${d.agreed?'ok':'warn'})">已${d.agreed?'同意':'改判为 ' + MAIN[d.main]}</span>` : ''}</div>
+    <div class="top">
+      <div class="card q"><h3>你要判断的</h3><div class="conf" style="margin-bottom:4px">每条都一样：读“待判的句子”，再看它引用的证据，判断<b>证据能不能撑住这句话</b>。下面是这一条的具体疑点：</div><div class="qt">${esc(sp.question || '确认 Claude 的判断是否成立。')}</div>${sp.context ? '<div class="conf" style="margin-top:6px">主判定（1–4）按<b>严格口径</b>：只看本句所引证据。页面下方另有一题问<b>宽口径</b>（7/8/9），两题都要答。</div>' : ''}</div>
+      <div class="card"><h3>Claude 预判</h3><div class="verdict"><span class="badge b-${c.main}">${MAIN[c.main]}</span><span class="conf">置信 ${esc(c.conf)}</span>${c.errors.length ? `<span class="conf">${esc(c.errors.join(' · '))}</span>` : ''}</div><div class="why">${esc(c.note)}</div>${vbox}</div>
+    </div>
+    <div class="card"><h3>待判的句子 · 任务：${esc(it.task.length > 90 ? it.task.slice(0, 90) + '…' : it.task)}</h3>
+      <div class="statement">${stmt}</div>
+      ${it.limitations && it.limitations.length ? `<div class="lim">报告自带限制：${it.limitations.map(esc).join('；')}</div>` : ''}
+      ${(c.span || vSpans.length) ? `<div class="legend">${c.span ? '<span><i class="sw" style="background:var(--span);box-shadow:inset 0 -2px 0 var(--bad)"></i>Claude 认为超出证据</span>' : ''}${vSpans.length ? '<span><i class="sw" style="border-bottom:2px wavy var(--warn)"></i>核验器指出的片段</span>' : ''}<span><i class="sw" style="background:var(--mark)"></i>证据里的关键原文</span></div>` : ''}
+      ${ctx}
+    </div>
+    ${contextCard(it)}
+    ${sp.swap ? `<div class="card" style="border-left:4px solid var(--warn)"><h3>测试题 · 不显示原视频</h3><div class="qt">这句话原来引的是 4126 视频的帧；这里已换成别的案例的图片。原视频会让你看到句子说的内容，反而干扰判断，所以本题不显示。只看下面这张图。</div></div>
+    <div class="card"><h3>所引证据（已被换成另一个案例的图片）</h3>${evidenceHtml(it)}</div>` : `${videoCard(it)}
+    ${zoom}
+    <div class="card"><h3>所引证据（只看这些，不用外部知识）</h3>${evidenceHtml(it)}</div>`}`;
+  renderVideoCtl();
+  renderDock();
+}
+function renderDock(){
+  if (view.mode !== 'item') { $('dock').style.display = 'none'; return; }
+  $('dock').style.display = '';
+  const it = byId[view.id], c = SPEC[it.id].claude, d = dec(it.id);
+  const sel = draft ? draft.main : (d ? d.main : null);
+  const editing = !!draft;
+  let h = `<div class="dock-row">
+    <button class="agree-btn" onclick="agree()">✓ 同意 Claude（${MAIN[c.main]}）<span class="kbd">Enter</span></button>
+    <span class="sep"></span>
+    ${OPTS.map((o, i) => `<button class="opt ${sel===o?'on':''} ${c.main===o?'claude':''}" onclick="pick('${o}')"><span class="kbd">${i+1}</span>${MAIN[o]}</button>`).join('')}
+    ${d && !editing ? `<span class="state-line">已保存：<b class="${d.agreed?'':'chg'}">${d.agreed?'同意':'改判 · ' + MAIN[d.main]}</b> <button class="btn" style="padding:1px 8px" onclick="undo()">撤销 <span class="kbd">U</span></button></span>` : ''}
+    <div class="nav"><button class="btn" onclick="step(-1)">← 上一条</button><button class="btn" onclick="step(1)">下一条 →</button></div>
+  </div>`;
+  if (SPEC[it.id].context) {
+    const cv = st.ctx[it.id];
+    h += `<div class="dock-row ctxrow"><span class="lbl3">宽口径：依据同单元已核实句子时这句成立吗？</span>${CTXO.map((o, i) => `<button class="opt ${cv===o?'on':''}" onclick="setCtx('${o}')"><span class="kbd">${7+i}</span>${CTX[o]}</button>`).join('')}${cv ? '' : '<span class="state-line" style="color:var(--warn)">未答</span>'}</div>`;
+  }
+  if (editing) {
+    h += `<div class="edit show">
+      <div><div class="lbl2">超出证据的片段（照抄句中原文，多段用 ｜ 分隔）${draft.main==='full'||draft.main==='cannot_tell'?'· 可留空':''}</div><textarea id="spanBox" oninput="draft.span=this.value">${esc(draft.span)}</textarea>
+        <div class="chips">${ERRS.map(([k, t]) => `<span class="chip ${draft.errors.includes(k)?'on':''}" onclick="toggleErr('${k}')">${t}</span>`).join('')}</div></div>
+      <div><div class="lbl2">备注（为什么和 Claude 不同，可选）</div><textarea id="noteBox" oninput="draft.note=this.value">${esc(draft.note)}</textarea>
+        <button class="btn primary save-btn" onclick="commit()">保存并下一条 <span class="kbd" style="color:#fff;background:transparent;border-color:rgba(255,255,255,.5)">Ctrl+Enter</span></button>
+        <button class="btn save-btn" onclick="draft=null;renderDock()">取消 <span class="kbd">Esc</span></button></div>
+    </div>`;
+  }
+  $('dock').innerHTML = h;
+}
+function tick(){ if (view.mode === 'item' && view.id) { const d = dec(view.id); if (d) d.seconds = (d.seconds || 0) + Math.round((Date.now() - started) / 1000); started = Date.now(); } }
+function record(id, main, errors, span, note, agreed, extra){
+  const c = SPEC[id].claude, prev = dec(id);
+  st.decisions[id] = {main, errors, span, note, agreed, claude_main: c.main, group: SPEC[id].group,
+    seconds: (prev ? prev.seconds || 0 : 0) + Math.round((Date.now() - started) / 1000), at: new Date().toISOString(), ...(extra || {})};
+  started = Date.now(); save();
+}
+function agree(){
+  const id = view.id, c = SPEC[id].claude;
+  record(id, c.main, c.errors.slice(), c.span, '同意 Claude 预标', true);
+  toast(`${id} 已同意 · ${MAIN[c.main]}`); draft = null; advance();
+}
+function pick(o){
+  const id = view.id, c = SPEC[id].claude, d = dec(id);
+  if (o === c.main && !(o === 'partial' || o === 'none')) { agree(); return; }
+  draft = {main:o, errors: o === c.main ? c.errors.slice() : (d && d.main === o ? d.errors.slice() : []),
+           span: o === c.main ? c.span : (d && d.main === o ? d.span : (o === 'partial' || o === 'none' ? '' : '')), note: d && !d.agreed ? d.note : ''};
+  renderDock(); setTimeout(() => { const b = $(o === 'partial' || o === 'none' ? 'spanBox' : 'noteBox'); if (b) b.focus(); }, 0);
+}
+function toggleErr(k){ const i = draft.errors.indexOf(k); i < 0 ? draft.errors.push(k) : draft.errors.splice(i, 1); renderDock(); }
+function commit(){
+  const id = view.id, c = SPEC[id].claude;
+  const agreed = draft.main === c.main && (draft.span || '').trim() === (c.span || '').trim();
+  record(id, draft.main, draft.errors, draft.span || '', draft.note || '', agreed);
+  toast(`${id} 已保存 · ${MAIN[draft.main]}${agreed ? '' : '（改判）'}`); draft = null; advance();
+}
+function undo(){ delete st.decisions[view.id]; save(); draft = null; render(); toast('已撤销'); }
+function advance(){
+  if (SPEC[view.id] && SPEC[view.id].context && !st.ctx[view.id]) { toast('还差宽口径一题：7 成立 / 8 不成立 / 9 无法判断'); renderDock(); return; }
+  const list = PRIORITY.includes(view.id) ? PRIORITY : REST;
+  const i = list.indexOf(view.id);
+  const next = list.slice(i + 1).find(id => !dec(id)) || list.find(id => !dec(id));
+  if (!next) { if (list === PRIORITY) { openSummary(); toast('重点条目已全部复核'); } else openSummary(); return; }
+  setTimeout(() => openItem(next), 160);
+}
+function step(k){ const list = PRIORITY.includes(view.id) ? PRIORITY : REST; const i = list.indexOf(view.id); const j = Math.max(0, Math.min(list.length - 1, i + k)); openItem(list[j]); }
+
+/* ---------- F 组（语义覆盖抽查 / 标签口径） ---------- */
+function openExtra(id){ tick(); view = {mode:'extra', id}; draft = null; render(); window.scrollTo(0, 0); }
+function renderExtra(){
+  const x = exById[view.id], a = st.extra[x.id], opts = xopts(x);
+  let body = '';
+  if (x.kind === 'semcov') {
+    body = `<div class="card"><h3>要求 · ${esc(x.scope)}</h3><div class="req">${esc(x.requirement)}：${esc(x.requirement_text)}</div><div class="conf">任务：${esc(x.task.length > 120 ? x.task.slice(0, 120) + '…' : x.task)}</div></div>
+      <div class="card"><h3>已核验的片段（${x.fragments.length} 条；文字片段的引语已由程序在来源正文里找到，图片片段是逐图核验给的描述）</h3>
+      ${x.fragments.map(f => `<div class="frag"><div class="fh">${esc(f.finding)} · ${f.image ? '图片 · ' : ''}${esc(f.source)}</div><div>${esc(f.part)}</div><div class="pq"><mark>${esc(f.quote)}</mark></div></div>`).join('')}
+      <details class="peek"><summary>看核验器（候选 0.3.6c）怎么判 · 建议自己先判</summary><div style="margin-top:6px"><b>${x.candidate.covered ? '已建立' : '未建立'}</b>${x.candidate.by.length ? '（依据 ' + esc(x.candidate.by.join('、')) + '）' : ''}：${esc(x.candidate.note)}</div></details></div>`;
+  } else {
+    body = `<div class="card"><h3>声明与答案</h3><div class="conf">${esc(x.task)}</div><div class="statement" style="margin-top:8px">${esc(x.answer_quote)}</div><div style="margin-top:8px">案卷标签：<b>${esc(x.label)}</b></div></div>`;
+  }
+  $('main').innerHTML = `<div class="meta"><span><b>${x.id}</b></span><span>${esc(x.run)}</span>${x.unit ? `<span>${x.unit === 'answer' ? '最终答案' : '报告 ' + esc(x.unit)}</span>` : ''}<span>${esc(GROUPS.F || '')}</span>${a ? `<span style="color:var(--ok)">已答：${esc(opts[a.choice])}</span>` : ''}</div>
+    <div class="card q"><h3>你要判断的</h3><div class="qt">${esc(x.question)}</div></div>${body}`;
+  renderExtraDock();
+}
+function renderExtraDock(){
+  $('dock').style.display = '';
+  const x = exById[view.id], a = st.extra[x.id], opts = xopts(x), keys = Object.keys(opts);
+  $('dock').innerHTML = `<div class="dock-row">${keys.map((k, i) => `<button class="opt ${a&&a.choice===k?'on':''}" onclick="pickExtra('${k}')" title="${esc(opts[k])}"><span class="kbd">${i+1}</span>${esc(opts[k].split('：')[0])}</button>`).join('')}
+    <input id="xnote" placeholder="备注（可选）" value="${esc(a ? a.note : '')}" style="flex:1;min-width:160px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)" oninput="if(st.extra['${x.id}']){st.extra['${x.id}'].note=this.value;save();}">
+    <div class="nav"><button class="btn" onclick="stepExtra(-1)">← 上一条</button><button class="btn" onclick="stepExtra(1)">下一条 →</button></div></div>
+    ${x.kind === 'label' ? `<div class="conf" style="padding:4px 2px">${keys.map((k, i) => `${i+1}. ${esc(opts[k])}`).join('　')}</div>` : ''}`;
+}
+function pickExtra(k){
+  const x = exById[view.id];
+  st.extra[x.id] = {choice: k, note: ($('xnote') || {}).value || '', at: new Date().toISOString(), seconds: Math.round((Date.now() - started) / 1000)};
+  started = Date.now(); save(); toast(`${x.id} · ${xopts(x)[k].split('：')[0]}`);
+  const next = EXTRA_IDS.slice(EXTRA_IDS.indexOf(x.id) + 1).find(id => !st.extra[id]) || EXTRA_IDS.find(id => !st.extra[id]);
+  setTimeout(() => next ? openExtra(next) : openSummary(), 160);
+}
+function stepExtra(k){ const i = EXTRA_IDS.indexOf(view.id); openExtra(EXTRA_IDS[Math.max(0, Math.min(EXTRA_IDS.length - 1, i + k))]); }
+
+/* ---------- quick ---------- */
+function openQuick(){ tick(); view = {mode:'quick'}; draft = null; render(); window.scrollTo(0, 0); }
+function renderQuick(){
+  renderDock();
+  const cards = REST.map(id => {
+    const it = byId[id], c = SPEC[id].claude, s = stateOf(id);
+    const thumbs = it.evidence.filter(e => e.image).map(e => e.image).concat(SPEC[id].images.map(x => 'media/' + x));
+    return `<div class="qcard ${s ? 'done-' + s : ''}"><div class="qid">${id}</div>
+      <div><div class="qs">${(VIDEOS[it.case_id]||[]).length && it.evidence.some(e=>/视频E\d+在/.test(e.label||'')) ? '<span class="vbadge" style="margin:0 6px 0 0">▶ 视频</span>' : ''}${esc(it.statement)}</div>
+        <div class="qn"><span class="badge b-${c.main}" style="padding:0 8px;font-size:11.5px">${MAIN[c.main]}</span> ${esc(c.note)}</div>
+        ${thumbs.length ? `<div class="qthumbs">${thumbs.slice(0, 6).map(src => `<img loading="lazy" src="${esc(src)}" data-cap="${esc(id)}" onclick="openLb(this)">`).join('')}</div>` : ''}</div>
+      <div class="qbtn"><button class="btn ${s==='agree'?'':'primary'}" onclick="quickAgree('${id}')">${s==='agree'?'✓ 已同意':'同意'}</button><button class="btn" onclick="openItem('${id}')">逐条看</button></div></div>`;
+  }).join('');
+  const left = REST.filter(id => !dec(id)).length;
+  $('main').innerHTML = `<div class="card q"><h3>其余 ${REST.length} 条 · Claude 高置信</h3><div class="qt">这些条目 Claude 都判为完全支持，核验器 0.3.4 也没判错（其中 12 条是 0.3.3 判错、0.3.4 不再判错）。扫一眼句子和理由，同意就点“同意”；有疑问点“逐条看”，进入完整视图。</div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="openItem(REST.find(id=>!dec(id))||REST[0])">逐条模式从未看的开始</button>${left ? `<button class="btn" onclick="agreeAllRest()">本页剩余 ${left} 条全部同意</button>` : ''}</div></div>
+    <div class="qgrid">${cards}</div>`;
+}
+function quickAgree(id){ const c = SPEC[id].claude; started = Date.now(); record(id, c.main, c.errors.slice(), c.span, '同意 Claude 预标（快速确认）', true, {quick: true}); render(); }
+function agreeAllRest(){
+  const left = REST.filter(id => !dec(id));
+  if (!confirm(`把剩余 ${left.length} 条全部记为“同意 Claude”？导出时会标注为批量确认。`)) return;
+  for (const id of left) { const c = SPEC[id].claude; started = Date.now(); record(id, c.main, c.errors.slice(), c.span, '同意 Claude 预标（批量确认）', true, {quick: true, bulk: true}); }
+  render(); toast(`已批量同意 ${left.length} 条`);
+}
+
+/* ---------- summary ---------- */
+function openSummary(){ tick(); view = {mode:'summary'}; draft = null; render(); window.scrollTo(0, 0); }
+function renderSummary(){
+  renderDock();
+  const ds = st.decisions, ids = Object.keys(ds);
+  const changed = ids.filter(id => !ds[id].agreed);
+  const priLeft = PRIORITY.filter(id => !ds[id]), restLeft = REST.filter(id => !ds[id]);
+  const mins = Math.round(ids.reduce((a, id) => a + (ds[id].seconds || 0), 0) / 60);
+  const cxLeft = PRIORITY.filter(id => SPEC[id].context && !st.ctx[id]), xLeft = EXTRA_IDS.filter(id => !st.extra[id]);
+  $('main').innerHTML = `<div class="card done-view"><h2>${priLeft.length ? `重点还剩 ${priLeft.length} 条` : '重点条目已全部复核'}</h2>
+    <div class="conf">已复核 ${ids.length}/${ITEMS.length} · 同意 ${ids.length - changed.length} · 改判 ${changed.length} · 累计约 ${mins} 分钟</div>
+    <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      ${priLeft.length ? `<button class="btn" onclick="openItem('${priLeft[0]}')">继续重点（${priLeft[0]}）</button>` : ''}
+      ${cxLeft.length ? `<button class="btn" onclick="openItem('${cxLeft[0]}')">宽口径还差 ${cxLeft.length} 题（${cxLeft[0]}）</button>` : ''}
+      ${xLeft.length ? `<button class="btn" onclick="openExtra('${xLeft[0]}')">F 组还剩 ${xLeft.length} 条</button>` : ''}
+      ${restLeft.length ? `<button class="btn" onclick="openQuick()">快速确认其余 ${restLeft.length} 条</button>` : ''}
+      <button class="btn primary" onclick="exportLabels()">导出标注</button></div>
+    <div class="conf" style="margin-top:10px">导出文件名 labels_&lt;你的缩写&gt;.json，放进本批次目录，再按《标注说明》跑 _gold_eval.py。只导出你已复核的条目。</div></div>
+    ${changed.length ? `<div class="card"><h3>你改判的条目</h3><table class="sum"><tr><th>条目</th><th>Claude</th><th>你</th><th>片段 / 备注</th></tr>${changed.map(id => `<tr><td><a href="#" onclick="openItem('${id}');return false">${id}</a></td><td>${MAIN[ds[id].claude_main]}</td><td><b>${MAIN[ds[id].main]}</b></td><td>${esc(ds[id].span)}${ds[id].note ? '<br><span class="conf">' + esc(ds[id].note) + '</span>' : ''}</td></tr>`).join('')}</table></div>` : ''}`;
+}
+
+/* ---------- export / import ---------- */
+function exportLabels(){
+  tick(); save();
+  const who = ($('who').value || '').trim();
+  if (!who) { toast('先在右上角填你的缩写'); $('who').focus(); return; }
+  if (/^claude/i.test(who)) { toast('缩写不能用 claude（那是预标注）'); return; }
+  const ids = ITEMS.map(it => it.id).filter(id => st.decisions[id]);
+  const out = {batch: BATCH, annotator: who, exported_at: new Date().toISOString(), mode: 'review_of_claude_draft',
+    note: '人工复核 Claude 预标注（labels_claude-draft.json）后的结果；review.agreed 表示与预标一致，review.bulk 表示批量确认未逐条看。',
+    labels: ids.map(id => { const d = st.decisions[id], it = byId[id];
+      return {id, kind: it.kind, run: it.run, main: d.main, errors: d.errors, span: d.span, note: d.note, seconds: d.seconds || 0,
+              ...(st.ctx[id] ? {context_label: st.ctx[id]} : {}),
+              review: {claude_main: d.claude_main, agreed: d.agreed, group: d.group, quick: !!d.quick, bulk: !!d.bulk, at: d.at}}; }),
+    context_only: Object.keys(st.ctx).filter(id => !st.decisions[id]).map(id => ({id, context_label: st.ctx[id]})),
+    extra_labels: EXTRA_IDS.filter(id => st.extra[id]).map(id => { const x = exById[id], a = st.extra[id];
+      return {id, kind: x.kind, run: x.run, unit: x.unit || null, requirement: x.requirement || null, choice: a.choice, note: a.note || '',
+              seconds: a.seconds || 0, candidate_covered: x.candidate ? x.candidate.covered : null}; })};
+  const blob = new Blob([JSON.stringify(out, null, 1)], {type: 'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `labels_${who}.json`; a.click();
+  toast(`已导出 ${ids.length} 条 + 宽口径 ${Object.keys(st.ctx).length} + F 组 ${out.extra_labels.length} → labels_${who}.json`);
+}
+function importFile(f){
+  if (!f) return;
+  f.text().then(t => { const d = JSON.parse(t); let n = 0;
+    for (const r of d.labels || []) { if (!byId[r.id] || !r.main) continue; const c = SPEC[r.id].claude;
+      st.decisions[r.id] = {main: r.main, errors: r.errors || [], span: r.span || '', note: r.note || '', seconds: r.seconds || 0,
+        agreed: r.review ? !!r.review.agreed : r.main === c.main, claude_main: c.main, group: SPEC[r.id].group, quick: !!(r.review && r.review.quick), bulk: !!(r.review && r.review.bulk), at: new Date().toISOString()}; n++;
+      if (r.context_label) st.ctx[r.id] = r.context_label; }
+    for (const r of d.context_only || []) if (byId[r.id]) st.ctx[r.id] = r.context_label;
+    for (const r of d.extra_labels || []) if (exById[r.id]) { st.extra[r.id] = {choice: r.choice, note: r.note || '', seconds: r.seconds || 0, at: new Date().toISOString()}; n++; }
+    save(); render(); toast(`已导入 ${n} 条`); });
+}
+
+/* ---------- lightbox ---------- */
+let lbList = [], lbIdx = 0;
+function openLb(img){ lbList = [...document.querySelectorAll('#main img')]; lbIdx = lbList.indexOf(img); showLb(); }
+function showLb(){ const im = lbList[lbIdx]; if (!im) return; $('lbImg').src = im.src; $('lbImg').classList.remove('full'); $('lbCap').textContent = `${im.dataset.cap || ''}　(${lbIdx + 1}/${lbList.length}) · 点击图片切换原尺寸 · ←/→ 翻页 · Esc 关闭`; $('lb').classList.add('on'); }
+function closeLb(){ $('lb').classList.remove('on'); }
+
+/* ---------- help ---------- */
+function showHelp(){
+  $('main').insertAdjacentHTML('afterbegin', `<div class="card" id="helpCard"><h3>快捷键 <button class="btn" style="float:right;padding:0 8px" onclick="this.closest('.card').remove()">关闭</button></h3><div class="help-k">
+    <span class="kbd">Enter</span><span>同意 Claude 的判断，自动跳到下一条未看的</span>
+    <span class="kbd">1</span><span>完全支持</span><span class="kbd">2</span><span>部分支持（会打开片段框）</span><span class="kbd">3</span><span>不支持</span><span class="kbd">4</span><span>无法判断</span>
+    <span class="kbd">Ctrl+Enter</span><span>在编辑框里保存并下一条</span><span class="kbd">Esc</span><span>取消编辑 / 关闭大图</span>
+    <span class="kbd">← →</span><span>上一条 / 下一条（大图打开时为翻图）</span><span class="kbd">U</span><span>撤销本条</span>
+    <span class="kbd">,  .</span><span>视频上一帧 / 下一帧</span><span class="kbd">K</span><span>视频播放 / 暂停</span>
+    <span class="kbd">7 8 9</span><span>宽口径题：成立 / 不成立 / 无法判断（只在带“宽口径题”的条目出现）</span>
+    <span class="kbd">Q</span><span>快速确认其余条目</span><span class="kbd">S</span><span>汇总与导出</span></div></div>`);
+}
+
+/* ---------- keys ---------- */
+document.addEventListener('keydown', e => {
+  const typing = /TEXTAREA|INPUT/.test(document.activeElement.tagName);
+  if ($('lb').classList.contains('on')) {
+    if (e.key === 'Escape') closeLb();
+    else if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbList.length; showLb(); }
+    else if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + lbList.length) % lbList.length; showLb(); }
+    return;
+  }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && draft) { e.preventDefault(); commit(); return; }
+  if (e.key === 'Escape' && draft) { draft = null; renderDock(); document.activeElement.blur(); return; }
+  if (typing) return;
+  if (view.mode === 'extra') {
+    const ks = Object.keys(xopts(exById[view.id]));
+    if (/^[1-9]$/.test(e.key) && ks[+e.key - 1]) pickExtra(ks[+e.key - 1]);
+    else if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') stepExtra(1);
+    else if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') stepExtra(-1);
+    else if (e.key === 's' || e.key === 'S') openSummary();
+    return;
+  }
+  if (view.mode !== 'item') { if (e.key === 'q' || e.key === 'Q') openQuick(); if (e.key === 's' || e.key === 'S') openSummary(); return; }
+  if (e.key === ',' ) { vStep(-1); return; }
+  if (e.key === '.' ) { vStep(1); return; }
+  if (e.key === 'k' || e.key === 'K') { vPlay(); return; }
+  if (e.key === 'Enter') { e.preventDefault(); draft ? commit() : agree(); }
+  else if (/^[1-4]$/.test(e.key)) pick(OPTS[+e.key - 1]);
+  else if (/^[7-9]$/.test(e.key) && SPEC[view.id].context) setCtx(CTXO[+e.key - 7]);
+  else if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') step(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') step(-1);
+  else if (e.key === 'u' || e.key === 'U') undo();
+  else if (e.key === 'q' || e.key === 'Q') openQuick();
+  else if (e.key === 's' || e.key === 'S') openSummary();
+  else if (e.key === '?') showHelp();
+});
+$('who').value = st.who || ''; $('who').oninput = e => { st.who = e.target.value; save(); };
+$('batchName').textContent = BATCH;
+window.addEventListener('resize', () => dUpdate());
+window.addEventListener('beforeunload', () => { tick(); save(); });
+const first = PRIORITY.find(id => !dec(id));
+if (first) openItem(first); else openSummary();
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any, Iterator, Literal
 
 from .inspect.factory import create_inspect_service
-from .inspect.contracts import inspect_action_schema
+from .inspect.contracts import OPT_IN_OPERATIONS, inspect_action_schema
 from .harness1 import harness1_workspace_type
 from .hi.workspace import WorkspaceHarness
 from .local_models import TransformersJsonGenerator, create_demo_policies
@@ -518,7 +518,7 @@ async def _run_demo(*, task: str, claims: tuple[str, ...], media_paths: tuple[st
                 except ValueError as exc:
                     raise DemoConfigurationError(str(exc)) from exc
             operations = frozenset(branch["properties"]["request"]["properties"]["operation"]["const"]
-                for branch in inspect_action_schema()["oneOf"]) - {"visual_qa", "audio_qa"}
+                for branch in inspect_action_schema()["oneOf"]) - {"visual_qa", "audio_qa"} - OPT_IN_OPERATIONS
             inspect_service = create_inspect_service(store=store, enabled_operations=operations)
             policies = OpenRouterPolicyBundle(remote_client, store=store, image_policy=inspect_service.policy)
         else:
@@ -537,7 +537,7 @@ async def _run_demo(*, task: str, claims: tuple[str, ...], media_paths: tuple[st
             local_operations = inspect_service.enabled_operations
             if local_operations is None:
                 local_operations = frozenset(branch["properties"]["request"]["properties"]["operation"]["const"]
-                    for branch in inspect_action_schema()["oneOf"])
+                    for branch in inspect_action_schema()["oneOf"]) - OPT_IN_OPERATIONS
             inspect_service.enabled_operations = local_operations - {"visual_qa"}
         async with InvestigationRuntime(
             store=store,

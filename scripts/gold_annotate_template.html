@@ -115,7 +115,8 @@ function render(){
   const it = ITEMS[cur], l = lab(it.id), m = MAIN[it.kind];
   let body = `<div class="meta">${it.id} · ${it.kind} · ${esc(it.run)} ${it.workspace ? '· ' + esc(it.workspace) : ''} ${it.case_id ? '· ' + esc(it.case_id) : ''}</div>`;
   if (it.kind === 'finding') {
-    body += `<div class="box"><h3>工作区接到的任务</h3>${esc(it.task)}</div>
+    body += `<div class="box"><h3>${it.context ? '总任务' : '工作区接到的任务'}</h3>${esc(it.task)}</div>
+      ${it.context ? `<div class="box"><h3>这句所在的最终答案（只用来理解指代，不作证据）</h3><div class="help" style="white-space:pre-wrap">${esc(it.context)}</div></div>` : ''}
       <div class="box"><h3>待判结论（${esc(it.finding_id)}）</h3><div class="statement">${esc(it.statement)}</div>
       ${it.limitations.length ? `<div class="help" style="margin-top:6px">报告自述的限制：${it.limitations.map(esc).join('；')}</div>` : ''}</div>
       <div class="box"><h3>所引证据（只按这些判断，不用外部知识补）</h3>${evidenceHtml(it.evidence)}</div>`;

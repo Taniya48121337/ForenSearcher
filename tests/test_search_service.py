@@ -889,3 +889,32 @@ async def test_operational_logs_exclude_query_content(caplog: pytest.LogCaptureF
     assert response.stop_reason == "candidates_exhausted"
     assert "SEARCH execution started" in caplog.text and "SEARCH execution finished" in caplog.text
     assert "private-query-marker" not in caplog.text
+
+
+@pytest.mark.asyncio
+async def test_stray_transport_cancellation_fails_one_source_not_the_run_20261004() -> None:
+    """传输层漏出的 CancelledError（调用方没取消）只算这一个来源的网络失败，其余来源照常提交。"""
+
+    with LocalCaseServer() as server:
+        candidates = tuple(CandidateSource(server.base_url + path, candidate_type="page")
+                           for path in ("/article?first", "/stray", "/article?last"))
+        service, store, _provider = make_service(candidates, policy=SearchPolicy(target_sources=2, source_concurrency=3))
+        original = service.opener.open
+
+        async def open_source(candidate, request):
+            if candidate.source_url.endswith("/stray"):
+                raise asyncio.CancelledError()
+            return await original(candidate, request)
+
+        service.opener.open = open_source
+        try:
+            response = await service.execute({"input_type": "text", "query": "stray cancel", "output_type": "text"},
+                                             workspace_id="W1-1")
+            direct = await service.execute({"source": server.base_url + "/stray", "output_type": "text"}, workspace_id="W1-2")
+        finally:
+            await service.aclose()
+    assert response.stop_reason == "target_reached"
+    stray = response.results[1].materials[0]
+    assert stray.status == "failed" and stray.error.code == "NETWORK_ERROR" and not stray.evidence
+    assert [r.materials[0].status for r in (response.results[0], response.results[2])] == ["ready", "ready"]
+    assert direct.results[0].materials[0].error.code == "NETWORK_ERROR"

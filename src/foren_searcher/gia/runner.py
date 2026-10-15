@@ -12,8 +12,11 @@ import math
 from collections.abc import Callable
 from typing import Any
 
-from ..contracts import GiaDecision, GiaInvestigateDecision, parse_gia_decision
-from ..policies import GiaPolicy, OutputRepairBudget, OutputRepairLimit, PolicyOutputError, PolicyReviewDeferred, output_repair_scope
+import re
+
+from ..contracts import GiaDecision, GiaFinishDecision, GiaInvestigateDecision, parse_gia_decision
+from ..policies import (GiaPolicy, OutputRepairBudget, OutputRepairLimit, PolicyOutputError, PolicyReviewDeferred,
+                        active_guards, guard_state, note_gia_output, output_repair_scope)
 from ..store.global_store import GlobalStore
 from ..store.records import MemoryPolicy, RecordAccess
 from ._common import _error_payload, _record_runtime_event
@@ -59,6 +62,8 @@ class GiaRunner:
         self.memory_policy = memory_policy
         self.max_turns = max_turns
         self.turn_timeout_s = float(turn_timeout_s) if turn_timeout_s is not None else None
+        # 由 InvestigationRuntime 填：{"max_tasks_per_round": N, "max_materials_per_task": M}；只在 eval_plus 时进模型输入
+        self.task_limits: dict[str, int] = {}
 
     @staticmethod
     def actions() -> tuple[dict[str, Any], ...]:
@@ -113,8 +118,81 @@ class GiaRunner:
         """让 GIA 查询记忆若干次，直到返回可验证的 INVESTIGATE/FINISH。"""
 
         with output_repair_scope() as repairs:
-            return await self._run(view, round_index=round_index, can_create_round=can_create_round,
-                                   validator=validator, repairs=repairs, round_in_progress=round_in_progress)
+            try:
+                return await self._run(view, round_index=round_index, can_create_round=can_create_round,
+                                       validator=validator, repairs=repairs, round_in_progress=round_in_progress)
+            except (OutputRepairLimit, GiaTurnLimit) as exc:
+                if round_in_progress or not active_guards().forced_finish:
+                    raise
+                forced = self._forced_decision(view, can_create_round=can_create_round, validator=validator)
+                if forced is None:
+                    raise
+                _record_runtime_event(self.store, actor_role="GIA", actor_id="GIA", event_type="forced_decision",
+                                      payload={"round_index": round_index, "reason": type(exc).__name__,
+                                               "error": str(exc)[:500], "decision": forced.to_dict()})
+                return forced
+
+    def _forced_decision(self, view: GlobalView, *, can_create_round: bool,
+                         validator: Callable[[GiaDecision], None] | None) -> GiaDecision | None:
+        """评测兜底 1b-3（10-05）：GIA 修复次数或轮数耗尽时不让整个 run 归零。
+
+        1. 被拒的 INVESTIGATE 只因任务数超过上限（GIA 看不到这个上限）→ 保留前 N 个任务；
+        2. 有过 FINISH 草稿（多半是被引用规则拒掉的）→ 用最后一份；
+        3. 已不能再开新一轮 → 用 HI 报告里的 Finding 拼一个答案；
+        其余情况仍按原样失败。结果里打 forced_* 标记，SFT 导出不应把这类决定当教师样本。
+        """
+
+        state = guard_state()
+        if state is None:
+            return None
+        output, error = state.last_gia_output, state.last_gia_error or ""
+        limit = re.search(r"INVESTIGATE tasks exceed the configured limit of (\d+)", error)
+        if can_create_round and limit and isinstance(output, dict) and isinstance(output.get("tasks"), list):
+            try:
+                decision = parse_gia_decision({**output, "tasks": output["tasks"][: int(limit.group(1))]})
+                if validator is not None:
+                    validator(decision)
+            except (KeyError, PermissionError, ValueError):
+                pass
+            else:
+                state.flag("forced_task_truncation")
+                return decision
+        answer = state.last_finish_draft
+        flag = "forced_finish_from_draft"
+        if not answer and not can_create_round:
+            answer = _answer_from_reports(view.to_dict())
+            flag = "forced_finish_from_reports"
+        if not answer and can_create_round:
+            # 10-05：还能开轮、却没有任何 FINISH 草稿（evidq27a 的 27B：GIA 连用 6 个回合读记忆、一次没决定 → GiaTurnLimit）。
+            # 按 GIA 首轮规则 4 的默认派工：一个工作区承担原任务全文、材料为原件 E；仍打 forced_* 标，导出不当教师样本。
+            originals = [item.get("evidence_id") for item in view.original_materials
+                         if isinstance(item, dict) and isinstance(item.get("evidence_id"), str)]
+            try:
+                decision = parse_gia_decision({"decision": "INVESTIGATE",
+                                               "tasks": [{"task": view.task, "materials": originals}]})
+                if validator is not None:
+                    validator(decision)
+            except (KeyError, PermissionError, ValueError):
+                return None
+            state.flag("forced_investigate_task")
+            return decision
+        if not answer:
+            return None
+        if state.guards.dedupe_finish_points:
+            from ..answer_points import dedupe_answer
+
+            answer, removed = dedupe_answer(answer)
+            if removed:
+                state.flag("finish_points_deduplicated")
+                state.count("duplicate_points_removed", removed)
+        decision = GiaFinishDecision("FINISH", answer)
+        if validator is not None:
+            try:
+                validator(decision)
+            except (KeyError, PermissionError, ValueError):
+                return None
+        state.flag(flag)
+        return decision
 
     async def _run(self, view: GlobalView, *, round_index: int, can_create_round: bool,
                    validator: Callable[[GiaDecision], None] | None, repairs: OutputRepairBudget,
@@ -143,6 +221,23 @@ class GiaRunner:
             }
             if round_in_progress:
                 model_view["runtime_constraints"]["round_in_progress"] = True
+            guards = active_guards()
+            state = guard_state()
+            if state is not None and self.task_limits:
+                state.task_limits = dict(self.task_limits)
+            if guards.gia_limits_visible and self.task_limits:
+                # 1b-2（eval_plus）：GIA 以前看不到这两个上限，超了才被拒（evidb4 3 个 run 因此崩溃）
+                model_view["runtime_constraints"].update(self.task_limits)
+            last_turn = guards.state_dependent_actions and turn_index == self.max_turns and not round_in_progress
+            if guards.state_dependent_actions and not can_create_round and not round_in_progress:
+                # 1b-1（eval_plus）：8B 不看 can_create_round 布尔值，用一句话写明下一步只能 FINISH
+                model_view["runtime_constraints"]["next_output"] = (
+                    "FINISH only: the investigation round budget is exhausted; INVESTIGATE will be rejected")
+            elif last_turn:
+                # 10-05（P1.6 同一思路）：GIA 本轮最后一个回合不再给记忆动作。evidq27a（27B）002/003/006 都是 GIA
+                # 连用 6 个回合 READ_RECORD / QUERY_MEMORY、一次都没决定，GiaTurnLimit 崩溃
+                model_view["runtime_constraints"]["next_output"] = (
+                    "INVESTIGATE or FINISH only: this is the last GIA turn of this round; memory actions are not available")
             # 相同记录页保留最近一次读取；完整行动轨迹仍在 Store 中。
             seen_pages: set[tuple[str, int]] = set()
             retained = []
@@ -177,7 +272,7 @@ class GiaRunner:
                     if len(model_history) <= 1:
                         raise
                     model_history.pop(0)
-            actions = () if round_in_progress else self.actions()
+            actions = () if round_in_progress or last_turn else self.actions()
             # 调用前保存完整模型输入，使一次决策可以从轨迹复现。
             self.store.record_event(
                 actor_role="GIA",
@@ -288,6 +383,7 @@ class GiaRunner:
                 # 没有 decision 时，只可能是一个受控的只读记忆动作。
                 observation = self._execute_memory_action(raw, access)
             except (KeyError, PermissionError, ValueError) as exc:
+                note_gia_output(raw, exc)
                 repairs.reject(exc)
                 # 可修复格式/权限错误作为 HARNESS_REJECTION 交给下一轮 GIA。
                 observation = {"action": "HARNESS_REJECTION", "error": str(exc)}
@@ -359,3 +455,17 @@ class GiaRunner:
             }
         raise ValueError(f"GIA action is not available: {action}")
 
+
+def _answer_from_reports(view: dict[str, Any], limit: int = 5) -> str | None:
+    """把最新 HI 报告的 Finding 依次编号拼成答案（forced_finish_from_reports 用）；没有 Finding 返回 None。"""
+
+    statements: list[str] = []
+    for item in view.get("latest_reports") or []:
+        report = item.get("report") if isinstance(item, dict) else None
+        for finding in (report or {}).get("findings") or []:
+            text = finding.get("statement") if isinstance(finding, dict) else None
+            if isinstance(text, str) and text.strip() and text.strip() not in statements:
+                statements.append(text.strip())
+    if not statements:
+        return None
+    return "\n".join(f"{index}. {text}" for index, text in enumerate(statements[:limit], 1))

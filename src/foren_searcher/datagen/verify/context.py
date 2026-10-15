@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -9,7 +10,7 @@ from typing import Any, Callable, Protocol
 from urllib.parse import urlparse
 
 _EVIDENCE_ID = re.compile(r"^E\d+$")
-_MATERIAL_LABEL = re.compile(r"^\s*材料\s*([A-Za-z])\s*$")
+_MATERIAL_LABEL = re.compile(r"^\s*(?:材料|Material)\s*([A-Za-z])\s*$")
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,7 @@ class EvidenceText:
     image_path: Path | None = None      # 图片类证据的像素文件（第二层看图用）
     acquired_by: str | None = None      # 取得方式（SEARCH/open、INSPECT/get_frames …），案卷 required_evidence.acquired_by 用它匹配
     provenance: str = ""                # 人能读的来源归属，如"来源材料：B（E2 → 视频E2在0.000秒的帧）"；见 describe_provenance
+    media_note: str = ""                # verifier@0.3.3：视频帧的取帧时间、单帧时长、所属视频总长与首尾位置；见 frame_media_note
 
     @property
     def is_text(self) -> bool:
@@ -106,6 +108,34 @@ def describe_provenance(evidence_id: str, resolve: Callable[[str], EvidenceText 
     return f"来源：{who}（{chain}）"
 
 
+def frame_media_note(locator: Any, parent_id: str | None, duration_s: float | None) -> str:
+    """视频帧的时间说明（给核验模型；r0c 里"结尾帧""视频共 6 秒"这类句子因核验模型不知道总长被判无支持）。
+
+    locator：帧证据的定位 JSON（time_s、frame_duration_s）；parent_id：所属视频 E；duration_s：该视频 media_profile 的总长。
+    不是帧（没有 time_s）返回空串。
+    """
+
+    if isinstance(locator, str):
+        try:
+            locator = json.loads(locator)
+        except ValueError:
+            return ""
+    if not isinstance(locator, dict) or not isinstance(locator.get("time_s"), (int, float)):
+        return ""
+    t = float(locator["time_s"])
+    step = locator.get("frame_duration_s")
+    step = float(step) if isinstance(step, (int, float)) and step > 0 else None
+    who = f"视频 {parent_id} 的" if parent_id else ""
+    note = f"这张图是{who}第 {t:.3f} 秒的帧" + (f"（单帧时长 {step:.3f} 秒）" if step else "")
+    if isinstance(duration_s, (int, float)) and duration_s > 0:
+        note += f"；该视频总长 {float(duration_s):.3f} 秒"
+        if step and t + step >= float(duration_s) - step / 2:
+            note += "，这是最后一帧"
+        elif step and t <= step / 2:
+            note += "，这是第一帧"
+    return note + "（程序记录）"
+
+
 class EvidenceLookup(Protocol):
     def has(self, evidence_id: str) -> bool: ...
     def get(self, evidence_id: str) -> EvidenceText: ...
@@ -141,6 +171,28 @@ class StoreLookup:
         self.store = store
         self._cache: dict[str, EvidenceText] = {}
         self._base_cache: dict[str, EvidenceText] = {}
+        self._locators: dict[str, Any] = {}
+        self._durations: dict[str, float] | None = None
+
+    def _video_durations(self) -> dict[str, float]:
+        """视频 E → media_profile 记的总长（秒）。首次用到时扫一遍全部证据。"""
+
+        if self._durations is None:
+            self._durations = {}
+            try:
+                records = self.store.evidence_records()
+            except Exception:  # noqa: BLE001 —— 旧 store 没有这个接口时不给时长
+                records = ()
+            for record in records:
+                if getattr(record, "acquired_by", None) != "INSPECT/media_profile" or len(record.derived_from) != 1:
+                    continue
+                try:
+                    duration = json.loads(record.content or "{}").get("duration_s")
+                except (ValueError, AttributeError):
+                    continue
+                if isinstance(duration, (int, float)):
+                    self._durations.setdefault(record.derived_from[0], float(duration))
+        return self._durations
 
     def has(self, evidence_id: str) -> bool:
         if not _EVIDENCE_ID.match(evidence_id):
@@ -156,6 +208,11 @@ class StoreLookup:
             return self._cache[evidence_id]
         text = self._base(evidence_id)
         text = replace(text, provenance=describe_provenance(evidence_id, self._base))
+        if text.is_image and len(text.derived_from) == 1 and evidence_id in self._locators:
+            parent = text.derived_from[0]
+            note = frame_media_note(self._locators[evidence_id], parent, self._video_durations().get(parent))
+            if note:
+                text = replace(text, media_note=note)
         self._cache[evidence_id] = text
         return text
 
@@ -185,6 +242,9 @@ class StoreLookup:
             acquired_by=getattr(record, "acquired_by", None),
         )
         self._base_cache[evidence_id] = text
+        locator = getattr(record, "locator", None)
+        if locator:
+            self._locators[evidence_id] = locator
         return text
 
 
@@ -199,4 +259,4 @@ def normalize_source_key(url: str) -> str:
     return host.lower() + ("/" + path if path else "")
 
 
-__all__ = ["DictLookup", "EvidenceLookup", "EvidenceText", "StoreLookup", "describe_provenance", "normalize_source_key"]
+__all__ = ["DictLookup", "EvidenceLookup", "EvidenceText", "StoreLookup", "describe_provenance", "frame_media_note", "normalize_source_key"]

@@ -16,7 +16,7 @@ from ..contracts import Evidence, GiaDecision, GiaFinishDecision, GiaInvestigate
 from ..hi.workspace import CustomActionHandler, WorkspaceHarness
 from ..ids import assign_workspace_tasks, is_evidence_id
 from ..inspect.service import InspectService
-from ..policies import GiaPolicy, HiPolicy
+from ..policies import GiaPolicy, HiPolicy, active_guards
 from ..search.service import SearchService
 from ..store.global_store import GlobalStore
 from ..store.records import MemoryPolicy
@@ -170,6 +170,8 @@ class InvestigationRuntime:
             max_turns=max_gia_turns,
             turn_timeout_s=gia_turn_timeout_s,
         )
+        self.gia.task_limits = {"max_tasks_per_round": max_workspaces_per_round,
+                                "max_materials_per_task": max_materials_per_workspace}
         self.rounds = RoundCoordinator(
             store=store,
             hi_policy=hi_policy,
@@ -442,6 +444,84 @@ class InvestigationRuntime:
                 task=task.strip(), original_material_ids=originals
             )
 
+    async def _ingest_keyframes(self, originals: tuple[str, ...], count: int) -> None:
+        """P1.1（10-05，规格 ingest_keyframes）：登记原件视频后立刻产出媒体属性 E 与 count 张均匀关键帧。
+
+        DESIGN §2.3："GIA 也看图……连同时长、分辨率"；以前这两样都要等 HI 第一次 INSPECT 之后才有，GIA 首轮是盲的，
+        HI 首轮只能猜 range_s [0, 60]（evidb4：材料 A 覆盖率中位 19%）。走同一个 INSPECT 服务（discovered_by=HARNESS），
+        所以帧与之后 HI 自己取的同一时刻帧是同一个 E（_reusable_media_image），工具缓存 / 录制回放照常生效。
+        失败只记事件、不让 run 失败：没有关键帧时与旧行为相同。
+        """
+
+        if self.inspect_service is None:
+            return
+        for evidence_id in originals:
+            if not is_evidence_id(evidence_id):
+                continue
+            try:
+                evidence = self.store.evidence(evidence_id)
+            except KeyError:
+                continue
+            if "video" not in evidence.modalities:
+                continue
+            payload: dict[str, Any] = {"evidence_id": evidence_id, "requested": count}
+            try:
+                # 第一次只取 0 秒：顺带产出 media_profile（时长），再按时长均匀取 count 帧（0 秒那帧复用同一个 E）
+                first = await self.inspect_service.execute(
+                    {"targets": [evidence_id], "request": {"operation": "get_frames", "params": {"times_s": [0.0]}}},
+                    workspace_id="HARNESS")
+                from ..view_annotations import media_duration
+
+                duration = media_duration(self.store, evidence_id)
+                payload["duration_s"] = duration
+                if duration is None:
+                    payload.update(status=first.status, error="media duration unavailable")
+                else:
+                    times = sorted({round(duration * index / count, 3) for index in range(count)})
+                    response = await self.inspect_service.execute(
+                        {"targets": [evidence_id], "request": {"operation": "get_frames", "params": {"times_s": times}}},
+                        workspace_id="HARNESS")
+                    frames = getattr(response.result, "frames", None) or ()
+                    payload.update(status=response.status, times_s=times,
+                                   frame_evidence_ids=[getattr(frame, "evidence_id", None) for frame in frames],
+                                   feedback=[item.to_dict() for item in response.feedback][:4])
+            except Exception as exc:  # noqa: BLE001 —— 关键帧只是补充输入，失败退回旧行为
+                payload.update(status="failed", error=f"{type(exc).__name__}: {str(exc)[:300]}")
+            _record_runtime_event(self.store, actor_role="HARNESS", actor_id="HARNESS", event_type="ingest_frames",
+                                  payload=payload)
+
+    async def _ingest_structure(self, originals: tuple[str, ...]) -> None:
+        """10-14 评测协议 --auto-tools on：登记原件视频后自动跑一次 INSPECT video_structure（原 DETECT generation_scan）。
+
+        结果 E 由 HARNESS 产出；GIA 视图把它的摘要行放在 current_materials 里（global_view），HI 之后自己调同一请求时复用。
+        失败只记事件。"""
+
+        if self.inspect_service is None:
+            return
+        enabled = getattr(self.inspect_service, "enabled_operations", None)
+        if enabled is not None and "video_structure" not in enabled:
+            return
+        for evidence_id in originals:
+            if not is_evidence_id(evidence_id):
+                continue
+            try:
+                evidence = self.store.evidence(evidence_id)
+            except KeyError:
+                continue
+            if "video" not in evidence.modalities:
+                continue
+            payload: dict[str, Any] = {"evidence_id": evidence_id, "operation": "video_structure"}
+            try:
+                response = await self.inspect_service.execute(
+                    {"targets": [evidence_id], "request": {"operation": "video_structure", "params": {}}},
+                    workspace_id="HARNESS")
+                payload.update(status=response.status, result_evidence_id=response.result_evidence_id,
+                               summary_lines=list(getattr(response.result, "summary_lines", ()) or ())[:8])
+            except Exception as exc:  # noqa: BLE001 —— 自动分析只是补充输入
+                payload.update(status="failed", error=f"{type(exc).__name__}: {str(exc)[:300]}")
+            _record_runtime_event(self.store, actor_role="HARNESS", actor_id="HARNESS", event_type="ingest_structure",
+                                  payload=payload)
+
     def _validate_originals(self, values: Iterable[str]) -> tuple[str, ...]:
         """验证 ``run`` 接收的已有原始引用只能是 C 材料或真实 Evidence。"""
 
@@ -490,6 +570,11 @@ class InvestigationRuntime:
                 )
             for reference_id in task.materials:
                 # Workspace 材料只接受已有 E 或已登记 C，R/F/W 等编号不能直接进入。
+                # P1.5①（10-05，规格 cross_round_handoff）：已登记的候选来源 R 也可以——交给下一轮工作区去取视频、做对照。
+                if (active_guards().cross_round_handoff and isinstance(reference_id, str)
+                        and reference_id.startswith("R") and reference_id[1:].isdigit()):
+                    self.store.candidate(reference_id)        # 不存在 → KeyError，与 E 不存在同样被拒
+                    continue
                 value = self.store.resolve(reference_id)
                 if not isinstance(value, Evidence) and not (
                     isinstance(reference_id, str)
@@ -662,6 +747,10 @@ class InvestigationRuntime:
         if completed is not None:
             return completed
         existing_rounds = self.store.round_records()
+        if not existing_rounds and active_guards().ingest_keyframes > 0:
+            await self._ingest_keyframes(originals, active_guards().ingest_keyframes)
+        if not existing_rounds and active_guards().auto_video_structure:
+            await self._ingest_structure(originals)
         # 轮次必须从 1 连续增长；空洞表示数据库状态不可安全推断。
         expected_indices = list(range(1, len(existing_rounds) + 1))
         if [record["round_index"] for record in existing_rounds] != expected_indices:

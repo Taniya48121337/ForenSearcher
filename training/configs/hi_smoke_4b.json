@@ -1,0 +1,43 @@
+{
+  "_what": "清单 E1 本机冒烟：Qwen3.5-4B，20 行 HI，40 步 LoRA → 存盘 → training/smoke_infer.py 重新加载、对一个没参与训练的真实状态推理、输出过程序核验。入口 scripts\\_训练链路冒烟_4B.cmd。只验证链路与显存 / 耗时，数字不作结论。",
+  "_why": {
+    "export_dir": "wk13 导出（hi@0.10.0 / gia@0.9.0 / compact_16k，Qwen 122B 教师，Sonnet 核验 verifier@0.3.6，HI accepted 120 行）。计划里写的 wk13u 是 10-14 在云端容器里跑的两案例验证，本机 export 目录里没有；wk13 规格、渲染档、核验器都与它相同。",
+    "row_select": "取估计输入 ≤ 16K token 的最短 20 行，先保证三种动作（SEARCH / INSPECT / READ_RECORD）各有一行，再按长度补满；实际 20 行里 12 行带图（1 张或 4 张），覆盖多图输入路径。推理用的 videosham_1028_wk13_1/request_0009（INCOMPLETE 报告，3 张图，约 21K token）排除在外。",
+    "max_tokens": "16384：32GB 显存上 4B 只验证链路，不追求覆盖长行；选中的 20 行都在这个长度内（预扫会记精确值）。",
+    "steps": "max_steps 40、grad_accum 1 = 20 行过两遍。几十步足够看到 loss 下降和 adapter 生效。",
+    "lr": "2e-4：步数少，用比服务器高一档的学习率让 40 步内 loss 有可见变化；冒烟不看泛化。",
+    "lora": "r 16 / alpha 32：4B 冒烟够用；targets 与服务器一致（只挂语言塔），保证同一条 PEFT / 保存 / 加载路径被走到。"
+  },
+  "_smoke_infer": {
+    "row": "videosham_1028_wk13_1/request_0009",
+    "max_new_tokens": 2048
+  },
+  "role": "hi",
+  "export_dir": "experiments/sft_data/export/wk13_27runs-77d4cdb7_hi@0.10.0_gia@0.9.0_compact_16k.claude-cli-claude-sonnet-5-5",
+  "model": ".models/Qwen3.5-4B",
+  "output_dir": "outputs/lora/hi_smoke_4b",
+  "max_tokens": 16384,
+  "max_steps": 40,
+  "epochs": 2,
+  "lr": 2e-4,
+  "min_lr_ratio": 0.1,
+  "warmup_steps": 4,
+  "grad_accum": 1,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "seed": 1,
+  "seeds": [1],
+  "dtype": "bfloat16",
+  "device_map": "auto",
+  "use_sample_weight": true,
+  "logits_on_supervised_only": true,
+  "gradient_checkpointing": true,
+  "row_select": {
+    "n": 20,
+    "max_input_tokens_est": 16000,
+    "order": "shortest",
+    "exclude_requests": ["videosham_1028_wk13_1/request_0009"]
+  },
+  "log_every": 1
+}

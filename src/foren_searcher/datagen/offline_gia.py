@@ -218,8 +218,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--model", default=None)
     parser.add_argument("--no-think", action="store_true")
     parser.add_argument("--specs", default="specs")
-    parser.add_argument("--hi-spec", default="hi@0.4.0")
-    parser.add_argument("--gia-spec", default="gia@0.5.0")
+    parser.add_argument("--hi-spec", default="hi@0.4.1")
+    parser.add_argument("--gia-spec", default="gia@0.6.0")     # 10-05 晚：运行时 GIA 提示已同步到 0.6.0
     parser.add_argument("--dry-run", action="store_true", help="只校验变体、列计划")
     parser.add_argument("--then-verify", action="store_true", help="跑完后对全部已完成的 D run 调 scripts/complete_verify_local.py")
     parser.add_argument("--judge-endpoint", default=None)

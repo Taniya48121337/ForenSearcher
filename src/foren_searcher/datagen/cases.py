@@ -23,6 +23,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+_CJK_TEXT = re.compile(r"[\u3400-\u9fff\uf900-\ufaff\u3040-\u30ff\uac00-\ud7af]")   # 汉字 / 假名 / 谚文
+
 Split = Literal["dev_train", "dev_select", "dev_confirm", "dev_eval", "test", "contrast_only"]
 SPLITS: tuple[Split, ...] = ("dev_train", "dev_select", "dev_confirm", "dev_eval", "test", "contrast_only")
 LEGACY_SPLITS: dict[str, Split] = {"dev": "dev_train", "heldout": "dev_eval"}   # 旧三分法 → 新五分法
@@ -115,6 +117,7 @@ class Requirement:
     id: str                   # REQ1 / REQ2 …
     text: str                 # 人能读懂的一句话
     must_cite: bool = True    # 为真时：FINISH/COMPLETED 前必须有 supported Finding 覆盖它
+    text_en: str | None = None   # 英文同义表述（10-07）：英文规格下工作区任务是英文，scope 兜底按它比对
 
     def __post_init__(self) -> None:
         if not re.match(r"^REQ\d+$", self.id):
@@ -193,6 +196,23 @@ class Case:
     reference_path: str | None = None  # 官方标注文件，演员不可见
     used_for_revision: tuple[str, ...] = ()   # 被用来改规格的记录（spec 版本号）
     notes: str = ""
+    # 英文任务文字（10-07）：规格 harness_params.language=en（hi@0.7.0 / gia@0.8.0 起）时交给模型的是它，
+    # 模型输入里不混中文框架文字；声明原文本来就是英文。核验仍用 task_text（核验提示是中文）。
+    task_text_en: str | None = None
+
+    def task_for(self, language: str) -> str:
+        """交给模型的任务文字：language=en 用 task_text_en（缺了就报错，不悄悄混用中文）。
+
+        10-07：task_text 本身就是纯英文（没有一个汉字，例如 EVID-Bench 的 222 个案卷）时直接用它——这不是混用中文。
+        """
+
+        if language == "en":
+            if (self.task_text_en or "").strip():
+                return str(self.task_text_en)
+            if not _CJK_TEXT.search(self.task_text):
+                return self.task_text
+            raise CaseError(f"{self.case_id} 没有 task_text_en，不能按英文规格跑")
+        return self.task_text
 
     def __post_init__(self) -> None:
         if not _CASE_ID.match(self.case_id):
@@ -233,6 +253,16 @@ class Case:
     @property
     def must_cite_requirements(self) -> tuple[str, ...]:
         return tuple(r.id for r in self.requirements if r.must_cite)
+
+    def orphan_requirements(self) -> tuple[str, ...]:
+        """must_cite=True 却没有任何 required_evidence.supports 指向的要求（2026-10-04）。
+
+        充分性/premature_finish 只按"干净 Finding 引用了支撑该要求的必需证据"算覆盖，这样的要求永远覆盖不了，
+        每个 run 的答案都会被判 premature_finish（r0cn 的 averimatec_423 REQ2 就是这样）。案卷检查应为空。
+        """
+
+        supported = {rid for item in self.required_evidence for rid in item.supports}
+        return tuple(rid for rid in self.must_cite_requirements if rid not in supported)
 
     def evidence_groups(self) -> list[tuple[str, tuple[str, ...]]]:
         """required_evidence_rule 解析成 [(mode, keys)]，mode ∈ {all, any_one_of}。
