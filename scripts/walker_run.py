@@ -98,7 +98,8 @@ def now() -> str:
 
 
 class Log:
-    def __init__(self, name: str, title: str, append: bool = False) -> None:
+    def __init__(self, name: str, title: str, append: bool = True) -> None:
+        # 10-15：日志名按轮次取，同轮次再跑（冒烟后全量、断点续跑）接在后面写，不覆盖前一次（r0a 冒烟日志被全量覆盖过）
         self.path = ROOT / name
         mode = "a" if append and self.path.exists() else "w"
         with self.path.open(mode, encoding="utf-8") as stream:

@@ -2,7 +2,8 @@
 
     python scripts/export_gate.py --export experiments/sft_data/export/<目录>
         [--cases experiments/sft_data/cases] [--evid-bench plan-harness-1/datasets/EVID-Bench/evid_bench.json]
-        [--evid-range 131 222] [--evid-channels 频道表.json] [--phash --evid-videos <EVID 视频目录>]
+        [--evid-range 131 222] [--evid-channels 频道表.json] [--train-channels 训练侧频道表.json] [--dictionary 词典.txt]
+        [--phash --evid-videos <EVID 视频目录>]
         [--model .models/Qwen3.5-9B]   # 有学生 processor 时逐行做 <image> 展开与 label mask 精确核对（接 datagen.check_inputs）
     → <导出目录>/gate_report.md、gate_report.json、gate_b2_review.md（B2 人工抽查用的 20 条）
 
@@ -149,8 +150,12 @@ def check_b2(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
     # 人工抽查：先放仍被扣的，再补放行的，凑 20 条（两类都要看：误扣看 held，误放看 released）
     sample = held[: THRESHOLDS["B2_manual_sample"]]
     sample += [r for r in flagged if r not in sample][: THRESHOLDS["B2_manual_sample"] - len(sample)]
+    want = THRESHOLDS["B2_manual_sample"]
+    short = (f"**本次只有 {len(sample)} 条，不足 {want} 条**：带 hidden_context 词的行一共只有 {len(flagged)} 行，已全部列出；"
+             f"误扣上限仍按清单 ≤ {THRESHOLDS['B2_max_wrong']} 条判。") if len(sample) < want else ""
     lines = ["# B2 人工抽查：hidden_context", "",
-             f"共 {len(flagged)} 行带 hidden_context 词；其中仍扣（held）{len(held)} 行。下表先列仍扣的，再补按证据放行的，最多 20 条。",
+             f"共 {len(flagged)} 行带 hidden_context 词；其中仍扣（held）{len(held)} 行。下表先列仍扣的，再补按证据放行的，最多 {want} 条。",
+             *([short] if short else []),
              "每条判一个字：**对**（判定正确）/ **错**（误扣：其实是学生看得到的证据；或误放：其实是特权词）。清单 B2：误扣 ≤ 2。", "",
              "| # | run | request | 单元 | 词 | 放行出处 | 桶 / 原因 | 教师输出（节选） | 判定 |", "|---|---|---|---|---|---|---|---|---|"]
     for i, r in enumerate(sample, 1):
@@ -161,8 +166,10 @@ def check_b2(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
     (out_dir / "gate_b2_review.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return item("B2", "hidden_context：证据里出现过的词不算泄漏", "需人工",
                 {"rows_with_hidden": len(flagged), "released_rows": sum(1 for r in flagged if r["metadata"].get("hidden_context_released")),
-                 "released_tokens_by_source": dict(released_src), "held": len(held), "review_sample": len(sample)},
-                "抽 20 条 held 人工看，误扣 ≤ 2", "抽查表 gate_b2_review.md；held 不足 20 条时用放行行补齐（看有没有误放）")
+                 "released_tokens_by_source": dict(released_src), "held": len(held), "review_sample": len(sample),
+                 "review_sample_short": len(sample) < want},
+                "抽 20 条 held 人工看，误扣 ≤ 2", "抽查表 gate_b2_review.md；held 不足 20 条时用放行行补齐（看有没有误放）"
+                + (f"。抽查只有 {len(sample)} 条（不足 {want}）：带 hidden_context 的行总共 {len(flagged)} 行，全部列入" if short else ""))
 
 
 def check_b3(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -254,11 +261,28 @@ def _norm_sentence(text: str) -> str:
     return " ".join(text.lower().split())
 
 
+B7_TEACHER_SLOTS = ("s3_teacher", "s1_teacher")       # 10-15 对话 6：没跑 S0、理由由 S3_next / S1_query 槽写的动作行
+
+
+def _b7_source(m: dict[str, Any]) -> str | None:
+    """walker 程序定的动作行的理由出处：s0_teacher / s3_teacher / s1_teacher（教师槽写的）、s0_template_fallback / walker_template（模板）。
+    不是 walker 动作行（报告 / 答案 / 派工的 walker_slot、非 walker 的 teacher）返回 None，不进 B7 分母。"""
+
+    source = m.get("rationale_source")
+    if source == "walker_slot" and m.get("rationale_slot") in B7_TEACHER_SLOTS:
+        return str(m["rationale_slot"])
+    return source if source in ("s0_teacher", "s0_template_fallback", "walker_template") else None
+
+
 def check_b7(rows: list[dict[str, Any]]) -> dict[str, Any]:
     acc = [r for r in rows if r["metadata"].get("bucket") == "accepted"]
     steps = [r["metadata"] for r in acc if r["metadata"].get("role") == "hi" and r["metadata"].get("unit") == "step"]
-    walker_steps = [m for m in steps if m.get("rationale_source") in ("s0_teacher", "s0_template_fallback", "walker_template")]
-    adoption = (sum(1 for m in walker_steps if m.get("rationale_source") == "s0_teacher") / len(walker_steps)) if walker_steps else None
+    # 分母 = accepted 的 walker 动作行（S0 槽写的、S3 / S1 槽写的、模板）；分子 = 教师槽写的（S0 / S3 / S1）
+    walker_steps = [m for m in steps if _b7_source(m)]
+    by_source = Counter(_b7_source(m) for m in walker_steps)
+    teacher_rows = sum(n for s, n in by_source.items() if s in ("s0_teacher", *B7_TEACHER_SLOTS))
+    adoption = teacher_rows / len(walker_steps) if walker_steps else None
+    s0_only = by_source["s0_teacher"] / len(walker_steps) if walker_steps else None
     sentences: Counter[str] = Counter()
     example: dict[str, str] = {}
     for r in acc:
@@ -279,12 +303,20 @@ def check_b7(rows: list[dict[str, Any]]) -> dict[str, Any]:
         status, note = ok(worst <= THRESHOLDS["B7_template_max"]), "没有 walker 程序定的动作行（非 walker 导出），只看模板句"
     else:
         status, note = ok(adoption >= THRESHOLDS["B7_s0_adoption"] and worst <= THRESHOLDS["B7_template_max"]), ""
-    return item("B7", "rationale：S0 采用率 ≥ 90%；模板句 ≤ 5 次/句", status,
-                {"walker_step_rows": len(walker_steps), "s0_adoption": round(adoption, 3) if adoption is not None else None,
+    old_labels = any(m.get("rationale_source") == "walker_template" for m in walker_steps) and not any(m.get("rationale_slot") for m in steps)
+    return item("B7", "rationale：教师槽采用率 ≥ 90%；模板句 ≤ 5 次/句", status,
+                {"walker_step_rows": len(walker_steps), "teacher_rationale_rows": teacher_rows,
+                 "s0_adoption": round(adoption, 3) if adoption is not None else None,
+                 "s0_slot_only": round(s0_only, 3) if s0_only is not None else None,
+                 "by_source": dict(by_source),
                  "rationale_source": dict(Counter(str(m.get("rationale_source")) for m in steps)),
                  "max_repeat": worst, "top_sentences": top},
-                "S0 采用率 ≥ 90%（accepted 的 walker 动作行里 S0 槽写的占比）；同一句（编号、数字归一后）≤ 5 次",
-                note + ("；walker_template = 那步没跑 S0 槽（S0 10-14 晚才默认开），重跑后应为 0" if walker_steps else ""))
+                "采用率 ≥ 90%（accepted 的 walker 动作行里理由由教师槽写的占比：S0_rationale，或没跑 S0 时 S3_next / S1_query 槽；"
+                "分母 = 这些 + 模板）；同一句（编号、数字归一后）≤ 5 次",
+                note + ("；s0_adoption 键名沿用，含 S3 / S1 槽写的理由（10-15 对话 6 起）；s0_slot_only 只算 S0 槽；"
+                        "walker_template = 没有任何槽写理由、用了程序模板（如 C4_search_fallback）" if walker_steps else "")
+                + ("；本导出没有 rationale_slot 字段（10-15 对话 6 之前的 export），S3 / S1 槽写的理由仍记成 walker_template，"
+                   "用当前 export.py 重导" if old_labels else ""))
 
 
 def _exact_mask(rows: list[dict[str, Any]], export_dir: Path, model: str | None) -> dict[str, Any]:
@@ -542,6 +574,95 @@ def _dhash_frames(path: Path, n: int = 8) -> list[int]:
     return hashes
 
 
+CHANNEL_KEYS = {"uploader", "uploader_id", "channel", "channel_id", "channel_name", "author", "creator"}   # 案卷里的上传者 / 频道字段
+DICTIONARY_PATHS = ("/usr/share/dict/words", "/usr/dict/words")
+
+
+def _norm_channel(name: Any) -> str:
+    return " ".join(str(name or "").casefold().split())
+
+
+def _evid_channel_ids(table: Path, evid: dict[str, set[str]]) -> set[str]:
+    """频道表旁的 <名>.detail.json（{外部 ID: {channel_id, uploader_id, …}}）里 EVID 视频的频道 / 上传者 ID；没有就空。"""
+
+    detail = table.with_name(table.stem + ".detail.json")
+    if not detail.is_file():
+        return set()
+    out: set[str] = set()
+    for key, info in json.loads(detail.read_text(encoding="utf-8")).items():
+        if isinstance(info, dict) and (key in evid or info.get("evid")):
+            out.update(_norm_channel(info.get(k)) for k in ("channel_id", "uploader_id") if info.get(k))
+    return out
+
+
+def _load_dictionary(path: str | None) -> tuple[set[str], str]:
+    """英文词典（一行一词）：--dictionary 给的文件 > 系统 words 文件 > nltk words 语料（已下载时）；都没有返回空集与"无"。"""
+
+    for candidate in ([path] if path else []) + list(DICTIONARY_PATHS):
+        if candidate and Path(candidate).is_file():
+            words = {w.strip().casefold() for w in Path(candidate).read_text(encoding="utf-8", errors="ignore").splitlines() if w.strip()}
+            return words, f"{candidate}（{len(words)} 词）"
+    try:
+        from nltk.corpus import words as nltk_words
+
+        words = {w.casefold() for w in nltk_words.words()}
+        return words, f"nltk words（{len(words)} 词）"
+    except Exception:  # noqa: BLE001 —— 没装 nltk 或语料没下载
+        return set(), "无"
+
+
+def _train_channel_meta(case_ids: list[str], case_dir: Path, table: Path | None) -> dict[str, dict[str, Any]]:
+    """每个训练案卷的上传者 / 频道元数据：{case_id: {"fields": [名字或 ID], "notes": 来源说明}}。
+    fields = 案卷 JSON 里 CHANNEL_KEYS 字段（任意层级）+ --train-channels 表（{case_id 或外部 ID: 频道名或名字列表}）里对上本案卷的项。"""
+
+    extra = json.loads(table.read_text(encoding="utf-8")) if table and table.is_file() else {}
+    out: dict[str, dict[str, Any]] = {}
+    for cid in case_ids:
+        dataset, _, source = cid.partition(":")
+        path = case_dir / f"{dataset}_{source}.json"
+        case = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+        fields: list[str] = []
+
+        def walk(value: Any) -> None:
+            if isinstance(value, dict):
+                for key, sub in value.items():
+                    if key in CHANNEL_KEYS and isinstance(sub, str) and sub.strip():
+                        fields.append(sub)
+                    else:
+                        walk(sub)
+            elif isinstance(value, list):
+                for sub in value:
+                    walk(sub)
+
+        walk(case)
+        keys = {cid, source, str(case.get("family_key") or "").partition(":")[2]}
+        for key, value in extra.items():
+            if key in keys:
+                fields += [value] if isinstance(value, str) else [str(v) for v in value or []]
+        out[cid] = {"fields": fields, "notes": str(case.get("notes") or "")}
+    return out
+
+
+def _channel_hits(names: set[str], ids: set[str], meta: dict[str, dict[str, Any]], dictionary: set[str]) -> tuple[list[dict[str, Any]], list[str]]:
+    """结构化字段：与 EVID 频道名或频道 ID 归一后相等算命中。notes：多词频道名、或不在词典里的单词频道名，整词出现算命中；
+    单词且在词典里（或没有词典）的名字不在 notes 里比，列进第二个返回值。"""
+
+    single = {n for n in names if len(n.split()) == 1}
+    skipped = sorted(n for n in single if not dictionary or n in dictionary)
+    free_text = [n for n in names if n not in skipped and len(n) >= 3]
+    patterns = {n: re.compile(r"(?<!\w)" + re.escape(n).replace(r"\ ", r"\s+") + r"(?!\w)", re.IGNORECASE) for n in free_text}
+    hits: list[dict[str, Any]] = []
+    for cid, m in meta.items():
+        for value in m["fields"]:
+            norm = _norm_channel(value)
+            if norm in names or norm in ids:
+                hits.append({"case": cid, "where": "上传者 / 频道字段", "channel": value})
+        for name, pattern in patterns.items():
+            if m["notes"] and pattern.search(m["notes"]):
+                hits.append({"case": cid, "where": "案卷 notes", "channel": name})
+    return hits, skipped
+
+
 def check_c6(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     from foren_searcher.datagen.cases import check_split_leakage, load_cases
 
@@ -579,13 +700,24 @@ def check_c6(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             if ext in blob and not any(h["case"] == cid and h["id"] == ext for h in id_hits):
                 id_hits.append({"case": cid, "where": "训练行文本", "id": ext, "evid": sorted(evids)})
     fmnv_hits = [h for h in id_hits if h["case"].startswith("fmnv:")]
-    # 之二：频道
+    # 之二：频道——10-15 对话 6：只比训练案卷的上传者 / 频道元数据，不再扫训练行全文（全文子串匹配把 "Young""Mana" 这类
+    # 普通词频道名误报成泄漏）；结构化字段按名字 / ID 精确比，案卷 notes（来源说明）按整词比、跳过词典词
+    channel_compare: dict[str, Any] = {}
     if args.evid_channels and Path(args.evid_channels).is_file():
         channels = json.loads(Path(args.evid_channels).read_text(encoding="utf-8"))      # {外部 ID 或 EVID 编号: 频道名}
-        evid_channels = {str(v).strip().lower() for k, v in channels.items() if k in evid or str(k).startswith("video_")}
-        blob = "\n".join(t for texts in by_case_rows.values() for t in texts).lower()
-        channel_hits = sorted(c for c in evid_channels if c and len(c) >= 4 and c in blob)
-        channel_state = "已检查"
+        names = {_norm_channel(v) for k, v in channels.items() if (k in evid or str(k).startswith("video_")) and v}
+        names.discard("")
+        ids = _evid_channel_ids(Path(args.evid_channels), evid)
+        dictionary, dict_source = _load_dictionary(getattr(args, "dictionary", None))
+        train_table = getattr(args, "train_channels", None)
+        meta = _train_channel_meta(sorted(involved), case_dir, Path(train_table) if train_table else None)
+        channel_hits, skipped = _channel_hits(names, ids, meta, dictionary)
+        channel_compare = {"train_cases": len(meta), "cases_with_channel_fields": sum(1 for m in meta.values() if m["fields"]),
+                           "cases_with_notes": sum(1 for m in meta.values() if m["notes"]), "train_channels_table": train_table,
+                           "evid_channel_names": len(names), "evid_channel_ids": len(ids), "dictionary": dict_source,
+                           "notes_skipped_names": skipped}
+        channel_state = (f"已检查（训练侧：上传者 / 频道字段 {channel_compare['cases_with_channel_fields']} 个案卷、"
+                         f"notes {channel_compare['cases_with_notes']} 个案卷；EVID 频道 {len(names)} 个；词典 {dict_source}）")
     else:
         channel_hits, channel_state = [], "未检查（缺 EVID 频道表：--evid-channels）"
     # 之三：感知哈希
@@ -618,15 +750,18 @@ def check_c6(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         phash_state = "未检查（加 --phash --evid-videos <EVID 视频目录>，在有视频的本机跑）"
     split_ok = not not_train and not family_leak and not leakage and case_error is None
     dedup_ok = not id_hits and not channel_hits and not phash_hits
-    complete = channel_state == "已检查" and phash_state.startswith("已检查")
+    complete = channel_state.startswith("已检查") and phash_state.startswith("已检查")
     status = "不通过" if not (split_ok and dedup_ok) else ("通过" if complete else "未检查")
     return item("C6", "划分泄漏 0；与 EVID 131–222 三重去重；FMNV 排除 EVID 编号", status,
                 {"accepted_not_dev_train": dict(not_train), "train_family_in_other_split": family_leak, "case_split_leakage": leakage[:5],
                  "case_load_error": case_error,
                  "evid_external_ids": len(evid), "id_hits": id_hits[:10], "fmnv_id_hits": len(fmnv_hits),
-                 "channel": channel_state, "channel_hits": channel_hits[:10], "phash": phash_state, "phash_hits": phash_hits[:10]},
+                 "channel": channel_state, "channel_hits": channel_hits[:10], "channel_compare": channel_compare,
+                 "phash": phash_state, "phash_hits": phash_hits[:10]},
                 "划分泄漏 0；ID / 频道 / 感知哈希三项都检查且命中 0",
-                "ID 一项比对 EVID 的源视频编号（evid_bench.json 的 source + EVID 案卷 family_key）与训练案卷全文、训练行全文")
+                "ID 一项比对 EVID 的源视频编号（evid_bench.json 的 source + EVID 案卷 family_key）与训练案卷全文、训练行全文。"
+                "频道一项只比训练案卷的上传者 / 频道元数据：案卷里的 uploader / channel 等字段与 --train-channels 表按名字（归一后）"
+                "或频道 ID 精确比，案卷 notes 按整词比且跳过词典词（没有词典时跳过全部单词频道名）；不扫训练行全文")
 
 
 # --------------------------------------------------------------------------- 汇总
@@ -679,6 +814,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--evid-cases", default=str(ROOT / "experiments" / "evid" / "cases"))
     parser.add_argument("--evid-range", nargs=2, type=int, default=[131, 222])
     parser.add_argument("--evid-channels", default=None, help="EVID 源视频频道表 JSON：{外部 ID 或 video_NNN: 频道名}")
+    parser.add_argument("--train-channels", default=None,
+                        help="训练侧频道表 JSON：{case_id 或外部 ID: 频道名或名字列表}（案卷里没有上传者字段时补；C6 频道一项按名字精确比）")
+    parser.add_argument("--dictionary", default=None,
+                        help="英文词典（一行一词）：C6 在案卷 notes 里比频道名时跳过词典词；不给时找系统 words 文件 / nltk 语料，都没有就跳过全部单词频道名")
     parser.add_argument("--phash", action="store_true", help="对训练案卷视频与 EVID 视频做感知哈希比对（要本机视频文件）")
     parser.add_argument("--evid-videos", default=str(ROOT / "plan-harness-1" / "datasets" / "EVID-Bench" / "videos"))
     parser.add_argument("--phash-max-distance", type=int, default=6)

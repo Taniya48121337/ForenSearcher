@@ -139,6 +139,11 @@ def fake_codex(tmp_path, monkeypatch):
     path.parent.mkdir()
     path.write_text(FAKE_CODEX, encoding="utf-8")
     path.chmod(path.stat().st_mode | stat.S_IEXEC)
+    if os.name == "nt":             # Windows 起不了 shebang 脚本（WinError 193）：同一份 Python 桩，外面套 .cmd
+        script = path.with_suffix(".py")
+        path.rename(script)
+        path = path.with_suffix(".cmd")
+        path.write_text(f'@"{sys.executable}" "{script}" %*\r\n', encoding="utf-8")
     monkeypatch.setenv("FOREN_CODEX_BIN", str(path))
     monkeypatch.setenv("FAKE_CODEX_STATE", str(tmp_path / "codex.state"))
     monkeypatch.setenv("FAKE_CODEX_LOG", str(tmp_path / "codex.log"))
@@ -205,15 +210,15 @@ def test_freeze_teacher_and_verifier_sections():
     assert verifier["judge"] == "claude-cli" and verifier["model"] == "claude-sonnet-5-5" and verifier["model_alias"] == "sonnet"
     assert verifier["server"]["judge"] == "api" and verifier["server"]["mode"] == "batch"
     assert verifier["server"]["endpoint"] == "https://api.anthropic.com/v1"
-    assert any("r0 成本压缩" in c["change"] for c in data["changelog"]) and "A5" in data["changelog"][-1]["change"]
+    # A5 那条之后还会追加 changelog（A3、A10、对话 5' 换 code_hash……），只要求它在记录里
+    assert any("r0 成本压缩" in c["change"] for c in data["changelog"]) and any("A5" in c["change"] for c in data["changelog"])
 
 
 def test_verifier_hashes():
     import walker_run
 
     verifier = json.loads(FREEZE.read_text(encoding="utf-8"))["verifier"]
-    assert walker_run.verifier_code_hash() == verifier["code_hash"] == \
-        "sha256:6e4eac1b07526c632f89b3634a9cd4d6261f8a4e39275d55c86238bc270b5a26"      # datagen/verify 一字未改
+    assert walker_run.verifier_code_hash() == verifier["code_hash"]      # datagen/verify 与冻结文件记的一致（换 hash 时冻结文件跟着改）
     assert walker_run.verifier_code_hash(("datagen/api_judge.py",)) == verifier["server"]["transport"]["hash"]
 
 

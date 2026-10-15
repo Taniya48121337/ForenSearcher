@@ -24,7 +24,8 @@
     verifier          每行 verifier = 冻结版本；judge_model 是冻结的核验模型且前缀是冻结的 judge（10-15 对话 5 起 claude-cli:）；
                       当前 datagen/verify 代码 hash = 冻结值
     tool_layer_hash   行 / manifest / run_config 里的工具层 hash 只有一个值且等于冻结值（r0e 来源豁免，单独列出）；当前代码重算也一致
-    run_freeze        每个 run 的 run_config.freeze.ok == true（r0e 豁免）
+    run_freeze        每个 run 的 run_config.freeze.ok == true（r0e 豁免）；只差 harness_overrides、且与冻结文件
+                      allowed_variant_overrides 某个组合一致的（V9）按 run_cases.recheck_freeze 改判 ok，detail.variants 列出
     teacher           分槽冻结（teacher.slots，10-15 起）：每个 run 的 run_config.walker.slot_models 逐槽核对——槽 Sk 的模型必须是
                       该槽后端（teacher.slots[Sk]）的主模型（backends）或备用模型（backup_backends），只换一个后端的 run 也认；
                       没有 slot_models 的 run 不过（r0e 豁免）。老格式冻结仍按 run 级 teacher_model ∈ {primary, backup}。
@@ -127,7 +128,9 @@ def git_info() -> dict[str, Any]:
             "tags_at_head": (run("tag", "--points-at", "HEAD") or "").split() or None}
 
 
-def run_provenance(runs: set[str], runs_dir: Path) -> list[dict[str, Any]]:
+def run_provenance(runs: set[str], runs_dir: Path, frozen: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    from foren_searcher.datagen.run_cases import recheck_freeze
+
     out = []
     for run in sorted(runs):
         path = runs_dir / run / "run_config.json"
@@ -135,7 +138,8 @@ def run_provenance(runs: set[str], runs_dir: Path) -> list[dict[str, Any]]:
             out.append({"run": run, "run_config": None})
             continue
         cfg = json.loads(path.read_text(encoding="utf-8"))
-        freeze = cfg.get("freeze") or {}
+        # 10-15 对话 6（清单 A10）：按冻结文件的 allowed_variant_overrides 重看（V9 只差 harness_overrides 时改判 ok）
+        freeze = recheck_freeze(cfg.get("freeze") or {}, frozen) or {}
         walker = cfg.get("walker") or {}
         out.append({"run": run, "run_config": str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path),
                     "teacher_model": cfg.get("teacher_model") or (cfg.get("configured_model") or {}).get("model") or walker.get("teacher_model"),
@@ -143,7 +147,8 @@ def run_provenance(runs: set[str], runs_dir: Path) -> list[dict[str, Any]]:
                     "slot_backends": {k: (v or {}).get("backend") for k, v in (walker.get("slot_teachers") or {}).items()} or None,
                     "spec_hash": cfg.get("spec_hash"),
                     "tool_layer_hash": cfg.get("tool_layer_hash"), "render_profile": cfg.get("render_profile"),
-                    "freeze_ok": freeze.get("ok"), "freeze_failed": freeze.get("failed"), "freeze_id": freeze.get("freeze_id")})
+                    "freeze_ok": freeze.get("ok"), "freeze_failed": freeze.get("failed"), "freeze_id": freeze.get("freeze_id"),
+                    "freeze_variant": freeze.get("variant")})
     return out
 
 
@@ -270,7 +275,7 @@ def pack(args: argparse.Namespace) -> int:
     # ---- runs / tool layer / freeze.ok
     runs = {str(md.get("run")) for _, md in all_md if md.get("run") and not is_exempt(md)}
     exempt_runs = sorted({str(md.get("run")) for _, md in all_md if md.get("run") and is_exempt(md)})
-    prov = run_provenance(runs, runs_dir)
+    prov = run_provenance(runs, runs_dir, freeze)
     frozen_layer = (freeze.get("tool_layer") or {}).get("hash")
     layer_rows = Counter(md.get("tool_layer_hash") for _, md in all_md if not is_exempt(md))
     layer_runs = Counter(p.get("tool_layer_hash") for p in prov)
@@ -288,6 +293,7 @@ def pack(args: argparse.Namespace) -> int:
                 "error": code.get("error")})
     not_ok = [p["run"] for p in prov if p.get("freeze_ok") is not True]
     checks.add("run_freeze", not not_ok, {"runs": len(prov), "not_ok": not_ok[:40], "n_not_ok": len(not_ok),
+                                          "variants": {p["run"]: p["freeze_variant"] for p in prov if p.get("freeze_variant")},
                                           "missing_run_config": [p["run"] for p in prov if p.get("run_config") is None][:20]})
 
     # ---- teacher

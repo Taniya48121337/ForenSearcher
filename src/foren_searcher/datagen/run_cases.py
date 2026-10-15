@@ -573,9 +573,44 @@ def freeze_check(freeze: dict[str, Any] | None, actual: dict[str, Any]) -> dict[
     expected.update(freeze.get("checks") or {})
     items = {key: {"expected": value, "actual": actual.get(key), "ok": actual.get(key) == value}
              for key, value in expected.items()}
+    # 10-15 对话 6（清单 A10）：冻结文件声明的变体（allowed_variant_overrides，如 V9）——overrides 与某个组合完全一致（不计顺序）算对
+    overrides = items.get("harness_overrides")
+    variant = allowed_variant(freeze, overrides["actual"]) if overrides and not overrides["ok"] else None
+    if variant:
+        overrides.update(ok=True, variant=variant)
     failed = [key for key, item in items.items() if not item["ok"]]
     return {"applies": True, "freeze_id": freeze.get("freeze_id"), "file": freeze.get("_file"), "ok": not failed,
-            "failed": failed, "items": items}
+            "failed": failed, "items": items, **({"variant": variant} if variant else {})}
+
+
+def allowed_variant(freeze: dict[str, Any] | None, overrides: Any) -> str | None:
+    """freeze.allowed_variant_overrides 里与这组 harness_overrides 完全一致（不计顺序、不多不少）的变体名；没有返回 None。"""
+
+    if not freeze or not isinstance(overrides, list) or not overrides:
+        return None
+    actual = sorted(str(x) for x in overrides)
+    for name, allowed in (freeze.get("allowed_variant_overrides") or {}).items():
+        if isinstance(allowed, list) and actual == sorted(str(x) for x in allowed):
+            return str(name)
+    return None
+
+
+def recheck_freeze(record: dict[str, Any] | None, freeze: dict[str, Any] | None) -> dict[str, Any] | None:
+    """按当前冻结文件重看 run 跑时写的 run_config.freeze（export --require-freeze、pack_r0 run_freeze 用）：
+    只放宽 harness_overrides 一项——跑时冻结文件还没声明 allowed_variant_overrides（r0a 的 V9 两条），现在与某个变体组合一致就改判。
+    其余不符项原样保留；冻结编号对不上、或本来就 ok 的记录原样返回。"""
+
+    if not isinstance(record, dict) or not record.get("applies") or record.get("ok") is True or not freeze:
+        return record
+    if record.get("freeze_id") != freeze.get("freeze_id") or "harness_overrides" not in (record.get("failed") or []):
+        return record
+    item = (record.get("items") or {}).get("harness_overrides") or {}
+    variant = allowed_variant(freeze, item.get("actual"))
+    if not variant:
+        return record
+    rest = [key for key in record.get("failed") or [] if key != "harness_overrides"]
+    return {**record, "ok": not rest, "failed": rest, "variant": variant, "rechecked": True,
+            "items": {**record["items"], "harness_overrides": {**item, "ok": True, "variant": variant}}}
 
 
 async def run_one(case_file: str | Path, run_name: str, *, runs_dir: str | Path, round_tag: str, sample: int,

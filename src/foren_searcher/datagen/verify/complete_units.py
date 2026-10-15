@@ -63,6 +63,8 @@ async def complete_run(run_dir: Path, case: Case | None, report_verdicts: list[V
                 apply_plan_judgment(unit, raw, case=case, judge_model=judge_name)
                 say(f"[{log.name}] plan {decision.request_id}: {json.dumps(summarize_plan(unit), ensure_ascii=False)}")
                 out.append(unit)
+                if sink is not None:
+                    sink.append(unit)
         return out
     finally:
         log.close()

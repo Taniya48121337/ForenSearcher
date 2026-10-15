@@ -752,15 +752,23 @@ class OracleGenerator(ModelImageInputs):
             "REPORT, not a tool action. Write the report JSON exactly as the HI instructions define it: "
             '{"task_id": "%s", "status": "%s", %s"findings": [{"statement": "...", "evidence_ids": ["..."], "limitations": ["..."]}], '
             '"selected_evidence_ids": ["..."], "rationale": "..."}.\n'
-            "- status: %s.%s If, after looking at the evidence, some required part of the task still cannot be answered from it, "
-            "you may instead use INCOMPLETE with a status_reason naming exactly what is missing; never use COMPLETED when the host "
-            "set INCOMPLETE.\n"
+            "- status: %s.%s Never use COMPLETED when the host set INCOMPLETE. When the host set COMPLETED, change it to INCOMPLETE "
+            "only if one of the numbered task parts below has no obtained evidence that answers it: mark that part not_answered in "
+            "part_coverage and write status_reason as one piece per such part, naming what the part asks and what is missing.\n"
+            "- Missing corroboration is not a missing part and never a reason for INCOMPLETE: the lack of a second or independent "
+            "source, of a first-hand, primary, original or official source, or of a visual / architectural match to the claimed "
+            "place, event or video goes into the limitations of the finding that answers the part. A part asked 'as far as the "
+            "evidence allows' is answered by what the evidence does establish (e.g. the earliest dated copy found, as 'no later "
+            "than'), with what stays open in limitations; it is not_answered only when no obtained evidence bears on it. A part "
+            "that only repeats the claim's wording or its date ('(posted: …)', '(claim date: …)') is answered by the finding that "
+            "checks the claim.\n"
             "%s"
             "%s"
             "- The task has these parts; answer EACH one explicitly in its own finding (statement + cited E), not only in limitations:\n%s"
             "  Add to the JSON a key \"part_coverage\": a list with one entry per part, {\"part\": <number>, \"finding\": <1-based finding "
-            "index>} when a finding answers it, or {\"part\": <number>, \"not_answered\": \"<what is missing>\"} when the evidence "
-            "cannot answer it. Do not mark a part answered if the finding only says it is unknown.\n"
+            "index>} when a finding answers it, or {\"part\": <number>, \"not_answered\": \"<what is missing>\"} when no obtained "
+            "evidence answers it (missing corroboration does not count). Do not mark a part answered if the finding only says it is "
+            "unknown.\n"
             "Host notes recorded from the tool outputs (facts already in the state, for precision):\n%s\n"
             "Return only the JSON object."
         ) % (task_id, status, '"status_reason": "...", ' if status == "INCOMPLETE" else "", status,
@@ -779,7 +787,7 @@ class OracleGenerator(ModelImageInputs):
             mock.update({"status": "INCOMPLETE", "status_reason": mock_gap})
         raw = self._codex(directory, actor_dir, "S4_report", base_prompt + suffix, image_paths, slots, mock)
         report = extract_json_object(raw)
-        status = _final_status(status, report)
+        status = _final_status(status, report, parts)
         status, reason = _coverage_status(status, reason, report, parts)
         report, dropped = _clean_report(report, task_id=task_id, status=status, reason=reason, allowed=set(allowed))
         if not report["findings"]:
@@ -787,7 +795,7 @@ class OracleGenerator(ModelImageInputs):
                               "least one of the allowed IDs." % ", ".join(dropped))
             raw = self._codex(directory, actor_dir, "S4_report_retry", base_prompt + retry, image_paths, slots, mock)
             retry_report = extract_json_object(raw)
-            status = _final_status(slot["status"], retry_report)
+            status = _final_status(slot["status"], retry_report, parts)
             status, reason = _coverage_status(status, reason, retry_report, parts)
             report, dropped = _clean_report(retry_report, task_id=task_id, status=status, reason=reason, allowed=set(allowed))
         if dropped:
@@ -1616,13 +1624,15 @@ def _collect_findings(view: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _coverage_status(status: str, reason: str | None, report: dict[str, Any], parts: list[str]) -> tuple[str, str | None]:
-    """逐条子要求：教师标了 not_answered、或某条没有对应 Finding，COMPLETED 就降为 INCOMPLETE，原因写明哪一条。"""
+    """逐条子要求：教师标了 not_answered、或某条没有对应 Finding，COMPLETED 就降为 INCOMPLETE，原因写明哪一条。
+    10-15（B6）：not_answered 写的是佐证缺口（第二独立来源 / 一手来源 / 视觉对应），或那一条只是声明原文 / 日期的碎片，
+    不算缺口——佐证缺口写进 limitations，状态不降。"""
 
     if status != "COMPLETED" or not parts:
         return status, reason
     coverage = report.get("part_coverage") if isinstance(report.get("part_coverage"), list) else []
     n_findings = len([f for f in report.get("findings") or [] if isinstance(f, dict)])
-    answered: set[int] = set()
+    answered: set[int] = {i for i, part in enumerate(parts, 1) if not _required_part(part)}
     gaps: list[str] = []
     for entry in coverage:
         if not isinstance(entry, dict):
@@ -1632,6 +1642,11 @@ def _coverage_status(status: str, reason: str | None, report: dict[str, Any], pa
         except (TypeError, ValueError):
             continue
         if entry.get("not_answered"):
+            if number in answered or _CORROBORATION.search(str(entry["not_answered"])):
+                answered.add(number)
+                _add_limitation(report, str(entry["not_answered"]),
+                                _finding_for(report, number, parts[number - 1] if 0 < number <= len(parts) else ""))
+                continue
             gaps.append(f"part {number} ({parts[number - 1][:80] if 0 < number <= len(parts) else '?'}): {str(entry['not_answered'])[:160]}")
         else:
             try:
@@ -1647,11 +1662,105 @@ def _coverage_status(status: str, reason: str | None, report: dict[str, Any], pa
     return "INCOMPLETE", "not every part of the task is answered by the evidence: " + "; ".join(gaps)
 
 
-def _final_status(host_status: str, report: dict[str, Any]) -> str:
-    """程序定的 status 为准；教师看了证据后可以把 COMPLETED 降为 INCOMPLETE（要写 status_reason），不能反过来。"""
+# 佐证缺口（B6，r0a 20 份被 S4 降级的报告里的主要理由）：缺第二 / 独立来源、一手 / 原始 / 官方来源、视觉 / 建筑对应
+_CORROBORATION = re.compile(
+    r"\b(?:second|another|additional|other|separate)\s+(?:independent\s+)?(?:source|report|outlet|confirmation)s?\b"
+    r"|\bindependent(?:ly)?\b|\bcorroborat|\bfirst[- ]hand\b|\bprimary\s+source"
+    r"|\boriginal\s+(?:source|attribution|official\s+statement|statement|post)\b|\bofficial\s+(?:statement|confirmation|source)"
+    r"|\bvisual(?:ly)?\s+(?:or\s+documentary\s+)?(?:correspondence|match|comparison|compared|identification|confirmation)"
+    r"|\bnot\s+visually\s+compared|\b(?:architectural|landmark)\s+(?:match|correspondence|identification)"
+    r"|\bcorrespondence\s+with\s+(?:an?|the)\s+(?:external|described)", re.I)
+_CLAIM_DATE = re.compile(r"\((?:posted|claim date):", re.I)
+_PART_VERB = re.compile(r"^(?:state|give|check|cite|investigate|find|determine|describe|say|explain|fact-check|compare|answer|"
+                        r"verify|establish|identify|report|use|inspect|look|examine|when|whether|where|how|what|which|scope)\b", re.I)
+_STOP = frozenset(("that this with from were have been which there their does only given material materials established "
+                   "establish establishes verified evidence obtained available whether where when what could cannot about into "
+                   "than them they these those such also part task claim source sources picture image photograph photo video "
+                   "shows show state find check give cite remain remains").split())
 
-    if host_status == "COMPLETED" and report.get("status") == "INCOMPLETE" and str(report.get("status_reason") or "").strip():
+
+def _required_part(part: str) -> bool:
+    """task_parts 里真正要回答的一项；把声明原文拆碎了的片段（'Military Veterans (posted: 2015-08-04)'、'(claim date: …)'）不算。"""
+
+    text = part.strip().lstrip('"“')
+    return not (text.startswith("(") or (_CLAIM_DATE.search(text) and not _PART_VERB.match(text)))
+
+
+def _stems(text: str) -> set[str]:
+    return {w[:5] for w in re.findall(r"[a-z]{4,}", text.lower()) if w not in _STOP}
+
+
+def _finding_for(report: dict[str, Any], number: int | None, text: str = "") -> int | None:
+    """part_coverage 里回答第 number 条的 Finding（0 起）；没有就取与 text 用词最接近的 Finding。"""
+
+    findings = [f for f in report.get("findings") or [] if isinstance(f, dict)]
+    for entry in report.get("part_coverage") or []:
+        if isinstance(entry, dict) and str(entry.get("part")) == str(number) and not entry.get("not_answered"):
+            try:
+                index = int(entry.get("finding")) - 1
+            except (TypeError, ValueError):
+                continue
+            if 0 <= index < len(findings):
+                return index
+    words = _stems(text)
+    scored = [(len(words & _stems(str(f.get("statement") or ""))), i) for i, f in enumerate(findings)]
+    return max(scored)[1] if scored and max(scored)[0] > 0 else None
+
+
+def _add_limitation(report: dict[str, Any], text: str, index: int | None) -> None:
+    findings = [f for f in report.get("findings") or [] if isinstance(f, dict)]
+    if not findings or not text.strip():
+        return
+    target = findings[index] if index is not None and 0 <= index < len(findings) else findings[-1]
+    limits = target.get("limitations") if isinstance(target.get("limitations"), list) else []
+    if text.strip() not in limits:
+        limits.append(text.strip())
+    target["limitations"] = limits
+
+
+def _part_gaps(report: dict[str, Any], parts: list[str]) -> dict[int, str]:
+    """part_coverage 里能算缺口的 not_answered：编号对得上一条要回答的 task_part，且写的不是佐证缺口。"""
+
+    gaps: dict[int, str] = {}
+    for entry in report.get("part_coverage") or []:
+        if not isinstance(entry, dict) or not str(entry.get("not_answered") or "").strip():
+            continue
+        try:
+            number = int(entry.get("part"))
+        except (TypeError, ValueError):
+            continue
+        text = str(entry["not_answered"]).strip()
+        if 0 < number <= len(parts) and _required_part(parts[number - 1]) and not _CORROBORATION.search(text):
+            gaps[number] = text
+    return gaps
+
+
+def _final_status(host_status: str, report: dict[str, Any], parts: list[str] | None = None) -> str:
+    """程序定的 status 为准；教师看了证据后可以把 COMPLETED 降为 INCOMPLETE（要写 status_reason），不能反过来。
+    10-15（B6）：降级只在 status_reason 对得上某条 task_part（任务要求的具体项没有证据回答，part_coverage 里标了
+    not_answered）时采纳，status_reason 只留对得上的段；佐证缺口与对不上任何一条的段移进 limitations（report 原地改写）。
+    一条都对不上就维持 COMPLETED。"""
+
+    if host_status != "COMPLETED" or report.get("status") != "INCOMPLETE" or not str(report.get("status_reason") or "").strip():
+        return host_status
+    parts = list(parts or []) or ["(the task as a whole)"]
+    gaps = _part_gaps(report, parts)
+    kept: list[str] = []
+    for piece in (p.strip() for p in str(report["status_reason"]).split(";")):
+        if not piece:
+            continue
+        if not _CORROBORATION.search(piece) and any(len(_stems(piece) & _stems(parts[n - 1] + " " + text)) >= 2
+                                                    for n, text in gaps.items()):
+            kept.append(piece)
+        else:
+            _add_limitation(report, piece, _finding_for(report, None, piece))
+    if gaps and not kept:
+        kept = [f"{parts[n - 1][:80].rstrip(' ,.')}: {text}" for n, text in sorted(gaps.items())]
+    if gaps:
+        report["status_reason"] = "; ".join(kept)
         return "INCOMPLETE"
+    report["status"] = host_status
+    report.pop("status_reason", None)
     return host_status
 
 

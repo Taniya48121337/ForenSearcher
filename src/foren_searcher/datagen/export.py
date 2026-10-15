@@ -14,8 +14,9 @@
 
 10-15 质量门（《第一次SFT开训清单_20261015》B2–B9、C3、C5，《export质量门_20261015》）：每行另记
     hidden_context_released（B2：本 run 学生够得着的证据里出现过的词放行）、cited_outside_view（B3）、tool_result_truncation（B4）、
-    incomplete_reason_checks（B6）、compat_problems（C5）、branch / walker_rule / rationale_source / s5_gt_review（C4、B7、B5）、
-    row_tokens_est（B9）、tool_layer_hash / teacher_role / freeze_ok（r0 冻结口径 §6）。GIA 定时复核行（wait 变体）不写进任何文件，
+    incomplete_reason_checks（B6）、compat_problems（C5）、branch / walker_rule / rationale_source（+ rationale_slot）/ s5_gt_review
+    （C4、B7、B5）、row_tokens_est（B9）、tool_layer_hash / teacher_role / freeze_ok（r0 冻结口径 §6；按 run_cases.recheck_freeze 认可
+    冻结文件声明的变体 overrides）。GIA 定时复核行（wait 变体）不写进任何文件，
     记在 manifest.excluded_rows。scripts/export_gate.py 读导出目录逐项出数。
 
 产物目录：
@@ -706,7 +707,8 @@ def decision_branch(action: dict[str, Any], payload: dict[str, Any]) -> str | No
 
 
 def walker_slots(log: RunLog, decision: Decision) -> dict[str, Any]:
-    """walker 的逐步记录：transport.json 的 oracle（规则、分支），slot_S0_rationale.json（S0 槽是否采用），
+    """walker 的逐步记录：transport.json 的 oracle（规则、分支），slot_S0_rationale.json（S0 槽是否采用；没有 S0 时看
+    slot_S3_next_choice.json / slot_S1_query_choice.json 的理由，记 rationale_source=walker_slot + rationale_slot=s3_teacher / s1_teacher），
     slot_S5_gt_check.json（答案是否按 GT 提示重写，清单 B5"S5 不用 GT"），slot_S5_revise.json（核验后按证据重写的错误类型）。"""
 
     rdir = log.run_dir / "requests" / decision.request_id
@@ -751,7 +753,20 @@ def walker_slots(log: RunLog, decision: Decision) -> dict[str, Any]:
     if "rationale_source" in info:
         pass
     elif oracle.get("kind") == "action" and decision.kind == "step":
-        info["rationale_source"] = "walker_template"      # walker 定的动作、没跑 S0 槽：rationale 是程序模板
+        # 10-15 对话 6（清单 B7）：没跑 S0 槽、但 S3_next（选读哪页 / 搜什么 / 查日期）或 S1_query（参考图检索词）槽写了理由，
+        # 且导出行的 rationale 就是那句——理由出自教师槽，不是模板；S3 写了理由但动作走了程序兜底（C4_search_fallback）的仍是模板
+        rationale = decision.output.get("rationale") if isinstance(decision.output, dict) else None
+        for name, slot_source in (("slot_S3_next_choice.json", "s3_teacher"), ("slot_S1_query_choice.json", "s1_teacher")):
+            try:
+                choice = json.loads((rdir / name).read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            written = choice.get("rationale") if isinstance(choice, dict) else None
+            if isinstance(written, str) and written.strip() and isinstance(rationale, str) and written.strip() == rationale.strip():
+                info["rationale_source"], info["rationale_slot"] = "walker_slot", slot_source
+                break
+        else:
+            info["rationale_source"] = "walker_template"      # walker 定的动作、没有槽写的理由：rationale 是程序模板
     elif transport.get("transport") == "oracle_walker":
         info["rationale_source"] = "walker_slot"           # 报告 / 答案 / 派工：由 S1–S5 槽写
     else:
@@ -1098,6 +1113,7 @@ def quality_summary(metas: list[dict[str, Any]]) -> dict[str, Any]:
         "compat_held": reasons("compat:"), "stale_verifier_held": reasons("stale_verifier"), "too_long_held": reasons("too_long"),
         "origin": dict(Counter(f"{m['role']}:{m.get('origin')}:{m['bucket']}" for m in metas)),
         "rationale_source": dict(Counter(str(m.get("rationale_source")) for m in metas if m["bucket"] == "accepted")),
+        "rationale_slot": dict(Counter(str(m["rationale_slot"]) for m in metas if m["bucket"] == "accepted" and m.get("rationale_slot"))),
     }
 
 
@@ -1117,10 +1133,12 @@ def freeze_summary(logs_config: list[tuple[str, dict[str, Any]]], freeze_file: P
     roles = Counter(str((cfg.get("walker") or {}).get("teacher_role")) for _, cfg in logs_config)
     ok = Counter(str((cfg.get("freeze") or {}).get("ok")) if isinstance(cfg.get("freeze"), dict) else "missing" for _, cfg in logs_config)
     slot_models = Counter(json.dumps((cfg.get("walker") or {}).get("slot_models"), sort_keys=True) for _, cfg in logs_config)
+    variants = {name: cfg["freeze"]["variant"] for name, cfg in logs_config
+                if isinstance(cfg.get("freeze"), dict) and cfg["freeze"].get("variant")}
     return {"freeze_id": freeze.get("freeze_id"), "freeze_tool_layer_hash": (freeze.get("tool_layer") or {}).get("hash"),
             "tool_layer_hash": dict(tool_hashes), "tool_layer_hash_unique": len([h for h in tool_hashes if h != "None"]) <= 1,
             "spec_hash": dict(spec_hashes), "teacher_model": dict(teachers), "teacher_role": dict(roles), "run_freeze_ok": dict(ok),
-            "slot_models": dict(slot_models),
+            "run_freeze_variant": variants, "slot_models": dict(slot_models),
             "verifier": VERIFIER_VERSION}
 
 
@@ -1233,17 +1251,32 @@ def main(argv: list[str] | None = None) -> int:
     overflow: list[dict[str, Any]] = []
     excluded: list[dict[str, Any]] = []
     skipped_runs: list[dict[str, Any]] = []
+    exempted_runs: list[dict[str, Any]] = []         # --require-freeze 时 freeze 不 ok、靠 --freeze-exempt 放进来的 run
     configs: list[tuple[str, dict[str, Any]]] = []
     from fnmatch import fnmatch
+
+    from .run_cases import recheck_freeze
+    freeze_path = Path(args.freeze_file)
+    try:
+        frozen = json.loads(freeze_path.read_text(encoding="utf-8")) if freeze_path.is_file() else None
+    except ValueError:
+        frozen = None
     for run_path in args.runs:
         log = load_run(run_path)
         try:
             freeze = log.config.get("freeze") if isinstance(log.config.get("freeze"), dict) else {}
-            if args.require_freeze and freeze.get("ok") is not True and not any(fnmatch(log.name, pat) for pat in args.freeze_exempt or []):
-                skipped_runs.append({"run": log.name, "reason": "freeze_not_ok" if freeze else "freeze_missing",
-                                     "failed": freeze.get("failed")})
-                print(f"{log.name}: 跳过（run_config.freeze 不是 ok）", flush=True)
-                continue
+            if freeze:
+                # 10-15 对话 6（清单 A10）：按当前冻结文件重看——只有 harness_overrides 不符、且与 allowed_variant_overrides
+                # 某个组合一致（V9）时改判 ok 并记 variant；行 metadata.freeze_ok 与 manifest 都用改判后的记录
+                freeze = recheck_freeze(freeze, frozen)
+                log.config["freeze"] = freeze
+            if args.require_freeze and freeze.get("ok") is not True:
+                if not any(fnmatch(log.name, pat) for pat in args.freeze_exempt or []):
+                    skipped_runs.append({"run": log.name, "reason": "freeze_not_ok" if freeze else "freeze_missing",
+                                         "failed": freeze.get("failed")})
+                    print(f"{log.name}: 跳过（run_config.freeze 不是 ok）", flush=True)
+                    continue
+                exempted_runs.append({"run": log.name, "failed": freeze.get("failed") if freeze else "freeze_missing"})
             configs.append((log.name, log.config))
             case = cases.get(log.case_id or "")
             reports = [v for v in all_verdicts if v.subject.get("run") == log.name]
@@ -1268,7 +1301,9 @@ def main(argv: list[str] | None = None) -> int:
                                     "freeze": freeze_summary(configs, Path(args.freeze_file)),
                                     "export_options": {"plan_copy": args.plan_copy, "origin_tag": args.origin_tag,
                                                        "compat_check": not args.no_compat, "max_row_tokens": args.max_row_tokens,
-                                                       "require_freeze": args.require_freeze, "hidden_context": args.hidden_context}})
+                                                       "require_freeze": args.require_freeze,
+                                                       "freeze_exempt": list(args.freeze_exempt or []), "freeze_exempted_runs": exempted_runs,
+                                                       "freeze_file": args.freeze_file, "hidden_context": args.hidden_context}})
     manifest["dataset_share_caps"] = share_caps
     (out_dir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     if overflow:

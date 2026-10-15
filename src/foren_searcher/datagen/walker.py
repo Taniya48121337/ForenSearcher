@@ -47,6 +47,8 @@ _PROFILE = re.compile(r"media profile:\s*(\w+),\s*([\d.]+)\s*s,\s*(\d+)\D(\d+),\
 _AUDIO = re.compile(r"(\d+)\s+audio track", re.I)
 _EID = re.compile(r"^E[1-9][0-9]*$")
 _NO_AUDIO_TASK = re.compile(r"do not assess audio|only the video track|video track only", re.I)
+_BOUNDARY_TASK = re.compile(r"time ranges?|ranges? on both sides|start and end|boundar|first and last|where (?:it|they|each) (?:starts?|begins?|ends?)"
+                            r"|from when|how long", re.I)
 _COPY_TASK = re.compile(r"segments?\s+(?:of\s+\w+\s+and\s+\w+\s+)?that\s+correspond|correspond(?:ing)?\s+to\s+each\s+other|copied\s+segment", re.I)
 _LOCATE_DESC = re.compile(r"(?:locate|find)[^:]*segment[^:]*:\s*(.+)$", re.I | re.S)
 
@@ -1374,7 +1376,8 @@ def _missing_parts(state: HiState, memory: dict[str, Any], pa: dict[str, Any], p
     issued = _issued(memory)
     missing = []
     other = {"A": "B", "B": "A"}
-    for ta, tb, _ in (pairs or [])[:2]:
+    # 10-15（B6）：只有采样对应点时，任务要逐段的时间范围 / 起止才算缺口；只问"有没有对应"的任务不列
+    for ta, tb, _ in (pairs or [])[:2] if _BOUNDARY_TASK.search(state.task) else []:
         missing.append(f"correspondence A {ta:.3f} s ↔ B {tb:.3f} s: start and end boundaries not established (sampled frames only)")
     for side, lo, hi in uncovered:
         if copy_task:
@@ -2787,7 +2790,9 @@ def _decide_followup(state: HiState, memory: dict[str, Any], windows: list[tuple
                      audio: list[str], anchors: list[tuple[float, float]] | None = None) -> Decision:
     """第 2 轮跟进：按缺口类型出程序（wk4）。
       锚点（对应段的起止没定）：锚点两侧 ±10 s 窗口对齐 → 取到与锚点一致的候选就在它的起止两侧各取 A/B 帧夹边界；
-                               取不到就退到以图找图：A 在锚点 ±3 s 的帧，各在 B 的锚点附近 locate，看位置是否随之平移。
+                               取不到就退到以图找图：A 在锚点 ±3 s 的帧，各在 B 的锚点附近 locate，看位置是否随之平移；
+                               10-15（B6）：再按"里面还对得上 / 外面对不上"把每侧的起止夹出来（往外延伸或二分，预算够就
+                               夹到 1 s），最后取 B 侧对应时刻的帧，和 A 的探针帧成对给报告看。
       时间窗（某段没看 / 没确认）：两侧时长相同（恒等映射）且窗口 > 1 s → 窗口内逐帧差分；否则取帧，另一侧同时刻也取。
       音轨：asr。
     覆盖某侧 80% 以上的"窗口"不是定点缺口（整段没确定），跳过——它由锚点程序处理。"""
@@ -2808,9 +2813,13 @@ def _decide_followup(state: HiState, memory: dict[str, Any], windows: list[tuple
         for job in jobs:
             if job["anchor"] and _inside_found(memory, job):
                 continue
-            step = _extent_step(state, memory, job, a, b, dur["A"], dur["B"], given)
+            step = _extent_step(state, memory, job, a, b, dur["A"], dur["B"], given, jobs)
             if step is not None:
                 return step
+        # 1b 窗口对齐对不上的锚点：以图找图把每侧起止夹出来，再取 B 侧对应帧
+        step = _bracket_step(state, memory, a, b, dur["A"], dur["B"])
+        if step is not None:
+            return step
     if jobs:
         windows = []                                             # 对应类任务的时间窗已并入对齐作业
 
@@ -2962,13 +2971,39 @@ def _inside_found(memory: dict[str, Any], job: dict[str, Any]) -> bool:
     return False
 
 
+def _empty_compare_cover(state: HiState, wa: list[float]) -> list[float] | None:
+    """这一轮已做过的限定范围 compare_media 里，A 范围盖住 wa、且一个对应段也没对上的那次的范围（同一引擎缩小范围也对不上）。"""
+
+    for obs in state.observations:
+        ra = (obs["params"] or {}).get("range_a_s")
+        if (obs["operation"] == "compare_media" and ra and obs.get("status") == "ready"
+                and not (obs.get("result") or {}).get("correspondences") and ra[0] <= wa[0] and ra[1] >= wa[1]):
+            return ra
+    return None
+
+
+def _skip_compare(state: HiState, memory: dict[str, Any], job: dict[str, Any], ext: dict[str, Any]) -> bool:
+    """锚点作业的窗口已被前一次空的限定范围比对盖住：记成已比（结果取那一次），不再发 F5。"""
+
+    if not job["anchor"] or "align_media" in state.inspect_ops:
+        return False
+    cover = _empty_compare_cover(state, job["wa"])
+    if cover is None:
+        return False
+    _mark(memory, f"fu_align_{job['id']}")
+    ext.update({"issued": True, "compare_from": cover})
+    return True
+
+
 def _extent_step(state: HiState, memory: dict[str, Any], job: dict[str, Any], a: str, b: str,
-                 da: float, db: float, given: list[str]) -> Decision | None:
+                 da: float, db: float, given: list[str], jobs: list[dict[str, Any]] | None = None) -> Decision | None:
     issued = _issued(memory)
     i = job["id"]
     ext = memory.setdefault("extent", {}).setdefault(i, {"anchor": job["anchor"], "window_a": job["wa"], "window_b": job["wb"]})
     wa, wb, anchor = job["wa"], job["wb"], job["anchor"]
     key = f"fu_align_{i}"
+    if key not in issued and state.remaining >= 3 and _skip_compare(state, memory, job, ext):
+        issued = _issued(memory)
     if key not in issued:
         if state.remaining < 3:
             return None
@@ -2989,7 +3024,7 @@ def _extent_step(state: HiState, memory: dict[str, Any], job: dict[str, Any], a:
                             f", B {wb[0]:.1f}-{wb[1]:.1f} s", "").replace(f" against B {wb[0]:.3f}-{wb[1]:.3f} s only", " only")),
                         branch="INSPECT compare_media(range)")
     align = next((o for o in reversed(state.observations) if o["operation"] in ("align_media", "compare_media")
-                  and (o["params"] or {}).get("range_a_s") == wa
+                  and (o["params"] or {}).get("range_a_s") == (ext.get("compare_from") or wa)
                   and (o["operation"] == "compare_media" or (o["params"] or {}).get("range_b_s") == wb)), None)
     if align is None:
         return None
@@ -3027,13 +3062,41 @@ def _extent_step(state: HiState, memory: dict[str, Any], job: dict[str, Any], a:
     # 锚点附近对齐不出一致的候选：以图找图（A 在锚点 ±3 s 的帧，各在 B 的锚点附近找，看位置是否随之平移）
     ta, tb = anchor
     if f"fu_locA_{i}" not in issued and state.remaining >= 3:
+        # 10-15：后面的锚点窗口也被同一次空比对盖住时，它们的 ±3 s 探针帧一起取（同一段 A，省一步）
+        group = [(ext, ta)]
+        for other in jobs or []:
+            if other["id"] == i or not other["anchor"] or f"fu_locA_{other['id']}" in issued or _inside_found(memory, other):
+                continue
+            oext = memory["extent"].setdefault(other["id"], {"anchor": other["anchor"], "window_a": other["wa"], "window_b": other["wb"]})
+            if f"fu_align_{other['id']}" not in _issued(memory) and not _skip_compare(state, memory, other, oext):
+                continue
+            if oext.get("found") is None and oext.get("compare_from"):
+                oext["found"] = False
+            if oext.get("found") is False:
+                _mark(memory, f"fu_locA_{other['id']}")
+                group.append((oext, other["anchor"][0]))
         _mark(memory, f"fu_locA_{i}")
-        times = _clip_times([ta - 3.0, ta + 3.0], da, 0.05)
-        ext["probe_a"] = times
-        return Decision("action", "F7_extent_probe_frames_A", _inspect([a], "get_frames", {"times_s": times}, [],
-                        f"The windowed alignment found no match consistent with A {ta:.3f} s ↔ B {tb:.3f} s; take A frames 3 s "
-                        f"before and after the anchor to look them up in B."), branch="INSPECT get_frames times_s")
-    probes = _frames_of(_frames_obs(state, a, ext.get("probe_a")))
+        times: list[float] = []
+        for e, t0 in group:
+            e["probe_own"] = _clip_times([t0 - 3.0, t0 + 3.0], da, 0.05)
+            # 锚点那一帧也一起取（不 locate）：夹边界时它是"里面"那一帧，与 B 侧锚点帧成对给报告看（r0f vcsl_pair_1：
+            # 第 2 轮没有锚点帧，S4 无法用里面 / 外面一对帧核边界）
+            e["anchor_a"] = _clip_times([t0], da, 0.05)
+            times += e["probe_own"] + e["anchor_a"]
+        times = sorted(set(times))
+        for e, _ in group:
+            e["probe_a"] = times
+        if len(group) > 1:
+            listed = ", ".join(f"{t0:.3f}" for _, t0 in group)
+            why = (f"The windowed comparison found no match consistent with the anchors A {listed} s; take A frames 3 s "
+                   f"before and after each anchor to look them up in B.")
+        else:
+            why = (f"The windowed alignment found no match consistent with A {ta:.3f} s ↔ B {tb:.3f} s; take A frames 3 s "
+                   f"before and after the anchor to look them up in B.")
+        return Decision("action", "F7_extent_probe_frames_A", _inspect([a], "get_frames", {"times_s": times}, [], why),
+                        branch="INSPECT get_frames times_s")
+    own = ext.get("probe_own") or ext.get("probe_a") or []
+    probes = [(e, t) for e, t in _frames_of(_frames_obs(state, a, ext.get("probe_a"))) if any(abs(t - x) < 0.25 for x in own)]
     for eid, t in probes:
         if f"fu_loc_{i}_{eid}" in issued or state.remaining < 2:
             continue
@@ -3042,6 +3105,174 @@ def _extent_step(state: HiState, memory: dict[str, Any], job: dict[str, Any], a:
                         {"query": {"type": "image", "evidence_id": eid}, "range_s": wb, "top_k": 3}, _existing(state, [eid], 1),
                         f"Find {eid} (A at {t:.3f} s) in B near {tb:.3f} s; if the correspondence continues it should appear near "
                         f"B {tb + (t - ta):.3f} s."), branch=f"INSPECT {loc_op}(image,range)")
+    return None
+
+
+_BRACKET_SETTLED_S = 3.0      # 每侧"里面对得上 / 外面对不上"的两个探针相距不超过这个，就算量出了起止（宽度写进 notes）
+_BRACKET_TARGET_S = 1.0       # 预算够时继续二分到这个宽度
+
+
+def _probe_points(state: HiState, memory: dict[str, Any], i: str, ext: dict[str, Any], a: str) -> list[dict[str, Any]]:
+    """锚点作业 i 的以图找图探针（±3 s 的和之后夹边界的）：d = 探针 A 时刻 − 锚点 A 时刻；ok = 在 B 里找到的位置
+    离"按锚点平移"的位置不超过 _consistent_tol(d)（B 窗口里一个候选也没有记为不一致）。"""
+
+    ta, tb = ext["anchor"]
+    batches = [(ext.get("probe_a"), ext.get("probe_own") or ext.get("probe_a") or [])]
+    batches += [(bt["times"], [p["t"] for p in bt["probes"] if p["job"] == i]) for bt in memory.get("bracket_batches") or []]
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for times, mine in batches:
+        if not times or not mine:
+            continue
+        for eid, t in _frames_of(_frames_obs(state, a, times)):
+            if eid in seen or not any(abs(t - x) < 0.25 for x in mine):
+                continue
+            obs = next((o for o in state.observations if o["operation"] in ("locate_frames", "locate") and o.get("status") == "ready"
+                        and (o["params"] or {}).get("range_s") == ext["window_b"]
+                        and ((o["params"].get("query") or {}).get("evidence_id")) == eid), None)
+            if obs is None:
+                continue
+            seen.add(eid)
+            cands = sorted((obs.get("result") or {}).get("candidates") or [], key=lambda c: -float(c.get("score") or 0))
+            got = _num(cands[0].get("time_s")) if cands else None
+            want = tb + (t - ta)
+            out.append({"d": _r(t - ta, 3), "t": t, "eid": eid, "got": got, "want": want,
+                        "ok": got is not None and abs(got - want) <= _consistent_tol(t - ta)})
+    return sorted(out, key=lambda p: p["t"])
+
+
+def _consistent_tol(d: float) -> float:
+    """以图找图的位置离"按锚点平移"的位置多近算一致：至少 1 s，离锚点越远放得越宽（20%）。重剪辑素材有轻微变速，
+    r0f vcsl_pair_1 里 A 15.967 s 落在 B 16.96 s（偏 1.12 s，探针离锚点 6 s），画面确是同一场景，固定 1 s 把它判成了不一致。"""
+
+    return max(1.0, 0.2 * abs(d))
+
+
+def _brackets(state: HiState, ext: dict[str, Any], points: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """锚点两侧（side −1 = 起点、+1 = 终点）各一个夹区间：从锚点往外，最后一个一致的探针（锚点本身算 0）与其后第一个不一致的。
+    cap = 这一侧还能探到多远（窗口 ±10 s、A / B 的首尾）；一致到 cap 且 cap 是视频首尾时，起止就是那个首尾（edge）。"""
+
+    ta, tb = ext["anchor"]
+    sides = _material_sides(state)
+    da = state.profile(sides.get("A") or "").get("duration") or 0.0
+    db = state.profile(sides.get("B") or "").get("duration") or 0.0
+    out = []
+    for side in (-1, 1):
+        limits = ([(_EXTENT_WINDOW_S, None), (ta - 0.05, "start of Material A"), (tb, "start of Material B")] if side < 0 else
+                  [(_EXTENT_WINDOW_S, None), (da - 0.05 - ta, "end of Material A"), (db - 0.05 - tb, "end of Material B")])
+        cap, edge_name = min(limits, key=lambda x: x[0])
+        inside, outside = 0.0, None
+        for p in sorted((p for p in points if p["d"] * side > 0.05), key=lambda p: abs(p["d"])):
+            if p["ok"]:
+                inside = abs(p["d"])
+            else:
+                outside = abs(p["d"])
+                break
+        at_cap = outside is None and inside >= cap - 0.3
+        out.append({"side": side, "inside": inside, "outside": outside, "cap": max(0.0, cap), "at_cap": at_cap,
+                    "edge": edge_name if at_cap else None, "tried": sorted(abs(p["d"]) for p in points if p["d"] * side > 0.05)})
+    return out
+
+
+def _next_probe(br: dict[str, Any]) -> float | None:
+    """这一侧下一个探针离锚点多远：还没出界就往外加倍（至少 +3 s），夹住了且宽于 1 s 就二分；都不用就 None。"""
+
+    if br["outside"] is None:
+        if br["at_cap"]:
+            return None
+        d = min(br["cap"], max(br["inside"] * 2, br["inside"] + 3.0))
+    elif br["outside"] - br["inside"] > _BRACKET_TARGET_S:
+        d = (br["inside"] + br["outside"]) / 2
+    else:
+        return None
+    if d - br["inside"] < 0.3 or any(abs(d - x) < 0.1 for x in br["tried"]):
+        return None
+    return _r(d, 3)
+
+
+def _bracket_step(state: HiState, memory: dict[str, Any], a: str, b: str, da: float, db: float) -> Decision | None:
+    """窗口比对对不上的锚点（±3 s 探针已在 B 里找过）：
+      F8_bracket_frames_A：按 _next_probe 一次取一批 A 帧（各锚点各侧一起；先补还没出界的一侧，再二分最宽的）；
+      F8_bracket_locate：逐帧在 B 的锚点窗口里找；
+      F8_bracket_frames_B：夹完后取 B 侧"按锚点平移"的对应时刻（每侧里面 / 外面各一），与 A 探针帧成对给报告看。
+    预算：每批留出取帧、B 侧成对帧、报告各一步。"""
+
+    loc_op = "locate_frames" if "locate_frames" in state.inspect_ops else "locate"
+    exts = [(i, e) for i, e in sorted((memory.get("extent") or {}).items())
+            if e.get("anchor") and e.get("issued") and e.get("found") is False and e.get("probe_a")]
+    if not exts or loc_op not in state.inspect_ops:
+        return None
+    issued = _issued(memory)
+    for bt in memory.get("bracket_batches") or []:
+        for eid, t in _frames_of(_frames_obs(state, a, bt["times"])):
+            probe = min(bt["probes"], key=lambda p: abs(p["t"] - t))
+            if abs(probe["t"] - t) >= 0.25 or f"fu_bloc_{eid}" in issued or state.remaining < 2:
+                continue
+            ext = memory["extent"][probe["job"]]
+            ta, tb = ext["anchor"]
+            _mark(memory, f"fu_bloc_{eid}")
+            return Decision("action", "F8_bracket_locate", _inspect([b], loc_op,
+                            {"query": {"type": "image", "evidence_id": eid}, "range_s": ext["window_b"], "top_k": 3},
+                            _existing(state, [eid], 1),
+                            f"Find {eid} (A at {t:.3f} s) in B; if the correspondence A {ta:.3f} s ↔ B {tb:.3f} s still holds there, it "
+                            f"should appear near B {tb + (t - ta):.3f} s."), branch=f"INSPECT {loc_op}(image,range)")
+    a_name = _material_sides(state).get("A") or ""
+    found = {i: (e, _probe_points(state, memory, i, e, a_name)) for i, e in exts}
+    brackets = {i: _brackets(state, e, pts) for i, (e, pts) in found.items() if pts}
+    pairs_pending = "fu_pairB" not in issued
+    budget = state.remaining - 2 - (1 if pairs_pending else 0)
+    wants = [(i, br, d) for i, brs in brackets.items() for br in brs for d in [_next_probe(br)] if d is not None]
+    wants.sort(key=lambda w: (w[1]["outside"] is not None, -((w[1]["outside"] or 0) - w[1]["inside"]), w[0], w[1]["side"]))
+    if wants and budget >= 1 and pairs_pending:              # B 侧成对帧取过后不再夹（成对帧要对应最终的区间）
+        probes = []
+        for i, br, d in wants[:min(budget, 4)]:
+            t = _clip_times([memory["extent"][i]["anchor"][0] + br["side"] * d], da, 0.05)
+            if t and not any(abs(p["t"] - t[0]) < 0.05 for p in probes):
+                probes.append({"job": i, "side": br["side"], "t": t[0]})
+        if probes:
+            batches = memory.setdefault("bracket_batches", [])
+            _mark(memory, f"fu_bracket_{len(batches)}")
+            times = sorted({p["t"] for p in probes})
+            batches.append({"times": times, "probes": probes})
+            return Decision("action", "F8_bracket_frames_A", _inspect([a], "get_frames", {"times_s": times}, [],
+                            "Take A frames between the last instants that still match and the first that no longer match (or further "
+                            "out where every lookup still matched), to narrow down where each correspondence starts and ends."),
+                            branch="INSPECT get_frames times_s")
+    if pairs_pending and state.remaining >= 2:
+        # 成对的先后（B 帧最多 8 张、回看最多 4 对）：每个锚点先锚点本身、再各侧的"外面"一帧，最后是不在锚点的"里面"一帧
+        first: list[tuple[float, float, list[str]]] = []
+        later: list[tuple[float, float, list[str]]] = []
+        for i, brs in brackets.items():
+            ext_i = memory["extent"][i]
+            (ta, tb), pts = ext_i["anchor"], found[i][1]
+            anchor_eids = [e for e, t in _frames_of(_frames_obs(state, a, ext_i.get("probe_a")))
+                           if any(abs(t - x) < 0.05 for x in ext_i.get("anchor_a") or [])]
+            if anchor_eids:
+                first.append((_r(ta, 3), _r(tb, 3), anchor_eids[:1]))
+            for br in brs:
+                for dist, bucket in ((br["outside"], first), (br["inside"], later)):
+                    if not dist:
+                        continue
+                    bucket.append((_r(ta + br["side"] * dist, 3), _r(tb + br["side"] * dist, 3),
+                                   [p["eid"] for p in pts if abs(p["d"] - br["side"] * dist) < 0.25]))
+        pairs: list[tuple[float, float]] = []
+        a_frames: list[str] = []
+        for t_a, t_b, eids in first + later:
+            if (t_a, t_b) in pairs or not _clip_times([t_b], db, 0.05) or len({x for _, x in pairs} | {t_b}) > 8:
+                continue
+            pairs.append((t_a, t_b))
+            a_frames += eids
+        times = _clip_times(sorted({t_b for _, t_b in pairs}), db, 0.05)
+        if times:
+            _mark(memory, "fu_pairB")
+            memory["bracket_pairs"] = [[t_a, t_b] for t_a, t_b in pairs]
+            memory["bracket_pairs_b"] = times
+            memory.setdefault("followup", []).append(f"Material B at the anchors' offsets {', '.join(f'{t:.3f}' for t in times)} s, "
+                                                     f"paired with the A lookup frames")
+            return Decision("action", "F8_bracket_frames_B", _inspect([b], "get_frames", {"times_s": times},
+                            _existing(state, a_frames, state.limit // 2),
+                            "Take B frames at the anchor's offset from the A lookup frames on both sides of each boundary, to view the "
+                            "pairs side by side."), branch="INSPECT get_frames times_s")
     return None
 
 
@@ -3076,34 +3307,48 @@ def _extent_findings(state: HiState, memory: dict[str, Any]) -> tuple[list[str],
                 settled = False
                 gaps.append(f"{name}: boundary frames not examined on both sides")
             continue
-        settled = False
         if ta is None:
+            settled = False
             notes.append(f"{name}: the range-limited alignment returned no matching clip")
             gaps.append(f"{name}: no corresponding clip found by alignment within these ranges; only sampled frames could show "
                         f"a correspondence there")
             continue
-        moved = []
-        for obs in state.observations:
-            if obs["operation"] not in ("locate_frames", "locate") or (obs["params"] or {}).get("range_s") != wb or obs.get("status") != "ready":
-                continue
-            q = ((obs["params"].get("query") or {}).get("evidence_id"))
-            t_q = next((t for e, t in _frames_of(_frames_obs(state, _material_sides(state).get("A") or "", ext.get("probe_a")))
-                        if e == q), None)
-            cands = sorted((obs.get("result") or {}).get("candidates") or [], key=lambda c: -float(c.get("score") or 0))
-            if t_q is None or not cands:
-                continue
-            got = _num(cands[0].get("time_s"))
-            want = tb + (t_q - ta)
-            ok = got is not None and abs(got - want) <= 1.0
-            moved.append(ok)
-            notes.append(f"{name}: A at {t_q:.3f} s located in B at {got:.3f} s (expected about {want:.3f} s if the "
-                         f"correspondence continued) — {'consistent' if ok else 'not consistent'}")
+        points = _probe_points(state, memory, i, ext, _material_sides(state).get("A") or "")
+        for p in points:
+            where = f"located in B at {p['got']:.3f} s" if p["got"] is not None else "not found in B near there"
+            notes.append(f"{name}: A at {p['t']:.3f} s {where} (expected about {p['want']:.3f} s if the "
+                         f"correspondence continued) — {'consistent' if p['ok'] else 'not consistent'}")
         notes.append(f"{name}: windowed alignment found no match consistent with the anchor")
-        if moved and all(moved):
-            gaps.append(f"{name}: continues at least 3 s on each side (image lookups), exact boundaries not measured")
-        else:
+        if not points:
+            settled = False
             gaps.append(f"{name}: no continuous correspondence could be measured around this anchor; only the sampled instants "
                         f"are supported")
+            continue
+        # 10-15（B6）：每侧按"里面还对得上 / 外面对不上"的一对探针给出起止所在的区间；夹不出的一侧才是缺口
+        side_settled = True
+        for br in _brackets(state, ext, points):
+            s, word = br["side"], ("start" if br["side"] < 0 else "end")
+            a_in, b_in = ta + s * br["inside"], tb + s * br["inside"]
+            inside_what = "the anchor" if br["inside"] == 0 else "still matching"
+            if br["outside"] is not None:
+                a_out, b_out = ta + s * br["outside"], tb + s * br["outside"]
+                width = br["outside"] - br["inside"]
+                lo, hi = (f"A {a_out:.3f} s (no longer matching)", f"A {a_in:.3f} s ({inside_what})") if s < 0 else \
+                         (f"A {a_in:.3f} s ({inside_what})", f"A {a_out:.3f} s (no longer matching)")
+                notes.append(f"{name}: the {word} lies between {lo} and {hi}, i.e. between B {min(b_in, b_out):.3f} and "
+                             f"{max(b_in, b_out):.3f} s at the anchor's offset; the image lookups bracket it to {width:.3f} s")
+                if width > _BRACKET_SETTLED_S + 0.05:
+                    side_settled = False
+                    gaps.append(f"{name}: the {word} lies between A {min(a_in, a_out):.3f} and {max(a_in, a_out):.3f} s, not "
+                                f"narrowed further (turn budget)")
+            elif br["edge"]:
+                notes.append(f"{name}: still matching at A {a_in:.3f} s ↔ B {b_in:.3f} s, at the {br['edge']}; the correspondence "
+                             f"runs to that edge")
+            else:
+                side_settled = False
+                gaps.append(f"{name}: the {word} was not reached — still matching at A {a_in:.3f} s ↔ B {b_in:.3f} s"
+                            + (", the edge of the examined range" if br["at_cap"] else " (turn budget)"))
+        settled = settled and side_settled
     return notes, gaps, settled
 
 
@@ -3151,6 +3396,15 @@ def _review_picks(state: HiState, memory: dict[str, Any], frames: list[str]) -> 
         fb = _frames_of(_frames_obs(state, b, ext.get("frames_b"))) if b else []
         for (ea, _), (eb, _) in zip(fa, fb):
             pairs += [ea, eb]
+    if a and b and memory.get("bracket_pairs"):
+        # 夹边界：A 探针帧与 B 侧按锚点平移的帧成对（10-15）
+        fa = [(e, t) for o in state.observations if o["operation"] == "get_frames" and o["targets"] == [a] for e, t in _frames_of(o)]
+        fb = _frames_of(_frames_obs(state, b, memory.get("bracket_pairs_b")))
+        for t_a, t_b in memory["bracket_pairs"]:
+            ea = next((e for e, t in fa if abs(t - t_a) < 0.05), None)
+            eb = next((e for e, t in fb if abs(t - t_b) < 0.05), None)
+            if ea and eb:
+                pairs += [ea, eb]
     if not pairs and a and b:
         # 时间窗跟进：两侧同一时刻的帧配成对，按时间均匀挑
         fa = {round(t, 3): e for o in state.observations if o["operation"] == "get_frames" and o["targets"] == [a] for e, t in _frames_of(o)}
