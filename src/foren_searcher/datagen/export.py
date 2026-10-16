@@ -341,6 +341,43 @@ def strip_tool_metadata(value: Any) -> Any:
     return value
 
 
+_FPS = re.compile(r"(\d+(?:\.\d+)?)\s*fps\b|\"fps\":\s*(\d+(?:\.\d+)?)|\"frame_rate\":\s*\{\"a\":\s*(\d+(?:\.\d+)?),\s*\"b\":\s*(\d+(?:\.\d+)?)"
+                  r"|\"frame_rate\":\s*(\d+(?:\.\d+)?)", re.I)
+
+
+def _visible_fps(student: str) -> set[float]:
+    """学生输入里出现的帧率（"25 fps"、"fps": 29.97、frame_rate a / b）。"""
+
+    out: set[float] = set()
+    for groups in _FPS.findall(student):
+        for g in groups:
+            if g:
+                try:
+                    out.add(float(g))
+                except ValueError:
+                    continue
+    return out
+
+
+def _as_number(token: str) -> float | None:
+    try:
+        return float(token) if re.fullmatch(r"\d+\.\d+", token) else None
+    except ValueError:
+        return None
+
+
+def _without_inspect_params(output: Any) -> Any:
+    """r1：INSPECT 动作参数里的采样时刻 / 区间（times_s、range_s 等）是 walker 按可见时长算出来的取样点，不按隐藏词查。"""
+
+    if not (isinstance(output, dict) and output.get("action") == "INSPECT"):
+        return output
+    args = output.get("arguments")
+    request = args.get("request") if isinstance(args, dict) else None
+    if not isinstance(request, dict) or "params" not in request:
+        return output
+    return {**output, "arguments": {**args, "request": {k: v for k, v in request.items() if k != "params"}}}
+
+
 def hidden_context(messages: list[dict[str, Any]], payload: Any, output: Any, limit: int = 8) -> list[str]:
     """教师输出里用到、学生输入（渲染后的 messages）里没有、但原始 payload 里有的数字 / 编号 / 专名（10-05）。
 
@@ -353,11 +390,16 @@ def hidden_context(messages: list[dict[str, Any]], payload: Any, output: Any, li
     student = json.dumps(messages[:-1], ensure_ascii=False)
     student_lower = student.lower()
     raw = json.dumps(strip_tool_metadata(payload), ensure_ascii=False)
+    frame_steps = [1.0 / f for f in _visible_fps(student) if f > 0]
     found: list[str] = []
-    for text in _output_values(output):
+    for text in _output_values(_without_inspect_params(output)):
         for token in _HIDDEN_TOKEN.findall(text):
             # 10-15：数字按整数值比（"129" 不因原始 payload 里有 129600 就算"学生看不到的数字"）
             if token in found or _token_in(token, student) or not _token_in(token, raw):
+                continue
+            # r1（10-17，《r0g2金标与B2》四节）：等于 1 / 可见帧率（±1%）的数是学生能算出的帧间隔（"0.0333 s"），不算看不到
+            value = _as_number(token)
+            if value is not None and any(abs(value - step) <= 0.01 * step for step in frame_steps):
                 continue
             # 10-13：句首大写的普通词（These / Face / This）学生输入里有小写形式就不算专名（walker wk5 报告 10/11 条因此被扣）
             if token.isalpha() and (token.lower() in student_lower or token.lower() in _COMMON_WORDS):

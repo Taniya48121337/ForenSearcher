@@ -296,6 +296,11 @@ GIA_TASK_NOTE_2 = (
     "and do not refer to an \"overall task\", \"original requirement\" or other workspaces it cannot see. "
     "When one task takes the whole question, the task field uses the original task verbatim, without rewriting or adding steps or explanations.")
 HI_LOCAL_TASK = "Current local task: "
+# r1（10-17）：重复操作合并时的 harness_event.notice（以前英文规格下也是中文，会进训练行；r0 靠 walker 不发重复动作绕开）
+MERGED_OCCURRENCES_NOTICE = ("This entry merges several executed operations with the same arguments and focus that returned the "
+                             "same data and feedback. The tool status and feedback decide which results are valid and what is "
+                             "unfinished; move the task forward from the results, and when evidence is missing change the "
+                             "evidence target or the arguments.")
 HI_VISUAL_NOTE = ("\nChoose the next tool action or submit the report based on the actions executed, the images actually attached and the text evidence. "
                   "Keep each task requirement and evidence limitation; keep quoted excerpts in their original language; cite the E IDs that support the corresponding statements.")
 HI_TEXT_NOTE = (

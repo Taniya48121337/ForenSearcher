@@ -703,7 +703,8 @@ def _generation_messages(system_prompt: str, payload: dict[str, Any], *, defer_f
             if step.get("completed_occurrences", 1) > 1:
                 messages.append({"role": "user", "content": render({"harness_event": {
                     "action": step["action"], "completed_occurrences": step["completed_occurrences"],
-                    "notice": "该条目合并了同参数、同焦点且返回相同数据与反馈的多次已执行操作。有效结果与未完成部分以工具状态和反馈为准；依据结果推进任务，缺少证据时改变取证目标或参数。"}})})
+                    "notice": _EN.MERGED_OCCURRENCES_NOTICE if _en() else
+                    "该条目合并了同参数、同焦点且返回相同数据与反馈的多次已执行操作。有效结果与未完成部分以工具状态和反馈为准；依据结果推进任务，缺少证据时改变取证目标或参数。"}})})
         else:
             messages.append({"role":"user", "content":render({"harness_event":{**step, "observation":observation}})})
     if view.get("direct_visual_input") and _en():
