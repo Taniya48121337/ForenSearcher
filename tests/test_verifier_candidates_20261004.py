@@ -162,9 +162,9 @@ def test_feature_version_labels() -> None:
     A.PROGRAM_RULES.update({k: True for k in A.PROGRAM_RULES})
     I.INFERENCE_CHECK["enabled"] = True
     S.SEMANTIC_COVERAGE["enabled"] = True
-    assert A.feature_version() == "verifier@0.3.6"
+    assert A.feature_version() == "verifier@0.4.0"
     A.PROGRAM_RULES.update({k: False for k in A.PROGRAM_RULES})
-    assert A.feature_version() == "verifier@0.3.6-partial:infer+semcov"
+    assert A.feature_version() == "verifier@0.4.0-partial:infer+semcov"
     I.INFERENCE_CHECK["enabled"] = False
     S.SEMANTIC_COVERAGE["enabled"] = False
     assert A.feature_version() == "verifier@0.3.5"

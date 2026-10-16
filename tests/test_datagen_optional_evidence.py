@@ -28,7 +28,7 @@ PROFILE_OPT = cases_mod.RequiredEvidence("media_profile", "媒体档案（可选
 
 
 def test_version_bumped():
-    assert VERIFIER_VERSION.startswith("verifier@0.3.")
+    assert VERIFIER_VERSION.startswith("verifier@0.4.")
 
 
 def test_optional_group_is_minor_note_not_disposition():

@@ -761,7 +761,7 @@ def feature_version() -> str:
     joint = "+joint" if JOINT_SOURCES["enabled"] else ""          # 候选：多来源合并复核（默认关闭，不进正式版本号）
     if len(tags) == len(flags):
         return VERIFIER_VERSION + joint
-    return ("verifier@0.3.6-partial:" + "+".join(tags) if tags else "verifier@0.3.5") + joint
+    return (VERIFIER_VERSION + "-partial:" + "+".join(tags) if tags else "verifier@0.3.5") + joint
 
 
 async def verify_anchored(report: dict[str, Any], lookup: EvidenceLookup, judge: JsonJudge, *,

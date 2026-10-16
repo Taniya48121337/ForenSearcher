@@ -15,7 +15,16 @@ from .exec_checks import exec_checks
 from .sufficiency import verify_sufficiency
 
 Disposition = Literal["positive", "negative", "uncertain"]
-VERIFIER_VERSION = "verifier@0.3.6"
+VERIFIER_VERSION = "verifier@0.4.0"
+# 0.3.6 → 0.4.0（2026-10-17，r1 预演之一，依据 r0g2 / r0a 金标与 r0g 充分性理由表，见 claude/r1核验器修正_20261017.md）：
+#   0. 缓存键带核验器版本（judges.cache_namespace），0.4.0 的题一律不命中 0.3.x 的旧回答；
+#   1. 充分性层不给 GT（sufficiency.py）：标注来源 / 网址指定的参考来源不进清单，改给案卷要求（REQ + must_cite）与证据索引；
+#   2. 充分性层：failed 页、任务没要求的精度（B 族逐段帧精确边界 / 成对帧）只算 limitation，不算缺口；
+#   3. 像素检查只对句子所指的那张图（anchored.py：图片对带同句其他图的索引；程序规则 tool_measurement / other_image_referent /
+#      cited_unrelated_image）；
+#   4. 第二层引语回查认省略号分段与短词（OCR 的 "ISSF" "2024"）；覆盖汇总带任务文字（标题、posted 日期、声明原文可作依据）；
+#   5. sloppy_numeric：写明"页面声明的发布日期"且与 dates 卡一致的日期，不按页面正文另一个日期判错（declared_date）；
+#   6. attribution_drift 看来源支持的那一部分本身有没有写成转述（r0a F001）。
 # 0.3.5 → 0.3.6（2026-10-05，v1p2_hard 金标采纳后默认打开，见 claude/程序规则与逐帧差异对照_20261004.md）：
 #   ① 第二层程序规则 task_given / back_reference / verdict_sentence（anchored.PROGRAM_RULES）；
 #   ② 推理核对（inference.py）：实锤"无支持"片段若能由同单元已核实句子直接推出、或只是被反驳的引述，降为 minor；

@@ -124,9 +124,9 @@ def test_wired_into_verify_anchored_and_version_label() -> None:
     try:
         A.PROGRAM_RULES.update({k: True for k in A.PROGRAM_RULES}); I.INFERENCE_CHECK["enabled"] = True
         S.SEMANTIC_COVERAGE["enabled"] = True
-        assert A.feature_version() == "verifier@0.3.6+joint"
+        assert A.feature_version() == "verifier@0.4.0+joint"
         J.JOINT_SOURCES["enabled"] = False
-        assert A.feature_version() == "verifier@0.3.6"
+        assert A.feature_version() == "verifier@0.4.0"
     finally:
         A.PROGRAM_RULES.update(saved[0]); I.INFERENCE_CHECK.update(saved[1]); S.SEMANTIC_COVERAGE.update(saved[2])
 

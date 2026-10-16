@@ -619,6 +619,13 @@ class ProgressJudge:
         return await self._timed(system_prompt, payload, images, schema)
 
 
+def cache_namespace() -> str:
+    """缓存键的版本前缀：0.3.x 为空（键与当时逐字相同，r0 的缓存照常可复现）；0.4.0 起是 VERIFIER_VERSION。"""
+
+    from .verdict import VERIFIER_VERSION
+    return "" if VERIFIER_VERSION < "verifier@0.4.0" else VERIFIER_VERSION
+
+
 class CachedJudge(ProgressJudge):
     """把核验模型的回答按 (system_prompt, payload, 图片内容) 的哈希缓存到 jsonl；同样的问题不再花第二次钱。
 
@@ -642,7 +649,12 @@ class CachedJudge(ProgressJudge):
 
     @staticmethod
     def key_for(system_prompt: str, payload: dict[str, Any], images: list[Path]) -> str:
+        """verifier@0.4.0 起键里带核验器版本（cache_namespace）：提示没变的题（例如外部网页的文本对）也不命中 0.3.x 的旧回答。"""
+
         digest = hashlib.sha256()
+        namespace = cache_namespace()
+        if namespace:
+            digest.update(namespace.encode("utf-8") + b"\0")
         digest.update(system_prompt.encode("utf-8"))
         digest.update(json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8"))
         for image in images:
