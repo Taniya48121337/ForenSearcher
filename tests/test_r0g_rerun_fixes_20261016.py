@@ -15,15 +15,8 @@ for sub in ("src", "experiments/sft_data"):
 from foren_searcher.datagen import walker as w  # noqa: E402
 
 
-def test_l3b_reads_given_photo_once_per_workspace():
-    state = SimpleNamespace(attached=set(), remaining=5)
-    memory = {"issued": ["compare_refs"]}
-    got = w._view_refs_before_report(state, memory, "E1", ["E7", "E8"])
-    assert got is not None and got.rule == "L3b_view_references_before_report"
-    # 读给定照片本身（L3 读的是参考图 side[0]），参考图作焦点
-    assert got.output["arguments"]["record_id"] == "E1"
-    assert got.output["focus_evidence_ids"] == ["E1", "E7", "E8"]
-    assert w._view_refs_before_report(state, memory, "E1", ["E7", "E8"]) is None
+# test_l3b_reads_given_photo_once_per_workspace → tests/test_r0plus_20261016.py::test_l3b_is_the_step_right_before_report
+# （10-16 r0+：L3b 改成交报告前的最后一步，_view_refs_before_report 换成 _l3b_before_report）
 
 
 def test_search_fallback_is_substituted():

@@ -116,3 +116,42 @@ def test_l_references_clause_only_for_location_points():
     assert w._search_gap("the reference photos E5, E6 of the claimed place were not compared feature by feature with E1")["kind"] == "references"
     assert w.inloop_actions(["The report does not cite a date"], hints, "L") == ["a further search for sources can address the points above"]
     assert w.inloop_actions(["x"], hints, "B") == []
+
+
+def _replay(case: str, upto: str) -> tuple:
+    run = ROOT / "experiments" / "sft_data" / "runs" / f"averimatec_{case}_r0g_1" / "requests"
+    if not run.is_dir():
+        import pytest
+        pytest.skip("r0g run not present")
+    memory: dict = {}
+    got = None
+    for rd in sorted(run.glob("request_*"), key=lambda p: int(p.name.split("_")[-1])):
+        req = json.loads((rd / "request.json").read_text(encoding="utf-8"))
+        if req["payload"].get("workspace_id") != "W1-1":
+            continue
+        got = w.decide_hi(req["payload"], memory, req.get("rendered_payload"))
+        if rd.name == upto:
+            break
+    return got, memory
+
+
+def test_l_reads_reverse_image_pages_first_and_keeps_report_closed():
+    # r0g l208：以图搜之后（request_0006），以图搜结果页 E19（geologyscience，写着 Peru）排在未读清单最前，不许交报告
+    got, _ = _replay("l208", "request_0006")
+    assert got.kind == "next_slot" and "report" not in got.slot["choices"]
+    assert got.slot["unread"][0]["evidence_id"] == "E19"
+    assert got.slot["report_decision"]["rule"] == "L9_report"
+
+
+def test_l3b_is_the_step_right_before_report():
+    from types import SimpleNamespace
+
+    state, memory = SimpleNamespace(remaining=5), {}
+    got = w._l3b_before_report(state, memory, "E1", ["E7", "E8"], compared=True, refs_shown=False, reviewed=False)
+    # 读给定照片本身（L3 读的是参考图 side[0]），参考图作焦点；理由交给 S0
+    assert got.rule == "L3b_view_references_before_report" and got.output["arguments"]["record_id"] == "E1"
+    assert got.output["focus_evidence_ids"] == ["E1", "E7", "E8"] and got.slot.get("substituted") and memory["l3b_offered"]
+    # 已经补看过（同记录同焦点再发会被运行时合并、插中文 harness_event）、参考图正在附图里、没做过比对 → 不发
+    for kw in ({"reviewed": True, "refs_shown": False}, {"reviewed": False, "refs_shown": True}):
+        assert w._l3b_before_report(state, {}, "E1", ["E7"], compared=True, **kw) is None
+    assert w._l3b_before_report(state, {}, "E1", ["E7"], compared=False, refs_shown=False, reviewed=False) is None

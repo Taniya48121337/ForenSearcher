@@ -2376,7 +2376,16 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
     claim = m.group(1) if m else state.task.rsplit(":", 1)[-1].strip()
     # 10-15 对话 5''（追加 2）：未读命中页；参考图与给定照片的并排比对是交报告前的必经动作
     must = _must_read(pages, read_ids, claim)
+    # r0+（10-16，L 族 0 份进 accepted 的排查）：以图搜到的页面载有这张图，是"来源说它拍于哪里"（REQ2）的直接证据——r0g l208
+    # 以图搜的 geologyscience 页（写着 Peru）没读，S3 去读了声明地点 Joshimath 的新闻。前 2 个没读的以图搜结果页先读
+    reverse_pages = [p for p in _search_pages(reverse) if not _social(p.get("url"))]
+    read_reverse = [p for p in reverse_pages if p["evidence_id"] in read_ids]
+    if len(read_reverse) < 2:
+        first = [{**p, "why": "it carries the picture (reverse image search)"} for p in reverse_pages
+                 if p["evidence_id"] not in read_ids][:2 - len(read_reverse)]
+        must = first + [p for p in must if p["evidence_id"] not in {f["evidence_id"] for f in first}]
     side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
+    refs_shown = bool(side) and all(e in state.attached for e in [image, *side])
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         compared = "compare_refs" in issued
@@ -2398,6 +2407,11 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                  + (", ".join(f"{r['evidence_id']} ({str(r.get('title') or r.get('url') or '')[:60]})" for r in refs[:4]) or "none"),
                  "compare the given picture with the reference photos feature by feature (buildings, landmarks, terrain, "
                  "signs, layout) and say plainly whether they show the same place; a similar kind of scene is not the same place",
+                 # r0+：r0g 的 4 份可回答 L 报告没有一条写比对结果（S4 交报告时看不到参考图，比对只在中间一步做过）
+                 (f"{image} and the reference photos {', '.join(side)} are attached to this turn: write one finding that states "
+                  f"the outcome of that side-by-side comparison (which features match or differ, and whether it is the claimed "
+                  f"place), citing {image} and the reference photo IDs" if refs_shown else
+                  "the reference photos are not attached to this turn; do not describe a comparison you cannot see"),
                  "pages read: " + (", ".join(sorted(read_ids)) or "none"),
                  "say where the pages that carry the picture say it was taken, citing them; if they disagree or none says, "
                  "state that the place is not established"] + _ocr_notes(state)
@@ -2449,20 +2463,43 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
             choices.append("read")
         must_ids = [p["evidence_id"] for p in must]
         unread = list(must) + [p for p in unread if p["evidence_id"] not in must_ids]
-    if "report" in choices:
-        # 追加 2(b)：要交报告时给定照片与参考图得在附图里并排（读页之后它们会掉出附图——r0a l101 第 4 步并排看过，第 11 步
-        # 交报告时已看不到，报告反说 "reference photographs are not available"）；每个工作区最多补两次
-        step = _view_refs_before_report(state, memory, image, side)
-        if step is not None:
-            return step
-    if state.remaining <= 1 or not choices or choices == ["report"]:
+    # 追加 2(b)：要交报告时给定照片与参考图得在附图里并排（读页之后它们会掉出附图——r0a l101 第 4 步并排看过，第 11 步
+    # 交报告时已看不到，报告反说 "reference photographs are not available"）。r0+（10-16）：以前在"可以交报告"刚成立时就补看
+    # （r0g l208 / l623 第 6 步），之后又读了 5 页，交报告时参考图早已掉出附图。现在补看就是交报告前的最后一步：要交报告时
+    # 先发 L3b，下一轮参考图在附图里就直接交报告
+    # L3b 每个工作区只发一次：同记录同焦点的重复动作会被运行时合并、插一条中文 harness_event（r0g 第一遍 B8）。读给定照片
+    # 本身只有 L3b 会做，所以按历史里有没有 READ_RECORD(给定照片) 判断
+    reviewed = any(h.get("action") == "READ_RECORD" and (h.get("request") or {}).get("record_id") == image
+                   for h in state.view.get("history") or [])
+    if memory.get("l3b_offered") and reviewed and refs_shown and "compare_refs" in issued:
         return report("L9_report")
+
+    def report_now(rule: str) -> Decision:
+        return _l3b_before_report(state, memory, image, side, compared="compare_refs" in issued, refs_shown=refs_shown,
+                                  reviewed=reviewed) or report(rule)
+
+    if state.remaining <= 1 or not choices or choices == ["report"]:
+        return report_now("L9_report")
     return Decision("next_slot", "L5_next_step", {}, branch="S3",
                     slot={"name": "S3_next", "choices": choices,
                           "unread": [{k: p.get(k) for k in ("evidence_id", "title", "url")} for p in unread[:8]],
                           "undated": [], "offsets": {}, "read": sorted(read_ids),
                           "previous": [_query_text(s.get("request") or {}) for s in text_queries],
-                          "claim": claim[:400], "report_decision": report("L9_report").to_dict()})
+                          "claim": claim[:400],
+                          "report_decision": (report_now if "report" in choices else report)("L9_report").to_dict()})
+
+
+def _l3b_before_report(state: HiState, memory: dict[str, Any], image: str | None, side: list[str], *, compared: bool,
+                       refs_shown: bool, reviewed: bool) -> Decision | None:
+    """L 族要交报告时：参考图比对做过、但给定照片与参考图此刻不在附图里，且这个工作区还没补看过 → 先补看（L3b：读给定照片本身、
+    参考图作焦点），下一轮参考图回到附图就交报告。S3 选"交报告"时换成这一步，标 substituted（理由由 S0 按实际动作写）。"""
+
+    if not (image and side and compared) or refs_shown or reviewed or state.remaining < 2:
+        return None
+    memory["l3b_offered"] = 1
+    return _substituted(Decision("action", "L3b_view_references_before_report", _read(image, [image, *side],
+                        f"Before reporting, view {image} again next to the reference photos {', '.join(side)} to state "
+                        f"whether they show the same place."), branch="READ_RECORD focus"))
 
 
 _SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos|search for sources on the open points)", re.I)
@@ -2571,22 +2608,6 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
                             f"({str(page.get('title') or page.get('url'))[:80]}); it may settle the open points."},
                             branch="READ_RECORD text")
     return report({"E": "E9_report", "L": "L9_report"}.get(family, "C9_report"))
-
-
-def _view_refs_before_report(state: HiState, memory: dict[str, Any], image: str | None, side: list[str]) -> Decision | None:
-    issued = _issued(memory)
-    if not image or not side or "compare_refs" not in issued or state.remaining < 2:
-        return None
-    if all(e in state.attached for e in [image, *side]):
-        return None
-    # 每个工作区只补一次；读给定照片本身（参考图作焦点）——与 L3 同记录同焦点的重复动作会被运行时合并，并插入一条中文的
-    # harness_event 提示（r0g 第一遍 L 族 14 条 run 共 56 行因此被门 B8 判为框架中文）
-    if memory.get("refs_reviewed"):
-        return None
-    memory["refs_reviewed"] = 1
-    return Decision("action", "L3b_view_references_before_report", _read(image, [image, *side],
-                    f"Before reporting, view {image} again next to the reference photos {', '.join(side)} to state whether they "
-                    f"show the same place."), branch="READ_RECORD focus")
 
 
 def _read_records(state: HiState) -> list[dict[str, Any]]:
