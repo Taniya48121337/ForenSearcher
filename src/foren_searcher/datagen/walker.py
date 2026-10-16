@@ -2962,6 +2962,152 @@ def _linked_video_step(state: HiState, memory: dict[str, Any], video: str | None
     return None
 
 
+# ---- r1（10-17）C 族：画面类声明必须看帧、"视频说了什么"要看完整转写。verifier@0.4.0 第 2 处补把"声明说的是画面里发生的事、
+# 报告只看了 OCR / 转写"判为缺口（r1v C 改写 17 → 24，新增 8 份里 3 份没看帧、5 份只引了转写第一句）。以前 walker 的 C 族只做
+# ASR / OCR，交报告那一轮附图是空的（r0g groundlie360_v1959500：茶里的"虫子"一帧没看）。
+_SPEECH_CLAIM = re.compile(r"\b(?:says?|said|saying|tells?|told|claims? that|admits?|announc\w*|declar\w*|remarks?|speech|"
+                           r"interview|quot\w*|stated?|statement|vows?|promis\w*|warns?|urges?|calls? for|asks?|argues?|"
+                           r"mentions?|confess\w*|insult\w*|joke\w*)\b|[\"“][^\"”]{8,}[\"”]|:\s*['\"“]", re.I)
+_VISUAL_CLAIM = re.compile(r"\b(?:shows?|showing|shown|footage|filmed|caught|captured|seen|visible|appears?|watch|look at|"
+                           r"in (?:the|this) (?:video|clip)|video of|moment|scene|crowd|fire|flood|explosion|attack\w*|"
+                           r"crash\w*|stepping|walk\w*|smok\w*|dancing|fight\w*|beat\w*|rob\w*|worms?|insects?|"
+                           r"inside|landscape|aerial|sky|street|building)\b", re.I)
+_MAX_SCENE_FRAMES = 6
+
+
+def claim_kinds(claim: str) -> set[str]:
+    """声明讲的是什么：visual = 画面里发生的事（动作、事件、物体出现与否）；speech = 视频里有人说了什么。可以两者都是。
+    只看声明文字；没有说话类的词时按画面类处理（REQ1 本来就问"画面、屏幕文字、语音"，多看一组帧不会错）。"""
+
+    kinds: set[str] = set()
+    if _VISUAL_CLAIM.search(claim) or not _SPEECH_CLAIM.search(claim):
+        kinds.add("visual")
+    if _SPEECH_CLAIM.search(claim):
+        kinds.add("speech")
+    return kinds
+
+
+def _scene_frames(state: HiState, video: str) -> list[str]:
+    """按场景采样的帧：按镜头取的帧（C2w get_frames）；没有就用 video_structure 每个镜头的中间帧图，再没有用 get_frames 取到的帧、
+    入库关键帧。均匀取 ≤ 6 张。"""
+
+    per_shot = [e for o in state.observations if o.get("operation") == "get_frames" and video in (o.get("targets") or [])
+                and (o.get("params") or {}).get("times_s") for e, _ in _frames_of(o)]
+    if per_shot:
+        return _spread(per_shot, _MAX_SCENE_FRAMES)
+    for obs in reversed(state.observations):
+        if obs.get("operation") != "video_structure" or video not in (obs.get("targets") or []):
+            continue
+        ids = [str(i.get("evidence_id")) for i in (obs.get("result") or {}).get("images") or [] if isinstance(i, dict) and i.get("evidence_id")]
+        ids = ids or [str(e) for e in obs.get("created") or [] if e != obs.get("result_evidence_id")]
+        if ids:
+            return _spread(ids, _MAX_SCENE_FRAMES)
+    frames = [e for o in state.observations if o.get("operation") == "get_frames" and video in (o.get("targets") or [])
+              for e, _ in _frames_of(o)]
+    return _spread(frames or _material_frames(state, video), _MAX_SCENE_FRAMES)
+
+
+def _scene_step(state: HiState, memory: dict[str, Any], video: str) -> Decision | None:
+    """C2v：按场景采样取帧（video_structure：镜头切分 + 每个镜头的中间帧图）；没有这个操作时 get_frames 均匀取 6 帧。"""
+
+    issued = _issued(memory)
+    if "scene_frames" in issued and "scene_extra" not in issued and "get_frames" in state.inspect_ops and state.remaining >= 4:
+        # 镜头少或镜头长（r1dev v1959500：166 s 只有 1 个镜头 → 只有 1 张中间帧）：按镜头取帧，长镜头约每 30 s 一张，≤ 6 张
+        obs = next((o for o in reversed(state.observations) if o.get("operation") == "video_structure"
+                    and video in (o.get("targets") or []) and o.get("status") == "ready"), None)
+        shots = [s.get("range_s") for s in ((obs or {}).get("result") or {}).get("shots") or [] if isinstance(s, dict)]
+        times: list[float] = []
+        for rng in shots:
+            if isinstance(rng, list) and len(rng) == 2 and _num(rng[0]) is not None and _num(rng[1]) is not None:
+                a, b = float(rng[0]), float(rng[1])
+                n = max(1, min(_MAX_SCENE_FRAMES, round((b - a) / 30.0)))
+                times += [_r(a + (k + 0.5) * (b - a) / n, 2) for k in range(n)]
+        times = [float(t) for t in _spread([str(t) for t in times], _MAX_SCENE_FRAMES)]
+        images = ((obs or {}).get("result") or {}).get("images") or []
+        if obs and len(times) > len(images):
+            _mark(memory, "scene_extra")
+            return Decision("action", "C2w_frames_per_shot", _inspect([video], "get_frames", {"times_s": times}, [],
+                            f"{video} has {len(shots)} shot(s); take {len(times)} frames spread over its shots to see what "
+                            f"the footage shows throughout."), branch="INSPECT get_frames")
+    if "scene_frames" in issued or state.remaining < 4:
+        return None
+    if "video_structure" in state.inspect_ops:
+        _mark(memory, "scene_frames")
+        return Decision("action", "C2v_scene_frames", _inspect([video], "video_structure", {}, [],
+                        f"Split {video} into its shots and take one frame per shot, to see what the footage itself shows."),
+                        branch="INSPECT video_structure")
+    if "get_frames" in state.inspect_ops:
+        _mark(memory, "scene_frames")
+        return Decision("action", "C2v_sample_frames", _inspect([video], "get_frames", {"count": _MAX_SCENE_FRAMES}, [],
+                        f"Take {_MAX_SCENE_FRAMES} frames spread over {video} to see what the footage itself shows."),
+                        branch="INSPECT get_frames")
+    return None
+
+
+def _asr_record(state: HiState, video: str) -> str | None:
+    for o in state.observations:
+        if o.get("operation") == "asr" and o.get("status") == "ready" and video in (o.get("targets") or []) \
+                and o.get("result_evidence_id"):
+            return str(o["result_evidence_id"])
+    return None
+
+
+def _claim_review_before_report(state: HiState, memory: dict[str, Any], video: str | None) -> Decision | None:
+    """C9v（同 L3b）：交报告前把场景帧放回附图（焦点），并读一次完整转写（有语音时）——下一轮 S4 看着帧和整段转写写报告。
+    每个工作区一次（按历史里有没有这一步判断）。"""
+
+    if not video or state.remaining < 2:
+        return None
+    frames = _scene_frames(state, video)
+    asr = _asr_record(state, video)
+    if not frames and not asr:
+        return None
+    record = asr or frames[0]
+    done = any(h.get("action") == "READ_RECORD" and (h.get("request") or {}).get("record_id") == record
+               and set(h.get("focus_evidence_ids") or []) >= set(frames[:2])
+               for h in state.view.get("history") or [])
+    if done or (memory.get("claim_review") and all(e in state.attached for e in frames)):
+        return None
+    memory["claim_review"] = 1
+    memory["review_record"] = record
+    focus = frames[:max(1, state.limit)]
+    what = (f"read the full transcript {asr} and view" if asr else "view") + f" the scene frames {', '.join(focus)}"
+    return _substituted(Decision("action", "C9v_review_before_report", _read(record, focus,
+                        f"Before reporting, {what} of {video}, to state what the video itself shows and says."),
+                        branch="READ_RECORD focus"))
+
+
+def _claim_media_notes(state: HiState, video: str | None, claim: str) -> tuple[list[str], list[dict[str, Any]]]:
+    """S4 的说明与合同校验项：画面类声明 → 一条 Finding 写帧里有没有声明说的那件事（引帧）；有转写 → 一条 Finding 概括整段
+    视频说了什么（不只第一句，引转写记录）。"""
+
+    if not video:
+        return [], []
+    kinds = claim_kinds(claim)
+    frames = [e for e in _scene_frames(state, video) if e in state.attached]
+    asr = _asr_record(state, video)
+    notes: list[str] = []
+    required: list[dict[str, Any]] = []
+    if frames:
+        notes.append(f"scene frames {', '.join(frames)} of {video} (one per shot) are attached to this turn"
+                     + (": the claim is about something visible in the footage, so one finding must say whether the frames "
+                        "show it (what is visible, which frame, and what is not visible), citing the frame IDs; on-screen "
+                        "text or the transcript alone does not answer what the picture shows" if "visual" in kinds else
+                        ": one finding must say what the footage itself shows, citing the frame IDs"))
+        required.append({"ids": frames, "words": r"show|visible|frame|appear|depict|see|footage|picture",
+                         "message": f"no finding says what the scene frames ({', '.join(frames)}) show; write one, citing them"})
+    elif "visual" in kinds:
+        notes.append(f"no frames of {video} are attached to this turn: do not describe the footage beyond what the cited "
+                     f"records state; say in limitations that the picture content was not examined")
+    if asr:
+        notes.append(f"the full speech transcript {asr} is in the state: one finding must say what the video says as a whole "
+                     f"(its main points in order, not only its opening sentence), quoting the passages that bear on the claim "
+                     f"and saying whether any passage states what the claim says, citing {asr}")
+        required.append({"ids": [asr], "words": r"say|says|said|speak|speech|transcript|state|mention",
+                         "message": f"no finding cites the speech transcript {asr} for what the video says as a whole; write one"})
+    return notes, required
+
+
 def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
     """C 族：（有视频时）先转写语音、读画面文字 → 每一步由 S3 槽在"再搜一条 / 读一页 / 交报告"里选，程序限预算。"""
 
@@ -3002,8 +3148,14 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
                          + (f", subtitles {o['subtitle']}" if o.get("subtitle") else ", no subtitles") + ")"
                          + ("; compare_media compared it with the given video — say whether the given video comes from it"
                             if "compare_linked" in _issued(memory) else ""))
-        return _report(state, memory, rule, status=status, reason=reason, notes=notes,
-                       branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        media_notes, required = _claim_media_notes(state, videos[0] if videos else None, claim_text)
+        decision = _report(state, memory, rule, status=status, reason=reason, notes=notes + media_notes,
+                           branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        decision.slot["required_findings"] = required
+        return decision
+
+    def report_now(rule: str) -> Decision:
+        return _claim_review_before_report(state, memory, videos[0] if videos else None) or report(rule)
 
     if state.remaining <= 0:
         return report("G1_last_turn_report", last_turn=True)
@@ -3020,9 +3172,14 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
             return Decision("action", "C2_ocr_material", _inspect([video], "ocr", {}, _existing(state, state.attached, state.limit),
                             f"Read the on-screen text of {video} (captions, name straps, logos) to compare it with the claim."),
                             branch="INSPECT ocr(video)")
+        step = _scene_step(state, memory, video)
+        if step is not None:
+            return step
     step = _pdf_pages_step(state, memory, read_ids)
     if step is not None and state.remaining >= 2:
         return step
+    if just_reviewed(state, memory):
+        return report("C9_report")
     if reads:
         step = _linked_video_step(state, memory, videos[0] if videos else None, read_ids)
         if step is not None:
@@ -3052,7 +3209,12 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
         must_ids = [p["evidence_id"] for p in must]
         unread = list(must) + [p for p in unread if p["evidence_id"] not in must_ids]
     if state.remaining <= 1 or not choices or choices == ["report"]:
-        return report("C9_report")
+        return report_now("C9_report")
+    if state.remaining == 2 and videos:
+        # 只剩两轮：这一轮把帧放回附图、读整段转写，下一轮交报告
+        step = _claim_review_before_report(state, memory, videos[0])
+        if step is not None:
+            return step
     return Decision("next_slot", "C3_next_step", {}, branch="S3",
                     slot={"name": "S3_next", "choices": choices,
                           "unread": [{k: p.get(k) for k in ("evidence_id", "title", "url")} for p in unread[:8]],
@@ -3061,7 +3223,7 @@ def _decide_claim(state: HiState, memory: dict[str, Any]) -> Decision:
                           "offsets": offsets, "read": sorted(read_ids),
                           "previous": [_query_text(s.get("request") or {}) for s in queries],
                           "claim": state.task.rsplit(":", 1)[-1].strip()[:400],
-                          "report_decision": report("C9_report").to_dict()})
+                          "report_decision": (report_now if "report" in choices else report)("C9_report").to_dict()})
 
 
 def _substituted(decision: Decision) -> Decision:
