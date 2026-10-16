@@ -384,3 +384,19 @@ def test_uncertain_part_with_unsupported_number_goes_to_confirm_r0a_F002() -> No
     # 不带数字的"拿不准"部分：照旧 minor
     cov = {**cov, "unsupported_parts": ["the original publisher remains undetermined"]}
     assert [e.severity.value for e in A._errors_for_finding("F8", statement, [loc], cov)] == ["minor"]
+
+
+def test_uncertain_number_absent_from_all_cited_sources_is_program_checked() -> None:
+    statement = "The follow-up retrieval for Material A 18.252 s returned Material B 13.349 s as a candidate."
+    loc = J("E53", image=False, label="INSPECT locate_frames result", provenance="", sup=[])
+    loc.supported = [Part("Material B 13.349 s as a candidate", '"time_s":13.349', True)]
+    cov = {"finding_id": "F8", "grounded": False, "model_grounded": True, "unsupported_parts": ["Material A 18.252 s"], "notes": ""}
+    sources = [EvidenceText("E53", '{"candidates":[{"evidence_id":"E50","time_s":13.349}]}', label="INSPECT locate_frames result")]
+    [e] = A._errors_for_finding("F8", statement, [loc], cov, sources=sources)
+    assert e.severity is Severity.MAJOR and e.extra["program_checked"] and e.extra["number_not_in_sources"] == ["18.252"]
+    assert not A._needs_confirm(e)                                     # 程序核实的，不走重采样复核
+    # 原文里有这个数（精度不同也算：18.25 ↔ 18.252）：仍是 major，但要复核
+    sources = [EvidenceText("E53", '{"query":{"time_s":18.25},"candidates":[{"time_s":13.349}]}', label="INSPECT locate_frames result")]
+    [e] = A._errors_for_finding("F8", statement, [loc], cov, sources=sources)
+    assert e.severity is Severity.MAJOR and not e.extra.get("program_checked") and A._needs_confirm(e)
+    assert A.numbers_absent(["0.9009", "15,000", "2:30"], [EvidenceText("E1", "第 0.901 秒；15000 views; at 2:30")], None) == []

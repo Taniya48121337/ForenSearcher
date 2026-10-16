@@ -651,8 +651,46 @@ def uncovered_numbers(part: str, judgments: list[Judgment], task: str | None) ->
     return [n for n in _NUMBER.findall(part or "") if _squash(n) not in seen]
 
 
+def _as_number(text: str) -> tuple[float, int] | None:
+    raw = text.replace(",", "")
+    try:
+        return float(raw), len(raw.split(".", 1)[1]) if "." in raw else 0
+    except ValueError:
+        return None
+
+
+def numbers_absent(numbers: list[str], sources: list[EvidenceText] | None, task: str | None) -> list[str]:
+    """numbers 里在所引全部 E 的全文 / 标题 / 网址 / 取帧说明、以及任务文字里都找不到的（按数值比，精度取两边较粗的一边：
+    18.25 与 18.252 算同一个数）。sources 为 None（调用方没给原文）时返回空表——查不了就不下结论。"""
+
+    if sources is None:
+        return []
+    pool_text = " ".join([*(f"{s.content} {s.label} {s.source_url or ''} {s.media_note}" for s in sources), task or ""])
+    pool = [(m, _as_number(m)) for m in set(_NUMBER.findall(pool_text))]
+    squashed = _squash(pool_text)
+    absent = []
+    for n in numbers:
+        value = _as_number(n)
+        if value is None:
+            if _squash(n) not in squashed:
+                absent.append(n)
+            continue
+        hit = False
+        for _, other in pool:
+            if other is None:
+                continue
+            tol = 0.5 * 10 ** (-min(value[1], other[1]))
+            if abs(value[0] - other[0]) <= tol + 1e-9:
+                hit = True
+                break
+        if not hit:
+            absent.append(n)
+    return absent
+
+
 def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None,
-                        *, allow_unsupported: bool = True, task: str | None = None) -> list[ErrorRecord]:
+                        *, allow_unsupported: bool = True, task: str | None = None,
+                        sources: list[EvidenceText] | None = None) -> list[ErrorRecord]:
     out: list[ErrorRecord] = []
     base_extra = {"finding": finding_id}
 
@@ -676,11 +714,15 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
             numbers = uncovered_numbers(part, judgments, task) if uncertain else []
             if numbers:
                 # verifier@0.4.0（r0a 金标 F002）："Retrieval for Material A 18.252 s"——模型列出这部分却按"很可能就是查询帧"判
-                # grounded=true。部分里的数字不在任何支持片段 / 来源标题 / 任务文字里时不按"拿不准"放过，记 major 走实锤复核
-                # （_verify_finding 第二遍没复现就降回 minor）
-                out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准，但其中的数字不在任何支持片段与任务文字里", span=part,
-                                 evidence_ids=cited, method="model", severity=Severity.MAJOR,
-                                 extra={**base_extra, "notes": coverage.get("notes", ""), "uncertain_numeric": numbers}))
+                # grounded=true。部分里的数字不在任何支持片段 / 来源标题 / 任务文字里时不按"拿不准"放过：
+                # 程序查所引全部 E 的原文也没有这个数 → major，不再走复核（program_checked，是程序核实的事实，复核的重采样常常
+                # 用省略号把这个数略过去）；原文里有这个数 → major 走实锤复核，第二遍没复现就降回 minor
+                absent = numbers_absent(numbers, sources, task)
+                detail = ("核验模型列为拿不准，其中的数字在所引 E 的原文与任务文字里都没有" if absent
+                          else "核验模型列为拿不准，但其中的数字不在任何支持片段与任务文字里")
+                out.append(error(ErrorType.UNSUPPORTED_ASSERTION, detail, span=part, evidence_ids=cited, method="model", severity=Severity.MAJOR,
+                                 extra={**base_extra, "notes": coverage.get("notes", ""), "uncertain_numeric": numbers,
+                                        **({"number_not_in_sources": absent, "program_checked": True} if absent else {})}))
                 continue
             if uncertain:
                 out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准、但整句判为有支持（仅备注）", span=part,
@@ -728,7 +770,7 @@ def _group(e: ErrorRecord) -> str:
 
 
 def _needs_confirm(e: ErrorRecord) -> bool:
-    return e.severity in _FIRM and e.method in ("model", "pixels")
+    return e.severity in _FIRM and e.method in ("model", "pixels") and not e.extra.get("program_checked")
 
 
 async def _verify_finding(finding_id: str, statement: str, texts: list[EvidenceText], judge: JsonJudge, *,
@@ -781,7 +823,7 @@ async def _verify_finding_once(finding_id: str, statement: str, texts: list[Evid
     if coverage is None:
         outcome.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", **failure.pending_fields()})
     outcome.coverage = coverage
-    outcome.errors = _errors_for_finding(finding_id, statement, usable, coverage, task=task)
+    outcome.errors = _errors_for_finding(finding_id, statement, usable, coverage, task=task, sources=texts)
     return outcome
 
 
