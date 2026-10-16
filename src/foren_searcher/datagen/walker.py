@@ -2488,6 +2488,12 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
 
     if state.remaining <= 1 or not choices or choices == ["report"]:
         return report_now("L9_report")
+    if state.remaining == 2:
+        # 只剩两轮：这一轮补看参考图、下一轮交报告（r0h 冒烟 l623：读到第 11 步只剩 1 轮，交报告时参考图不在附图里）
+        step = _l3b_before_report(state, memory, image, side, compared="compare_refs" in issued, refs_shown=refs_shown,
+                                  reviewed=reviewed)
+        if step is not None:
+            return step
     return Decision("next_slot", "L5_next_step", {}, branch="S3",
                     slot={"name": "S3_next", "choices": choices,
                           "unread": [{k: p.get(k) for k in ("evidence_id", "title", "url")} for p in unread[:8]],
