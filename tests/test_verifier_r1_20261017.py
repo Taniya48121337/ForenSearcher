@@ -172,3 +172,104 @@ def test_failed_pages_alone_do_not_flag_completed() -> None:
 def test_prompt_rules_for_failed_pages_and_unrequested_precision() -> None:
     assert "limitations_not_gaps" in SUFFICIENCY_SYSTEM_PROMPT and "候选页打不开" in SUFFICIENCY_SYSTEM_PROMPT
     assert "任务没有明确要求的精度" in SUFFICIENCY_SYSTEM_PROMPT and "网页上的图是否就是给定的" in SUFFICIENCY_SYSTEM_PROMPT
+
+
+# ---------------------------------------------------------------- 3. 像素检查只对句子所指的那张图
+
+from foren_searcher.datagen.verify import anchored as A                                # noqa: E402
+from foren_searcher.datagen.verify.anchored import Judgment, Part                      # noqa: E402
+from foren_searcher.datagen.verify.pixel_rules import image_type, is_tool_measurement   # noqa: E402
+
+
+def J(eid: str, *, image: bool, label: str, provenance: str, sup: list[str] = (), con: list[tuple[str, str]] = (),
+      media_note: str = "") -> Judgment:
+    return Judgment("F1", eid, "contradicted" if con else "supported", supported=[Part(p, "q", None if image else True) for p in sup],
+                    contradicted=[Part(p, q, None if image else True) for p, q in con], is_image=image, source_label=label,
+                    provenance=provenance, media_note=media_note)
+
+
+def firm(errors):
+    return [(e.type.value, e.severity.value, e.extra.get("program_rule")) for e in errors]
+
+
+def test_tool_measurement_not_refuted_by_pixels_F006() -> None:
+    statement = ("The comparison matches 100% of Material A's half-second samples to Material B, with matched footage in A 0–4 s and "
+                 "B 0–4 s. The comparison image at A 3.2 s and B 3.2 s shows corresponding river scenery.")
+    part = "The comparison matches 100% of Material A's half-second samples to Material B, with matched footage in A 0–4 s and B 0–4 s."
+    text = J("E25", image=False, label="INSPECT compare_media result", provenance="来源材料：A、B（E1、E2 → INSPECT compare_media result）",
+             sup=["The comparison matches 100% of Material A's half-second samples", "with matched footage in A 0–4 s and B 0–4 s"])
+    panel = J("E21", image=True, label="A 0.2-4.2 s: region in red differs from B at the same moment", provenance="来源材料：A、B（E1、E2 → …）",
+              sup=["corresponding river scenery"], con=[(part, "A 3.2s shows a wooden boat inside the red box")])
+    cov = {"finding_id": "F1", "grounded": True, "model_grounded": True, "unsupported_parts": [], "notes": ""}
+    assert firm(A._errors_for_finding("F1", statement, [text, panel], cov)) == [("wrong_citation", "minor", "tool_measurement")]
+    assert is_tool_measurement("100% of A's half-second samples match footage in B",
+                               "The comparison reports that 100% of A's half-second samples match footage in B.")
+    assert not is_tool_measurement("a wooden boat appears in both frames", "The comparison image shows a wooden boat in both frames.")
+
+
+def test_other_image_referent_F012_and_real_contradiction_kept() -> None:
+    statement = ("The specific visual evidence consists of whole-frame A/B comparison panels identifying the participants and paired crops "
+                 "of the lower-center participant. At both 0.0 s and 2.8 s, A's crop contains the decorated cyan hat where B's crop shows "
+                 "hair and background.")
+    panel = J("E21", image=True, label="A 0.3-5.3 s: region in red differs from B at the same moment", provenance="来源材料：A、B（…）",
+              sup=["whole-frame A/B comparison panels"],
+              con=[("paired crops of the lower-center participant", "the detail is on the top-left tile"),
+                   ("the decorated cyan hat", "A detail shows an orange hat")])
+    crop_a = J("E37", image=True, label="frame of video E1 at 0.000 s (cropped region)", provenance="来源材料：A（E1 → …）",
+               sup=["A's crop contains the decorated cyan hat"], media_note="这张图是视频 E1 的第 0.000 秒的帧")
+    crop_b = J("E34", image=True, label="frame of video E2 at 0.000 s (cropped region)", provenance="来源材料：B（E2 → …）",
+               sup=["B's crop shows hair and background"], media_note="这张图是视频 E2 的第 0.000 秒的帧")
+    assert [image_type(x) for x in (panel, crop_a)] == ["diff_panel", "crop"]
+    errors = A._errors_for_finding("F1", statement, [panel, crop_a, crop_b], None)
+    assert firm(errors) == [("wrong_citation", "minor", "other_image_referent")] * 2
+    # 只引了这一张对照面板：没有"另一张图"可指，画面反驳照记
+    errors = A._errors_for_finding("F1", statement, [panel], None)
+    assert [e.severity.value for e in errors if e.type.value == "wrong_citation"] == ["critical", "critical"]
+
+
+def test_unrelated_reference_images_collapse_to_one_minor_F007() -> None:
+    statement = "The photograph shows a rural road with large sections of its paved surface displaced, alongside motorcycles, people and vegetation."
+    given = J("E1", image=True, label="Material A", provenance="来源材料：A（E1，原始材料）",
+              sup=["The photograph shows a rural road with large sections of its paved surface displaced", "alongside motorcycles",
+                   "people", "and vegetation"])
+    refs = [J(e, image=True, label=f"Highways page {e}", provenance=f"来源：外部网页 site{e}.com",
+              con=[("The photograph shows a rural road with large sections of its paved surface displaced", "an intact highway"),
+                   ("alongside motorcycles, people and vegetation", "only cars")]) for e in ("E6", "E9", "E12")]
+    errors = A._errors_for_finding("F1", statement, [given, *refs], None)
+    assert firm(errors) == [("wrong_citation", "minor", "cited_unrelated_image")]
+    assert list(errors[0].evidence_ids) == ["E6", "E9", "E12"] and errors[0].extra["merged"] == 6 and errors[0].extra["described"] == ["E1"]
+    # 外部参考图反驳、给定图并不支持同一部分：照记
+    lone = J("E1", image=True, label="Material A", provenance="来源材料：A（E1，原始材料）", sup=["a city street"])
+    errors = A._errors_for_finding("F1", statement, [lone, refs[0]], None)
+    assert {e.severity.value for e in errors if e.type.value == "wrong_citation"} == {"critical"}
+
+
+def test_image_pair_prompt_rules_and_other_cited_images() -> None:
+    assert A._IMAGE_RULE in A.pair_system_prompt(provenance=True, image=True)
+    assert A._OTHERS_RULE in A.pair_system_prompt(provenance=True, image=True, others=True)
+    assert A.pair_system_prompt(provenance=False) == A._PAIR_SYSTEM_PROMPT_LEGACY       # 文本对不带图片规则
+    seen: list[dict[str, Any]] = []
+
+    class Judge:
+        async def judge(self, *, system_prompt, payload, images, schema=None):
+            seen.append({"prompt": system_prompt, **payload})
+            return {"supported_parts": [], "contradicted_parts": []}
+
+    img = tmp_png()
+    texts = [EvidenceText("E21", "", modalities=("image",), label="A 0.3-5.3 s: region in red differs", image_path=img,
+                          provenance="来源材料：A、B（…）"),
+             EvidenceText("E37", "", modalities=("image",), label="frame of video E1 at 0.000 s (cropped region)", image_path=img,
+                          provenance="来源材料：A（…）", media_note="这张图是视频 E1 的第 0.000 秒的帧"),
+             EvidenceText("E27", "compare_media text", label="INSPECT compare_media result")]
+    run(A._verify_finding_once("F1", "s", texts, Judge()))
+    pairs = {p["source"]["evidence_id"]: p for p in seen if "source" in p}
+    assert pairs["E21"]["other_cited_images"] == [{"evidence_id": "E37", "label": "frame of video E1 at 0.000 s (cropped region)",
+                                                   "media_note": "这张图是视频 E1 的第 0.000 秒的帧"}]
+    assert "other_cited_images" not in pairs["E27"] and A._IMAGE_RULE not in pairs["E27"]["prompt"]
+
+
+def tmp_png() -> Path:
+    import tempfile
+    path = Path(tempfile.mkdtemp()) / "x.png"
+    path.write_bytes(b"\x89PNG\r\n\x1a\n")
+    return path

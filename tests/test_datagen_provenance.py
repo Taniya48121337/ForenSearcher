@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 
+from foren_searcher.datagen.verify.anchored import pair_system_prompt
 from foren_searcher.datagen.verify.anchored import (
     _COVERAGE_SYSTEM_PROMPT_LEGACY, _PAIR_SYSTEM_PROMPT_LEGACY, COVERAGE_SYSTEM_PROMPT, coverage_system_prompt, PAIR_SYSTEM_PROMPT, PAIR_SYSTEM_PROMPTS,
     _source_payload, verify_anchored,
@@ -109,7 +110,9 @@ def test_pair_and_coverage_payloads_show_provenance(tmp_path: Path):
     result = asyncio.run(verify_anchored(report, lookup, judge))
     pairs = {(p["statement"][:2], p["source"]["evidence_id"]): (prompt, p) for prompt, p in judge.calls if "source" in p}
     prompt_e7, payload_e7 = pairs[("A显", "E7")]
-    assert prompt_e7 == PAIR_SYSTEM_PROMPT
+    # verifier@0.4.0：图片对另加图片规则；同句还引了别的图时带 other_cited_images 与对应规则
+    assert prompt_e7 == pair_system_prompt(provenance=True, image=True, others="other_cited_images" in payload_e7)
+    assert prompt_e7.startswith(PAIR_SYSTEM_PROMPT.split("- 两个列表都可以为空。")[0])
     assert payload_e7["source"]["provenance"].startswith("来源材料：B")
     assert "来源材料：B" in payload_e7["source"]["content"]
     assert pairs[("A显", "E5")][1]["source"]["provenance"].startswith("来源材料：A")

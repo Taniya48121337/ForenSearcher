@@ -117,7 +117,7 @@ def test_image_pairs_carry_media_note_and_task_but_web_pairs_do_not(tmp_path: Pa
     pairs = {(p["statement"][:4], p["source"]["evidence_id"]): (prompt, p) for prompt, p, _ in judge.calls if "source" in p}
     prompt, payload = pairs[("材料A首", "E5")]
     assert payload["source"]["media_note"].endswith("这是第一帧（程序记录）") and payload["task"] == "比较材料A的开头与结尾"
-    assert prompt == pair_system_prompt(provenance=True, media_note=True, task=True) and "media_note" in prompt and "指代" in prompt
+    assert prompt == pair_system_prompt(provenance=True, media_note=True, task=True, image=True, others="other_cited_images" in payload) and "media_note" in prompt and "指代" in prompt
     assert prompt.startswith(PAIR_SYSTEM_PROMPT.split("- 两个列表都可以为空。")[0])
     web_prompt, web_payload = pairs[("Vent", "E9")]
     assert web_prompt == _PAIR_SYSTEM_PROMPT_LEGACY and "task" not in web_payload and "media_note" not in web_payload["source"]

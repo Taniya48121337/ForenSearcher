@@ -36,6 +36,7 @@ from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText
 from .lang import (BACKREF, CONCRETE_ZH, DATE_NUMERIC, LIMITATION, TASK_WORDS, VERDICT, dates_in, grams, has_concrete,
                    strip_dates)
+from .pixel_rules import apply_pixel_rules
 
 MAX_SOURCE_CHARS = 120_000   # 第一次全量 20K 把 85K 字符的 PDF 章节截掉了大半，表格数字全判成无支持；27b 有 262K 上下文，放宽
 
@@ -75,20 +76,29 @@ _MEDIA_RULE = ("- 图片来源带 media_note（程序记录的取帧时间、单
                "是不是第一帧 / 最后一帧、视频总长的部分可以据此判断：写进 supported，quote 写 media_note 里的相应内容。\n")
 _TASK_RULE = ("- payload 带 task（这份报告所接的调查任务）时，只用它理解待核句里的指代（“材料A”“给定视频”“该人物”分别指什么）；"
               "task 里的说法不是证据，不能据此支持或反驳任何部分。\n")
+# verifier@0.4.0（r0g2 金标 F006 / F009 / F012 / F007）：图片只反驳对画面内容的直接描述；一句引了几张图时只核说这张图的部分
+_IMAGE_RULE = ("- 来源是图片时：待核句里归因给工具 / 比对结果的测量值（“the comparison reports 100% …”“audio matches in 9 of 9 windows”"
+               "“similarity 0.97”）不是对画面的描述，图片不能反驳它，不写进 contradicted；图片只能反驳待核句对画面内容的直接描述。\n")
+_OTHERS_RULE = ("- payload 带 other_cited_images（同一句还引用了的其他图：编号、标题、取帧时间）时：先按待核句里的时间、区域、图类型"
+                "（整帧对照面板 / 差异图 / 裁剪图 / 单帧 / 给定图片 / 外部网页上的参考图）判断哪些部分说的是这张图；说的是另一张图的部分"
+                "既不写进 supported 也不写进 contradicted。\n")
 
 
-def pair_system_prompt(*, provenance: bool, media_note: bool = False, task: bool = False) -> str:
-    """按 payload 实际带的字段选提示词：没有新字段时与旧版逐字相同（保住缓存）。"""
+def pair_system_prompt(*, provenance: bool, media_note: bool = False, task: bool = False, image: bool = False,
+                       others: bool = False) -> str:
+    """按 payload 实际带的字段选提示词：没有新字段时与旧版逐字相同（保住缓存）。image / others 是 verifier@0.4.0 的图片规则。"""
 
     prompt = PAIR_SYSTEM_PROMPT if provenance else _PAIR_SYSTEM_PROMPT_LEGACY
-    extra = (_MEDIA_RULE if media_note else "") + (_TASK_RULE if task else "")
+    extra = ((_MEDIA_RULE if media_note else "") + (_TASK_RULE if task else "") + (_IMAGE_RULE if image else "")
+             + (_OTHERS_RULE if others else ""))
     if not extra:
         return prompt
     return prompt.replace("- 两个列表都可以为空。", extra + "- 两个列表都可以为空。")
 
 
 PAIR_SYSTEM_PROMPTS = tuple(dict.fromkeys(
-    pair_system_prompt(provenance=p, media_note=m, task=t) for m in (False, True) for t in (False, True) for p in (True, False)))
+    pair_system_prompt(provenance=p, media_note=m, task=t, image=i, others=o) for i in (False, True) for o in (False, True)
+    for m in (False, True) for t in (False, True) for p in (True, False)))
 # 识别"这是一次 pair 调用"时用（假核验模型、统计）；前两项仍是 PAIR_SYSTEM_PROMPT / 旧提示词
 
 COVERAGE_SYSTEM_PROMPT = """你是报告审核员。给你一句调查结论（待核句）和它引用的各条来源已经核实的支持片段。
@@ -457,20 +467,38 @@ def _wants_task(text: EvidenceText) -> bool:
     return text.is_image and text.provenance.startswith("来源材料")
 
 
+def _other_images(text: EvidenceText, others: list[EvidenceText] | None) -> list[dict[str, Any]]:
+    """同一句引用的其他图（verifier@0.4.0）：编号、标题、取帧时间，让核验模型分清句子哪部分说的是这张图。"""
+
+    out = []
+    for other in others or []:
+        if other.evidence_id == text.evidence_id or not other.is_image:
+            continue
+        item: dict[str, Any] = {"evidence_id": other.evidence_id, "label": (other.label or "")[:160]}
+        if other.media_note:
+            item["media_note"] = other.media_note
+        out.append(item)
+    return out
+
+
 async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: EvidenceText, *, task: str | None = None,
-                     sample: int = 0) -> Judgment:
+                     sample: int = 0, others: list[EvidenceText] | None = None) -> Judgment:
     images = [text.image_path] if text.is_image and text.image_path else []
     if text.is_image and not images:
         return Judgment(finding_id, text.evidence_id, "needs_pixels", is_image=True)
     source = _source_payload(text)
     provenance = str(source.get("provenance") or "")
     payload = {"statement": statement, "source": source, "image_attached": bool(images)}
+    other_images = _other_images(text, others) if text.is_image else []
+    if other_images:
+        payload["other_cited_images"] = other_images
     if sample:
         payload["resample"] = sample          # 0.3.4 实锤复核：独立重采样（缓存键不同）；sample=0 时 payload 与旧版逐字相同
     with_task = bool(task and task.strip()) and _wants_task(text)
     if with_task:
         payload["task"] = task.strip()[:MAX_TASK_CHARS]  # type: ignore[union-attr]
-    system_prompt = pair_system_prompt(provenance=bool(provenance), media_note="media_note" in source, task=with_task)
+    system_prompt = pair_system_prompt(provenance=bool(provenance), media_note="media_note" in source, task=with_task,
+                                       image=text.is_image, others=bool(other_images))
     raw, failure = await _call_checked(judge, system_prompt, payload, images, PAIR_SCHEMA)
     if raw is None:
         return Judgment(finding_id, text.evidence_id, "failed", is_image=text.is_image, call_error=dict(failure.errors),
@@ -578,7 +606,7 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
         # 单条来源上的"以偏概全"提示只是线索（视频帧类报告几乎条条被提示），记 minor，不单独把报告推成 negative
         out.append(error(ErrorType.SCOPE_OVERREACH, "核验模型提示：由局部/少数样本推断了整体", span=statement, severity=Severity.MINOR,
                          evidence_ids=[j.evidence_id for j in supporting if j.scope_overreach], method="model", extra=base_extra))
-    return out
+    return apply_pixel_rules(out, statement, judgments)          # verifier@0.4.0 第 3 处：像素只核句子所指的那张图
 
 
 @dataclass
@@ -630,7 +658,8 @@ async def _verify_finding_once(finding_id: str, statement: str, texts: list[Evid
     """一条 Finding：各 E 的 judge_pair 并发（按 texts 顺序收集），全部完成后再汇总覆盖。"""
 
     outcome = _FindingOutcome()
-    judgments = list(await asyncio.gather(*(judge_pair(judge, finding_id, statement, text, task=task, sample=sample) for text in texts)))
+    judgments = list(await asyncio.gather(*(judge_pair(judge, finding_id, statement, text, task=task, sample=sample, others=texts)
+                                            for text in texts)))
     outcome.judgments = judgments
     for judgment in judgments:
         if judgment.verdict == "needs_pixels":
