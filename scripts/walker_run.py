@@ -59,6 +59,14 @@ def specs_for(round_tag: str) -> tuple[str, str]:
     import re
 
     m = re.match(r"wk(\d+)", round_tag)          # 10-14：wk11b / wk11g / wk11n（S5 对照的各版）按数字部分取规格
+    if not m and round_tag.startswith("r1"):
+        # 10-17 r1：r1* 轮次用 specs/r1_freeze.json 的规格（hi@0.11.0 / gia@0.9.0）；草稿里还没填就退回 r0
+        try:
+            frozen = json.loads((ROOT / "specs" / "r1_freeze.json").read_text(encoding="utf-8")).get("specs") or {}
+        except (OSError, ValueError):
+            frozen = {}
+        if frozen.get("hi") and frozen.get("gia"):
+            return frozen["hi"], frozen["gia"]
     if not m:
         # 10-15 r0 冻结：不是 wk<数字> 的轮次（第一次 SFT 的重跑等）用 specs/r0_freeze.json 的冻结规格
         try:

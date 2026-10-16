@@ -3,15 +3,27 @@
   "status": "draft",
   "frozen_at": null,
   "doc": "claude/r1核验器修正_20261017.md",
-  "note": "r1 冻结草稿（10-17，r1 预演之一：核验器修正）。只填了 verifier 与 tool_layer 两节；specs / spec_hash / checks / teacher 待 r1 规格定稿（第 3 个对话统一打 r1-frozen 时补）。specs 留空，run_cases.load_freeze 不会把它当成 hi@0.10.0 / gia@0.9.0 的冻结文件（r0 的 run 仍对 r0_freeze.json 核）。",
+  "note": "r1 冻结草稿（10-17，r1 预演之一：核验器修正）。只填了 verifier 与 tool_layer 两节；specs / spec_hash / checks / teacher 待 r1 规格定稿（第 3 个对话统一打 r1-frozen 时补）。specs 留空，run_cases.load_freeze 不会把它当成 hi@0.10.0 / gia@0.9.0 的冻结文件（r0 的 run 仍对 r0_freeze.json 核）。 10-17 r1 预演之二：填了 specs（hi@0.11.0 / gia@0.9.0）、spec_hash、checks、teacher（照抄 r0）、walker 策略版本；tool_layer / verifier hash 由 walker_run freeze --write 重算。仍是草稿，tag 不打。",
   "specs": {
-    "hi": null,
-    "gia": null
+    "hi": "hi@0.11.0",
+    "gia": "gia@0.9.0"
   },
-  "spec_hash": {},
-  "checks": {},
+  "spec_hash": {
+    "hi": "sha256:c981099064da5e91b13b5ffbb7f06b6d3b23a662994c1d3907f98d8736a7b504",
+    "gia": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033"
+  },
+  "checks": {
+    "state_renderer": "compact_16k",
+    "image_input_limit": 8,
+    "gia_report_review_delay_s": null,
+    "harness_params_mode": "apply",
+    "harness_overrides": [],
+    "state_renderer_override": null,
+    "auto_tools": "off",
+    "instruction_mode": "teacher"
+  },
   "tool_layer": {
-    "hash": "sha256:4c8fbd5549de94b2c08958670356a6f7743c9fa405902468f0a92ec7c6dcecdd",
+    "hash": "sha256:04590a14dbed932b11b42a650ef0ea64470201ff2207877538c9e27e2d3a4e20",
     "paths": [
       "hi/workspace.py",
       "inspect",
@@ -22,11 +34,11 @@
     "groups": {
       "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
       "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
-      "search": "sha256:04ba89e0500e41ce979fec4a9de4dc41ea5f6ced6588c6145a46e88c8b9478dc",
+      "search": "sha256:54f4d62e6ff414963aa2a837f9cd88ba8c35e5e088c54571826be78ab8f1fc70",
       "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
     },
     "line_endings": "crlf_to_lf",
-    "computed_at": "2026-10-17T01:51:49",
+    "computed_at": "2026-10-17T03:01:26",
     "status": "draft（当前 r1 分支，含 r1-image-search 的 search 层改动）",
     "tag": null,
     "r0_hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4"
@@ -103,6 +115,154 @@
     {
       "date": "2026-10-17",
       "change": "建草稿：verifier@0.4.0（核验器修正 6 处 + 缓存分键），tool_layer 记当前 r1 分支 hash；tag 未打。"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "r1 预演之二：specs hi@0.11.0 / gia@0.9.0 + spec_hash；checks / teacher 照抄 r0；walker 策略 walker-r1@2026-10-17；工具层（search 第二家引擎缩略图、notice 英文）hash 重算"
     }
-  ]
+  ],
+  "teacher": {
+    "mode": "slots",
+    "decided": "2026-10-15 负责人（清单第〇节\"教师与核验器\"）；实现 = 对话 5a（claude/教师分槽与核验器API化_20261015.md）",
+    "slots": {
+      "S0": "qwen",
+      "S1": "qwen",
+      "S2": "qwen",
+      "S3": "qwen",
+      "S4": "strong",
+      "S5": "strong"
+    },
+    "slot_meaning": {
+      "S0": "HI 动作的 rationale",
+      "S1": "检索查询词",
+      "S2": "GIA 第 2 轮任务文本",
+      "S3": "检索类下一步 / 充分性",
+      "S4": "HI 报告",
+      "S5": "GIA 答案（含 S5_answer_revise：核验后只按证据重写）"
+    },
+    "slot_name_rule": "槽调用名按前缀归槽：S4_report_retry → S4，S1_query_retry → S1，S5_answer_revise / _review / _gate / _bon<k> → S5（oracle_generator.slot_key）",
+    "backends": {
+      "qwen": {
+        "model": "qwen/qwen3.5-397b-a17b",
+        "endpoint": "https://openrouter.ai/api/v1",
+        "endpoint_env": "FOREN_TEACHER_QWEN_ENDPOINT",
+        "model_env": "FOREN_TEACHER_QWEN_MODEL",
+        "api_key_env": "FOREN_TEACHER_QWEN_API_KEY",
+        "server": "H20 自部署 vLLM（Qwen3.5-397B-A17B FP8 放得进 8×H20）：设 FOREN_TEACHER_QWEN_ENDPOINT=http://<H20>:<端口>/v1、FOREN_TEACHER_QWEN_MODEL=<served name>；预检按模型身份核对（去 org 前缀、大小写、点/横线，允许 -FP8 之类后缀）",
+        "thinking": true,
+        "thinking_off_slots": [
+          "S0"
+        ],
+        "reasoning_effort": null,
+        "temperature": 0.3,
+        "max_tokens": 16384,
+        "attempts": 5,
+        "timeout_s": 900,
+        "providers": null
+      },
+      "strong": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "medium",
+        "serial": true,
+        "timeout_s": 900,
+        "retry_max_s": 900,
+        "server": "Codex CLI（ChatGPT 订阅，不按 token 计费）：本机已登录；服务器按 server/15_walker.sh 末尾的步骤装 Codex CLI 并登录（复制 ~/.codex/auth.json 或 codex login --device-auth），出口走 FS_PROXY。调用 = codex exec --ephemeral --sandbox read-only --json -m gpt-6-astra -c model_reasoning_effort=\"medium\" --image …（无工具、只读）；跨进程串行锁，--jobs 2；429 / usage limit 按 30/60/120/240/480 s 退避，总等待 ≤ FOREN_ORACLE_RETRY_MAX_S（900 s）",
+        "endpoint_alternative": "将来换 CLIProxyAPI 之类 OpenAI 兼容代理：type 改为 endpoint，填 endpoint（如 http://127.0.0.1:8317/v1）、model、endpoint_env / model_env / api_key_env，其余字段同 qwen 后端；只改本节并记 changelog，代码不动"
+      }
+    },
+    "backup_switch": "FOREN_TEACHER_BACKUP=qwen | strong | all（或 walker_run --teacher-backup）：该后端整条 run 换成 backup_backends 的配置；类型相同时其余字段继承 backends.<名>，类型不同（strong：codex → OpenRouter 端点）时只用 backup_backends.<名> 自己的字段",
+    "backup_only_when": "该后端连续 429 / 402 / 余额不足；换的单位是整条 run（不在一条 run 里混用），run_config.walker.slot_teachers 记每个槽的 model 与 role；批处理自动换备用归对话 5",
+    "strong_model_choice": "S4 / S5 仍是 gpt-6-astra，10-15 r0 成本压缩起走 Codex CLI（ChatGPT 订阅）而非 OpenRouter API（5a 实测 strong 约 $1 / 案例）。Sonnet（anthropic/claude-sonnet-5.5，OpenRouter）只作 strong 的备用：S5 若用 Sonnet 就与核验器同家族（漏洞审查 F1），靠金标 D1 兜底",
+    "qwen_choice": "S0–S3 用 Qwen3.5-397B-A17B：wk14（397B）在 30 案例上各列都不差于 wk13（122B）——报告 positive 7 对 4、HI accepted 207 对 120、跑成 30/30 对 27/30；27B（wk15）未跑。S1 / S3 槽的单独质量对比没有做（见 walker_teachers_wk12_wk13_wk14.md）",
+    "per_row_fields": [
+      "metadata.slot_teacher（S0–S3 用的模型）",
+      "metadata.terminal_teacher（S4 / S5 用的模型，含核验后重写）",
+      "metadata.teacher_model（run 级摘要：<S0–S3 模型>+<S4/S5 模型>）"
+    ],
+    "primary": "qwen/qwen3.5-397b-a17b+gpt-6-astra",
+    "backup_summary": "qwen/qwen3.5-122b-a10b+anthropic/claude-sonnet-5.5",
+    "compat_note": "primary / backup 是 run 级 teacher_model 摘要，只覆盖\"全主\"\"全备\"；pack_r0.py 的 teacher 检查（10-15 r0 成本压缩起）按 run_config.walker.slot_models 逐槽核对：每个槽的 model 必须等于该槽后端的主模型或备用模型，只换一个后端的 run 也认",
+    "previous": {
+      "primary": "gpt-6-astra",
+      "primary_backend": "codex",
+      "primary_slot_effort": "medium",
+      "backup": "qwen/qwen3.5-397b-a17b",
+      "backup_backend": "openrouter",
+      "basis": "同 18 个检索类案例（wk11/wk12/wk13 共有、wk13 跑成的）Sonnet 严格通过（positive 且无 major/critical）：报告 Codex wk12 8/18、Sonnet wk11 3/18、Qwen 122B wk13 0/13；答案 1/18、4/18、3/19（wk13 为核验后重写版）。HI accepted：wk12 166 行 / 21 案例，wk13 120 行 / 27 案例。wk13 另有 3 个 fmnv_c 案例没跑成。 10-15 按判定规则复核（wk14 397B，同 18 个检索类案例，Sonnet 严格判）：① HI accepted 行 / 案例 397B 7.5、Codex 7.5（100%）；② 报告严格通过 397B 2/18、Codex 8/18（25%，未达 90%）；③ GIA FINISH 严格入选 397B 3/18、Codex 1/18；④ 跑成率 397B 30/30。②不达标 → Codex 维持主教师，备用由 122B 换成 397B（397B 每列都不差于 122B：报告 positive 7 对 4、HI accepted 207 对 120、跑成 30/30 对 27/30）。27B（wk15）未跑。见 walker_teachers_wk12_wk13_wk14.md。",
+      "decision_rule": "wk14（397B）/ wk15（27B）跑完、walker_teachers_wk13_wk14_wk15.md 出来后：在同 30 案例上比 ① HI accepted 行 / 案例，② 报告严格通过率，③ GIA FINISH accepted 数，④ 跑成率。某个 Qwen 在 ①② 都不低于 Codex wk12 的 90%，且跑成率 ≥ 90% → 改为主教师（服务器 H20 自部署），Codex 降为备用；否则维持 Codex 主、该 Qwen 中最好的一个作备用。改动只改本节并在 changelog 记一条，已产出的行按 teacher_model 区分，不混批。",
+      "server_note": "Codex 不能在服务器上跑；维持 Codex 为主教师时，r0 重跑（A8）在本机做。"
+    },
+    "backup_backends": {
+      "qwen": {
+        "model": "qwen/qwen3.5-122b-a10b"
+      },
+      "strong": {
+        "type": "endpoint",
+        "model": "anthropic/claude-sonnet-5.5",
+        "endpoint": "https://openrouter.ai/api/v1",
+        "endpoint_env": "FOREN_TEACHER_STRONG_ENDPOINT",
+        "model_env": "FOREN_TEACHER_STRONG_MODEL",
+        "api_key_env": "FOREN_TEACHER_STRONG_API_KEY",
+        "thinking": true,
+        "thinking_off_slots": [],
+        "reasoning_effort": "medium",
+        "temperature": null,
+        "max_tokens": 16384,
+        "attempts": 5,
+        "timeout_s": 900,
+        "providers": null
+      }
+    },
+    "backup": "qwen/qwen3.5-122b-a10b+anthropic/claude-sonnet-5.5",
+    "previous_strong_5a": {
+      "model": "openai/gpt-6-astra",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "endpoint_env": "FOREN_TEACHER_STRONG_ENDPOINT",
+      "model_env": "FOREN_TEACHER_STRONG_MODEL",
+      "api_key_env": "FOREN_TEACHER_STRONG_API_KEY",
+      "server": "服务器同样调 API（OpenRouter，OpenAI 兼容）；需要出口代理时走系统代理",
+      "thinking": true,
+      "thinking_off_slots": [],
+      "reasoning_effort": "medium",
+      "temperature": null,
+      "max_tokens": 16384,
+      "attempts": 5,
+      "timeout_s": 900,
+      "providers": null
+    },
+    "per_slot_record": "每次槽调用记 backend（codex / endpoint）、slot_backend、backend_role、model（请求的）、model_served（Codex 输出里能找到的模型名，找不到为 null；端点为返回的 model 字段）、codex_version、lock_wait_s、usage",
+    "note_r1": "10-17 r1 预演之二：教师照抄 r0（同一分槽表、同一主 / 备用模型）；oracle_generator 的槽表仍从 specs/r0_freeze.json 读。"
+  },
+  "walker": {
+    "policy_version": "walker-r1@2026-10-17",
+    "doc": "claude/r1_walker与search整合_20261017.md",
+    "rules": [
+      "E2 以图搜 output_type=image；读过的页面 E6 compare_media(E1, 页面上的图)；没比对 / 没对上只写候选；E7 交报告前补看对照图",
+      "缩略图哈希 no match 只降权不排除；第一家引擎缩略图没对上试第二家（search 层）",
+      "L 报告必须写参考图比对结论（required_findings 进 S4 合同校验）",
+      "C：video_structure + 按镜头取帧；交报告前整段转写 + 场景帧放回附图；画面类声明一条 Finding 写帧里有没有那件事",
+      "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）"
+    ],
+    "search_policy": {
+      "E": {
+        "image_search": "lens,yandex",
+        "image_host": "imgbb",
+        "image_fallback": "off"
+      },
+      "L": {
+        "image_search": "yandex"
+      },
+      "C": {
+        "image_search": "yandex"
+      },
+      "B": {
+        "image_search": "off"
+      },
+      "normalize": "FOREN_REVERSE_NORMALIZE=1",
+      "lens_max_searches": "FOREN_LENS_MAX_SEARCHES（冒烟 40）"
+    },
+    "inloop_sufficiency": true
+  },
+  "updated_at": "2026-10-17T03:01:23"
 }
