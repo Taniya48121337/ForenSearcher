@@ -307,6 +307,13 @@ class OracleGenerator(ModelImageInputs):
         workspace = payload.get("workspace_id")
         actor = workspace or "GIA"
         memory = self.memories.setdefault(actor, {})
+        if workspace:
+            # r1（10-17）：检索类案例的族按第 1 轮工作区的任务定，之后各轮沿用（第 2 轮的任务文字是 S2 写的，族词可能不在里面）
+            has_search = any(isinstance(a, dict) and a.get("name") == "SEARCH" for a in payload.get("available_actions") or [])
+            if str(workspace).startswith("W1-") and getattr(self, "run_family", None) is None:
+                self.run_family = _walker.task_family(str(view.get("task") or ""), has_search)
+            elif getattr(self, "run_family", None):
+                memory.setdefault("run_family", self.run_family)
         decision = (decide_hi(payload, memory, rendered if render_info else None) if workspace
                     else decide_gia(payload, memory))
         slots: list[dict[str, Any]] = []
@@ -984,8 +991,9 @@ class OracleGenerator(ModelImageInputs):
 
         from foren_searcher.datagen.errors import ErrorType, Severity
         from foren_searcher.datagen.status_rewrite import build_reason
+        from foren_searcher.datagen.verify.context import StoreLookup
         from foren_searcher.datagen.verify.judges import CachedJudge, ClaudeCliLimit
-        from foren_searcher.datagen.verify.sufficiency import (SUFFICIENCY_SYSTEM_PROMPT, _report_payload, _required_entries,
+        from foren_searcher.datagen.verify.sufficiency import (SUFFICIENCY_SYSTEM_PROMPT, sufficiency_payload,
                                                                verify_sufficiency)
 
         workspace = str(report.get("task_id") or "")
@@ -1002,11 +1010,14 @@ class OracleGenerator(ModelImageInputs):
                 task_text = str(self.store.workspace_task_record(workspace).get("task") or "")
                 req_ids, scope_note = self._inloop_scope(workspace, case, task_text, judge)
                 stored = self._predicted_store_report(report)
-                suff_payload = {"task": task_text, "required_evidence": _required_entries(case, case.scoped_required_evidence(req_ids)),
-                                "report": _report_payload(stored)}
+                # r1（10-17）：与事后核验（reverify / verdict.verify_report）同一份 payload——verifier@0.4.0 的 sufficiency_payload，
+                # 带 lookup（证据索引：所引 E 的标题 / 取得方式 / 网址）。没被改写的报告在事后全量核验时直接命中这条缓存
+                lookup = StoreLookup(self.store)
+                suff_payload = sufficiency_payload(stored, task_text, case=case, requirement_ids=req_ids, lookup=lookup)
                 entry.update({"scope": scope_note, "key": CachedJudge.key_for(SUFFICIENCY_SYSTEM_PROMPT, suff_payload, []),
                               "predicted_finding_ids": [f["finding_id"] for f in stored["findings"]]})
-                result = asyncio.run(verify_sufficiency(stored, task_text, judge, case=case, requirement_ids=req_ids))
+                result = asyncio.run(verify_sufficiency(stored, task_text, judge, case=case, requirement_ids=req_ids,
+                                                        lookup=lookup))
             except ClaudeCliLimit as exc:
                 entry.update({"error": f"claude_cli_limit: {str(exc)[:200]}", "limit_hit": True})
                 result = None

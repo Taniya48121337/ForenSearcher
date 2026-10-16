@@ -302,7 +302,12 @@ def walker_gaps(run_dir: Path, workspace: str, report_request: str) -> dict[str,
     try:
         for name, request, transport in _requests(run_dir):
             payload = request.get("payload") or {}
-            if payload.get("workspace_id") != workspace:
+            ws = str(payload.get("workspace_id") or "")
+            if ws.startswith("W1-") and "run_family" not in memory and not workspace.startswith("W1-"):
+                # r1：第 2 轮沿用第 1 轮的族（oracle_generator 同样做法），重放时也要带上
+                has_search = any(isinstance(a, dict) and a.get("name") == "SEARCH" for a in payload.get("available_actions") or [])
+                memory["run_family"] = w.task_family(str((payload.get("model_view") or {}).get("task") or ""), has_search)
+            if ws != workspace:
                 continue
             captured.clear()
             try:

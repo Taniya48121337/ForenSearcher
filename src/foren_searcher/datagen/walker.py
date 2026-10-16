@@ -474,6 +474,8 @@ def _report(state: HiState, memory: dict[str, Any], rule: str, *, status: str, r
     if reason:
         skeleton["status_reason"] = reason
     family = task_family(state.task, "SEARCH" in state.actions)
+    if not state.task_id.startswith("W1-") and memory.get("run_family") in ("E", "L", "C") and "SEARCH" in state.actions:
+        family = str(memory["run_family"])          # r1：第 2 轮沿用第 1 轮的族（见 decide_hi）
     # 10-15 对话 5''（追加 3 / 4）：可引 E 的来源与模态（S4 程序校验用：limitations 不得说已有的材料"不可用"、结论要引建立它的
     # 工具记录）；检索候选页面 failed 的计数（≥ 1/3 时在 limitations 末尾自动加一句，不占教师槽）
     kinds = {e: {"acquired_by": (state.cards.get(e) or {}).get("acquired_by"),
@@ -616,12 +618,16 @@ def decide_hi(payload: dict[str, Any], memory: dict[str, Any], rendered: dict[st
                        reason="the previous action was rejected by the interface; reporting what has been observed",
                        notes=[f"validation feedback: {str(state.invalid)[:300]}"], branch="report_incomplete")
 
+    family = task_family(state.task, "SEARCH" in state.actions)
+    # r1（10-17）：第 2 轮的任务文字是 S2 写的，族词可能不在里面（r0h e133 W2-1 "…as claimed. Scope: open and read <网址>"
+    # 判成 B 族，走到 G9 直接交 INCOMPLETE）。检索类案例的第 2 轮沿用第 1 轮的族（oracle_generator 记在 memory["run_family"]）
+    if not state.task_id.startswith("W1-") and "SEARCH" in state.actions and memory.get("run_family") in ("E", "L", "C"):
+        family = str(memory["run_family"])
     # 第 2 轮及以后的工作区：任务里写明了要补的时间窗 / 音轨 → 跟进模式（不重走整条比对链）
-    if not state.task_id.startswith("W1-") and task_family(state.task, "SEARCH" in state.actions) == "B":
+    if not state.task_id.startswith("W1-") and family == "B":
         windows, audio, anchors = followup_scope(state.task)
         if windows or audio or anchors:
             return _decide_followup(state, memory, windows, audio, anchors)
-    family = task_family(state.task, "SEARCH" in state.actions)
     # 10-15 对话 5''（追加 2）：检索类第 2 轮——任务的 Scope 写明了要打开再读的网址 / 要并排看的参考图，只补这些
     if not state.task_id.startswith("W1-") and family in ("E", "L", "C") and _SEARCH_SCOPE.search(state.task):
         return _before_report(state, memory, _decide_search_followup(state, memory, family))
