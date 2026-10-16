@@ -123,14 +123,14 @@ def test_image_pairs_carry_media_note_and_task_but_web_pairs_do_not(tmp_path: Pa
     assert web_prompt == _PAIR_SYSTEM_PROMPT_LEGACY and "task" not in web_payload and "media_note" not in web_payload["source"]
     coverage = {p["statement"][:4]: (prompt, p, imgs) for prompt, p, imgs in judge.calls if "supported_parts" in p}
     c_prompt, c_payload, c_images = coverage["材料A首"]
-    assert c_prompt == coverage_system_prompt(provenance=True, images=True)
+    assert c_prompt == coverage_system_prompt(provenance=True, images=True, task=True) and c_payload["task"] == "比较材料A的开头与结尾"   # 0.4.0：汇总带任务文字
     assert [i["evidence_id"] for i in c_payload["attached_images"]] == ["E5", "E6"] and len(c_images) == 2
     assert "media_note" in c_payload["attached_images"][1]
     single_prompt, single_payload, single_images = coverage["材料A开"]          # 只引一张图：不附图，提示词不变
     assert "attached_images" not in single_payload and single_images == []
-    assert single_prompt == coverage_system_prompt(provenance=True)
+    assert single_prompt == coverage_system_prompt(provenance=True, task=True)
     web_c = coverage["Vent"]
-    assert web_c[0] == _COVERAGE_SYSTEM_PROMPT_LEGACY and "attached_images" not in web_c[1]
+    assert web_c[0] == coverage_system_prompt(provenance=False, task=True) and "attached_images" not in web_c[1]
 
 
 def test_without_task_or_note_prompts_are_unchanged():

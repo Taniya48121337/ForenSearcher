@@ -273,3 +273,44 @@ def tmp_png() -> Path:
     path = Path(tempfile.mkdtemp()) / "x.png"
     path.write_bytes(b"\x89PNG\r\n\x1a\n")
     return path
+
+
+# ---------------------------------------------------------------- 4. 引语回查（短词 / 省略号）、超长来源、汇总带任务文字
+
+from foren_searcher.datagen.verify.anchored import focused_content, quote_in_source   # noqa: E402
+
+OCR = json.dumps({"summary": {"texts": [{"text": t} for t in ("Guardian", "ISSF", "PARiS", "2024", "May 2024", "TEAMSTERSINTERNALPOLL",
+                                                              "34%", "59.6%", "KAMALA", "HARRIS", "TRUMP")]}})
+
+
+def test_quote_check_accepts_short_tokens_and_ellipsis_F008_F011() -> None:
+    assert all(quote_in_source(q, OCR) for q in ("ISSF", "PARiS", "2024", "“ISSF”", "KAMALA ... HARRIS ... TRUMP", "KAMALA … HARRIS",
+                                                 '"text": "34%" ... "text": "59.6%"', "TEAMSTERSINTERNALPOLL"))
+    assert not any(quote_in_source(q, OCR) for q in ("OBAMA ... HARRIS", "ISS", "SS", "2025", "KAMALA ... BIDEN"))
+    assert quote_in_source("visited the cemetery … photographed", "AFP reporters visited the cemetery on May 2 and photographed graves")
+
+
+def test_focused_content_keeps_head_and_statement_hits() -> None:
+    body = "HEAD " + "x" * 200 + "".join(f" frame{i:05d}" for i in range(20000)) + ' "KAMALA" at 105.5 s ' + "y" * 5000
+    shown, cut = focused_content(body, 'OCR identifies "KAMALA" in the video', limit=4000)
+    assert cut and shown.startswith("HEAD ") and "KAMALA" in shown and len(shown) < 4000 + 200
+    assert focused_content("short", "s") == ("short", False)
+
+
+def test_coverage_gets_task_text_F002_F003() -> None:
+    assert A._COVERAGE_TASK_RULE in A.coverage_system_prompt(provenance=False, task=True)
+    seen: list[dict[str, Any]] = []
+
+    class Judge:
+        async def judge(self, *, system_prompt, payload, images, schema=None):
+            seen.append({"prompt": system_prompt, **payload})
+            if "source" in payload:
+                return {"supported_parts": [{"part": "HISTORICTRUMPVICTORY", "quote": "TRUMP"}], "contradicted_parts": []}
+            return {"unsupported_parts": [], "grounded": True, "notes": ""}
+
+    task = "Fact-check the following claim, which circulated as the title of the given video: Donald Trump wins 2024 presidential election"
+    texts = [EvidenceText("E12", OCR, label="OCR of E1", acquired_by="INSPECT/ocr")]
+    run(A._verify_finding_once("F2", "OCR shows HISTORICTRUMPVICTORY, matching the title's assertion of a Trump victory.", texts, Judge(),
+                               task=task))
+    coverage = [p for p in seen if "supported_parts" in p and "source" not in p]
+    assert coverage and coverage[0]["task"] == task and A._COVERAGE_TASK_RULE in coverage[0]["prompt"]

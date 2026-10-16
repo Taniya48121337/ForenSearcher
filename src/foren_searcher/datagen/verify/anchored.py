@@ -162,14 +162,22 @@ def is_limitation_statement(statement: str) -> bool:
     return bool(_LIMITATION.search(statement or ""))
 
 
-def coverage_system_prompt(*, provenance: bool, images: bool = False, limitation: bool = False) -> str:
+# verifier@0.4.0（r0g2 金标 F002 / F003）："matches the title's assertion of a Trump victory""the title's stated February 18 posting
+# date" 复述的是任务原文（标题、posted 日期），没有哪条 E 会载有它，汇总一律判"所引 E 均未支持"。现在汇总带 task，复述任务原文的部分以它为据。
+_COVERAGE_TASK_RULE = ("\n- payload 带 task（学生拿到的调查任务原文：声明 / 标题原文、声明或发布日期、给定材料的说明）时，待核句里复述任务原文"
+                       "所给信息的部分（“标题说……”“标题所称的 2 月 18 日发布日期”“声明说……”）以 task 为依据，算有支持，不列入 unsupported_parts；"
+                       "但对这些说法真伪的判断、拿它与证据比较得出的结论、以及任务里没有的事实，照常要有支持片段。")
+
+
+def coverage_system_prompt(*, provenance: bool, images: bool = False, limitation: bool = False, task: bool = False) -> str:
     prompt = COVERAGE_SYSTEM_PROMPT if provenance else _COVERAGE_SYSTEM_PROMPT_LEGACY
     prompt = prompt + _COVERAGE_IMAGE_RULE if images else prompt
-    return prompt + _COVERAGE_LIMITATION_RULE if limitation else prompt
+    prompt = prompt + _COVERAGE_LIMITATION_RULE if limitation else prompt
+    return prompt + _COVERAGE_TASK_RULE if task else prompt
 
 
-COVERAGE_SYSTEM_PROMPTS = tuple(coverage_system_prompt(provenance=p, images=i, limitation=l)
-                                for l in (False, True) for i in (False, True) for p in (True, False))
+COVERAGE_SYSTEM_PROMPTS = tuple(coverage_system_prompt(provenance=p, images=i, limitation=l, task=k)
+                                for k in (False, True) for l in (False, True) for i in (False, True) for p in (True, False))
 COVERAGE_MAX_IMAGES = 8
 MAX_TASK_CHARS = 1_500
 
@@ -284,12 +292,33 @@ def _squash(text: str) -> str:
     return re.sub(r"\s+", "", text).replace("“", '"').replace("”", '"').replace("’", "'").replace("‘", "'").lower()
 
 
-def quote_in_source(quote: str, content: str) -> bool:
-    """引语回查：去掉所有空白、统一引号后做子串匹配（引语 ≥ 6 字符）；不是子串时允许按顺序的公共片段合计 ≥ 85%（容忍省略号、标点小改）。"""
+_ELLIPSIS = re.compile(r"\s*(?:\.{3,}|…+|\[\s*(?:\.{3}|…)\s*\])\s*")
+_QUOTE_MARKS = "\"'“”‘’「」『』"
 
+
+def _token_in(token: str, content: str) -> bool:
+    """短引语（OCR 的 "ISSF" "2024" "34%"）：在原文里作为独立的词出现（前后不是字母数字），不分大小写。"""
+
+    token = token.strip().strip(_QUOTE_MARKS).strip()
+    if len(token) < 2:
+        return False
+    return re.search(rf"(?<![A-Za-z0-9]){re.escape(token)}(?![A-Za-z0-9])", content, re.I) is not None
+
+
+def quote_in_source(quote: str, content: str) -> bool:
+    """引语回查：去掉所有空白、统一引号后做子串匹配（引语 ≥ 6 字符）；不是子串时允许按顺序的公共片段合计 ≥ 85%（容忍省略号、标点小改）。
+
+    verifier@0.4.0（r0g2 金标 F008 / F011）：核验模型摘 OCR 结果常写成 "KAMALA ... HARRIS ... TRUMP"、或只摘一个短词 "ISSF"，
+    以前前者按顺序公共片段不到 85%、后者不足 6 字符，一律不采信，汇总时这些部分就成了"所引 E 均未支持"。现在：
+    引语里有省略号时按省略号分段，每段都在原文里（短段按独立的词找）就算；整条引语不足 6 字符时按独立的词找。"""
+
+    pieces = [x for x in _ELLIPSIS.split(quote or "") if x.strip().strip(_QUOTE_MARKS).strip(" ,;:")]
+    if len(pieces) >= 2:
+        c = _squash(content)
+        return all((len(_squash(x)) >= 6 and _squash(x) in c) or _token_in(x.strip(" ,;:"), content) for x in pieces)
     q = _squash(quote)
     if len(q) < 6:
-        return False
+        return _token_in(quote or "", content)
     c = _squash(content)
     if q in c:
         return True
@@ -316,12 +345,51 @@ def _payload_provenance(text: EvidenceText) -> str:
     return text.provenance
 
 
-def _source_payload(text: EvidenceText) -> dict[str, Any]:
-    content = text.content
-    truncated = False
-    if len(content) > MAX_SOURCE_CHARS:
-        content = content[:MAX_SOURCE_CHARS]
-        truncated = True
+_NEEDLE = re.compile(r"[\"“”'‘’]([^\"“”'‘’]{2,60})[\"“”'‘’]|\b[A-Z][A-Za-z0-9%.&-]{2,}\b|\b\d[\d.,:%-]*\b")
+FOCUS_WINDOW = 600
+
+
+def focused_content(content: str, statement: str, limit: int = MAX_SOURCE_CHARS) -> tuple[str, bool]:
+    """超长来源（r0g 有 12 条 OCR 记录 120K–633K 字符）不再只截前 limit 字：前一半照给开头（OCR 的汇总、网页正文开头），
+    后一半给待核句里的词（引号里的串、大写词、数字）在其余部分出现处前后各 FOCUS_WINDOW 字，中间用"（中略）"隔开。
+    返回 (内容, 是否有删节)。引语回查仍对全文做。"""
+
+    if len(content) <= limit:
+        return content, False
+    head = content[: limit // 2]
+    rest = content[limit // 2:]
+    needles = []
+    for m in _NEEDLE.finditer(statement or ""):
+        word = (m.group(1) or m.group(0)).strip()
+        if len(word) >= 2 and word not in needles:
+            needles.append(word)
+    spans: list[list[int]] = []
+    for word in needles:
+        for m in re.finditer(re.escape(word), rest, re.I):
+            spans.append([max(0, m.start() - FOCUS_WINDOW), min(len(rest), m.end() + FOCUS_WINDOW)])
+            if len(spans) > 400:
+                break
+    spans.sort()
+    merged: list[list[int]] = []
+    for s in spans:
+        if merged and s[0] <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], s[1])
+        else:
+            merged.append(s)
+    budget = limit - len(head)
+    pieces = []
+    for start, end in merged:
+        if budget <= 0:
+            break
+        piece = rest[start:min(end, start + budget)]
+        pieces.append(piece)
+        budget -= len(piece)
+    gap = "\n…（中略）…\n"
+    return head + (gap + gap.join(pieces) if pieces else "") + gap, True
+
+
+def _source_payload(text: EvidenceText, statement: str = "") -> dict[str, Any]:
+    content, truncated = focused_content(text.content, statement)
     provenance = _payload_provenance(text)
     if text.is_text:
         shown = content
@@ -486,7 +554,7 @@ async def judge_pair(judge: JsonJudge, finding_id: str, statement: str, text: Ev
     images = [text.image_path] if text.is_image and text.image_path else []
     if text.is_image and not images:
         return Judgment(finding_id, text.evidence_id, "needs_pixels", is_image=True)
-    source = _source_payload(text)
+    source = _source_payload(text, statement)
     provenance = str(source.get("provenance") or "")
     payload = {"statement": statement, "source": source, "image_attached": bool(images)}
     other_images = _other_images(text, others) if text.is_image else []
@@ -532,7 +600,8 @@ def _coverage_images(judgments: list[Judgment]) -> list[Judgment]:
 
 
 async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: str,
-                                  judgments: list[Judgment], *, sample: int = 0) -> tuple[dict[str, Any] | None, CallFailure]:
+                                  judgments: list[Judgment], *, sample: int = 0,
+                                  task: str | None = None) -> tuple[dict[str, Any] | None, CallFailure]:
     support: list[dict[str, Any]] = []
     for j in judgments:
         for p in j.supported:
@@ -547,8 +616,11 @@ async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: 
                                        **({"media_note": j.media_note} if j.media_note else {})} for j in attached]
     if sample:
         payload["resample"] = sample
+    with_task = bool(task and task.strip())
+    if with_task:
+        payload["task"] = task.strip()[:MAX_TASK_CHARS]  # type: ignore[union-attr]
     system_prompt = coverage_system_prompt(provenance=any("provenance" in item for item in support), images=bool(attached),
-                                           limitation=FEATURES["limitation_rule"] and is_limitation_statement(statement))
+                                           limitation=FEATURES["limitation_rule"] and is_limitation_statement(statement), task=with_task)
     raw, failure = await _call_checked(judge, system_prompt, payload, [j.image_path for j in attached if j.image_path], COVERAGE_SCHEMA)
     if raw is None:
         return None, failure
@@ -675,7 +747,7 @@ async def _verify_finding_once(finding_id: str, statement: str, texts: list[Evid
         # 有一条 E 没判成，就说不清"没被支持的部分"是真没支持还是那条 E 没看；只报反驳，不报无据
         outcome.errors = _errors_for_finding(finding_id, statement, usable, None, allow_unsupported=False)
         return outcome
-    coverage, failure = await _judge_coverage_checked(judge, finding_id, statement, usable, sample=sample)
+    coverage, failure = await _judge_coverage_checked(judge, finding_id, statement, usable, sample=sample, task=task)
     if coverage is None:
         outcome.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", **failure.pending_fields()})
     outcome.coverage = coverage
