@@ -154,8 +154,17 @@ def test_l_report_requires_comparison_verdict():
     got, _ = _replay("averimatec_l623_r1dev_1", "request_0012")
     assert got.kind == "report"
     req = got.slot["required_findings"]
-    assert req and req[0]["ids"] == ["E4", "E7", "E11"] and "match" in req[0]["words"]
-    assert any("match (the same place), no match (a different place), or cannot tell" in n for n in got.slot["notes"])
+    assert req and req[0]["message"].startswith("no finding")      # 比对结论（或无法比对及原因）必须写成 Finding
+
+
+def test_l_reference_photos_ranked_by_query_words():
+    # r1s l623：查询 "U.S. Capitol building interior" 的前 3 张是拉链零件、字母 U 剪贴画；相关的 "State Capitol Buildings Interior" 在后面
+    rdir = ROOT / "experiments" / "sft_data" / "runs" / "averimatec_l623_r1s_1" / "requests" / "request_0004"
+    if not rdir.is_dir():
+        pytest.skip("r1s l623 not present")
+    req = json.loads((rdir / "request.json").read_text(encoding="utf-8"))
+    refs = w.ranked_refs(w._search_obs(w.HiState(req["payload"], {})))
+    assert [r["evidence_id"] for r in refs] == ["E15", "E18"]
 
 
 # ---------------------------------------------------------------------------- search：第二家引擎的缩略图

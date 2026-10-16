@@ -508,7 +508,7 @@ def _followup_hints(state: HiState) -> dict[str, Any]:
     images = _material_images(state)
     return {"unread": [{"evidence_id": p["evidence_id"], "url": p["url"], "reverse": p["evidence_id"] in reverse}
                        for p in pages[:6]],
-            "refs": [r["evidence_id"] for r in _search_images(searches)][:3], "image": images[0] if images else None}
+            "refs": [r["evidence_id"] for r in ranked_refs(searches)][:3], "image": images[0] if images else None}
 
 
 _LOCATION_POINT = re.compile(r"compar|reference|same (?:place|building|location|site|landmark)|landmark|architect|"
@@ -2606,7 +2606,32 @@ def _search_images(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-_L_VERDICT_WORDS = r"same place|different place|match|differ|consistent|inconsistent|cannot tell|can't tell|not the same|resembl"
+def ranked_refs(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """r1（10-17）：参考图按标题 / 网址与参考图查询词的重合排序，有相关的就去掉完全无关的。r1s l623：查询
+    "U.S. Capitol building interior" 的前 3 张是拉链零件、字母 U 剪贴画（E4 / E7 / E11），"State Capitol Buildings Interior"
+    排在后面，L3 拿无关图去比，S4 只能写"参考图里没有建筑特征"。"""
+
+    out: list[dict[str, Any]] = []
+    for search in searches:
+        req = search.get("request") or {}
+        if req.get("output_type") != "image" or req.get("input_type") != "text":
+            continue
+        words = _claim_words(_query_text(req))
+        for ref in _search_images([search]):
+            score = len(words & _claim_words(f"{ref.get('title') or ''} {_page_text(ref)}"))
+            out.append({**ref, "score": score})
+    if any(r["score"] > 0 for r in out):
+        out = [r for r in out if r["score"] > 0]
+    seen: set[str] = set()
+    ranked = []
+    for r in sorted(out, key=lambda r: -r["score"]):
+        if r["evidence_id"] not in seen:
+            seen.add(r["evidence_id"])
+            ranked.append(r)
+    return ranked
+
+
+_L_VERDICT_WORDS =r"same place|different place|match|differ|consistent|inconsistent|cannot tell|can't tell|not the same|resembl"
 _L_CANNOT_WORDS = r"could not be compared|cannot be compared|not compared|no reference|could not be confirmed|not be confirmed|" \
                   r"comparison"
 
@@ -2624,7 +2649,7 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
     queries = _query_searches(searches)
     ref_searches = [s for s in queries if (s.get("request") or {}).get("output_type") == "image"]
     reverse = [s for s in queries if (s.get("request") or {}).get("input_type") == "image"]
-    refs = _search_images(searches)
+    refs = ranked_refs(searches)          # r1：相关的参考图在前，无关的去掉
     pages = _search_pages(searches)
     reads = _read_records(state)
     read_ids = {str((r.get("request") or {}).get("record_id")) for r in reads}
@@ -2642,6 +2667,7 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
         must = first + [p for p in must if p["evidence_id"] not in {f["evidence_id"] for f in first}]
     side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
     refs_shown = bool(side) and all(e in state.attached for e in [image, *side])
+    compares = image_compares(state, image)
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         compared = "compare_refs" in issued
@@ -2675,7 +2701,8 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                    "not be compared with the claimed place and why (no reference photo was found)")),
                  "pages read: " + (", ".join(sorted(read_ids)) or "none"),
                  "say where the pages that carry the picture say it was taken, citing them; if they disagree or none says, "
-                 "state that the place is not established"] + _ocr_notes(state)
+                 "state that the place is not established"] + _image_match_notes(state, image, reverse_pages, read_ids, compares) \
+            + _ocr_notes(state)
         decision = _report(state, memory, rule, status=status, reason=reason, notes=notes,
                            branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
         # r1：S4 报告必须写参考图比对的结论（匹配 / 不匹配 / 无法比对及原因），程序校验（s4_contract_problems）
@@ -2683,7 +2710,8 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
             {"ids": list(side) if refs_shown else [], "words": _L_VERDICT_WORDS if refs_shown else _L_CANNOT_WORDS,
              "message": (f"no finding states the outcome of comparing {image} with the reference photos {', '.join(side)} "
                          f"(match / no match / cannot tell and why), citing them" if refs_shown else
-                         "no finding says whether the given picture could be compared with the claimed place, and why not")}]
+                         "no finding says whether the given picture could be compared with the claimed place, and why not")}] \
+            + _compare_required(image, reverse_pages, read_ids, compares)
         return decision
 
     if state.remaining <= 0:
@@ -2708,12 +2736,19 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                         f"landmarks and layout."), branch="READ_RECORD focus")
     # L4 以图搜：哪些网页载有这张图、它们说拍于哪里（第 2 轮跟进只补比对 / 读页时不再搜）
     if not reverse and _image_search_allowed(state) and state.remaining >= 3 and "skip_reverse" not in issued:
+        # r1：output_type=image——每个结果另带这个网页上的那张图，读过的页面再与给定照片比对（同 E 族 E6）
         return Decision("action", "L4_reverse_image", {"action": "SEARCH", "arguments": {
-            "input_type": "image", "query": image, "output_type": "text"}, "focus_evidence_ids": [image],
-            "rationale": f"Find web pages that carry {image}; they may say where it was actually taken."},
-            branch="SEARCH image page")
+            "input_type": "image", "query": image, "output_type": "image"}, "focus_evidence_ids": [image],
+            "rationale": f"Find web pages that carry {image}, with each page's copy of it; they may say where it was actually taken."},
+            branch="SEARCH image image")
     step = _pdf_pages_step(state, memory, read_ids)
     if step is not None and state.remaining >= 2:
+        return step
+    # L6（r1）：读过的以图搜页面——它上面那张图与给定照片比对，"这页说的拍摄地"才算这张照片的（r1s l623 第 1 轮核验：
+    # "does not confirm that the photo in the article is the same image"）
+    step = _compare_page_step(state, memory, image, reverse_pages, read_ids, compares, []) if state.remaining >= 3 else None
+    if step is not None:
+        step.rule = "L6_compare_page_image"
         return step
     unread = [p for p in pages if p["evidence_id"] not in read_ids]
     text_queries = [s for s in queries if (s.get("request") or {}).get("output_type") == "text"
@@ -2802,7 +2837,7 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
         if src in urls:
             pages = _search_pages([search])
             opened[src] = pages[0]["evidence_id"] if pages else None
-    refs = _search_images(searches)
+    refs = ranked_refs(searches)          # r1：相关的参考图在前，无关的去掉
     side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
     # r0+：Scope 写了"再搜来源"——S1 写一条文字查询（针对任务里列的未答点）→ 读命中声明最多的 2 页
     search_wanted = bool(_SCOPE_SEARCH.search(scope))
