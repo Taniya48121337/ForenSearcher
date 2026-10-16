@@ -967,6 +967,12 @@ def d1(args: argparse.Namespace) -> int:
             if any(w in _log_tail_since(log.path, start) for w in CLAUDE_LIMIT_WORDS):
                 write_checkpoint(args.round, "重写后复核", _log_tail_since(log.path, start), log)
                 return 1
+        if not getattr(args, "no_status_rewrite", False):
+            start = log.path.stat().st_size
+            status_rewrite_round(args.round, log, env)
+            if any(w in _log_tail_since(log.path, start) for w in CLAUDE_LIMIT_WORDS):
+                write_checkpoint(args.round, "status 改写后复核", _log_tail_since(log.path, start), log)
+                return 1
         if checkpoint_path(args.round).is_file():
             checkpoint_path(args.round).rename(checkpoint_path(args.round).with_suffix(f".done-{time.strftime('%Y%m%d-%H%M%S')}.json"))
         if getattr(args, "second_judge", None):
@@ -1128,6 +1134,42 @@ def revise_round(round_tag: str, log: Log, env: dict[str, str], mode: str = "ful
     return 0
 
 
+def _latest_verdicts(round_tag: str) -> Path | None:
+    files = [p for p in (ROOT / SFT).glob(f"verdicts_{round_tag}_judged.*.jsonl")]
+    return max(files, key=lambda p: p.stat().st_mtime) if files else None
+
+
+def status_rewrite_round(round_tag: str, log: Log, env: dict[str, str]) -> int:
+    """10-16 r0g 收尾（负责人定"核验器为准"）：充分性层判 completed_without_finishing（major / critical）的报告，status 改
+    INCOMPLETE、status_reason 取充分性判定的说明（datagen.status_rewrite），之后 GIA 的状态一并重渲染；改了就整轮再核验一次
+    （没变的单元命中缓存）。不调教师、不改核验器。改写前的核验文件另存 *.pre_status_rewrite。"""
+
+    from foren_searcher.datagen.status_rewrite import rewrite_round
+
+    path = _latest_verdicts(round_tag)
+    if path is None:
+        log.say("[status 改写] 没有核验文件，跳过")
+        return 0
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    for p in (ROOT / SFT).glob(f"verdicts*_{round_tag}_judged.*.jsonl"):
+        backup = p.with_name(p.name + ".pre_status_rewrite")
+        if not backup.exists():
+            shutil.copy2(p, backup)
+    done = rewrite_round(rows, RUNS, source=path.name)
+    summary_path = ROOT / SFT / f"walker_{round_tag}_status_rewrite.json"
+    old = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else []
+    summary_path.write_text(json.dumps(old + done, ensure_ascii=False, indent=2), encoding="utf-8")
+    finish = sum(len(d.get("finish_after") or []) for d in done)
+    log.say(f"[status 改写] {len(done)} 份报告 COMPLETED → INCOMPLETE（{path.name}）；之后 GIA 仍 FINISH 且报告带可修缺口的 FINISH 行 "
+            f"{finish} 条（导出 held finish_after_status_rewrite）；明细 {summary_path.name}")
+    # 上次改了、但之后的复核没跑成（Claude CLI 中途失败）：status_rewrite.json 比核验文件新也要复核
+    stale = [p for p in RUNS.glob(f"*_{round_tag}_*/status_rewrite.json") if ".failed-" not in str(p)
+             and p.stat().st_mtime > path.stat().st_mtime]
+    if not done and not stale:
+        return 0
+    return verify_round(round_tag, log, env)
+
+
 ARMS = {"b": "原方法：GT 词提示重写 + 核验意见全给重写", "g": "证据门控提示 + 只按证据重写",
         "n": "N 份稿按 GT 择优，不重写"}
 
@@ -1251,6 +1293,10 @@ def main() -> int:
     p.add_argument("--second-judge", default=None, help="再用这个 OpenRouter 模型核一遍（与 Sonnet 对照核验一致性），例如 qwen/qwen3.5-122b-a10b；默认不跑")
     p.add_argument("--second-judge-sample", type=int, default=20, help="第二核验器只抽这么多个 run（按 run 名哈希定序，默认 20；0 = 全部）")
     p.add_argument("--arms", action="store_true", help="S5 对照：d0 首稿 / b 原方法 / g 证据门控 / n 择优 四版分别核验")
+    p.add_argument("--no-status-rewrite", action="store_true",
+                   help="核验后不把充分性层判 completed_without_finishing 的报告改为 INCOMPLETE（10-16 起默认改）")
+    sr = sub.add_parser("status-rewrite", help="对已核验的一轮：充分性层判 completed_without_finishing 的报告改 INCOMPLETE，再核验")
+    sr.add_argument("--round", default=ROUND)
     rv = sub.add_parser("revise", help="对已核验的一轮：判错的答案按核验意见重写一次，再核验 + 导出 + 对照")
     rv.add_argument("--round", default=ROUND)
     rv.add_argument("--cases", nargs="+", default=D1_CASES)
@@ -1274,6 +1320,9 @@ def main() -> int:
         if not os.environ.get("FOREN_ORACLE_SLOT") and not os.environ.get("FOREN_ORACLE_SLOT_ENDPOINT"):
             os.environ["FOREN_ORACLE_SLOT"] = "slots"      # 10-15：核验后重写走 S5 → strong 后端，与 d1 相同
         return revise_job(args)
+    if args.job == "status-rewrite":
+        log = Log(f"_walker_{args.round}_status改写日志.txt", f"walker {args.round}：充分性判定后 status 改写")
+        return status_rewrite_round(args.round, log, env_setup()) or (1 if log.failed else 0)
     if args.job == "freeze":
         if not os.environ.get("FOREN_ORACLE_SLOT") and not os.environ.get("FOREN_ORACLE_SLOT_ENDPOINT"):
             os.environ["FOREN_ORACLE_SLOT"] = "slots"      # 10-15：预检按默认教师（分槽表）核对，与 d1 相同

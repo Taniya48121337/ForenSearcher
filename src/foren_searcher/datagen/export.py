@@ -44,6 +44,7 @@ from .cases import Case, load_cases, split_summary
 from .runlog import Decision, RunLog, load_run
 from .prompt_variants import spec_scope
 from .specs import Spec
+from .status_rewrite import HELD_REASON as STATUS_REWRITE_HELD, finish_after_marks, rewritten_requests
 from .verify.calibrate import recalibrate
 from .verify.complete_units import load_units, merge_units
 from .verify.units import verify_units
@@ -1015,6 +1016,10 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
     for v in units:
         by_unit[(v.unit, str(v.subject.get("request")))] = v
     report_by_ws = {v.subject.get("workspace_id"): v for v in reports}
+    # 10-16 r0g 收尾：核验后处理把充分性层判 completed_without_finishing 的报告改成了 INCOMPLETE（datagen.status_rewrite，
+    # 之后 GIA 的状态已重渲染）；改写后的报告带可修缺口、GIA 当时仍 FINISH 的行与新状态不自洽 → held
+    finish_marks = finish_after_marks(log.run_dir)
+    rewritten = rewritten_requests(log.run_dir)
     guard_markers = runtime_guard_markers(log)
     corpus = build_run_evidence(log)
     facts_cache: dict[str, WorkspaceFacts] = {}
@@ -1119,6 +1124,9 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
             bucket, weight, reason = "held", 0.0, "s5_used_gt"
         if slots.get("rationale_target") == "mismatch" and bucket == "accepted":           # 10-15 对话 5''：理由与动作对象不符
             bucket, weight, reason = "held", 0.0, "rationale_target_mismatch"
+        finish_after = finish_marks.get(decision.request_id) if decision.role == "GIA" and decision.kind == "answer" else None
+        if finish_after and bucket == "accepted":
+            bucket, weight, reason = "held", 0.0, STATUS_REWRITE_HELD
         verdict_src = unit if decision.kind in ("step", "plan", "answer") else report
         meta: dict[str, Any] = {
             "role": decision.role.lower(), "unit": decision.kind, "origin": origin_tag or log.origin, "source_kind": log.origin,
@@ -1154,6 +1162,8 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
             "loss_scope": "last_assistant_only", "exported_at": date.today().isoformat(),
         }
         meta["plan_copies_task"] = bool(plan_copy)
+        meta["status_rewritten"] = decision.request_id in rewritten if decision.kind == "report" else None
+        meta["finish_after_status_rewrite"] = finish_after
         if plan_copy and bucket == "accepted":
             meta.setdefault("weight_adjustments", []).append("plan_copies_task")
         if unit is not None and decision.kind == "step":
@@ -1209,6 +1219,10 @@ def quality_summary(metas: list[dict[str, Any]]) -> dict[str, Any]:
         "compat_held": reasons("compat:"), "stale_verifier_held": reasons("stale_verifier"), "too_long_held": reasons("too_long"),
         "rationale_target_mismatch_held": reasons("rationale_target_mismatch"),
         "provenance_unverified_vs_false_held": reasons("provenance_unverified_vs_false"),
+        # 10-16：核验后 status 改写（报告行数 / 按桶）与因此 held 的 FINISH 行
+        "status_rewritten_reports": dict(Counter(m["bucket"] for m in metas if m.get("status_rewritten"))),
+        "finish_after_status_rewrite": {"rows": sum(1 for m in metas if m.get("finish_after_status_rewrite")),
+                                        "held": reasons(STATUS_REWRITE_HELD)},
         "hidden_knowledge_rows": sum(1 for m in metas if [t for t in m.get("hidden_knowledge") or []
                                                          if t not in (m.get("hidden_knowledge_released") or {})]),
         "rationale_target": dict(Counter(str(m["rationale_target"]) for m in metas if m.get("rationale_target"))),
