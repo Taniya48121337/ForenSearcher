@@ -171,7 +171,10 @@ def test_failed_pages_alone_do_not_flag_completed() -> None:
 
 def test_prompt_rules_for_failed_pages_and_unrequested_precision() -> None:
     assert "limitations_not_gaps" in SUFFICIENCY_SYSTEM_PROMPT and "候选页打不开" in SUFFICIENCY_SYSTEM_PROMPT
-    assert "任务没有明确要求的精度" in SUFFICIENCY_SYSTEM_PROMPT and "网页上的图是否就是给定的" in SUFFICIENCY_SYSTEM_PROMPT
+    assert "任务没有明确要求的精度" in SUFFICIENCY_SYSTEM_PROMPT
+    # 三类核心缺口要落到 covered=false / INCOMPLETE（第一次全量重核时模型记了缺口却仍判 COMPLETED）；画面类只针对"声明说的是画面里的事"
+    assert "承认不等于回答" in SUFFICIENCY_SYSTEM_PROMPT and "声明说的是视频画面里发生的事" in SUFFICIENCY_SYSTEM_PROMPT
+    assert "不要因为没看画面帧判缺口" in SUFFICIENCY_SYSTEM_PROMPT and "确认是同一张" in SUFFICIENCY_SYSTEM_PROMPT
 
 
 # ---------------------------------------------------------------- 3. 像素检查只对句子所指的那张图
