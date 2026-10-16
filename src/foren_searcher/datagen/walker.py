@@ -1439,7 +1439,9 @@ def _missing_parts(state: HiState, memory: dict[str, Any], pa: dict[str, Any], p
         else:
             missing.append(f"Material {side} {lo:.3f}–{hi:.3f} s: no counterpart in Material {other[side]}, so differences there "
                            f"cannot be measured (sampled frames only)")
-    if not _NO_AUDIO_TASK.search(state.task):
+    # 10-16 对话 5''：纯视觉任务（问"何时可见"、不提声音）不跑 ASR，也不把"音轨没转写 / 一侧没音轨"列为缺口——r0g 第一遍
+    # videosham_4126 第 1 轮因此判 INCOMPLETE，第 2 轮去转写两侧（都没有语音）
+    if not _NO_AUDIO_TASK.search(state.task) and not _visual_only(state.task):
         audio = {"A": pa.get("audio"), "B": pb.get("audio")}
         for side in ("A", "B"):
             if (audio[side] or 0) > 0 and audio[other[side]] == 0:
@@ -2486,11 +2488,12 @@ def _view_refs_before_report(state: HiState, memory: dict[str, Any], image: str 
         return None
     if all(e in state.attached for e in [image, *side]):
         return None
-    n = int(memory.get("refs_reviewed") or 0)
-    if n >= 2:
+    # 每个工作区只补一次；读给定照片本身（参考图作焦点）——与 L3 同记录同焦点的重复动作会被运行时合并，并插入一条中文的
+    # harness_event 提示（r0g 第一遍 L 族 14 条 run 共 56 行因此被门 B8 判为框架中文）
+    if memory.get("refs_reviewed"):
         return None
-    memory["refs_reviewed"] = n + 1
-    return Decision("action", "L3b_view_references_before_report", _read(side[0], [image, *side],
+    memory["refs_reviewed"] = 1
+    return Decision("action", "L3b_view_references_before_report", _read(image, [image, *side],
                     f"Before reporting, view {image} again next to the reference photos {', '.join(side)} to state whether they "
                     f"show the same place."), branch="READ_RECORD focus")
 
@@ -2735,9 +2738,10 @@ def resolve_slot_choice(decision: Decision, choice: dict[str, Any]) -> Decision:
         if "search" in choices:
             claim = str(slot.get("claim") or "").split()
             query = " ".join(claim[:12]) or "news report"
-            return Decision("action", "C4_search_fallback", {"action": "SEARCH", "arguments": {
+            # 10-15 对话 5''：兜底搜索也由 S0 按实际动作写理由（r0g 第一遍这句模板在 accepted 里出现 6 次，门 B7 上限 5）
+            return _substituted(Decision("action", "C4_search_fallback", {"action": "SEARCH", "arguments": {
                 "input_type": "text", "query": query, "output_type": "text"}, "focus_evidence_ids": [],
-                "rationale": "Search for reports of the event the claim describes."}, branch="SEARCH text page")
+                "rationale": "Search for reports of the event the claim describes."}, branch="SEARCH text page"))
         return report
     raise ValueError(f"unknown slot {slot.get('name')}")
 
