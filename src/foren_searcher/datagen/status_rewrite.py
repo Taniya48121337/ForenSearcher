@@ -1,8 +1,10 @@
 """核验后处理：充分性层判 completed_without_finishing（major / critical）的报告改为 INCOMPLETE（10-16 r0g 收尾，负责人定"核验器为准"）。
 
 不改充分性提示、不新调教师。对每份这样的报告：
-- status → INCOMPLETE，status_reason = 充分性判定的 missing（英文）里学生看得到的部分（含学生输入与报告里都没有的专名 / 数字
-  的条目视为来自 GT 的说明，去掉，记在 dropped）；findings / limitations 不动。
+- status → INCOMPLETE，status_reason = 充分性判定的 missing（英文）里学生看得到的部分（与案卷 GT 字段——标注来源的站名 / 网址、
+  标注日期、标注地名——实际匹配且学生看不到的条目视为来自 GT 的说明，去掉，记在 dropped；10-16 r0+ 前是"学生看不到的专名 /
+  数字"，句首大写词与中文条目被误去）；中文条目退到案卷要求的 text_en；findings / limitations 不动。build_reason 也给
+  walker 循环内的充分性检查用（oracle_generator）。
 - 同一 run 里凡是带这份报告的地方一并改：execution_links / 报告请求的 response.json / trajectory.jsonl / 之后各请求的
   request.json（payload 与 rendered_payload：GIA 的 latest_reports、history_index、memory_history）/ store.sqlite3
   （reports、rounds、trajectory_events）。原文件留 *.pre_status_rewrite（只留第一次的）。
@@ -70,29 +72,169 @@ def leaked_tokens(text: str, visible: str) -> list[str]:
     return out
 
 
-def _english_requirement(key: str, requirements: list[dict[str, Any]]) -> str | None:
-    """充分性层用中文写的要求短语（r0g 37 份里只有 vcsl_pair_5 一份）→ 案卷里字面最接近的那条要求的 text_en（按汉字重合）。"""
+def _english_requirement(key: str, requirements: list[dict[str, Any]], threshold: float = 0.5) -> str | None:
+    """充分性层用中文写的要求短语 / missing 条目 → 案卷里字面最接近的那条要求的 text_en（按汉字重合，不调模型）。
+    分数取 重合字数 / 两边较短的一边：条目常比要求长（"图片是否确实拍摄于美国国会大厦，未得到核验……" 对 "图片是否拍于声明所说的地点"）。"""
 
     chars = set(_CJK.findall(key))
     best, score = None, 0.0
     for r in requirements:
         other = set(_CJK.findall(str(r.get("text") or "")))
         if chars and other and r.get("text_en"):
-            s = len(chars & other) / len(chars)
+            s = len(chars & other) / min(len(chars), len(other))
             if s > score:
                 best, score = str(r["text_en"]), s
-    return best if score >= 0.5 else None
+    return best if score >= threshold else None
+
+
+# ---------------------------------------------------------------------------- GT 条目（10-16 r0+：只认与案卷 GT 字段实际匹配的）
+
+_ISO_DATE = re.compile(r"\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b")
+_MONTHS = {m: i for i, m in enumerate(("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"), 1)}
+_DMY = re.compile(r"\b(\d{1,2})\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})\b")
+_MDY = re.compile(r"\b([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b")
+_YEAR = re.compile(r"\b(19\d{2}|20\d{2})\b")
+_GT_URL = re.compile(r"(?:https?://)?(?:web\.archive\.org/web/\d+[a-z_]*/)?(?:https?://)?((?:[a-z0-9-]+\.)+[a-z]{2,})(/[^\s（()，,；;]*)?", re.I)
+_WORD = re.compile(r"[A-Za-z][A-Za-z0-9'&.-]*")
+_TLD_LIKE = {"com", "org", "net", "gov", "edu", "co", "uk", "in", "news", "info", "tv", "de", "fr", "au", "ca", "es", "it", "ru",
+             "cn", "jp", "br", "pk", "bd", "lk", "np", "ng", "za", "ke", "ph", "id", "my", "sg", "nz", "ie", "us", "io", "me", "ac"}
+_HOST_SKIP = {"www", "m", "amp", "web", "en", "edition", "archive", "mobile"}
+
+
+def _dates_in(text: str) -> set[str]:
+    out: set[str] = set()
+    for y, m, d in _ISO_DATE.findall(text):
+        out.add(f"{int(y):04d}-{int(m):02d}-{int(d):02d}")
+    for d, mon, y in _DMY.findall(text):
+        if mon[:3].lower() in _MONTHS:
+            out.add(f"{int(y):04d}-{_MONTHS[mon[:3].lower()]:02d}-{int(d):02d}")
+    for mon, d, y in _MDY.findall(text):
+        if mon[:3].lower() in _MONTHS:
+            out.add(f"{int(y):04d}-{_MONTHS[mon[:3].lower()]:02d}-{int(d):02d}")
+    return out
+
+
+def _site_tokens(host: str) -> list[str]:
+    """gettyimages.co.uk → ["gettyimages"]；www.tribuneindia.com → ["tribuneindia"]；edition.cnn.com → ["cnn"]。"""
+
+    labels = [x for x in host.lower().split(".") if x and x not in _HOST_SKIP]
+    while labels and labels[-1] in _TLD_LIKE:
+        labels.pop()
+    return [x.replace("-", "") for x in labels[-1:] if len(x) >= 3]
+
+
+def gt_fields(case: dict[str, Any] | None) -> dict[str, Any]:
+    """案卷里只有 GT 才知道的字段：标注来源的网址 / 站名、标注日期、标注地名（entity_in_evidence）。来源：notes 里的
+    "标注来源 <url>"、required_evidence 里描述以"标注"开头的条目（与它的 url_pattern）、checks 的 date_in_range 注释
+    （"标注：最早发布 YYYY-MM-DD"）与 entity_in_evidence 的 text。学生输入里本来就有的（声明、任务文字）不在这里排除，
+    由 gt_matches 的可见性判断处理。"""
+
+    case = case or {}
+    texts: list[str] = []
+    m = re.findall(r"标注(?:的最早)?来源[:：]?\s*(\S+)", str(case.get("notes") or ""))
+    texts += m
+    for r in case.get("required_evidence") or []:
+        desc = str(r.get("description") or "")
+        if desc.startswith("标注"):
+            texts.append(desc)
+            if r.get("url_pattern"):
+                texts.append(str(r["url_pattern"]))
+    dates: set[str] = set()
+    entities: list[str] = []
+    for check in case.get("checks") or []:
+        kind, params = check.get("kind"), check.get("params") or {}
+        if kind == "date_in_range":
+            dates |= _dates_in(str(check.get("note") or ""))
+        elif kind == "entity_in_evidence":
+            for value in [params.get("text"), *(params.get("aliases") or [])]:
+                if isinstance(value, str) and value.strip() and value.strip() not in entities:
+                    entities.append(value.strip())
+    hosts, sites, paths = [], [], []
+    for text in texts:
+        dates |= _dates_in(text)
+        for host, path in _GT_URL.findall(text):
+            host = host.lower().removeprefix("www.")
+            if host.startswith("web.archive.org") or "." not in host:
+                continue
+            if host not in hosts:
+                hosts.append(host)
+            sites += [s for s in _site_tokens(host) if s not in sites]
+            if path and len(path) > 1 and path not in paths:
+                paths.append(path.lower().rstrip("*"))
+    return {"hosts": hosts, "sites": sites, "paths": paths, "dates": sorted(dates), "entities": entities}
+
+
+def _norm(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", text.lower())
+
+
+def _site_hit(ngram: str, site: str) -> bool:
+    """n 元词组（去空格小写）是否就是标注站名：相等，或是站名的前缀（Getty → gettyimages），或占站名一半以上
+    （Guardian → theguardian）。"Times" 对 hindustantimes 只占 5/14、又不是前缀，不算。"""
+
+    if len(ngram) < 4 or ngram not in site:
+        return False
+    return ngram == site or site.startswith(ngram) or len(ngram) * 2 >= len(site)
+
+
+def gt_matches(item: str, gt: dict[str, Any], visible: str) -> list[str]:
+    """条目里与 GT 字段实际匹配、且学生看不到的片段（站名 / 网址、日期、年份、地名）。空 = 不是 GT 条目。"""
+
+    if not gt:
+        return []
+    vis_lower, vis_norm, vis_dates = visible.lower(), _norm(visible), _dates_in(visible)
+    hits: list[str] = []
+    words = _WORD.findall(item)
+    for n in (3, 2, 1):
+        for i in range(len(words) - n + 1):
+            phrase = " ".join(words[i:i + n])
+            ng = _norm(phrase)
+            if any(_site_hit(ng, s) for s in gt.get("sites") or []) and ng not in vis_norm \
+                    and not any(phrase in h for h in hits):
+                hits.append(phrase)
+    for host in gt.get("hosts") or []:
+        if host.removeprefix("www.") in item.lower() and host.removeprefix("www.") not in vis_lower and host not in hits:
+            hits.append(host)
+    gt_dates = set(gt.get("dates") or [])
+    for d in _dates_in(item):
+        if d in gt_dates and d not in vis_dates:
+            hits.append(d)
+    gt_years = {d[:4] for d in gt_dates}
+    item_dates = _dates_in(item)
+    for y in _YEAR.findall(item):
+        if y in gt_years and y not in visible and not any(d.startswith(y) for d in item_dates if d in gt_dates):
+            hits.append(y)
+    for ent in gt.get("entities") or []:
+        if re.search(rf"\b{re.escape(ent)}\b", item, re.I) and not re.search(rf"\b{re.escape(ent)}\b", visible, re.I):
+            hits.append(ent)
+    return hits
 
 
 def build_reason(sufficiency: dict[str, Any], errors: list[dict[str, Any]], visible: str,
-                 requirements: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+                 requirements: list[dict[str, Any]] | None = None, case: dict[str, Any] | None = None) -> dict[str, Any]:
+    """status_reason = 充分性判定的 missing（英文）。10-16 r0+（负责人第 2 项）：只去掉与案卷 GT 字段实际匹配、学生看不到的条目
+    （gt_matches：标注来源的站名 / 网址 / 日期 / 年份 / 地名）；句首大写词不再当专名。中文条目不去：退到字面最接近的那条
+    案卷要求的 text_en（"not established: …"），对不上任何要求时才去掉。循环内（oracle_generator）与事后改写共用。"""
+
     items = [" ".join(str(x).split()) for x in sufficiency.get("missing") or [] if str(x).strip()]
-    kept, dropped = [], []
+    gt = gt_fields(case)
+    kept, dropped, mapped = [], [], []
     for item in items:
-        bad = leaked_tokens(item, visible)
-        if bad or _CJK.search(item):
-            dropped.append({"text": item, "tokens": bad, "cjk": bool(_CJK.search(item))})
-        else:
+        bad = gt_matches(item, gt, visible)
+        if bad:
+            dropped.append({"text": item, "tokens": bad, "cjk": bool(_CJK.search(item)), "why": "gt"})
+            continue
+        if _CJK.search(item):
+            en = _english_requirement(item, requirements or [], threshold=0.4)
+            if not en:
+                dropped.append({"text": item, "tokens": [], "cjk": True, "why": "cjk_unmapped"})
+                continue
+            piece = "not established: " + en[:1].lower() + en[1:].rstrip(" .")
+            mapped.append({"text": item, "text_en": en})
+            if piece not in kept:
+                kept.append(piece)
+            continue
+        if item.rstrip(" .") not in kept:
             kept.append(item.rstrip(" ."))
     source = "missing"
     if not kept:
@@ -105,7 +247,7 @@ def build_reason(sufficiency: dict[str, Any], errors: list[dict[str, Any]], visi
             if _CJK.search(key):
                 key = (_english_requirement(key, requirements or []) or "").rstrip(" .")
                 key = key[:1].lower() + key[1:]
-            if key and not leaked_tokens(key, visible) and key not in keys:
+            if key and not gt_matches(key, gt, visible) and key not in keys:
                 keys.append(key)
         kept = [f"not established: {', '.join(keys)}"] if keys else ["the findings do not cover everything the task asks for"]
         source = "requirements" if keys else "generic"
@@ -116,7 +258,7 @@ def build_reason(sufficiency: dict[str, Any], errors: list[dict[str, Any]], visi
             break
         reason += piece
     return {"reason": reason, "source": source, "missing": items, "kept": kept[:MAX_ITEMS], "dropped": dropped,
-            "detail": [e.get("detail") for e in errors]}
+            "mapped_cjk": mapped, "rule": "gt_fields@20261016", "detail": [e.get("detail") for e in errors]}
 
 
 # ---------------------------------------------------------------------------- walker 自己记的可修缺口
@@ -308,7 +450,7 @@ def rewrite_report(run_dir: Path, target: dict[str, Any]) -> dict[str, Any]:
     config = _load(run_dir / "run_config.json") or {}
     case = _load(Path(str(config.get("case_file") or ""))) if config.get("case_file") else None
     reason = build_reason(target.get("sufficiency") or {}, target.get("errors") or [], visible,
-                          (case or {}).get("requirements") or [])
+                          (case or {}).get("requirements") or [], case)
     gaps = walker_gaps(run_dir, workspace, rid)
     counts = {"execution_links": _rewrite_json_file(run_dir / "execution_links.json", workspace, reason["reason"]),
               "response": _rewrite_json_file(run_dir / "requests" / rid / "response.json", workspace, reason["reason"]),
@@ -377,5 +519,5 @@ def rewritten_requests(run_dir: Path) -> dict[str, str]:
     return {r["request"]: r["workspace"] for r in record.get("rewrites") or [] if r.get("changed") and r.get("request")}
 
 
-__all__ = ["HELD_REASON", "REWRITE_FILE", "build_reason", "finish_after_marks", "leaked_tokens", "rewrite_report",
-           "rewrite_round", "rewritten_requests", "targets", "walker_gaps"]
+__all__ = ["HELD_REASON", "REWRITE_FILE", "build_reason", "finish_after_marks", "gt_fields", "gt_matches", "leaked_tokens",
+           "rewrite_report", "rewrite_round", "rewritten_requests", "targets", "walker_gaps"]

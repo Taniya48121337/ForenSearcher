@@ -26,20 +26,30 @@ def test_targets_only_severe_cwf():
     assert [t["workspace"] for t in sr.targets(rows)] == ["W1-1"]
 
 
+GT_CASE = {"notes": "标注来源 https://web.archive.org/web/20240527073048/https://www.gettyimages.in/detail/news-photo/x/461948087。",
+           "required_evidence": [{"key": "earliest_source", "description": "标注的最早来源：gettyimages.co.uk/detail/news-photo/x（2013-12-12）",
+                                  "url_pattern": "gettyimages.co.uk/detail/news-photo/x*"}],
+           "checks": [{"kind": "date_in_range", "params": {}, "note": "标注：最早发布 2013-12-12（When…）"},
+                      {"kind": "entity_in_evidence", "params": {"text": "Kansas"}}]}
+
+
 def test_reason_drops_gt_items_and_maps_chinese_keys():
     visible = json.dumps({"view": "The Diplomat page; candidate pages", "report": REPORT})
     suff = {"missing": ["No visual comparison confirming that the Diplomat image is the same as the supplied image.",
                         "The earliest source (Getty, 2013-12-12) was not found."]}
-    got = sr.build_reason(suff, [], visible)
+    got = sr.build_reason(suff, [], visible, case=GT_CASE)
     assert got["reason"] == "No visual comparison confirming that the Diplomat image is the same as the supplied image"
-    assert got["dropped"][0]["tokens"] == ["Getty", "2013"]
-    # missing 全是中文：取未覆盖要求对应的案卷 text_en
+    assert got["dropped"][0]["tokens"] == ["Getty", "2013-12-12"]
+    # missing 是中文：10-16 r0+ 起条目本身退到字面最接近的案卷要求 text_en（以前整条去掉、再退到未覆盖要求的 key）
     zh = {"missing": ["对应片段在 A、B 两侧成对的起止时间区间。"],
           "requirements": [{"key": "对应片段在 A、B 两侧的时间区间", "covered": False}]}
     reqs = [{"text": "A 与 B 中内容对应（相同或经变换）的片段，以及两侧各自的时间范围", "text_en": "Segments of A and B that correspond"},
             {"text": "未能确定的内容", "text_en": "What could not be determined"}]
     got = sr.build_reason(zh, [], "{}", reqs)
-    assert got["reason"] == "not established: segments of A and B that correspond" and got["source"] == "requirements"
+    assert got["reason"] == "not established: segments of A and B that correspond" and got["source"] == "missing"
+    # 对不上任何要求的中文条目才去掉，全去掉时仍退到未覆盖要求的 key
+    got = sr.build_reason({"missing": ["媒体属性缺帧率和音轨数"], "requirements": zh["requirements"]}, [], "{}", reqs)
+    assert got["dropped"][0]["why"] == "cjk_unmapped" and got["source"] == "requirements"
 
 
 def _make_run(tmp: Path) -> Path:
