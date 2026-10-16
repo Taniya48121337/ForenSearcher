@@ -69,6 +69,13 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def data_digest(hashes: dict[str, str]) -> str:
+    """data/ 下各文件 sha256 的总摘要（pack_id 取前 12 位）。按 posix 相对路径的字符串排序：10-16 前打包按 Path 排序，
+    Windows 的 Path 比较不分大小写（fmnv_c__0oux… 排在 fmnv_c_DQc… 前），--verify 按字符串排，Windows 打的包到哪都校验不过。"""
+
+    return hashlib.sha256("".join(f"{k}\0{v}\n" for k, v in sorted(hashes.items())).encode()).hexdigest()
+
+
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
@@ -394,8 +401,8 @@ def pack(args: argparse.Namespace) -> int:
     (out / "provenance").mkdir()
     (out / "provenance" / "runs.jsonl").write_text("".join(json.dumps(p, ensure_ascii=False) + "\n" for p in prov), encoding="utf-8")
 
-    data_hashes = {p.relative_to(out).as_posix(): sha256_file(p) for p in sorted((out / "data").rglob("*")) if p.is_file()}
-    digest = hashlib.sha256("".join(f"{k}\0{v}\n" for k, v in data_hashes.items()).encode()).hexdigest()
+    data_hashes = {p.relative_to(out).as_posix(): sha256_file(p) for p in (out / "data").rglob("*") if p.is_file()}
+    digest = data_digest(data_hashes)
     pack_id = f"r0-{time.strftime('%Y%m%d')}-{digest[:12]}"
     identity = {
         "pack_id": pack_id, "status": status, "created_at": time.strftime("%Y-%m-%d %H:%M:%S"), "freeze_id": freeze.get("freeze_id"),
@@ -447,8 +454,7 @@ def verify(pack_dir: Path) -> int:
              if p.is_file() and p.name != "SHA256SUMS" and p.relative_to(pack_dir).as_posix() not in listed]
     identity = json.loads((pack_dir / "r0_pack.json").read_text(encoding="utf-8")) if (pack_dir / "r0_pack.json").is_file() else {}
     data_hashes = {rel: d for rel, d in listed.items() if rel.startswith("data/")}
-    digest = hashlib.sha256("".join(f"{k}\0{v}\n" for k, v in sorted(data_hashes.items())).encode()).hexdigest()
-    digest_ok = digest == identity.get("data_digest")
+    digest_ok = data_digest(data_hashes) == identity.get("data_digest")
     ok = not bad and not missing and not extra and digest_ok
     print(json.dumps({"pack": str(pack_dir), "pack_id": identity.get("pack_id"), "status": identity.get("status"),
                       "files": len(listed), "changed": bad[:20], "missing": missing[:20], "extra": extra[:20],
