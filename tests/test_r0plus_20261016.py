@@ -155,3 +155,10 @@ def test_l3b_is_the_step_right_before_report():
     for kw in ({"reviewed": True, "refs_shown": False}, {"reviewed": False, "refs_shown": True}):
         assert w._l3b_before_report(state, {}, "E1", ["E7"], compared=True, **kw) is None
     assert w._l3b_before_report(state, {}, "E1", ["E7"], compared=False, refs_shown=False, reviewed=False) is None
+
+
+def test_tracking_params_are_stripped():
+    hints = {"unread": [{"url": "https://www.orissapost.com/x/amp/?utm_medium=organic&utm_source=yandexsmartcamera"},
+                        {"url": "https://example.com/a?id=3&utm_source=y"}]}
+    assert w.inloop_actions(["x"], hints, "C") == ["candidate pages that were found but not read: "
+                                                   "https://www.orissapost.com/x/amp/, https://example.com/a?id=3"]

@@ -514,6 +514,14 @@ _LOCATION_POINT = re.compile(r"compar|reference|same (?:place|building|location|
                              r"shows the (?:claimed|named)|place the claim names", re.I)
 
 
+def _strip_tracking(url: str) -> str:
+    """去掉以图搜结果网址上的 utm_* 跟踪参数（?utm_medium=organic&utm_source=yandexsmartcamera），其余参数保留。"""
+
+    base, _, query = url.partition("?")
+    keep = [q for q in query.split("&") if q and not q.lower().startswith("utm_")]
+    return base + ("?" + "&".join(keep) if keep else "")
+
+
 def inloop_actions(items: list[str], hints: dict[str, Any], family: str) -> list[str]:
     """r0+：报告没答完时，walker 按自己的状态写出第 2 轮能做的事（GIA 的 _search_gap 认这几种说法）：
     未读页面的网址 → 打开再读；L 族参考图 → 逐项并排比对；都没有 → 再搜一次来源。B / A 族不写。"""
@@ -521,7 +529,7 @@ def inloop_actions(items: list[str], hints: dict[str, Any], family: str) -> list
     if family not in ("E", "L", "C"):
         return []
     out = []
-    urls = [str(p["url"]) for p in hints.get("unread") or [] if p.get("url")][:3]
+    urls = [_strip_tracking(str(p["url"])) for p in hints.get("unread") or [] if p.get("url")][:3]
     if urls:
         out.append("candidate pages that were found but not read: " + ", ".join(urls))
     if family == "L" and hints.get("refs") and hints.get("image") and any(_LOCATION_POINT.search(i) for i in items):

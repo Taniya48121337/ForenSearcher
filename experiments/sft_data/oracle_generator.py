@@ -169,6 +169,7 @@ class OracleGenerator(ModelImageInputs):
         import asyncio
 
         super().__init__(store=store)
+        self.store = store                                  # 10-16 r0+：循环内充分性检查读工作区任务与 F 序号
         self.output_dir = Path(output_dir).resolve()
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.instruction = instruction
