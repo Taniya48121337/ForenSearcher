@@ -640,8 +640,19 @@ _HEDGED_PART = re.compile(r"据|称|报道|引述|表示|声称|\b(?:according t
                           r"|alleg\w*|stat(?:ed|es)|remarks?|told|quoted|announce[ds]?)\b", re.I)
 
 
+_NUMBER = re.compile(r"\d+(?:[.:,]\d+)*")
+
+
+def uncovered_numbers(part: str, judgments: list[Judgment], task: str | None) -> list[str]:
+    """part 里的数字中，不出现在任何支持片段 / 引语 / 来源标题、也不在任务文字里的那些（verifier@0.4.0）。"""
+
+    seen = _squash(" ".join([*(f"{p.part} {p.quote}" for j in judgments for p in j.supported), *(j.source_label for j in judgments),
+                             task or ""]))
+    return [n for n in _NUMBER.findall(part or "") if _squash(n) not in seen]
+
+
 def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None,
-                        *, allow_unsupported: bool = True) -> list[ErrorRecord]:
+                        *, allow_unsupported: bool = True, task: str | None = None) -> list[ErrorRecord]:
     out: list[ErrorRecord] = []
     base_extra = {"finding": finding_id}
 
@@ -661,6 +672,15 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
                 out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "限制语（交代调查范围、不含具体事实），仅备注", span=part,
                                  evidence_ids=cited, method="model", severity=Severity.MINOR,
                                  extra={**base_extra, "notes": coverage.get("notes", ""), "limitation_part": True}))
+                continue
+            numbers = uncovered_numbers(part, judgments, task) if uncertain else []
+            if numbers:
+                # verifier@0.4.0（r0a 金标 F002）："Retrieval for Material A 18.252 s"——模型列出这部分却按"很可能就是查询帧"判
+                # grounded=true。部分里的数字不在任何支持片段 / 来源标题 / 任务文字里时不按"拿不准"放过，记 major 走实锤复核
+                # （_verify_finding 第二遍没复现就降回 minor）
+                out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准，但其中的数字不在任何支持片段与任务文字里", span=part,
+                                 evidence_ids=cited, method="model", severity=Severity.MAJOR,
+                                 extra={**base_extra, "notes": coverage.get("notes", ""), "uncertain_numeric": numbers}))
                 continue
             if uncertain:
                 out.append(error(ErrorType.UNSUPPORTED_ASSERTION, "核验模型列为拿不准、但整句判为有支持（仅备注）", span=part,
@@ -761,7 +781,7 @@ async def _verify_finding_once(finding_id: str, statement: str, texts: list[Evid
     if coverage is None:
         outcome.pending.append({"finding": finding_id, "reason": "coverage_output_invalid", **failure.pending_fields()})
     outcome.coverage = coverage
-    outcome.errors = _errors_for_finding(finding_id, statement, usable, coverage)
+    outcome.errors = _errors_for_finding(finding_id, statement, usable, coverage, task=task)
     return outcome
 
 

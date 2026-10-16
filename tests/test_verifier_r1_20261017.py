@@ -367,3 +367,20 @@ def test_drift_not_flagged_when_supported_part_is_already_attributed_r0a_F001() 
     news.supported = [Part("Odinga's supporters destroyed the eggs", "supporters reportedly destroyed eggs", True)]
     errors = A._errors_for_finding("F4", "Odinga's supporters destroyed the eggs.", [news], None)
     assert [e.severity.value for e in errors if e.type is ErrorType.ATTRIBUTION_DRIFT] == ["major"]
+
+
+# ---------------------------------------------------------------- 补：覆盖汇总"拿不准"的数字部分走实锤复核（r0a F002）
+
+def test_uncertain_part_with_unsupported_number_goes_to_confirm_r0a_F002() -> None:
+    statement = "The follow-up retrieval for Material A 18.252 s returned Material B 13.349 s as a candidate."
+    loc = J("E53", image=False, label="INSPECT locate_frames result", provenance="", sup=["Material B 13.349 s as a candidate"])
+    loc.supported = [Part("Material B 13.349 s as a candidate", '"evidence_id":"E50","time_s":13.349', True)]
+    cov = {"finding_id": "F8", "grounded": False, "model_grounded": True, "unsupported_parts": ["Material A 18.252 s"], "notes": "probably"}
+    errors = A._errors_for_finding("F8", statement, [loc], cov)
+    assert [(e.severity.value, e.extra.get("uncertain_numeric")) for e in errors] == [("major", ["18.252"])]
+    # 数字在任务文字里（声明日期之类）：照旧只记 minor
+    errors = A._errors_for_finding("F8", statement, [loc], cov, task="Compare A 18.252 s with B")
+    assert [e.severity.value for e in errors] == ["minor"] and errors[0].extra.get("uncertain")
+    # 不带数字的"拿不准"部分：照旧 minor
+    cov = {**cov, "unsupported_parts": ["the original publisher remains undetermined"]}
+    assert [e.severity.value for e in A._errors_for_finding("F8", statement, [loc], cov)] == ["minor"]
