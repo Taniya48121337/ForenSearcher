@@ -168,6 +168,7 @@ class MultiReverseImageProvider:
                 checks[:len(top)] = [self.verifier.skipped("no_time_left") for _ in top]
             else:
                 checks[:len(top)] = await self.verifier.verify(image_path.read_bytes(), urls, total_timeout_s=budget)
+                await self._second_engine_thumbs(top, urls, checks, image_path, started)
         out = [rn.build_candidate(slot, check) for slot, check in zip(slots, checks)]
         for c in out:
             extra = c.extra or {}
@@ -176,6 +177,36 @@ class MultiReverseImageProvider:
                 kinds = self.stats["date_kinds"]
                 kinds[extra["date_kind"]] = kinds.get(extra["date_kind"], 0) + 1
         return rn.same_first(out)
+
+
+    async def _second_engine_thumbs(self, top: list[dict[str, Any]], urls: list[str | None], checks: list[dict[str, Any] | None],
+                                    image_path: Path, started: float) -> None:
+        """r1（10-17）：第一家引擎的缩略图没判 near-identical 时，再试同一网页其他引擎给的缩略图，取更好的那个判定
+        （10-16 实测 e260：Yandex 缩略图 near-identical、Lens 缩略图是同一事件的另一张照片，合并按 Lens 判 no match，名次 2–3 → 5）。
+        记 verified_engine_fallback（用了哪个引擎的缩略图）。"""
+
+        rank = {"same": 3, "similar": 2, "different": 1}
+        retry: list[tuple[int, str]] = []
+        for i, slot in enumerate(top):
+            if (checks[i] or {}).get("verified_match") == "same":
+                continue
+            for name, cand in slot["per_engine"].items():
+                alt = thumb_url_of(cand)
+                if alt and alt != urls[i]:
+                    retry.append((i, alt))
+                    break
+        if not retry:
+            return
+        budget = None
+        if self.time_budget_s is not None:
+            budget = self.time_budget_s - (time.monotonic() - started) - 2.0
+            if budget < 1.0:
+                return
+        again = await self.verifier.verify(image_path.read_bytes(), [u for _, u in retry], total_timeout_s=budget)
+        for (i, alt), check in zip(retry, again):
+            old = checks[i] or {}
+            if rank.get(str(check.get("verified_match")), 0) > rank.get(str(old.get("verified_match")), 0):
+                checks[i] = {**check, "verified_engine_fallback": alt}
 
 
 def merge_candidates(lists: dict[str, list[CandidateSource]], order: Sequence[str]) -> list[CandidateSource]:

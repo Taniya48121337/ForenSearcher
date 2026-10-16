@@ -877,7 +877,8 @@ class OracleGenerator(ModelImageInputs):
             report, dropped = _clean_report(retry_report, task_id=task_id, status=status, reason=reason, allowed=set(allowed))
         # 10-15 对话 5''（追加 3）：程序校验 CONTRACT_RULES，有问题就把问题反馈给教师重写一次；重写后问题更少（且有 Finding）才换
         kinds = slot.get("evidence_kinds") or {}
-        problems = s4_contract_problems(report, kinds) if kinds else []
+        required = list(slot.get("required_findings") or [])     # r1：E 比对 / L 参考图 / C 帧与整段转写，必须写成 Finding
+        problems = s4_contract_problems(report, kinds, required) if (kinds or required) else []
         if problems:
             contract: dict[str, Any] = {"first": problems}
             retry = suffix + ("\nYour previous report has these problems; fix them and return the complete JSON object again:\n"
@@ -892,7 +893,7 @@ class OracleGenerator(ModelImageInputs):
                 report2, dropped2 = None, []
                 contract["retry_error"] = f"{type(exc).__name__}: {exc}"[:300]
             if report2 and report2["findings"]:
-                left = s4_contract_problems(report2, kinds)
+                left = s4_contract_problems(report2, kinds, required)
                 contract["retry"] = left
                 if len(left) < len(problems):
                     report, dropped = report2, dropped2
@@ -2070,13 +2071,37 @@ def _sentences(text: str) -> list[str]:
     return [x.strip() for x in re.split(r"(?<=[.;!?])\s+", text or "") if x.strip()]
 
 
-def s4_contract_problems(report: dict[str, Any], kinds: dict[str, dict[str, Any]]) -> list[str]:
+def required_finding_problems(report: dict[str, Any], required: list[dict[str, Any]]) -> list[str]:
+    """r1（10-17）：walker 要求必须写成 Finding 的结论（E：每条图片比对记录；L：参考图比对的结论；C：帧里有没有声明说的事、
+    整段转写说了什么）。一项算写了 = 某个 Finding 引了其中任一 E（ids 为空则不要求引用）、且 statement 或 limitations 里有
+    对应的词。"""
+
+    problems: list[str] = []
+    findings = [f for f in report.get("findings") or [] if isinstance(f, dict)]
+    for item in required or []:
+        ids = set(item.get("ids") or [])
+        words = re.compile(str(item.get("words") or "."), re.I)
+        ok = False
+        for f in findings:
+            cited = set(f.get("evidence_ids") or [])
+            text = " ".join([str(f.get("statement") or ""), *[str(x) for x in f.get("limitations") or []]])
+            if (not ids or cited & ids) and words.search(text):
+                ok = True
+                break
+        if not ok:
+            problems.append(str(item.get("message") or "a required finding is missing"))
+    return problems
+
+
+def s4_contract_problems(report: dict[str, Any], kinds: dict[str, dict[str, Any]],
+                         required: list[dict[str, Any]] | None = None) -> list[str]:
     """报告违反 CONTRACT_RULES 的地方（给教师的反馈句，空 = 没问题）：
     (a) limitation 说某条已在可引 E 里的记录 / 某类已取得的材料"不可用 / 没附上"；
     (b1) statement 里有"未核实 / 未确定"的句子（这类内容该进 limitations，不挂引用）；
-    (b2) statement 讲的是比对 / OCR / 日期这类工具结果，有这种记录却只引了采样帧。"""
+    (b2) statement 讲的是比对 / OCR / 日期这类工具结果，有这种记录却只引了采样帧；
+    (c)（r1）walker 要求的结论没写成 Finding（required_finding_problems）。"""
 
-    problems: list[str] = []
+    problems: list[str] = required_finding_problems(report, required or [])
     have = {name: sorted(e for e, k in kinds.items() if test(k)) for name, (_, test) in _KIND_WORDS.items()}
     for i, f in enumerate(report.get("findings") or [], 1):
         if not isinstance(f, dict):

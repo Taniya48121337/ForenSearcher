@@ -263,6 +263,8 @@ def build_candidate(slot: Mapping[str, Any], verification: Mapping[str, Any] | N
     if verification and verified != "unchecked":
         extra["verified_scores"] = {"dhash": verification.get("dhash"), "phash": verification.get("phash")}
         extra["verified_thumbnail_url"] = verification.get("thumbnail_url")
+        if verification.get("verified_engine_fallback"):        # r1：第一家引擎的缩略图没对上，用的是另一家的缩略图
+            extra["verified_engine_fallback"] = True
     elif verification and verification.get("reason"):
         extra["verified_reason"] = verification["reason"]
     if dates:
