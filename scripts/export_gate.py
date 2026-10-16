@@ -240,15 +240,37 @@ def check_b6(rows: list[dict[str, Any]], unanswerable: set[str]) -> dict[str, An
     def inc_rate(items: list[dict[str, Any]]) -> float | None:
         return round(sum(1 for r in items if (parse_target(r) or {}).get("status") == "INCOMPLETE") / len(items), 3) if items else None
 
-    rate_acc, rate_all = inc_rate(answerable_acc), inc_rate(answerable_all)
+    # 10-16 负责人定：核验后按充分性判定改写成 INCOMPLETE 的报告（metadata.status_rewritten，datagen.status_rewrite）照常
+    # 进训练集，但单列、不计入 30% 线——线只量 walker / S4 自己判的 INCOMPLETE。空 findings、比对不符仍对全部 accepted 报告查
+    rewritten = [r for r in answerable_acc if r["metadata"].get("status_rewritten")]
+    rated_acc = [r for r in answerable_acc if not r["metadata"].get("status_rewritten")]
+    rate_acc, rate_all = inc_rate(rated_acc), inc_rate([r for r in answerable_all if not r["metadata"].get("status_rewritten")])
+
+    def fam(r: dict[str, Any]) -> str:
+        ds, _, sid = str(r["metadata"].get("case_id") or "").partition(":")
+        return "B" if ds in ("videosham", "vcsl", "qvhighlights") else ("E" if sid.startswith("e") else "L") if ds == "averimatec" else "C"
+
+    def frac(items: list[dict[str, Any]]) -> str:
+        k = sum(1 for r in items if (parse_target(r) or {}).get("status") == "INCOMPLETE")
+        return f"{k}/{len(items)}"
+
+    by_family = {f: {"rated": frac([r for r in rated_acc if fam(r) == f]),
+                     "verifier_rewrite": len([r for r in rewritten if fam(r) == f]),
+                     "with_rewrite": frac([r for r in answerable_acc if fam(r) == f])}
+                 for f in "BCEL"}
     passed = (not empty and (not mismatch_acc) and rate_acc is not None and rate_acc <= THRESHOLDS["B6_incomplete_rate"])
     status = "无数据" if (not have_checks and reports) or rate_acc is None else ok(passed)
     return item("B6", "INCOMPLETE：status_reason 与实际一致；空 findings 0；可回答案例 INCOMPLETE 率 ≤ 30%", status,
                 {"accepted_reports": len(acc_reports), "accepted_empty_findings": len(empty),
                  "accepted_reason_mismatch": len(mismatch_acc), "reason_mismatch_all_buckets": dict(mismatch_all),
-                 "incomplete_rate_accepted": rate_acc, "incomplete_rate_all_reports": rate_all, "unanswerable_cases": sorted(unanswerable)},
-                "空 findings 0；比对不符 0；accepted 报告 INCOMPLETE 率 ≤ 30%",
-                "INCOMPLETE 率按 accepted 报告算（训进去的是这些）；全部报告的比率一并列出，看生成侧。"
+                 "incomplete_rate_accepted": rate_acc, "incomplete_rate_all_reports": rate_all,
+                 "verifier_rewrite_accepted_answerable": len(rewritten),
+                 "incomplete_rate_accepted_with_rewrite": inc_rate(answerable_acc), "by_family_accepted_answerable": by_family,
+                 "unanswerable_cases": sorted(unanswerable)},
+                "空 findings 0；比对不符 0；accepted 报告 INCOMPLETE 率 ≤ 30%（核验改写的单列，不计入）",
+                "INCOMPLETE 率按 accepted 报告算（训进去的是这些）；全部报告的比率一并列出，看生成侧。核验后按充分性判定改写的报告"
+                "（verifier_rewrite）照常进训练集，单列在 verifier_rewrite_accepted_answerable / incomplete_rate_accepted_with_rewrite，"
+                "不计入 30% 线。"
                 + ("" if have_checks else " 旧导出没有 incomplete_reason_checks 字段。"))
 
 

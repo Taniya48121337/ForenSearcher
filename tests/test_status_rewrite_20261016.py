@@ -87,3 +87,24 @@ def test_rewrite_everywhere_and_finish_marks(tmp_path, monkeypatch):
     assert sr.finish_after_marks(run) == {"request_0002": {"workspace": "W1-1", "report_request": "request_0001"}}
     assert sr.rewritten_requests(run) == {"request_0001": "W1-1"}
     assert sr.rewrite_round(rows, tmp_path) == []          # 改过的不再改
+
+
+def test_gate_b6_lists_verifier_rewrite_separately():
+    if str(ROOT / "scripts") not in sys.path:
+        sys.path.insert(0, str(ROOT / "scripts"))
+    import export_gate
+
+    def row(case: str, status: str, rewritten: bool = False) -> dict:
+        meta = {"unit": "report", "bucket": "accepted", "case_id": case, "run": case, "incomplete_reason_checks": [],
+                "status_rewritten": rewritten}
+        return {"messages": [{"role": "assistant", "content": json.dumps({"status": status, "findings": [{"statement": "x"}]})}],
+                "metadata": meta}
+
+    rows = [row("fmnv:a", "COMPLETED"), row("fmnv:b", "COMPLETED"), row("fmnv:c", "COMPLETED"), row("vcsl:d", "INCOMPLETE"),
+            row("averimatec:e1", "INCOMPLETE", True), row("averimatec:e2", "INCOMPLETE", True)]
+    got = export_gate.check_b6(rows, set())
+    assert got["status"] == "通过"
+    assert got["value"]["incomplete_rate_accepted"] == 0.25
+    assert got["value"]["verifier_rewrite_accepted_answerable"] == 2
+    assert got["value"]["incomplete_rate_accepted_with_rewrite"] == 0.5
+    assert got["value"]["by_family_accepted_answerable"]["E"] == {"rated": "0/0", "verifier_rewrite": 2, "with_rewrite": "2/2"}

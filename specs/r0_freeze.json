@@ -313,6 +313,10 @@
     {
       "date": "2026-10-16",
       "change": "r0g 收尾（负责人定：充分性口径以核验器为准）：新增核验后处理 datagen/status_rewrite.py——核验器充分性层判 completed_without_finishing（major / critical）的报告，程序把 status 改为 INCOMPLETE、status_reason 取充分性判定的 missing （英文；含学生输入与报告里都没有的专名 / 数字的条目视为 GT 说明去掉，全去掉时退到未覆盖要求的 key 或案卷要求的 text_en），findings / limitations 不动；同一 run 里 execution_links、报告 response、trajectory、之后各请求的 request.json（GIA 的 latest_reports / history_index / memory_history）与 store.sqlite3 一并改（原文件留 *.pre_status_rewrite），再整轮复核一次（缓存按单元命中）。walker_run d1 在答案重写后自动做（--no-status-rewrite 关），另有 walker_run status-rewrite。export：改写后的报告带可修缺口（重放 walker 得交报告那一步 _must_read 的未读命中页 / _open_gap_clause 非空，B 族取 classify_gaps 可修段）而之后 GIA 仍 FINISH 的行 held finish_after_status_rewrite；metadata 记 status_rewritten / finish_after_status_rewrite，manifest 计数。不改充分性提示、不新调教师、不改核验器（datagen/verify、errors.py 未动，verifier.code_hash 不变）；tool_layer hash、spec_hash、teacher 未变；tool_layer.tag 仍 r0-frozen-3（tag 沿用）。同时提交 walker 三处修复（L3b 改读 E1 每工作区一次、兜底搜索由 S0 写理由、纯视觉任务不要求转写音轨，walker 不在冻结 hash 里）。r1 待办：把充分性检查放进 walker 循环（S4 后、GIA 看到报告前各核一次），让 GIA 能据此派第 2 轮。见 claude/r0g收尾与第二份门报告_20261016.md"
+    },
+    {
+      "date": "2026-10-16",
+      "change": "门 B6 口径（负责人定）：核验后按充分性判定改写成 INCOMPLETE 的报告（metadata.status_rewritten）照常进训练集，但在 scripts/export_gate.py 的 B6 里单列（verifier_rewrite_accepted_answerable、incomplete_rate_accepted_with_rewrite、by_family_accepted_answerable），不计入 30% 线；空 findings / status_reason 比对仍对全部 accepted 报告查。r0g 101 runs：B6 19.4%（含改写 52.8%）。核验器、export、工具层、规格、教师都不变；tag 沿用 r0-frozen-3。"
     }
   ]
 }
