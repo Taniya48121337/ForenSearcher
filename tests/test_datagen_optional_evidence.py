@@ -64,14 +64,17 @@ def test_unmatchable_optional_item_does_not_flag():
 
 
 def test_sufficiency_optional_uncovered_is_minor():
+    # verifier@0.4.0：按网址指定的参考来源（AFP / ALT 的 url_pattern）不进充分性层，这里用按取得方式匹配的证据测可选 / 必需
+    alt_opt = cases_mod.RequiredEvidence("alt", "旁证报道（可选）", acquired_by="SEARCH/open", must_cite=False)
+    alt_req = cases_mod.RequiredEvidence("alt", "旁证报道", acquired_by="SEARCH/open")
     judge = FakeJudge({}, sufficiency={"requirements": [{"key": "afp", "covered": True}, {"key": "alt", "covered": False, "note": "没提 Alt News"}],
                                        "status_should_be": "COMPLETED"})
-    result = asyncio.run(verify_sufficiency(report(), "t", judge, case=_case(AFP, ALT_OPT)))
+    result = asyncio.run(verify_sufficiency(report(), "t", judge, case=_case(AFP, alt_opt)))
     [e] = result.errors
     assert e.type is ErrorType.OMITTED_REQUIRED_FACT and e.severity is Severity.MINOR and e.extra["optional"]
     judge_req = FakeJudge({}, sufficiency={"requirements": [{"key": "afp", "covered": True}, {"key": "alt", "covered": False}],
                                            "status_should_be": "COMPLETED"})
-    result = asyncio.run(verify_sufficiency(report(), "t", judge_req, case=_case(AFP, ALT)))
+    result = asyncio.run(verify_sufficiency(report(), "t", judge_req, case=_case(AFP, alt_req)))
     assert [e.severity for e in result.errors if e.type is ErrorType.OMITTED_REQUIRED_FACT] == [Severity.MAJOR]
 
 

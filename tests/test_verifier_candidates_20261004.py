@@ -230,7 +230,13 @@ def test_report_semantic_coverage_downgrades_only_resolved_keys() -> None:
 def test_sufficiency_merges_any_one_of_groups_0_3_6() -> None:
     from foren_searcher.datagen.verify import sufficiency as SU
 
-    case = _case_wilson()
+    # verifier@0.4.0：按网址指定的参考来源不进充分性层（是答案对照，第一层照常核）；合组逻辑改用按取得方式匹配的同构案卷测
+    wilson = _case_wilson()
+    assert SU._required_entries(wilson, wilson.scoped_required_evidence({"REQ1"})) == []
+    raw = wilson.to_dict()
+    for item in raw["required_evidence"]:
+        item["acquired_by"], item["url_pattern"] = f"SEARCH/open/{item['key']}", None
+    case = Case.from_dict(raw)
     entries = SU._required_entries(case, case.scoped_required_evidence({"REQ1"}))
     assert [e["key"] for e in entries] == ["theblaze|freebeacon"] and entries[0]["must_cite"]
     look = SU._entry_lookup(entries)

@@ -184,7 +184,7 @@ async def verify_report(report: dict[str, Any], lookup: EvidenceLookup, *, subje
         verdict.judgments = [j.to_dict() for j in anchored.judgments]
         verdict.coverage = anchored.coverage
         if text:
-            sufficiency = await verify_sufficiency(report, text, judge, case=case, requirement_ids=requirement_ids)
+            sufficiency = await verify_sufficiency(report, text, judge, case=case, requirement_ids=requirement_ids, lookup=lookup)
             verdict.layers_run.append("sufficiency")
             errors = merge_sufficiency_errors(errors, sufficiency.errors)
             verdict.sufficiency = sufficiency.raw
