@@ -2606,6 +2606,11 @@ def _search_images(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+_L_VERDICT_WORDS = r"same place|different place|match|differ|consistent|inconsistent|cannot tell|can't tell|not the same|resembl"
+_L_CANNOT_WORDS = r"could not be compared|cannot be compared|not compared|no reference|could not be confirmed|not be confirmed|" \
+                  r"comparison"
+
+
 def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
     """L 族（10-13，AVerImaTeC "Where was this image taken?"）：给定照片随声明流传，声明说它拍的是某个地点 / 地标。
     L1 读图里的文字 → L2 以文字搜图片（S1 槽写声明所说地点的名字）取参考照片 → L3 参考照片与给定照片并排看
@@ -2660,14 +2665,26 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                  "signs, layout) and say plainly whether they show the same place; a similar kind of scene is not the same place",
                  # r0+：r0g 的 4 份可回答 L 报告没有一条写比对结果（S4 交报告时看不到参考图，比对只在中间一步做过）
                  (f"{image} and the reference photos {', '.join(side)} are attached to this turn: write one finding that states "
-                  f"the outcome of that side-by-side comparison (which features match or differ, and whether it is the claimed "
-                  f"place), citing {image} and the reference photo IDs" if refs_shown else
-                  "the reference photos are not attached to this turn; do not describe a comparison you cannot see"),
+                  f"the outcome of that side-by-side comparison — match (the same place), no match (a different place), or "
+                  f"cannot tell (and why: angle, crop, too few distinctive features) — naming the features that match or "
+                  f"differ, citing {image} and the reference photo IDs" if refs_shown else
+                  (f"the reference photos {', '.join(side)} are not attached to this turn; do not describe what you cannot see: "
+                   f"write one finding that says the comparison with them could not be confirmed in this report and why"
+                   if side else
+                   "no reference photo of the claimed place was obtained: write one finding that says the given picture could "
+                   "not be compared with the claimed place and why (no reference photo was found)")),
                  "pages read: " + (", ".join(sorted(read_ids)) or "none"),
                  "say where the pages that carry the picture say it was taken, citing them; if they disagree or none says, "
                  "state that the place is not established"] + _ocr_notes(state)
-        return _report(state, memory, rule, status=status, reason=reason, notes=notes,
-                       branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        decision = _report(state, memory, rule, status=status, reason=reason, notes=notes,
+                           branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        # r1：S4 报告必须写参考图比对的结论（匹配 / 不匹配 / 无法比对及原因），程序校验（s4_contract_problems）
+        decision.slot["required_findings"] = [
+            {"ids": list(side) if refs_shown else [], "words": _L_VERDICT_WORDS if refs_shown else _L_CANNOT_WORDS,
+             "message": (f"no finding states the outcome of comparing {image} with the reference photos {', '.join(side)} "
+                         f"(match / no match / cannot tell and why), citing them" if refs_shown else
+                         "no finding says whether the given picture could be compared with the claimed place, and why not")}]
+        return decision
 
     if state.remaining <= 0:
         return report("G1_last_turn_report", last_turn=True)
@@ -2820,9 +2837,14 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
                            "and say plainly which points stay open")
         if refs_wanted:
             notes.append("reference photos: " + (", ".join(side) or "none") + "; compare them with the given picture feature by "
-                         "feature and say plainly whether they show the same place")
-        return _report(state, memory, rule, status=status, reason=reason, notes=notes + _ocr_notes(state),
-                       branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+                         "feature and say plainly whether they show the same place (match / no match / cannot tell, and why)")
+        decision = _report(state, memory, rule, status=status, reason=reason, notes=notes + _ocr_notes(state),
+                           branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        if refs_wanted:
+            decision.slot["required_findings"] = [{"ids": list(side), "words": _L_VERDICT_WORDS if side else _L_CANNOT_WORDS,
+                                                   "message": "no finding states the outcome of the comparison with the reference "
+                                                              "photos (match / no match / cannot tell and why)"}]
+        return decision
 
     if state.remaining <= 0:
         return report("G1_last_turn_report", last_turn=True)
