@@ -218,7 +218,9 @@ def test_verifier_hashes():
     import walker_run
 
     verifier = json.loads(FREEZE.read_text(encoding="utf-8"))["verifier"]
-    assert walker_run.verifier_code_hash() == verifier["code_hash"]      # datagen/verify 与冻结文件记的一致（换 hash 时冻结文件跟着改）
+    # 10-17 r1：datagen/verify 改为 verifier@0.4.0，当前代码对 r1_freeze.json 草稿核；r0 的冻结值原样留在 r0_freeze.json
+    r1 = json.loads((FREEZE.parent / "r1_freeze.json").read_text(encoding="utf-8"))["verifier"]
+    assert walker_run.verifier_code_hash() == r1["code_hash"] and verifier["code_hash"] == r1["code_hash_r0"]
     assert walker_run.verifier_code_hash(("datagen/api_judge.py",)) == verifier["server"]["transport"]["hash"]
 
 

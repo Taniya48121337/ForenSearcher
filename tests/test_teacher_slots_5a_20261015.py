@@ -352,7 +352,8 @@ def test_verifier_code_hash_unchanged():
     import walker_run
 
     frozen = json.loads((ROOT / "specs" / "r0_freeze.json").read_text(encoding="utf-8"))["verifier"]
-    assert walker_run.verifier_code_hash() == frozen["code_hash"]
+    r1 = json.loads((ROOT / "specs" / "r1_freeze.json").read_text(encoding="utf-8"))["verifier"]       # 10-17：verifier@0.4.0
+    assert walker_run.verifier_code_hash() == r1["code_hash"] and frozen["code_hash"] == r1["code_hash_r0"]
     assert frozen["judge"] == "claude-cli" and frozen["model"] == "claude-sonnet-5-5"          # 10-15 对话 5：改回 Claude CLI 订阅
     assert frozen["server"]["judge"] == "api" and frozen["server"]["mode"] == "batch"           # 5b 的 API 配置备用
 

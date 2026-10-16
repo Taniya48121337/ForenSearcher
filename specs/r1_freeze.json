@@ -1,0 +1,108 @@
+{
+  "freeze_id": "r1",
+  "status": "draft",
+  "frozen_at": null,
+  "doc": "claude/r1核验器修正_20261017.md",
+  "note": "r1 冻结草稿（10-17，r1 预演之一：核验器修正）。只填了 verifier 与 tool_layer 两节；specs / spec_hash / checks / teacher 待 r1 规格定稿（第 3 个对话统一打 r1-frozen 时补）。specs 留空，run_cases.load_freeze 不会把它当成 hi@0.10.0 / gia@0.9.0 的冻结文件（r0 的 run 仍对 r0_freeze.json 核）。",
+  "specs": {
+    "hi": null,
+    "gia": null
+  },
+  "spec_hash": {},
+  "checks": {},
+  "tool_layer": {
+    "hash": "sha256:4c8fbd5549de94b2c08958670356a6f7743c9fa405902468f0a92ec7c6dcecdd",
+    "paths": [
+      "hi/workspace.py",
+      "inspect",
+      "search",
+      "state_render.py"
+    ],
+    "files": 69,
+    "groups": {
+      "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+      "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+      "search": "sha256:04ba89e0500e41ce979fec4a9de4dc41ea5f6ced6588c6145a46e88c8b9478dc",
+      "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+    },
+    "line_endings": "crlf_to_lf",
+    "computed_at": "2026-10-17T00:48:00",
+    "status": "draft（当前 r1 分支，含 r1-image-search 的 search 层改动）",
+    "tag": null,
+    "r0_hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4"
+  },
+  "verifier": {
+    "version": "verifier@0.4.0",
+    "prompt_version": "verifier@0.4.0",
+    "judge": "claude-cli",
+    "model": "claude-sonnet-5-5",
+    "model_alias": "sonnet",
+    "model_family": "claude-sonnet-5-5",
+    "settings": {
+      "cli": "本机 Claude Code CLI（claude -p，订阅登录 claude.ai / OAuth，不按 token 计费）；--model sonnet，开跑前用一道小题把别名解析成实际模型名，judge_model 记 claude-cli:<实际模型名>",
+      "reasoning_effort": "medium（Claude Code 对 Sonnet 5.5 的默认 effort；不另设）",
+      "temperature": null,
+      "tools": null,
+      "images": "base64 图（与 API 核验器同一 payload 渲染）",
+      "structured_output": "--json-schema",
+      "limit": "订阅额度 / 限流 → ClaudeCliLimit：本步退出，已判的在缓存（verify_cache.claude-cli-claude-sonnet-5-5.jsonl），walker 批处理记断点停批，下次双击续跑"
+    },
+    "concurrency": 3,
+    "mode": "sync",
+    "code_paths": [
+      "datagen/verify",
+      "datagen/errors.py"
+    ],
+    "code_hash": "sha256:73af63e82118c08a4b0673dff1c3d6e05dfbb7e4acd508103eaaa30c208d8d10",
+    "code_hash_r0": "sha256:db5a4e8566129f754f9c5b2b124b89a7a724652ecb8bd14bd34a74ae1a51e941",
+    "transport": {
+      "path": "datagen/api_judge.py",
+      "hash": "sha256:7a9be8f2d377b4d84d3188cdd315755912a426c2b8b4cfaa31b577d9588bb3bd",
+      "note": "传输层没改，与 r0 的 server.transport.hash 相同"
+    },
+    "cache_namespace": "verifier@0.4.0",
+    "cache_note": "缓存键 = sha256(cache_namespace + system_prompt + payload + 图片)；0.4.0 的题不命中 0.3.x 的旧回答",
+    "schemas": {
+      "CONFIRM_SCHEMA": "sha256:134d360895c5c25b5bc82d9f49acdf2b38d1ad31746a7cef62f95bed81aa11dc",
+      "COVERAGE_SCHEMA": "sha256:0636663ebe8f66f09bae34d92da84f412a2ba8cec3caf35b65920462ee4b3940",
+      "INFERENCE_SCHEMA": "sha256:7ef0279c399345a4ad22f96e65755190aa7ffab714b80dba126e7df93d713929",
+      "JOINT_SCHEMA": "sha256:4d5d5481af2c0b765b73f0ac9058bce51e9d055d270bcbc5407bb514ddb5a654",
+      "LABEL_SCHEMA": "sha256:ac3428035901f7adf41cd02272e49984a89832ab800686462630b48144a29def",
+      "PAIR_SCHEMA": "sha256:c786d375e7bb6825410662059531976e623e840de056ccadf72d5424dd90005e",
+      "PLAN_SCHEMA": "sha256:51d29f45253b8064c6514d6251612c059afcfd496c3cdb0a522d6947faf075ae",
+      "SEMANTIC_SCHEMA": "sha256:76ad2e88e87ccc21fd570912106e10a1e0459bf59ab0bd4fc34e0888e1485ebd",
+      "SUFFICIENCY_SCHEMA": "sha256:b2578f6f354d37db702d68f3a2ba6d230508403c35b7f59f5336f13922cc52cb"
+    },
+    "schema_list": [
+      "CONFIRM_SCHEMA",
+      "COVERAGE_SCHEMA",
+      "INFERENCE_SCHEMA",
+      "JOINT_SCHEMA",
+      "LABEL_SCHEMA",
+      "PAIR_SCHEMA",
+      "PLAN_SCHEMA",
+      "SEMANTIC_SCHEMA",
+      "SUFFICIENCY_SCHEMA"
+    ],
+    "prompts": {
+      "SUFFICIENCY_SYSTEM_PROMPT": "sha256:7b88825d651ff85f5a1eea488cc494253b0e0cba78ee32c80f268ab79ed2a4f7",
+      "PAIR_SYSTEM_PROMPTS": "sha256:0ece67fd44c3ea5c20353bd3e987c16838af3c5fe24f0a46443f361d62ca73f9",
+      "COVERAGE_SYSTEM_PROMPTS": "sha256:7f88d4da3af402978d57e1fedd80be256ed4a355a823c9ead3f291b36a7fb222"
+    },
+    "changes_from_r0": [
+      "1 充分性层不给 GT：参考来源（url_pattern、无 acquired_by）不进清单；改给案卷要求（REQ+must_cite，VideoSham 官方编辑描述换成不含 GT 的要求）与证据索引；missing 用英文",
+      "2 failed 页 / 任务没要求的精度只算 limitation（新字段 limitations_not_gaps；程序兜底 failed_pages_only）",
+      "3 像素检查只对句子所指的那张图（图片对规则 + other_cited_images；pixel_rules：tool_measurement / other_image_referent / cited_unrelated_image）",
+      "4 引语回查认省略号分段与短词；超长来源给开头 + 句中词附近；覆盖汇总带任务文字",
+      "5 sloppy_numeric：写明页面声明日期且与 dates 卡一致的不判错（date_rules.declared_date）",
+      "6 attribution_drift 看转述来源支持的那一部分",
+      "0 缓存键带核验器版本"
+    ]
+  },
+  "changelog": [
+    {
+      "date": "2026-10-17",
+      "change": "建草稿：verifier@0.4.0（核验器修正 6 处 + 缓存分键），tool_layer 记当前 r1 分支 hash；tag 未打。"
+    }
+  ]
+}
