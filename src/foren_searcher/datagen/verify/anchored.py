@@ -166,8 +166,11 @@ def is_limitation_statement(statement: str) -> bool:
 # verifier@0.4.0（r0g2 金标 F002 / F003）："matches the title's assertion of a Trump victory""the title's stated February 18 posting
 # date" 复述的是任务原文（标题、posted 日期），没有哪条 E 会载有它，汇总一律判"所引 E 均未支持"。现在汇总带 task，复述任务原文的部分以它为据。
 _COVERAGE_TASK_RULE = ("\n- payload 带 task（学生拿到的调查任务原文：声明 / 标题原文、声明或发布日期、给定材料的说明）时，待核句里复述任务原文"
-                       "所给信息的部分（“标题说……”“标题所称的 2 月 18 日发布日期”“声明说……”）以 task 为依据，算有支持，不列入 unsupported_parts；"
-                       "但对这些说法真伪的判断、拿它与证据比较得出的结论、以及任务里没有的事实，照常要有支持片段。")
+                       "所给信息的部分（“标题说……”“标题所称的 2 月 18 日发布日期”“声明说……”）以 task 为依据，算有支持，不列入 unsupported_parts。"
+                       "task 只用来认定这类复述；其余部分照上面的规则判断，不因为带了 task 而更严或更松。")
+# 10-17 第一次全量重核后改过措辞：原来末尾是"但对这些说法真伪的判断、拿它与证据比较得出的结论……照常要有支持片段"，
+# 模型据此把答案里"…does not connect this photograph to that event""none was established…"这类结论句从"拿不准"（minor）
+# 改判 grounded=false（critical），r0g 107 条的答案单元 12 份由 positive 翻成 negative
 
 
 def coverage_system_prompt(*, provenance: bool, images: bool = False, limitation: bool = False, task: bool = False) -> str:
