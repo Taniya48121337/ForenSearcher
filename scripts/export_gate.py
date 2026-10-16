@@ -242,9 +242,14 @@ def check_b6(rows: list[dict[str, Any]], unanswerable: set[str]) -> dict[str, An
 
     # 10-16 负责人定：核验后按充分性判定改写成 INCOMPLETE 的报告（metadata.status_rewritten，datagen.status_rewrite）照常
     # 进训练集，但单列、不计入 30% 线——线只量 walker / S4 自己判的 INCOMPLETE。空 findings、比对不符仍对全部 accepted 报告查
+    # 10-16 r0+：循环内充分性检查改的（metadata.status_inloop_rewritten，GIA 看到的就是改后的）同样是核验器判的，同样单列、不计入线
+    def by_verifier(r: dict[str, Any]) -> bool:
+        return bool(r["metadata"].get("status_rewritten") or r["metadata"].get("status_inloop_rewritten"))
+
     rewritten = [r for r in answerable_acc if r["metadata"].get("status_rewritten")]
-    rated_acc = [r for r in answerable_acc if not r["metadata"].get("status_rewritten")]
-    rate_acc, rate_all = inc_rate(rated_acc), inc_rate([r for r in answerable_all if not r["metadata"].get("status_rewritten")])
+    inloop = [r for r in answerable_acc if r["metadata"].get("status_inloop_rewritten") and not r["metadata"].get("status_rewritten")]
+    rated_acc = [r for r in answerable_acc if not by_verifier(r)]
+    rate_acc, rate_all = inc_rate(rated_acc), inc_rate([r for r in answerable_all if not by_verifier(r)])
 
     def fam(r: dict[str, Any]) -> str:
         ds, _, sid = str(r["metadata"].get("case_id") or "").partition(":")
@@ -256,6 +261,7 @@ def check_b6(rows: list[dict[str, Any]], unanswerable: set[str]) -> dict[str, An
 
     by_family = {f: {"rated": frac([r for r in rated_acc if fam(r) == f]),
                      "verifier_rewrite": len([r for r in rewritten if fam(r) == f]),
+                     "verifier_inloop": len([r for r in inloop if fam(r) == f]),
                      "with_rewrite": frac([r for r in answerable_acc if fam(r) == f])}
                  for f in "BCEL"}
     passed = (not empty and (not mismatch_acc) and rate_acc is not None and rate_acc <= THRESHOLDS["B6_incomplete_rate"])
@@ -265,12 +271,13 @@ def check_b6(rows: list[dict[str, Any]], unanswerable: set[str]) -> dict[str, An
                  "accepted_reason_mismatch": len(mismatch_acc), "reason_mismatch_all_buckets": dict(mismatch_all),
                  "incomplete_rate_accepted": rate_acc, "incomplete_rate_all_reports": rate_all,
                  "verifier_rewrite_accepted_answerable": len(rewritten),
+                 "verifier_inloop_accepted_answerable": len(inloop),
                  "incomplete_rate_accepted_with_rewrite": inc_rate(answerable_acc), "by_family_accepted_answerable": by_family,
                  "unanswerable_cases": sorted(unanswerable)},
                 "空 findings 0；比对不符 0；accepted 报告 INCOMPLETE 率 ≤ 30%（核验改写的单列，不计入）",
                 "INCOMPLETE 率按 accepted 报告算（训进去的是这些）；全部报告的比率一并列出，看生成侧。核验后按充分性判定改写的报告"
                 "（verifier_rewrite）照常进训练集，单列在 verifier_rewrite_accepted_answerable / incomplete_rate_accepted_with_rewrite，"
-                "不计入 30% 线。"
+                "不计入 30% 线。r0+（10-16）起循环内充分性检查改的（verifier_inloop）同样单列、不计入。"
                 + ("" if have_checks else " 旧导出没有 incomplete_reason_checks 字段。"))
 
 

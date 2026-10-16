@@ -44,7 +44,7 @@ from .cases import Case, load_cases, split_summary
 from .runlog import Decision, RunLog, load_run
 from .prompt_variants import spec_scope
 from .specs import Spec
-from .status_rewrite import HELD_REASON as STATUS_REWRITE_HELD, finish_after_marks, rewritten_requests
+from .status_rewrite import HELD_REASON as STATUS_REWRITE_HELD, finish_after_marks, inloop_rewritten_requests, rewritten_requests
 from .verify.calibrate import recalibrate
 from .verify.complete_units import load_units, merge_units
 from .verify.units import verify_units
@@ -1020,6 +1020,7 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
     # 之后 GIA 的状态已重渲染）；改写后的报告带可修缺口、GIA 当时仍 FINISH 的行与新状态不自洽 → held
     finish_marks = finish_after_marks(log.run_dir)
     rewritten = rewritten_requests(log.run_dir)
+    inloop_rewritten = inloop_rewritten_requests(log.run_dir)      # 10-16 r0+：循环内充分性检查改的（GIA 看到的就是改后的）
     guard_markers = runtime_guard_markers(log)
     corpus = build_run_evidence(log)
     facts_cache: dict[str, WorkspaceFacts] = {}
@@ -1163,6 +1164,7 @@ def export_run(log: RunLog, case: Case | None, report_verdicts: list[Verdict], s
         }
         meta["plan_copies_task"] = bool(plan_copy)
         meta["status_rewritten"] = decision.request_id in rewritten if decision.kind == "report" else None
+        meta["status_inloop_rewritten"] = decision.request_id in inloop_rewritten if decision.kind == "report" else None
         meta["finish_after_status_rewrite"] = finish_after
         if plan_copy and bucket == "accepted":
             meta.setdefault("weight_adjustments", []).append("plan_copies_task")
@@ -1221,6 +1223,7 @@ def quality_summary(metas: list[dict[str, Any]]) -> dict[str, Any]:
         "provenance_unverified_vs_false_held": reasons("provenance_unverified_vs_false"),
         # 10-16：核验后 status 改写（报告行数 / 按桶）与因此 held 的 FINISH 行
         "status_rewritten_reports": dict(Counter(m["bucket"] for m in metas if m.get("status_rewritten"))),
+        "status_inloop_rewritten_reports": dict(Counter(m["bucket"] for m in metas if m.get("status_inloop_rewritten"))),
         "finish_after_status_rewrite": {"rows": sum(1 for m in metas if m.get("finish_after_status_rewrite")),
                                         "held": reasons(STATUS_REWRITE_HELD)},
         "hidden_knowledge_rows": sum(1 for m in metas if [t for t in m.get("hidden_knowledge") or []

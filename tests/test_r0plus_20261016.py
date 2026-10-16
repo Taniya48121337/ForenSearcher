@@ -60,3 +60,59 @@ def test_chinese_items_map_to_requirement_text_en():
     assert got["kept"] == ["not established: whether the picture shows the place the claim names (compared with reference photos)",
                            "not established: where the sources that carry the picture say it was actually taken"]
     assert len(got["mapped_cjk"]) == 3 and got["source"] == "missing"
+
+
+# ---------------------------------------------------------------------------- 循环内检查 → GIA 第 2 轮
+
+from foren_searcher.datagen import walker as w  # noqa: E402
+
+E_TASK = ('The given image circulated with the following claim: "Photo shows a protest in Delhi" (claim date: 2023-01-16). '
+          "Find where and when this image was first published, as far as the evidence allows, and whether its original "
+          "context matches the claim. Cite the sources and dates you rely on, and state what could not be determined.")
+
+
+def _gia_payload(reason: str, task: str = E_TASK) -> dict:
+    report = {"task_id": "W1-1", "status": "INCOMPLETE", "status_reason": reason,
+              "findings": [{"finding_id": "F1", "statement": "x", "evidence_ids": ["E4"]}]}
+    return {"global_view": {"task": task, "latest_reports": [{"task": task, "report": report}],
+                            "original_materials": [{"evidence_id": "E1", "reference_id": "E1", "modalities": ["image"]}],
+                            "image_inputs": [{"evidence_id": "E1"}],
+                            "runtime_constraints": {"round_index": 2, "can_create_round": True, "remaining_turns": 6,
+                                                    "max_tasks_per_round": 2}}}
+
+
+def test_inloop_reason_names_unread_pages_and_gia_dispatches_round2():
+    hints = {"unread": [{"evidence_id": "E19", "url": "https://geologyscience.com/landslides", "reverse": True}], "refs": [],
+             "image": "E1"}
+    items = ["The report does not identify where and when the image was first published",
+             "8 of 19 candidate pages failed to load and were not examined"]
+    reason = w.inloop_status_reason(items, hints, "E")
+    assert reason.endswith("candidate pages that were found but not read: https://geologyscience.com/landslides")
+    got = w.decide_gia(_gia_payload(reason), {})
+    assert got.rule == "G2_round2_search_gap"
+    assert "open and read https://geologyscience.com/landslides" in got.slot["scope"]
+    # 没答上的点作为要补的点交给 S2；"N 个页面打不开"不算
+    assert items[0] in got.slot["gaps"] and items[1] not in got.slot["gaps"]
+
+
+def test_no_unread_pages_means_search_more():
+    reason = w.inloop_status_reason(["Whether the original context matches the claim is not established"], {"unread": []}, "E")
+    assert reason.endswith("a further search for sources can address the points above")
+    got = w.decide_gia(_gia_payload(reason), {})
+    assert got.rule == "G2_round2_search_gap" and "search for sources on the open points" in got.slot["scope"]
+    assert got.slot["gaps"] == ["Whether the original context matches the claim is not established"]
+    assert w._SEARCH_SCOPE.search("Check the date. " + got.slot["scope"])
+
+
+def test_old_unfixable_reason_still_finishes():
+    got = w.decide_gia(_gia_payload("no date of any copy of the image was established"), {})
+    assert got.kind == "finish"
+
+
+def test_l_references_clause_only_for_location_points():
+    hints = {"unread": [], "refs": ["E5", "E6"], "image": "E1"}
+    reason = w.inloop_status_reason(["Whether the picture shows the claimed place (no comparison with reference photos)"], hints, "L")
+    assert "reference photos E5, E6 of the claimed place were not compared feature by feature with E1" in reason
+    assert w._search_gap("the reference photos E5, E6 of the claimed place were not compared feature by feature with E1")["kind"] == "references"
+    assert w.inloop_actions(["The report does not cite a date"], hints, "L") == ["a further search for sources can address the points above"]
+    assert w.inloop_actions(["x"], hints, "B") == []

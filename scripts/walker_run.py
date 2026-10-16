@@ -34,6 +34,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -825,6 +826,8 @@ def d1(args: argparse.Namespace) -> int:
         use_openrouter_teacher(args.teacher_model)
     if getattr(args, "arms", False):
         os.environ["FOREN_ORACLE_ARMS"] = "1"
+    if not getattr(args, "no_inloop_sufficiency", False):
+        os.environ["FOREN_INLOOP_SUFFICIENCY"] = "1"        # 10-16 r0+：充分性检查进循环（oracle_generator._after_report）
     env = env_setup()
     log_name = LOG_NAME if args.round == ROUND else f"_walker_{args.round}日志.txt"
     slot = (f"分槽教师 {teacher_model()}（冻结文件）" if slot_backend() == "slots"
@@ -951,6 +954,7 @@ def d1(args: argparse.Namespace) -> int:
         with ThreadPoolExecutor(max_workers=jobs) as pool:
             list(pool.map(lambda item: one(*item), list(enumerate(args.cases, 1))))
     backup_share_warning(args.round, args.cases, log)
+    inloop_summary(args.round, log)
     if stop.is_set():
         return 1
     if os.environ.get("FOREN_ORACLE_ARMS") == "1":
@@ -1016,10 +1020,77 @@ def backup_share_warning(round_tag: str, cases: list[str], log: Log) -> float:
     return share
 
 
+def merge_inloop_caches(round_tag: str, log: Log) -> dict[str, int]:
+    """10-16 r0+：循环内充分性检查的判官缓存（各 run 目录 inloop_verify_cache.jsonl，同一提示、同一 payload）并进 claude-cli 主缓存，
+    跑完后的全量核验对没改过的报告直接命中。只追加主缓存里没有的 key；只在 claude-cli 核验时做（同一判官）。"""
+
+    stats = {"files": 0, "rows": 0, "added": 0}
+    if judge_kind() != "claude-cli":
+        return stats
+    model = _frozen_verifier().get("model") or "claude-sonnet-5-5"
+    target = ROOT / SFT / f"verify_cache.claude-cli-{model}.jsonl"
+    have: set[str] = set()
+    if target.is_file():
+        for line in target.read_text(encoding="utf-8").splitlines():
+            m = re.match(r'\{"key": "([0-9a-f]{64})"', line)
+            if m:
+                have.add(m.group(1))
+    new_lines: list[str] = []
+    for path in sorted(RUNS.glob(f"*_{round_tag}_*/inloop_verify_cache.jsonl")):
+        if ".failed-" in str(path):
+            continue
+        stats["files"] += 1
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                key = json.loads(line)["key"]
+            except (ValueError, KeyError, TypeError):
+                continue
+            stats["rows"] += 1
+            if key not in have:
+                have.add(key)
+                new_lines.append(line)
+    if new_lines:
+        with target.open("a", encoding="utf-8") as handle:
+            handle.write("\n".join(new_lines) + "\n")
+    stats["added"] = len(new_lines)
+    if stats["files"]:
+        log.say(f"[循环内核验] 判官缓存并进 {target.name}：{stats['files']} 个 run、{stats['rows']} 条、新增 {stats['added']} 条")
+    return stats
+
+
+def inloop_summary(round_tag: str, log: Log) -> dict[str, Any]:
+    """10-16 r0+：本轮循环内充分性检查的汇总（各 run 的 inloop_sufficiency.json）→ walker_<轮次>_inloop.json。"""
+
+    rows = []
+    for path in sorted(RUNS.glob(f"*_{round_tag}_*/inloop_sufficiency.json")):
+        if ".failed-" in str(path):
+            continue
+        for c in json.loads(path.read_text(encoding="utf-8")).get("checks") or []:
+            rows.append({"run": path.parent.name, **{k: c.get(k) for k in ("request", "workspace", "family", "status_in", "status_out",
+                                                                         "flagged", "rewritten", "followup_appended", "error",
+                                                                         "limit_hit", "judge_new_calls", "judge_cache_hits",
+                                                                         "scope", "key")}})
+    checked = [r for r in rows if r["status_in"] == "COMPLETED"]
+    summary = {"round": round_tag, "reports_seen": len(rows), "checked": len(checked),
+               "rewritten": sum(1 for r in rows if r.get("rewritten")),
+               "rewritten_round2": sum(1 for r in rows if r.get("rewritten") and str(r["workspace"]).startswith("W2-")),
+               "followup_appended": sum(1 for r in rows if r.get("followup_appended")),
+               "errors": sum(1 for r in rows if r.get("error")), "limit_hits": sum(1 for r in rows if r.get("limit_hit")),
+               "judge_new_calls": sum(int(r.get("judge_new_calls") or 0) for r in rows),
+               "judge_cache_hits": sum(int(r.get("judge_cache_hits") or 0) for r in rows), "rows": rows}
+    (ROOT / SFT / f"walker_{round_tag}_inloop.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    if rows:
+        log.say(f"[循环内核验] 报告 {summary['reports_seen']} 份：核 {summary['checked']}（COMPLETED），改 INCOMPLETE {summary['rewritten']}"
+                f"（第 2 轮 {summary['rewritten_round2']}），补跟进 {summary['followup_appended']}；出错 {summary['errors']}、限额 "
+                f"{summary['limit_hits']}；判官新调用 {summary['judge_new_calls']}、命中缓存 {summary['judge_cache_hits']}")
+    return summary
+
+
 def verify_round(round_tag: str, log: Log, env: dict[str, str]) -> int:
     """核验 + 导出。本机默认 Claude CLI（Sonnet）；服务器没有 Claude CLI 时 FOREN_WALKER_JUDGE=local，用 8001 端口的
     本地核验器（FOREN_JUDGE_ENDPOINT / FOREN_WALKER_JUDGE_MODEL，与 server/14_run_cases.sh 的 --judge local 相同）。"""
 
+    merge_inloop_caches(round_tag, log)
     verify_env = dict(env)
     judge = judge_kind()
     judge_args = ["--judge", judge]
@@ -1295,6 +1366,8 @@ def main() -> int:
     p.add_argument("--arms", action="store_true", help="S5 对照：d0 首稿 / b 原方法 / g 证据门控 / n 择优 四版分别核验")
     p.add_argument("--no-status-rewrite", action="store_true",
                    help="核验后不把充分性层判 completed_without_finishing 的报告改为 INCOMPLETE（10-16 起默认改）")
+    p.add_argument("--no-inloop-sufficiency", action="store_true",
+                   help="不在循环内做充分性检查（10-16 r0+ 起默认做：S4 之后、GIA 之前核一次报告，判没答完就改 INCOMPLETE 并写可修缺口）")
     sr = sub.add_parser("status-rewrite", help="对已核验的一轮：充分性层判 completed_without_finishing 的报告改 INCOMPLETE，再核验")
     sr.add_argument("--round", default=ROUND)
     rv = sub.add_parser("revise", help="对已核验的一轮：判错的答案按核验意见重写一次，再核验 + 导出 + 对照")

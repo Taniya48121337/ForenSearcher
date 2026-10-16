@@ -117,4 +117,5 @@ def test_gate_b6_lists_verifier_rewrite_separately():
     assert got["value"]["incomplete_rate_accepted"] == 0.25
     assert got["value"]["verifier_rewrite_accepted_answerable"] == 2
     assert got["value"]["incomplete_rate_accepted_with_rewrite"] == 0.5
-    assert got["value"]["by_family_accepted_answerable"]["E"] == {"rated": "0/0", "verifier_rewrite": 2, "with_rewrite": "2/2"}
+    assert got["value"]["by_family_accepted_answerable"]["E"] == {"rated": "0/0", "verifier_rewrite": 2, "verifier_inloop": 0,
+                                                                  "with_rewrite": "2/2"}

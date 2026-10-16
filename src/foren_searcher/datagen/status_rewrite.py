@@ -512,6 +512,16 @@ def finish_after_marks(run_dir: Path) -> dict[str, dict[str, Any]]:
     return out
 
 
+INLOOP_FILE = "inloop_sufficiency.json"       # = oracle_generator.INLOOP_FILE
+
+
+def inloop_rewritten_requests(run_dir: Path) -> dict[str, str]:
+    """导出用（10-16 r0+）：{报告请求号: 工作区}——循环内充分性检查把 status 改成 INCOMPLETE 的报告行（GIA 看到的就是改后的）。"""
+
+    record = _load(Path(run_dir) / INLOOP_FILE) or {}
+    return {c["request"]: c["workspace"] for c in record.get("checks") or [] if c.get("rewritten") and c.get("request")}
+
+
 def rewritten_requests(run_dir: Path) -> dict[str, str]:
     """导出用：{报告请求号: 工作区}——status 由核验后处理改写的报告行。"""
 
@@ -519,5 +529,5 @@ def rewritten_requests(run_dir: Path) -> dict[str, str]:
     return {r["request"]: r["workspace"] for r in record.get("rewrites") or [] if r.get("changed") and r.get("request")}
 
 
-__all__ = ["HELD_REASON", "REWRITE_FILE", "build_reason", "finish_after_marks", "gt_fields", "gt_matches", "leaked_tokens",
-           "rewrite_report", "rewrite_round", "rewritten_requests", "targets", "walker_gaps"]
+__all__ = ["HELD_REASON", "INLOOP_FILE", "REWRITE_FILE", "build_reason", "finish_after_marks", "gt_fields", "gt_matches",
+           "inloop_rewritten_requests", "leaked_tokens", "rewrite_report", "rewrite_round", "rewritten_requests", "targets", "walker_gaps"]

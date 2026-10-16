@@ -34,6 +34,15 @@
                             轨迹里实际交的是 d0；walker_run.py --arms 再把各版拷成单独的轮次去核验。
   FOREN_ORACLE_CASE         案卷路径（wk5 起）：只用于 S5 写完后的 GT 核对（label_expected / interval_iou / VCSL 标注段），
                             没对上时把"可能漏了什么"反馈给教师重写一次，要求只写证据支持的内容；walker 的决定从不读它。
+                            （10-16 r0+）循环内充分性检查也用它（核验器要案卷的必需证据清单）。
+  FOREN_INLOOP_SUFFICIENCY=1（10-16 r0+）S4 写完报告、GIA 看到之前，用核验器现成的充分性层（verify.sufficiency，claude-cli
+                            sonnet，同一提示、同一 payload → 同一缓存键）核一次 COMPLETED 报告；判 completed_without_finishing
+                            major / critical 时 status 改 INCOMPLETE，status_reason = status_rewrite.build_reason 过滤后的 missing
+                            + walker 写的可修缺口（walker.inloop_actions），GIA 据此在轮次预算内派第 2 轮；第 2 轮的报告同样核。
+                            范围（requirement_ids）：第 1 轮按核验器 plan 单元同一道评判题（judge_plan，结果同样进缓存），
+                            第 2 轮按任务文字兜底。缓存写 run 目录的 inloop_verify_cache.jsonl（walker_run 核验前并进主缓存），
+                            每次检查记一条到 inloop_sufficiency.json。E / L / C 第 1 轮报告是 INCOMPLETE 但没写跟进时，也补
+                            walker 的可修缺口。mock 槽下不跑。
   FOREN_ORACLE_SLOT=slots   （10-15，对话 5a，r0 口径）教师按槽分：槽 → 后端的映射与各后端的 endpoint / model / 思考 / 温度
                             从冻结文件 teacher 一节读（默认 specs/r0_freeze.json，FOREN_TEACHER_FREEZE 可换）：
                             S0 rationale / S1 查询 / S2 任务文本 / S3 充分性 → qwen 后端（服务器 H20 自部署 vLLM，本机 OpenRouter）；
@@ -70,11 +79,14 @@ from pathlib import Path
 from typing import Any
 
 from foren_searcher.datagen.teacher import render_for_model
+from foren_searcher.datagen import walker as _walker
 from foren_searcher.datagen.walker import Decision, decide_gia, decide_hi, resolve_slot_choice
 from foren_searcher.datagen.verify.lang import dates_in as _dates_in, label_hit as _label_hit
 from foren_searcher.local_models import extract_json_object
 from foren_searcher.model_images import ModelImageInputs
 
+INLOOP_FILE = "inloop_sufficiency.json"          # 10-16 r0+：循环内充分性检查的记录（run 目录）
+INLOOP_CACHE = "inloop_verify_cache.jsonl"       # 同上，判官缓存（核验前并进主缓存）
 _EREF = re.compile(r"\bE[1-9][0-9]*\b")
 _BRACKET = re.compile(r"\[(E[1-9][0-9]*)\]")
 
@@ -243,6 +255,11 @@ class OracleGenerator(ModelImageInputs):
         self._caption_intro = ""
         self.rationale_slot = _env_flag("FOREN_ORACLE_RATIONALE", True) and not self.mock
         self.bon = max(1, int(os.environ.get("FOREN_ORACLE_BON") or 3))
+        # 10-16 r0+：循环内充分性检查
+        self.inloop = _env_flag("FOREN_INLOOP_SUFFICIENCY", False) and not self.mock
+        self.plan_records: dict[int, dict[str, Any]] = {}
+        self._inloop_judge_obj: Any = None
+        self._inloop_case_obj: Any = None
 
     async def generate_json(self, *, system_prompt: str, payload: dict[str, Any]) -> dict[str, Any]:
         import asyncio
@@ -299,6 +316,7 @@ class OracleGenerator(ModelImageInputs):
                                               slots)
         elif decision.kind == "report":
             output = self._slot_report(directory, actor_dir, base_prompt, image_paths, decision, payload, slots)
+            output = self._after_report(directory, decision, payload, rendered if render_info else None, output)
         elif decision.kind == "finish":
             output = self._slot_finish(directory, actor_dir, base_prompt, image_paths, decision, payload, slots)
         elif decision.kind == "investigate_slot":
@@ -308,6 +326,7 @@ class OracleGenerator(ModelImageInputs):
             decision = self._slot_choose(directory, actor_dir, base_prompt, image_paths, decision, payload, slots)
             if decision.kind == "report":
                 output = self._slot_report(directory, actor_dir, base_prompt, image_paths, decision, payload, slots)
+                output = self._after_report(directory, decision, payload, rendered if render_info else None, output)
             else:
                 output = decision.output
                 if workspace and self.rationale_slot and decision.slot.get("substituted"):
@@ -320,6 +339,11 @@ class OracleGenerator(ModelImageInputs):
             output = self._rationale_target_guard(directory, actor_dir, base_prompt, image_paths, output,
                                                   rendered if render_info else payload, slots)
 
+        if not workspace and isinstance(output, dict) and output.get("decision") == "INVESTIGATE":
+            # r0+：循环内充分性检查给第 1 轮工作区定范围时，按核验器 plan 单元同一道评判题（plan_judged.plan_payload）
+            rc_view = (payload.get("global_view") or {}).get("runtime_constraints") or {}
+            self.plan_records[int(rc_view.get("round_index") or 1)] = {"payload": copy.deepcopy(payload),
+                                                                         "output": copy.deepcopy(output)}
         raw = json.dumps(output, ensure_ascii=False)
         (directory / "response.json").write_text(raw, encoding="utf-8")
         usage = {"input_tokens": sum(int((s.get("usage") or {}).get("input_tokens") or 0) for s in slots),
@@ -881,6 +905,143 @@ class OracleGenerator(ModelImageInputs):
             (directory / "slot_S4_dropped_ids.json").write_text(json.dumps(dropped), encoding="utf-8")
         return report
 
+    # ------------------------------------------------------------------ 10-16 r0+：循环内充分性检查
+    @property
+    def run_dir(self) -> Path:
+        return self.output_dir.parent
+
+    def _inloop_judge(self) -> Any:
+        if self._inloop_judge_obj is None:
+            from foren_searcher.datagen.verify.judges import CachedJudge, ClaudeCliJudge
+
+            # 与 walker_run 的核验（complete_verify_local --judge claude-cli，模型别名 sonnet）同一个判官；缓存先写 run 目录，
+            # 核验前由 walker_run 并进主缓存（--jobs 2 两个进程同时追加一个大文件不安全）
+            self._inloop_judge_obj = CachedJudge(ClaudeCliJudge(model=os.environ.get("FOREN_INLOOP_JUDGE_MODEL") or "sonnet"),
+                                                 self.run_dir / INLOOP_CACHE)
+        return self._inloop_judge_obj
+
+    def _inloop_case(self) -> tuple[Any, dict[str, Any]]:
+        if self._inloop_case_obj is None:
+            from foren_searcher.datagen.cases import Case
+
+            path = os.environ.get("FOREN_ORACLE_CASE")
+            if not path or not Path(path).is_file():
+                self._inloop_case_obj = (None, {})
+            else:
+                self._inloop_case_obj = (Case.load(Path(path)), json.loads(Path(path).read_text(encoding="utf-8")))
+        return self._inloop_case_obj
+
+    def _inloop_scope(self, workspace: str, case: Any, task_text: str, judge: Any) -> tuple[set[str] | None, dict[str, Any]]:
+        """核验器的范围：plan 单元评判的 judge_targets（第 1 轮可复现：covered_before 为空、之前没有报告），否则按任务文字兜底
+        （scope.requirements_for_workspace 不给 units 时的做法）。第 2 轮的 covered_before 要第 1 轮报告的锚定核验结果，循环里没有，
+        所以第 2 轮只能兜底，跑完后的全量核验可能换范围（缓存不命中），统计里单列。"""
+
+        import asyncio
+        from types import SimpleNamespace
+
+        from foren_searcher.datagen.verify.plan_judged import judge_plan
+        from foren_searcher.datagen.verify.scope import requirements_for_workspace
+
+        m = re.match(r"^W(\d+)-(\d+)$", workspace)
+        record = self.plan_records.get(int(m.group(1))) if m else None
+        if case is not None and case.requirements and m and int(m.group(1)) == 1 and record:
+            gview = record["payload"].get("global_view") or {}
+            plan = SimpleNamespace(output=record["output"], view=gview,
+                                   round_index=(gview.get("runtime_constraints") or {}).get("round_index"))
+            raw = asyncio.run(judge_plan(plan, case, set(), judge, None))
+            known = {r.id for r in case.requirements}
+            for item in (raw or {}).get("tasks") or []:
+                if isinstance(item, dict) and int(item.get("index") or 0) == int(m.group(2)):
+                    targets = {str(t) for t in item.get("targets") or [] if str(t) in known or not known}
+                    return targets, {"method": "judge_targets", "requirement_ids": sorted(targets)}
+        req_ids, note = requirements_for_workspace(case, task_text, run=self.run_dir.name, workspace_id=workspace, units=None)
+        return req_ids, {**note, "inloop": "text_overlap" + ("" if record else " (no plan record)")}
+
+    def _predicted_store_report(self, report: dict[str, Any]) -> dict[str, Any]:
+        """store.commit_workspace_report 会给的样子：F 编号 = finding_sequence 的下一个（独立序列表，校验失败也不复用）。"""
+
+        try:
+            with self.store._connect() as connection:          # noqa: SLF001 —— 只读一个序号
+                row = connection.execute("SELECT seq FROM sqlite_sequence WHERE name='finding_sequence'").fetchone()
+            seq = int(row[0]) if row else 0
+        except Exception:  # noqa: BLE001
+            seq = 0
+        findings = [{"finding_id": f"F{seq + i + 1}", "workspace_id": report.get("task_id"), "statement": f["statement"],
+                     "evidence_ids": list(f.get("evidence_ids") or []), "limitations": list(f.get("limitations") or [])}
+                    for i, f in enumerate(report.get("findings") or [])]
+        return {"task_id": report.get("task_id"), "status": report.get("status"), "status_reason": report.get("status_reason"),
+                "findings": findings}
+
+    def _after_report(self, directory: Path, decision: Decision, payload: dict[str, Any], rendered: dict[str, Any] | None,
+                      report: dict[str, Any]) -> dict[str, Any]:
+        """S4 之后、交给 harness（之后 GIA 看到）之前：COMPLETED → 充分性层核一次；E / L / C 第 1 轮的 INCOMPLETE 报告没写跟进
+        → 补 walker 的可修缺口。"""
+
+        if not self.inloop or not isinstance(report, dict):
+            return report
+        import asyncio
+
+        from foren_searcher.datagen.errors import ErrorType, Severity
+        from foren_searcher.datagen.status_rewrite import build_reason
+        from foren_searcher.datagen.verify.judges import CachedJudge, ClaudeCliLimit
+        from foren_searcher.datagen.verify.sufficiency import (SUFFICIENCY_SYSTEM_PROMPT, _report_payload, _required_entries,
+                                                               verify_sufficiency)
+
+        workspace = str(report.get("task_id") or "")
+        family = str(decision.slot.get("family") or "")
+        hints = decision.slot.get("followup") or {}
+        entry: dict[str, Any] = {"request": directory.name, "workspace": workspace, "family": family,
+                                 "status_in": report.get("status"), "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        case, case_dict = self._inloop_case()
+        if report.get("status") == "COMPLETED" and case is not None:
+            started = time.monotonic()
+            judge = self._inloop_judge()
+            calls_before = (judge.misses, judge.hits)
+            try:
+                task_text = str(self.store.workspace_task_record(workspace).get("task") or "")
+                req_ids, scope_note = self._inloop_scope(workspace, case, task_text, judge)
+                stored = self._predicted_store_report(report)
+                suff_payload = {"task": task_text, "required_evidence": _required_entries(case, case.scoped_required_evidence(req_ids)),
+                                "report": _report_payload(stored)}
+                entry.update({"scope": scope_note, "key": CachedJudge.key_for(SUFFICIENCY_SYSTEM_PROMPT, suff_payload, []),
+                              "predicted_finding_ids": [f["finding_id"] for f in stored["findings"]]})
+                result = asyncio.run(verify_sufficiency(stored, task_text, judge, case=case, requirement_ids=req_ids))
+            except ClaudeCliLimit as exc:
+                entry.update({"error": f"claude_cli_limit: {str(exc)[:200]}", "limit_hit": True})
+                result = None
+            except Exception as exc:  # noqa: BLE001 —— 检查失败不挡 run：报告照原样交，跑完后的全量核验 + 事后改写兜底
+                entry["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+                result = None
+            entry.update({"judge_new_calls": judge.misses - calls_before[0], "judge_cache_hits": judge.hits - calls_before[1],
+                          "elapsed_s": round(time.monotonic() - started, 1)})
+            if result is not None:
+                raw = result.raw or {}
+                severe = [e for e in result.errors if e.type is ErrorType.COMPLETED_WITHOUT_FINISHING
+                          and e.severity in (Severity.MAJOR, Severity.CRITICAL)]
+                entry.update({"judge_failed": bool(raw.get("_failed")), "errors": [e.to_dict() for e in result.errors],
+                              "missing": raw.get("missing"), "status_should_be": raw.get("status_should_be"),
+                              "flagged": bool(severe)})
+                if severe:
+                    visible = json.dumps(rendered or payload, ensure_ascii=False) + "\n" + json.dumps(report, ensure_ascii=False)
+                    detail = build_reason(raw, [e.to_dict() for e in severe], visible, case_dict.get("requirements") or [], case_dict)
+                    reason = _walker.inloop_status_reason(detail["kept"], hints, family)
+                    report = {**report, "status": "INCOMPLETE", "status_reason": reason}
+                    entry.update({"rewritten": True, "status_reason": reason, "reason_detail": detail,
+                                  "actions": _walker.inloop_actions(detail["kept"], hints, family)})
+        if report.get("status") == "INCOMPLETE" and family in ("E", "L", "C") and workspace.startswith("W1-") \
+                and not _walker.has_followup_clause(str(report.get("status_reason") or "")):
+            reason = str(report.get("status_reason") or "").strip().rstrip(";. ")
+            actions = _walker.inloop_actions(_walker._gap_clauses(reason), hints, family)
+            if actions:
+                report = {**report, "status_reason": "; ".join([reason, *actions]) if reason else "; ".join(actions)}
+                entry.update({"followup_appended": actions})
+        entry["status_out"] = report.get("status")
+        path = self.run_dir / INLOOP_FILE
+        record = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {"checks": []}
+        record["checks"].append(entry)
+        path.write_text(json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8")
+        return report
+
     def _slot_finish(self, directory: Path, actor_dir: Path, base_prompt: str, image_paths: list[Path], decision: Decision,
                      payload: dict[str, Any], slots: list[dict[str, Any]]) -> dict[str, Any]:
         notes = decision.slot.get("notes") or []
@@ -969,6 +1130,29 @@ class OracleGenerator(ModelImageInputs):
             ) % (json.dumps(str(slot.get("claim") or ""), ensure_ascii=False),)
             claim_words = [w for w in re.findall(r"[A-Z][\w'-]+", str(slot.get("claim") or ""))][:5]
             mock = {"query": " ".join(claim_words) or "landmark photo", "rationale": "[mock]"}
+            raw = self._codex(directory, actor_dir, "S1_query", base_prompt + suffix, image_paths, slots, mock)
+            try:
+                ok = bool(str(extract_json_object(raw).get("query") or "").strip())
+            except Exception:  # noqa: BLE001
+                ok = False
+            if not ok:
+                raw = self._codex(directory, actor_dir, "S1_query_retry", base_prompt + suffix
+                                  + '\nYour previous output had no usable "query" string. Return the JSON object again.',
+                                  image_paths, slots, mock)
+        elif slot.get("name") == "S1_query" and slot.get("purpose") == "followup":
+            # 10-16 r0+：检索类第 2 轮"再搜来源"——任务文字里列着第 1 轮没答上的点，写一条文字查询去找讲这些点的来源
+            suffix = (
+                "\n\nHOST DECISION FOR THIS TURN (language slot S1): the host has decided that this turn is a text SEARCH for "
+                "web pages (input_type=text, output_type=text) about the open points that your task lists (what the first "
+                "round left unanswered). Write ONE search query.\n"
+                "- Aim it at the most important open point: name the specific event, place, people, date or publication it "
+                "concerns, using words from the claim and from what the pages already read in this state say. The claim: %s\n"
+                "- Never write E/R/W IDs, 'the given image', 'fact check', 'first round' or 'open point'; search engines do not "
+                "know them.\n"
+                'Return only {"query": "...", "rationale": "one sentence (at most 40 words) saying which open point it targets"}.'
+            ) % (json.dumps(str(slot.get("claim") or ""), ensure_ascii=False),)
+            claim_words = [w for w in re.findall(r"[A-Z][\w'-]+", str(slot.get("claim") or ""))][:6]
+            mock = {"query": " ".join(claim_words) or "news report", "rationale": "[mock]"}
             raw = self._codex(directory, actor_dir, "S1_query", base_prompt + suffix, image_paths, slots, mock)
             try:
                 ok = bool(str(extract_json_object(raw).get("query") or "").strip())

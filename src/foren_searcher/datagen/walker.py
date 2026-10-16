@@ -481,7 +481,67 @@ def _report(state: HiState, memory: dict[str, Any], rule: str, *, status: str, r
     return Decision("report", rule, skeleton, branch=branch,
                     slot={"name": "S4_report", "status": status, "status_reason": reason, "allowed_evidence_ids": allowed,
                           "notes": notes, "task_parts": task_parts(state.task), "family": family, "evidence_kinds": kinds,
-                          "auto_limitations": _failed_page_limitation(state)})
+                          "auto_limitations": _failed_page_limitation(state),
+                          "followup": _followup_hints(state) if family in ("E", "L", "C") else {}})
+
+
+def _claim_of(task: str) -> str:
+    m = re.search(r'claim:\s*"(.*)"\s*\(claim date', task, re.S)
+    return m.group(1) if m else task.rsplit(":", 1)[-1].strip()
+
+
+def _followup_hints(state: HiState) -> dict[str, Any]:
+    """10-16 r0+：交报告时记下第 2 轮还能做什么，供循环内充分性检查判"报告没答完"时写可修缺口（inloop_status_reason）。
+    unread：已取得、没读、不是社交平台的页面——以图搜的结果在前（它们载有这张图），其后按标题 / 摘要命中声明的词数；
+    refs：L 族以文字搜到的参考图；image：给定图片。只用学生看得到的检索结果。"""
+
+    if "SEARCH" not in state.actions:
+        return {}
+    searches = _search_obs(state)
+    read_ids = {str((r.get("request") or {}).get("record_id")) for r in _read_records(state)}
+    reverse = {p["evidence_id"] for p in _search_pages([s for s in searches if (s.get("request") or {}).get("input_type") == "image"])}
+    words = _claim_words(_claim_of(state.task))
+    pages = [p for p in _search_pages(searches) if p["evidence_id"] not in read_ids and p.get("url") and not _social(p.get("url"))]
+    pages.sort(key=lambda p: (p["evidence_id"] not in reverse, -len(words & _claim_words(_page_text(p)))))
+    images = _material_images(state)
+    return {"unread": [{"evidence_id": p["evidence_id"], "url": p["url"], "reverse": p["evidence_id"] in reverse}
+                       for p in pages[:6]],
+            "refs": [r["evidence_id"] for r in _search_images(searches)][:3], "image": images[0] if images else None}
+
+
+_LOCATION_POINT = re.compile(r"compar|reference|same (?:place|building|location|site|landmark)|landmark|architect|"
+                             r"where (?:the )?(?:picture|photo|photograph|image) was (?:actually )?taken|actual location|"
+                             r"shows the (?:claimed|named)|place the claim names", re.I)
+
+
+def inloop_actions(items: list[str], hints: dict[str, Any], family: str) -> list[str]:
+    """r0+：报告没答完时，walker 按自己的状态写出第 2 轮能做的事（GIA 的 _search_gap 认这几种说法）：
+    未读页面的网址 → 打开再读；L 族参考图 → 逐项并排比对；都没有 → 再搜一次来源。B / A 族不写。"""
+
+    if family not in ("E", "L", "C"):
+        return []
+    out = []
+    urls = [str(p["url"]) for p in hints.get("unread") or [] if p.get("url")][:3]
+    if urls:
+        out.append("candidate pages that were found but not read: " + ", ".join(urls))
+    if family == "L" and hints.get("refs") and hints.get("image") and any(_LOCATION_POINT.search(i) for i in items):
+        out.append(f"the reference photos {', '.join(hints['refs'])} of the claimed place were not compared feature by "
+                   f"feature with {hints['image']}")
+    if not out:
+        out.append("a further search for sources can address the points above")
+    return out
+
+
+def has_followup_clause(reason: str) -> bool:
+    return any(_search_gap(c) for c in _gap_clauses(reason or ""))
+
+
+def inloop_status_reason(items: list[str], hints: dict[str, Any], family: str) -> str:
+    """循环内充分性检查把 COMPLETED 改成 INCOMPLETE 时的 status_reason：充分性判定的 missing（build_reason 过滤后的英文条目）
+    + walker 写的可修缺口（inloop_actions）。"""
+
+    items = [i for i in items if i]
+    return "; ".join(items + inloop_actions(items, hints, family))
 
 
 _PAGE_STATUS = re.compile(r"^\[(R\d+)\] (\S+?);? page=(ready|partial|failed)\b")
@@ -2405,8 +2465,10 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                           "claim": claim[:400], "report_decision": report("L9_report").to_dict()})
 
 
-_SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos)", re.I)
+_SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos|search for sources on the open points)", re.I)
 _SCOPE_URL = re.compile(r"open and read (https?://[^\s;]+?)(?=[;]|\.\s|\.$|\s|$)", re.I)
+_SCOPE_SEARCH = re.compile(r"search for sources on the open points", re.I)
+_FOLLOWUP_READS = 2
 
 
 def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str) -> Decision:
@@ -2431,6 +2493,13 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
             opened[src] = pages[0]["evidence_id"] if pages else None
     refs = _search_images(searches)
     side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
+    # r0+：Scope 写了"再搜来源"——S1 写一条文字查询（针对任务里列的未答点）→ 读命中声明最多的 2 页
+    search_wanted = bool(_SCOPE_SEARCH.search(scope))
+    claim = _claim_of(state.task)
+    text_queries = [s for s in _query_searches(searches) if (s.get("request") or {}).get("input_type") == "text"
+                    and (s.get("request") or {}).get("output_type") == "text" and not (s.get("request") or {}).get("source")]
+    found = [p for p in _search_pages(text_queries) if not _social(p.get("url"))]
+    found_read = [p for p in found if p["evidence_id"] in read_ids]
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         unread = [u for u in urls if not opened.get(u) or opened[u] not in read_ids]
@@ -2439,15 +2508,22 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
             missing.append("candidate pages that could not be opened or read: " + ", ".join(unread))
         if refs_wanted and "compare_refs" not in issued:
             missing.append("no reference photo of the claimed place was viewed side by side with the picture")
+        if search_wanted and not found_read:
+            missing.append("no page about the open points could be found and read" if text_queries else "no search was made")
         status = "INCOMPLETE" if missing and not (read_ids or "compare_refs" in issued) else "COMPLETED"
         reason = "; ".join(missing) if status == "INCOMPLETE" else None
         if last_turn and status == "INCOMPLETE":
             reason = "turn budget exhausted: " + str(reason)
-        notes = ["this round only reads the pages the first round left unread and compares the picture with reference photos; "
-                 "say what each page that was read states about the picture (where / when it was published or taken) and "
-                 "whether that changes the first round's conclusion",
+        notes = ["this round only addresses what the first round left open (pages left unread, comparison with reference "
+                 "photos, the open points named in the task); say what each page that was read states about the picture "
+                 "(where / when it was published or taken) or about the claim, and whether that changes the first round's conclusion",
                  "pages read: " + (", ".join(f"{e} ({u})" for u, e in opened.items() if e in read_ids) or "none"),
                  "pages that could not be opened: " + (", ".join(u for u in urls if not opened.get(u)) or "none")]
+        if search_wanted:
+            notes.append("pages read from the new search: " + (", ".join(f"{p['evidence_id']} ({str(p.get('title') or p.get('url'))[:80]})"
+                                                                         for p in found_read) or "none")
+                         + "; answer each open point named in the task in its own finding, citing the page that settles it, "
+                           "and say plainly which points stay open")
         if refs_wanted:
             notes.append("reference photos: " + (", ".join(side) or "none") + "; compare them with the given picture feature by "
                          "feature and say plainly whether they show the same place")
@@ -2479,6 +2555,21 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
             return Decision("action", "L3_view_with_references", _read(side[0], [image, *side],
                             f"View {image} next to the reference photos {', '.join(side)} of the place the claim names, to compare "
                             f"landmarks and layout."), branch="READ_RECORD focus")
+    if search_wanted:
+        if not text_queries and "followup_search" not in issued and state.remaining >= 3:
+            _mark(memory, "followup_search")
+            return Decision("query_slot", "S2f_search_open_points", {"action": "SEARCH"}, branch="SEARCH text page",
+                            slot={"name": "S1_query", "purpose": "followup", "input_type": "text", "output_type": "text",
+                                  "previous": [], "focus": [], "claim": claim[:400]})
+        words = _claim_words(claim)
+        todo = sorted((p for p in found if p["evidence_id"] not in read_ids),
+                      key=lambda p: -len(words & _claim_words(_page_text(p))))
+        if todo and len(found_read) < _FOLLOWUP_READS and state.remaining >= 2:
+            page = todo[0]
+            return Decision("action", "S2f_read_found_page", {"action": "READ_RECORD", "arguments": {"record_id": page["evidence_id"]},
+                            "focus_evidence_ids": [], "rationale": f"Read {page['evidence_id']} "
+                            f"({str(page.get('title') or page.get('url'))[:80]}); it may settle the open points."},
+                            branch="READ_RECORD text")
     return report({"E": "E9_report", "L": "L9_report"}.get(family, "C9_report"))
 
 
@@ -2845,8 +2936,18 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
             search_gap = _search_gap(g["reason"])
             if search_gap:
                 g.update(search_gap)
-    fixable = [g for g in gaps if g["fixable"] and (family == "B" or g["kind"] in ("unread_pages", "references"))]
-    if family in ("E", "L", "C") and fixable and state.can_create and state.remaining >= 1 and "round2" not in issued             and rounds_done == 1:
+        # r0+（10-16）：报告里写了 walker 能接手的跟进（未读页面 / 参考图比对 / 再搜来源）时，同一份报告里其余没答上的点
+        # （充分性判定的 missing 条目等，"other"）也作为第 2 轮要补的点交给 S2；"N 个页面打不开"这类补不上的除外
+        followable = {g["task_id"] for g in gaps if g["kind"] in _FOLLOWUP_KINDS}
+        for g in gaps:
+            if g["task_id"] in followable and g["kind"] == "other" and not g["budget"]:
+                if _FAILED_PAGES.search(g["reason"]):
+                    g["kind"] = "failed_pages"
+                else:
+                    g.update({"kind": "missing_point", "fixable": True})
+    fixable = [g for g in gaps if g["fixable"] and (family == "B" or g["kind"] in (*_FOLLOWUP_KINDS, "missing_point"))]
+    if family in ("E", "L", "C") and any(g["kind"] in _FOLLOWUP_KINDS for g in fixable) and state.can_create \
+            and state.remaining >= 1 and "round2" not in issued and rounds_done == 1:
         _mark(memory, "round2")
         urls: list[str] = []
         for g in fixable:
@@ -2855,10 +2956,13 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
         parts = [f"open and read {u}" for u in urls[:3]]
         if refs:
             parts.append("view the given picture next to reference photos of the place the claim names")
+        if any(g["kind"] == "search_more" for g in fixable):
+            parts.append("search for sources on the open points listed above and read them")
         scope = "Scope: " + "; ".join(parts) + "." if parts else ""
         return Decision("investigate_slot", "G2_round2_search_gap", {"decision": "INVESTIGATE"},
                         branch="INVESTIGATE round2 " + "+".join(sorted({g["kind"] for g in fixable})),
-                        slot={"name": "S2_task", "gaps": [g["reason"] for g in fixable], "materials": state.originals(),
+                        slot={"name": "S2_task", "gaps": [g["reason"] for g in fixable if g["kind"] != "search_more"],
+                              "materials": state.originals(),
                               "unfixable": [g["reason"] for g in gaps if not g["fixable"]], "scope": scope})
     if family != "B":
         fixable = []
@@ -2927,7 +3031,12 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
 
 # ---- 报告缺口的分类（GIA 只看报告里写出来的东西）
 
-_SEARCH_GAP = re.compile(r"candidate pages that match the claim were not examined|reference photos .{0,80}were not viewed side by side", re.I)
+_SEARCH_GAP = re.compile(r"candidate pages that (?:match the claim were not examined|were found but not read)|reference photos .{0,80}"
+                         r"were not (?:viewed side by side|compared feature by feature)|a further search for sources can address", re.I)
+# r0+：只说"N 个候选页面打不开 / 没检查"的条目——靠更多工作补不上（r0g 理由表四节第 2 处）
+_FAILED_PAGES = re.compile(r"\b\d+\s+(?:of|out of)\s+\d+\s+(?:candidate\s+)?pages?\b[^;]{0,60}\b(?:fail|could not|"
+                           r"(?:were|was) (?:never |not )(?:be )?(?:opened|loaded|examined|checked))|failed to load", re.I)
+_FOLLOWUP_KINDS = ("unread_pages", "references", "search_more")
 _URL = re.compile(r"https?://[^\s,;]+")
 _NO_CORRESPONDENCE = re.compile(r"no consistent (?:frame-level )?correspondence|found no (?:consistent )?correspondence|"
                                 r"\b0% of (?:A|B|Material)", re.I)
@@ -2936,12 +3045,14 @@ _NO_CORRESPONDENCE = re.compile(r"no consistent (?:frame-level )?correspondence|
 def _search_gap(reason: str) -> dict[str, Any] | None:
     """walker 写进检索类报告 status_reason 的可修缺口（追加 2）：未读命中页（带网址）、参考图没并排看。"""
 
-    if re.search(r"candidate pages that match the claim were not examined", reason, re.I):
+    if re.search(r"candidate pages that (?:match the claim were not examined|were found but not read)", reason, re.I):
         urls = [u.rstrip(".)") for u in _URL.findall(reason)]
         if urls:
             return {"kind": "unread_pages", "fixable": True, "urls": urls}
-    if re.search(r"reference photos .{0,80}were not viewed side by side", reason, re.I):
+    if re.search(r"reference photos .{0,80}were not (?:viewed side by side|compared feature by feature)", reason, re.I):
         return {"kind": "references", "fixable": True, "urls": []}
+    if re.search(r"a further search for sources can address", reason, re.I):     # r0+（inloop_actions）
+        return {"kind": "search_more", "fixable": True, "urls": []}
     return None
 
 
