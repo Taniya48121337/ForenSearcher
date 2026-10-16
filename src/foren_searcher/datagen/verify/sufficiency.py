@@ -27,6 +27,7 @@ SUFFICIENCY_SCHEMA = _obj({
     "answerable_from_report": {"type": "boolean"},
     "status_should_be": {"type": "string", "enum": ["COMPLETED", "INCOMPLETE"]},
     "missing": {"type": "array", "items": {"type": "string"}},
+    "limitations_not_gaps": {"type": "array", "items": {"type": "string"}},
 })
 
 SUFFICIENCY_SYSTEM_PROMPT = """你是报告审核员。给你一个局部调查任务（task）、案卷对这个任务的要求清单（requirements，可能为空）、
@@ -37,7 +38,8 @@ SUFFICIENCY_SYSTEM_PROMPT = """你是报告审核员。给你一个局部调查�
 {"requirements":[{"key":"清单里的 key（REQ1、dates…）或你从任务文字里归纳的要求（短语）","covered":true|false,"by":"回答它的 finding 编号或 null","note":"一句话"}],
  "answerable_from_report":true|false,   // 仅凭报告中的 Finding 是否已能回答该局部任务
  "status_should_be":"COMPLETED|INCOMPLETE",
- "missing":["任务明确提出、报告却没有用证据回答的问题（用英文写，一条一句）"]}
+ "missing":["任务明确提出、报告却没有用证据回答的问题（用英文写，一条一句）"],
+ "limitations_not_gaps":["报告的局限，但不构成缺口的点（用英文写），见下面的规则"]}
 规则：
 - requirements 清单里 must_cite=true 的要求，要有 Finding 引用证据回答了它才算 covered；required_evidence 里 must_cite=true 的项，
   要有 Finding 引用了这类证据才算 covered。
@@ -47,6 +49,14 @@ SUFFICIENCY_SYSTEM_PROMPT = """你是报告审核员。给你一个局部调查�
 - covered 只看问题有没有被证据回答，不看结论是否与你预期的一致。
 - 报告写了 limitations 说明为何取不到，不等于 covered，但可以让 status_should_be 是 INCOMPLETE。
 - missing 用英文写，只写任务问了而报告没回答的问题；不要写清单、任务文字和报告里都没有出现的来源名、网址、日期、地名。
+- 候选页打不开、没读到（failed / not examined）本身不是缺口：只要已读的页面里有证据回答了这条要求，"N 个候选页没检查"
+  只写进 limitations_not_gaps，不进 missing，也不因此判 INCOMPLETE；只有没有任何已读页面回答这条要求时，才是这条要求没被回答
+  （missing 写没回答的问题本身，不写"某某页打不开"）。
+- 精度以任务文字和清单为准：任务没有明确要求的精度——每个对应段帧精确的起止边界、每一段都配成对的抽帧、差异图、媒体属性
+  （时长 / 帧率 / 音轨数）——报告给出了时间区间或采样对应点、并在 limitations 里说明了精度的，写进 limitations_not_gaps，不算缺口。
+  任务或清单明确要求了的（例如"给出两侧的时间区间"），没给仍是缺口。
+- 反过来，任务问的核心问题没有回答仍是缺口，例如：视频本身显示了什么 / 说了什么没有描述或转写；网页上的图是否就是给定的
+  那张没有核对；声明说的地点有没有与参考照片比对。
 - 保守：拿不准就 covered=false，并在 note 里说明。"""
 
 
@@ -128,7 +138,8 @@ async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: Json
                                    method="model", extra=extra))
     missing_must = [r for r in uncovered if str(r.get("key")) in must_keys]
     should = raw.get("status_should_be")
-    if status == "COMPLETED" and (missing_must or should == "INCOMPLETE"):
+    only_failed_pages = _drop_failed_pages(raw, result)
+    if status == "COMPLETED" and (missing_must or (should == "INCOMPLETE" and not only_failed_pages)):
         keys = ", ".join(str(r.get("key")) for r in (missing_must or uncovered))
         detail = f"报 COMPLETED 但任务要求未全部覆盖：{keys}" if keys else "报 COMPLETED 但审核认为应为 INCOMPLETE"
         result.errors.append(error(ErrorType.COMPLETED_WITHOUT_FINISHING, detail, method="model", extra={"status_should_be": should}))
@@ -136,6 +147,46 @@ async def verify_sufficiency(report: dict[str, Any], task_text: str, judge: Json
         result.errors.append(error(ErrorType.INCOMPLETE_THOUGH_ANSWERABLE, "报告内容已足以回答任务，却报 INCOMPLETE",
                                    method="model", extra={"status_should_be": should}))
     return result
+
+
+# verifier@0.4.0：只说"N 个候选页打不开 / 没检查（所以可能还有更早的副本）"的 missing 条目是 limitation，不是缺口。
+# r0g 的例子："2 of 6 candidate pages failed to load and were not examined"、"Examination of the 8 candidate pages that failed
+# to load"、"3 of 8 candidate pages were not examined, so an earlier copy may exist."；和别的缺口写在同一句的不算（"Only one
+# external source was used. 3 of 5 candidate pages failed …"）。
+_FAILED_PAGES = re.compile(
+    r"(?:the\s+)?(?:examination\s+of\s+(?:the\s+)?)?(?:\d+\s*(?:of|/)\s*\d+\s+|\d+\s+|all\s+|several\s+|some\s+|other\s+|remaining\s+)*"
+    r"(?:other\s+|remaining\s+)?candidate\s+(?:external\s+|web\s+)?(?:pages?|sources?|links?|urls?)"
+    r"(?:\s+that)?(?:\s+(?:failed\s+to\s+(?:load|open)|could\s+not\s+be\s+(?:opened|loaded|read|retrieved)|did\s+not\s+(?:load|open)"
+    r"|(?:were|was)\s+(?:never\s+|not\s+)?(?:examined|opened|read|checked|retried|loaded|inspected|reviewed)))?"
+    r"(?:,?\s+and\s+(?:were|was)\s+(?:not|never)\s+(?:examined|checked|retried|read|opened|inspected))?", re.I)
+_FAILED_PAGES_ZH = re.compile(r"(?:\d+\s*(?:/|个中的?|中的?)\s*)?\d*\s*个?候选(?:网)?页(?:面)?[^；;。]*?(?:打不开|未能打开|加载失败|未检查|未查看|没有检查|未读)")
+_CONSEQUENCE = re.compile(r",?\s*(?:so|and|therefore)\s+(?:an?\s+|the\s+)?(?:earlier|other|older|further|additional)\b[^.;]*?"
+                          r"(?:may|might|could)\s+(?:exist|be\s+missed|remain)[^.;]*", re.I)
+_FILLER = re.compile(r"[\W\d_]+|\b(?:and|the|were|was|not|never|examined|retried|of|so|thus|therefore|pages?|candidates?)\b", re.I)
+
+
+def failed_pages_only(item: str) -> bool:
+    """missing 条目是否只是在说"候选页打不开 / 没检查"（后面最多跟"所以可能还有更早的副本"）。"""
+
+    text = str(item or "")
+    if not (_FAILED_PAGES.search(text) and re.search(r"fail|not\s+(?:be\s+)?(?:examined|opened|loaded|checked|read|retried)|never|did\s+not", text, re.I)) \
+            and not _FAILED_PAGES_ZH.search(text):
+        return False
+    rest = _FAILED_PAGES_ZH.sub(" ", _CONSEQUENCE.sub(" ", _FAILED_PAGES.sub(" ", text)))
+    rest = re.sub(r"[，。；、（）]|所以|因此|可能|还有|更早|副本|存在|未检查|未查看|没有检查|未读|打不开", "", rest)
+    return len(_FILLER.sub("", rest)) <= 2
+
+
+def _drop_failed_pages(raw: dict[str, Any], result: "SufficiencyResult") -> bool:
+    """只讲 failed 页的 missing 条目移到 raw["missing_failed_pages"]（不进 status_reason）。返回 True = missing 原本非空且全是这种条目，
+    此时模型的 status_should_be=INCOMPLETE 不单独构成 completed_without_finishing（必需要求没覆盖的照样判）。"""
+
+    missing = [str(m) for m in raw.get("missing") or [] if str(m).strip()]
+    dropped = [m for m in missing if failed_pages_only(m)]
+    if dropped:
+        result.raw["missing"] = [m for m in missing if m not in dropped]
+        result.raw["missing_failed_pages"] = dropped
+    return bool(missing) and len(dropped) == len(missing)
 
 
 def _required_entries(case: Case | None, scoped: Any) -> list[dict[str, Any]]:
@@ -221,4 +272,4 @@ def _entry_lookup(required: list[dict[str, Any]]) -> dict[str, str]:
     return out
 
 
-__all__ = ["GT_FREE_EDIT_REQUIREMENT", "SUFFICIENCY_SYSTEM_PROMPT", "SufficiencyResult", "is_reference_entry", "sufficiency_payload", "verify_sufficiency"]
+__all__ = ["GT_FREE_EDIT_REQUIREMENT", "SUFFICIENCY_SYSTEM_PROMPT", "SufficiencyResult", "is_reference_entry", "failed_pages_only", "sufficiency_payload", "verify_sufficiency"]

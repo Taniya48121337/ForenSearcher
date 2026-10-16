@@ -130,3 +130,45 @@ def test_requirement_gap_sets_status_without_extra_omitted_error() -> None:
     result = run(verify_sufficiency(e17_report("INCOMPLETE"), "t", judge, case=e17_case()))
     assert [(e.type, e.severity, e.extra.get("requirement")) for e in result.errors] == [
         (ErrorType.OMITTED_REQUIRED_FACT, Severity.MAJOR, "dates")]
+
+
+# ---------------------------------------------------------------- 2. failed 页 / B 族精度不单独算缺口
+
+from foren_searcher.datagen.verify.sufficiency import SUFFICIENCY_SYSTEM_PROMPT, failed_pages_only   # noqa: E402
+
+FAILED_ONLY = ["2 of 6 candidate pages failed to load and were not examined",
+               "Examination of the 8 candidate pages that failed to load",
+               "3 of 8 candidate pages were not examined, so an earlier copy may exist.",
+               "The 10 of 14 candidate pages that failed to load were not retried",
+               "8 of 12 candidate external pages were not examined, so an earlier or other source reporting a booster loss may exist among them.",
+               "6 of 9 candidate pages were not examined.",
+               "3 个候选页打不开，未检查"]
+REAL_GAPS = ["Only one external source (Business Insider) was used. 3 of 5 candidate pages failed to load and were not examined.",
+             "The image's original publisher and first publication date were not determined, and 9 of 15 candidate pages were not examined.",
+             "There is no independent corroboration or SpaceX primary source; only CBS was used, and 2 of 5 candidate pages did not load.",
+             "No visual comparison confirming that the Diplomat image is the same as the supplied image",
+             "No findings from video frames or a transcript describing what the video shows or says"]
+
+
+def test_failed_pages_only_classifier_on_r0g_items() -> None:
+    assert all(failed_pages_only(x) for x in FAILED_ONLY)
+    assert not any(failed_pages_only(x) for x in REAL_GAPS)
+
+
+def test_failed_pages_alone_do_not_flag_completed() -> None:
+    covered = [{"key": "REQ1", "covered": True, "by": "F1", "note": ""}, {"key": "dates", "covered": True, "by": "F1", "note": ""},
+               {"key": "external", "covered": True, "by": "F1", "note": ""}]
+    judge = RecordingJudge({"requirements": covered, "answerable_from_report": True, "status_should_be": "INCOMPLETE",
+                            "missing": [FAILED_ONLY[0]], "limitations_not_gaps": []})
+    result = run(verify_sufficiency(e17_report(), "t", judge, case=e17_case()))
+    assert result.errors == [] and result.raw["missing"] == [] and result.raw["missing_failed_pages"] == [FAILED_ONLY[0]]
+    # 同一份报告，真缺口（E 族没确认是同一张图）照样判
+    judge = RecordingJudge({"requirements": covered, "answerable_from_report": False, "status_should_be": "INCOMPLETE",
+                            "missing": [FAILED_ONLY[0], REAL_GAPS[3]], "limitations_not_gaps": []})
+    result = run(verify_sufficiency(e17_report(), "t", judge, case=e17_case()))
+    assert [e.type for e in result.errors] == [ErrorType.COMPLETED_WITHOUT_FINISHING] and result.raw["missing"] == [REAL_GAPS[3]]
+
+
+def test_prompt_rules_for_failed_pages_and_unrequested_precision() -> None:
+    assert "limitations_not_gaps" in SUFFICIENCY_SYSTEM_PROMPT and "候选页打不开" in SUFFICIENCY_SYSTEM_PROMPT
+    assert "任务没有明确要求的精度" in SUFFICIENCY_SYSTEM_PROMPT and "网页上的图是否就是给定的" in SUFFICIENCY_SYSTEM_PROMPT
