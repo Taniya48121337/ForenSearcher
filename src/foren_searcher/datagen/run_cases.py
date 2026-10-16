@@ -152,6 +152,51 @@ def resolve_image_search_engine(mode: str = "auto", root: str | Path | None = No
     return "+".join(resolve_image_engines(mode, root)) or "off"
 
 
+def lens_cache_dir(root: str | Path | None) -> Path | None:
+    """10-16：Google Lens 结果的硬盘缓存（按图片 sha256），重跑同一张图不再计费。
+
+    默认 <项目根>/.local/lens_cache；环境变量 FOREN_LENS_CACHE_DIR 改位置，设 off 关掉。
+    """
+
+    value = os.environ.get("FOREN_LENS_CACHE_DIR", "").strip()
+    if value.lower() in {"off", "none", "0"}:
+        return None
+    if value:
+        return Path(value)
+    return (Path(root) if root is not None else Path.cwd()) / ".local" / "lens_cache"
+
+
+def lens_max_searches() -> int | None:
+    """10-16：FOREN_LENS_MAX_SEARCHES=N 时，本 run 的 Google Lens 最多发 N 次搜索请求（硬上限，到了就停用）；不设不限。"""
+
+    value = os.environ.get("FOREN_LENS_MAX_SEARCHES", "").strip()
+    return int(value) if value else None
+
+
+def reverse_verifier(policy: Any, root: str | Path | None) -> Any | None:
+    """10-16：以图搜图结果自核（下载前 N 条缩略图比感知哈希）。只在 FOREN_REVERSE_NORMALIZE=1 时建；
+    FOREN_REVERSE_VERIFY_TOP=N（默认 10，0 / off 关掉核对）；缓存 FOREN_THUMB_VERIFY_CACHE_DIR（默认
+    <项目根>/.local/thumb_verify_cache，off 关掉）。下载走 SafeHttpClient（公网地址校验、大小上限）。"""
+
+    from ..search.providers.reverse_normalize import enabled
+
+    if not enabled():
+        return None
+    raw = os.environ.get("FOREN_REVERSE_VERIFY_TOP", "").strip().lower()
+    top = 0 if raw in {"off", "none"} else int(raw) if raw else 10
+    if top <= 0:
+        return None
+    from ..search.openers.http import SafeHttpClient
+    from ..search.providers.thumb_verify import ThumbnailVerifier
+
+    value = os.environ.get("FOREN_THUMB_VERIFY_CACHE_DIR", "").strip()
+    if value.lower() in {"off", "none", "0"}:
+        cache = None
+    else:
+        cache = Path(value) if value else (Path(root) if root is not None else Path.cwd()) / ".local" / "thumb_verify_cache"
+    return ThumbnailVerifier(SafeHttpClient(policy), top_n=top, cache_dir=cache)
+
+
 def image_engine_providers(names: list[str], root: str | Path | None, timeout_s: float) -> list[tuple[str, Any]]:
     from ..search.providers.keys import find_key, require_key
 
@@ -164,9 +209,15 @@ def image_engine_providers(names: list[str], root: str | Path | None, timeout_s:
             out.append((name, GoogleVisionWebProvider(require_key("gcv", root), timeout_s)))
         elif name == "lens":
             from ..search.providers.google_lens import GoogleLensProvider
+            from ..search.providers.image_host import resolve_fallback, resolve_host
 
+            # 10-16：FOREN_LENS_IMAGE_HOST=imgbb 时，本机帧先传 imgbb（10 分钟后删除）再走 Serper；
+            # imgbb 失败改传 litterbox（1 小时后删除，FOREN_LENS_IMAGE_FALLBACK=off 关）；默认都关
+            _host, imgbb_key, ttl = resolve_host(root)
             out.append((name, GoogleLensProvider(serpapi_key=find_key("serpapi", root), serper_key=find_key("serper", root),
-                                                 timeout_s=max(timeout_s, 45.0))))
+                                                 timeout_s=max(timeout_s, 45.0), cache_dir=lens_cache_dir(root),
+                                                 imgbb_key=imgbb_key, image_ttl_s=ttl,
+                                                 image_fallback=resolve_fallback(), max_searches=lens_max_searches())))
         elif name == "tineye":
             from ..search.providers.tineye import TinEyeProvider
 
@@ -390,7 +441,9 @@ def search_service_for(case: Case, store: Any, output: Path, *, blocklist: str =
         from ..search.providers.thumbnail_clip import ImageQueryRouter, text_also_note
 
         timeout = getattr(getattr(search, "policy", None), "provider_timeout_s", 30.0)
-        multi = MultiReverseImageProvider(image_engine_providers(engines, Path.cwd(), timeout))
+        multi = MultiReverseImageProvider(image_engine_providers(engines, Path.cwd(), timeout),
+                                          verifier=reverse_verifier(getattr(search, "policy", None), Path.cwd()),
+                                          time_budget_s=timeout)
         # 10-13：text_image 的文字同时走文字搜索（evidM27a：只走以图搜图时 YouTube 文字搜索整个丢了）
         search.provider = ImageQueryRouter(search.provider, multi, text_also=True)
         search.text_image_wide = True

@@ -182,7 +182,8 @@ def normalize_web_detection(web: Mapping[str, Any], output_type: str) -> list[di
                 have.add(vid)
                 thumbs.append({"url": f"https://www.youtube.com/watch?v={vid}", "title": None,
                                "kind": "similar_thumbnail" if key == "visuallySimilarImages" else "thumbnail",
-                               "image_url": _http_url(url), "video_id": vid})
+                               "image_url": _http_url(url), "video_id": vid,
+                               "thumb_match": {"fullMatchingImages": "full", "partialMatchingImages": "partial"}.get(key, "similar")})
     others = [p for p in pages if not _looks_like_video(p["url"])]
     return videos + thumbs + others
 
@@ -206,7 +207,9 @@ def _candidate(item: Mapping[str, Any], rank: int, guess: list[str] | None = Non
             image_url=item.get("image_url") if item.get("image_url") == url else None,
             thumbnail_url=item.get("image_url") if item.get("image_url") != url else None,
             platform=_platform(url), platform_video_id=item.get("video_id") if is_video else None,
-            extra={"match": kind},
+            # 10-16：thumb_match（缩略图来自 full / partial / similar 哪一栏）、best_guess 供 reverse_normalize 用，只进 extra
+            extra={"match": kind, **({"thumb_match": item["thumb_match"]} if item.get("thumb_match") else {}),
+                   **({"best_guess": guess[0]} if guess else {})},
         )
     except ValueError:
         return None
