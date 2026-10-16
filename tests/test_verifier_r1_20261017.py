@@ -314,3 +314,40 @@ def test_coverage_gets_task_text_F002_F003() -> None:
                                task=task))
     coverage = [p for p in seen if "supported_parts" in p and "source" not in p]
     assert coverage and coverage[0]["task"] == task and A._COVERAGE_TASK_RULE in coverage[0]["prompt"]
+
+
+# ---------------------------------------------------------------- 5. 页面声明的日期与 dates 卡一致，不算 sloppy_numeric
+
+def _dates_finding(part: str, page_quote: str, card_quote: str, statement: str):
+    page = J("E6", image=False, label="Zerrin Sümer page", provenance="", sup=["Gethu Cinema entry"])
+    page.contradicted = [Part(part, page_quote, True, "sloppy_numeric")]
+    card = J("E10", image=False, label="dates of https://www.gethucinema.com/x", provenance="", sup=[part])
+    card.supported = [Part(part, card_quote, True)]
+    return A._errors_for_finding("F3", statement, [page, card], {"finding_id": "F3", "grounded": True, "model_grounded": True,
+                                                                  "unsupported_parts": [], "notes": ""})
+
+
+def test_declared_page_date_matching_dates_card_is_minor_F001_F013() -> None:
+    f001 = _dates_finding("with a declared page publication date of January 26, 2024", "Posted on 08/Feb/2023 22:22:55",
+                          "published date declared by the page: 2024-01-26",
+                          "The dated source is Gethu Cinema's entry, with a declared page publication date of January 26, 2024.")
+    assert [(e.severity.value, e.extra.get("date_rule")) for e in f001] == [("minor", "page_has_other_date")]
+    f013 = _dates_finding("Its page declares publication on January 30, 2021", "Petition created on 31 January 2021",
+                          "published date declared by the page: 2021-01-30",
+                          "Its page declares publication on January 30, 2021, and modification on May 19, 2023.")
+    assert [(e.severity.value, e.extra.get("date_rule"), e.extra.get("gap_days")) for e in f013] == [("minor", "timezone", 1)]
+
+
+def test_date_rule_needs_declared_wording_and_matching_card() -> None:
+    # 没写"声明的日期"：照记
+    plain = _dates_finding("published on January 30, 2021", "Petition created on 31 January 2021",
+                           "published date declared by the page: 2021-01-30", "The petition was published on January 30, 2021.")
+    assert [e.severity.value for e in plain] == ["major"]
+    # 写了"声明的日期"但与 dates 卡不一致（抄错了）：照记
+    wrong = _dates_finding("Its page declares publication on January 3, 2021", "Petition created on 31 January 2021",
+                           "published date declared by the page: 2021-01-30", "Its page declares publication on January 3, 2021.")
+    assert [e.severity.value for e in wrong] == ["major"]
+    # B 族时间戳：不是日历日期，不受影响
+    ts = _dates_finding("the declared segment boundary at 118.37 s", "time_s 22.27", "declared by the page: 118.37",
+                        "the declared segment boundary at 118.37 s")
+    assert [e.severity.value for e in ts] == ["major"]

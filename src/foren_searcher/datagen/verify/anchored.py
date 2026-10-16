@@ -36,6 +36,7 @@ from ..errors import ErrorRecord, ErrorType, Severity, error
 from .context import EvidenceLookup, EvidenceText
 from .lang import (BACKREF, CONCRETE_ZH, DATE_NUMERIC, LIMITATION, TASK_WORDS, VERDICT, dates_in, grams, has_concrete,
                    strip_dates)
+from .date_rules import apply_date_rule
 from .pixel_rules import apply_pixel_rules
 
 MAX_SOURCE_CHARS = 120_000   # 第一次全量 20K 把 85K 字符的 PDF 章节截掉了大半，表格数字全判成无支持；27b 有 262K 上下文，放宽
@@ -678,7 +679,8 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
         # 单条来源上的"以偏概全"提示只是线索（视频帧类报告几乎条条被提示），记 minor，不单独把报告推成 negative
         out.append(error(ErrorType.SCOPE_OVERREACH, "核验模型提示：由局部/少数样本推断了整体", span=statement, severity=Severity.MINOR,
                          evidence_ids=[j.evidence_id for j in supporting if j.scope_overreach], method="model", extra=base_extra))
-    return apply_pixel_rules(out, statement, judgments)          # verifier@0.4.0 第 3 处：像素只核句子所指的那张图
+    out = apply_pixel_rules(out, statement, judgments)           # verifier@0.4.0 第 3 处：像素只核句子所指的那张图
+    return apply_date_rule(out, statement, judgments)            # verifier@0.4.0 第 5 处：页面声明的日期与 dates 卡一致不算 sloppy_numeric
 
 
 @dataclass
