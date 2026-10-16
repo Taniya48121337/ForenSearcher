@@ -629,6 +629,38 @@ def freeze_job(args: argparse.Namespace) -> int:
 
 # ---------------------------------------------------------------------------- 单个 run（子进程里跑）
 
+# r1（10-17，r1 预演之二）walker 策略版本：E 族以图搜取页面上的图并与 E1 比对、没比对的只写候选；L 族报告必须写参考图比对结论；
+# C 族按场景取帧 + 整段转写交给 S4；第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0）
+WALKER_POLICY_VERSION = "walker-r1@2026-10-17"
+
+
+def r1_search_policy(case_file: str, round_tag: str, mode: str | None) -> dict[str, Any] | None:
+    """r1 轮次（r1*）的以图搜策略（按 10-16 Lens–Yandex 实测）：Google Lens 只给 E 族（Yandex 两族都开）；图床只给 E 族的
+    案例图（FOREN_LENS_IMAGE_HOST=imgbb，只在这个 run 进程里设），litterbox 备用关；结果统一写法 + 缩略图自核
+    （FOREN_REVERSE_NORMALIZE=1）。L / C 族默认不用 Lens。给定媒体（B 族）不检索。r0 轮次返回 None（行为不变）。"""
+
+    if not round_tag.startswith("r1") or mode == "provided_media":
+        return None
+    from foren_searcher.datagen.walker import task_family
+
+    try:
+        task = json.loads(Path(case_file).read_text(encoding="utf-8")).get("task_text_en") or ""
+    except (OSError, ValueError):
+        task = ""
+    family = task_family(str(task), True)
+    os.environ.setdefault("FOREN_REVERSE_NORMALIZE", "1")
+    if family == "E":
+        os.environ.setdefault("FOREN_LENS_IMAGE_HOST", "imgbb")
+        os.environ["FOREN_LENS_IMAGE_FALLBACK"] = "off"
+        engines = "lens,yandex"
+    else:
+        os.environ.pop("FOREN_LENS_IMAGE_HOST", None)
+        engines = "yandex"
+    return {"family": family, "image_search": engines, "image_host": os.environ.get("FOREN_LENS_IMAGE_HOST") or "off",
+            "image_fallback": os.environ.get("FOREN_LENS_IMAGE_FALLBACK") or "default",
+            "normalize": os.environ.get("FOREN_REVERSE_NORMALIZE"), "lens_max_searches": os.environ.get("FOREN_LENS_MAX_SEARCHES")}
+
+
 def run_one_case(case_file: str, run_name: str, round_tag: str, overrides: list[str] | None = None) -> int:
     from foren_searcher.datagen import run_cases as rc
 
@@ -689,6 +721,9 @@ def run_one_case(case_file: str, run_name: str, round_tag: str, overrides: list[
     except (OSError, ValueError):
         mode = None
     extra = {"image_search": "off"} if hi_spec != "hi@0.7.0" and mode == "provided_media" else {}
+    policy = r1_search_policy(case_file, round_tag, mode)
+    if policy:
+        extra = {"image_search": policy["image_search"]}
     outcome = asyncio.run(rc.run_one(
         case_file, run_name, runs_dir=str(RUNS), round_tag=round_tag, sample=1, teacher="codex", endpoint=None, model=None,
         thinking=True, specs_root="specs", hi_spec=hi_spec, gia_spec=gia_spec, blocklist="exclude",
@@ -712,7 +747,9 @@ def run_one_case(case_file: str, run_name: str, round_tag: str, overrides: list[
                          # 10-15 对话 5a：每个槽实际用的模型（分槽模式；其余模式所有槽同一个教师，记为 null）
                          "slot_teachers": slot_teachers(),
                          "slot_models": {k: v["model"] for k, v in (slot_teachers() or {}).items()} or None,
-                         "teacher_backup": os.environ.get("FOREN_TEACHER_BACKUP") or None}
+                         "teacher_backup": os.environ.get("FOREN_TEACHER_BACKUP") or None,
+                         "policy_version": WALKER_POLICY_VERSION if round_tag.startswith("r1") else None,
+                         "search_policy": policy}
         # 10-15 r0 冻结：顶层也记教师（run_cases 记的是 configured_model.model，这里以 walker 的槽为准），
         # 以及冻结口径里它是主教师还是备用、计划用哪个核验器（核验在 run 之后，实际用的写在 verdicts 文件名与导出行里）
         cfg["teacher_model"] = teacher_model()
