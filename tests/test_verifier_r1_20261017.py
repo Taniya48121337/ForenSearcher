@@ -351,3 +351,19 @@ def test_date_rule_needs_declared_wording_and_matching_card() -> None:
     ts = _dates_finding("the declared segment boundary at 118.37 s", "time_s 22.27", "declared by the page: 118.37",
                         "the declared segment boundary at 118.37 s")
     assert [e.severity.value for e in ts] == ["major"]
+
+
+# ---------------------------------------------------------------- 6. attribution_drift 看转述来源支持的那一部分（r0a F001）
+
+def test_drift_not_flagged_when_supported_part_is_already_attributed_r0a_F001() -> None:
+    statement = ("The original publisher, earliest publication date and location remain undetermined. The visible scene and reports of "
+                 "boycott remarks do not identify who caused the damage.")
+    news = J("E5", image=False, label="Raila mentions eggs among products to be boycotted", provenance="", sup=["reports of boycott remarks"])
+    news.source_reports_claim = True
+    errors = A._errors_for_finding("F4", statement, [news], {"finding_id": "F4", "grounded": True, "model_grounded": True,
+                                                            "unsupported_parts": [], "notes": ""})
+    assert not [e for e in errors if e.type is ErrorType.ATTRIBUTION_DRIFT]
+    # 转述来源支持的部分写成了事实：照记
+    news.supported = [Part("Odinga's supporters destroyed the eggs", "supporters reportedly destroyed eggs", True)]
+    errors = A._errors_for_finding("F4", "Odinga's supporters destroyed the eggs.", [news], None)
+    assert [e.severity.value for e in errors if e.type is ErrorType.ATTRIBUTION_DRIFT] == ["major"]

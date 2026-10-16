@@ -636,6 +636,10 @@ async def _judge_coverage_checked(judge: JsonJudge, finding_id: str, statement: 
             "notes": str(raw.get("notes") or "")}, CallFailure()
 
 
+_HEDGED_PART = re.compile(r"据|称|报道|引述|表示|声称|\b(?:according to|reports?|reported|reportedly|report(?:ing)? that|said|says|claims?|claimed"
+                          r"|alleg\w*|stat(?:ed|es)|remarks?|told|quoted|announce[ds]?)\b", re.I)
+
+
 def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgment], coverage: dict[str, Any] | None,
                         *, allow_unsupported: bool = True) -> list[ErrorRecord]:
     out: list[ErrorRecord] = []
@@ -672,9 +676,13 @@ def _errors_for_finding(finding_id: str, statement: str, judgments: list[Judgmen
     supporting = [j for j in judgments if j.supported]
     hedged = re.search(r"据|称|报道|引述|表示|声称|According to|reported|said|claims?", statement) is not None
     meta = FEATURES["limitation_rule"] and is_limitation_statement(statement)    # 交代调查范围的句子不是在转述来源
-    if not hedged and not meta and any(j.source_reports_claim and j.statement_asserts_fact for j in supporting):
+    # verifier@0.4.0（r0a 金标 F001）：转述型来源支持的那一部分本身已写成转述（"reports of boycott remarks"）就不算漂移——
+    # 以前只看整句有没有 reported / said，"…remain undetermined. … reports of boycott remarks do not identify …" 被记 major
+    drifting = [j for j in supporting if j.source_reports_claim and j.statement_asserts_fact
+                and any(not _HEDGED_PART.search(p.part) for p in j.supported)]
+    if not hedged and not meta and drifting:
         out.append(error(ErrorType.ATTRIBUTION_DRIFT, "来源只是转述说法，该句却写成了事实", span=statement,
-                         evidence_ids=[j.evidence_id for j in supporting if j.source_reports_claim], method="model", extra=base_extra))
+                         evidence_ids=[j.evidence_id for j in drifting], method="model", extra=base_extra))
     if any(j.scope_overreach for j in supporting):
         # 单条来源上的"以偏概全"提示只是线索（视频帧类报告几乎条条被提示），记 minor，不单独把报告推成 negative
         out.append(error(ErrorType.SCOPE_OVERREACH, "核验模型提示：由局部/少数样本推断了整体", span=statement, severity=Severity.MINOR,
