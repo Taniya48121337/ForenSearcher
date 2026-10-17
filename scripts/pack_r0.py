@@ -8,6 +8,10 @@
     python scripts/pack_r0.py --verify experiments/sft_data/r0_pack/r0
     # 同时打一个 tar.gz 带去服务器
     python scripts/pack_r0.py --export <目录> --tar dist
+    # 10-17 r1：按轮次打包（默认 out = experiments/sft_data/r1_pack/r1、freeze = specs/r1_freeze.json、身份文件 r1_pack.json、
+    # pack_id = r1-<日期>-<hash>），并核 provenance：--provenance-files 列的输入（案卷清单、频道表、unanswerable、探测结果、
+    # 金标 items、案卷 json 等）必须都在 git 里且与 HEAD 一致；代码目录（src、scripts、specs、training、oracle_generator）也不许有未提交改动
+    python scripts/pack_r0.py --round r1 --export <目录> --configs training/configs/hi_r1_27b.json ... --provenance-files <文件或 glob ...>
 
 包的结构（默认 experiments/sft_data/r0_pack/r0/，正好是 training/configs/*_r0_9b.json 的 export_dir 的上一级）：
     data/            hi_accepted.jsonl、gia_accepted.jsonl、manifest.json（导出原样）、images/（只复制被行引用的图）
@@ -102,7 +106,7 @@ class Checks:
         return [c["name"] for c in self.items if not c["ok"] and c["level"] == "warn"]
 
 
-def current_code_hashes() -> dict[str, Any]:
+def current_code_hashes(freeze_path: Path | None = None) -> dict[str, Any]:
     """按 run_cases / walker_run 的同一口径重算当前代码的工具层 hash 与核验器代码 hash（只读）。"""
 
     out: dict[str, Any] = {}
@@ -117,7 +121,7 @@ def current_code_hashes() -> dict[str, Any]:
         from foren_searcher.datagen.specs import Spec
         out["spec_hash"] = {}
         for role in ("hi", "gia"):
-            frozen = json.loads((ROOT / "specs" / "r0_freeze.json").read_text(encoding="utf-8"))["specs"][role]
+            frozen = json.loads((freeze_path or ROOT / "specs" / "r0_freeze.json").read_text(encoding="utf-8"))["specs"][role]
             out["spec_hash"][role] = Spec.load(ROOT / "specs" / frozen).hash()
     except Exception as exc:
         out["spec_error"] = f"{type(exc).__name__}: {exc}"
@@ -133,6 +137,40 @@ def git_info() -> dict[str, Any]:
             return None
     return {"head": run("rev-parse", "HEAD"), "describe": run("describe", "--tags", "--always", "--dirty"),
             "tags_at_head": (run("tag", "--points-at", "HEAD") or "").split() or None}
+
+
+PROVENANCE_CODE_PATHS = ("src", "scripts", "specs", "training", "experiments/sft_data/oracle_generator.py",
+                         "experiments/sft_data/source_policy.py")   # cli_generator.py 不在 walker 链路上（walker_run 换掉了 make_teacher）
+
+
+def provenance_check(patterns: list[str]) -> tuple[bool, dict[str, Any]]:
+    """输入文件（glob 展开）必须被 git 跟踪且与 HEAD 一致；代码目录（PROVENANCE_CODE_PATHS）不许有未提交改动或未跟踪的 .py。
+    工作区里与本包无关的改动（旧案卷、文档、_trash 删除等）不算——只记数，不挡。"""
+
+    def git(*a: str) -> str:
+        res = subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True, timeout=120, encoding="utf-8")
+        return res.stdout
+
+    files: list[str] = []
+    unmatched: list[str] = []
+    for pat in patterns:
+        hits = sorted(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pat) if p.is_file()) if any(c in pat for c in "*?[") else (
+            [pat.replace("\\", "/")] if (ROOT / pat).is_file() else [])
+        files += hits
+        if not hits:
+            unmatched.append(pat)
+    files = sorted(set(files))
+    tracked = set(git("ls-files", "--", *files).splitlines()) if files else set()
+    untracked = [f for f in files if f not in tracked]
+    modified = [line[3:] for line in git("status", "--porcelain", "--", *files).splitlines() if line[:2].strip()] if files else []
+    code_dirty = [line for line in git("status", "--porcelain", "--", *PROVENANCE_CODE_PATHS).splitlines()
+                  if not line.startswith("??") or line.rstrip().endswith(".py")]
+    other_dirty = len(git("status", "--porcelain").splitlines())
+    ok = not untracked and not modified and not unmatched and not code_dirty
+    return ok, {"files": len(files), "untracked": untracked[:40], "modified": modified[:40], "unmatched_patterns": unmatched,
+                "code_dirty": code_dirty[:40], "head": git("rev-parse", "HEAD").strip(),
+                "worktree_dirty_entries_total": other_dirty,
+                "note": "describe 里的 -dirty 来自与本包无关的工作区改动时不算失败；本项只看 provenance 输入与代码目录"}
 
 
 def run_provenance(runs: set[str], runs_dir: Path, frozen: dict[str, Any] | None = None) -> list[dict[str, Any]]:
@@ -247,7 +285,7 @@ def pack(args: argparse.Namespace) -> int:
     manifest = json.loads((export_dir / "manifest.json").read_text(encoding="utf-8"))
     all_md = [(role, r.get("metadata") or {}) for role, items in rows.items() for r in items]
     images = check_rows(rows, export_dir, checks)
-    code = current_code_hashes()
+    code = current_code_hashes(freeze_path)
 
     # ---- spec_hash
     spec_sets = {role: sorted({md.get("spec_hash") for r, md in all_md if r == role}) for role in ("hi", "gia")}
@@ -360,6 +398,10 @@ def pack(args: argparse.Namespace) -> int:
         problems.append(f"训练配置角色不全：{sorted(r for r in roles if r)}")
     checks.add("train_configs", not problems, {"configs": cfg_out, "problems": problems})
 
+    # ---- provenance（10-17 r1）：输入文件都已提交、与 HEAD 一致；代码目录没有未提交改动
+    if args.provenance_files is not None:
+        checks.add("provenance", *provenance_check(args.provenance_files))
+
     # ---- 数量（只报警）
     finish = sum(1 for r, md in all_md if r == "gia" and (md.get("action") == "FINISH" or md.get("unit") == "answer"))
     counts = {"hi": len(rows["hi"]), "gia": len(rows["gia"]), "gia_finish": finish}
@@ -403,7 +445,7 @@ def pack(args: argparse.Namespace) -> int:
 
     data_hashes = {p.relative_to(out).as_posix(): sha256_file(p) for p in (out / "data").rglob("*") if p.is_file()}
     digest = data_digest(data_hashes)
-    pack_id = f"r0-{time.strftime('%Y%m%d')}-{digest[:12]}"
+    pack_id = f"{args.round}-{time.strftime('%Y%m%d')}-{digest[:12]}"
     identity = {
         "pack_id": pack_id, "status": status, "created_at": time.strftime("%Y-%m-%d %H:%M:%S"), "freeze_id": freeze.get("freeze_id"),
         "export_id": manifest.get("export_id"), "source_export_dir": str(export_dir),
@@ -415,7 +457,7 @@ def pack(args: argparse.Namespace) -> int:
         "train_configs": cfg_out, "git": git_info(), "data_digest": digest,
         "checks": checks.items, "failed": strict_fail, "warnings": checks.warnings,
     }
-    (out / "r0_pack.json").write_text(json.dumps(identity, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / f"{args.round}_pack.json").write_text(json.dumps(identity, ensure_ascii=False, indent=2), encoding="utf-8")
     sums = [f"{sha256_file(p)}  {p.relative_to(out).as_posix()}" for p in sorted(out.rglob("*")) if p.is_file() and p.name != "SHA256SUMS"]
     (out / "SHA256SUMS").write_text("\n".join(sums) + "\n", encoding="utf-8")
     print(f"{'打包完成' if status == 'ok' else '试包（不合冻结口径，不能用于正式 r0）'}：{out}  pack_id={pack_id}")
@@ -428,7 +470,7 @@ def pack(args: argparse.Namespace) -> int:
         tar_dir.mkdir(parents=True, exist_ok=True)
         tar_path = tar_dir / f"ForenSearcher_{pack_id}.tar.gz"
         with tarfile.open(tar_path, "w:gz") as tar:
-            tar.add(out, arcname=f"experiments/sft_data/r0_pack/{out.name}")
+            tar.add(out, arcname=f"experiments/sft_data/{out.parent.name}/{out.name}")
         print(f"  tar：{tar_path}（{tar_path.stat().st_size / 1e6:.1f} MB，在仓库根目录解开）")
     return 0
 
@@ -452,7 +494,8 @@ def verify(pack_dir: Path) -> int:
             bad.append(rel)
     extra = [p.relative_to(pack_dir).as_posix() for p in pack_dir.rglob("*")
              if p.is_file() and p.name != "SHA256SUMS" and p.relative_to(pack_dir).as_posix() not in listed]
-    identity = json.loads((pack_dir / "r0_pack.json").read_text(encoding="utf-8")) if (pack_dir / "r0_pack.json").is_file() else {}
+    ident_files = sorted(pack_dir.glob("r*_pack.json"))
+    identity = json.loads(ident_files[0].read_text(encoding="utf-8")) if ident_files else {}
     data_hashes = {rel: d for rel, d in listed.items() if rel.startswith("data/")}
     digest_ok = data_digest(data_hashes) == identity.get("data_digest")
     ok = not bad and not missing and not extra and digest_ok
@@ -468,8 +511,11 @@ def verify(pack_dir: Path) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--export", help="r0 导出目录（export.py 或 pack_sft.py 的产物）")
-    parser.add_argument("--out", default="experiments/sft_data/r0_pack/r0")
-    parser.add_argument("--freeze", default="specs/r0_freeze.json")
+    parser.add_argument("--round", default="r0", help="轮次（r0 / r1）：决定 out / freeze 的默认值、身份文件名与 pack_id 前缀")
+    parser.add_argument("--out", default=None, help="默认 experiments/sft_data/<轮次>_pack/<轮次>")
+    parser.add_argument("--freeze", default=None, help="默认 specs/<轮次>_freeze.json")
+    parser.add_argument("--provenance-files", nargs="*", default=None,
+                        help="必须已提交且与 HEAD 一致的输入文件（可用 glob）；给了就加 provenance 核对项（严格）")
     parser.add_argument("--runs-dir", default="experiments/sft_data/runs")
     parser.add_argument("--configs", nargs="+", default=DEFAULT_CONFIGS)
     parser.add_argument("--allow-mismatch", action="store_true", help="不合冻结口径也出包（status=trial）")
@@ -477,6 +523,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tar", default=None, help="另打一个 tar.gz 到这个目录（例如 dist）")
     parser.add_argument("--verify", default=None, help="只校验一个已有的包")
     args = parser.parse_args(argv)
+    args.out = args.out or f"experiments/sft_data/{args.round}_pack/{args.round}"
+    args.freeze = args.freeze or f"specs/{args.round}_freeze.json"
     if args.verify:
         path = Path(args.verify)
         return verify(path if path.is_absolute() else ROOT / path)

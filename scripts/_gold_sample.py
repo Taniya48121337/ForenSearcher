@@ -140,6 +140,73 @@ def stratified(cands: list[dict[str, Any]], n: int, seed: str, per_run: int = 3)
     return picked
 
 
+NEW_ACTION_KINDS = ("E_compare", "L_compare", "C_frames", "C_transcript")
+
+
+def new_action_kind(log: Any, run: str, fid: str) -> str | None:
+    """r1 新动作的 Finding：E / L 引了 compare_media 图片比对记录；C 引了帧（get_frames / video_structure 的图）→ C_frames，
+    引了转写（asr）且不引帧 → C_transcript。"""
+
+    try:
+        f = log.store.finding(fid)
+    except KeyError:
+        return None
+    kinds = set()
+    for e in f.evidence_ids:
+        try:
+            t = log.lookup.get(e)
+        except Exception:  # noqa: BLE001
+            continue
+        acq = str(t.acquired_by or "").lower()
+        label = str(t.label or "").lower()
+        if "compare_media" in acq or "difference composite" in label or "compare_media" in label:
+            kinds.add("compare")
+        elif t.image_path and ("get_frames" in acq or "video_structure" in acq or "frame" in label):
+            kinds.add("frames")
+        elif "asr" in acq or "transcript" in label:
+            kinds.add("transcript")
+    fam = "E" if run.startswith("averimatec_e") else "L" if run.startswith("averimatec_l") else         "B" if run.startswith(("videosham", "vcsl", "qvhighlights")) else "C"
+    if fam in ("E", "L") and "compare" in kinds:
+        return f"{fam}_compare"
+    if fam == "C" and "frames" in kinds:
+        return "C_frames"
+    if fam == "C" and "transcript" in kinds:
+        return "C_transcript"
+    return None
+
+
+def new_action_picks(cands: list[dict[str, Any]], quota: int, seed: str) -> list[dict[str, Any]]:
+    """--new-action-quota：四类各 quota/4（余数给前几类），类内核验器标错的先取，再按 seed 分层补。"""
+
+    logs: dict[str, Any] = {}
+    pools: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    try:
+        for c in cands:
+            if not c["run"].startswith(("averimatec_", "fmnv_", "groundlie360_")):
+                continue
+            if c["run"] not in logs:
+                logs[c["run"]] = load_run(run_dir(c["run"]))
+            kind = new_action_kind(logs[c["run"]], c["run"], c["finding"])
+            if kind:
+                pools[kind].append({**c, "new_action": kind})
+    finally:
+        for log in logs.values():
+            log.close()
+    out: list[dict[str, Any]] = []
+    per = [quota // len(NEW_ACTION_KINDS) + (1 if i < quota % len(NEW_ACTION_KINDS) else 0) for i in range(len(NEW_ACTION_KINDS))]
+    for kind, n in zip(NEW_ACTION_KINDS, per):
+        pool = pools.get(kind) or []
+        got = stratified([c for c in pool if c["verifier_flagged"]], n, seed, per_run=1)
+        got += stratified([c for c in pool if not c["verifier_flagged"]], n - len(got), seed, per_run=1)
+        out += got
+    short = quota - len(out)
+    if short > 0:                         # 某类不够：从其余类的剩余里补
+        taken = {(c["run"], c["finding"]) for c in out}
+        rest = [c for k in NEW_ACTION_KINDS for c in pools.get(k) or [] if (c["run"], c["finding"]) not in taken]
+        out += stratified(rest, short, seed, per_run=1)
+    return out
+
+
 PLAN_TASK_TYPES = ("premise_smuggling", "task_not_gap_driven")
 
 
@@ -430,6 +497,11 @@ def main() -> int:
     parser.add_argument("--oversample-flagged", action="store_true",
                         help="核验器标了 major/critical 的 Finding 全取，不足 --findings 再按原分层补（10-15 对话 5''）")
     parser.add_argument("--only-cases", default=None, help="只抽这份案卷清单里的案例（experiments/sft_data 下的 JSON 列表）")
+    parser.add_argument("--round-prefix", default="r0", help="--only-cases 时 run 名里轮次的前缀（10-17 r1a：r1）")
+    parser.add_argument("--new-action-quota", type=int, default=0,
+                        help="10-17 r1a：Finding 里留这么多条给 r1 新动作（E/L 图片比对结论、C 帧结论、C 整段转写概括），"
+                             "四类平均分、类内核验器标 major/critical 的先取；其余名额照 --oversample-flagged")
+    parser.add_argument("--answers-balanced", action="store_true", help="10-17 r1a：答案单元按核验器判定 positive / negative 各一半")
     args = parser.parse_args()
     if args.plan_tasks:
         return plan_tasks_batch(args)
@@ -449,10 +521,23 @@ def main() -> int:
     if args.only_cases:
         # 10-15 对话 5''：只抽这些案卷的 run（r0g 补金标只抽新案例）；清单是 walker_d2_cases.py 写的案卷名列表
         names = set(json.loads((SFT / args.only_cases).read_text(encoding="utf-8")))
-        keep = lambda run: any(run.startswith(n + "_") and run[len(n) + 1:].split("_")[0].startswith("r0") for n in names)  # noqa: E731
+        keep = lambda run: any(run.startswith(n + "_") and run[len(n) + 1:].split("_")[0] == args.round_prefix  # noqa: E731
+                               if args.round_prefix != "r0" else run.startswith(n + "_") and run[len(n) + 1:].split("_")[0].startswith("r0")
+                               for n in names)
         cands = [c for c in cands if keep(c["run"])]
         units = [u for u in units if keep(u["subject"]["run"])]
-    if args.oversample_flagged:
+    reserved: list[dict[str, Any]] = []
+    if args.new_action_quota:
+        reserved = new_action_picks(cands, args.new_action_quota, args.seed)
+        taken = {(c["run"], c["workspace"], c["finding"]) for c in reserved}
+        cands = [c for c in cands if (c["run"], c["workspace"], c["finding"]) not in taken]
+        args.findings = max(0, args.findings - len(reserved))
+    if args.oversample_flagged and args.new_action_quota:
+        flagged = [c for c in cands if c["verifier_flagged"]]
+        picks = stratified(flagged, min(len(flagged), args.findings), args.seed, per_run=3)
+        picks += stratified([c for c in cands if not c["verifier_flagged"]], max(0, args.findings - len(picks)), args.seed)
+        picks = reserved + picks
+    elif args.oversample_flagged:
         # 10-15 对话 5''（追加 10）：核验器标了 major/critical 的 Finding 全取（r0a 只有 3 条，精确率测不出来），不足再按原分层补
         flagged = [c for c in cands if c["verifier_flagged"]]
         picks = stratified(flagged, len(flagged), args.seed, per_run=10 ** 6)
@@ -462,11 +547,19 @@ def main() -> int:
         picks = stratified([c for c in cands if c["verifier_flagged"]], half, args.seed)
         picks += stratified([c for c in cands if not c["verifier_flagged"]], args.findings - len(picks), args.seed)
     answers = [u for u in units if u.get("unit") == "answer"]
-    answers = sorted(answers, key=lambda u: h(args.seed, u["subject"]["run"], u["subject"].get("request")))[: args.answers]
+    answers = sorted(answers, key=lambda u: h(args.seed, u["subject"]["run"], u["subject"].get("request")))
+    if args.answers_balanced:
+        pos = [u for u in answers if u.get("disposition") == "positive"]
+        neg = [u for u in answers if u.get("disposition") != "positive"]
+        k = args.answers // 2
+        answers = neg[: max(k, args.answers - len(pos))] + pos[: max(args.answers - k, args.answers - len(neg))]
+        answers = answers[: args.answers]
+    else:
+        answers = answers[: args.answers]
     plans = [u for u in units if u.get("unit") == "plan"]
     neg = [u for u in plans if u.get("disposition") != "positive"]
     pos = sorted((u for u in plans if u.get("disposition") == "positive"), key=lambda u: h(args.seed, u["subject"]["run"], u["subject"].get("request")))
-    plans = (neg + pos)[: max(args.plans, len(neg))]
+    plans = (neg + pos)[: max(args.plans, len(neg))] if args.plans else []      # 10-17：--plans 0 = 不抽计划单元
 
     logs: dict[str, Any] = {}
 
@@ -489,7 +582,7 @@ def main() -> int:
                           "workspace": f.workspace_id, "finding_id": f.finding_id, "task": task,
                           "statement": f.statement, "limitations": list(f.limitations),
                           "evidence": [evidence_card(log, e, media, c["run"]) for e in f.evidence_ids]})
-            strata.append({"id": item_id, **c})
+            strata.append({"id": item_id, **{k: v for k, v in c.items() if not k.startswith("_")}})
         for i, u in enumerate(answers):
             subj = u["subject"]
             log = log_of(subj["run"])
