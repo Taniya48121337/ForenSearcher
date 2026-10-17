@@ -1,0 +1,104 @@
+{
+  "case_id": "groundlie360:v33090306",
+  "dataset": "groundlie360",
+  "source_id": "v33090306",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明（它是给定视频流传时的标题），检查视频并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：DMX rapped over the \"Reading Rainbow\" children's television theme song.（发布日期：2016-09-12）",
+  "task_text_en": "Fact-check the following claim, which circulated as the title of the given video, examining the video and searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: DMX rapped over the \"Reading Rainbow\" children's television theme song. (posted: 2016-09-12)",
+  "family_key": "groundlie360:33090306",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../../../plan-harness-1/datasets/GroundLie360/videos/vid/33090306.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "DMX rapped over the \"Reading Rainbow\" children's television theme song."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频实际显示和说出的内容（画面、字幕、语音）与声明是否相符",
+      "must_cite": true,
+      "text_en": "What the given video actually shows and says (pictures, on-screen text, speech) and whether it matches the claim"
+    },
+    {
+      "id": "REQ2",
+      "text": "外部来源对声明所说事件的记载",
+      "must_cite": true,
+      "text_en": "What external sources record about the event the claim describes"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "视频画面（抽帧）",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "transcript",
+      "description": "视频语音转写",
+      "acquired_by": "INSPECT/asr",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "any_one_of:frames,transcript; all:external",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading"
+        ]
+      },
+      "note": "GroundLie360 first_level=Fake，second_level=['false_title']；标题里的不实片段：[{'start': 0, 'end': 70, 'value': 'DMX rapped over the \"Reading Rainbow\" children\\'s television theme song', 'entity': 'false description'}]"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g1 建卷（2026-10-18 01:22:55，scripts/g1/g1_cases.py）：GroundLie360 帖子 33090306（youtube，2016-09-12，58 s），视频原地引用已解压的 GroundLie360 videos/（Snopes 核查；核查站点被检索护栏屏蔽）。"
+}
