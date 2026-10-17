@@ -1,0 +1,47 @@
+{
+  "_what": "r1 SFTGIA LoRA，Qwen3.8-27B 占位（2026-10-18 r1-frozen 打包），与 HI 同一底座、各挂一套 LoRA。超参沿用 gia_r0_9b.json，只改底座与跨卡。两个种子：training/jobs/r1_sft_27b.txt。",
+  "_why": {
+    "model": "同 hi_r0_27b.json：服务器 .models/llm/Qwen3.8-27B。",
+    "allow_multi_gpu": "true，同 HI：一个任务 2 张 A100（FS_TRAIN_SLOTS=\"0,1;2,3\"）。",
+    "steps": "GIA 61 行（FINISH 58、第 2 轮派工 3）、grad_accum 4 → 每遍 16 次更新，3 遍 48 次；warmup 3 同 9B。行少、过拟合风险高，epoch_1 / epoch_2 / final 都留着让门 B-GIA 选。",
+    "other": "lr / lora / 种子 / sample_weight 全部同 gia_r0_9b.json。",
+    "warmup_steps": "4：GIA 102 行（r1 包）、grad_accum 4 → 每遍 26 次更新，3 遍 78 次，5% 取整。"
+  },
+  "role": "gia",
+  "export_dir": "experiments/sft_data/r1_pack/r1/data",
+  "model": ".models/llm/Qwen3.8-27B",
+  "output_dir": "outputs/lora/r1_27b/gia",
+  "max_tokens": 32768,
+  "epochs": 3,
+  "lr": 0.0001,
+  "min_lr_ratio": 0.1,
+  "warmup_steps": 4,
+  "grad_accum": 4,
+  "max_grad_norm": 1.0,
+  "weight_decay": 0.0,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "lora_dropout": 0.05,
+  "lora_targets": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "seed": 1,
+  "seeds": [
+    1,
+    2
+  ],
+  "dtype": "bfloat16",
+  "device_map": "auto",
+  "allow_multi_gpu": true,
+  "use_sample_weight": true,
+  "logits_on_supervised_only": true,
+  "gradient_checkpointing": true,
+  "save_each_epoch": true,
+  "log_every": 2
+}

@@ -150,8 +150,12 @@ def main() -> int:
                 round2.append({"run": p.name, "family": fam, "rule": r["rule"]})
         ws_rules: dict = defaultdict(list)
         ws_task: dict = {}
+        ws_ops: dict = defaultdict(set)
         for r in reqs:
             ws_rules[r["ws"]].append(r["rule"])
+            req = ((r["response"].get("arguments") or {}).get("request") or {}) if isinstance(r["response"], dict) else {}
+            if req.get("operation"):
+                ws_ops[r["ws"]].add(req["operation"])
             if r["task"] and r["ws"] not in ws_task:
                 ws_task[r["ws"]] = r["task"]
         for ws, rules in ws_rules.items():
@@ -170,9 +174,11 @@ def main() -> int:
                 kinds = claim_kinds(claim)
             except Exception:  # noqa: BLE001
                 kinds = {"visual"}
-            if "visual" in kinds:
+            has_video = any(str(m.get("media_type", "")).startswith("video") for m in (case or {}).get("media") or [])
+            if "visual" in kinds and has_video:
                 w1 = [x for ws, rs in ws_rules.items() if ws.startswith("W1") for x in rs]
-                frames = any(str(x).startswith(("C2v", "C2w")) for x in w1)
+                frames = any(str(x).startswith(("C2v", "C2w")) for x in w1) or bool(
+                    {"get_frames", "video_structure"} & set().union(*[o for ws, o in ws_ops.items() if ws.startswith("W1")] or [set()]))
                 review = any(str(x).startswith("C9v") for x in w1)
                 c_visual["cases"] += 1
                 c_visual["frames"] += int(frames)

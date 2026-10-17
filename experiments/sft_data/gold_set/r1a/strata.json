@@ -1,0 +1,458 @@
+{
+ "meta": {
+  "batch": "r1a",
+  "seed": "20261018",
+  "report_verdicts": "verdicts_r1_judged.claude-cli-claude-sonnet-5-5.134runs-6a8cb9f4.jsonl",
+  "unit_verdicts": "verdicts_units_r1_judged.claude-cli-claude-sonnet-5-5.134runs-6a8cb9f4.jsonl",
+  "counts": {
+   "finding": 20,
+   "answer": 10,
+   "plan": 0
+  }
+ },
+ "strata": [
+  {
+   "id": "F001",
+   "run": "averimatec_e511_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "averimatec:e511",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "sloppy_numeric",
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "E_compare"
+  },
+  {
+   "id": "F002",
+   "run": "averimatec_e74_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F5",
+   "case_id": "averimatec:e74",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "E_compare"
+  },
+  {
+   "id": "F003",
+   "run": "averimatec_l341_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:l341",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "L_compare"
+  },
+  {
+   "id": "F004",
+   "run": "averimatec_l716_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F7",
+   "case_id": "averimatec:l716",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "L_compare"
+  },
+  {
+   "id": "F005",
+   "run": "fmnv_c_RXR0B1SxiU0_r1_1",
+   "dataset": "fmnv",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "fmnv:c_RXR0B1SxiU0",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "attribution_drift"
+   ],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "C_frames"
+  },
+  {
+   "id": "F006",
+   "run": "groundlie360_v1949000_r1_1",
+   "dataset": "groundlie360",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "groundlie360:v1949000",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "C_frames"
+  },
+  {
+   "id": "F007",
+   "run": "groundlie360_v1949000_r1_1",
+   "dataset": "groundlie360",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "groundlie360:v1949000",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "C_transcript"
+  },
+  {
+   "id": "F008",
+   "run": "fmnv_c_doJ9iSPBUbg_r1_1",
+   "dataset": "fmnv",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "fmnv:c_doJ9iSPBUbg",
+   "verifier_flagged": false,
+   "verifier_errors": [],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5",
+   "new_action": "C_transcript"
+  },
+  {
+   "id": "F009",
+   "run": "averimatec_e94_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W2-1",
+   "finding": "F11",
+   "case_id": "averimatec:e94",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F010",
+   "run": "fmnv_c__0oux8o9MJo_r1_1",
+   "dataset": "fmnv",
+   "workspace": "W1-1",
+   "finding": "F3",
+   "case_id": "fmnv:c__0oux8o9MJo",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "attribution_drift"
+   ],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F011",
+   "run": "groundlie360_v1949000_r1_1",
+   "dataset": "groundlie360",
+   "workspace": "W2-1",
+   "finding": "F5",
+   "case_id": "groundlie360:v1949000",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F012",
+   "run": "vcsl_pair_7_r1_1",
+   "dataset": "vcsl",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "vcsl:pair_7",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "sloppy_numeric",
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F013",
+   "run": "videosham_4214_r1_1",
+   "dataset": "videosham",
+   "workspace": "W1-1",
+   "finding": "F4",
+   "case_id": "videosham:4214",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "sloppy_numeric",
+    "sloppy_numeric"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F014",
+   "run": "averimatec_e248_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F4",
+   "case_id": "averimatec:e248",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "attribution_drift"
+   ],
+   "report_disposition": "positive",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F015",
+   "run": "vcsl_pair_1_r1_1",
+   "dataset": "vcsl",
+   "workspace": "W2-1",
+   "finding": "F5",
+   "case_id": "vcsl:pair_1",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F016",
+   "run": "averimatec_e153_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:e153",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F017",
+   "run": "vcsl_pair_1_r1_1",
+   "dataset": "vcsl",
+   "workspace": "W2-1",
+   "finding": "F6",
+   "case_id": "vcsl:pair_1",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F018",
+   "run": "averimatec_e92_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F4",
+   "case_id": "averimatec:e92",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "wrong_citation",
+    "attribution_drift"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F019",
+   "run": "averimatec_e505_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F1",
+   "case_id": "averimatec:e505",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "F020",
+   "run": "averimatec_l101_r1_1",
+   "dataset": "averimatec",
+   "workspace": "W1-1",
+   "finding": "F2",
+   "case_id": "averimatec:l101",
+   "verifier_flagged": true,
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "report_disposition": "negative",
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A001",
+   "kind": "answer",
+   "run": "fmnv_c_FEbcNwkD7EU_r1_1",
+   "request": "request_0013",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A002",
+   "kind": "answer",
+   "run": "averimatec_l313_r1_1",
+   "request": "request_0022",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A003",
+   "kind": "answer",
+   "run": "fmnv_c_UkbuN8grJmY_r1_1",
+   "request": "request_0014",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A004",
+   "kind": "answer",
+   "run": "vcsl_pair_7_r1_1",
+   "request": "request_0008",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "premature_finish"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A005",
+   "kind": "answer",
+   "run": "averimatec_l244_r1_1",
+   "request": "request_0024",
+   "verifier_disposition": "negative",
+   "verifier_errors": [
+    "omitted_required_fact",
+    "omitted_required_fact"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A006",
+   "kind": "answer",
+   "run": "vcsl_pair_12_r1_1",
+   "request": "request_0007",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "wrong_citation",
+    "wrong_citation",
+    "wrong_citation",
+    "wrong_citation",
+    "wrong_citation"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A007",
+   "kind": "answer",
+   "run": "vcsl_pair_15_r1_1",
+   "request": "request_0008",
+   "verifier_disposition": "positive",
+   "verifier_errors": [],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A008",
+   "kind": "answer",
+   "run": "averimatec_e94_r1_1",
+   "request": "request_0018",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "omitted_required_fact"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A009",
+   "kind": "answer",
+   "run": "averimatec_e74_r1_1",
+   "request": "request_0013",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "unsupported_assertion",
+    "unsupported_assertion"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  },
+  {
+   "id": "A010",
+   "kind": "answer",
+   "run": "averimatec_e421_r1_1",
+   "request": "request_0022",
+   "verifier_disposition": "positive",
+   "verifier_errors": [
+    "unsupported_assertion",
+    "omitted_required_fact"
+   ],
+   "verifier": "verifier@0.4.0",
+   "judge_model": "claude-cli:claude-sonnet-5-5"
+  }
+ ]
+}

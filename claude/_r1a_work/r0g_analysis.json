@@ -1,0 +1,430 @@
+{
+ "export": "r0g_107runs-646e51cd_hi@0.10.0_gia@0.9.0_compact_16k.claude-cli-claude-sonnet-5-5",
+ "round": "r0g",
+ "unanswerable_cases": 21,
+ "buckets_by_family": {
+  "gia:B": {
+   "accepted": 31,
+   "held": 70,
+   "rejected": 3
+  },
+  "gia:C": {
+   "accepted": 24,
+   "held": 42,
+   "rejected": 6
+  },
+  "gia:E": {
+   "accepted": 6,
+   "held": 38,
+   "rejected": 2
+  },
+  "gia:L": {
+   "held": 19,
+   "rejected": 9
+  },
+  "hi:B": {
+   "accepted": 176,
+   "held": 30,
+   "rejected": 4
+  },
+  "hi:C": {
+   "accepted": 324,
+   "held": 14,
+   "rejected": 5
+  },
+  "hi:E": {
+   "accepted": 222,
+   "held": 10,
+   "rejected": 9
+  },
+  "hi:L": {
+   "accepted": 102,
+   "held": 29,
+   "rejected": 6
+  }
+ },
+ "report_buckets_by_family": {
+  "B": {
+   "accepted:INCOMPLETE": 11,
+   "accepted:COMPLETED": 11,
+   "held:INCOMPLETE": 10,
+   "held:COMPLETED": 1,
+   "rejected:INCOMPLETE": 3,
+   "rejected:COMPLETED": 1
+  },
+  "C": {
+   "accepted:COMPLETED": 17,
+   "accepted:INCOMPLETE": 11,
+   "held:INCOMPLETE": 3,
+   "rejected:COMPLETED": 2,
+   "rejected:INCOMPLETE": 3
+  },
+  "E": {
+   "accepted:INCOMPLETE": 11,
+   "accepted:COMPLETED": 3,
+   "held:INCOMPLETE": 1,
+   "rejected:COMPLETED": 2,
+   "rejected:INCOMPLETE": 6
+  },
+  "L": {
+   "accepted:INCOMPLETE": 2,
+   "held:INCOMPLETE": 5,
+   "held:COMPLETED": 2,
+   "rejected:INCOMPLETE": 5
+  }
+ },
+ "answerable_accepted_reports": {
+  "B": {
+   "COMPLETED": 11,
+   "INCOMPLETE": 11
+  },
+  "C": {
+   "COMPLETED": 17,
+   "INCOMPLETE": 11
+  },
+  "E": {
+   "COMPLETED": 0,
+   "INCOMPLETE": 7
+  },
+  "L": {
+   "COMPLETED": 0,
+   "INCOMPLETE": 0
+  }
+ },
+ "hole1_EL_completed": {
+  "E": "0/7",
+  "L": "0/0"
+ },
+ "hole1_EL_completed_cases": {},
+ "hole2_posthoc_rewrite_accepted_answerable": "23/57 = 40.4%",
+ "hole2_posthoc_by_family": {
+  "E": 6,
+  "C": 11,
+  "B": 6
+ },
+ "hole2_inloop_rewrite_accepted_answerable": "0/57",
+ "hole2_posthoc_rewrite_all_reports": "46/110（runs with status_rewrite.json: 46）",
+ "hole2_posthoc_rewrite_runs": [
+  "averimatec_e107_r0g_1",
+  "averimatec_e122_r0g_1",
+  "averimatec_e133_r0g_1",
+  "averimatec_e153_r0g_1",
+  "averimatec_e17_r0g_1",
+  "averimatec_e31_r0g_1",
+  "averimatec_e4_r0g_1",
+  "averimatec_e77_r0g_1",
+  "averimatec_e84_r0g_1",
+  "averimatec_e85_r0g_1",
+  "averimatec_e92_r0g_1",
+  "averimatec_e99_r0g_1",
+  "averimatec_l167_r0g_1",
+  "averimatec_l313_r0g_1",
+  "averimatec_l623_r0g_1",
+  "fmnv_c_5ah45BH3ZHU_r0g_1",
+  "fmnv_c__F3RKk9srG4_r0g_1",
+  "fmnv_c_doJ9iSPBUbg_r0g_1",
+  "fmnv_c_DQcHjdjCdMI_r0g_1",
+  "fmnv_c_jLK70KY4Zz4_r0g_1",
+  "fmnv_c_RXR0B1SxiU0_r0g_1",
+  "fmnv_c_UkbuN8grJmY_r0g_1",
+  "fmnv_c_v56J3P8QvT0_r0g_1",
+  "fmnv_c_X9tDERFjOMw_r0g_1",
+  "fmnv_c_XGC31lmdS6s_r0g_1",
+  "fmnv_c_zcEuCznPmYM_r0g_1",
+  "groundlie360_c_46581202_r0g_1",
+  "groundlie360_v1914403_r0g_1",
+  "groundlie360_v1929908_r0g_1",
+  "groundlie360_v1936701_r0g_1",
+  "groundlie360_v1949000_r0g_1",
+  "groundlie360_v1988600_r0g_1",
+  "qvhighlights_603_r0g_1",
+  "qvhighlights_6887_r0g_1",
+  "vcsl_pair_10_r0g_1",
+  "vcsl_pair_11_r0g_1",
+  "vcsl_pair_15_r0g_1",
+  "vcsl_pair_5_r0g_1",
+  "vcsl_pair_5_v9_r0g_1",
+  "vcsl_pair_7_r0g_1",
+  "vcsl_pair_8_r0g_1",
+  "videosham_1028_r0g_1",
+  "videosham_4080_r0g_1",
+  "videosham_4094_r0g_1",
+  "videosham_4112_r0g_1",
+  "videosham_4142_r0g_1"
+ ],
+ "hole3_round2_dispatch": {
+  "count": 3,
+  "by_family": {
+   "E": 1,
+   "B": 2
+  },
+  "runs": [
+   "averimatec_e4_r0g_1",
+   "vcsl_pair_1_r0g_1",
+   "vcsl_pair_9_r0g_1"
+  ]
+ },
+ "hole3_round2_plan_accepted": {
+  "count": 3,
+  "by_family": {
+   "E": 1,
+   "B": 2
+  }
+ },
+ "round2_scope_first_compare": {
+  "tasks": 0,
+  "did_compare": 0,
+  "runs": [],
+  "share": "0/0"
+ },
+ "c_visual_frames": {
+  "cases": 33,
+  "frames": 0,
+  "review": 0,
+  "both": 0,
+  "missing": [
+   {
+    "run": "fmnv_c_26aFQ2NQ52U_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_5ah45BH3ZHU_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c__0oux8o9MJo_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c__F3RKk9srG4_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_doJ9iSPBUbg_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_DQcHjdjCdMI_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_eC8ctVxSglU_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_FEbcNwkD7EU_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_i1rl1KhKIjE_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_jdZthfG9NwA_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_jLK70KY4Zz4_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_JltE_BRx7aM_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_RXR0B1SxiU0_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_S9uZ7tPnY80_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_TIu19O02X2c_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_ue4pMOsllxc_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_UkbuN8grJmY_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_v56J3P8QvT0_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_vumukVWqdZ4_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_X9tDERFjOMw_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_XGC31lmdS6s_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_YlabJFdFusI_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_ySOXzZQnQ_Q_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "fmnv_c_zcEuCznPmYM_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1815915_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1914403_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1921702_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1929908_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1936701_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1949000_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1958010_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1959500_r0g_1",
+    "frames": false,
+    "review": false
+   },
+   {
+    "run": "groundlie360_v1988600_r0g_1",
+    "frames": false,
+    "review": false
+   }
+  ],
+  "share_frames_and_review": "0/33"
+ },
+ "openrouter_slot_cost_usd": 6.3,
+ "runs": 107,
+ "E_answer_gt": {
+  "cases": 11,
+  "date_ok": 2,
+  "label_ok": 2,
+  "both_ok": 1,
+  "rows": [
+   {
+    "run": "averimatec_e107_r0g_1",
+    "date_ok": true,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e120_r0g_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e122_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e133_r0g_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e153_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e17_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e31_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e4_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e84_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e92_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e94_r0g_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   }
+  ]
+ }
+}
