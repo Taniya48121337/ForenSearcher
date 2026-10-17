@@ -104,9 +104,17 @@ class ImageSourceOpener:
             return OpenedMaterial("image", "absent")
         tried = 0
         last_error: SearchError | None = None
-        for url, method in page_image_candidates(page.content, page.final_url):
-            if tried >= 4:
+        attempts: list[tuple[str, str]] = []
+        for url, method in page_image_candidates(page.content, page.final_url)[:4]:
+            attempts.append((url, method))
+            # r1：图片网址取不到（r1s2 l623：BuzzFeed News 停刊后图片主机解析不了）再试互联网档案馆的原样存档
+            attempts.append((ARCHIVE_RAW + url, method + " (archived)"))
+        archived_for: set[str] = set()
+        for url, method in attempts:
+            if tried >= 8:
                 break
+            if url.startswith(ARCHIVE_RAW) and url[len(ARCHIVE_RAW):] not in archived_for:
+                continue                      # 原网址取到了（或图太小），不再取存档
             tried += 1
             try:
                 resource = await self.http.fetch(url, maximum_bytes=self.policy.maximum_image_bytes)
@@ -115,6 +123,8 @@ class ImageSourceOpener:
                     width, height, image_format = image.width, image.height, image.format
             except SearchFailure as exc:
                 last_error = exc.error
+                if not url.startswith(ARCHIVE_RAW):
+                    archived_for.add(url)     # 原网址取不到：下一个就试它的存档
                 continue
             except (UnidentifiedImageError, OSError):
                 last_error = SearchError("extract", "UNSUPPORTED_FORMAT", "page image is not a complete supported image")
@@ -127,12 +137,14 @@ class ImageSourceOpener:
             label = f"main image of the page ({method}): {candidate.search_title or page.final_url}"[:300]
             return OpenedMaterial("image", "ready", content, resource.content, Image.MIME.get(image_format or "", resource.media_type),
                                   "." + (image_format or "bin").lower().replace("jpeg", "jpg"), ("image",), label,
-                                  f"page main image ({method})", f"SEARCH/open/page_main_image:{method}+Pillow", "source_material")
+                                  f"page main image ({method})",
+                                  f"SEARCH/open/page_main_image:{method.replace(' (archived)', '+archive')}+Pillow", "source_material")
         if last_error is not None:
             return OpenedMaterial("image", "failed", error=last_error)
         return OpenedMaterial("image", "absent")
 
 
+ARCHIVE_RAW = "https://web.archive.org/web/2id_/"     # 档案馆原样返回最近一次存档的字节（id_ = 不改写）
 _SKIP_IMAGE = ("logo", "icon", "sprite", "avatar", "pixel", "spacer", "badge", "/ads/", "doubleclick", "gravatar", "emoji",
                "placeholder", "blank.", "loading")
 

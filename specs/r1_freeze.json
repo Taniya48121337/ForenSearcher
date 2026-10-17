@@ -23,7 +23,7 @@
     "instruction_mode": "teacher"
   },
   "tool_layer": {
-    "hash": "sha256:67a792e4707ccaa37bc7312405291e9040ff7fd0a12ebdf74d635bc515dd409e",
+    "hash": "sha256:fb74a40bdf985954328252e9d7e9bcc51d906a7f7870c67572d806cc434c698f",
     "paths": [
       "hi/workspace.py",
       "inspect",
@@ -34,11 +34,11 @@
     "groups": {
       "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
       "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
-      "search": "sha256:fa641e34d7f9213d1f5833d29a8445d0ed9a640be0de1bad9e0b6dc27a60cf02",
+      "search": "sha256:09fc31c3d5fc499064a2a2c213ce4247b4bfb19dd2656e211488e3edee6eb68f",
       "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
     },
     "line_endings": "crlf_to_lf",
-    "computed_at": "2026-10-17T13:29:44",
+    "computed_at": "2026-10-17T14:54:32",
     "status": "draft（当前 r1 分支，含 r1-image-search 的 search 层改动）",
     "tag": null,
     "r0_hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4"
@@ -127,6 +127,10 @@
     {
       "date": "2026-10-17",
       "change": "walker-r1@2026-10-17c：HiState 从 SEARCH 结果材料登记卡片（r1s2 l208 第 2 轮读到的页不能引）；工具层不变"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17d：比对优先取了页内主图的页面；工具层页内主图取不到时试档案馆存档；工具层 hash 重算"
     }
   ],
   "teacher": {
@@ -243,7 +247,7 @@
     "note_r1": "10-17 r1 预演之二：教师照抄 r0（同一分槽表、同一主 / 备用模型）；oracle_generator 的槽表仍从 specs/r0_freeze.json 读。"
   },
   "walker": {
-    "policy_version": "walker-r1@2026-10-17c",
+    "policy_version": "walker-r1@2026-10-17d",
     "doc": "claude/r1_walker与search整合_20261017.md",
     "rules": [
       "E2 以图搜 output_type=image；读过的页面 E6 compare_media(E1, 页面上的图)；没比对 / 没对上只写候选；E7 交报告前补看对照图",
@@ -252,7 +256,8 @@
       "C：video_structure + 按镜头取帧；交报告前整段转写 + 场景帧放回附图；画面类声明一条 Finding 写帧里有没有那件事",
       "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）",
       "（17b，负责人定 (a)+(c)）读过但没有图的页面先 SEARCH source=R output_type=image 取页内主图（E6a / L6a）再比；L 族比对 ≤ 2 次；L4b 以图搜之后必做一次文字搜（S1 place_text），第 1 个结果页必读",
-      "（17c）SEARCH 结果材料里的 E 也登记成卡片，第 2 轮读过的页面能被 S4 引用"
+      "（17c）SEARCH 结果材料里的 E 也登记成卡片，第 2 轮读过的页面能被 S4 引用",
+      "（17d）特意取了页内主图的页面先比；页内主图网址取不到时试互联网档案馆原样存档（web.archive.org/web/2id_/）"
     ],
     "search_policy": {
       "E": {

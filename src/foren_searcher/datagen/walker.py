@@ -2346,8 +2346,11 @@ def _compare_page_step(state: HiState, memory: dict[str, Any], image: str | None
     opened = {k[5:] for k in issued if k.startswith("pimg_")}
     order = [pg["evidence_id"] for _, pg in dated_pages]
 
-    def rank(p: dict[str, Any]) -> tuple[bool, int]:
-        return p["evidence_id"] not in order, order.index(p["evidence_id"]) if p["evidence_id"] in order else 0
+    def rank(p: dict[str, Any]) -> tuple[bool, bool, int]:
+        # r1：特意取了页内主图的页面（文字搜到、写着拍摄地 / 出处的那页）先比——r1s2 l623 取到了 BuzzFeed 的图，比对名额却先给了
+        # 以图搜的副本，BuzzFeed 那张没比上
+        return (p.get("candidate") not in opened, p["evidence_id"] not in order,
+                order.index(p["evidence_id"]) if p["evidence_id"] in order else 0)
 
     todo = sorted((p for p in pages if p["evidence_id"] in read_ids and p.get("image") and p["image"] not in done
                    and p["image"] != image), key=rank)
