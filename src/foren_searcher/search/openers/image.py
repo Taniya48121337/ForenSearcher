@@ -37,6 +37,9 @@ class ImageSourceOpener:
         source_was_not_an_image = False
         if "image" in cached_materials:
             values.append(OpenedMaterial("image", "not_requested"))
+        elif not image_url and candidate.candidate_type in {"page", "document", "unknown"}:
+            # r1（10-17，负责人定 (a)）：文字搜到的网页没有引擎报的原图——取页内主图（og:image → twitter:image → 正文第一张大图）
+            values.append(await self._page_main_image(candidate))
         elif image_url:
             try:
                 resource = await self.http.fetch(image_url, maximum_bytes=self.policy.maximum_image_bytes)
@@ -87,3 +90,97 @@ class ImageSourceOpener:
         else:
             values.append(OpenedMaterial("thumbnail", "not_requested"))
         return OpenedSource(final_url, tuple(values))
+
+    async def _page_main_image(self, candidate: CandidateSource) -> OpenedMaterial:
+        """页内主图：按 og:image、twitter:image、link rel=image_src、正文第一张大图（≥ 200×150 像素）的顺序取第一张能下载、
+        能完整解码的图。材料 content 记图片网址、所在页面、抽取方式；取不到记 absent / failed。"""
+
+        try:
+            page = await self.http.fetch(candidate.source_url, maximum_bytes=self.policy.maximum_document_bytes)
+        except SearchFailure as exc:
+            return OpenedMaterial("image", "failed", error=exc.error)
+        if not (page.media_type in {"text/html", "application/xhtml+xml"}
+                or page.content.lstrip()[:15].lower().startswith((b"<!doctype html", b"<html"))):
+            return OpenedMaterial("image", "absent")
+        tried = 0
+        last_error: SearchError | None = None
+        for url, method in page_image_candidates(page.content, page.final_url):
+            if tried >= 4:
+                break
+            tried += 1
+            try:
+                resource = await self.http.fetch(url, maximum_bytes=self.policy.maximum_image_bytes)
+                with Image.open(io.BytesIO(resource.content)) as image:
+                    image.load()
+                    width, height, image_format = image.width, image.height, image.format
+            except SearchFailure as exc:
+                last_error = exc.error
+                continue
+            except (UnidentifiedImageError, OSError):
+                last_error = SearchError("extract", "UNSUPPORTED_FORMAT", "page image is not a complete supported image")
+                continue
+            if min(width, height) < 150 or max(width, height) < 200:
+                last_error = SearchError("extract", "EXTRACT_FAILED", "page image is too small to be the main picture")
+                continue
+            content = json.dumps({"width": width, "height": height, "format": image_format, "source_url": resource.final_url,
+                                  "page_url": page.final_url, "extraction": method}, ensure_ascii=False)
+            label = f"main image of the page ({method}): {candidate.search_title or page.final_url}"[:300]
+            return OpenedMaterial("image", "ready", content, resource.content, Image.MIME.get(image_format or "", resource.media_type),
+                                  "." + (image_format or "bin").lower().replace("jpeg", "jpg"), ("image",), label,
+                                  f"page main image ({method})", f"SEARCH/open/page_main_image:{method}+Pillow", "source_material")
+        if last_error is not None:
+            return OpenedMaterial("image", "failed", error=last_error)
+        return OpenedMaterial("image", "absent")
+
+
+_SKIP_IMAGE = ("logo", "icon", "sprite", "avatar", "pixel", "spacer", "badge", "/ads/", "doubleclick", "gravatar", "emoji",
+               "placeholder", "blank.", "loading")
+
+
+def page_image_candidates(html: bytes, base_url: str) -> list[tuple[str, str]]:
+    """页内主图的候选网址（按优先级，去重）：og:image（含 og:image:secure_url / og:image:url）→ twitter:image → link rel=image_src
+    → 正文（article / main / body）里第一批 <img>（跳过 data:、svg、logo / icon / 头像之类；声明了宽高且小于 200 的跳过）。"""
+
+    from urllib.parse import urljoin
+
+    import lxml.html
+
+    try:
+        doc = lxml.html.fromstring(html)
+    except (ValueError, TypeError, lxml.etree.ParserError):  # type: ignore[attr-defined]
+        return []
+    out: list[tuple[str, str]] = []
+    seen: set[str] = set()
+
+    def add(raw: str | None, method: str) -> None:
+        raw = (raw or "").strip()
+        if not raw or raw.startswith("data:"):
+            return
+        url = urljoin(base_url, raw)
+        low = url.lower()
+        if not low.startswith(("http://", "https://")) or low.split("?", 1)[0].endswith(".svg") or url in seen:
+            return
+        if method == "first_large_img" and any(s in low for s in _SKIP_IMAGE):
+            return
+        seen.add(url)
+        out.append((url, method))
+
+    for prop in ("og:image:secure_url", "og:image:url", "og:image"):
+        for node in doc.xpath(f'//meta[@property="{prop}" or @name="{prop}"]'):
+            add(node.get("content"), "og:image")
+    for node in doc.xpath('//meta[@name="twitter:image" or @property="twitter:image" or @name="twitter:image:src"]'):
+        add(node.get("content"), "twitter:image")
+    for node in doc.xpath('//link[@rel="image_src"]'):
+        add(node.get("href"), "image_src")
+    scope = (doc.xpath("//article") or doc.xpath("//main") or doc.xpath("//body") or [doc])[0]
+    for node in scope.iter("img"):
+        dims = []
+        for attr in ("width", "height"):
+            value = str(node.get(attr) or "").strip().rstrip("px")
+            dims.append(int(value) if value.isdigit() else None)
+        if any(d is not None and d < 200 for d in dims):
+            continue
+        add(node.get("src") or node.get("data-src") or node.get("data-original") or node.get("data-lazy-src"), "first_large_img")
+        if sum(1 for _, m in out if m == "first_large_img") >= 4:
+            break
+    return out
