@@ -159,7 +159,7 @@ def test_l_report_requires_comparison_verdict():
 
 def test_l_reference_photos_ranked_by_query_words():
     # r1s l623：查询 "U.S. Capitol building interior" 的前 3 张是拉链零件、字母 U 剪贴画；相关的 "State Capitol Buildings Interior" 在后面
-    rdir = ROOT / "experiments" / "sft_data" / "runs" / "averimatec_l623_r1s_1" / "requests" / "request_0004"
+    rdir = ROOT / "experiments" / "sft_data" / "runs" / "averimatec_l623_r1s_1.failed-pass1-20261017" / "requests" / "request_0004"
     if not rdir.is_dir():
         pytest.skip("r1s l623 not present")
     req = json.loads((rdir / "request.json").read_text(encoding="utf-8"))
@@ -211,3 +211,40 @@ def test_merged_occurrence_notice_is_english(monkeypatch):
 
     assert prompts_en.MERGED_OCCURRENCES_NOTICE.startswith("This entry merges several executed operations")
     assert all(ord(c) < 128 for c in prompts_en.MERGED_OCCURRENCES_NOTICE)
+
+
+# ---------------------------------------------------------------------------- 10-17 负责人定 (a)+(c)
+
+def test_page_image_candidates_order_and_filters():
+    from foren_searcher.search.openers.image import page_image_candidates
+
+    html = (b'<html><head><meta property="og:image" content="/a/main.jpg"><meta name="twitter:image" content="https://x.org/t.jpg">'
+            b'</head><body><article><img src="logo.png"><img src="s.jpg" width="50"><img data-src="/big.jpg" width="800">'
+            b'<img src="data:image/png;base64,AAAA"><img src="/v.svg"></article></body></html>')
+    assert page_image_candidates(html, "https://news.org/story/1") == [
+        ("https://news.org/a/main.jpg", "og:image"), ("https://x.org/t.jpg", "twitter:image"),
+        ("https://news.org/big.jpg", "first_large_img")]
+
+
+def test_page_image_from_later_open_is_merged_into_page_entry():
+    text = {"request": {"input_type": "text", "query": "q", "output_type": "text"}, "details": {"results": [
+        {"candidate_id": "R5", "source_url": "https://n.org/a", "page_evidence_id": "E25", "materials": []}]}}
+    opened = {"request": {"source": "R5", "output_type": "image"}, "details": {"results": [
+        {"candidate_id": "R5", "source_url": "https://n.org/a", "materials": [
+            {"kind": "image", "status": "ready", "evidence": [{"evidence_id": "E40", "modalities": ["image"]}]},
+            {"kind": "page", "status": "ready", "evidence": [{"evidence_id": "E25", "modalities": ["text"]}]}]}]}}
+    pages = w._search_pages([text, opened])
+    assert len(pages) == 1 and pages[0]["image"] == "E40"
+
+
+def test_open_page_image_then_compare_counts_against_l_cap():
+    state = SimpleNamespace(inspect_ops={"compare_media"}, remaining=6, actions={"SEARCH"}, observations=[], cards={},
+                            compare_params=lambda **kw: kw)
+    pages = [{"evidence_id": "E25", "candidate": "R5", "url": "https://n.org/a", "image": None}]
+    memory: dict = {}
+    got = w._compare_page_step(state, memory, "E1", pages, {"E25"}, {}, [], cap=2, family="L")
+    assert got.rule == "L6a_open_page_image" and got.output["arguments"] == {"source": "R5", "output_type": "image"}
+    assert w._compare_page_step(state, memory, "E1", pages, {"E25"}, {}, [], cap=2, family="L") is None   # 只开一次
+    pages[0]["image"] = "E40"
+    got = w._compare_page_step(state, memory, "E1", pages, {"E25"}, {}, [], cap=2, family="L")
+    assert got.rule == "E6_compare_page_image" and got.output["arguments"]["targets"] == ["E1", "E40"]

@@ -639,7 +639,7 @@ def freeze_job(args: argparse.Namespace) -> int:
 
 # r1（10-17，r1 预演之二）walker 策略版本：E 族以图搜取页面上的图并与 E1 比对、没比对的只写候选；L 族报告必须写参考图比对结论；
 # C 族按场景取帧 + 整段转写交给 S4；第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0）
-WALKER_POLICY_VERSION = "walker-r1@2026-10-17"
+WALKER_POLICY_VERSION = "walker-r1@2026-10-17b"
 
 
 def r1_search_policy(case_file: str, round_tag: str, mode: str | None) -> dict[str, Any] | None:

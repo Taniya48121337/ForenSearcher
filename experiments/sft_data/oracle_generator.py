@@ -1175,6 +1175,31 @@ class OracleGenerator(ModelImageInputs):
                 raw = self._codex(directory, actor_dir, "S1_query_retry", base_prompt + suffix
                                   + '\nYour previous output had no usable "query" string. Return the JSON object again.',
                                   image_paths, slots, mock)
+        elif slot.get("name") == "S1_query" and slot.get("purpose") == "place_text":
+            # r1（10-17，负责人定 (c)）：L 族以图搜之后必做一次文字搜——找讲"这张照片实际拍于哪里"的网页
+            suffix = (
+                "\n\nHOST DECISION FOR THIS TURN (language slot S1): the host has decided that this turn is a text SEARCH for "
+                "web pages (input_type=text, output_type=text) that report where the given picture was actually taken or "
+                "show that it is not the place the claim names. Write ONE search query.\n"
+                "- Build it from clues visible in this state: text read from the picture (the texts listed on the OCR record's "
+                "observation line, copied in their own language and script), words from the titles of the pages that the "
+                "reverse image search returned, and place clues; add the claim's key words only when they help. The claim: %s\n"
+                "- Earlier queries: %s. The new query must differ from them.\n"
+                "- Never write E/R/W IDs, 'the given image', 'reverse image search' or 'fact check'; search engines do not know them.\n"
+                'Return only {"query": "...", "rationale": "one sentence (at most 40 words) citing the E or R IDs the clues come from"}.'
+            ) % (json.dumps(str(slot.get("claim") or ""), ensure_ascii=False),
+                 json.dumps(list(slot.get("previous") or []), ensure_ascii=False))
+            claim_words = [w for w in re.findall(r"[A-Z][\w'-]+", str(slot.get("claim") or ""))][:6]
+            mock = {"query": " ".join(claim_words + ["photo location"]) or "photo location", "rationale": "[mock]"}
+            raw = self._codex(directory, actor_dir, "S1_query", base_prompt + suffix, image_paths, slots, mock)
+            try:
+                ok = bool(str(extract_json_object(raw).get("query") or "").strip())
+            except Exception:  # noqa: BLE001
+                ok = False
+            if not ok:
+                raw = self._codex(directory, actor_dir, "S1_query_retry", base_prompt + suffix
+                                  + '\nYour previous output had no usable "query" string. Return the JSON object again.',
+                                  image_paths, slots, mock)
         elif slot.get("name") == "S1_query":
             previous = slot.get("previous") or []
             suffix = (

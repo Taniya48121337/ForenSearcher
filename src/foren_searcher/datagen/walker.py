@@ -1935,9 +1935,20 @@ def _search_pages(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
     pages: list[dict[str, Any]] = []
     seen: set[str] = set()
+    by_candidate: dict[str, dict[str, Any]] = {}
     for search in searches:
         for result in (search.get("details") or {}).get("results") or []:
             page = _page_of(result)
+            cand = result.get("candidate_id")
+            if not page and cand in by_candidate:
+                page = by_candidate[cand]["evidence_id"]          # r1：SEARCH source=R output_type=image 的结果里 page 是缓存的
+            if page and page in seen:
+                # r1：之后对同一页 SEARCH source=R output_type=image 取到了页内主图——补进先前那条
+                image, image_kind = _image_of(result)
+                entry = next(p for p in pages if p["evidence_id"] == page)
+                if image and not entry.get("image"):
+                    entry.update(image=image, image_kind=image_kind)
+                continue
             if page and page not in seen:
                 seen.add(page)
                 image, image_kind = _image_of(result)
@@ -1945,6 +1956,8 @@ def _search_pages(searches: list[dict[str, Any]]) -> list[dict[str, Any]]:
                               "title": result.get("search_title"), "snippet": result.get("search_snippet"),
                               "content_match": result.get("content_match") or {}, "image": image, "image_kind": image_kind,
                               "verified": thumb_verdict(result.get("search_snippet"))})
+                if cand:
+                    by_candidate[str(cand)] = pages[-1]
     return pages
 
 
@@ -2256,6 +2269,7 @@ def _earliest_date(line: str) -> str | None:
 # 这个网页上的那张图 + 页面 + 缩略图），读过的页面就用 compare_media 图片模式把它的图与 E1 比对（对齐后的逐像素差异 + 三栏
 # 对照图），比对结果是证据记录；没比对过的页面 S4 只能写"候选"。
 _MAX_IMAGE_COMPARES = 3
+_MAX_L_COMPARES = 2       # r1（负责人定）：L 族每个工作区比对 ≤ 2 次（含取页内主图），给文字搜和读页留回合
 _SAME_AREA = 0.02          # 对齐后差异面积 ≤ 2%：同一张图，没有可见的像素差异
 _EDITED_AREA = 0.35        # ≤ 35%：同一张图，有局部差异（裁切 / 加框 / 贴字 / 局部改动，差异框指出在哪）；更大：不是同一张
 _AREA = re.compile(r"(?:changed area|measured)\s+([\d.]+)\s*%", re.I)
@@ -2310,22 +2324,37 @@ _CLASS_TEXT = {"same": "the same picture, no pixel difference above the noise th
 
 def _compare_page_step(state: HiState, memory: dict[str, Any], image: str | None, pages: list[dict[str, Any]],
                        read_ids: set[str], compares: dict[str, dict[str, Any]],
-                       dated_pages: list[tuple[str, dict[str, Any]]]) -> Decision | None:
-    """E6：读过、带这个网页上那张图（或缩略图）、还没比过的页面 → compare_media(E1, 那张图)。有日期的页面按日期先比，
-    每个工作区最多比 _MAX_IMAGE_COMPARES 次。"""
+                       dated_pages: list[tuple[str, dict[str, Any]]], cap: int = 3, family: str = "E") -> Decision | None:
+    """E6 / L6：读过、带这个网页上那张图（或缩略图）、还没比过的页面 → compare_media(E1, 那张图)。有日期的页面按日期先比，
+    每个工作区最多比 cap 次（E 3、L 2）。r1（负责人定 (a)）：读过的页面没有图（文字搜到的）→ 先 SEARCH source=R
+    output_type=image 取页内主图（E6a / L6a），下一轮再比；打开也算进 cap。"""
 
     if not image or "compare_media" not in state.inspect_ops or state.remaining < 2:
         return None
     issued = _issued(memory)
     done = {k for k in compares} | {k[4:] for k in issued if k.startswith("cmp_")}
-    if len(done) >= _MAX_IMAGE_COMPARES:
-        return None
+    opened = {k[5:] for k in issued if k.startswith("pimg_")}
     order = [pg["evidence_id"] for _, pg in dated_pages]
+
+    def rank(p: dict[str, Any]) -> tuple[bool, int]:
+        return p["evidence_id"] not in order, order.index(p["evidence_id"]) if p["evidence_id"] in order else 0
+
     todo = sorted((p for p in pages if p["evidence_id"] in read_ids and p.get("image") and p["image"] not in done
-                   and p["image"] != image),
-                  key=lambda p: (p["evidence_id"] not in order, order.index(p["evidence_id"]) if p["evidence_id"] in order else 0))
-    if not todo:
+                   and p["image"] != image), key=rank)
+    if len(done) >= cap:
         return None
+    if not todo:
+        pending = [p for p in pages if p.get("candidate") in opened and not p.get("image")]
+        need = sorted((p for p in pages if p["evidence_id"] in read_ids and not p.get("image") and p.get("candidate")
+                       and p["candidate"] not in opened and not _social(p.get("url"))), key=rank)
+        if not need or len(done) + len(pending) >= cap or state.remaining < 4 or "SEARCH" not in state.actions:
+            return None
+        page = need[0]
+        _mark(memory, f"pimg_{page['candidate']}")
+        return Decision("action", f"{family}6a_open_page_image", {"action": "SEARCH", "arguments": {
+            "source": page["candidate"], "output_type": "image"}, "focus_evidence_ids": [],
+            "rationale": f"{page['evidence_id']} was read; fetch the main picture of that page ({page['candidate']}) to compare it "
+                         f"with {image}."}, branch="SEARCH open image")
     page = todo[0]
     _mark(memory, f"cmp_{page['image']}")
     what = "thumbnail" if page.get("image_kind") == "thumbnail" else "copy of the picture"
@@ -2661,10 +2690,19 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
     # 以图搜的 geologyscience 页（写着 Peru）没读，S3 去读了声明地点 Joshimath 的新闻。前 2 个没读的以图搜结果页先读
     reverse_pages = [p for p in _search_pages(reverse) if not _social(p.get("url"))]
     read_reverse = [p for p in reverse_pages if p["evidence_id"] in read_ids]
-    if len(read_reverse) < 2:
+    # r1（负责人定 (c)）：以图搜之后必做的那条文字搜（L4b）——它的第 1 个结果页也必读；有它时以图搜结果页只必读 1 个
+    place_searches = [s for s in queries if (s.get("request") or {}).get("input_type") == "text"
+                      and (s.get("request") or {}).get("output_type") == "text"]
+    place_pages = [p for p in _search_pages(place_searches[:1]) if not _social(p.get("url"))]
+    quota = 1 if place_pages else 2
+    if len(read_reverse) < quota:
         first = [{**p, "why": "it carries the picture (reverse image search)"} for p in reverse_pages
-                 if p["evidence_id"] not in read_ids][:2 - len(read_reverse)]
+                 if p["evidence_id"] not in read_ids][:quota - len(read_reverse)]
         must = first + [p for p in must if p["evidence_id"] not in {f["evidence_id"] for f in first}]
+    if place_pages and not any(p["evidence_id"] in read_ids for p in place_pages):
+        top = {**place_pages[0], "why": "top result of the text search for where the picture was taken"}
+        must = [m for m in must if m["evidence_id"] != top["evidence_id"]]
+        must.insert(len([m for m in must if "reverse image search" in str(m.get("why"))]), top)
     side = _existing(state, [r["evidence_id"] for r in refs], max(1, min(3, state.limit - 1)))
     refs_shown = bool(side) and all(e in state.attached for e in [image, *side])
     compares = image_compares(state, image)
@@ -2701,7 +2739,7 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                    "not be compared with the claimed place and why (no reference photo was found)")),
                  "pages read: " + (", ".join(sorted(read_ids)) or "none"),
                  "say where the pages that carry the picture say it was taken, citing them; if they disagree or none says, "
-                 "state that the place is not established"] + _image_match_notes(state, image, reverse_pages, read_ids, compares) \
+                 "state that the place is not established"] + _image_match_notes(state, image, pages, read_ids, compares) \
             + _ocr_notes(state)
         decision = _report(state, memory, rule, status=status, reason=reason, notes=notes,
                            branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
@@ -2711,7 +2749,7 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
              "message": (f"no finding states the outcome of comparing {image} with the reference photos {', '.join(side)} "
                          f"(match / no match / cannot tell and why), citing them" if refs_shown else
                          "no finding says whether the given picture could be compared with the claimed place, and why not")}] \
-            + _compare_required(image, reverse_pages, read_ids, compares)
+            + _compare_required(image, pages, read_ids, compares)
         return decision
 
     if state.remaining <= 0:
@@ -2741,14 +2779,23 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
             "input_type": "image", "query": image, "output_type": "image"}, "focus_evidence_ids": [image],
             "rationale": f"Find web pages that carry {image}, with each page's copy of it; they may say where it was actually taken."},
             branch="SEARCH image image")
+    # L4b（r1，负责人定 (c)）：以图搜之后必做一次文字搜（OCR / 标题文字 + 地点线索），不交给 S3 选
+    if reverse and not place_searches and "place_text" not in issued and state.remaining >= 5:
+        _mark(memory, "place_text")
+        return Decision("query_slot", "L4b_place_text_search", {"action": "SEARCH"}, branch="SEARCH text page",
+                        slot={"name": "S1_query", "purpose": "place_text", "input_type": "text", "output_type": "text",
+                              "previous": [_query_text(s.get("request") or {}) for s in ref_searches], "focus": [image],
+                              "claim": claim[:400]})
     step = _pdf_pages_step(state, memory, read_ids)
     if step is not None and state.remaining >= 2:
         return step
     # L6（r1）：读过的以图搜页面——它上面那张图与给定照片比对，"这页说的拍摄地"才算这张照片的（r1s l623 第 1 轮核验：
     # "does not confirm that the photo in the article is the same image"）
-    step = _compare_page_step(state, memory, image, reverse_pages, read_ids, compares, []) if state.remaining >= 3 else None
+    step = (_compare_page_step(state, memory, image, pages, read_ids, compares, [], cap=_MAX_L_COMPARES, family="L")
+            if state.remaining >= 3 else None)
     if step is not None:
-        step.rule = "L6_compare_page_image"
+        if step.rule == "E6_compare_page_image":
+            step.rule = "L6_compare_page_image"
         return step
     unread = [p for p in pages if p["evidence_id"] not in read_ids]
     text_queries = [s for s in queries if (s.get("request") or {}).get("output_type") == "text"

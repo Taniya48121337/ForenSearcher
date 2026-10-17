@@ -23,7 +23,7 @@
     "instruction_mode": "teacher"
   },
   "tool_layer": {
-    "hash": "sha256:04590a14dbed932b11b42a650ef0ea64470201ff2207877538c9e27e2d3a4e20",
+    "hash": "sha256:67a792e4707ccaa37bc7312405291e9040ff7fd0a12ebdf74d635bc515dd409e",
     "paths": [
       "hi/workspace.py",
       "inspect",
@@ -34,11 +34,11 @@
     "groups": {
       "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
       "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
-      "search": "sha256:54f4d62e6ff414963aa2a837f9cd88ba8c35e5e088c54571826be78ab8f1fc70",
+      "search": "sha256:fa641e34d7f9213d1f5833d29a8445d0ed9a640be0de1bad9e0b6dc27a60cf02",
       "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
     },
     "line_endings": "crlf_to_lf",
-    "computed_at": "2026-10-17T03:01:26",
+    "computed_at": "2026-10-17T13:29:44",
     "status": "draft（当前 r1 分支，含 r1-image-search 的 search 层改动）",
     "tag": null,
     "r0_hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4"
@@ -119,6 +119,10 @@
     {
       "date": "2026-10-17",
       "change": "r1 预演之二：specs hi@0.11.0 / gia@0.9.0 + spec_hash；checks / teacher 照抄 r0；walker 策略 walker-r1@2026-10-17；工具层（search 第二家引擎缩略图、notice 英文）hash 重算"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17b：页内主图抽取（工具层 search/openers/image.py）+ E6a/L6a + L4b 必做文字搜 + L 比对 ≤ 2；工具层 hash 重算"
     }
   ],
   "teacher": {
@@ -235,14 +239,15 @@
     "note_r1": "10-17 r1 预演之二：教师照抄 r0（同一分槽表、同一主 / 备用模型）；oracle_generator 的槽表仍从 specs/r0_freeze.json 读。"
   },
   "walker": {
-    "policy_version": "walker-r1@2026-10-17",
+    "policy_version": "walker-r1@2026-10-17b",
     "doc": "claude/r1_walker与search整合_20261017.md",
     "rules": [
       "E2 以图搜 output_type=image；读过的页面 E6 compare_media(E1, 页面上的图)；没比对 / 没对上只写候选；E7 交报告前补看对照图",
       "缩略图哈希 no match 只降权不排除；第一家引擎缩略图没对上试第二家（search 层）",
       "L 报告必须写参考图比对结论（required_findings 进 S4 合同校验）",
       "C：video_structure + 按镜头取帧；交报告前整段转写 + 场景帧放回附图；画面类声明一条 Finding 写帧里有没有那件事",
-      "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）"
+      "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）",
+      "（17b，负责人定 (a)+(c)）读过但没有图的页面先 SEARCH source=R output_type=image 取页内主图（E6a / L6a）再比；L 族比对 ≤ 2 次；L4b 以图搜之后必做一次文字搜（S1 place_text），第 1 个结果页必读"
     ],
     "search_policy": {
       "E": {
@@ -264,5 +269,5 @@
     },
     "inloop_sufficiency": true
   },
-  "updated_at": "2026-10-17T03:01:23"
+  "updated_at": "2026-10-17T13:29:41"
 }

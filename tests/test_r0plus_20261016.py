@@ -118,12 +118,12 @@ def test_l_references_clause_only_for_location_points():
     assert w.inloop_actions(["x"], hints, "B") == []
 
 
-def _replay(case: str, upto: str) -> tuple:
+def _replay(case: str, upto: str, memory: dict | None = None) -> tuple:
     run = ROOT / "experiments" / "sft_data" / "runs" / f"averimatec_{case}_r0g_1" / "requests"
     if not run.is_dir():
         import pytest
         pytest.skip("r0g run not present")
-    memory: dict = {}
+    memory = {} if memory is None else memory
     got = None
     for rd in sorted(run.glob("request_*"), key=lambda p: int(p.name.split("_")[-1])):
         req = json.loads((rd / "request.json").read_text(encoding="utf-8"))
@@ -137,7 +137,8 @@ def _replay(case: str, upto: str) -> tuple:
 
 def test_l_reads_reverse_image_pages_first_and_keeps_report_closed():
     # r0g l208：以图搜之后（request_0006），以图搜结果页 E19（geologyscience，写着 Peru）排在未读清单最前，不许交报告
-    got, _ = _replay("l208", "request_0006")
+    # 10-17 r1（负责人定 (c)）：以图搜之后先必做一次文字搜（L4b）；重放的 r0g 轨迹里没有这一步，预先记成已做过再看选页
+    got, _ = _replay("l208", "request_0006", memory={"issued": ["place_text"]})
     assert got.kind == "next_slot" and "report" not in got.slot["choices"]
     assert got.slot["unread"][0]["evidence_id"] == "E19"
     assert got.slot["report_decision"]["rule"] == "L9_report"
