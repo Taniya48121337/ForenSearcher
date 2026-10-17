@@ -99,6 +99,16 @@ class HiState:
         for obs in self.observations:
             for card in obs.get("evidence") or []:
                 self._add_card(card)
+        # r1（10-17）：SEARCH 结果材料里的 E（页面、页内主图、缩略图）也是学生看过的卡片。以前只认 evidence_view 与 INSPECT 观察的
+        # evidence：卡片清单满了（max_evidence_cards=12）之后，第 2 轮打开再读的页面不在卡片里，S4 的可引 E 清单里没有它——
+        # r1s2 l208 W2-1 读到 geologyscience 页（写着 Peru）却"按 evidence-ID 限制不能引"
+        if "SEARCH" in self.actions:
+            for search in _search_obs(self):
+                for result in (search.get("details") or {}).get("results") or []:
+                    for material in result.get("materials") or []:
+                        if material.get("status") in ("ready", "partial"):
+                            for card in material.get("evidence") or []:
+                                self._add_card(card)
         # 卡片清单有上限（max_evidence_cards），早先看到的卡片存进 memory，后面照样认得这些 E
         known = self.memory.setdefault("cards", {})
         for eid, card in self.cards.items():
