@@ -1,0 +1,117 @@
+{
+  "case_id": "averimatec:e85",
+  "dataset": "averimatec",
+  "source_id": "e85",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定图片随以下声明流传：\"Photo shows the ongoing protests against pension reforms in France.\"（声明日期：2023-03-26）。依据证据尽量查明这张图片最早在哪里、何时发布，以及它的原始语境是否与声明相符。引用所依据的来源与日期，说明未能确定的内容。",
+  "task_text_en": "The given image circulated with the following claim: \"Photo shows the ongoing protests against pension reforms in France.\" (claim date: 2023-03-26). Find where and when this image was first published, as far as the evidence allows, and whether its original context matches the claim. Cite the sources and dates you rely on, and state what could not be determined.",
+  "family_key": "averimatec:85",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d3/averimatec_e85.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Photo shows the ongoing protests against pension reforms in France."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "indiatoday.in/fact-check/story/not-french-protests-photo-shows-israeli-demonstrations-against-netanyahu-govt-2354209-2023-03-31"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "这张图片能查到的最早一份（网站、页面）及其日期，以及日期的性质（页面声明 / 上传 / 存档，只能说明\"不晚于\"）",
+      "must_cite": true,
+      "text_en": "The earliest copy of the image that can be found (site, page) and its date, with what kind of date it is (declared by the page, upload, archive capture; it only shows 'no later than')"
+    },
+    {
+      "id": "REQ2",
+      "text": "最早那份所说的图片内容（地点、时间、事件）与声明是否相符",
+      "must_cite": true,
+      "text_en": "Whether what the earliest copy says the picture shows (place, time, event) matches the claim"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "dates",
+      "description": "SEARCH 日期查询的结果（页面声明 / 上传 / 最早存档）",
+      "acquired_by": "SEARCH/dates",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的、载有这张图片的页面",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "earliest_source",
+      "description": "标注的最早来源：cutt.ly/O42Ppzg（2023-03-05）",
+      "url_pattern": "cutt.ly/o42ppzg*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all:dates,external; any_one_of:earliest_source,dates",
+  "checks": [
+    {
+      "kind": "date_in_range",
+      "params": {
+        "min": "2023-02-02",
+        "max": "2023-09-04"
+      },
+      "note": "标注：最早发布 2023-03-05（Which website was the image originally published on?）；范围放宽到前 1 个月、后 6 个月（找到的可能是较晚的转载）"
+    },
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading",
+          "out of context",
+          "miscaptioned",
+          "unrelated"
+        ]
+      },
+      "note": "AVerImaTeC label=Refuted"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D3 制作（2026-10-15 23:25:55）：AVerImaTeC 训练集第 85 条；图片取自 HuggingFace Rui4416/AVerImaTeC images.zip 的 images/67a51255e2f02e5f4998bbe3#CLAIM#0.jpg。标注最早来源 cutt.ly/O42Ppzg，日期 2023-03-05（答案原文：The image was originally published on Reuters on March 5, 2023.）。排除原核查文章 indiatoday.in/fact-check/story/not-french-protests-photo-shows-israeli-demonstrations-against-netanyahu-govt-2354209-2023-03-31。 [r0g unanswerable=true（2026-10-16 检索后端核对：GT 来源两次检索都不在前 10 候选（text 10 条；image 10 条）；见 experiments/sft_data/unanswerable_r0b.json）]"
+}

@@ -1,0 +1,107 @@
+{
+  "case_id": "averimatec:l244",
+  "dataset": "averimatec",
+  "source_id": "l244",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "给定图片随以下声明流传：\"Image shows a well-drilling truck burnt by Al-Shabaab militants in Kenya.\"（声明日期：2022-10-01）。核查这张图片是否真的拍于声明所说的地点，并依据证据尽量查明它实际拍于哪里。引用所依据的来源，说明未能确定的内容。",
+  "task_text_en": "The given image circulated with the following claim: \"Image shows a well-drilling truck burnt by Al-Shabaab militants in Kenya.\" (claim date: 2022-10-01). Check whether the picture really shows the place the claim names, and find where it was actually taken, as far as the evidence allows. Cite the sources you rely on, and state what could not be determined.",
+  "family_key": "averimatec:244",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d3/averimatec_l244.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Image shows a well-drilling truck burnt by Al-Shabaab militants in Kenya."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "factcheck.afp.com/doc.afp.com.32LT4GE"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图片是否拍于声明所说的地点（与该地点的参考照片当面比对：建筑、地标、地形、标牌）",
+      "must_cite": true,
+      "text_en": "Whether the picture shows the place the claim names (compared with reference photos of that place: buildings, landmarks, terrain, signs)"
+    },
+    {
+      "id": "REQ2",
+      "text": "载有这张图片的来源说它实际拍于哪里",
+      "must_cite": true,
+      "text_en": "Where the sources that carry the picture say it was actually taken"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的、载有这张图片或该地点照片的页面",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all:external",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading",
+          "out of context",
+          "miscaptioned",
+          "not taken in",
+          "elsewhere"
+        ]
+      },
+      "note": "AVerImaTeC label=Refuted"
+    },
+    {
+      "kind": "entity_in_evidence",
+      "params": {
+        "text": "Somalia",
+        "aliases": [
+          "Mogadishu",
+          "Somali"
+        ],
+        "statement_aliases": [
+          "Mogadishu",
+          "Somali"
+        ]
+      },
+      "requirement": "REQ2",
+      "note": "标注：Where was the image taken? → Mogadishu (HOL) - Al Shabab militants killed 12 civilians drilling a well in drought-ravaged southern Somalia on Friday."
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D3 制作（2026-10-15 23:26:12）：AVerImaTeC 训练集第 244 条（L 族，照片拍摄地）；图片取自 images.zip 的 images/67cf03fa35531374f6d5a82c#CLAIM#0.jpg。标注来源 https://www.hiiraan.com/news4/2022/oct/188060/al_shabab_killed_12_civilians_at_a_water_well_in_gedi_region_and_burned_their_bodies.aspx。排除原核查文章 factcheck.afp.com/doc.afp.com.32LT4GE。 r0g 扩案例：按 walker_d2_cases.l_auto_picks 的规则程序筛（编号顺序），地名取自标注答案。 [r0g unanswerable=true（2026-10-16 检索后端核对：GT 来源两次检索都不在前 10 候选（text 7 条；image 10 条）；见 experiments/sft_data/unanswerable_r0b.json）]"
+}

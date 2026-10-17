@@ -1,0 +1,765 @@
+{
+ "generated": "2026-10-17 17:42:17",
+ "method": "r1 新定义（负责人 10-17）：GT 可回答且引擎前 10 召回（以图搜 + 文字搜）里有载图页才算可回答；探测见 scripts/check_unanswerable.py → r1_answerable_probe.json。不可回答的每族保留 ≤ 1/3 行，排除出 B6 分母。",
+ "probe": "r1_answerable_probe.json",
+ "probe_generated": "2026-10-17 17:41:54",
+ "summary": {
+  "E": {
+   "answerable": 35,
+   "unanswerable": 15,
+   "undetermined": 0,
+   "in_r1": 50,
+   "in_r1_unanswerable": 15
+  },
+  "L": {
+   "answerable": 9,
+   "unanswerable": 13,
+   "undetermined": 0,
+   "in_r1": 13,
+   "in_r1_unanswerable": 4
+  }
+ },
+ "unanswerable_case_ids": [
+  "averimatec:e2",
+  "averimatec:e28",
+  "averimatec:e302",
+  "averimatec:e360",
+  "averimatec:e384",
+  "averimatec:e4",
+  "averimatec:e403",
+  "averimatec:e459",
+  "averimatec:e505",
+  "averimatec:e513",
+  "averimatec:e550",
+  "averimatec:e60",
+  "averimatec:e72",
+  "averimatec:e85",
+  "averimatec:e99",
+  "averimatec:l101",
+  "averimatec:l124",
+  "averimatec:l167",
+  "averimatec:l247"
+ ],
+ "rows": [
+  {
+   "case": "averimatec_e2",
+   "case_id": "averimatec:e2",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 9、比上 0、GT 要点 2；text 召回 10、比上 0、GT 要点 7）",
+   "case_file": "experiments/sft_data/cases/averimatec_e2.json"
+  },
+  {
+   "case": "averimatec_e4",
+   "case_id": "averimatec:e4",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 7、GT 要点 0；text 召回 10、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_e4.json"
+  },
+  {
+   "case": "averimatec_e9",
+   "case_id": "averimatec:e9",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e9.json"
+  },
+  {
+   "case": "averimatec_e12",
+   "case_id": "averimatec:e12",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e12.json"
+  },
+  {
+   "case": "averimatec_e17",
+   "case_id": "averimatec:e17",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e17.json"
+  },
+  {
+   "case": "averimatec_e28",
+   "case_id": "averimatec:e28",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 8、比上 8、GT 要点 0；text 召回 7、比上 0、GT 要点 3）",
+   "case_file": "experiments/sft_data/cases/averimatec_e28.json"
+  },
+  {
+   "case": "averimatec_e31",
+   "case_id": "averimatec:e31",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e31.json"
+  },
+  {
+   "case": "averimatec_e60",
+   "case_id": "averimatec:e60",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 5；text 召回 10、比上 0、GT 要点 7）",
+   "case_file": "experiments/sft_data/cases/averimatec_e60.json"
+  },
+  {
+   "case": "averimatec_e72",
+   "case_id": "averimatec:e72",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 4；text 召回 10、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_e72.json"
+  },
+  {
+   "case": "averimatec_e74",
+   "case_id": "averimatec:e74",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e74.json"
+  },
+  {
+   "case": "averimatec_e77",
+   "case_id": "averimatec:e77",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e77.json"
+  },
+  {
+   "case": "averimatec_e84",
+   "case_id": "averimatec:e84",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e84.json"
+  },
+  {
+   "case": "averimatec_e85",
+   "case_id": "averimatec:e85",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 5、GT 要点 2；text 召回 10、比上 0、GT 要点 5）",
+   "case_file": "experiments/sft_data/cases/averimatec_e85.json"
+  },
+  {
+   "case": "averimatec_e92",
+   "case_id": "averimatec:e92",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e92.json"
+  },
+  {
+   "case": "averimatec_e94",
+   "case_id": "averimatec:e94",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e94.json"
+  },
+  {
+   "case": "averimatec_e99",
+   "case_id": "averimatec:e99",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 5、GT 要点 1；text 召回 10、比上 0、GT 要点 1）",
+   "case_file": "experiments/sft_data/cases/averimatec_e99.json"
+  },
+  {
+   "case": "averimatec_e107",
+   "case_id": "averimatec:e107",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e107.json"
+  },
+  {
+   "case": "averimatec_e115",
+   "case_id": "averimatec:e115",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e115.json"
+  },
+  {
+   "case": "averimatec_e120",
+   "case_id": "averimatec:e120",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e120.json"
+  },
+  {
+   "case": "averimatec_e122",
+   "case_id": "averimatec:e122",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页、text 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e122.json"
+  },
+  {
+   "case": "averimatec_e133",
+   "case_id": "averimatec:e133",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e133.json"
+  },
+  {
+   "case": "averimatec_e153",
+   "case_id": "averimatec:e153",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e153.json"
+  },
+  {
+   "case": "averimatec_e184",
+   "case_id": "averimatec:e184",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：text 5 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e184.json"
+  },
+  {
+   "case": "averimatec_e193",
+   "case_id": "averimatec:e193",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 4 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e193.json"
+  },
+  {
+   "case": "averimatec_e238",
+   "case_id": "averimatec:e238",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e238.json"
+  },
+  {
+   "case": "averimatec_e248",
+   "case_id": "averimatec:e248",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e248.json"
+  },
+  {
+   "case": "averimatec_e260",
+   "case_id": "averimatec:e260",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e260.json"
+  },
+  {
+   "case": "averimatec_e297",
+   "case_id": "averimatec:e297",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 4 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e297.json"
+  },
+  {
+   "case": "averimatec_e302",
+   "case_id": "averimatec:e302",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 3；text 召回 10、比上 0、GT 要点 7）",
+   "case_file": "experiments/sft_data/cases/averimatec_e302.json"
+  },
+  {
+   "case": "averimatec_e360",
+   "case_id": "averimatec:e360",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 9；text 召回 10、比上 0、GT 要点 6）",
+   "case_file": "experiments/sft_data/cases/averimatec_e360.json"
+  },
+  {
+   "case": "averimatec_e372",
+   "case_id": "averimatec:e372",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 5 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e372.json"
+  },
+  {
+   "case": "averimatec_e378",
+   "case_id": "averimatec:e378",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 6 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e378.json"
+  },
+  {
+   "case": "averimatec_e382",
+   "case_id": "averimatec:e382",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 2 页、text 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e382.json"
+  },
+  {
+   "case": "averimatec_e384",
+   "case_id": "averimatec:e384",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 2、GT 要点 5；text 召回 10、比上 0、GT 要点 4）",
+   "case_file": "experiments/sft_data/cases/averimatec_e384.json"
+  },
+  {
+   "case": "averimatec_e402",
+   "case_id": "averimatec:e402",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 2 页、text 5 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e402.json"
+  },
+  {
+   "case": "averimatec_e403",
+   "case_id": "averimatec:e403",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 1、GT 要点 0；text 召回 6、比上 0、GT 要点 2）",
+   "case_file": "experiments/sft_data/cases/averimatec_e403.json"
+  },
+  {
+   "case": "averimatec_e411",
+   "case_id": "averimatec:e411",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 6 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e411.json"
+  },
+  {
+   "case": "averimatec_e414",
+   "case_id": "averimatec:e414",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e414.json"
+  },
+  {
+   "case": "averimatec_e421",
+   "case_id": "averimatec:e421",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e421.json"
+  },
+  {
+   "case": "averimatec_e459",
+   "case_id": "averimatec:e459",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 8、比上 0、GT 要点 4；text 召回 10、比上 0、GT 要点 8）",
+   "case_file": "experiments/sft_data/cases/averimatec_e459.json"
+  },
+  {
+   "case": "averimatec_e484",
+   "case_id": "averimatec:e484",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 5 页、text 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e484.json"
+  },
+  {
+   "case": "averimatec_e486",
+   "case_id": "averimatec:e486",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 3 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e486.json"
+  },
+  {
+   "case": "averimatec_e500",
+   "case_id": "averimatec:e500",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 1 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e500.json"
+  },
+  {
+   "case": "averimatec_e505",
+   "case_id": "averimatec:e505",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 2、比上 2、GT 要点 0；text 召回 10、比上 0、GT 要点 1）",
+   "case_file": "experiments/sft_data/cases/averimatec_e505.json"
+  },
+  {
+   "case": "averimatec_e511",
+   "case_id": "averimatec:e511",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e511.json"
+  },
+  {
+   "case": "averimatec_e513",
+   "case_id": "averimatec:e513",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 7、GT 要点 2；text 召回 7、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_e513.json"
+  },
+  {
+   "case": "averimatec_e516",
+   "case_id": "averimatec:e516",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 5 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e516.json"
+  },
+  {
+   "case": "averimatec_e522",
+   "case_id": "averimatec:e522",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 6 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e522.json"
+  },
+  {
+   "case": "averimatec_e530",
+   "case_id": "averimatec:e530",
+   "family": "E",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_e530.json"
+  },
+  {
+   "case": "averimatec_e550",
+   "case_id": "averimatec:e550",
+   "family": "E",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 6、比上 1、GT 要点 2；text 召回 10、比上 0、GT 要点 9）",
+   "case_file": "experiments/sft_data/cases/averimatec_e550.json"
+  },
+  {
+   "case": "averimatec_l3",
+   "case_id": "averimatec:l3",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 8、比上 8、GT 要点 0；text 召回 6、比上 1、GT 要点 2；text_claim 召回 5、比上 0、GT 要点 3）",
+   "case_file": "claude/_r0plus_work/unused_cases/averimatec_l3.json"
+  },
+  {
+   "case": "averimatec_l73",
+   "case_id": "averimatec:l73",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 0；text 召回 10、比上 0、GT 要点 0；text_claim 召回 7、比上 0、GT 要点 2）",
+   "case_file": "claude/_r0plus_work/unused_cases/averimatec_l73.json"
+  },
+  {
+   "case": "averimatec_l101",
+   "case_id": "averimatec:l101",
+   "family": "L",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 9、比上 9、GT 要点 0；text 召回 6、比上 0、GT 要点 0；text_claim 召回 10、比上 0、GT 要点 10）",
+   "case_file": "experiments/sft_data/cases/averimatec_l101.json"
+  },
+  {
+   "case": "averimatec_l124",
+   "case_id": "averimatec:l124",
+   "family": "L",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 4；text 召回 10、比上 0、GT 要点 8；text_claim 召回 8、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_l124.json"
+  },
+  {
+   "case": "averimatec_l167",
+   "case_id": "averimatec:l167",
+   "family": "L",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 10、GT 要点 0；text 召回 10、比上 1、GT 要点 0；text_claim 召回 5、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_l167.json"
+  },
+  {
+   "case": "averimatec_l178",
+   "case_id": "averimatec:l178",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 9、比上 8、GT 要点 0；text 召回 7、比上 0、GT 要点 1；text_claim 召回 1、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_l178.json"
+  },
+  {
+   "case": "averimatec_l208",
+   "case_id": "averimatec:l208",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l208.json"
+  },
+  {
+   "case": "averimatec_l244",
+   "case_id": "averimatec:l244",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：text 1 页、text_claim 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l244.json"
+  },
+  {
+   "case": "averimatec_l247",
+   "case_id": "averimatec:l247",
+   "family": "L",
+   "answerable": false,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 0；text 召回 9、比上 0、GT 要点 0；text_claim 召回 3、比上 0、GT 要点 0）",
+   "case_file": "experiments/sft_data/cases/averimatec_l247.json"
+  },
+  {
+   "case": "averimatec_l249",
+   "case_id": "averimatec:l249",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 0、GT 要点 2；text 召回 10、比上 0、GT 要点 0；text_claim 召回 9、比上 0、GT 要点 1）",
+   "case_file": "experiments/sft_data/cases/averimatec_l249.json"
+  },
+  {
+   "case": "averimatec_l250",
+   "case_id": "averimatec:l250",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l250.json"
+  },
+  {
+   "case": "averimatec_l274",
+   "case_id": "averimatec:l274",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 10、GT 要点 0；text 召回 7、比上 0、GT 要点 1；text_claim 召回 9、比上 0、GT 要点 4）",
+   "case_file": "experiments/sft_data/cases/averimatec_l274.json"
+  },
+  {
+   "case": "averimatec_l313",
+   "case_id": "averimatec:l313",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 3 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l313.json"
+  },
+  {
+   "case": "averimatec_l316",
+   "case_id": "averimatec:l316",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 2 页、text 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l316.json"
+  },
+  {
+   "case": "averimatec_l325",
+   "case_id": "averimatec:l325",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：image 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l325.json"
+  },
+  {
+   "case": "averimatec_l341",
+   "case_id": "averimatec:l341",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：image 4 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l341.json"
+  },
+  {
+   "case": "averimatec_l497",
+   "case_id": "averimatec:l497",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 9、比上 8、GT 要点 0；text 召回 10、比上 1、GT 要点 3；text_claim 召回 10、比上 0、GT 要点 9）",
+   "case_file": "experiments/sft_data/cases/averimatec_l497.json"
+  },
+  {
+   "case": "averimatec_l498",
+   "case_id": "averimatec:l498",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 10、GT 要点 0；text 召回 7、比上 0、GT 要点 0；text_claim 召回 10、比上 0、GT 要点 6）",
+   "case_file": "experiments/sft_data/cases/averimatec_l498.json"
+  },
+  {
+   "case": "averimatec_l623",
+   "case_id": "averimatec:l623",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": true,
+   "reason": "载图页：text_claim 2 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l623.json"
+  },
+  {
+   "case": "averimatec_l703",
+   "case_id": "averimatec:l703",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": false,
+   "reason": "前 10 召回里没有载图页（image 召回 7、比上 7、GT 要点 0；text 召回 7、比上 0、GT 要点 3；text_claim 召回 7、比上 0、GT 要点 3）",
+   "case_file": "experiments/sft_data/cases/averimatec_l703.json"
+  },
+  {
+   "case": "averimatec_l716",
+   "case_id": "averimatec:l716",
+   "family": "L",
+   "answerable": true,
+   "in_r1": true,
+   "in_r0g": false,
+   "reason": "载图页：text_claim 1 页",
+   "case_file": "experiments/sft_data/cases/averimatec_l716.json"
+  },
+  {
+   "case": "averimatec_l739",
+   "case_id": "averimatec:l739",
+   "family": "L",
+   "answerable": false,
+   "in_r1": false,
+   "in_r0g": true,
+   "reason": "前 10 召回里没有载图页（image 召回 10、比上 10、GT 要点 0；text 召回 10、比上 0、GT 要点 3；text_claim 召回 9、比上 0、GT 要点 4）",
+   "case_file": "experiments/sft_data/cases/averimatec_l739.json"
+  }
+ ]
+}

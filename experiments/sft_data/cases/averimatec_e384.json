@@ -1,0 +1,117 @@
+{
+  "case_id": "averimatec:e384",
+  "dataset": "averimatec",
+  "source_id": "e384",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定图片随以下声明流传：\"Photo of a group of people on a beach carrying placards that spell out #StopAdani shows protest in Australia against the Indian billionaire Gautam Adani in 2023.\"（声明日期：2023-02-02）。依据证据尽量查明这张图片最早在哪里、何时发布，以及它的原始语境是否与声明相符。引用所依据的来源与日期，说明未能确定的内容。",
+  "task_text_en": "The given image circulated with the following claim: \"Photo of a group of people on a beach carrying placards that spell out #StopAdani shows protest in Australia against the Indian billionaire Gautam Adani in 2023.\" (claim date: 2023-02-02). Find where and when this image was first published, as far as the evidence allows, and whether its original context matches the claim. Cite the sources and dates you rely on, and state what could not be determined.",
+  "family_key": "averimatec:384",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d3/averimatec_e384.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "Photo of a group of people on a beach carrying placards that spell out #StopAdani shows protest in Australia against the Indian billionaire Gautam Adani in 2023."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "boomlive.in/fact-check/viral-picture-australia-protest-against-adani-group-gautam-adani-hindenburg-research-report-adani-fpo-stock-old-photo-20925"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "这张图片能查到的最早一份（网站、页面）及其日期，以及日期的性质（页面声明 / 上传 / 存档，只能说明\"不晚于\"）",
+      "must_cite": true,
+      "text_en": "The earliest copy of the image that can be found (site, page) and its date, with what kind of date it is (declared by the page, upload, archive capture; it only shows 'no later than')"
+    },
+    {
+      "id": "REQ2",
+      "text": "最早那份所说的图片内容（地点、时间、事件）与声明是否相符",
+      "must_cite": true,
+      "text_en": "Whether what the earliest copy says the picture shows (place, time, event) matches the claim"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "dates",
+      "description": "SEARCH 日期查询的结果（页面声明 / 上传 / 最早存档）",
+      "acquired_by": "SEARCH/dates",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的、载有这张图片的页面",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "earliest_source",
+      "description": "标注的最早来源：indianculturalforum.in/2017/10/14/stopadani-protests-in-australia-against-adanis-venture-of-carmichael-coal-mine（2017-10-14）",
+      "url_pattern": "indianculturalforum.in/2017/10/14/stopadani-protests-in-australia-against-adanis-venture-of-carmichael-coal-mine*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all:dates,external; any_one_of:earliest_source,dates",
+  "checks": [
+    {
+      "kind": "date_in_range",
+      "params": {
+        "min": "2017-09-13",
+        "max": "2018-04-15"
+      },
+      "note": "标注：最早发布 2017-10-14（When was the image originally published?）；范围放宽到前 1 个月、后 6 个月（找到的可能是较晚的转载）"
+    },
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading",
+          "out of context",
+          "miscaptioned",
+          "unrelated"
+        ]
+      },
+      "note": "AVerImaTeC label=Refuted"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D3 制作（2026-10-16 18:03:12）：AVerImaTeC 训练集第 384 条；图片取自 HuggingFace Rui4416/AVerImaTeC images.zip 的 images/67a5081fe2f02e5f49989c1d#CLAIM#0.jpg。标注最早来源 indianculturalforum.in/2017/10/14/stopadani-protests-in-australia-against-adanis-venture-of-carmichael-coal-mine，日期 2017-10-14（答案原文：October 14, 2017 in the Indian Cultural Forum）。排除原核查文章 boomlive.in/fact-check/viral-picture-australia-protest-against-adani-group-gautam-adani-hindenburg-research-report-adani-fpo-stock-old-photo-20925。 r0+ 扩案例（2026-10-16，claude/_r0plus_work/build_el.py，规则同 walker_d2_cases 的 averimatec_picks，编号顺序）。 [r0g unanswerable=false（2026-10-16 检索后端核对：GT 进了候选：text 第 1 名；见 experiments/sft_data/unanswerable_r0b.json）]"
+}

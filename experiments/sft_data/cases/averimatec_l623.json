@@ -1,0 +1,107 @@
+{
+  "case_id": "averimatec:l623",
+  "dataset": "averimatec",
+  "source_id": "l623",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "给定图片随以下声明流传：\"A photo of a woman holding a flag in a government building was taken at the U.S. Capitol building on January 6th\"（声明日期：2023-01-06）。核查这张图片是否真的拍于声明所说的地点，并依据证据尽量查明它实际拍于哪里。引用所依据的来源，说明未能确定的内容。",
+  "task_text_en": "The given image circulated with the following claim: \"A photo of a woman holding a flag in a government building was taken at the U.S. Capitol building on January 6th\" (claim date: 2023-01-06). Check whether the picture really shows the place the claim names, and find where it was actually taken, as far as the evidence allows. Cite the sources you rely on, and state what could not be determined.",
+  "family_key": "averimatec:623",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d3/averimatec_l623.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "A photo of a woman holding a flag in a government building was taken at the U.S. Capitol building on January 6th"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "usatoday.com/story/news/factcheck/2023/01/19/fact-check-woman-flag-kansas-jan-6-not-u-s-capitol-insurrection-donald-trump/11047156002"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "图片是否拍于声明所说的地点（与该地点的参考照片当面比对：建筑、地标、地形、标牌）",
+      "must_cite": true,
+      "text_en": "Whether the picture shows the place the claim names (compared with reference photos of that place: buildings, landmarks, terrain, signs)"
+    },
+    {
+      "id": "REQ2",
+      "text": "载有这张图片的来源说它实际拍于哪里",
+      "must_cite": true,
+      "text_en": "Where the sources that carry the picture say it was actually taken"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的、载有这张图片或该地点照片的页面",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all:external",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading",
+          "out of context",
+          "miscaptioned",
+          "not taken in",
+          "elsewhere"
+        ]
+      },
+      "note": "AVerImaTeC label=Refuted"
+    },
+    {
+      "kind": "entity_in_evidence",
+      "params": {
+        "text": "Kansas",
+        "aliases": [
+          "Topeka",
+          "Battle of Mine Creek"
+        ],
+        "statement_aliases": [
+          "Topeka",
+          "Battle of Mine Creek"
+        ]
+      },
+      "requirement": "REQ2",
+      "note": "标注：Where was the 1-th image taken?  → The mural Battle of Mine Creek by David H. Overmyer can be seen in the background. The Kansas State Historical Society lists the mural as being on display on th"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D3 制作（2026-10-14 00:49:52）：AVerImaTeC 训练集第 623 条（L 族，照片拍摄地）；图片取自 images.zip 的 images/67cb54b035531374f6ce8437#CLAIM#0.jpg。标注来源 https://web.archive.org/web/20191217225513/https://www.kshs.org/p/kansas-state-capitol-online-tour-battle-of-mine-creek/16586。排除原核查文章 usatoday.com/story/news/factcheck/2023/01/19/fact-check-woman-flag-kansas-jan-6-not-u-s-capitol-insurrection-donald-trump/11047156002。 [r0g unanswerable=false（2026-10-16 检索后端核对：GT 进了候选：text 第 2 名；见 experiments/sft_data/unanswerable_r0b.json）]"
+}

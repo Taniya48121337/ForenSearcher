@@ -1,0 +1,69 @@
+{
+  "case_id": "groundlie360:c_46581202",
+  "dataset": "groundlie360",
+  "source_id": "c_46581202",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Video behind 'most terrifying photo' ever taken in space| Astronaut Bruce McCandless II makes the first, untethered, free flight spacewalk.（声明日期：2023-12-11）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: Video behind 'most terrifying photo' ever taken in space| Astronaut Bruce McCandless II makes the first, untethered, free flight spacewalk. (claim date: 2023-12-11)",
+  "family_key": "groundlie360:46581202",
+  "media": [],
+  "claims": [
+    "Video behind 'most terrifying photo' ever taken in space| Astronaut Bruce McCandless II makes the first, untethered, free flight spacewalk."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）",
+      "must_cite": true,
+      "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"
+    },
+    {
+      "id": "REQ2",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "true",
+        "aliases": [
+          "true",
+          "correct",
+          "accurately describes",
+          "consistent with",
+          "supported by",
+          "confirmed",
+          "authentic",
+          "genuine",
+          "accurate"
+        ]
+      },
+      "note": "GroundLie360 first_level=Real，second_level=[]（Snopes 核查；核查站点被检索护栏屏蔽）"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D2 制作（2026-10-15 23:25:40）：GroundLie360 帖子 46581202（reddit，2023-12-11）。视频未下载，只核查文字声明。"
+}

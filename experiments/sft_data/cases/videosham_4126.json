@@ -5,6 +5,7 @@
   "split": "dev_train",
   "task_kind": "temporal_locate",
   "task_text": "确定给定两段6秒视频中，黑衣人物在 B 可见而在 A 对应位置不可见的全部时间区间。核查每段区间的起止边界，并说明定位精度及仍不确定的范围。",
+  "task_text_en": "Determine every time interval in the two given 6-second videos during which the person in black is visible in B but not visible at the corresponding position in A. Check the start and end boundaries of each interval, and state the localization precision and the range that remains uncertain.",
   "family_key": "videosham:4126",
   "media": [
     {
@@ -37,21 +38,36 @@
       ],
       "url_pattern": null,
       "acquired_by": "INSPECT/get_frames"
+    },
+    {
+      "key": "diff_images",
+      "description": "diff_media 产出的逐帧差异图（差异时间线、差异框与成对放大），可替代成对抽帧作为差异位置的证据",
+      "source_hint": null,
+      "locator_hint": null,
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ],
+      "url_pattern": null,
+      "acquired_by": "INSPECT/diff_media"
     }
   ],
   "requirements": [
     {
       "id": "REQ1",
       "text": "黑衣人物在 B 可见而在 A 对应位置不可见的时间区间（每段的起止边界，两侧时间）",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "The time intervals during which the person in black is visible in B but not at the corresponding position in A (start and end boundaries of each interval, on both sides)"
     },
     {
       "id": "REQ2",
       "text": "每段边界的定位精度（采样间隔）与仍不确定的范围；未核验区间不当作没有差异",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "The localization precision of each boundary (sampling interval) and the range that remains uncertain; unverified intervals are not treated as having no difference"
     }
   ],
-  "required_evidence_rule": "all",
+  "required_evidence_rule": "any_one_of:frames,diff_images",
   "checks": [],
   "reference_path": "../data/cases/videosham_4126/reference.json",
   "used_for_revision": [],

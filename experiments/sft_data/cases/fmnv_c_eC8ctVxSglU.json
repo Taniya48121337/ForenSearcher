@@ -1,0 +1,100 @@
+{
+  "case_id": "fmnv:c_eC8ctVxSglU",
+  "dataset": "fmnv",
+  "source_id": "c_eC8ctVxSglU",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明（它是给定视频流传时的标题），检查视频并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：SpaceX loses contact with Starship spacecraft during test flight | USA TODAY",
+  "task_text_en": "Fact-check the following claim, which circulated as the title of the given video, examining the video and searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: SpaceX loses contact with Starship spacecraft during test flight | USA TODAY",
+  "family_key": "fmnv:eC8ctVxSglU",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d2/fmnv_eC8ctVxSglU.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "SpaceX loses contact with Starship spacecraft during test flight | USA TODAY"
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频实际显示和说出的内容（画面、字幕、语音）与声明是否相符",
+      "must_cite": true,
+      "text_en": "What the given video actually shows and says (pictures, on-screen text, speech) and whether it matches the claim"
+    },
+    {
+      "id": "REQ2",
+      "text": "外部来源对声明所说事件的记载",
+      "must_cite": true,
+      "text_en": "What external sources record about the event the claim describes"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "视频画面（抽帧）",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "transcript",
+      "description": "视频语音转写",
+      "acquired_by": "INSPECT/asr",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "any_one_of:frames,transcript; all:external",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "accurate",
+        "aliases": [
+          "true",
+          "correct",
+          "accurately describes",
+          "consistent with",
+          "supported by",
+          "confirmed",
+          "authentic",
+          "genuine"
+        ]
+      },
+      "note": "FMNV label=true，class=real；答案应说标题属实"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D2 制作（2026-10-14 00:49:32）：FMNV 真新闻：视频是 YouTube eC8ctVxSglU 原样，标题是它自己的标题。FMNV subject：space X。"
+}

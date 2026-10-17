@@ -1,0 +1,117 @@
+{
+  "case_id": "averimatec:e17",
+  "dataset": "averimatec",
+  "source_id": "e17",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定图片随以下声明流传：\"An image shows homeless people in slums in Haldwani surrounding a railroad following a Supreme Court order putting a stay on the decision of the Uttarakhand High Court to demolish 4,000 homes in Haldwani.\"（声明日期：2023-01-05）。依据证据尽量查明这张图片最早在哪里、何时发布，以及它的原始语境是否与声明相符。引用所依据的来源与日期，说明未能确定的内容。",
+  "task_text_en": "The given image circulated with the following claim: \"An image shows homeless people in slums in Haldwani surrounding a railroad following a Supreme Court order putting a stay on the decision of the Uttarakhand High Court to demolish 4,000 homes in Haldwani.\" (claim date: 2023-01-05). Find where and when this image was first published, as far as the evidence allows, and whether its original context matches the claim. Cite the sources and dates you rely on, and state what could not be determined.",
+  "family_key": "averimatec:17",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../media/d3/averimatec_e17.jpg",
+      "media_type": "image/jpeg"
+    }
+  ],
+  "claims": [
+    "An image shows homeless people in slums in Haldwani surrounding a railroad following a Supreme Court order putting a stay on the decision of the Uttarakhand High Court to demolish 4,000 homes in Haldwani."
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "altnews.in/haldwani-eviction-bjp-leaders-share-10-yr-old-kolkata-pic-with-misleading-claim"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "这张图片能查到的最早一份（网站、页面）及其日期，以及日期的性质（页面声明 / 上传 / 存档，只能说明\"不晚于\"）",
+      "must_cite": true,
+      "text_en": "The earliest copy of the image that can be found (site, page) and its date, with what kind of date it is (declared by the page, upload, archive capture; it only shows 'no later than')"
+    },
+    {
+      "id": "REQ2",
+      "text": "最早那份所说的图片内容（地点、时间、事件）与声明是否相符",
+      "must_cite": true,
+      "text_en": "Whether what the earliest copy says the picture shows (place, time, event) matches the claim"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "dates",
+      "description": "SEARCH 日期查询的结果（页面声明 / 上传 / 最早存档）",
+      "acquired_by": "SEARCH/dates",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的、载有这张图片的页面",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "earliest_source",
+      "description": "标注的最早来源：gettyimages.co.uk/detail/news-photo/people-get-on-with-their-lives-in-a-slum-on-the-railway-news-photo/461948087（2013-12-12）",
+      "url_pattern": "gettyimages.co.uk/detail/news-photo/people-get-on-with-their-lives-in-a-slum-on-the-railway-news-photo/461948087*",
+      "acquired_by": null,
+      "must_cite": false,
+      "supports": [
+        "REQ1"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all:dates,external; any_one_of:earliest_source,dates",
+  "checks": [
+    {
+      "kind": "date_in_range",
+      "params": {
+        "min": "2013-11-11",
+        "max": "2014-06-13"
+      },
+      "note": "标注：最早发布 2013-12-12（What is the date of the claim image being first published?）；范围放宽到前 1 个月、后 6 个月（找到的可能是较晚的转载）"
+    },
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading",
+          "out of context",
+          "miscaptioned",
+          "unrelated"
+        ]
+      },
+      "note": "AVerImaTeC label=Refuted"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "D3 制作（2026-10-14 00:49:44）：AVerImaTeC 训练集第 17 条；图片取自 HuggingFace Rui4416/AVerImaTeC images.zip 的 images/67894ea4e2f02e5f4982b0e9#CLAIM#0.jpg。标注最早来源 gettyimages.co.uk/detail/news-photo/people-get-on-with-their-lives-in-a-slum-on-the-railway-news-photo/461948087，日期 2013-12-12（答案原文：December 12, 2013）。排除原核查文章 altnews.in/haldwani-eviction-bjp-leaders-share-10-yr-old-kolkata-pic-with-misleading-claim。 [r0g unanswerable=false（2026-10-15 检索后端核对：GT 进了候选：text 第 2 名；见 experiments/sft_data/unanswerable_r0b.json）]"
+}

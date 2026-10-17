@@ -5,6 +5,7 @@
   "split": "dev_train",
   "task_kind": "copy_detect",
   "task_text": "在给定视频 A 与 B 中查找相同或经变换的对应片段，给出两侧时间范围及证据。不要把内容对应推断成原创归属。输入仅包含视频轨，不评估音频。",
+  "task_text_en": "In the given videos A and B, find the segments that correspond to each other (identical or transformed), and give the time ranges on both sides with supporting evidence. Do not infer original authorship from a content correspondence. The input contains only the video track; do not assess audio.",
   "family_key": "vcsl:snowman_song",
   "media": [
     {
@@ -28,17 +29,20 @@
     {
       "id": "REQ1",
       "text": "A 与 B 中内容对应（相同或经变换）的片段，以及两侧各自的时间范围",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Segments of A and B whose content corresponds (identical or transformed), with the time range on each side"
     },
     {
       "id": "REQ2",
       "text": "对应关系的画面依据：两侧对应帧的内容，以及画面包装、裁剪、叠加等变换",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Visual grounds for the correspondence: the content of corresponding frames on both sides, and transformations such as framing, cropping or overlays"
     },
     {
       "id": "REQ3",
       "text": "未能确定的内容：边界精度、未检查的区间；不把内容对应推断为原创归属或传播先后",
-      "must_cite": false
+      "must_cite": false,
+      "text_en": "What could not be determined: boundary precision and unexamined intervals; a content correspondence is not taken as original authorship or order of spread"
     }
   ],
   "required_evidence": [
