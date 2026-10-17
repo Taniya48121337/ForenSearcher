@@ -40,7 +40,7 @@ INSPECT {"targets": ["E1"], "request": {"operation": "ocr", "params": {}}}
 ```
 INSPECT ocr returned ready; Result Evidence: E3, E1; evidence cards also include source materials and metadata.
 OCR of E1: 0 text boxes, 0 distinct texts in 0 of 1 image; no text was recognised (OCR can miss text, so this does not show there is none).
-{"backend": "RapidOCR", "limitations": ["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
+{"backend":"RapidOCR","limitations":["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
 ```
 
 ## 3. W1-1 · turn 2/12 · rule `E2_reverse_image` · branch `SEARCH image image` · request_0003
@@ -251,7 +251,7 @@ READ_RECORD {"record_id": "E24"}
 ```
 READ_RECORD E24; offset=0; next_offset=None
   E24 label: difference composite (images): left A=E1, middle B=E5, right the aligned B, red = differing pixels, green box = difference extent; changed area 0.000%
-  content: {"bbox":null,"changed_area":0.0,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":48,"zoom":null}
+  content: {"changed_area":0.0,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":48}
 ```
 
 ## 12. W1-1 · turn 11/12 · rule `E9_report` · branch `report_completed` · request_0012
@@ -285,6 +285,19 @@ REPORT status=COMPLETED
 **State**
 
 - latest reports: 1 → W1-1 COMPLETED (6 findings)
+  - supporting records of W1-1 (given to GIA with the report, as rendered):
+```
+    E22 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 1.68% (threshold 48), difference box x 0.09–0.82, y 0.37–0.80 (relative to the A picture)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E25 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["No pixel difference with area ≥ min_area (0.0005) was found in the compared region of the two images (measured 0.000%)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E18 [dates of https://www.naijalivetv.com/ramadan-buhari-tinubu-breakfast-at-aso-villa-photos/?amp=]: Dates for https://www.naijalivetv.com/ramadan-buhari-tinubu-breakfast-at-aso-villa-photos/?amp=: - published date declared by the page: 2019-05-10 (when this page says it was published; the picture or video in it may have appeared earlier elsewhere) - last-modified date declared by the page: 2019-05-10 - the image file https://www.naijalivetv.com/wp-content/uploads/2019/05/28C59A20-7BC1-4900-BC40-3ED4559BC23F.jpeg has no Internet Archive capture
+    E10 [Ramadan: Buhari, Tinubu breakfast at Aso Villa [PHOTOS] - Naija Live Tv]: [1] Abuja – President Muhammadu Buhari on Friday evening hosted the national leader of the All Progressives Congress (APC), Chief Bola Tinubu to Ramadan breakfast at the Residential Villa, Abuja. [2] President Muhammadu Buhari breaks Ramadan fast with the APC National Leader Asiwaju, Senator Bola Ahmed Tinubu at the residency Presidential Villa Friday Night in Abuja [3] The President’s Personal Assistant (Photograph), Mr Sunday Aghaeze, in a pictorial reports made this known in Abuja. [4] The two of the pictures had shown the President and Tinubu on a dining table with varieties of eatables and drinks while the president was seen in the two other pictures escorting his guest [5] The sudden appearance of Tinubu at the Presidential Villa had finally put to rest the reported ‘political misunderstandings’ between the president and the Asiwaju. [6] Tinubu’s absence during the last President’s visit to Lagos shortly before his 10-day private visit to London was misinterpreted in some quarters. [7] Similarly, President Buhari’s inability to attend 2019 Tinubu’s colloquium at the International Conference Centre, Abuja, to mark his 67th birthday, was squally misinterpreted by some soc…[truncated 693 chars; READ_RECORD rea…[truncated 17 chars; READ_RECORD reads the full text]
+    E17 [dates of https://www.premiumtimesng.com/news/more-news/329414-ramadan-buhari-hosts-tinubu-to-breaking-of-fast.html]: Dates for https://www.premiumtimesng.com/news/more-news/329414-ramadan-buhari-hosts-tinubu-to-breaking-of-fast.html: - earliest Internet Archive capture of this page: 2019-05-11 (https://web.archive.org/web/20190511091824/https://www.premiumtimesng.com/news/more-news/329414-ramadan-buhari-hosts-tinubu-to-breaking-of-fast.html); the page existed no later than this date, which is not a publication date - the image file https://www.premiumtimesng.com/news/more-news/329414-ramadan-buhari-hosts-tinubu-to-breaking-of-fast.html/attachment/president-buhari-remadan-breakfast-with-asiwaju-1 has no Internet Archive capture
+    E9 [Ramadan: Buhari, Tinubu breakfast at Aso Villa PHOTOS - Naija Live Tv]: media_metadata_not_pixels
+    E21 [difference composite (images): left A=E1, middle B=E9, right the aligned B, red = differing pixels, green box = differen …[+30 chars]]: media_metadata_not_pixels
+    E5 [search result thumbnail]: media_metadata_not_pixels
+    E24 [difference composite (images): left A=E1, middle B=E5, right the aligned B, red = differing pixels, green box = differen …[+30 chars]]: media_metadata_not_pixels
+    E1 [Material A]: media_metadata_not_pixels
+```
 - attached images (5): E9, E21, E5, E1(complete_media), E24
 
 **Decision**

@@ -40,7 +40,7 @@ INSPECT {"targets": ["E1"], "request": {"operation": "ocr", "params": {}}}
 ```
 INSPECT ocr returned ready; Result Evidence: E3, E1; evidence cards also include source materials and metadata.
 OCR of E1: 0 text boxes, 0 distinct texts in 0 of 1 image; no text was recognised (OCR can miss text, so this does not show there is none).
-{"backend": "RapidOCR", "limitations": ["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
+{"backend":"RapidOCR","limitations":["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
 ```
 
 ## 3. W1-1 · turn 2/12 · rule `L2_reference_images` · branch `SEARCH text image` · request_0003
@@ -95,7 +95,7 @@ READ_RECORD {"record_id": "E9"}
 ```
 READ_RECORD E9; offset=0; next_offset=None
   E9 label: Photos of Uttarakhand Disaster 2021: Glacier Breaks Off at Joshimath in ...
-  content: {"width": 1200, "height": 675, "format": "JPEG", "source_url": "https://st1.photogallery.ind.sh/wp-content/uploads/indiacom/uttra1200x675-202102-1612704475.jpg"}
+  content: {"width":1200,"height":675,"format":"JPEG","source_url":"https://st1.photogallery.ind.sh/wp-content/uploads/indiacom/uttra1200x675-202102-1612704475.jpg"}
 ```
 
 ## 5. W1-1 · turn 4/12 · rule `L4_reverse_image` · branch `SEARCH image image` · request_0005
@@ -167,7 +167,7 @@ SEARCH {"input_type": "text", "query": "landslide near Cusco Peru 2018 aerial ph
   R17: Landslide in Cusco, Peru 2018 - SERC — Landslide in Cusco, Peru 2018: --small a 1366 by 2048 pixel WebP
   R18: Landslide_in_Cusco_Peru_-_2018 - Spatial Source — A landslide near Cusco, Peru, March 2018. Image via Wikimedia Commons.
   R19: Landslide in Cusco, Peru - 2018 | PDF - Scribd — Landslide_in_Cusco,_Peru_-_2018 - Free download as PDF File (.pdf) or read online for free. glissement de terrain sur une large surface
-  R20: Monster cracks appear in the ground after landslide and heavy ... — Mar 2, 2018 · On March 2, 2018, a new landslide occurred around 3 am and caused the collapse of 37 homes, the health center of the city, a stretch of 300 meters of road and threatens to destroy a primary and secondary sc …[+123 chars]
+  R20: Monster cracks appear in the ground after landslide and heavy ... — Mar 2, 2018 · On March 2, 2018, a new landslide occurred around 3 am and caused the collapse of 37 homes, the health center of the city, a stretch of 300 meters of road and threatens to destroy a primary and secondary sc …[+74 chars]
 ```
 
 ## 7. W1-1 · turn 6/12 · rule `C5_read_page` · branch `READ_RECORD text` · request_0007
@@ -314,6 +314,15 @@ REPORT status=COMPLETED
 **State**
 
 - latest reports: 1 → W1-1 COMPLETED (6 findings)
+  - supporting records of W1-1 (given to GIA with the report, as rendered):
+```
+    E40 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["No pixel difference with area ≥ min_area (0.0005) was found in the compared region of the two images (measured 0.000%)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E34 [Landslide in Cusco, Peru 2018]: [1] Landslide in Cusco, Peru 2018 [2] View Original Image at Full Size [3] Originally uploaded in [Math You Need - Majors:Vectors](https://serc.carleton.edu/mathyouneed/geomajors/vectors/index.html). [4] Image 269480 is a 1366 by 2048 pixel WebP [5] Uploaded: Jun7 23 [6] Last Modified: 2023-08-11 09:51:21 [7] Permanent URL: https://serc.carleton.edu/download/images/269480/landslide_in_cusco_peru_-_2018.webp [8] The file is referred to in 1 page [9] Provenance [10] [https://upload.wikimedia.org/wikipedia/commons/b/b2/Landslide_in_Cusco%2C_Per...](https://upload.wikimedia.org/wikipedia/commons/b/b2/Landslide_in_Cusco%2C_Peru_-_2018.jpg) [11] Galeria del Ministerio de Defensa del Perú, CC BY 2.0 <[https://creativecommons.org/licenses/by/2.0>,](<https://creativecommons.org/licenses/by/2.0\>,>) via Wikimedia Commons [12] Reuse This item is offered under a Creative Commons Attribution-NonCommercial-ShareAlike license http://creativecommons.org/licenses/by-nc-sa/3.0/ You may reuse this item for non-commercial purposes as long as you provide attribution and offer any derivative works under a similar license.
+    E1 [Material A]: media_metadata_not_pixels
+    E9 [Photos of Uttarakhand Disaster 2021: Glacier Breaks Off at Joshimath in ...]: media_metadata_not_pixels
+    E4 [Photos of Uttarakhand Disaster 2021: Glacier Breaks Off at Joshimath in ...]: media_metadata_not_pixels
+    E7 [Uttarakhand's Joshimath declared sinking zone, over 60 families ...]: media_metadata_not_pixels
+```
 - attached images (4): E1(complete_media), E9, E4, E7
 
 **Decision**

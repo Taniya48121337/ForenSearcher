@@ -40,7 +40,7 @@ INSPECT {"targets": ["E1"], "request": {"operation": "ocr", "params": {}}}
 ```
 INSPECT ocr returned ready; Result Evidence: E3, E1; evidence cards also include source materials and metadata.
 OCR of E1: 5 text boxes, 4 distinct texts in 1 of 1 image. Texts: "?"; "Q"; "K"; ">". READ_RECORD E3 lists every text box with its position and confidence.
-{"backend": "RapidOCR", "limitations": ["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
+{"backend":"RapidOCR","limitations":["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
 ```
 
 ## 3. W1-1 · turn 2/12 · rule `L2_reference_images` · branch `SEARCH text image` · request_0003
@@ -105,7 +105,7 @@ READ_RECORD {"record_id": "E13"}
 ```
 READ_RECORD E13; offset=0; next_offset=None
   E13 label: United States Capitol Building Interior Rotunda Stock Photo - Download ...
-  content: {"width": 459, "height": 612, "format": "JPEG", "source_url": "https://media.istockphoto.com/id/1360270263/photo/united-states-capitol-building-interior-rotunda.jpg?s=612x612&w=is&k=20&c=BQD-4qTUoe-MsNgAAtccDVpk2sqm7lFSsxydi0GEYkA="}
+  content: {"width":459,"height":612,"format":"JPEG","source_url":"https://media.istockphoto.com/id/1360270263/photo/united-states-capitol-building-interior-rotunda.jpg?s=612x612&w=is&k=20&c=BQD-4qTUoe-MsNgAAtccDVpk2sqm7lFSsxydi0GEYkA="}
 ```
 
 ## 5. W1-1 · turn 4/12 · rule `L4_reverse_image` · branch `SEARCH image image` · request_0005
@@ -137,14 +137,14 @@ SEARCH {"input_type": "image", "query": "E1", "output_type": "image"}
 [R18] https://imgflip.com/m/politics/tag/heatwave?sort=top-2020-03; image=not_requested, page=not_requested, thumbnail=not_requested
 [R19] https://imgflip.com/i/66a4k4; image=not_requested, page=not_requested, thumbnail=not_requested
 [R20] https://genesiustimes.com/broncos-sign-rachel-dolezal-after-she-identifies-as-colin-kaepernick/; image=not_requested, page=not_requested, thumbnail=not_requested
-  R11: when the unorganized capitol riot makes you play like Primus - YouTube — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: bass guitar, primus, capitol, riot, riots …[+156 chars]
-  R12: Jody South - Lucy's Straight Jacket: тексты песен, клипы и концерты — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Смотреть "when the unorganized capitol ri …[+41 chars]
+  R11: when the unorganized capitol riot makes you play like Primus - YouTube — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: bass guitar, primus, capitol, riot, riots …[+74 chars]
+  R12: Jody South - Lucy's Straight Jacket: тексты песен, клипы и концерты — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Смотреть "when the unorganized capitol ri …[+74 chars]
   R13: Oh - Christopher Fountain — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported).
   R14: "The Worst Attack On Our Democracy Since The Civil War" - The Donald - America First Patriots Win — Thumbnail compared with the query image: partial match, not near-identical. Found by Yandex (match type not reported). Page text: share.
   R15: b/ - Random " Thread #883894642 — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported).
   R16: Grandma Insurrection Blank Template - Imgflip — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported).
   R17: Insurrection meemaw - pachawasound.com — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported).
-  R18: politics heatwave Memes & GIFs - Imgflip — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Surprisingly , …[+610 chars]
+  R18: politics heatwave Memes & GIFs - Imgflip — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Surprisingly ,  …[+608 chars]
 ```
 
 ## 6. W1-1 · turn 5/12 · rule `L4b_place_text_search` · branch `SEARCH text page` · request_0006
@@ -172,9 +172,9 @@ SEARCH {"input_type": "text", "query": "woman holding flag government building J
 [R24] https://19thnews.org/2021/02/women-arrested-storming-the-capitol/; page=ready(E34), document=not_requested
 [R25] https://www.washingtonpost.com/graphics/2021/politics/trump-insurrection-capitol/; page=ready(E33), document=not_requested
   R21: Killing of Ashli Babbitt - Wikipedia — On January 6, 2021, Ashli Babbitt, a 35-year-old American United States Air Force veteran and pool supply owner, [1] was fatally shot by an officer during the attack on the United States Capitol. [2]
-  R22: "Capitol Meemaw" Goes Viral But She Was In Kansas, Not DCPhoto shows woman at Kansas Statehouse rally, not Capitol ...Fact check: Photo show …[+255 chars] — Jan 12, 2021 · There's just one big problem with the meme: The woman was not actually at the Capitol in DC on Jan. 6. Instead, she was participating in another protest halfway across the country in Topeka, Kansas. There  …[+1351 chars]
-  R23: Capitol Meemaw - Know Your Meme — Origin On January 6th, 2021, @FlockaKnows tweeted, [1] "This is white privilege in America . Let that sink in" along with a photograph of numerous pro-Trump protestors standing around inside (shown below, left). At the l …[+176 chars]
-  R24: 'Can't wait to tell my grandkids I was here': The women arrested for ... — They are awaiting trial in their home state of Pennsylvania. The women at the frontlines of the insurrections, however, weren't just the ones carrying it out. Earlier this week, Captain Carneysha Mendoza, a Black woman w …[+83 chars]
+  R22: "Capitol Meemaw" Goes Viral But She Was In Kansas, Not DCPhoto shows woman at Kansas Statehouse rally, not Capitol ...Fact check: Photo show …[+154 chars] — Jan 12, 2021 · There's just one big problem with the meme: The woman was not actually at the Capitol in DC on Jan. 6. Instead, she was participating in another protest halfway across the country in Topeka, Kansas. There  …[+74 chars]
+  R23: Capitol Meemaw - Know Your Meme — Origin On January 6th, 2021, @FlockaKnows tweeted, [1] "This is white privilege in America . Let that sink in" along with a photograph of numerous pro-Trump protestors standing around inside (shown below, left). At the l …[+74 chars]
+  R24: 'Can't wait to tell my grandkids I was here': The women arrested for ... — They are awaiting trial in their home state of Pennsylvania. The women at the frontlines of the insurrections, however, weren't just the ones carrying it out. Earlier this week, Captain Carneysha Mendoza, a Black woman w …[+74 chars]
   R25: What happened Wednesday at the U.S. Capitol - Washington Post — Congressional staff members are evacuated after protesters breached the building during Wednesday's joint session to affirm the electoral college vote. Overrun Trump supporters riot at the Capitol ...
 ```
 
@@ -219,7 +219,7 @@ SEARCH {"source": "R22", "output_type": "image"}
 
 ```
 [R22] https://www.buzzfeednews.com/article/davidmack/capitol-meemaw-meme-topeka-kansas; image=failed, page=ready(E32), thumbnail=not_requested
-  R22: "Capitol Meemaw" Goes Viral But She Was In Kansas, Not DCPhoto shows woman at Kansas Statehouse rally, not Capitol ...Fact check: Photo show …[+255 chars] — Jan 12, 2021 · There's just one big problem with the meme: The woman was not actually at the Capitol in DC on Jan. 6. Instead, she was participating in another protest halfway across the country in Topeka, Kansas. There  …[+1351 chars]
+  R22: "Capitol Meemaw" Goes Viral But She Was In Kansas, Not DCPhoto shows woman at Kansas Statehouse rally, not Capitol ...Fact check: Photo show …[+154 chars] — Jan 12, 2021 · There's just one big problem with the meme: The woman was not actually at the Capitol in DC on Jan. 6. Instead, she was participating in another protest halfway across the country in Topeka, Kansas. There  …[+74 chars]
 ```
 
 ## 9. W1-1 · turn 8/12 · rule `C5_read_page` · branch `READ_RECORD text` · request_0009
@@ -325,6 +325,14 @@ REPORT status=INCOMPLETE reason=Picture correspondence: the BuzzFeed News and Th
 **State**
 
 - latest reports: 1 → W1-1 INCOMPLETE (5 findings) — reason: Picture correspondence: the BuzzFeed News and The 19th candidate pages’ pictures were not compared with the given picture, so their connection to it remains unconfirmed; candidate-source examination: the Christopher Fountain page was not examined.; the picture on https://www.buzzfeednews.com/article …[+598 chars]
+  - supporting records of W1-1 (given to GIA with the report, as rendered):
+```
+    E32 ["Capitol Meemaw" Goes Viral But She Was In Kansas, Not DC]: [1] In the chaos of last week's [insurrection at the Capitol building](https://www.buzzfeednews.com/article/mollyhensleyclancy/trump-dc-maga-election-protests-capitol) in Washington, DC, people online have been trying to identify those who were part of the mob. [2] Many rioters who [appeared in viral photos](https://www.buzzfeednews.com/article/salvadorhernandez/pelosi-desk-guy-capitol-charged) have since been [named and charged](https://www.buzzfeednews.com/article/adolfoflores/shirtless-horned-man-lectern-west-virginia-delegate-capitol), but one woman captured in a photograph from Jan. 6 has instead become a meme: meemaw at the Capitol. [3] The photo of the older woman wearing comfortable clothing, smiling at the camera, and carrying a flag, phone, and drinking cup emerged on the day of the DC riot when one Twitter user shared a wider image with a caption about white privilege. (Many people have argued the mostly white Trump supporters received vastly [different treatment from authorities than Black Lives Matter demonstrators have](https://www.buzzfeednews.com/article/emmanuelfelton/black-lives-matter-trump-mob-police-comparison).) [4] Another user then retweeted that post but…[truncated 4134 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E1 [Material A]: media_metadata_not_pixels
+    E13 [United States Capitol Building Interior Rotunda Stock Photo - Download ...]: media_metadata_not_pixels
+    E10 [Capitol Rotunda | Architect of the Capitol]: media_metadata_not_pixels
+    E15 [984 Us Capitol Building Interior Stock Photos, High-Res Pictures, and ...]: media_metadata_not_pixels
+```
 - attached images (4): E1(complete_media), E10, E13, E15
 
 **Decision**
@@ -537,6 +545,16 @@ REPORT status=COMPLETED
 **State**
 
 - latest reports: 1 → W2-1 COMPLETED (4 findings)
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E38 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 0.50% (threshold 32), difference box x 0.94–1.00, y 0.46–0.54 (relative to the A picture)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E42 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 77.61% (threshold 48), difference box x 0.00–1.00, y 0.00–1.00 (relative to the A picture)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E32 ["Capitol Meemaw" Goes Viral But She Was In Kansas, Not DC]: [1] In the chaos of last week's [insurrection at the Capitol building](https://www.buzzfeednews.com/article/mollyhensleyclancy/trump-dc-maga-election-protests-capitol) in Washington, DC, people online have been trying to identify those who were part of the mob. [2] Many rioters who [appeared in viral photos](https://www.buzzfeednews.com/article/salvadorhernandez/pelosi-desk-guy-capitol-charged) have since been [named and charged](https://www.buzzfeednews.com/article/adolfoflores/shirtless-horned-man-lectern-west-virginia-delegate-capitol), but one woman captured in a photograph from Jan. 6 has instead become a meme: meemaw at the Capitol. [3] The photo of the older woman wearing comfortable clothing, smiling at the camera, and carrying a flag, phone, and drinking cup emerged on the day of the DC riot when one Twitter user shared a wider image with a caption about white privilege. (Many people have argued the mostly white Trump supporters received vastly [different treatment from authorities than Black Lives Matter demonstrators have](https://www.buzzfeednews.com/article/emmanuelfelton/black-lives-matter-trump-mob-police-comparison).) [4] Another user then retweeted that post but…[truncated 4134 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E43 [Oh — Christopher Fountain]: [1] [Oh](https://christopherfountain.squarespace.com/blog/2024/6/11/oh) [2] [/](https://christopherfountain.squarespace.com/blog/2024/6/11/oh) [3] AND: [4] [#NOW](https://twitter.com/hashtag/NOW?src=hash&ref_src=twsrc%5Etfw) Park Police dances as protesters throw bottles and chant "Fascist!" at him outside of White House DC [pic.twitter.com/mXC9CeO4Ed](https://t.co/mXC9CeO4Ed) [5] [June 8, 2024](https://twitter.com/ScooterCasterNY/status/1799528041284038944?ref_src=twsrc%5Etfw) [6] "Well, first of all, President Biden certainly - unlike President Trump - supports the freedom of speech and the freedom of expression. So obviously these protesters are exercising their right, and that is their right to do. That being said, we certainly understand it's a challenge. President Biden is certainly fighting for every vote, he's not taking anything for granted. But look, this is the freedom that people have, going back to the message of freedom, they have the right to protest, they have the right to speak their mind." [7] BUT: [8] [Teens Arrested Over 'Damage' to 'Pride Progress' Street Mural in Washington Because Everything Is Stupid](https://redstate.com/bonchie/2024/06/08/arrests-in…[truncated 1168 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E1 [Material A]: media_metadata_not_pixels
+    E35 [main image of the page (og:image): https://www.buzzfeednews.com/article/davidmack/capitol-meemaw-meme-topeka-kansas]: media_metadata_not_pixels
+    E39 [main image of the page (og:image): https://19thnews.org/2021/02/women-arrested-storming-the-capitol/]: media_metadata_not_pixels
+```
 - attached images (6): E1(complete_media), E39, E10, E35, E13, E15
 
 **Decision**
@@ -551,6 +569,16 @@ QUERY_MEMORY {"query": "The given image circulated with the following claim: \"A
 **State**
 
 - latest reports: 1 → W2-1 COMPLETED (4 findings)
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E38 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 0.50% (threshold 32), difference box x 0.94–1.00, y 0.46–…[truncated 205 chars; READ_RECORD reads the full text]
+    E42 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 77.61% (threshold 48), difference box x 0.00–1.00, y 0.00…[truncated 205 chars; READ_RECORD reads the full text]
+    E32 ["Capitol Meemaw" Goes Viral But She Was In Kansas, Not DC]: [1] In the chaos of last week's [insurrection at the Capitol building](https://www.buzzfeednews.com/article/mollyhensleyclancy/trump-dc-maga-election-…[truncated 205 chars; READ_RECORD reads the full text]
+    E43 [Oh — Christopher Fountain]: [1] [Oh](https://christopherfountain.squarespace.com/blog/2024/6/11/oh) [2] [/](https://christopherfountain.squarespace.com/blog/2024/6/11/oh) [3] A…[truncated 205 chars; READ_RECORD reads the full text]
+    E1 [Material A]: media_metadata_not_pixels
+    E35 [main image of the page (og:image): https://www.buzzfeednews.com/article/davidmack/capitol-meemaw-meme-topeka-kansas]: media_metadata_not_pixels
+    E39 [main image of the page (og:image): https://19thnews.org/2021/02/women-arrested-storming-the-capitol/]: media_metadata_not_pixels
+```
 - attached images (6): E1(complete_media), E39, E35, E10, E13, E15
 
 **Decision**

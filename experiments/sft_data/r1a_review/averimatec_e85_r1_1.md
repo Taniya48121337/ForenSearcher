@@ -40,7 +40,7 @@ INSPECT {"targets": ["E1"], "request": {"operation": "ocr", "params": {}}}
 ```
 INSPECT ocr returned ready; Result Evidence: E3, E1; evidence cards also include source materials and metadata.
 OCR of E1: 0 text boxes, 0 distinct texts in 0 of 1 image; no text was recognised (OCR can miss text, so this does not show there is none).
-{"backend": "RapidOCR", "limitations": ["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
+{"backend":"RapidOCR","limitations":["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
 ```
 
 ## 3. W1-1 · turn 2/12 · rule `E2_reverse_image` · branch `SEARCH image image` · request_0003
@@ -73,11 +73,11 @@ SEARCH {"input_type": "image", "query": "E1", "output_type": "image"}
 [R9] https://www.reddit.com/r/pics/comments/1fbl786/750000_israelis_tonight_calling_for_hostage/; image=not_requested, page=not_requested, thumbnail=not_requested
 [R10] https://apnews.com/article/politics-israel-government-protests-and-demonstrations-benjamin-netanyahu-tel-aviv-008c329e8dcf97418cbd42a74113320a; image=not_requested, page=not_requested, thumbnail=not_requested
   R1: Israelis rally again against government's judicial overhaul | Reuters — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Google Lens (match type not reported). Site: Reuters.
-  R2: Kumpulan Berita X - Minanews.net — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Pekan Ke-26, Puluhan Ribu Warga Israel Be …[+43 chars]
+  R2: Kumpulan Berita X - Minanews.net — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Pekan Ke-26, Puluhan Ribu Warga Israel Be …[+74 chars]
   R3: Dialogue should prevent Israel's slide into civil war - The Jewish People Policy Institute — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Google Lens (match type not reported). Site: המכון למדיניות העם היהודי - JPPI.
   R4: Protesters keep pressure on Israel PM over reform plan Malay Mail — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Protesters keep pressure on Israel PM ove …[+13 chars]
   R5: White House: Biden 'Very Forthright' with Netanyahu — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Google Lens (match type not reported). Site: الشرق الأوسط.
-  R6: Protesters keep pressure on Israel PM over reform plan - AL-MONITOR: The Middle Eastʼs leading independent news source since 201 — Thumbnail compared w …[+1387 chars]
+  R6: Protesters keep pressure on Israel PM over reform plan - AL-MONITOR: The Middle Eastʼs leading independent news source since 201 — Thumbnail compared w …[+1385 chars]
 ```
 
 ## 4. W1-1 · turn 3/12 · rule `E3_dates_top_results` · branch `SEARCH dates` · request_0004
@@ -100,7 +100,7 @@ SEARCH {"source": "R2", "output_type": "text", "include": ["dates"]}
 ```
 [R2] https://minanews.net/kanal/terkini/x/page/640/; dates=ready(E18)
 dates[R2]: image first archived 2023-07-03 (details and what each date means: E18)
-  R2: Kumpulan Berita X - Minanews.net — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Pekan Ke-26, Puluhan Ribu Warga Israel Be …[+43 chars]
+  R2: Kumpulan Berita X - Minanews.net — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Pekan Ke-26, Puluhan Ribu Warga Israel Be …[+74 chars]
 ```
 
 ## 5. W1-1 · turn 4/12 · rule `E3_dates_top_results` · branch `SEARCH dates` · request_0005
@@ -239,9 +239,9 @@ SEARCH {"input_type": "text", "query": "aerial night protest crowd banners Hebre
 [R15] https://www.jpost.com/israel-news/politics-and-diplomacy/article-733805; page=ready(E27), document=not_requested
 [R16] https://www.france24.com/en/middle-east/20230708-tens-of-thousands-protest-in-israel-as-netanyahu-pushes-judicial-reform-forward; page=ready(E28), document=not_requested
 [R17] https://www.dreamstime.com/tel-aviv-israel-march-night-parade-protest-against-israeli-judicial-reform-people-protesting-government-video272350204; page=ready(E29), document=not_requested
-  R11: 2023 Israeli judicial reform protests - Wikipedia — From January to October 2023, large-scale protests took place across Israel in response to the government's push for a wide-ranging judicial reform. The proposed reform aimed to give the government full control of the Su …[+178 chars]
-  R12: 2023 Israeli Judicial Reform Protests Photos and Premium High ... — Browse 4,819 2023 israeli judicial reform protests photos and images available, or start a new search to explore more photos and images. Members of the Brothers in Arm reserve soldiers movement hold flags during a protes …[+67 chars]
-  R13: 20 striking images of protest against Israeli democracy under ...Israelis Protest Against Law to Limit Supreme Court PowersIsrael's 'Day of  …[+170 chars] — Mar 14, 2023 · An aerial picture shows the size of protest crowds in Tel Aviv on March 11. Jack Guez/AFP/Getty A banner reads “civil disobedience” in Hebrew. Jack Guez/AFP/Getty Jul 25, 2023 · Demonstrators face off with …[+722 chars]
+  R11: 2023 Israeli judicial reform protests - Wikipedia — From January to October 2023, large-scale protests took place across Israel in response to the government's push for a wide-ranging judicial reform. The proposed reform aimed to give the government full control of the Su …[+74 chars]
+  R12: 2023 Israeli Judicial Reform Protests Photos and Premium High ... — Browse 4,819 2023 israeli judicial reform protests photos and images available, or start a new search to explore more photos and images. Members of the Brothers in Arm reserve soldiers movement hold flags during a protes …[+74 chars]
+  R13: 20 striking images of protest against Israeli democracy under ...Israelis Protest Against Law to Limit Supreme Court PowersIsrael's 'Day of  …[+154 chars] — Mar 14, 2023 · An aerial picture shows the size of protest crowds in Tel Aviv on March 11. Jack Guez/AFP/Getty A banner reads “civil disobedience” in Hebrew. Jack Guez/AFP/Getty Jul 25, 2023 · Demonstrators face off with …[+74 chars]
   R14: Israelis Protest Against Law to Limit Supreme Court Powers — Jul 25, 2023 · Demonstrators face off with mounted Israeli riot police officers in Tel Aviv during a protest against the Israeli government's judicial-reform plan, on July 24, 2023.
   R15: Israel's 'Day of Disruption' protest by land, air and sea ... — Mar 9, 2023 · Jerusalem Post / Israel News / Israel Politics Israel's 'Day of Disruption' protest by land, air and sea - In pictures As people crowd into the streets to protest against the judicial reform bill ...
   R16: Protests reignite in Israel as Netanyahu pushes new judicial ... — Jul 8, 2023 · An aerial view shows protesters as they take part in a demonstration against Israeli Prime Minister Benjamin Netanyahu and his nationalist coalition government's judicial overhaul, in Tel Aviv ...
@@ -268,7 +268,7 @@ READ_RECORD {"record_id": "E24"}
 ```
 READ_RECORD E24; offset=0; next_offset=None
   E24 label: difference composite (images): left A=E1, middle B=E5, right the aligned B, red = differing pixels, green box = difference extent; changed area 32.092%
-  content: {"bbox":[0.0,0.1233,1.0,1.0],"changed_area":0.32092,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":48,"zoom":null}
+  content: {"bbox":[0.0,0.123,1.0,1.0],"changed_area":0.321,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":48}
 ```
 
 ## 12. W1-1 · turn 11/12 · rule `E9_report` · branch `report_completed` · request_0012
@@ -308,6 +308,20 @@ REPORT status=INCOMPLETE reason=What the earliest copy of the image says it show
 **State**
 
 - latest reports: 1 → W1-1 INCOMPLETE (6 findings) — reason: What the earliest copy of the image says it shows (place, time, event), so that it can be compared with the claim of French pension-reform protests; Whether the Minanews or WION image is the same photograph as the given image, and so whether either page's context applies to it; candidate pages that  …[+375 chars]
+  - supporting records of W1-1 (given to GIA with the report, as rendered):
+```
+    E25 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 32.09% (threshold 48), difference box x 0.00–1.00, y 0.12–1.00 (relative to the A picture)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E22 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["The two images differ in pixels: changed area 50.31% (threshold 48), difference box x 0.00–1.00, y 0.00–1.00 (relative to the A picture)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E18 [dates of https://minanews.net/kanal/terkini/x/page/640/]: Dates for https://minanews.net/kanal/terkini/x/page/640/: - earliest Internet Archive capture of the image file https://minanews.net/wp-content/uploads/2023/07/protes-pekan-27-1024x683.jpg: 2023-07-03; the image was online no later than this date
+    E16 [Aerial view shows powerful images from the protests against Benjamin Netanyahu's justice plans - Middle East News]: [1] Powerful images showed tens of thousands of Israelis joined demonstrations in Tel Aviv and Jerusalem on Saturday for the eighth consecutive week against judicial reform plans by Prime Minister Benjamin Netanyahu's new government. [2] Protesters say the changes will threaten democratic checks and balances on ministers by the courts and accuse Netanyahu of trying to escape a legal case against him. [3] The government's plan has sparked nationwide protests in Israel and caused alarm among economists, former security officials and legal experts at home and abroad. [4] Critics say it undermines the courts' independence while handing the government unbridled power, which in turn would endanger minority rights, encourage corruption, isolate Israel diplomatically and wreak havoc on its economy. [5] Netanyahu says the reforms will strengthen democracy and boost business. He has dismissed protesters as "anarchists" unwilling to accept the decisive right-wing victory in a Nov. 1 election. [6] The Knesset (parliament) passed the first reading of the first bill of the government’s proposed judicial reform by a vote of 63 for and 47 against after midnight on Tuesday (February 21). [7] …[truncated 454 chars; READ_RECORD rea…[truncated 17 chars; READ_RECORD reads the full text]
+    E19 [dates of https://www.wionews.com/photos/aerial-view-shows-powerful-images-from-the-protests-against-benjamin-netanyahus- …[+20 chars]]: Dates for https://www.wionews.com/photos/aerial-view-shows-powerful-images-from-the-protests-against-benjamin-netanyahus-justice-plans-566185: - published date declared by the page: 2023-02-26 (when this page says it was published; the picture or video in it may have appeared earlier elsewhere) - last-modified date declared by the page: 2023-02-26 - earliest Internet Archive capture of this page: 2023-02-27 (https://web.archive.org/web/20230227115012/https://www.wionews.com/photos/aerial-view-shows-powerful-images-from-the-protests-against-benjamin-netanyahus-justice-plans-566185); the page existed no later than this date, which is not a publication date - the image file https://cdn.wionews.com/sites/default/files/2023/02/27/335100-tel-aviv.png?im=FitAndFill=(1200,900) has no Internet Archive capture
+    E6 [X – Laman 640 – Minanews.net]: [1] Tausiyah [2] Habib Hizbullah - Ahad, 2 Juli 2023 - 02:30 WIB [3] Indonesia [4] - Sabtu, 1 Juli 2023 - 21:50 WIB [5] Kolom [6] - Sabtu, 1 Juli 2023 - 21:28 WIB [7] Internasional [8] - Sabtu, 1 Juli 2023 - 19:36 WIB [9] Palestina [10] - Sabtu, 1 Juli 2023 - 19:33 WIB [11] - Sabtu, 1 Juli 2023 - 17:40 WIB [12] - Sabtu, 1 Juli 2023 - 17:33 WIB [13] Sosok [14] - Kamis, 15 Oktober 2026 - 09:10 WIB [15] - Sabtu, 10 Oktober 2026 - 08:06 WIB [16] - Rabu, 7 Oktober 2026 - 07:04 WIB [17] - Jumat, 2 Oktober 2026 - 09:53 WIB [18] Kanal Berita [19] Halaman
+    E5 [Kumpulan Berita X - Minanews.net]: media_metadata_not_pixels
+    E24 [difference composite (images): left A=E1, middle B=E5, right the aligned B, red = differing pixels, green box = differen …[+31 chars]]: media_metadata_not_pixels
+    E1 [Material A]: media_metadata_not_pixels
+    E15 [Aerial view shows powerful images from the protests against Benjamin Netanyahu's justice plans - Middle East News]: media_metadata_not_pixels
+    E21 [difference composite (images): left A=E1, middle B=E15, right the aligned B, red = differing pixels, green box = differe …[+32 chars]]: media_metadata_not_pixels
+```
 - attached images (5): E5, E1(complete_media), E21, E24, E15
 
 **Decision**
@@ -474,6 +488,13 @@ REPORT status=INCOMPLETE reason=Original publication context: no examined captio
 **State**
 
 - latest reports: 1 → W2-1 INCOMPLETE (5 findings) — reason: Original publication context: no examined caption or image comparison establishes the given photograph's location, capture date or earliest publication; Israel versus France: the read articles concern Israeli judicial reform protests, but their correspondence to the given photograph was not establis …[+4 chars]
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E26 [20 Striking Images of Protest Against Israeli Democracy Under Siege – Mother Jones]: [1] [Sign up for the free Mother Jones Daily.](https://www.motherjones.com/newsletters/?mj_oac=Article_Top_No_Oligarchs) [2] Since late January, hundreds of thousands of Israelis have been loudly protesting an impending judicial overhaul by the nation’s new right-wing government. The most controversial part of the proposal gives the Knesset, Israeli’s parliament, the power to overrule supreme court decisions with a simple majority vote, which means the nation’s top court would be unable to strike down objectionable laws. It would effectively, as one Israeli news report put it, “neuter” the court. [3] Opponents say the changes, if allowed, will “endanger the entire legal system” and cement the power grip of the ruling coalition led by Prime Minister Benjamin Netanyahu, who faces a corruption charge. (The Knesset already has approved another rule stating that a prime minister may only be removed from office for physical or mental unfitness.) Since the changes were proposed, Israelis have taken to the streets en masse to register their displeasure. [4] And we respect that! But maybe you’d consider supporting our work directly? Help fund more journalism that seeks the truth and hold…[truncated 1276 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E27 [Israel's 'Day of Disruption' protest by land, air and sea - In pictures | The Jerusalem Post]: [1] Demonstrators on Thursday morning blocked traffic into the departures area at Ben-Gurion Airport as part of the [nationwide judicial reform protests](https://www.jpost.com/breaking-news/article-733771) taking place throughout the country. [2] As people crowd into the streets to [protest against the judicial reform](https://www.jpost.com/israel-news/article-733049) bill, the century-old adage "a picture is worth a thousand words" certainly rings true. [3] Demonstrations around Haifa and Israel's northern coast [4] The maritime route to the port of Haifa was completely blocked on Thursday morning due to the flotilla from the organization "Sailors to Save Democracy" up and down the coast. [5] Ben-Gurion Airport protests [6] IDF reservists hold a protest in Jerusalem at the Kohelet Forum buildings [7] Hundreds of IDF reservists gathered outside the [Kohelet Forum](https://www.jpost.com/israel-news/article-733703) buildings in Jerusalem on Thursday morning as part of the Brothers in Arms' reservist protest against the judicial reforms, according to a report from the organization.
+    E28 [Protests reignite in Israel as Netanyahu pushes new judicial reform bill - France 24]: [1] Protests reignite in Israel as Netanyahu pushes new judicial reform bill [2] Israel's anti-government protest movement gained new momentum on Saturday night as tens of thousands of people spilled into the streets of cities across the country to oppose Prime Minister Benjamin Netanyahu's contentious plan to overhaul the judicial system. [3] To display this content from YouTube, you must enable advertisement tracking and audience measurement. [4] One of your browser extensions seems to be blocking the video player from loading. To watch this content, you may need to disable it on this site. [5] The grassroots movement has staged [protests](https://www.france24.com/en/tag/protest/) for over six months since [Netanyahu](https://www.france24.com/en/tag/benjamin-netanyahu/#pager)'s government unveiled the overhaul plan. But in recent weeks, the protests had shown signs of weakening. [6] Plans by the government to [push forward with the overhaul](https://www.france24.com/en/middle-east/20230618-israel-s-netanyahu-says-divisive-judicial-reforms-will-move-ahead-this-week) next week in parliament, coupled with the firing of [Tel Aviv](https://www.france24.com/en/tag/israel/)'s polic…[truncated 2722 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E1 [Material A]: media_metadata_not_pixels
+```
 - attached images (5): E1(complete_media), E5, E21, E24, E15
 
 **Decision**
@@ -488,6 +509,13 @@ QUERY_MEMORY {"query": "The given image circulated with the following claim: \"P
 **State**
 
 - latest reports: 1 → W2-1 INCOMPLETE (5 findings) — reason: Original publication context: no examined caption or image comparison establishes the given photograph's location, capture date or earliest publication; Israel versus France: the read articles concern Israeli judicial reform protests, but their correspondence to the given photograph was not establis …[+4 chars]
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E26 [20 Striking Images of Protest Against Israeli Democracy Under Siege – Mother Jones]: [1] [Sign up for the free Mother Jones Daily.](https://www.motherjones.com/newsletters/?mj_oac=Article_Top_No_Oligarchs) [2] Since late January, hund…[truncated 205 chars; READ_RECORD reads the full text]
+    E27 [Israel's 'Day of Disruption' protest by land, air and sea - In pictures | The Jerusalem Post]: [1] Demonstrators on Thursday morning blocked traffic into the departures area at Ben-Gurion Airport as part of the [nationwide judicial reform protes…[truncated 205 chars; READ_RECORD reads the full text]
+    E28 [Protests reignite in Israel as Netanyahu pushes new judicial reform bill - France 24]: [1] Protests reignite in Israel as Netanyahu pushes new judicial reform bill [2] Israel's anti-government protest movement gained new momentum on Sat…[truncated 205 chars; READ_RECORD reads the full text]
+    E1 [Material A]: media_metadata_not_pixels
+```
 - attached images (5): E1(complete_media), E5, E21, E24, E15
 
 **Decision**

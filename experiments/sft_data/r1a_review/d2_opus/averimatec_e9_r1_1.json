@@ -1,0 +1,39 @@
+{"run": "averimatec_e9_r1_1", "family": "E", "steps_read": 13, "overall": "minor_issues",
+ "issues": [
+  {"step": "GIA turn 1 round 1 (request_0001)", "category": "plan_quality", "severity": "minor",
+   "what": "T1 is the overall task copied verbatim (\"The given image circulated with the following claim: ... state what could not be determined.\"), with no decomposition into reverse search / dating / context reading.",
+   "why_bad_to_teach": "It teaches the coordinator to forward the task unchanged rather than state what the workspace should establish.",
+   "ideal": "One task is fine here, but its text should name the steps: reverse-search E1, date the earliest matching pages, read the original caption/context, and compare with the Mecca/2023-04-12 claim."},
+  {"step": "W1-1 turn 3 (request_0004)", "category": "rationale_mismatch", "severity": "minor",
+   "what": "Rationale says Premium Times (R1) \"describes a Ramadan meal at Aso Villa, contradicting the Mecca claim\", but R1's visible title is only \"Ramadan: Buhari hosts Tinubu to breaking of fast\"; \"Aso Villa\" appears only in R2's (Naija Live Tv) title, and no page had been read yet.",
+   "why_bad_to_teach": "It teaches mixing up which source said what and treating a search snippet as a page's content before reading it.",
+   "ideal": "\"R1 (Premium Times, titled 'Buhari hosts Tinubu to breaking of fast') has a near-identical thumbnail; get its dates to see when this copy was online.\""},
+  {"step": "W1-1 turn 5 (request_0006)", "category": "wasted_step", "severity": "minor",
+   "what": "A date lookup on R3, an unrelated article (\"Internet users on GSM networks increase to 70.3m - NCC\"), justified as helping to \"further refute the false claim\"; its result (image first archived 2019-05-11) is never used.",
+   "why_bad_to_teach": "It teaches dating pages whose topic shows the image is only an incidental thumbnail, and calling the claim false before any context has been read.",
+   "ideal": "Skip R3, or justify it neutrally as a check on whether the unrelated page holds an earlier copy of the image."},
+  {"step": "W1-1 turn 7 (request_0008)", "category": "rationale_mismatch", "severity": "minor",
+   "what": "Rationale presumes the result: comparing E1 with E9 \"will verify they are identical and confirm the original context\". It also says \"Presidential Villa\" where E10 says \"Residential Villa, Abuja\". The comparison then found a 1.68% difference.",
+   "why_bad_to_teach": "Writing the expected outcome into the rationale teaches confirmation bias in comparisons.",
+   "ideal": "\"Compare E1 with the Naija Live Tv image E9 to check whether it is the same photograph and whether anything was altered.\""},
+  {"step": "W1-1 turn 10 (request_0011)", "category": "rationale_mismatch", "severity": "minor",
+   "what": "The E7 'review comparison image' step is justified as \"Reading E24 will provide the formal tool result to cite\", not as looking at the diff composite to check the match.",
+   "why_bad_to_teach": "It teaches that reviewing a comparison is about collecting citations rather than checking the picture.",
+   "ideal": "\"View the E24 composite to confirm visually that E1 and the Premium Times thumbnail E5 are the same photograph before reporting.\""},
+  {"step": "GIA FINISH round 2 (request_0013)", "category": "other", "severity": "minor",
+   "what": "The verifier fed back \"wrong_citation/critical\", but the REVISED ANSWER is word-for-word identical to the original ANSWER.",
+   "why_bad_to_teach": "If the flag was valid, the exported answer still carries the bad citation; if it was not, the no-op revise step is noise in the training data.",
+   "ideal": "The revise step should either change the flagged citation or the pipeline should record why it was rejected."}
+ ],
+ "good_patterns": [
+  "Standard provenance chain done in order: OCR, reverse image search, dates for the top matches, reading the earliest dated page's text, then pixel comparisons of E1 against both matching copies (E9 and E5).",
+  "Careful date semantics in the report and answer: \"no later than May 10, 2019 according to the page's declared publication date\", and the archive capture \"establishes the page's existence by that date, not its first publication date\".",
+  "Honest comparison reporting: the 0.000% match with the thumbnail is hedged (\"thresholded comparison of a small thumbnail\"), and the 1.68% difference with the Naija Live TV copy is reported rather than hidden.",
+  "Attribution is kept: \"the Abuja context comes from the accompanying report\" / \"room's location was not independently established\", and the report scopes what is false (the image's context) without claiming the two men never met in Mecca."
+ ],
+ "cannot_judge": [
+  "The rest of E10 is truncated (+1580 chars), so I could not check the 'Friday evening' detail or whether the page gives an event date beyond the publication date.",
+  "Whether the watermark in F6 (\"visibly carries a large watermark across this region\") is actually visible in E9/E21; the images are attached but not rendered here, and no review step looked at E21.",
+  "Which citation the verifier flagged as wrong_citation/critical; none of the visible citations looks clearly wrong to me."
+ ],
+ "summary": "A short, well-ordered E-family run: reverse search found 2019 Naija Live TV and Premium Times copies; dates, page text and two pixel comparisons support an honestly hedged conclusion that the image is a May 2019 Abuja Ramadan-meal photo, not Mecca 2023. The issues are minor: a verbatim GIA task, rationales that mix up sources or presume outcomes, one wasted date lookup on an unrelated page, and a no-op answer revision after a critical verifier flag. Nothing here would teach hallucination or wrong verdicts."}

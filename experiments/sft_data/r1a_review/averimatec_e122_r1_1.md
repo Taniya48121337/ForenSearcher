@@ -40,7 +40,7 @@ INSPECT {"targets": ["E1"], "request": {"operation": "ocr", "params": {}}}
 ```
 INSPECT ocr returned ready; Result Evidence: E3, E1; evidence cards also include source materials and metadata.
 OCR of E1: 1 text box, 1 distinct text in 1 of 1 image. Texts: "NAVJO". READ_RECORD E3 lists every text box with its position and confidence.
-{"backend": "RapidOCR", "limitations": ["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
+{"backend":"RapidOCR","limitations":["coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters."]}
 ```
 
 ## 3. W1-1 · turn 2/12 · rule `E2_reverse_image` · branch `SEARCH image image` · request_0003
@@ -69,9 +69,9 @@ SEARCH {"input_type": "image", "query": "E1", "output_type": "image"}
 [R5] https://www.change.org/p/canadian-government-canadian-government-speak-up-to-protect-democracy-and-safety-of-protestors-in-india; image=ready(E13), page=ready(E14), thumbnail=ready(E15)
   R1: Surendra Baisla dausa @pilotsurendra - Twitter Profile Sotwe — Thumbnail compared with the query image: near-identical. Found by Yandex (match type not reported). Page text: ऐसी तस्वीर तो तालीबान में भी देखने को नहीं मिली 😡.
   R2: भारत अंधभक्तमुक्त केलाच पाहिजे. - मार्मिक — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: भारत अंधभक्तमुक्त केलाच पाहिजे.
-  R3: Read all Latest Updates on and about AAP MLA — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: ED conducts fresh searches in money laund …[+44 chars]
+  R3: Read all Latest Updates on and about AAP MLA — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: ED conducts fresh searches in money laund …[+74 chars]
   R4: Jhinda Music (@JhindaMusic) Aguea — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported).
-  R5: Petition - Canadian Government: speak up to protect democracy and safety of protestors in India - Canada - Change.org — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Canadian Government: speak up to protect  …[+44 chars]
+  R5: Petition - Canadian Government: speak up to protect democracy and safety of protestors in India - Canada - Change.org — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Canadian Government: speak up to protect  …[+74 chars]
 ```
 
 ## 4. W1-1 · turn 3/12 · rule `E3_dates_top_results` · branch `SEARCH dates` · request_0004
@@ -116,7 +116,7 @@ SEARCH {"source": "R3", "output_type": "text", "include": ["dates"]}
 ```
 [R3] https://www.dtnext.in/topic/aap-mla; dates=ready(E17)
 dates[R3]: page says published 2024-02-24 (details and what each date means: E17)
-  R3: Read all Latest Updates on and about AAP MLA — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: ED conducts fresh searches in money laund …[+44 chars]
+  R3: Read all Latest Updates on and about AAP MLA — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: ED conducts fresh searches in money laund …[+74 chars]
 ```
 
 ## 6. W1-1 · turn 5/12 · rule `E3_dates_top_results` · branch `SEARCH dates` · request_0006
@@ -138,7 +138,7 @@ SEARCH {"source": "R5", "output_type": "text", "include": ["dates"]}
 ```
 [R5] https://www.change.org/p/canadian-government-canadian-government-speak-up-to-protect-democracy-and-safety-of-protestors-in-india; dates=ready(E18)
 dates[R5]: page says published 2021-01-30; page says modified 2023-05-19; first archived 2021-01-31 (details and what each date means: E18)
-  R5: Petition - Canadian Government: speak up to protect democracy and safety of protestors in India - Canada - Change.org — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Canadian Government: speak up to protect  …[+44 chars]
+  R5: Petition - Canadian Government: speak up to protect democracy and safety of protestors in India - Canada - Change.org — Thumbnail compared with the query image: no match (cropping, an added border or a local edit can also prevent a hash match). Found by Yandex (match type not reported). Page text: Canadian Government: speak up to protect  …[+74 chars]
 ```
 
 ## 7. W1-1 · turn 6/12 · rule `E5_read_earliest_dated` · branch `READ_RECORD text` · request_0007
@@ -251,7 +251,7 @@ READ_RECORD {"record_id": "E23"}
 ```
 READ_RECORD E23; offset=0; next_offset=None
   E23 label: difference composite (images): left A=E1, middle B=E6, right the aligned B, red = differing pixels, green box = difference extent; changed area 0.000%
-  content: {"bbox":null,"changed_area":0.0,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":40,"zoom":null}
+  content: {"changed_area":0.0,"kind":"single","operation":"diff_media","panels":["a_image","b_image","diff_overlay"],"registration_mode":"homography","threshold":40}
 ```
 
 ## 12. W1-1 · turn 11/12 · rule `E9_report` · branch `report_completed` · request_0012
@@ -290,6 +290,20 @@ REPORT status=INCOMPLETE reason=The report does not state what the earliest copy
 **State**
 
 - latest reports: 1 → W1-1 INCOMPLETE (6 findings) — reason: The report does not state what the earliest copy says the image shows (place, time, event), so it does not answer whether the original context matches the claim; The report did not confirm that the image was on the Change.org page in the January 2021 archived version. The 2021 date therefore cannot  …[+143 chars]
+  - supporting records of W1-1 (given to GIA with the report, as rendered):
+```
+    E21 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["No pixel difference with area ≥ min_area (0.0005) was found in the compared region of the two images (measured 0.000%)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E24 [INSPECT compare_media result]: {"operation":"compare_media","summary_lines":["No pixel difference with area ≥ min_area (0.0005) was found in the compared region of the two images (measured 0.000%)."],"images":[],"note":"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts."}
+    E14 [Petition · Canadian Government: speak up to protect democracy and safety of protestors in India - Canada · Change.org]: [1] Canadian Government: speak up to protect democracy and safety of protestors in India [2] The Issue [3] We, the Canadians of South-Asian descent, are increasingly worried about the human rights violations and brutalities committed by the Indian government on peacefully protesting farmers in Delhi. [4] God-fearing, simple- minded farmers of the country were taken aback in September, 2020, when they were informed of hastily and undemocratically passed agricultural laws that encouraged privatization in the sector and took away guarantees that ensured fair pricing of crops, thus leaving them open to corporate exploitation and threatening their livelihood. So, farmers across the country, including the elderly, women and children, have been peacefully protesting for repeal of these laws since September, 2020, before marching to Delhi, India’s capital, in November, 2020. Since then, these farmers from various states of the country have set up protests on the national highways leading into Delhi to make their voices heard. The government’s response to these protests has been dismal, holding multiple meetings with various farm union leaders while showing unenthusiastic and non-negotia…[truncated 4800 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E18 [dates of https://www.change.org/p/canadian-government-canadian-government-speak-up-to-protect-democracy-and-safety-of-pr …[+17 chars]]: Dates for https://www.change.org/p/canadian-government-canadian-government-speak-up-to-protect-democracy-and-safety-of-protestors-in-india: - published date declared by the page: 2021-01-30 (when this page says it was published; the picture or video in it may have appeared earlier elsewhere) - last-modified date declared by the page: 2023-05-19 - earliest Internet Archive capture of this page: 2021-01-31 (https://web.archive.org/web/20210131005550/https://www.change.org/p/canadian-government-canadian-government-speak-up-to-protect-democracy-and-safety-of-protestors-in-india); the page existed no later than this date, which is not a publication date - the image file https://assets.change.org/photos/2/df/ny/sCDFNyQhYqvGKoD-1600x900-noPad.jpg?1612035090 has no Internet Archive capture
+    E7 [भारत अंधभक्तमुक्त केलाच पाहिजे… – मार्मिक]: [1] ऑलिंपिक स्पर्धा, आशियाई स्पर्धा, कॉमनवेल्थ स्पर्धा अशा जागतिक स्पर्धांमध्ये पदके जिंकून देशाचा स्वाभिमान बनलेल्या भारतकन्यांवर दिल्ली पोलिसांनी केलेला अत्याचाराचा व्हिडिओ काही मिनिटांत देशभर व्हायरल झाला आणि संबध देशातून संतापाची लाट उसळली. या देशाची पहिली आणि एकमेव ऑलिम्पिक पदक विजेती महिला कुस्तीपटू साक्षी मलिक हातात तिरंगा घेऊन शांततापूर्ण निदर्शने करत असताना केंद्र सरकारच्या गृह खात्याचे सरकारी गुलाम असलेले दिल्ली पोलीस जमावाने येऊन तिला उचलतात, जमिनीवर पाडून बुटाने तिचे तोंड चिरडतात, ही कसली मर्दुमकी? एखादे सरकार इतके गर्वोद्धत होते की ते ऑलिंपिक पदक जिंकणारे खेळाडू चिरडण्याची हिंमत करते? इकडे एका दबंग खासदाराला पाठीशी घालणारे तिकडे अख्खे मणिपूर राज्य दहा दिवसात कापरासारखे पेटून खाक झाले, तेव्हा तिथल्या नाकर्त्या आणि आगीत तेल ओतणार्या मुख्यमंत्र्यांना पाठीशी घालत होते. चुकीच्या प्रवृत्तींना पाठीशी घालून सत्तेची तात्पुरती गणिते जुळवता येत असली तरी कायदा व सुव्यवस्था वजाबाकीत जाते. चीन अरुणाचल प्रदेशात घुसला तरी त्यावर ब्र न काढणारे सरकार कुस्तीपटूंवर लाठ्या चालवण्याचे शौर्य गाजवते. ते देखील कशासाठी? तर बालवयातील लैंगिक छळ विरोधी कायद्याखाली वासनांधतेचा आरोप असलेल्या नराधमाला अटक करावी, त्याच्यावर कारवाई करावी, त्याच्या मगरमिठीतून कुस्ती सोडवावी, अशी मागणी पीडित मुलीनी केली …[truncated 4800 chars; READ_RECORD re…[truncated 18 chars; READ_RECORD reads the full text]
+    E16 [dates of https://emarmik.com/10-6-2023-santosh-deshpande-lekh/]: Dates for https://emarmik.com/10-6-2023-santosh-deshpande-lekh/: - earliest Internet Archive capture of this page: 2023-12-08 (https://web.archive.org/web/20231208065019/https://emarmik.com/10-6-2023-santosh-deshpande-lekh/); the page existed no later than this date, which is not a publication date - the image file https://emarmik.com/wp-content/uploads/2023/06/WhatsApp-Image-2023-06-08-at-2.40.32-PM-602x375.jpeg has no Internet Archive capture
+    E13 [Petition - Canadian Government: speak up to protect democracy and safety of protestors in India - Canada - Change.org]: media_metadata_not_pixels
+    E1 [Material A]: media_metadata_not_pixels
+    E20 [difference composite (images): left A=E1, middle B=E13, right the aligned B, red = differing pixels, green box = differe …[+31 chars]]: media_metadata_not_pixels
+    E23 [difference composite (images): left A=E1, middle B=E6, right the aligned B, red = differing pixels, green box = differen …[+30 chars]]: media_metadata_not_pixels
+    E6 [भारत अंधभक्तमुक्त केलाच पाहिजे. - मार्मिक]: media_metadata_not_pixels
+```
 - attached images (5): E13, E1(complete_media), E6, E20, E23
 
 **Decision**
@@ -367,6 +381,10 @@ REPORT status=INCOMPLETE reason=Image presence on the Change.org petition in 202
 **State**
 
 - latest reports: 1 → W2-1 INCOMPLETE (2 findings) — reason: Image presence on the Change.org petition in 2021 archives: no examined archive capture establishes that the image appeared there in 2021.
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E25 [aap mla]: [1] Chennai [2] Tamil Nadu [3] India [4] World [5] Entertainment [6] Entertainment [7] Cinema [8] OTT [9] Business [10] Sports [11] Lifestyle [12] Technology [13] Videos [14] Explainers [15] Editor's Picks [16] aap mla [17] National [18] Delhi Waqf Board money laundering case: Court reserves order on AAP MLA Amanat Ullah Khan's anticipatory bail plea [19] ANI [20] 24 Feb 2024 [21] 4 min read [22] National [23] ED conducts fresh searches in money laundering case against AAP MLA Amanatullah Khan [24] PTI [25] 02 Jan 2024 [26] 2 min read [27] TruthExposed [28] 2021 farmers’ stir visual falsely linked to wrestler [29] DT NEXT Bureau [30] 31 May 2023 [31] 1 min read [32] National [33] AAP MLAs Atishi, Saurabh Bharadwaj take oath as Delhi ministers [34] ANI [35] 09 Mar 2023 [36] 2 min read [37] TruthExposed [38] DeTect: AAP MLA shares old video with false claim [39] DT NEXT Bureau [40] 05 Dec 2022 [41] 1 min read [42] DT Next [43] www.dtnext.in [44] INSTALL APP
+```
 - attached images (5): E13, E1(complete_media), E6, E20, E23
 
 **Decision**
@@ -381,6 +399,10 @@ QUERY_MEMORY {"query": "The given image circulated with the following claim: \"T
 **State**
 
 - latest reports: 1 → W2-1 INCOMPLETE (2 findings) — reason: Image presence on the Change.org petition in 2021 archives: no examined archive capture establishes that the image appeared there in 2021.
+  - supporting records of W2-1 (given to GIA with the report, as rendered):
+```
+    E25 [aap mla]: [1] Chennai [2] Tamil Nadu [3] India [4] World [5] Entertainment [6] Entertainment [7] Cinema [8] OTT [9] Business [10] Sports [11] Lifestyle [12] Technology [13] Videos [14] Explainers [15] Editor's Picks [16] aap mla [17] National [18] Delhi Waqf Board money laundering case: Court reserves order on AAP MLA Amanat Ullah Khan's anticipatory bail plea [19] ANI [20] 24 Feb 2024 [21] 4 min read [22] National [23] ED conducts fresh searches in money laundering case against AAP MLA Amanatullah Khan [24] PTI [25] 02 Jan 2024 [26] 2 min read [27] TruthExposed [28] 2021 farmers’ stir visual falsely linked to wrestler [29] DT NEXT Bureau [30] 31 May 2023 [31] 1 min read [32] National [33] AAP MLAs Atishi, Saurabh Bharadwaj take oath as Delhi ministers [34] ANI [35] 09 Mar 2023 [36] 2 min read [37] TruthExposed [38] DeTect: AAP MLA shares old video with false claim [39] DT NEXT Bureau [40] 05 Dec 2022 [41] 1 min read [42] DT Next [43] www.dtnext.in [44] INSTALL APP
+```
 - attached images (5): E13, E1(complete_media), E6, E20, E23
 
 **Decision**
