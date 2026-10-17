@@ -57,8 +57,13 @@ class ImageSourceOpener:
                     ("image",), candidate.search_title or resource.final_url, "complete image",
                     "SEARCH/open/image+Pillow", "source_material"))
             except SearchFailure as exc:
-                values.append(OpenedMaterial("image", "failed", error=exc.error))
                 source_was_not_an_image = image_url == candidate.source_url and exc.error.code == "UNSUPPORTED_FORMAT"
+                if source_was_not_an_image:
+                    # r1（10-17 负责人定 (ii)）：第 2 轮按网址 SEARCH {"source": <页面网址>, "output_type": "image"} 取页内主图——
+                    # 网址其实是网页，就按网页取它的主图
+                    values.append(await self._page_main_image(candidate))
+                else:
+                    values.append(OpenedMaterial("image", "failed", error=exc.error))
         else:
             values.append(OpenedMaterial("image", "absent"))
         if "page" in cached_materials:
@@ -117,7 +122,7 @@ class ImageSourceOpener:
                 continue                      # 原网址取到了（或图太小），不再取存档
             tried += 1
             try:
-                resource = await self.http.fetch(url, maximum_bytes=self.policy.maximum_image_bytes)
+                resource = await self._fetch_with_retry(url)
                 with Image.open(io.BytesIO(resource.content)) as image:
                     image.load()
                     width, height, image_format = image.width, image.height, image.format
@@ -143,7 +148,28 @@ class ImageSourceOpener:
             return OpenedMaterial("image", "failed", error=last_error)
         return OpenedMaterial("image", "absent")
 
+    async def _fetch_with_retry(self, url: str):
+        """页内主图下载：网络 / 超时 / 限流类失败按 1、2、4 秒退避，共试 3 次（负责人定：服务器网络和本机不同，重试无害）。
+        内容类失败（404、不是图片）不重试。"""
 
+        import asyncio
+
+        last: SearchFailure | None = None
+        for attempt in range(PAGE_IMAGE_ATTEMPTS):
+            try:
+                return await self.http.fetch(url, maximum_bytes=self.policy.maximum_image_bytes)
+            except SearchFailure as exc:
+                last = exc
+                client_error = str(exc.error.message or "").startswith("source returned HTTP 4")
+                if exc.error.code not in _RETRYABLE_FETCH or client_error or attempt == PAGE_IMAGE_ATTEMPTS - 1:
+                    raise
+                await asyncio.sleep(2 ** attempt)
+        assert last is not None
+        raise last
+
+
+PAGE_IMAGE_ATTEMPTS = 3
+_RETRYABLE_FETCH = {"NETWORK_ERROR", "TIMEOUT", "RATE_LIMITED", "PROVIDER_ERROR", "HTTP_ERROR"}
 ARCHIVE_RAW = "https://web.archive.org/web/2id_/"     # 档案馆原样返回最近一次存档的字节（id_ = 不改写）
 _SKIP_IMAGE = ("logo", "icon", "sprite", "avatar", "pixel", "spacer", "badge", "/ads/", "doubleclick", "gravatar", "emoji",
                "placeholder", "blank.", "loading")

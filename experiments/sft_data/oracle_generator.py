@@ -953,11 +953,16 @@ class OracleGenerator(ModelImageInputs):
 
         m = re.match(r"^W(\d+)-(\d+)$", workspace)
         record = self.plan_records.get(int(m.group(1))) if m else None
-        if case is not None and case.requirements and m and int(m.group(1)) == 1 and record:
+        if case is not None and case.requirements and m and record:
+            round_n = int(m.group(1))
             gview = record["payload"].get("global_view") or {}
             plan = SimpleNamespace(output=record["output"], view=gview,
                                    round_index=(gview.get("runtime_constraints") or {}).get("round_index"))
-            raw = asyncio.run(judge_plan(plan, case, set(), judge, None))
+            # r1（10-17 负责人定）：第 2 轮也按 plan 评判定范围——covered_before 与 existing_reports 按事后核验同一算法
+            # （verify.units.verify_units → check_plan；complete_units 用 log 取本轮之前的报告全文），同一 payload、同一 key
+            covered = self._inloop_covered_before(round_n, case, judge) if round_n > 1 else set()
+            log = SimpleNamespace(store=self.store) if round_n > 1 else None
+            raw = asyncio.run(judge_plan(plan, case, covered, judge, log))
             known = {r.id for r in case.requirements}
             for item in (raw or {}).get("tasks") or []:
                 if isinstance(item, dict) and int(item.get("index") or 0) == int(m.group(2)):
@@ -965,6 +970,69 @@ class OracleGenerator(ModelImageInputs):
                     return targets, {"method": "judge_targets", "requirement_ids": sorted(targets)}
         req_ids, note = requirements_for_workspace(case, task_text, run=self.run_dir.name, workspace_id=workspace, units=None)
         return req_ids, {**note, "inloop": "text_overlap" + ("" if record else " (no plan record)")}
+
+    def _inloop_covered_before(self, round_n: int, case: Any, judge: Any) -> set[str]:
+        """事后核验里第 round_n 轮 plan 单元的 covered_before：之前各轮工作区里、没被污染的 Finding（三层核验 + 校准后的
+        tainted_findings 以外）所引的案卷必需证据支持的要求（verify.hindsight.UsefulEvidence.coverage_by_workspace）。
+        之前各轮的报告这里按事后核验同样的参数跑一遍 verify_report（同一判官、同一缓存：事后核验直接命中）。"""
+
+        import asyncio
+
+        from foren_searcher.datagen.verify.calibrate import recalibrate
+        from foren_searcher.datagen.verify.context import StoreLookup
+        from foren_searcher.datagen.verify.verdict import verify_report
+
+        lookup = StoreLookup(self.store)
+        covered: set[str] = set()
+        cache = self.__dict__.setdefault("_covered_cache", {})
+        for rec in self.store.workspace_report_records():
+            mm = re.match(r"^W(\d+)-\d+$", str(rec.task_id))
+            if not mm or int(mm.group(1)) >= round_n:
+                continue
+            if rec.task_id in cache:
+                covered |= cache[rec.task_id]
+                continue
+            try:
+                task_text = str(self.store.workspace_task_record(rec.task_id).get("task") or "")
+            except KeyError:
+                task_text = ""
+            req_ids, _ = self._inloop_scope(rec.task_id, case, task_text, judge)
+            visible = self._visible_ids(rec.task_id)
+            verdict = asyncio.run(verify_report(rec.to_dict(), lookup, subject={"run": self.run_dir.name, "workspace_id": rec.task_id},
+                                                case=case, task_text=task_text or None, judge=judge, visible_ids=visible,
+                                                requirement_ids=req_ids))
+            tainted = set(recalibrate(verdict).tainted_findings)
+            reqs: set[str] = set()
+            for finding in rec.to_dict().get("findings") or []:
+                if str(finding.get("finding_id")) in tainted:
+                    continue
+                for eid in finding.get("evidence_ids") or []:
+                    if not isinstance(eid, str) or not lookup.has(eid):
+                        continue
+                    text = lookup.get(eid)
+                    acquired_by = getattr(self.store.evidence(eid), "acquired_by", None)
+                    for req in case.required_evidence:
+                        if req.matches(source_url=text.source_url, acquired_by=acquired_by, label=text.label):
+                            reqs |= set(req.supports)
+            cache[rec.task_id] = reqs
+            covered |= reqs
+        return covered
+
+    def _visible_ids(self, workspace: str) -> set[str] | None:
+        """reverify._visible_ids 的循环内版本：这个工作区各次请求的 model_view 里出现过的 E 编号并集。"""
+
+        ids: set[str] = set()
+        found = False
+        for rd in sorted((self.output_dir).glob("request_*")):
+            try:
+                payload = json.loads((rd / "request.json").read_text(encoding="utf-8")).get("payload") or {}
+            except (OSError, ValueError):
+                continue
+            if payload.get("workspace_id") != workspace:
+                continue
+            found = True
+            ids |= set(re.findall(r'"(E\d+)"', json.dumps(payload.get("model_view") or {}, ensure_ascii=False)))   # 同 reverify._EVIDENCE_TOKEN
+        return ids if found else None
 
     def _predicted_store_report(self, report: dict[str, Any]) -> dict[str, Any]:
         """store.commit_workspace_report 会给的样子：F 编号 = finding_sequence 的下一个（独立序列表，校验失败也不复用）。"""
@@ -2074,7 +2142,7 @@ _UNESTABLISHED = re.compile(r"\bnot\s+(?:been\s+|yet\s+|independently\s+)?(?:ver
                             r"(?:determined|established|verified|confirmed)|\bunverified\b|\bundetermined\b"
                             r"|\bremains?\s+(?:unknown|undetermined|unclear|unestablished)", re.I)
 _OPEN_GAP = re.compile(r"candidate pages that match the claim were not examined: https?://|reference photos .{0,80}were not viewed "
-                       r"side by side", re.I)
+                       r"side by side|fetch the main image of https?://", re.I)
 _CLAIM_VERDICT = re.compile(r"^(?:therefore,?\s+|so\s+|overall,?\s+)?the claim(?:'s|’s)?\b", re.I)
 _KIND_WORDS = {
     "reference": (re.compile(r"\breference\s+(?:photo|image|picture|photograph)s?|\bphotos?\s+of\s+the\s+(?:claimed|named)", re.I),

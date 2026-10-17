@@ -248,3 +248,58 @@ def test_open_page_image_then_compare_counts_against_l_cap():
     pages[0]["image"] = "E40"
     got = w._compare_page_step(state, memory, "E1", pages, {"E25"}, {}, [], cap=2, family="L")
     assert got.rule == "E6_compare_page_image" and got.output["arguments"]["targets"] == ["E1", "E40"]
+
+
+# ---------------------------------------------------------------------------- 10-17 负责人定 (ii)
+
+def test_page_image_gap_becomes_first_scope_item():
+    url = "https://www.buzzfeednews.com/article/x/capitol-meemaw-meme-topeka-kansas"
+    clause = w.PAGE_IMAGE_CLAUSE.format(url=url)
+    gap = w._search_gap(clause)
+    assert gap["kind"] == "page_image" and gap["image_urls"] == [url]
+    assert w.has_followup_clause(clause)
+    hints = {"uncompared": [url], "unread": [{"url": "https://a.org/b"}], "refs": [], "image": "E1"}
+    acts = w.inloop_actions(["where the picture was taken is not established"], hints, "L")
+    assert acts[0] == clause and acts[1].startswith("candidate pages that were found but not read")
+
+
+def test_followup_scope_routes_page_image_first():
+    scope = ("Task. Scope: first fetch the main image of https://n.org/a and compare it with the given picture; "
+             "open and read https://m.org/b.")
+    assert w._SEARCH_SCOPE.search(scope)
+    assert [u.rstrip(".") for u in w._PAGE_IMAGE_GAP.findall(scope)] == ["https://n.org/a"]
+    assert [u.rstrip(".") for u in w._SCOPE_URL.findall(scope)] == ["https://m.org/b"]
+
+
+def test_page_image_fetch_retries_network_errors(monkeypatch):
+    from foren_searcher.search.contracts import SearchError, SearchFailure
+    from foren_searcher.search.openers import image as img
+
+    calls = []
+
+    class Http:
+        async def fetch(self, url, maximum_bytes):
+            calls.append(url)
+            if len(calls) < 3:
+                raise SearchFailure(SearchError("fetch", "NETWORK_ERROR", "source hostname could not be resolved"))
+            return "ok"
+
+    async def no_sleep(_):
+        return None
+
+    monkeypatch.setattr("asyncio.sleep", no_sleep)
+    opener = img.ImageSourceOpener.__new__(img.ImageSourceOpener)
+    opener.http, opener.policy = Http(), SimpleNamespace(maximum_image_bytes=1)
+    assert asyncio.run(opener._fetch_with_retry("https://x/y.jpg")) == "ok" and len(calls) == 3
+
+    calls.clear()
+
+    class Http404(Http):
+        async def fetch(self, url, maximum_bytes):
+            calls.append(url)
+            raise SearchFailure(SearchError("fetch", "NETWORK_ERROR", "source returned HTTP 404"))
+
+    opener.http = Http404()
+    with pytest.raises(SearchFailure):
+        asyncio.run(opener._fetch_with_retry("https://x/y.jpg"))
+    assert len(calls) == 1                     # 4xx 不重试

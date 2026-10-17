@@ -516,7 +516,10 @@ def _followup_hints(state: HiState) -> dict[str, Any]:
     pages = [p for p in _search_pages(searches) if p["evidence_id"] not in read_ids and p.get("url") and not _social(p.get("url"))]
     pages.sort(key=lambda p: (p["evidence_id"] not in reverse, -len(words & _claim_words(_page_text(p)))))
     images = _material_images(state)
-    return {"unread": [{"evidence_id": p["evidence_id"], "url": p["url"], "reverse": p["evidence_id"] in reverse}
+    uncompared = uncompared_pages(state, images[0] if images else None)
+    pages = [p for p in pages if p["url"] not in uncompared]
+    return {"uncompared": uncompared,
+            "unread": [{"evidence_id": p["evidence_id"], "url": p["url"], "reverse": p["evidence_id"] in reverse}
                        for p in pages[:6]],
             "refs": [r["evidence_id"] for r in ranked_refs(searches)][:3], "image": images[0] if images else None}
 
@@ -524,6 +527,30 @@ def _followup_hints(state: HiState) -> dict[str, Any]:
 _LOCATION_POINT = re.compile(r"compar|reference|same (?:place|building|location|site|landmark)|landmark|architect|"
                              r"where (?:the )?(?:picture|photo|photograph|image) was (?:actually )?taken|actual location|"
                              r"shows the (?:claimed|named)|place the claim names", re.I)
+
+
+def uncompared_pages(state: HiState, image: str | None, cap: int = 2) -> list[str]:
+    """r1（负责人定 (ii)）：读过、但它上面的照片没与给定图片比上的页面网址（特意取过页内主图的在前，其次文字搜到的页）。
+    第 2 轮 Scope 写成"先取 <页面> 的页内主图并比对"。只给 L / E 族用。"""
+
+    if not image or "SEARCH" not in state.actions:
+        return []
+    searches = _search_obs(state)
+    read_ids = {str((r.get("request") or {}).get("record_id")) for r in _read_records(state)}
+    reverse = {p["evidence_id"] for p in _search_pages([s for s in searches if (s.get("request") or {}).get("input_type") == "image"])}
+    compares = image_compares(state, image)
+    opened = {k[5:] for k in _issued(state.memory) if k.startswith("pimg_")}
+    out = []
+    for p in sorted(_search_pages(searches), key=lambda p: (p.get("candidate") not in opened, p["evidence_id"] in reverse)):
+        if p["evidence_id"] not in read_ids or not p.get("url") or _social(p.get("url")):
+            continue
+        c = compares.get(str(p.get("image"))) if p.get("image") else None
+        if c and c.get("class") in ("same", "edited", "different"):
+            continue
+        if p["evidence_id"] in reverse and p.get("image"):
+            continue                  # 以图搜副本本来就带图，没比是名额不够，不派第 2 轮
+        out.append(_strip_tracking(str(p["url"])))
+    return out[:cap]
 
 
 def _strip_tracking(url: str) -> str:
@@ -541,6 +568,8 @@ def inloop_actions(items: list[str], hints: dict[str, Any], family: str) -> list
     if family not in ("E", "L", "C"):
         return []
     out = []
+    if family == "L":
+        out += [PAGE_IMAGE_CLAUSE.format(url=u) for u in hints.get("uncompared") or []]
     urls = [_strip_tracking(str(p["url"])) for p in hints.get("unread") or [] if p.get("url")][:3]
     if urls:
         out.append("candidate pages that were found but not read: " + ", ".join(urls))
@@ -2732,6 +2761,12 @@ def _decide_place_check(state: HiState, memory: dict[str, Any]) -> Decision:
                                             f"the claimed place were not viewed side by side with {image}")
         else:
             status, reason = "INCOMPLETE", "no page that carries the picture was read, so where it was actually taken is not established"
+        # r1（负责人定 (ii)）：读到的页面里没有一张照片与给定照片比上、又有页面的照片没比——第 2 轮先取它的页内主图并比对
+        pending_pages = uncompared_pages(state, image)
+        matched_any = any(c.get("class") in ("same", "edited") for c in compares.values())
+        if pending_pages and not matched_any:
+            clauses = "; ".join(PAGE_IMAGE_CLAUSE.format(url=u) for u in pending_pages)
+            status, reason = "INCOMPLETE", (f"{reason}; {clauses}" if status == "INCOMPLETE" and reason else clauses)
         if status == "INCOMPLETE" and _open_gap_clause(must):
             reason = f"{reason}; {_open_gap_clause(must)}"
         if last_turn and status == "INCOMPLETE":
@@ -2871,7 +2906,8 @@ def _l3b_before_report(state: HiState, memory: dict[str, Any], image: str | None
                         f"whether they show the same place."), branch="READ_RECORD focus"))
 
 
-_SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos|search for sources on the open points)", re.I)
+_SEARCH_SCOPE = re.compile(r"Scope:[^\n]*(?:open and read https?://|next to reference photos|search for sources on the open points|"
+                           r"fetch the main image of https?://)", re.I)
 _SCOPE_URL = re.compile(r"open and read (https?://[^\s;]+?)(?=[;]|\.\s|\.$|\s|$)", re.I)
 _SCOPE_SEARCH = re.compile(r"search for sources on the open points", re.I)
 _FOLLOWUP_READS = 2
@@ -2885,6 +2921,8 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
     issued = _issued(memory)
     scope = state.task[state.task.rfind("Scope:"):]
     urls = [u.rstrip(".") for u in _SCOPE_URL.findall(scope)][:3]
+    # r1（负责人定 (ii)）：Scope 写了"先取 <页面> 的页内主图并比对"——第 2 轮先做这一步（取图 → 比对 → 读这一页），再读别的页
+    image_urls = [u.rstrip(".") for u in _PAGE_IMAGE_GAP.findall(scope)][:2]
     refs_wanted = family == "L" and bool(re.search(r"next to reference photos", scope, re.I))
     searches = _search_obs(state)
     reads = _read_records(state)
@@ -2906,10 +2944,33 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
                     and (s.get("request") or {}).get("output_type") == "text" and not (s.get("request") or {}).get("source")]
     found = [p for p in _search_pages(text_queries) if not _social(p.get("url"))]
     found_read = [p for p in found if p["evidence_id"] in read_ids]
+    img_pages: dict[str, dict[str, Any]] = {}
+    for search in searches:
+        req = search.get("request") or {}
+        if str(req.get("source") or "") in image_urls and req.get("output_type") == "image":
+            got = _search_pages([search])
+            if got:
+                img_pages[str(req["source"])] = got[0]
+    compares = image_compares(state, image)
+
+    def image_outcome(url: str) -> str:
+        entry = img_pages.get(url)
+        c = compares.get(str(entry.get("image"))) if entry and entry.get("image") else None
+        if entry is None or not entry.get("image"):
+            return "unfetched"
+        return c["class"] if c else "uncompared"
 
     def report(rule: str, last_turn: bool = False) -> Decision:
         unread = [u for u in urls if not opened.get(u) or opened[u] not in read_ids]
         missing = []
+        for url in image_urls:
+            outcome = image_outcome(url)
+            if outcome == "unfetched":
+                missing.append(f"the main image of {url} could not be fetched, so that page's picture was not compared with the given picture")
+            elif outcome == "uncompared":
+                missing.append(f"the main image of {url} was not compared with the given picture")
+            elif outcome not in ("same", "edited"):
+                missing.append(f"compare_media does not show that the main image of {url} is the given picture")
         if unread:
             missing.append("candidate pages that could not be opened or read: " + ", ".join(unread))
         if refs_wanted and "compare_refs" not in issued:
@@ -2917,6 +2978,8 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
         if search_wanted and not found_read:
             missing.append("no page about the open points could be found and read" if text_queries else "no search was made")
         status = "INCOMPLETE" if missing and not (read_ids or "compare_refs" in issued) else "COMPLETED"
+        if image_urls and not any(image_outcome(u) in ("same", "edited") for u in image_urls):
+            status = "INCOMPLETE"       # 写着拍摄地的那页的照片没比上，"那页说的地点"就不能算这张照片的
         reason = "; ".join(missing) if status == "INCOMPLETE" else None
         if last_turn and status == "INCOMPLETE":
             reason = "turn budget exhausted: " + str(reason)
@@ -2933,16 +2996,38 @@ def _decide_search_followup(state: HiState, memory: dict[str, Any], family: str)
         if refs_wanted:
             notes.append("reference photos: " + (", ".join(side) or "none") + "; compare them with the given picture feature by "
                          "feature and say plainly whether they show the same place (match / no match / cannot tell, and why)")
+        shown = read_ids | {p["evidence_id"] for p in img_pages.values()}
+        notes += _image_match_notes(state, image, list(img_pages.values()), shown, compares)
         decision = _report(state, memory, rule, status=status, reason=reason, notes=notes + _ocr_notes(state),
                            branch="report_last_turn" if last_turn else ("report_completed" if status == "COMPLETED" else "report_incomplete"))
+        decision.slot["required_findings"] = _compare_required(image, list(img_pages.values()), shown, compares)
         if refs_wanted:
-            decision.slot["required_findings"] = [{"ids": list(side), "words": _L_VERDICT_WORDS if side else _L_CANNOT_WORDS,
+            decision.slot["required_findings"] += [{"ids": list(side), "words": _L_VERDICT_WORDS if side else _L_CANNOT_WORDS,
                                                    "message": "no finding states the outcome of the comparison with the reference "
                                                               "photos (match / no match / cannot tell and why)"}]
         return decision
 
     if state.remaining <= 0:
         return report("G1_last_turn_report", last_turn=True)
+    for url in image_urls:
+        entry = img_pages.get(url)
+        if entry is None and f"pimgurl_{url}" not in issued and state.remaining >= 3:
+            _mark(memory, f"pimgurl_{url}")
+            return Decision("action", "S2f_open_page_image", {"action": "SEARCH", "arguments": {"source": url, "output_type": "image"},
+                            "focus_evidence_ids": [], "rationale": f"The first round read {url} but could not compare its picture; "
+                                                                   f"fetch that page's main picture."}, branch="SEARCH open image")
+        if (entry and entry.get("image") and entry["image"] not in compares and f"cmp_{entry['image']}" not in issued
+                and image and "compare_media" in state.inspect_ops and state.remaining >= 2):
+            _mark(memory, f"cmp_{entry['image']}")
+            return Decision("action", "S2f_compare_page_image", _inspect([image, entry["image"]], "compare_media",
+                            state.compare_params(), [image, entry["image"]],
+                            f"Compare the main picture {entry['image']} of {url} with {image} to establish whether that page "
+                            f"carries the given picture."), branch="INSPECT compare_media(image)")
+        if entry and entry["evidence_id"] not in read_ids and f"readimg_{url}" not in issued and state.remaining >= 2:
+            _mark(memory, f"readimg_{url}")
+            return Decision("action", "S2f_read_page", {"action": "READ_RECORD", "arguments": {"record_id": entry["evidence_id"]},
+                            "focus_evidence_ids": [], "rationale": f"Read {entry['evidence_id']}, the page at {url}, for what it "
+                                                                   f"says about where the picture was taken."}, branch="READ_RECORD text")
     for url in urls:
         if url not in opened and f"open_{url}" not in issued and state.remaining >= 2:
             _mark(memory, f"open_{url}")
@@ -3507,10 +3592,15 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
             and state.remaining >= 1 and "round2" not in issued and rounds_done == 1:
         _mark(memory, "round2")
         urls: list[str] = []
+        image_urls: list[str] = []
         for g in fixable:
-            urls += [u for u in g.get("urls") or [] if u not in urls]
+            image_urls += [u for u in g.get("image_urls") or [] if u not in image_urls]
+        for g in fixable:
+            urls += [u for u in g.get("urls") or [] if u not in urls and u not in image_urls]
         refs = any(g["kind"] == "references" for g in fixable) and family == "L"
-        parts = [f"open and read {u}" for u in urls[:3]]
+        # r1（负责人定 (ii)）：取页内主图并比对排在最前，第 2 轮先做这一步再读别的页
+        parts = [f"first fetch the main image of {u} and compare it with the given picture" for u in image_urls[:2]]
+        parts += [f"open and read {u}" for u in urls[:3]]
         if refs:
             parts.append("view the given picture next to reference photos of the place the claim names")
         if any(g["kind"] == "search_more" for g in fixable):
@@ -3589,11 +3679,15 @@ def decide_gia(payload: dict[str, Any], memory: dict[str, Any]) -> Decision:
 # ---- 报告缺口的分类（GIA 只看报告里写出来的东西）
 
 _SEARCH_GAP = re.compile(r"candidate pages that (?:match the claim were not examined|were found but not read)|reference photos .{0,80}"
-                         r"were not (?:viewed side by side|compared feature by feature)|a further search for sources can address", re.I)
+                         r"were not (?:viewed side by side|compared feature by feature)|a further search for sources can address|"
+                         r"fetch the main image of https?://", re.I)
 # r0+：只说"N 个候选页面打不开 / 没检查"的条目——靠更多工作补不上（r0g 理由表四节第 2 处）
 _FAILED_PAGES = re.compile(r"\b\d+\s+(?:of|out of)\s+\d+\s+(?:candidate\s+)?pages?\b[^;]{0,60}\b(?:fail|could not|"
                            r"(?:were|was) (?:never |not )(?:be )?(?:opened|loaded|examined|checked))|failed to load", re.I)
-_FOLLOWUP_KINDS = ("unread_pages", "references", "search_more")
+_FOLLOWUP_KINDS = ("page_image", "unread_pages", "references", "search_more")
+# r1（10-17 负责人定 (ii)）：第 1 轮读到了写着拍摄地的页面、却没比上它的照片——第 2 轮先取这一页的页内主图并比对
+PAGE_IMAGE_CLAUSE = "the picture on {url} was not compared with the given picture: fetch the main image of {url} and compare it with the given picture"
+_PAGE_IMAGE_GAP = re.compile(r"fetch the main image of (https?://[^\s;]+?) and compare", re.I)
 _URL = re.compile(r"https?://[^\s,;]+")
 _NO_CORRESPONDENCE = re.compile(r"no consistent (?:frame-level )?correspondence|found no (?:consistent )?correspondence|"
                                 r"\b0% of (?:A|B|Material)", re.I)
@@ -3602,6 +3696,9 @@ _NO_CORRESPONDENCE = re.compile(r"no consistent (?:frame-level )?correspondence|
 def _search_gap(reason: str) -> dict[str, Any] | None:
     """walker 写进检索类报告 status_reason 的可修缺口（追加 2）：未读命中页（带网址）、参考图没并排看。"""
 
+    image_urls = [u.rstrip(".)") for u in _PAGE_IMAGE_GAP.findall(reason)]
+    if image_urls:
+        return {"kind": "page_image", "fixable": True, "urls": [], "image_urls": image_urls}
     if re.search(r"candidate pages that (?:match the claim were not examined|were found but not read)", reason, re.I):
         urls = [u.rstrip(".)") for u in _URL.findall(reason)]
         if urls:
