@@ -339,3 +339,63 @@ L 族按策略不用 Lens），余额仍 2422。
 
 产物：`runs/*_r1s2_1`（及两遍留档）、`verdicts_r1s2_judged.*`、`export/r1s2_*`、`walker_r1s2_*.json`、日志 `_walker_r1s2日志.txt`；
 统计 `claude/_r1s_work/r1s2_summary*.json`、`r1s2_page_images*.json`、`page_image_stats.py`（未入库）；开发冒烟 `runs/*_r1dev3_1`。
+
+### 十节的负责人决定（10-17）
+
+1 → 取 (ii)（十一节）。2 → 要：第 2 轮的循环内检查也跑 plan 评判（十一节）。3 → 全量前不动，页内主图的档案馆存档仍用 `web/2id_/`
+（最近一次存档），留给第 3 个对话定（十二节）。
+
+## 十一、L 族最后一轮补：(ii) 第 2 轮先取页内主图并比对；循环内第 2 轮 plan 评判；冒烟 r1s3
+
+### 1. 改动（`931ca82`，walker-r1@2026-10-17e，工具层 hash `sha256:49bb6f7e…ba16`）
+
+- **walker 写可修缺口**：`uncompared_pages`——读过、但照片没与给定照片比上的页面（特意取过页内主图的在前，其次文字搜到的页；以图搜副本
+  本来带图，不算）。L 族报告里读到的页面没有一张比上、又有这种页面时，报告 INCOMPLETE，status_reason 写成具体动作
+  "the picture on <页面> was not compared with the given picture: fetch the main image of <页面> and compare it with the given picture"；
+  循环内检查改写 COMPLETED 时（`inloop_actions`）这一条排在最前。S4 保留这条缺口原文。
+- **GIA 第 2 轮 Scope**：`_search_gap` 认这一条（kind=page_image），Scope 第一项写 "first fetch the main image of <页面> and compare it
+  with the given picture"，其后才是 "open and read …"。
+- **第 2 轮必须先做**：`_decide_search_followup` 先 `SEARCH {"source": <页面>, "output_type": "image"}` 取页内主图 → `compare_media` →
+  读这一页，再做 Scope 里别的事；这一页的照片没比上（取不到 / 没比 / 不是同一张）报告就 INCOMPLETE 并写明原因；比对结论进 S4 合同项。
+- **工具层**：网址来源其实是网页时改取页内主图；页内主图下载网络 / 超时 / 限流类失败按 1、2、4 秒退避共试 3 次（4xx 不重试），
+  档案馆存档仍是最后一招。
+- **循环内第 2 轮 plan 评判**：`_inloop_scope` 对第 2 轮也跑 `judge_plan`；covered_before 按事后核验同一算法——之前各轮的报告按事后
+  参数跑 `verify_report`（同一判官、同一缓存）→ `recalibrate` → 没被污染的 Finding 所引必需证据支持的要求；existing_reports 取 store
+  里本轮之前的报告全文；可见 E 与 `reverify._visible_ids` 同一口径。开跑前离线核对 r1s2 三条：covered_before 与事后 units 文件
+  逐项相同，第 2 轮 plan 评判的 key 都已在事后缓存里（`claude/_r1s_work/round2_scope_check.py`）。
+- 测试：页内主图缺口 → Scope 第一项、in-loop 动作顺序、Scope 解析、下载重试（4xx 不重试）；`test_r1_walker_20261017.py` 22 条 +
+  `test_r0plus` 12 条 + search 两个文件，共 90 条全过。
+
+### 2. 冒烟 r1s3（重跑 l623、l101、l274；l208、e92 沿用 r1s2）
+
+| 案例 | 第 1 轮 | 第 2 轮（Scope 第一项 = 取页内主图并比对） | 循环内 / 事后 / 桶 | 验收 |
+|---|---|---|---|---|
+| **l623** | L4b 找到 BuzzFeed（Kansas / Topeka）；L6a 取图 NETWORK_ERROR（3 次重试 + 存档都没取到）；报告 COMPLETED → 循环内改 INCOMPLETE，缺口 = 取 BuzzFeed 页内主图并比对 | **S2f_open_page_image** 取到 og:image → **S2f_compare** 0.50%（同一张，右缘 x 0.94–1.00 有局部差异）→ 读 BuzzFeed 页 → 再读 3 页 → 报告 **COMPLETED**（"照片与 BuzzFeed 的 Capitol Meemaw 是同一张，BuzzFeed 写明在 Kansas，声明的国会大厦地点不对"） | W2：循环内 judge_targets REQ1–2、判 COMPLETED；事后 positive、status_should_be COMPLETED，**key 相同**；**accepted** | ✅ |
+| l101 | 读页、L6 比以图搜副本（同一张，博客页不写地点）；报告 INCOMPLETE，缺口 = 取 travelchardham / jagran 两页的页内主图并比对 | 两页都取到 first_large_img → 比对 **80% / 68% 不同**（不是同一张）→ 读两页 → 再读 2 页 → 报告 **INCOMPLETE**（"两页的照片都不是这张"） | W1 / W2 held（答案层 GT 检查：没有 Kolkata） | ✅ 按 Scope 比了、如实 INCOMPLETE |
+| l274 | L4b 找到 Kremlin 线索；Daily Mail og:image 比对 75% 不同；报告 INCOMPLETE，缺口 = 取 Moscow Times 页内主图并比对 | 取到 og:image → 比对 **78% 不同** → 读页 → 再读 2 页 → 报告 **INCOMPLETE**（"Moscow Times 的主图不是这张"） | W2 accepted（INCOMPLETE）；W1 rejected | ✅ 按 Scope 比了、如实 INCOMPLETE |
+
+- **事后 status_rewrite 改写 0**（r1s3）。第 2 轮报告里经循环内检查的只有 l623 W2（COMPLETED）：循环内与事后同一范围（plan 评判
+  judge_targets REQ1–2）、同一 key（`inloop_key_check.py`：e2fee720… = e2fee720…），判定相同。l623 W1 的 key 不同是因为它被循环内改写了
+  （存进 store 的是 INCOMPLETE 报告），符合预期。l101 / l274 的第 2 轮报告本来就是 INCOMPLETE，循环内不核。
+- 第 2 轮派工 3（三条都派了）；答案 positive 0/3 → 重写后 1/3（l623）。
+- **L 族可回答 accepted 里的 COMPLETED：l208（r1s2）+ l623（r1s3）= 2/4**，达到 r1s2 时定的 ≥ 2/4。
+- 页内主图（r1s3）：第 1 轮 L6a 2 次（l274 取到 og:image、不是同一张；l623 网络失败），第 2 轮 S2f 4 次全取到（l623 og:image 同一张；
+  l101 first_large_img ×2、l274 og:image，都不是同一张）。
+- 花费：OpenRouter 约 **$0.44**；Serper 0 点（余额仍 2422）。
+
+### 3. l101 / l274 的归因：引擎召回不到
+
+两条在三轮冒烟（r1s2 三遍 + r1s3）里，以图搜（Yandex）与文字搜都没有一页"载有这张照片并写明拍摄地"：l101（GT Kolkata）以图搜到的
+副本只有不写地点的博客，文字搜到的铁路贫民窟 / 海尔德瓦尼车站页的照片都不是这张；l274（GT Kremlin）文字搜到的克里姆林宫 / 普京宫殿
+报道用的是别的照片。walker 该做的动作都做了（参考图比对、以图搜、必做文字搜、页内主图比对、第 2 轮按 Scope 补比对），报告如实
+INCOMPLETE——**归"引擎召回不到"**，不是 walker 或核验器的问题。
+
+**建议第 3 个对话建卷时把"可回答"定义为：GT 可回答，且引擎前 N 条召回（以图搜 + 文字搜）里有载图页**（载有这张照片、并写明
+GT 那一点的页面）。按这个定义 l101 / l274 当前算不可回答，可回答 L 族就是 l208、l623（2/2）。
+
+## 十二、要负责人定（第 3 个对话）
+
+1. **"可回答"的新定义**（十一节 3）：GT 可回答且引擎前 N 召回里有载图页；N 取多少、以图搜和文字搜各算几条，建卷时定。
+2. **页内主图的档案馆存档时间点**：现在用 `web/2id_/`（最近一次存档），按负责人 10-17 定全量前不动；是否改成按页面日期取存档，留给
+   第 3 个对话。
+3. 打 `r1-frozen` 时把 oracle_generator 的槽表切到 r1_freeze（负责人已定，第 3 个对话做）；E 族"再搜更早副本"全量后看答案层 GT 检查再定。
