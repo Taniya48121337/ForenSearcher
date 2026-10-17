@@ -263,3 +263,79 @@ FOREN_FREEZE_STRICT=1 FOREN_LENS_MAX_SEARCHES=40 python scripts\walker_run.py d1
    `r1-frozen` 时要不要把槽表也切到 r1_freeze，第 3 个对话定。
 7. walker.py 不在工具层 hash 的路径里，walker 的版本只靠 `walker.policy_version` 记；全量前如果 walker 再改，记得同步改这个版本号。
 8. `test_r1_walker_20261017.py` 里的重放用例读本机 run 目录（r1dev / r1s / r0h，git 不管），换机器会跳过（同 test_r0plus 的做法）。
+
+### 八节的负责人决定（10-17）
+
+1 → 取 (a)+(c)，(b) 回合上限不放宽（九节）。2 → `r1` 分支 push 一份作备份，main 不动（已 push，见九节末）。3 → hi 版本号保持 0.11.0，
+不改名。4 → E 族"再搜更早副本"等全量后看答案层 GT 检查再定。5 → 等允许动核验器时再改。6 → 第 3 个对话打 `r1-frozen` 时把槽表
+切到 r1_freeze。7、8 → 照旧。
+
+## 九、补：页内主图抽取 + L 族必做文字搜（负责人定 (a)+(c)），冒烟 r1s2
+
+### 1. 改动（分支 `r1`）
+
+| 提交 | 改动 |
+|---|---|
+| `342fc06` | **工具层**：`ImageSourceOpener` 对没有引擎原图的网页（`SEARCH {"source": R, "output_type": "image"}`）抽页内主图——og:image（含 secure_url / url）→ twitter:image → link rel=image_src → article / main / body 里第一批 `<img>`（跳过 data:、svg、logo / icon / 头像、声明宽高 < 200），取第一张能下载、能完整解码、≥ 200×150 的图；材料 kind=image，content 记图片网址 / 所在页面 / 抽取方式，label "main image of the page (<方式>)"，acquired_by `SEARCH/open/page_main_image:<方式>+Pillow`。按需触发，文字搜索的结果形态与回放 key 不变 |
+| `15c97f9` | **walker**：读过但没有图的页面（文字搜到的）先 `E6a / L6a_open_page_image` 取页内主图，下一轮 E6 / L6 比；`_search_pages` 把之后取到的图补进先前的页面条目；**L 族比对 ≤ 2 次**（打开算进名额，还剩 ≥ 4 回合才打开）；**L4b_place_text_search**：以图搜之后必做一次文字搜（S1 新 purpose `place_text`：图里的文字照原文与原文字、以图搜结果页标题、地点线索），不交给 S3，它的第 1 个结果页必读、以图搜结果页必读减到 1 个。策略版本 walker-r1@2026-10-17b，工具层 hash 重算 |
+| `a2c9c15` | **walker 修**：`HiState` 也从 SEARCH 结果材料登记卡片——卡片清单满（12）之后，第 2 轮打开再读的页面进不了 S4 的可引清单（r1s2 第 1 遍 l208 W2-1 读到写着 Peru 的 geologyscience 页却"按 evidence-ID 限制不能引"）。17c |
+| `4fcfd17` | **工具层**：页内主图网址取不到时再试互联网档案馆原样存档（`web.archive.org/web/2id_/<网址>`）；**walker**：特意取了页内主图的页面排在比对最前（r1s2 第 2 遍 l623 的比对名额先给了以图搜副本）。17d，工具层 hash `sha256:fb74a40b…698f` |
+
+`r1_freeze.json`：tool_layer.hash `sha256:fb74a40bdf985954328252e9d7e9bcc51d906a7f7870c67572d806cc434c698f`，`walker.policy_version =
+walker-r1@2026-10-17d`（规则清单逐版追加），verifier code_hash 仍 `c66504d4…`；`freeze --round r1s2` ok。测试 `test_r1_walker_20261017.py`
+19 条（新增页内主图候选顺序 / 过滤、补进页面条目、L6a → L6 计入上限）、`test_r0plus` 的 l208 重放预先记 L4b 已做；两文件 31 条全过。
+
+### 2. 冒烟 r1s2（L 4 个可回答 + e92）
+
+命令同四节（`--round r1s2`，`FOREN_FREEZE_STRICT=1`，`--jobs 2`，`FOREN_LENS_MAX_SEARCHES=40`）。跑了三遍：第 1 遍（17b）L 0/4，
+查出卡片登记的 bug（`a2c9c15`）；第 2 遍（17c）L 1/4，查出 l623 的图片主机一时解析失败 + 比对优先级（`4fcfd17`）；第 3 遍（17d）
+重跑 l623 / l101 / l274（l208、e92 沿用第 2 遍）。前两遍的 L run 留档为 `*_r1s2_1.failed-pass1-20261017` / `.failed-pass2-20261017`。
+
+| 案例 | 最终（第 3 遍）动作要点 | 报告 → 循环内 → 事后 → 桶 | |
+|---|---|---|---|
+| **l208**（GT：Peru） | OCR → 参考图 → L3 → 以图搜(image) → **L4b**"landslide near Cusco Peru 2018 aerial photo" → 读 SERC 页 → **L6a** 取页内主图（first_large_img）→ **L6** 比对 **0.0%（同一张）** → 读页 → L3b → 报告 | W1 COMPLETED（Cusco, Peru，引 SERC 页与比对记录）→ 不改 → 不改 → **accepted** | ✅ |
+| l623（GT：Kansas） | … → L4b → S3 再搜一条 → 读 BuzzFeed（Kansas / Topeka）→ **L6a 取图失败（NETWORK_ERROR）** → 读页 → L3b → 报告 → 第 2 轮读 3 页 | W1 COMPLETED → **循环内改 INCOMPLETE**（"BuzzFeed 的照片没确认是同一张"）→ accepted（INCOMPLETE）；W2 COMPLETED → 循环内不改 → **事后改写** → held | ❌ |
+| l101（GT：Kolkata） | … → L4b"slums on railway tracks India…" → 读页 → **L6** 以图搜副本 0.0% 同一张（博客页，没写拍摄地）→ 读页 ×2 → L3b → 报告 → 第 2 轮 | W1 INCOMPLETE（walker 判：没有来源说拍于哪里）→ held；W2 COMPLETED → 不改 → held（答案层 GT 检查：结论里没有 Kolkata） | ❌ |
+| l274（GT：Kremlin） | … → L4b"Vladimir Putin golden doors Kremlin Grand Kremlin Palace…" → 读 Daily Mail 页 → **L6a** 取到 og:image → **L6 比对 75% 不同**（是另一张克里姆林宫照片）→ 读页 → L3b → 报告 → 第 2 轮 | W1 INCOMPLETE → rejected；W2 INCOMPLETE → held | ❌ |
+| e92（E，回归） | 与 r1s 同：以图搜(image) → 日期 → 读页 → **E6** ×2（20% / 25%，同一张有差异）→ E7 → 报告 | COMPLETED → 不改 → accepted | ✅ E 没坏 |
+
+**L 族 accepted 里的 COMPLETED：1/4（l208）**，目标 ≥ 2/4 **没达到**。e92 照旧 COMPLETED。第 2 轮派工 3（l623、l101、l274）；
+事后 status_rewrite 改写 1（l623 W2）；答案 positive 2/5 → 重写后 3/5。
+
+### 3. 页内主图抽取：命中几次、比对结果
+
+| | 第 1 遍 | 第 2 遍 | 第 3 遍 | 最终 4+1 个案例 |
+|---|---|---|---|---|
+| 发起取页内主图（E6a / L6a） | 3 | 4 | 2（另 l208 沿用第 2 遍 1 次） | l208 1、l274 1、l623 1、l101 0、e92 0 |
+| 取到（ready） | 1（l274 og:image） | 2（l208 first_large_img、l274 og:image） | 1（l274 og:image） | **2**：l208、l274 |
+| 没取到 | l101 absent、l623 EXTRACT_FAILED | l101 absent、l623 NETWORK_ERROR | l623 NETWORK_ERROR（档案馆存档也没取到） | l623 |
+| 取到的图的比对结果 | l274：75% 不同 | l208：**0.0% 同一张**；l274：75% 不同 | l274：75% 不同 | l208 同一张（→ COMPLETED）；l274 不同（Daily Mail 那张是克里姆林宫的另一张照片，判"不是同一张"是对的） |
+
+另外以图搜（image 输出）副本的比对：l208 / l101 / l623 各有 1 个副本 0–1.2% 同一张——这些页面（博客、图集）载有这张照片，但都没写拍摄地。
+e92 的两次 E6 都是以图搜副本（20%、25%）；e92 没读文字搜到的页面，不需要取页内主图。
+
+### 4. 没到 2/4：按"检索召回 / 回合 / 工具"归因
+
+| 案例 | 归因 | 说明 |
+|---|---|---|
+| l623 | **工具**（主）+ 检索召回 | 三遍里两遍文字搜都找到了 BuzzFeed（写明 Kansas / Topeka），但它的图片主机 img.buzzfeed.com（BuzzFeed News 2023 年停刊）在冒烟时两次连不上（EXTRACT_FAILED / NETWORK_ERROR），档案馆存档也没取到；单独试时又能取到——这台机器到该主机的网络时好时坏。照片取不到就比不了，核验器按规则判"没确认是同一张"。第 2 轮再读的页（patriots.win、imgflip、dailydot）不写拍摄地 |
+| l101 | **检索召回** | 文字搜与以图搜都没碰到写"Kolkata"的页面；以图搜副本（博客）是同一张但没写地点；第 2 轮的 COMPLETED 报告给的地点与 GT 不符（答案层 GT 检查判 omitted Kolkata） |
+| l274 | **检索召回** | L4b 的查询词对（Kremlin / Grand Kremlin Palace），但搜到的页（Daily Mail）用的是另一张照片；没有一页"载有这张照片并写明拍于克里姆林宫"，第 2 轮的"克里姆林宫"只靠与参考图的外观相似，循环内检查改 INCOMPLETE |
+| （回合） | 次要 | 12 回合下 L 族：OCR、参考图、L3、以图搜、L4b、读 2–3 页、取图 + 比对、L3b、报告，基本用满；l623 第 3 遍 S3 又加了一条文字搜，取图那一步已排在第 9 回合，比对来不及（取图失败也没给比对留余地） |
+
+## 十、要负责人定（第九节新增）
+
+1. **L 族 1/4**：剩下 3 条里 2 条是检索召回（l101、l274：网上没找到"载有这张照片 + 写明地点"的页），1 条是工具（l623：页内主图主机
+   连不上）。可选：(i) l623 这类给图片下载加重试 / 换出口（代理）——工具层；(ii) 第 2 轮 Scope 里写明"取 <页面> 的页内主图并比对"，
+   让第 2 轮专门补这一步（walker + GIA，不改回合上限）；(iii) 接受 L 族可回答案例的 COMPLETED 率就在 1/4 左右，全量时看 15 个可回答的整体。
+   我倾向 (ii)：l623 第 1 轮已经找到 BuzzFeed，只差比对，第 2 轮补比对最便宜。
+2. **第 2 轮报告的循环内检查与事后核验范围不同**：循环内第 2 轮只能按任务文字定范围（没有 plan 评判），事后按 plan 定范围，两边判定
+   可能不一致——r1s2 l623 W2 循环内判 COMPLETED、事后改写 INCOMPLETE（事后改写 1 份就是它）。要不要让循环内第 2 轮也跑 plan 评判（多
+   1 次判官调用）？
+3. 页内主图取不到时档案馆存档用的是 `web/2id_/`（最近一次存档）；要不要按页面日期取存档时间点，全量前定。
+
+本节花费：OpenRouter 三遍合计约 **$1.81**（第 1 遍 $0.76、第 2 遍 L 四条 $0.64、第 3 遍三条 $0.41）；Serper **0 点**（e92 回放 r1s 的录制，
+L 族按策略不用 Lens），余额仍 2422。
+
+产物：`runs/*_r1s2_1`（及两遍留档）、`verdicts_r1s2_judged.*`、`export/r1s2_*`、`walker_r1s2_*.json`、日志 `_walker_r1s2日志.txt`；
+统计 `claude/_r1s_work/r1s2_summary*.json`、`r1s2_page_images*.json`、`page_image_stats.py`（未入库）；开发冒烟 `runs/*_r1dev3_1`。
