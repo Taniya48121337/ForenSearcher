@@ -123,6 +123,10 @@
     {
       "date": "2026-10-17",
       "change": "walker-r1@2026-10-17b：页内主图抽取（工具层 search/openers/image.py）+ E6a/L6a + L4b 必做文字搜 + L 比对 ≤ 2；工具层 hash 重算"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17c：HiState 从 SEARCH 结果材料登记卡片（r1s2 l208 第 2 轮读到的页不能引）；工具层不变"
     }
   ],
   "teacher": {
@@ -239,7 +243,7 @@
     "note_r1": "10-17 r1 预演之二：教师照抄 r0（同一分槽表、同一主 / 备用模型）；oracle_generator 的槽表仍从 specs/r0_freeze.json 读。"
   },
   "walker": {
-    "policy_version": "walker-r1@2026-10-17b",
+    "policy_version": "walker-r1@2026-10-17c",
     "doc": "claude/r1_walker与search整合_20261017.md",
     "rules": [
       "E2 以图搜 output_type=image；读过的页面 E6 compare_media(E1, 页面上的图)；没比对 / 没对上只写候选；E7 交报告前补看对照图",
@@ -247,7 +251,8 @@
       "L 报告必须写参考图比对结论（required_findings 进 S4 合同校验）",
       "C：video_structure + 按镜头取帧；交报告前整段转写 + 场景帧放回附图；画面类声明一条 Finding 写帧里有没有那件事",
       "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）",
-      "（17b，负责人定 (a)+(c)）读过但没有图的页面先 SEARCH source=R output_type=image 取页内主图（E6a / L6a）再比；L 族比对 ≤ 2 次；L4b 以图搜之后必做一次文字搜（S1 place_text），第 1 个结果页必读"
+      "（17b，负责人定 (a)+(c)）读过但没有图的页面先 SEARCH source=R output_type=image 取页内主图（E6a / L6a）再比；L 族比对 ≤ 2 次；L4b 以图搜之后必做一次文字搜（S1 place_text），第 1 个结果页必读",
+      "（17c）SEARCH 结果材料里的 E 也登记成卡片，第 2 轮读过的页面能被 S4 引用"
     ],
     "search_policy": {
       "E": {
