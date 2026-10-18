@@ -116,12 +116,35 @@
       "ok": true
     }
   },
-  "tool_layer_status": "draft（当前 r1 分支，含 r1-image-search 的 search 层改动）",
+  "tool_layer": {
+    "hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+    "files": 69,
+    "paths": [
+      "hi/workspace.py",
+      "inspect",
+      "search",
+      "state_render.py"
+    ],
+    "line_endings": "crlf_to_lf",
+    "groups": {
+      "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+      "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+      "search": "sha256:11a588f186e62b4067c4fcad6c0b6321de6a5fcd6a8af7f573186ad797a8cc07",
+      "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+    },
+    "adjacent": {
+      "prompts_en.py": "sha256:18ccde5941e484a86bffdc63a63c2604b340cda438bb6338d92a75abae25fb22",
+      "policies.py": "sha256:9f28d1562670957c59078db4b609fd006f1323225d22a5b6d82bf7f06824261b",
+      "local_models.py": "sha256:90282d0bd5438c62bc56988e8c508a25a06a584b1edc4c00aefcff423a72bb61",
+      "gia/global_view.py": "sha256:d15eb3ce416b927d732d9da3e652a8801d84fd9d9b67045bbc4454ef6f4f4edc"
+    }
+  },
+  "tool_layer_status": "frozen（r1-frozen；r1 全量 134 runs 的 run_config 与行里都是这个 hash）",
   "tool_layer_frozen_groups": {
     "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
     "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
     "search": "sha256:11a588f186e62b4067c4fcad6c0b6321de6a5fcd6a8af7f573186ad797a8cc07",
     "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
   },
-  "teacher_override": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\specs\\g1_teacher.json"
+  "checked_at": "2026-10-18T15:42:39"
 }
