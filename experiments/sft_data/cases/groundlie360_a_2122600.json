@@ -43,8 +43,8 @@
   "required_evidence": [
     {
       "key": "original_video",
-      "description": "原片：YouTube D3kMNTqbyno（与 GroundLie360 原片 [2122601] 同一段素材，compare_media 确认）",
-      "url_pattern": "youtube.com/watch[?]v=D3kMNTqbyno*",
+      "description": "原片：YouTube 8rn08tINChA（与 GroundLie360 原片 [2122601] 同一段素材，compare_media 确认）",
+      "url_pattern": "youtube.com/watch[?]v=8rn08tINChA*",
       "must_cite": true,
       "supports": [
         "REQ1"
@@ -76,5 +76,5 @@
   "checks": [],
   "reference_path": null,
   "used_for_revision": [],
-  "notes": "g3 建卷（2026-10-18 23:58:04，scripts/g3/g3_cases.py g360_a）：GroundLie360 假帖子 2122600（facebook，Fake，['false_title', 'temporal_edit']；发布日期 20160313.0；帖子标题：Gardeners can create a hybrid kiwi banana fruit by planting a piece of a banana and a piece of a kiwi in the same pot.），数据集原片编号 [2122601]。材料 = 帖子视频原文件（59.7 s，不重编码）。YouTube 原片 D3kMNTqbyno，上传者 / 频道：Joward Cerk（UCqRt1mXEPNkyNZuR6Bqfx2g）；g3 探测排名 {'text_image': 4}。确认：本地原片 vs D3kMNTqbyno——B matches A: 90% of A's half-second samples are found in B (A 236 s, B 212 s; the matched footage lies in B 0-212 s).；帖子 vs D3kMNTqbyno——B matches A: 100% of A's half-second samples are found in B (A 59 s, B 212 s; the matched footage lies in B 128-187 s).。数据集剪辑点（temporal_edit_location，按镜头边界标 1）：[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]；镜头切分（帧号）：[[ 0 34] [ 35 169] [ 170 255] [ 256 319] [ 320 411] [ 412 448] [ 449 568] [ 569 625] [ 626 675] [ 676 753] [ 754 899] [ 900 1004] [1005 1129] [1130 1254] [1255 1429] [1430 1463] [1464 1567] [1568 1672] [1673 1771] [1772 1782]]。没有被删区间，不设 interval_iou。C6 建卷时自查：EVID 编号 0、频道不在 EVID 131–222 频道表、感知哈希 0。"
+  "notes": "g3 建卷（2026-10-18 23:58:04，scripts/g3/g3_cases.py g360_a）：GroundLie360 假帖子 2122600（facebook，Fake，['false_title', 'temporal_edit']；发布日期 20160313.0；帖子标题：Gardeners can create a hybrid kiwi banana fruit by planting a piece of a banana and a piece of a kiwi in the same pot.），数据集原片编号 [2122601]。材料 = 帖子视频原文件（59.7 s，不重编码）。YouTube 原片 D3kMNTqbyno，上传者 / 频道：Joward Cerk（UCqRt1mXEPNkyNZuR6Bqfx2g）；g3 探测排名 {'text_image': 4}。确认：本地原片 vs D3kMNTqbyno——B matches A: 90% of A's half-second samples are found in B (A 236 s, B 212 s; the matched footage lies in B 0-212 s).；帖子 vs D3kMNTqbyno——B matches A: 100% of A's half-second samples are found in B (A 59 s, B 212 s; the matched footage lies in B 128-187 s).。数据集剪辑点（temporal_edit_location，按镜头边界标 1）：[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]；镜头切分（帧号）：[[ 0 34] [ 35 169] [ 170 255] [ 256 319] [ 320 411] [ 412 448] [ 449 568] [ 569 625] [ 626 675] [ 676 753] [ 754 899] [ 900 1004] [1005 1129] [1130 1254] [1255 1429] [1430 1463] [1464 1567] [1568 1672] [1673 1771] [1772 1782]]。没有被删区间，不设 interval_iou。C6 建卷时自查：EVID 编号 0、频道不在 EVID 131–222 频道表、感知哈希 0。 【10-19 冒烟后更正 GT】原片改为 YouTube 8rn08tINChA（上传者 / 频道：Kin（UCv-D6IpYrkgaYIcUp3pvHcw））：g3 探测标题搜第 2 名，与本地原片 compare_media 双向 100%、同为 235.5 s、无差异，帖子落在其 128–187 s；原定的 D3kMNTqbyno（212 s，只含原片 90%）是较短的转载。原 url_pattern youtube.com/watch[?]v=D3kMNTqbyno*。建卷时的确认只下了缩略图最近的前 3 个，8rn08tINChA 的缩略图判 different 没下到；冒烟 run groundlie360_a_2122600_r1g3_1 找到的正是它。"
 }
