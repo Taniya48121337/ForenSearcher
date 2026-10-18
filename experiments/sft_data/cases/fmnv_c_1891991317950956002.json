@@ -1,0 +1,103 @@
+{
+  "case_id": "fmnv:c_1891991317950956002",
+  "dataset": "fmnv",
+  "source_id": "c_1891991317950956002",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明（它是给定视频流传时的标题），检查视频并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：February is Black History Month—a time to recognize the significant achievements of African American leaders, excluding Martin Luther King Jr.",
+  "task_text_en": "Fact-check the following claim, which circulated as the title of the given video, examining the video and searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: February is Black History Month—a time to recognize the significant achievements of African American leaders, excluding Martin Luther King Jr.",
+  "family_key": "fmnv:1891991317950956002",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "media/g1/fmnv/fmnv_1891991317950956002.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [
+    "February is Black History Month—a time to recognize the significant achievements of African American leaders, excluding Martin Luther King Jr."
+  ],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频实际显示和说出的内容（画面、字幕、语音）与声明是否相符",
+      "must_cite": true,
+      "text_en": "What the given video actually shows and says (pictures, on-screen text, speech) and whether it matches the claim"
+    },
+    {
+      "id": "REQ2",
+      "text": "外部来源对声明所说事件的记载",
+      "must_cite": true,
+      "text_en": "What external sources record about the event the claim describes"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "视频画面（抽帧）",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "transcript",
+      "description": "视频语音转写",
+      "acquired_by": "INSPECT/asr",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "any_one_of:frames,transcript; all:external",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "misleading",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue"
+        ]
+      },
+      "note": "FMNV label=false，class=ft；答案应说标题与视频不符 / 不实"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g1 建卷（2026-10-18 01:44:45，scripts/g1/g1_cases.py）：FMNV CD 类（class=ft，标题与画面不符，替换的是对象）：视频是 FMNV 1891991317950956002 原样，标题是数据集生成的假标题。FMNV subject：Martin Luther King Jr.；FMNV 划分 train；视频 45.5 s（FMNV.zip 原文件，未重编码）。"
+}

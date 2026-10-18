@@ -1,0 +1,8 @@
+# g1 SFT，Qwen3.8-27B 占位：HI / GIA 各两个种子（清单 E4）。27B 一个任务 2 张卡，8×A100 上一次 2 个任务：
+#   export FS_TRAIN_SLOTS="0,1;2,3"
+#   bash server/11_loop_layout.sh B && bash server/13_train_queue.sh training/jobs/g1_sft_27b.txt
+# 开训前先核一遍数据：python training/sft_lora.py --config training/configs/hi_g1_27b.json --dry-run
+--config training/configs/hi_g1_27b.json --seed 1 --output-dir outputs/lora/g1_27b/hi_s1
+--config training/configs/hi_g1_27b.json --seed 2 --output-dir outputs/lora/g1_27b/hi_s2
+--config training/configs/gia_g1_27b.json --seed 1 --output-dir outputs/lora/g1_27b/gia_s1
+--config training/configs/gia_g1_27b.json --seed 2 --output-dir outputs/lora/g1_27b/gia_s2

@@ -1,0 +1,91 @@
+{
+  "case_id": "fmnv:a_1jLoMoqV8oE",
+  "dataset": "fmnv",
+  "source_id": "a_1jLoMoqV8oE",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定视频在网上流传。找到它的原始来源视频，并确定这一版与原片相比是否有改动、改在哪里：删掉、添加、调换或改变了哪些部分，给出两个视频中的时间。引用具体证据，说明未能确定的内容。",
+  "task_text_en": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+  "family_key": "fmnv:1jLoMoqV8oE",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "media/g1/fmnv/fmnv_1jLoMoqV8oE_cut.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+      "must_cite": true,
+      "text_en": "The original source video of the given video (address, channel or title), and the picture correspondence that identifies it"
+    },
+    {
+      "id": "REQ2",
+      "text": "给定视频与原片的差异：删掉 / 添加 / 调换 / 改变了哪些部分，两个视频中的时间",
+      "must_cite": true,
+      "text_en": "How the given video differs from the original: which parts were removed, added, reordered or altered, with times in both videos"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容（未比对的模态、边界精度等）",
+      "must_cite": false,
+      "text_en": "What could not be determined (modalities not compared, boundary precision, etc.)"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "original_video",
+      "description": "原片：YouTube 1jLoMoqV8oE（FMNV 真新闻，标题：Why we haven't yet named Donald Trump as winner | US Election）",
+      "url_pattern": "youtube.com/watch[?]v=1jLoMoqV8oE*",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "acquired_by": null
+    },
+    {
+      "key": "comparison",
+      "description": "材料与原片的 compare_media 比对结果（对应段、删掉的原片段）",
+      "acquired_by": "INSPECT/compare_media",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "frames",
+      "description": "剪点两侧的材料帧与原片帧",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all:original_video; any_one_of:comparison,frames",
+  "checks": [
+    {
+      "kind": "interval_iou",
+      "params": {
+        "start": 61.2,
+        "end": 81.2,
+        "min_iou": 0.5
+      },
+      "note": "原片 61.2–81.2 s 被删（材料剪点在 61.2 s）；区间由制作过程确定",
+      "requirement": "REQ2"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g1 建卷（2026-10-18 02:18:00，scripts/g1/g1_cases.py，模板同 walker_d2_cases.build_provenance）：FMNV 真新闻 1jLoMoqV8oE（2024 US presidential election）。原片取自 FMNV.zip（与 YouTube 原片同一视频），去掉 61.2–81.2 s（20.0 s）后 PyAV 重编码（libx264，1280×720）；材料时长 125.85 s，剪点在材料 61.2 s；原片时长 145.82 s。"
+}

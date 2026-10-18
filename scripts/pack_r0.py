@@ -34,6 +34,9 @@
                       该槽后端（teacher.slots[Sk]）的主模型（backends）或备用模型（backup_backends），只换一个后端的 run 也认；
                       没有 slot_models 的 run 不过（r0e 豁免）。老格式冻结仍按 run 级 teacher_model ∈ {primary, backup}。
                       用了备用的 run 的行占比 > 20% 报警（不算失败）
+                      10-18 g1：--teacher-override specs/g1_teacher.json 时 S0–S3 按覆盖文件的槽表 / 后端核，S4 / S5 仍按 --freeze
+    teacher_override  （给 --teacher-override 时）每个 run 的 run_config.teacher_override 文件名、sha256、base_freeze 与本次一致；
+                      覆盖文件也进 freeze/、provenance（runs.jsonl 每行 teacher = 覆盖文件名）与身份文件的 teacher_override
     gia_wait_rows     system_variant=wait 的 GIA 行为 0（定时复核关）
     train_configs     两份配置角色对、export_dir 指向本包 data/、种子 ≥ 2、sample_weight 开、lora_r ≤ 32、max_tokens ≥ 32768
     counts            HI ≥ 500、GIA ≥ 60、FINISH ≥ 30（清单 C1；只报警——数量门由 export_gate 管）
@@ -208,13 +211,19 @@ def model_matches(actual: str | None, expected: str | None) -> bool:
     return bool(a and e) and (a == e or a.startswith(e + "-") or a.startswith(e + ":"))
 
 
-def slot_teacher_check(prov: list[dict[str, Any]], ft: dict[str, Any]) -> dict[str, Any]:
+OVERRIDE_SLOTS = ("S0", "S1", "S2", "S3")   # 10-18 g1：--teacher-override 只换这四槽；S4 / S5 仍按基础冻结文件核
+
+
+def slot_teacher_check(prov: list[dict[str, Any]], ft: dict[str, Any], override: dict[str, Any] | None = None) -> dict[str, Any]:
     """10-15（5a 遗留，r0 成本压缩落实）：按 run_config.walker.slot_models 逐槽核对教师。
+    10-18 g1：给 override（教师覆盖文件的 teacher 一节）时，OVERRIDE_SLOTS 按 override 的槽表 / 后端核，其余槽仍按 ft。
     返回 {"ok", "runs": {run: role}, "problems": [...], "slot_models": {Sk: {模型: run 数}}, "roles": {role: run 数}}。"""
 
+    def table(key: str) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        src = override if override and key in OVERRIDE_SLOTS else ft
+        return (src.get("slots") or {}).get(key), src.get("backends") or {}, src.get("backup_backends") or {}
+
     slots = ft.get("slots") or {}
-    backends = ft.get("backends") or {}
-    backups = ft.get("backup_backends") or {}
     problems: list[str] = []
     roles: dict[str, str | None] = {}
     seen: dict[str, Counter] = {k: Counter() for k in slots}
@@ -226,7 +235,8 @@ def slot_teacher_check(prov: list[dict[str, Any]], ft: dict[str, Any]) -> dict[s
             roles[run] = None
             continue
         per = []
-        for key, backend in slots.items():
+        for key in slots:
+            backend, backends, backups = table(key)
             actual = models.get(key)
             seen[key][str(actual)] += 1
             primary = (backends.get(backend) or {}).get("model")
@@ -344,13 +354,16 @@ def pack(args: argparse.Namespace) -> int:
     # ---- teacher
     ft = freeze.get("teacher") or {}
     teachers = Counter(md.get("teacher_model") for _, md in all_md)
+    override_path = ROOT / args.teacher_override if args.teacher_override else None
+    override_ft = json.loads(override_path.read_text(encoding="utf-8")).get("teacher") or {} if override_path else None
     if ft.get("slots"):
-        slot_check = slot_teacher_check(prov, ft)
+        slot_check = slot_teacher_check(prov, ft, override_ft)
         run_roles = slot_check["runs"]
         counted = [(r, md) for r, md in all_md if not is_exempt(md)]
         backup_rows = sum(1 for _, md in counted if run_roles.get(str(md.get("run"))) in ("backup", "mixed"))
         checks.add("teacher", slot_check["ok"], {"mode": "per_slot", "rows": dict(teachers), "primary": ft.get("primary"),
                                                  "backup": ft.get("backup"), **{k: v for k, v in slot_check.items() if k != "runs"},
+                                                 "override_slots": list(OVERRIDE_SLOTS) if override_ft else None,
                                                  "teacher_role_rows": dict(Counter(md.get("teacher_role") for _, md in all_md))})
     else:
         allowed = {ft.get("primary"), ft.get("backup")}
@@ -360,6 +373,22 @@ def pack(args: argparse.Namespace) -> int:
                                                          "teacher_role_rows": dict(Counter(md.get("teacher_role") for _, md in all_md))})
     share = backup_rows / max(1, len(all_md))
     checks.add("teacher_backup_share", share <= BACKUP_SHARE_WARN, {"backup_rows": backup_rows, "share": round(share, 3)}, warn=True)
+    override_info = None
+    if override_path:
+        # 10-18 g1：每个 run 的 run_config.teacher_override 必须指向这份覆盖文件（文件名 + sha256 一致），base_freeze = 本次 --freeze
+        digest = sha256_file(override_path)
+        override_info = {"file": override_path.relative_to(ROOT).as_posix(), "sha256": digest, "slots": list(OVERRIDE_SLOTS),
+                         "base_freeze": freeze_path.relative_to(ROOT).as_posix()}
+        bad_runs = []
+        for p in prov:
+            cfg = json.loads((runs_dir / p["run"] / "run_config.json").read_text(encoding="utf-8")) if p.get("run_config") else {}
+            to = cfg.get("teacher_override") or {}
+            if (Path(str(to.get("file") or "")).name != override_path.name or to.get("sha256") != digest
+                    or Path(str(to.get("base_freeze") or "")).name != freeze_path.name):
+                bad_runs.append(p["run"])
+            p["teacher"] = override_path.name
+        checks.add("teacher_override", not bad_runs, {**override_info, "runs": len(prov), "mismatch": bad_runs[:40],
+                                                      "n_mismatch": len(bad_runs)})
 
     # ---- GIA wait 变体
     wait_rows = sum(1 for r, md in all_md if r == "gia" and md.get("system_variant") == "wait")
@@ -400,7 +429,7 @@ def pack(args: argparse.Namespace) -> int:
 
     # ---- provenance（10-17 r1）：输入文件都已提交、与 HEAD 一致；代码目录没有未提交改动
     if args.provenance_files is not None:
-        checks.add("provenance", *provenance_check(args.provenance_files))
+        checks.add("provenance", *provenance_check([*args.provenance_files, *([args.teacher_override] if args.teacher_override else [])]))
 
     # ---- 数量（只报警）
     finish = sum(1 for r, md in all_md if r == "gia" and (md.get("action") == "FINISH" or md.get("unit") == "answer"))
@@ -440,6 +469,8 @@ def pack(args: argparse.Namespace) -> int:
             shutil.copy2(ROOT / rel, out / "configs" / Path(rel).name)
     (out / "freeze").mkdir()
     shutil.copy2(freeze_path, out / "freeze" / freeze_path.name)
+    if override_path:
+        shutil.copy2(override_path, out / "freeze" / override_path.name)
     (out / "provenance").mkdir()
     (out / "provenance" / "runs.jsonl").write_text("".join(json.dumps(p, ensure_ascii=False) + "\n" for p in prov), encoding="utf-8")
 
@@ -452,6 +483,7 @@ def pack(args: argparse.Namespace) -> int:
         "spec": freeze.get("specs"), "spec_hash": frozen_spec, "state_renderer": frozen_renderer,
         "tool_layer_hash": sorted(h for h in seen if h), "tool_layer_frozen": frozen_layer,
         "teacher_model": dict(teachers), "teacher_frozen": {"primary": ft.get("primary"), "backup": ft.get("backup")},
+        "teacher_override": override_info, "teacher": override_path.name if override_path else freeze_path.name,
         "verifier": fv.get("version"), "verifier_code_hash": fv.get("code_hash"), "judge_model": dict(judges),
         "counts": {**counts, "images": len(images)}, "sample_weight_sum": {r: round(sum(float((x.get("metadata") or {}).get("sample_weight") or 0) for x in rows[r]), 3) for r in rows},
         "train_configs": cfg_out, "git": git_info(), "data_digest": digest,
@@ -494,7 +526,7 @@ def verify(pack_dir: Path) -> int:
             bad.append(rel)
     extra = [p.relative_to(pack_dir).as_posix() for p in pack_dir.rglob("*")
              if p.is_file() and p.name != "SHA256SUMS" and p.relative_to(pack_dir).as_posix() not in listed]
-    ident_files = sorted(pack_dir.glob("r*_pack.json"))
+    ident_files = sorted(pack_dir.glob("*_pack.json"))
     identity = json.loads(ident_files[0].read_text(encoding="utf-8")) if ident_files else {}
     data_hashes = {rel: d for rel, d in listed.items() if rel.startswith("data/")}
     digest_ok = data_digest(data_hashes) == identity.get("data_digest")
@@ -516,6 +548,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--freeze", default=None, help="默认 specs/<轮次>_freeze.json")
     parser.add_argument("--provenance-files", nargs="*", default=None,
                         help="必须已提交且与 HEAD 一致的输入文件（可用 glob）；给了就加 provenance 核对项（严格）")
+    parser.add_argument("--teacher-override", default=None,
+                        help="教师覆盖文件（如 specs/g1_teacher.json）：S0–S3 按它核，S4 / S5 仍按 --freeze；默认 freeze 取它的 teacher.base_freeze")
     parser.add_argument("--runs-dir", default="experiments/sft_data/runs")
     parser.add_argument("--configs", nargs="+", default=DEFAULT_CONFIGS)
     parser.add_argument("--allow-mismatch", action="store_true", help="不合冻结口径也出包（status=trial）")
@@ -524,6 +558,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--verify", default=None, help="只校验一个已有的包")
     args = parser.parse_args(argv)
     args.out = args.out or f"experiments/sft_data/{args.round}_pack/{args.round}"
+    if not args.freeze and args.teacher_override:
+        args.freeze = (json.loads((ROOT / args.teacher_override).read_text(encoding="utf-8")).get("teacher") or {}).get("base_freeze")
     args.freeze = args.freeze or f"specs/{args.round}_freeze.json"
     if args.verify:
         path = Path(args.verify)
