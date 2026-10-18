@@ -1,0 +1,5278 @@
+{
+  "table": [
+    {
+      "run": "fmnv_a_0Uc3vwNlDdY_r1g2_1",
+      "requests": 13,
+      "llm_calls": 11,
+      "input_tokens": 416935,
+      "output_tokens": 2158,
+      "llm_seconds": 293.8,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=0Uc3vwNlDdY, uploaded 2024-10-05; it matches 99% of the given video's half-second picture samples, though earliest publication is unconfirmed. [E18][E31]\n\nUsing A for the given video and B for the source, comparison reports:\n- Removed: B 43.1–59.0 s, skipped at A 43.8 s. [E18]\n- Removed: B 94.3–98.4 s, skipped at A 79.8 s. [E18]\n- Ending: at A 81.3 s, correspondence moves backward from B 99.4 s to B 98.4 s. [E18]\n- Tail: A uses B 0–99 s only, omitting the remaining source tail; its precise A boundary is unverified. [E18]\n- Sound differs at A ↔ B: 35.0–43.5 ↔ 34.6–43.0; 44.0–50.0 ↔ 59.0–65.0; 50.5–55.5 ↔ 65.5–70.5; 55.5–66.0 ↔ 70.5–80.9; 66.0–76.5 ↔ 80.9–91.3; 76.5–79.0 ↔ 91.3–93.8 s. [E18]\n\nBoundaries are approximate to 0.5 s; added footage, object/face alterations, speed changes, the content of audio changes, and additional changes between samples were not established. [E18]",
+      "wall_seconds": 994.5,
+      "case": "fmnv_a_0Uc3vwNlDdY",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_0zC0K0YZEzg_r1g2_1",
+      "requests": 13,
+      "llm_calls": 11,
+      "input_tokens": 428677,
+      "output_tokens": 2077,
+      "llm_seconds": 325.6,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source copy was found at https://www.youtube.com/watch?v=_O79TTS6QNk, uploaded 2025-01-17; 95% of the given video's half-second picture samples match, but earliest-original status is unverified.[E25][E38]\nLet A denote the given video and B this source: the comparison places A’s matched footage within B 2–130 s and reports the rest of B absent.[E25]\nReported differences:\n- Removed B 26.6–42.6 s at A 27.8 s.[E25]\n- Removed B 51.8–65.0 s at A 37.8 s.[E25]\n- Removed B 70.9–79.4 s at A 44.2 s.[E25]\n- Removed B 97.5–118.6 s at A 63.2 s.[E25]\n- Reversed playback: A 1.8–5.2 s corresponds to B 1.9–4.5 s.[E25]\n- Frozen frame: A 8.8–11.2 s corresponds to B 10.5–10.5 s.[E25]\n- Different sound: A 28.0–29.5 s versus B 42.6–44.1 s.[E25]\nThese are algorithmic results with approximately 0.5 s boundary precision; reversal/freezing lack visual confirmation, and added footage, broader reordering, object alterations, and the sound difference’s content or cause remain unverified.[E25]",
+      "wall_seconds": 1039.6,
+      "case": "fmnv_a_0zC0K0YZEzg",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 1,
+            "incomplete_though_answerable": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_4aIK1tjpGuk_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 378660,
+      "output_tokens": 1588,
+      "llm_seconds": 199.2,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source video was found at https://www.youtube.com/watch?v=4aIK1tjpGuk; it contains 100% of the given video's half-second picture samples. [E35][E42] This copy was uploaded on 2025-01-09 and first archived on 2025-01-11; whether it was the earliest upload is not established. [E42]\n\nRemoved footage: at approximately 58.7 s in the given video (A), the source video's (B) 58.5–79.0 s interval is skipped—reported as 20.5 s removed—with A continuing directly from before that interval to after it. [E35]\n\nAdded, reordered or visually altered footage: no additional differences of these kinds were reported by the sampled comparison. [E35]\n\nSound: audio matches at corresponding moments in all 235 of 235 tested windows; this does not establish identical complete soundtracks across the omitted interval. [E35]\n\nThe omitted sequence's specific content was not established, cut boundaries are accurate to about 0.5 s, and changes between sampled instants were not ruled out. [E35]",
+      "wall_seconds": 1267.0,
+      "case": "fmnv_a_4aIK1tjpGuk",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_5A6U5EjH048_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 358347,
+      "output_tokens": 1662,
+      "llm_seconds": 242.5,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found at https://www.youtube.com/watch?v=5A6U5EjH048, uploaded on 2025-03-07; it contains matches for 100% of the given video’s half-second picture samples, although its status as the earliest original publication remains unverified.[E16][E23]\n\n- Removed footage: source 40.5–55.6 s, a reported 15.1 s span, is skipped at given-video 40.7 s; the full content of that omitted passage was not established.[E16]\n- Sound difference: given-video 42.5–44.0 s differs from source 57.1–58.6 s, but the audible change and its cause were not verified.[E16]\n- Sound difference: given-video 63.0–64.5 s differs from source 77.6–79.1 s, again without verification of the audible change or its cause.[E16]\n- Added or reordered footage: none was identified by the comparison; this does not establish that every frame is unchanged.[E16]\n\nEdit boundaries are approximate to 0.5 s, and unsampled intervals, subtle visual alterations and other playback changes were not exhaustively verified.[E16]",
+      "wall_seconds": 658.2,
+      "case": "fmnv_a_5A6U5EjH048",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_6C0lUMKMj0w_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 389027,
+      "output_tokens": 1538,
+      "llm_seconds": 162.6,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The original source remains unconfirmed: the candidate at https://www.youtube.com/watch?v=o48vO9FqdGU, uploaded 2024-08-12, matched only 12% of the given video’s half-second samples and was judged probably not its source.[E48][E43]\n\nRemoved, added, reordered or visually altered parts—and their corresponding times in an original—cannot be determined because consistent overall visual correspondence was not established.[E43]\n\nThe separate sound comparison reported differences between given video A 40.0–67.0 s and candidate B 0.0–27.0 s (similarity 0.39), and between A 67.0–71.5 s and B 27.0–31.5 s (similarity 0.44).[E43] These are comparisons with an unconfirmed candidate, not established edits: the weak audio alignment does not verify corresponding passages or prove sound replacement.[E43]",
+      "wall_seconds": 1215.9,
+      "case": "fmnv_a_6C0lUMKMj0w",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 3,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_6VKUdVYw_j8_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 255194,
+      "output_tokens": 1118,
+      "llm_seconds": 123.5,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The original source cannot be determined from the available sampled frames, which do not establish provenance.[E3][E5][E8][E10] At 18.8 s, Material A shows BOL branding, voting booths, American flags, and a banner labelled KAMALA HARRIS / DEMOCRATIC and DONALD TRUMP / REPUBLICAN; these provide search clues, not confirmation of an original source.[E5] Removed, added, reordered or altered parts—and their corresponding times in both videos—cannot be determined without an identified original for comparison.[E3][E5][E8][E10] Material A lasts 75.160 s; speech recognition covered 0.0–75.16 s, but soundtrack changes were not verified, and sampled images do not establish continuous visual coverage.[E2][E11][E3][E5][E8][E10]",
+      "wall_seconds": 1087.7,
+      "case": "fmnv_a_6VKUdVYw_j8",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_8SN_JjTXSRY_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 235236,
+      "output_tokens": 1061,
+      "llm_seconds": 95.7,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The original source video could not be identified: no searched video was confirmed to match Material A, whose recorded duration is 85.6 s.[E2][E5]\n\nAt 21.4 s, the footage shows “BATTLEGROUND STATES,” HARRIS and TRUMP columns, “AMERICA DECIDES,” a Stuff watermark, and a tally of 99 and 137 with “270 TO WIN”; these are identification clues, not a verified source match.[E5]\n\nRemoved, added, reordered or altered portions, and their corresponding times in Material A and the original, remain undetermined because no original comparison was established.[E3][E5][E8][E10]\n\nVisual observations were sampled rather than continuous, and speech recognition covered 0.0–85.6 s without establishing whether the sound matches an original.[E3][E5][E8][E10][E12]",
+      "wall_seconds": 807.3,
+      "case": "fmnv_a_8SN_JjTXSRY",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_96EvZqRmRD0_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 251577,
+      "output_tokens": 1188,
+      "llm_seconds": 121.6,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was established; the frame at 13.56 s provides NDTV WORLD branding, “Courtesy: Instagram/parishilton,” and the headline “PARIS HILTON SHARES HEARTBREAKING VIDEO OF MALIBU HOME RUINS,” but these clues do not establish an original-video match.[E5]\n\nRemoved, added, reordered or altered footage—and corresponding times in both videos—remain undetermined: the available observations establish sampled content, not correspondence with an original.[E3][E5][E8][E10]\n\nMaterial A lasts 54.320 s and has one audio track; speech recognition processed 0.0–54.32 s without recognising speech, which does not prove speech is absent or establish whether sound was changed.[E2][E12]",
+      "wall_seconds": 467.8,
+      "case": "fmnv_a_96EvZqRmRD0",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_9ACukGwm6O8_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 408349,
+      "output_tokens": 1794,
+      "llm_seconds": 229.1,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 4,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: KRGV’s “Cards Against Humanity suing SpaceX for allegedly trespassing on Boca Chica property,” https://www.youtube.com/watch?v=9ACukGwm6O8, uploaded 2024-09-25; 100% of the given video’s half-second picture samples match this source, although its status as the earliest upload remains unverified.[E33][E26]\n\nUsing A for the given video and B for the source:\n- Removed footage: B 31.3–43.1 s, lasting 11.8 s, is skipped at A 31.8 s.[E26]\n- Different sound: A 34.5–36.0 s versus B 45.5–47.0 s.[E26]\n- Different sound: A 36.0–39.0 s versus B 47.0–50.0 s.[E26]\n- Different sound: A 39.5–53.5 s versus B 50.5–64.3 s.[E26]\n- Different sound: A 54.0–63.5 s versus B 64.8–74.2 s.[E26]\n\nThe comparison lists no added or reordered footage or replaced faces; three compared face tracks match.[E26]\n\nBoundaries are approximate to 0.5 s; the omitted scene’s content, the nature and spoken content of the sound changes, speed/reversal/freeze alterations, and changes between sampled frames were not established.[E26]",
+      "wall_seconds": 694.8,
+      "case": "fmnv_a_9ACukGwm6O8",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {}
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_9TeYOZWGu8s_r1g2_1",
+      "requests": 10,
+      "llm_calls": 9,
+      "input_tokens": 332529,
+      "output_tokens": 1423,
+      "llm_seconds": 187.1,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=9TeYOZWGu8s; all of the given video's half-second picture samples matched this source, whose upload and earliest recorded archive date are 2022-11-16, although earliest publication is not established. [E25][E32]\n\nRemoved footage: at approximately 20.7 s in the given video, the source's 20.4–28.2 s interval (7.8 s) is skipped, joining footage before and after that passage; the boundaries are accurate to about 0.5 s. [E25]\n\nAdded, reordered or visually altered footage: the sampled comparison reported none. [E25]\n\nSound: 79 of 81 one-second windows matched at corresponding moments; the two unmatched windows were not located or explained, so complete audio identity was not established. [E25]\n\nThe omitted passage's specific action or speech, frame-exact edit boundaries, and changes between sampled moments were not determined. [E25]",
+      "wall_seconds": 579.1,
+      "case": "fmnv_a_9TeYOZWGu8s",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {}
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_9sTK9zOuZwg_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 229171,
+      "output_tokens": 1107,
+      "llm_seconds": 101.9,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was verified; the source remains undetermined. [E12]\n\nConsequently, removals, additions, reordering and visual alterations cannot be determined, and no corresponding edit times in the given video and an original can be supplied. [E5][E12]\n\nOne visible search clue is the caption “US correspondent Mark Stone” at 15.04 s in the given video. [E4]\n\nThe transcript records the opening at 0.0–3.84 s as “The U.S. election is approaching fast, but how does it actually work?” [E12]\n\nAudio was transcribed across 0.0–120.28 s; this transcription does not establish whether sound was changed, so sound changes remain unverified. [E12]",
+      "wall_seconds": 699.9,
+      "case": "fmnv_a_9sTK9zOuZwg",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_A5dqLhDAnfQ_r1g2_1",
+      "requests": 13,
+      "llm_calls": 11,
+      "input_tokens": 409838,
+      "output_tokens": 2271,
+      "llm_seconds": 245.2,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=A5dqLhDAnfQ, containing 100% of the given video's half-second picture samples; this establishes a sampled match, not earliest publication. [E17][E30]\n\nThe comparison reports these differences (A = given video; B = source):\n- Removed: B 35.7–48.5 s (12.8 s), skipped at A 44.2 s. [E17]\n- Slowed: A 0.0–44.2 s corresponds to B 0.2–35.7 s, reported as 0.809x speed. [E17]\n- Accelerated: A 44.2–56.7 s corresponds to B 48.5–66.4 s, reported as 1.489x speed. [E17]\n- Accelerated: A 58.2–73.2 s corresponds to B 68.3–86.0 s, reported as 1.22x speed. [E17]\n- Sound differences: A 8.0–9.5 ↔ B 6.6–8.0 s; 9.5–11.0 ↔ 7.8–9.2 s; 22.5–24.5 ↔ 18.4–20.2 s; 27.5–32.0 ↔ 22.4–26.2 s; 33.0–34.5 ↔ 26.9–28.3 s; 37.5–40.5 ↔ 30.5–33.1 s. [E17]\n\nBoundaries have approximately 0.5 s precision; added/reordered footage, local visual alterations, A 56.7–58.2 s correspondence, and the content or cause of sound differences remain unverified. [E17]",
+      "wall_seconds": 488.3,
+      "case": "fmnv_a_A5dqLhDAnfQ",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "wrong_citation": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_AdNdtUAyK60_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 256258,
+      "output_tokens": 1079,
+      "llm_seconds": 128.7,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was established, so the original cannot be determined from the available evidence; the CNA broadcast labels are search clues, not a verified source match.[E5]\n\nAt 29.64 s, Material A shows a CNA split-screen labelled “WASHINGTON DC” and “PENNSYLVANIA”, with election totals of 194 and 265.[E5]\n\nFor Material A 0.0–118.64 s, removals, additions, reordering and alterations—and their corresponding times in an original video—cannot be determined without a verified counterpart.[E3][E5][E8][E10]\n\nSound alterations also remain unverified: ASR processed 0.0–118.64 s and transcribed “Well, let's take you to Pennsylvania now.” at 0.34–2.78 s, but this does not establish correspondence with original audio.[E11]",
+      "wall_seconds": 957.3,
+      "case": "fmnv_a_AdNdtUAyK60",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_BMljmBWBhek_r1g2_1",
+      "requests": 13,
+      "llm_calls": 11,
+      "input_tokens": 409113,
+      "output_tokens": 1563,
+      "llm_seconds": 166.0,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 4,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source was verified: the tested candidate matched only 11% of the given video's half-second samples, and the comparison assessed it as probably not the source.[E31] The candidate's reported upload date was 2025-03-07; this date does not establish the earliest upload.[E36]\n\nRemoved, added, reordered or altered footage—and corresponding times in both videos—cannot be determined from the available comparison because reliable correspondence with an original was not established.[E31] Sound alterations likewise remain unverified: the separate audio comparison reported an envelope correlation of 0.14, insufficient to attribute differences to edits of an established original.[E31]\n\nVisual inspection covered discrete samples, leaving unsampled intervals unverified; these results establish neither authenticity nor absence of editing.[E31][E3][E5][E32][E33]",
+      "wall_seconds": 850.0,
+      "case": "fmnv_a_BMljmBWBhek",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_BQBoqdkM4hw_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 380633,
+      "output_tokens": 1525,
+      "llm_seconds": 162.6,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The original source was not confirmed: the candidate “Paris can't wait for Olympics to cast its spell” (https://www.youtube.com/watch?v=lPKTc3KQUxY), uploaded on 2023-07-26, was assessed as probably not the source of the given video. [E44][E39]\n\nOnly 12% of the given video's half-second samples matched consistently with this candidate. [E39] The separate audio comparison found matching sound in only 3 of 162 one-second windows (2%), with envelope correlation 0.11; this does not establish sound alterations against an original. [E39]\n\nRemoved, added, reordered or visually altered passages—and their corresponding times in the given video and original—cannot be determined from the available comparison because reliable source correspondence was not established. [E39] These results do not establish that the given video is authentic or unedited. [E39]",
+      "wall_seconds": 1017.6,
+      "case": "fmnv_a_BQBoqdkM4hw",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_B_JVNt3xtGE_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 421395,
+      "output_tokens": 1959,
+      "llm_seconds": 191.6,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=B_JVNt3xtGE, uploaded 2024-08-30; 85% of the given video’s half-second picture samples match it, supporting that this version is altered. [E25][E38]\n\nUsing A for the given video and B for the source, the comparison reports:\n- Removal: B 29.3–57.0 s skipped at A 36.0 s. [E25]\n- Replacement: A 36.3–42.3 s has no counterpart in B, with surrounding correspondence from B 36.0 s to B 57.0 s. [E25]\n- Reordering: at A 43.8 s, correspondence jumps backward from B 58.2 s to B 57.1 s. [E25]\n- Repetition: B 57.1–58.1 s appears at A 42.5–43.5 s and 44.0–45.0 s. [E25]\n- Sound differences: A 34.5–36.0 s maps only to B 39.0–39.0 s; A 49.0–73.0 s differs from B 61.3–85.1 s. [E25]\n- Shorter picture mismatch: A 32.2–34.3 s, without an established B interval. [E25]\n\nReplacement content, exact sound changes, and specific speed/reversal edits remain unverified; boundaries are approximate to 0.5 s, and sampled coverage cannot exclude further alterations. [E25]",
+      "wall_seconds": 718.0,
+      "case": "fmnv_a_B_JVNt3xtGE",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_CgK_2lfSASM_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 338062,
+      "output_tokens": 1709,
+      "llm_seconds": 198.3,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: The Dodo’s video at https://www.youtube.com/watch?v=CgK-2lfSASM; all of the given video’s half-second picture samples matched it.[E24][E31] This copy was uploaded on 2025-01-17, but whether an earlier original exists remains undetermined.[E31]\n\nDifferences (A = given video):\n- Removed: source 38.6–53.0 s, totaling 14.4 s, is skipped at A 39.3 s.[E24]\n- Different sound: A 40.5–50.0 s ↔ source 54.0–63.4 s.[E24]\n- Different sound: A 50.5–52.0 s ↔ source 63.9–65.4 s.[E24]\n- Different sound: A 63.0–64.5 s ↔ source 76.3–77.8 s.[E24]\n- Different sound: A 64.5–71.5 s ↔ source 77.8–84.7 s.[E24]\n- Different sound: A 72.0–73.5 s ↔ source 85.2–86.7 s.[E24]\n- Silenced: A 74.5–76.0 s is silent where source 87.7–89.2 s has sound.[E24]\n\nNo added or reordered footage or local visual alteration was identified by the sampled comparison.[E24] Boundaries are approximate to 0.5 s; the removed segment’s full content, specific audio changes, and possible changes between samples were not verified.[E24]",
+      "wall_seconds": 753.9,
+      "case": "fmnv_a_CgK_2lfSASM",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_EFMx_tx4r8o_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 263722,
+      "output_tokens": 1111,
+      "llm_seconds": 134.4,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was confirmed; the KOIN 6 branding is a search clue, not an established source match. [E5]\nAt 25.058366666666668 s, Material A shows a presenter beside “YOUR LOCAL ELECTION HEADQUARTERS,” with a Washington District 3 ticker naming Marie Gluesenkamp Perez and Joe Kent at 52% and 48%, respectively. [E5]\nMaterial A lasts 100.267 s and has one audio track; speech recognition transcribed “It's now 11 o'clock on election night.” at 0.05–3.05 s. [E2][E11]\nWithout a matched original, removals, additions, reordering, visual alterations, sound differences and corresponding times in both videos remain undetermined; the sampled images and transcription do not establish those comparisons. [E5][E11]",
+      "wall_seconds": 1249.0,
+      "case": "fmnv_a_EFMx_tx4r8o",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_Euh9gFFEBtw_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 327507,
+      "output_tokens": 1980,
+      "llm_seconds": 184.7,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=Euh9gFFEBtw, uploaded 2024-10-26; it matches 100% of the given video’s half-second picture samples, although earliest publication remains undetermined. [E16][E23]\n\nWith A denoting the given video and B the source, the detected differences are:\n- Removed footage: B 30.8–42.1 s, reported as 11.4 s, is skipped at A 31.2 s. [E16]\n- Different sound: A 31.5–36.5 s versus B 42.1–47.1 s. [E16]\n- Different sound: A 37.0–46.5 s versus B 47.6–57.1 s. [E16]\n- Different sound: A 46.5–49.0 s versus B 57.1–59.6 s. [E16]\n- Different sound: A 51.5–55.5 s versus B 62.0–66.0 s. [E16]\n- Different sound: A 56.0–62.5 s versus B 66.5–73.0 s. [E16]\n\nThe comparison reported no added footage, reordering or replaced visual region. [E16]\n\nBoundaries have approximately 0.5 s precision; the removed interval’s full content, specific soundtrack changes and their causes, and alterations between sampled frames remain unverified. [E16]",
+      "wall_seconds": 694.9,
+      "case": "fmnv_a_Euh9gFFEBtw",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_F51nH6oLGfY_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 384376,
+      "output_tokens": 1715,
+      "llm_seconds": 213.8,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The original of the complete circulated video was not confirmed; the candidate was https://www.youtube.com/watch?v=ZRWeZzN9nmQ, with recorded upload and earliest archive dates of 2025-01-06.[E46][E41] Only 27% of the circulated video's half-second samples matched consistently, so the comparison did not establish this candidate as the source of the whole video.[E41]\n\nRemoved, added, reordered or visually altered footage—and paired timestamps for those changes—could not be determined from the insufficient consistent picture correspondence.[E41]\n\nFor sound, the comparison reported differences between circulated-video 47.0–90.0 s and candidate-video 0.2–43.2 s, but the weak independent audio alignment (envelope correlation 0.16; zero of 85 one-second windows matching) does not establish audio replacement or reliable corresponding times.[E41]\n\nThese results leave the complete source and edit inventory unresolved; they do not establish that the circulated video is unedited.[E41]",
+      "wall_seconds": 899.0,
+      "case": "fmnv_a_F51nH6oLGfY",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 4,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_I0bt3tSEwTE_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 338635,
+      "output_tokens": 1624,
+      "llm_seconds": 202.0,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=I0bt3tSEwTE, uploaded on 2025-01-19; all of the given video's half-second picture samples matched this source, although its status as the earliest upload is unverified. [E23][E30]\n\nRemoved footage: at approximately 41.2 s in the given video, the source's 41.0–56.2 s interval is skipped—a reported 15.2 s omission—with the given video continuing directly to footage after that interval. [E23]\n\nAdded, reordered or visually altered footage: the comparison reported no additional differences of these kinds within its sampled coverage. [E23]\n\nSound: 121 of 163 one-second windows matched at corresponding moments; this does not establish complete audio identity or show that the remaining windows were altered. [E23]\n\nThe omitted interval's precise content, frame-exact cut boundaries and changes between sampled moments were not established; reported boundaries have approximately 0.5 s precision. [E23]",
+      "wall_seconds": 617.5,
+      "case": "fmnv_a_I0bt3tSEwTE",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_JAsOglAzTcE_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 412454,
+      "output_tokens": 1791,
+      "llm_seconds": 216.4,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=JAsOglAzTcE; it contains 100% of the given video's half-second picture samples, although its status as the earliest original publication remains unverified.[E25][E38]\n\nThe comparison reports two removals:\n- At 27.8 s in the given video, source 27.5–38.0 s (10.5 s) is skipped, joining footage before and after that interval.[E25]\n- At 29.2 s in the given video, source 39.0–40.8 s (1.8 s) is skipped, again joining footage before and after the interval.[E25]\n\nThese boundaries have approximately 0.5 s precision; the omitted scenes' contents, additions, reordering, speed changes and local visual alterations were not established by the sampled comparison.[E25]\n\nThe given video has one audio track, whereas the downloaded source has zero; consequently, whether sound was added or changed relative to the published source remains undetermined.[E2][E24][E12]",
+      "wall_seconds": 414.1,
+      "case": "fmnv_a_JAsOglAzTcE",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_JOAGzL8SpTk_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 406629,
+      "output_tokens": 1641,
+      "llm_seconds": 181.9,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 4,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source video was found: https://www.youtube.com/watch?v=JOAGzL8SpTk, uploaded 2024-10-18; every half-second picture sample from the given video matched this source, although its status as the earliest publication remains unverified. [E39][E32]\n\n- Removed footage: source 23.5–32.1 s, reported as 8.6 s, is skipped at 23.7 s in the given video. [E32]\n- Sound difference: given video 24.0–25.5 s differs from source 32.1–33.6 s. [E32]\n- Sound difference: given video 26.5–48.0 s differs from source 34.6–56.0 s. [E32]\n- The comparison identified no added or reordered footage. [E32]\n\nBoundaries are accurate to approximately 0.5 s; the removed passage’s visual content, the specific words or sounds changed, exact frame-level boundaries, and possible alterations between sampled pictures were not established. [E32]",
+      "wall_seconds": 563.8,
+      "case": "fmnv_a_JOAGzL8SpTk",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_Km1Dw8q98PQ_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 254569,
+      "output_tokens": 970,
+      "llm_seconds": 152.2,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "Without an identified original, removed, added, reordered or altered parts—and their corresponding times in both videos—cannot be determined.[E5]\n\nAt 32.16 s, Material A shows a gray star-patterned background, red and white graphic blocks, MSNBC labels and The Guardian branding.[E5]\n\nMaterial A lasts 128.680 s and has one audio track; speech recognition processed 0.0–128.68 s with no failed ranges reported, but sound differences were not verified against an original, and visual inspection covered only sampled instants.[E2][E11]",
+      "wall_seconds": 1162.4,
+      "case": "fmnv_a_Km1Dw8q98PQ",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_La9Fi3WfBQc_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 227142,
+      "output_tokens": 1162,
+      "llm_seconds": 124.6,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was confirmed, so removals, additions, reordering or alterations—and their corresponding times in the given video and the original—could not be determined from the sampled visual evidence.[E3][E5][E8][E10]\nAt 25.692333333333334 s, Material A shows a presenter beside a display headed “2024 ELECTORAL MAP” and “270 ELECTORAL VOTES NEEDED TO WIN,” with a United States map and Harris and Trump counters both displaying 0; this identifies visible content, not an original-source match.[E5]\nThe reported inspection sampled 0.000 s, 25.692 s, 64.197 s and 89.856 s; intervening footage was not verified, and failed audio transcription left speech and soundtrack differences undetermined.[E3][E5][E8][E10]",
+      "wall_seconds": 1263.3,
+      "case": "fmnv_a_La9Fi3WfBQc",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a__0_V_hd_nFs_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 369887,
+      "output_tokens": 1999,
+      "llm_seconds": 172.0,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source copy was found at https://www.youtube.com/watch?v=-0-V_hd_nFs, uploaded 2025-01-15; it contains matches for 100% of the given video's half-second picture samples, but its status as the earliest original is unverified. [E24][E31]\n\nThe comparison establishes these differences (A = given video; B = source copy):\n- Removed footage: B 29.2–40.2 s, lasting 11.0 s, is skipped at A 29.7 s. [E24]\n- Different sound: A 38.5–40.0 s versus B 48.6–50.1 s. [E24]\n- Different sound: A 40.0–41.5 s versus B 50.1–51.6 s. [E24]\n- Different sound: A 41.5–49.5 s versus B 51.6–59.5 s. [E24]\n- Different sound: A 49.5–59.5 s versus B 59.5–69.4 s. [E24]\n\nNo added or reordered picture spans were identified by the sampled comparison. [E24]\n\nBoundaries are approximate to 0.5 s; frame-exact cuts, changes between samples, other local visual alterations, and the specific sounds responsible for the audio differences remain unverified. [E24][E11]",
+      "wall_seconds": 942.0,
+      "case": "fmnv_a__0_V_hd_nFs",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {}
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a__1wB0eT6YSo_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 380015,
+      "output_tokens": 1782,
+      "llm_seconds": 183.0,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=_1wB0eT6YSo, uploaded 2025-03-06; 100% of the given video’s half-second picture samples matched it, although earliest publication was not established. [E41][E34]\n\nWith A = given video and B = source, the differences are:\n- Removed footage: B 23.7–32.9 s is skipped at A 24.2 s, joining the preceding and following footage; the removed passage’s visual content was not established. [E34]\n- Different sound: A 30.5–32.0 s ↔ B 38.8–40.3 s. [E34]\n- Different sound: A 32.5–34.0 s ↔ B 40.7–42.2 s. [E34]\n- Different sound: A 34.0–36.0 s ↔ B 42.2–44.2 s. [E34]\n- Different sound: A 38.0–39.5 s ↔ B 46.2–47.7 s. [E34]\n- Different sound: A 39.5–41.0 s ↔ B 47.7–49.1 s. [E34]\n- Different sound: A 41.5–43.0 s ↔ B 49.6–51.1 s. [E34]\n\nBoundaries have approximately 0.5 s precision; the audible nature and cause of sound differences, and exhaustive absence of additions, reordering, speed changes or local visual alterations between samples, were not verified. [E34]",
+      "wall_seconds": 728.8,
+      "case": "fmnv_a__1wB0eT6YSo",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a__6kQkSBP84U_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 391102,
+      "output_tokens": 1603,
+      "llm_seconds": 149.4,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source candidate was found at https://www.youtube.com/watch?v=U4HsnfoOPEw (B), with matches for 43% of the given video’s (A) half-second samples; this establishes shared footage, not the complete original source of A. [E42][E47]\nThe candidate’s upload date is 2025-01-29, and its first recorded archive capture is 2025-02-25; neither establishes earliest publication. [E47]\nA lasts 104.304 s and B lasts 154.436 s. [E2][E34]\nThe sampled frames alone do not establish a complete account of removals, additions, reorderings and alterations with corresponding times in both videos. [E4][E6][E43][E44]\nContinuous segment boundaries, object or face changes, playback changes and sound differences remain unverified; A’s transcription alone does not establish an audio comparison with B. [E42][E11]",
+      "wall_seconds": 1018.2,
+      "case": "fmnv_a__6kQkSBP84U",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a__HC36OnL_6c_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 229770,
+      "output_tokens": 1107,
+      "llm_seconds": 97.2,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was identified; the visible “LARRY KING LIVE” and “ET” labels at 26.5265 s provide clues but do not establish a source match. [E5]\n\nRemoved, added, reordered or altered footage—and corresponding timestamps in the given video and the original—cannot be determined without an established source comparison. [E3][E5][E8][E10]\n\nMaterial A lasts 106.039 s and contains one audio track; speech recognition processed 0.0–106.039 s, but sound changes were not verified against an original. [E2][E11]\n\nThe sampled frames do not establish continuous visual coverage, and a confirmed source video is needed to resolve the requested differences. [E3][E5][E8][E10]",
+      "wall_seconds": 643.6,
+      "case": "fmnv_a__HC36OnL_6c",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a__qP0d_xiYTo_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 371774,
+      "output_tokens": 2041,
+      "llm_seconds": 169.4,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/watch?v=_qP0d-xiYTo, uploaded 2024-11-07; it matches 100% of the given video's half-second picture samples, although earliest publication is unverified.[E24][E31]\n\nRemoval: source 44.5–61.1 s, reported as 16.7 s, is skipped at given-video 45.3 s, which continues from before the omitted interval to after it.[E24]\n\nSound differences were flagged at these corresponding times (given video ↔ source):\n• 34.5–37.0 s ↔ 34.1–36.6 s.[E24]\n• 37.0–40.5 s ↔ 36.5–40.0 s.[E24]\n• 45.5–64.5 s ↔ 61.1–80.0 s.[E24]\n• 66.0–78.5 s ↔ 81.5–93.9 s.[E24]\n• 88.5–90.0 s ↔ 103.8–105.3 s.[E24]\n• 90.0–91.5 s ↔ 105.3–106.8 s.[E24]\n\nThese detections do not establish replaced speech or intentional audio editing.[E24]\n\nThe comparison lists no added footage, reordering or changed visual region.[E24]\n\nExact cut boundaries, the omitted interval's full content, the nature of the audio differences, and exhaustive checks for speed changes or other frame-level alterations remain unverified.[E24][E25][E26][E27][E28]",
+      "wall_seconds": 727.6,
+      "case": "fmnv_a__qP0d_xiYTo",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_b5HDrQ_M5_Y_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 233584,
+      "output_tokens": 1098,
+      "llm_seconds": 127.3,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was identified, so the available visual and transcription clues do not establish its provenance.[E5][E11][E12]\n\nSearchable clues include OCR recognition of “DENALI” at 21.7 s and “Election Wars:” and “2025” at 85.9–110.4 s in the given video.[E11] The speech transcription records “Please raise your right hand” at 0.02–2.02 s.[E12]\n\nWithout an identified original, removed, added, reordered or altered footage—and corresponding times in both videos—cannot be determined; sound changes likewise remain unverified.[E5][E11][E12] A matching source video is needed to establish those differences; these observations alone do not establish that the given video is unchanged.[E5][E11][E12]",
+      "wall_seconds": 974.5,
+      "case": "fmnv_a_b5HDrQ_M5_Y",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_d4xTktY_lrw_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 352737,
+      "output_tokens": 1636,
+      "llm_seconds": 151.7,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching candidate was found, but its status as the original upload is not established: https://www.youtube.com/watch?v=x6msSslb7aI; comparison reported matches for 78% of A’s half-second samples. [E36][E31] The candidate was uploaded and first archived on 2024-11-08, but an earlier copy may exist. [E36]\n\nThe given video (A) lasts 66.960 s. [E2] The candidate (B) lasts 207.842 s. [E24]\n\nThe comparison reports these differences:\n- Unmatched footage: A 46.2–50.2 s and 62.2–66.7 s have no counterpart in B. [E31]\n- Reordering: at A 39.7 s, the correspondence jumps from B 125.5 s back to B 57.3 s. [E31]\n- Frozen footage: A 0.8–14.7 s corresponds to B 141.6–142.1 s; A 22.2–44.7 s to B 58.1–58.2 s; A 57.3–60.7 s to B 58.3–58.3 s. [E31]\n\nThese automated correspondences do not establish the content of every alteration or a complete, verified removal list. [E31] Sound differences remain unverified; A’s speech transcription alone cannot establish an audio difference from B. [E12]",
+      "wall_seconds": 518.9,
+      "case": "fmnv_a_d4xTktY_lrw",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_dgUIwhI09Rc_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 205317,
+      "output_tokens": 1261,
+      "llm_seconds": 90.2,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was identified or confirmed as a visual match; the @JEJEVIBEPOD branding is an attribution clue, not proof of the source.[E5][E11]\n\nAt 8.1 s, the supplied video shows the Eiffel Tower with Olympic rings and light beams, blurred background areas, red vertical branding and the caption “in grand”; without an original comparison, these cannot be classified as added or altered elements.[E5]\n\nFor the supplied video's 0.0–32.4 s, removed, added, reordered or altered footage—and corresponding times in both videos—remain undetermined because no source correspondence was established.[E2][E3][E5][E8][E10]\n\nSound changes also remain unverified: speech recognition processed 0.0–32.4 s and recorded “Here's how the Paris Olympics opening ceremony generated so much controversy”, but no original-audio comparison was established.[E12]",
+      "wall_seconds": 372.6,
+      "case": "fmnv_a_dgUIwhI09Rc",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_fTIOGkfNU6I_r1g2_1",
+      "requests": 10,
+      "llm_calls": 9,
+      "input_tokens": 330272,
+      "output_tokens": 1437,
+      "llm_seconds": 144.8,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source video was found at https://www.youtube.com/watch?v=fTIOGkfNU6I; it contains all of the given video's half-second picture samples, and its recorded upload and first archive dates are both 2025-01-18, although earliest publication is not established. [E18][E25]\n\nConfirmed removal: at 50.7 s in the given video, source footage from 50.5–69.1 s, lasting 18.6 s, is skipped, joining footage before that interval directly to footage after it; the reported boundaries are accurate to about 0.5 s. [E18]\n\nAdditional insertions, reordering, speed changes and local visual alterations were not established or ruled out between sampled moments, and the removed interval's full content was not determined. [E18]\n\nSound differences could not be determined: the given video has one audio track, but the downloaded source has zero audio tracks, which does not establish that the online source was silent. [E2][E17]",
+      "wall_seconds": 762.7,
+      "case": "fmnv_a_fTIOGkfNU6I",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_fsdDrrt_maI_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 371380,
+      "output_tokens": 1729,
+      "llm_seconds": 217.0,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The source video found is https://www.youtube.com/watch?v=fsdDrrt_maI, uploaded December 11, 2024; it matches 100% of the given video's half-second picture samples, although earliest publication is not established.[E24][E31]\n\nDifferences, with A denoting the given video:\n- Removed footage: original 43.6–59.7 s (16.1 s) is skipped at A 44.3 s.[E24]\n- Sound difference: A 55.5–57.5 s versus original 70.6–72.6 s.[E24]\n- Sound difference: A 60.0–61.5 s versus original 75.1–76.6 s.[E24]\n- Sound difference: A 79.5–81.5 s versus original 94.3–96.3 s.[E24]\n- Sound difference: A 82.0–84.0 s versus original 96.8–98.8 s.[E24]\n\nThe comparison reports no added or reordered footage or replaced face; the sound flags do not establish changed words or deliberate audio editing.[E24]\n\nBoundaries have approximately 0.5 s precision; exact removed speech, the content and cause of sound differences, frame-exact boundaries, and changes between sampled instants remain undetermined.[E11][E24]",
+      "wall_seconds": 972.0,
+      "case": "fmnv_a_fsdDrrt_maI",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "scope_overreach": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "wrong_citation": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_gP9y0JAxWWg_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 224782,
+      "output_tokens": 948,
+      "llm_seconds": 105.5,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was established, so removals, additions, reordering, visual alterations, sound differences, and corresponding times in both videos cannot be determined from this investigation. [E2][E12]\n\nThe examined video lasts 53.020 s and has one audio track; speech transcription covered 0.0–53.01963333333333 s, but no comparison with a verified original was established. [E2][E12]\n\nThe available clues are “CALIFORNIA” and “WILDFIRES,” recognised at 0.7–3.0 s, and a severely burned car beside a residential street, a white car across the street, and damaged buildings and vegetation at 13.246566666666666 s; these do not establish source correspondence. [E11][E5]",
+      "wall_seconds": 646.2,
+      "case": "fmnv_a_gP9y0JAxWWg",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_h3uASpEE75Q_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 418505,
+      "output_tokens": 1524,
+      "llm_seconds": 220.6,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 4,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 2,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 1,
+        "INSPECT get_frames count": 1,
+        "SEARCH dates": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source was established: the tested candidate matched only 9% of the given video's half-second samples and was assessed as probably not its source. [E39]\n\nThe candidate was uploaded on 2024-09-14 and first archived on 2024-09-15; these dates do not establish the given video's origin. [E44]\n\nRemoved, added, reordered or visually altered passages, and their corresponding times in the original, cannot be determined from the obtained comparison because it did not establish consistent frame-level correspondence. [E39]\n\nThe sound comparison reported differences between the given video at 38.5–92.0 s and the candidate at 0.3–53.8 s, with similarity 0.22 and no matching sound in 106 one-second windows; however, weak alignment (envelope correlation 0.14) and the unconfirmed source mean this does not establish audio alteration relative to an original. [E39]",
+      "wall_seconds": 1566.4,
+      "case": "fmnv_a_h3uASpEE75Q",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 2,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_kRBDYNT_UOA_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 232808,
+      "output_tokens": 1071,
+      "llm_seconds": 95.2,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH"
+          ]
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "report_incomplete": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "No original source video was found or verified, so removals, additions, reordering, alterations, and corresponding times in the given video and the original cannot be determined from the obtained evidence.[E5][E3][E8][E10]\nAt 20.8208 s, Material A shows three medal-wearing people on a podium displaying “PARIS 2024” and Olympic rings, with an NBC logo at the upper right; these clues do not establish its original source.[E5]\nMaterial A lasts 83.283 s and has one audio track; the sampled images do not establish continuous visual coverage, and ASR processing of 0.0–83.2832 s does not verify sound differences against an original.[E2][E3][E5][E8][E10][E12]",
+      "wall_seconds": 779.5,
+      "case": "fmnv_a_kRBDYNT_UOA",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_kvsfmJI5nJU_r1g2_1",
+      "requests": 12,
+      "llm_calls": 10,
+      "input_tokens": 386786,
+      "output_tokens": 1851,
+      "llm_seconds": 180.3,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source was found: https://www.youtube.com/live/kvsfmJI5nJU, uploaded 2024-11-05; it contains matches for 100% of the given video’s half-second picture samples, although earliest publication was not established. [E40][E47]\n\nThe given video (A) removes source footage at 60.9–81.1 s, lasting 20.2 s, at A 61.7 s, jumping across that interval. [E40]\n\nSix sound differences were measured at corresponding times:\n- A 48.5–50.0 s ↔ source 48.0–49.5 s. [E40]\n- A 51.5–54.5 s ↔ source 51.0–54.0 s. [E40]\n- A 54.5–56.0 s ↔ source 54.0–55.5 s. [E40]\n- A 70.5–76.5 s ↔ source 89.5–95.4 s. [E40]\n- A 85.5–87.5 s ↔ source 104.4–106.3 s. [E40]\n- A 101.5–103.0 s ↔ source 120.2–121.7 s. [E40]\n\nBoundaries have approximately 0.5 s precision; the omitted interval’s full content, exact audio changes, source ending treatment, added or reordered footage, speed changes, object or face alterations, and changes between sampled frames were not verified. [E40][E41][E42][E43][E44]",
+      "wall_seconds": 1623.9,
+      "case": "fmnv_a_kvsfmJI5nJU",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 1,
+            "incomplete_though_answerable": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "fmnv_a_l0YMhoSMgro_r1g2_1",
+      "requests": 14,
+      "llm_calls": 12,
+      "input_tokens": 462391,
+      "output_tokens": 2291,
+      "llm_seconds": 225.4,
+      "repairs": 0,
+      "hi_steps": 10,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT ocr": 1,
+        "INSPECT asr": 1,
+        "SEARCH": 3,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 10,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT ocr",
+            "INSPECT asr",
+            "SEARCH",
+            "SEARCH",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "SEARCH"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT ocr(video)": 1,
+        "INSPECT asr": 1,
+        "SEARCH text video": 1,
+        "SEARCH text_image video": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "SEARCH dates": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A matching source copy was found: “What new poll says about state of presidential race following the debate” at https://www.videosarena.com/what-new-poll-says-about-state-of-presidential-race-following-the-debate/, matching 97% of the given video’s half-second samples; the earliest original remains unverified.[E32][E45]\n\nA denotes the given video; B denotes that source copy, with comparison boundaries accurate to approximately 0.5 seconds.[E32]\n\n- Removed: B 62.4–82.6 s at A 63.2 s; B 130.0–133.4 s at A 111.8 s.[E32]\n- Backward jumps: A 113.3 s goes from B 134.5 to 133.5 s; A 124.7 s goes from B 144.4 to 143.3 s.[E32]\n- Repeated: B 133.5–134.5 s at A 112.0–113.0 and 113.5–115.0 s; B 143.3–144.3 s at A 122.0–124.5 and 125.0–126.0 s.[E32]\n- Accelerated: A 121.7–124.7 s corresponds to B 140.0–144.4 s, reportedly 1.765× speed.[E32]\n- Frozen: A 126.2–130.2 s holds B 147.1–147.3 s.[E32]\n- Sound mismatch: A 41.5–43.0 s versus B 41.1–42.6 s.[E32]\n- Unresolved mismatches: A 115.3–117.2 and 119.7–121.7 s; corresponding B ranges remain unknown.[E32]\n\nOmitted content, exact sound changes, added footage, object/face alterations and unexamined intervals remain undetermined.[E32]",
+      "wall_seconds": 1233.0,
+      "case": "fmnv_a_l0YMhoSMgro",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 1,
+            "incomplete_though_answerable": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_0072_r1g2_1",
+      "requests": 8,
+      "llm_calls": 7,
+      "input_tokens": 257264,
+      "output_tokens": 3257,
+      "llm_seconds": 191.2,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 3
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "INSPECT get_frames times_s+box": 1,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A depicts a weighted squat exercise, while corresponding inspected views of B show an empty gym area, changing the activity conveyed despite the shared setting.[E31][E24][E25]\n\n• Person: A shows the man standing at 0.0 s, squatting at 4.2 s, and standing at 8.48 s; he is absent from B’s corresponding area at 1.88 s and 2.04 s, although which version added or removed him is undetermined.[E30][E31][E32][E24][E25]\n• Branding: The comparison flags a lower-right difference during A 0.2–8.2 s; B’s Trailhead logo is visible in the supplied views but absent from A’s supplied full frames, changing the visible branding.[E23][E17][E4][E26][E9]\n• Timing: The tool matches 100% of A’s half-second samples to B, mapping A 0.0–8.2 s to B 1.5–2.4 s at 0.102x speed; this does not establish the exercise movement’s speed.[E23]\n• Sound: Both files have 0 audio tracks, so neither supplies speech, music or sound for comparison.[E3][E12]\n\nB’s original-source identity and exact frame pairings remain unconfirmed, and sampled coverage cannot exclude additional differences in unexamined intervals or regions.[E23]",
+      "wall_seconds": 238.8,
+      "case": "videosham_0072",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_0090_r1g2_1",
+      "requests": 10,
+      "llm_calls": 8,
+      "input_tokens": 300216,
+      "output_tokens": 1995,
+      "llm_seconds": 214.7,
+      "repairs": 0,
+      "hi_steps": 6,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 2,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 6,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT compare_media(range)": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding gathering footage with a localized visual alteration: B includes a foreground man handling playing cards, while A shows the heater, gravel and crowd in his place, changing a card demonstration into a gathering without the performer.[E28][E31][E21]\n\nAt 0.000 s, B shows him leaning over a deck and A shows the background; the comparison labeled 4.2 s likewise shows him only in B.[E28][E31][E21] The comparison detects the central difference in seven samples over A 0.2–6.2 s; its pixel analysis reports differences over A [0.000, 7.110) s corresponding to B [0.000, 7.110) s, without proving the performer's absence in every frame.[E22][E27]\n\nSound matches in 9 of 9 tested one-second windows; differing speech-recognition wording does not establish an audible change or identify the speaker.[E22][E34][E35]\n\nB's source identity, uninterrupted visual correspondence, additional differences in unexamined regions and intervals, and complete audio equivalence remain unverified; the reports also do not fully establish both media profiles and audio-track counts.[E22][E27][E34][E35] The comparison establishes presence versus absence, not which version came first.[E22]",
+      "wall_seconds": 345.0,
+      "case": "videosham_0090",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "wrong_citation": 1,
+            "scope_overreach": 2,
+            "sloppy_numeric": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2,
+            "scope_overreach": 2
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_0099_r1g2_1",
+      "requests": 7,
+      "llm_calls": 6,
+      "input_tokens": 200840,
+      "output_tokens": 1404,
+      "llm_seconds": 122.9,
+      "repairs": 0,
+      "hi_steps": 4,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 4,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT compare_media",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT compare_media(range)": 1,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show substantial sampled audiovisual correspondence, but specific visual alterations, their locations within 0–8 s, and their effects on the footage’s meaning cannot be determined from the reported match statistics. [E21]\n\nThe comparison reports that 94% of A’s half-second samples match B, with matched footage lying in B at 0–8 s; the unmatched share does not itself identify an alteration. [E21]\n\nSound matches at the tested moments in 12 of 12 comparison windows. [E21] B’s narration explains that powering off the document camera automatically displays the computer; its transcript ends at 4.68–6.16 s with “will automatically be displayed.” [E32] B’s sound analysis labels 0.0–6.2 s as speech and 6.2–8.1 s as other sound, without identifying that other sound’s source. [E32]\n\nUnsampled image regions and intervening moments remain unverified, sound correspondence is limited to the tested windows, and B’s identity as the original source is not established. [E21]",
+      "wall_seconds": 161.1,
+      "case": "videosham_0099",
+      "tag": "r1g2",
+      "chain_ok": false,
+      "chain_any": false,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 3
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_0104_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 232694,
+      "output_tokens": 1801,
+      "llm_seconds": 143.6,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "INSPECT asr": 2,
+        "report_incomplete": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The sound strongly agrees, but specific time-aligned visual changes and their effects on the footage’s meaning were not determinable from the comparison results: consistent visual matches were found for 0% of A’s half-second samples, which does not establish unrelated origins or confirm B as A’s source. [E21]\n\nAudio aligned at B = A +0.00 s, with envelope correlation 1.00; 28 of 28 tested one-second windows sounded the same. [E21]\n\nB’s transcript concerns getting the necessary people moving forward during 0.0–8.4 s, then sending calls for papers or topics during 8.4–14.88 s; the sound measurements support shared audible content, without establishing a change in its meaning. [E23][E21]\n\nBoth videos are 15.000 s, 960×474, 25.000 fps, with one audio track. [E3][E12]\n\nExact visual-difference locations, continuous correspondence between sampled frames, B’s source identity, and sound differences below the comparison’s one-second spectral-envelope precision remain unverified. [E21]",
+      "wall_seconds": 326.5,
+      "case": "videosham_0104",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_0109_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 243486,
+      "output_tokens": 1725,
+      "llm_seconds": 206.0,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding street footage, but B includes a central person wearing a black shirt and gray shorts where A shows pavement, clearly visible in paired views at 0.000 s and 5.2 s.[E25][E28][E21] At 5.2 s, this changes the apparent performance from three foreground participants in B to two in A, omitting the central person's involvement relative to B.[E21]\n\nThe comparison reports matches for 100% of A's half-second samples and pixel differences across A [0.000, 5.680) s and B [0.000, 5.680) s; that measured interval does not establish the person's absence through continuous visual inspection.[E24]\n\nSound matched in all 10 tested windows.[E24] Speech recognition returned no speech segments for A and “You” at 0.0–2.0 s for B, but these inconsistent transcriptions do not establish an audible difference or verified wording.[E31][E32]\n\nB's original-source status and the direction of editing remain undetermined; unsampled visual intervals, exact audible content and facial correspondence were not verified, so the evidence does not establish that everything else is identical.[E24][E31][E32]",
+      "wall_seconds": 390.3,
+      "case": "videosham_0109",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2,
+            "scope_overreach": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "videosham_1021_r1g2_1",
+      "requests": 8,
+      "llm_calls": 8,
+      "input_tokens": 287923,
+      "output_tokens": 2902,
+      "llm_seconds": 196.4,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding restaurant footage, with a confirmed object-content difference: A contains a tall green bottle in the central table area, while B shows background diners and tableware at that location.[E21][E29][E26] This changes what objects appear present in the scene, but does not establish drinking or a different meaning for the conversation.[E21][E30][E27]\n\nThe bottle difference is visually confirmed at 0.000 s, 1.702 s and 3.2 s in both videos.[E29][E26][E30][E27][E21] Automated analysis reports pixel differences across A [0.000, 4.004) s and B [0.000, 4.004) s, frames 0–119, localized to normalized x 0.43–0.51 and y 0.40–0.90, with peak area 2.89%.[E25]\n\nAll of A’s half-second samples match footage in B; tested sound matches in 6 of 6 windows, and the supplied transcripts contain the same speech, so no speech difference is established.[E25][E32][E33]\n\nB’s identity as an original source and the direction of alteration remain unverified; unsampled visual intervals were not directly inspected frame by frame, and complete waveform identity and detailed non-speech sounds were not independently verified.[E25]",
+      "wall_seconds": 452.5,
+      "case": "videosham_1021",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_1050_r1g2_1",
+      "requests": 9,
+      "llm_calls": 8,
+      "input_tokens": 309658,
+      "output_tokens": 3207,
+      "llm_seconds": 202.6,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The principal confirmed difference is the large right-hand wall: A shows it red, while B shows it blue, clearly visible in the paired views at 0.000 s and 1.2 s.[E29][E26][E21] This changes the setting’s appearance; the corresponding person, dog and room layout, together with matching recognized speech, do not demonstrate a change to the dog-training interaction’s meaning.[E21][E32][E33]\nThe comparison reports matching footage across A 0–10 s and B 0–10 s in 100% of A’s half-second samples.[E25] It flags the wall region in 10 samples over A 0.2–9.2 s and reports pixel differences across A [0.000, 10.000) s ↔ B [0.000, 10.000) s; that measured interval does not independently identify every intervening visual detail.[E25]\nBoth transcripts recognize “Get a heel. Yes. Good girl. Good girl. Go get it” over 1.3–9.44 s, and sound matches in 18 of 18 tested windows.[E32][E33][E25]\nB’s original-source status and unexamined visual and audio details remain unverified by the reported comparisons.[E25][E32][E33]",
+      "wall_seconds": 430.7,
+      "case": "videosham_1050",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "scope_overreach": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_1056_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 319005,
+      "output_tokens": 2050,
+      "llm_seconds": 231.7,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT ocr": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT ocr",
+            "INSPECT ocr",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT ocr(image)": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The confirmed difference is the rectangular box held by the person on the left: vivid purple in A, white or pale gray in B, visible in paired frames at 2.002 s and in the comparison labeled 4.3 s. [E29][E26][E21] This changes the object's apparent color; the visible activity remains the same person holding the box beside the person in black. [E21] The box's brand, contents and purpose remain undetermined, so a broader change in meaning is not established. [E26][E29]\n\nBoth videos are reported as 6.006 s long, and 100% of A's half-second samples matched footage within B 0–6 s. [E25] The comparison flags the box region in four samples across A 2.3–5.3 s, but that is not the exact duration of the color difference, which is also visible at 2.002 s. [E25][E29][E26]\n\nSound matched in 10 of 10 tested windows; differing automatic transcripts do not establish an audio edit or verify exact wording. [E25][E34][E35] B's source identity and originality, exact change boundaries, and differences in unexamined regions or intervals remain unverified. [E25]",
+      "wall_seconds": 335.7,
+      "case": "videosham_1056",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "wrong_citation": 1,
+            "scope_overreach": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4002_r1g2_1",
+      "requests": 11,
+      "llm_calls": 9,
+      "input_tokens": 320745,
+      "output_tokens": 2206,
+      "llm_seconds": 153.5,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT ocr": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT ocr",
+            "INSPECT ocr",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT ocr(image)": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B contain corresponding skydiving-preparation footage, but their lower-third graphics attribute different names and dates to the scene.[E21][E25]\n\nAt 2.2022 s in both videos, A displays “John Conor” and “39 Aug 2045” on a blue-purple banner with a yellow-orange cloud-like graphic; B displays “CONOR HEWETT” and “SEPTEMBER 4, 2021” on a blue banner with white brackets.[E30][E27] This changes the scene’s textual meaning, and A’s date is impossible; neither caption verifies the actual identity or recording date.[E30][E27]\n\nAt 0.0 s, B already shows a white vertical stroke absent from A’s inspected region.[E29][E26]\n\nAll half-second samples from A matched footage in B, and sound matched in 8 of 8 tested windows.[E25] B’s source identity and chronological priority remain unverified, while unviewed visual intervals and sounds beyond the tested comparisons cannot be declared identical.[E25][E34][E35]",
+      "wall_seconds": 244.7,
+      "case": "videosham_4002",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "scope_overreach": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "misread_fine_text": 2
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4022_r1g2_1",
+      "requests": 6,
+      "llm_calls": 5,
+      "input_tokens": 164664,
+      "output_tokens": 1656,
+      "llm_seconds": 136.0,
+      "repairs": 0,
+      "hi_steps": 3,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 3,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "The confirmed difference is sound: A 0.0–4.5 s differs from B 0.0–4.5 s, with reported spectral similarity 0.36 and approximately 0.5 s boundary precision.[E21] A’s automated transcript reads “U.S. Treasuries ticked higher as equity investors”; B’s reads “Então gente, aqui é o meu local de trabalho”—meaning “So everyone, this is my workplace”—giving the pictures financial-market commentary versus a workplace introduction.[E22][E23]\n\nVisual correspondence is strongly supported by automated measurement: 100% of A’s half-second samples matched B, and no pixel difference meeting the min_area threshold of 0.0005 was reported across 150 frames compared in A 0.00–5.00 s.[E21] However, visual equivalence at corresponding positions cannot be independently determined from the cited images because no paired frames or difference images were supplied; the measurement does not exclude every possible visual alteration.[E21]\n\nB’s status as the original source, which soundtrack accompanied the recorded scene, and the direction of any soundtrack replacement remain undetermined.[E21][E22][E23] Sound equivalence after 4.5 s through 5.005 s and differences in music or other non-speech audio were not established.[E21][E22][E23]",
+      "wall_seconds": 211.2,
+      "case": "videosham_4022",
+      "tag": "r1g2",
+      "chain_ok": false,
+      "chain_any": false,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 3,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4034_r1g2_1",
+      "requests": 6,
+      "llm_calls": 5,
+      "input_tokens": 160461,
+      "output_tokens": 1778,
+      "llm_seconds": 175.9,
+      "repairs": 0,
+      "hi_steps": 3,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 3,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B strongly match visually, but have confirmed soundtrack differences; the specific effect on the footage’s meaning remains undetermined because the changed sounds were not identified.[E21][E22][E23]\nThe comparison matched 100% of A’s half-second samples to B and found no pixel difference with area ≥ 0.0005 in 868 frames over A 0.00–28.96 s; this is a threshold-limited measurement, not independent inspection of every detail.[E21]\nSound differs at three corresponding intervals:\n• A 7.5–13.0 s ↔ B 7.5–13.0 s: spectral similarity 0.45.[E21]\n• A 14.0–19.0 s ↔ B 14.0–19.0 s: spectral similarity 0.45.[E21]\n• A 24.5–28.5 s ↔ B 24.5–28.5 s: spectral similarity 0.42.[E21]\nThese boundaries are approximate to 0.5 s.[E21]\nA’s ASR returned no speech segments, while B’s returned “Diversos solzinhos ainda?” at 0.66–2.66 s; neither silence in A nor the accuracy of B’s wording is established.[E22][E23]\nB’s source identity, which soundtrack is original, the alteration mechanism, paired-frame visual confirmation, and a complete comparison of both media profiles remain undetermined from the reported support; unverified details cannot be treated as identical.[E21][E22][E23]",
+      "wall_seconds": 269.0,
+      "case": "videosham_4034",
+      "tag": "r1g2",
+      "chain_ok": false,
+      "chain_any": false,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 3
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4037_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 247376,
+      "output_tokens": 1822,
+      "llm_seconds": 179.7,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding footage, with a confirmed localized appearance difference: A depicts a predominantly purple iguana where B depicts an orange one, changing the animal’s apparent coloration in the same scene.[E28][E25][E21]\n\nAt 0.0 s, the torso and long tail are purple in A and orange in B; the 4.3 s comparison shows the color difference alongside corresponding window, cushion, hand and phone details.[E28][E25][E21]\n\nThe comparison found 100% of A’s half-second samples in B, with matched footage in B 0–5 s; its frame-level analysis reports pixel differences throughout A [0.000, 5.200) s ↔ B [0.000, 5.200) s, which does not independently establish the color alteration in every frame.[E24]\n\nSound matched in 9 of 9 examined one-second windows, and both transcripts returned “You” during 0.0–2.0 s, supporting sampled audio correspondence rather than complete audio identity.[E24][E31][E32]\n\nB’s source identity and chronological priority, the animal’s real coloration, and equivalence of unexamined visual regions, intervals and audio details remain unverified.[E24][E28][E25][E31][E32]",
+      "wall_seconds": 251.7,
+      "case": "videosham_4037",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "negative",
+          "tally": {
+            "wrong_citation": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "videosham_4057_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 265861,
+      "output_tokens": 1958,
+      "llm_seconds": 178.5,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "Both videos show a kettlebell demonstration; reported omissions and repetition in A could distort perceived continuity, swing counts or cadence, although exact effects were not established.[E24][E21]\n\n• Reported omission: at A 7.8 s, the comparison identifies B 6.1–7.5 s as skipped.[E24]\n• Reported repetition: B 7.5–8.8 s reportedly appears at A 8.0–9.5 s and 10.0–11.0 s; these alignments have approximately 0.5 s precision and were not independently verified throughout.[E24]\n• Visual differences are flagged around the person at A 2.2–6.2 s, the lower-leg/foot region at A 3.2–4.2 s, and the kettlebell at A 11.2–12.2 s.[E24]\n• A 2.2 s versus B 1.7 s shows different swing phases; A 12.2 s versus B 10.9 s shows contour and position differences in the kettlebell, without establishing object substitution.[E21][E22]\n• Audio analysis detected no speech and labeled A 0.0–13.35 s and B 0.0–12.65 s as silence, but audio equivalence was not established.[E31][E32][E24]\n\nB’s source identity, exact temporal correspondence, and differences in unexamined intervals or regions remain unverified.[E24]",
+      "wall_seconds": 229.5,
+      "case": "videosham_4057",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4066_r1g2_1",
+      "requests": 12,
+      "llm_calls": 11,
+      "input_tokens": 403864,
+      "output_tokens": 3047,
+      "llm_seconds": 271.7,
+      "repairs": 0,
+      "hi_steps": 8,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 2,
+        "INSPECT get_frames": 4,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 8,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT compare_media(range)": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT get_frames times_s": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B contain closely matching footage with a confirmed local object difference: at 4.3 s, B shows a black suspended bag and red attachment, while A shows background and a cord without the bag. [E29][E38] This changes the apparent mechanics: B supplies a visible load beside the transparent barrier that helps explain the apparatus and cord, whereas A lacks that visual explanation. [E29][E38][E31]\n\nThe difference is also documented at 3.0 s; the comparison flags A 3.3–5.3 s, but those detection boundaries do not establish the bag difference’s exact onset or continuous duration. [E28][E37][E22] The comparison reports that 91% of A’s half-second samples match B, supporting correspondence rather than complete identity. [E22]\n\nSound matches in 5 of 5 tested one-second windows, and both automatic transcripts recognize “Thank you.” at 3.54–5.433 s; complete sound equivalence remains unverified. [E22][E40][E41]\n\nThe A 3.2–5.2 s alternative-speed or backward alignment flag does not establish a speed change or reversal. [E27] B’s original-source status and which version was altered remain undetermined; unsampled visual intervals and face identity were not verified. [E22][E27]",
+      "wall_seconds": 351.9,
+      "case": "videosham_4066",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "scope_overreach": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4099_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 240960,
+      "output_tokens": 1815,
+      "llm_seconds": 150.3,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 4,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A contains matching footage but changes its timing relative to B; the comparison found matches in B for 100% of A’s half-second samples, which does not establish continuous pixel identity or confirm B as the original source. [E21]\n\n• Slowdown: A 0.0–4.2 s plays B 0.0–1.3 s at a reported 0.35x speed. [E21]\n• Omission: B 1.3–3.1 s, a reported 1.8 s of footage, is skipped at A 4.2 s, compressing the action sequence; the specific action lost was not established. [E21]\n\nThese differences mean A does not faithfully preserve B’s movement speed and continuity; the reported boundaries are accurate to about 0.5 s. [E21]\n\nPossible speed or backward alignments at A 4.2–6.7 s, 6.8–8.2 s, 8.2–10.7 s and 10.8–12.2 s remain ambiguous rather than confirmed additional edits. [E21]\n\nBoth supplied files have zero audio tracks, so sound differences cannot be assessed. [E3][E12]\n\nUnsampled visual intervals and local alterations remain unverified, and no suitable frontal face was available for comparison. [E21]",
+      "wall_seconds": 185.7,
+      "case": "videosham_4099",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "scope_overreach": 2,
+            "omitted_required_fact": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4114_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 256752,
+      "output_tokens": 1743,
+      "llm_seconds": 140.3,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding shopping-corridor footage, but A makes a location occupied by two people in B appear unoccupied, with residual patches; this changes the footage’s evidence of people being present.[E21][E27][E30]\n\nAt 0.9009 s and 2.7027 s in both videos, B shows two people near the entrance, while A shows pale, blurred background-like patches and altered floor reflections—consistent with removing the people from A relative to B.[E26][E29][E27][E30]\n\nThe comparison reports a localized difference at A 1.2–4.2 s, at the same moments in B, covering approximately 0.4% of the frame; separately, pixel differences span [0.000, 5.005) s in both videos, which does not establish continuous removal throughout that interval.[E25]\n\nAudio analysis covered 0.0–5.005 s in each video, detected no reliable speech, and classified 0.0–5.0 s as silence; however, contradictory audio-comparison results leave sound equivalence unresolved.[E32][E33][E25]\n\nB’s source identity and editing direction remain unverified, intervening visual content is not fully established by sampled observations, and no frontal face was available for comparison.[E25]",
+      "wall_seconds": 197.1,
+      "case": "videosham_4114",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 2,
+            "scope_overreach": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4118_r1g2_1",
+      "requests": 6,
+      "llm_calls": 5,
+      "input_tokens": 156583,
+      "output_tokens": 1184,
+      "llm_seconds": 85.0,
+      "repairs": 0,
+      "hi_steps": 3,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 3,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": false,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B have matching visual footage within the comparison’s detection threshold, but different soundtracks; visual correspondence therefore does not establish equivalent audiovisual meaning.[E21]\n\nBoth videos are 9 s long, and 100% of A’s half-second samples were found in B, with matched footage located in B 0–8 s.[E21] Across the 135 frames compared in A 0.00–9.00 s, no pixel difference with area ≥ 0.0005 was detected.[E21]\n\nThe confirmed audio difference is reported at A 0.0–8.5 s versus B -0.0–8.5 s at the same moment, with spectral similarity 0.35; boundaries have approximately 0.5 s precision, and the remaining audio is not established as identical.[E21]\n\nNeither video’s ASR analysis yielded reliable recognized speech, so the differing sounds and their specific effect on the perceived action, emotional tone or factual meaning remain undetermined; empty transcripts do not establish silence.[E22][E23] B’s source identity, which soundtrack came first and the cause of the difference were not verified.[E21][E22][E23]",
+      "wall_seconds": 140.1,
+      "case": "videosham_4118",
+      "tag": "r1g2",
+      "chain_ok": false,
+      "chain_any": false,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 3
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "negative",
+          "tally": {
+            "unsupported_assertion": 1,
+            "premature_finish": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4140_r1g2_1",
+      "requests": 13,
+      "llm_calls": 11,
+      "input_tokens": 396497,
+      "output_tokens": 2269,
+      "llm_seconds": 241.1,
+      "repairs": 0,
+      "hi_steps": 9,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4,
+        "INSPECT ocr": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "COMPLETED"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 9,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "COMPLETED",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT ocr",
+            "INSPECT ocr",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 4,
+        "INSPECT ocr(image)": 2,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B contain closely corresponding footage with two confirmed word substitutions on the blue poster at the left.[E26][E21]\n\n• Upper word: at 0.0 s, B shows black “NEXT,” while A shows white “BEST.”[E33][E36]\n• Lower word: at A 5.2 s ↔ B 5.2 s, B shows white “BEST,” while A shows black “NEXT.”[E21]\n\nThese substitutions change B’s “NEXT JOB / BEST JOB” to A’s “BEST JOB / NEXT JOB,” reversing the background wording and emphasis without establishing a change in the speaker’s intended message.[E21][E22]\n\nAll of A’s half-second samples matched footage in B 0–10 s; the comparison reports pixel differences over A [0.000, 10.010) s ↔ B [0.000, 10.010) s, though the words were directly inspected only at selected moments.[E26]\n\nSound matched in 18 of 18 examined one-second windows, and both speech transcripts contain the same introduction and statement about finding a corner of the house to talk.[E26][E41][E42]\n\nB’s source identity and which version came first remain unverified; unsampled visual intervals were not continuously inspected, so additional subtle differences cannot be excluded.[E26]",
+      "wall_seconds": 433.3,
+      "case": "videosham_4140",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1,
+            "omitted_required_fact": 2,
+            "completed_without_finishing": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        }
+      ]
+    },
+    {
+      "run": "videosham_4151_r1g2_1",
+      "requests": 11,
+      "llm_calls": 10,
+      "input_tokens": 367137,
+      "output_tokens": 3174,
+      "llm_seconds": 234.7,
+      "repairs": 0,
+      "hi_steps": 7,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 4,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 7,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s+box": 4,
+        "INSPECT asr": 2,
+        "report_completed": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A and B show corresponding footage, with a confirmed clothing-color difference: the right-hand person's shirt torso and sleeve are brown-orange in A and green in B, visible in paired views at 0.2 s and 4.2 s. [E21][E22]\nThe demonstrated effect is a change in appearance; the corresponding poses and surroundings do not establish a different event or intent. [E21][E22]\nThe comparison matches 100% of A's half-second samples to B and reports pixel differences across A [0.000, 5.005) s ↔ B [0.000, 5.005) s, frames 0–149; direct visual confirmation of the garment difference is limited to sampled views. [E26][E21][E22]\nSound matches in 8 of 8 tested windows, supporting sampled audio agreement rather than complete waveform identity. [E26]\nB's original-source status and the direction of alteration remain unverified; unexamined regions and intervals cannot be declared identical, and B's frame rate and both videos' audio-track counts are not determinable from these findings. [E26]",
+      "wall_seconds": 470.3,
+      "case": "videosham_4151",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 2,
+            "incomplete_though_answerable": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 3,
+            "scope_overreach": 1
+          }
+        }
+      ]
+    },
+    {
+      "run": "videosham_4218_r1g2_1",
+      "requests": 9,
+      "llm_calls": 7,
+      "input_tokens": 264653,
+      "output_tokens": 1556,
+      "llm_seconds": 168.6,
+      "repairs": 0,
+      "hi_steps": 5,
+      "repeats": 0,
+      "gia": {
+        "INVESTIGATE": 1,
+        "READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "ops": {
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames": 2,
+        "INSPECT asr": 2
+      },
+      "reports": [
+        "INCOMPLETE"
+      ],
+      "workspaces": {
+        "W1-1": {
+          "steps": 5,
+          "align": false,
+          "diff": false,
+          "diff_ready": false,
+          "diff_images_seen": false,
+          "locate": false,
+          "boundary_frames": true,
+          "report": "INCOMPLETE",
+          "ops": [
+            "INSPECT compare_media",
+            "INSPECT get_frames",
+            "INSPECT get_frames",
+            "INSPECT asr",
+            "INSPECT asr"
+          ],
+          "compare": true,
+          "compare_ready": true
+        }
+      },
+      "branches": {
+        "INVESTIGATE round1": 1,
+        "INSPECT compare_media": 1,
+        "INSPECT get_frames times_s": 2,
+        "INSPECT asr": 2,
+        "report_incomplete": 1,
+        "GIA READ_RECORD": 1,
+        "FINISH": 1
+      },
+      "oracle": true,
+      "answer": "A labelled comparison at A 4.360 s ↔ B 4.360 s, frame 109, reports a changed area of 0.059%; the investigation did not determine the region’s semantic content or its effect on the footage’s meaning. [E28]\n\nBoth videos are 5.000 s, 960×540, 25.000 fps, with one audio track. [E3][E12]\n\nAutomated transcripts for both videos over 0.0–5.0 s give: “Dig This Volleyball Club preaches adaptability to all of his goals.” [E30][E31] This establishes matching recognition output, not verified spoken wording or identical soundtracks; speaker identity, music, other sounds and audiovisual synchronization were not established by those transcripts. [E30][E31]\n\nB’s source identity, continuous visual agreement outside the inspected samples, and the full extent and meaning of alterations remain unverified. [E29]",
+      "wall_seconds": 307.4,
+      "case": "videosham_4218",
+      "tag": "r1g2",
+      "chain_ok": true,
+      "chain_any": true,
+      "verdict_reports": [
+        {
+          "workspace": "W1-1",
+          "disposition": "positive",
+          "tally": {
+            "omitted_required_fact": 1
+          }
+        }
+      ],
+      "verdict_answer": [
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {}
+        },
+        {
+          "workspace": null,
+          "disposition": "positive",
+          "tally": {
+            "unsupported_assertion": 1
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "r0e": {},
+    "tp2": {},
+    "wk1": {},
+    "r1g2": {}
+  },
+  "branches": {
+    "INVESTIGATE round1": 60,
+    "INSPECT ocr(video)": 40,
+    "INSPECT asr": 76,
+    "SEARCH text video": 53,
+    "INSPECT compare_media": 47,
+    "INSPECT get_frames times_s": 73,
+    "SEARCH dates": 27,
+    "report_completed": 38,
+    "GIA READ_RECORD": 30,
+    "FINISH": 60,
+    "SEARCH text_image video": 25,
+    "INSPECT get_frames count": 7,
+    "report_incomplete": 22,
+    "INSPECT get_frames times_s+box": 27,
+    "INSPECT compare_media(range)": 3,
+    "INSPECT ocr(image)": 6
+  }
+}
