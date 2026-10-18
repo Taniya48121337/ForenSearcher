@@ -328,12 +328,19 @@ def fv_compare(fake: Path, original: Path) -> dict[str, Any]:
     b_dur = float(match.get("b_duration_s") or 0) or None
     b_used = sum(max(0.0, float(r["b_range_s"][1]) - float(r["b_range_s"][0])) for r in runs if r.get("b_range_s"))
     lines = list(report.get("summary_lines") or [])
+    structural = sum(len(report.get(k) or []) for k in ("segments_not_in_b", "b_cuts", "reorders", "repeats"))
+    max_area = max((float(r.get("area") or 0) for r in report.get("changed_regions") or []), default=0.0)
     return {"source_match": bool(report.get("source_match")), "fake_in_original": match.get("fraction_of_a_matched"),
             "fake_s": match.get("a_duration_s"), "original_s": match.get("b_duration_s"),
             "original_not_in_fake": round(1 - b_used / b_dur, 3) if b_dur else None,
-            "no_difference": any(l.startswith("No added, missing, re-timed or re-ordered footage") for l in lines),
+            # "完全没差异"（负责人 10-19）：既没有缺失 / 多出 / 调序 / 重复段，像素差异也在 same 档（变化区域面积 ≤ 画面 2%）；
+            # 只有像素差异、没有缺失段的（画面内改动）要保留——那正是 fv 类与自剪删段案例不同的地方。原片两端没用到的部分不算缺失段
+            "structural_diffs": structural, "max_region_area": max_area,
+            "no_difference": structural == 0 and (max_area or 0.0) <= 0.02,
             "segments": [{k: r.get(k) for k in ("kind", "a_range_s", "b_range_s")} for r in runs[:8]],
-            "segments_not_in_b": report.get("segments_not_in_b"), "summary_lines": lines[:6]}
+            "segments_not_in_b": report.get("segments_not_in_b"), "b_cuts": report.get("b_cuts"),
+            "changed_regions": [{k: r.get(k) for k in ("area", "peak_t") if k in r} for r in (report.get("changed_regions") or [])[:6]],
+            "summary_lines": lines[:6]}
 
 
 def build_fv_a(n: int) -> None:
@@ -414,8 +421,8 @@ def build_fv_a(n: int) -> None:
             if not_in_orig > 0.35:
                 drop(f"比不上：假视频有 {not_in_orig:.0%} 在原片里找不到（> 35%）", "difference_over_35", {"compare": cmp})
                 continue
-            if cmp["no_difference"] and (not_in_fake or 0) < 0.02:
-                drop("完全没差异", "no_difference", {"compare": cmp})
+            if cmp["no_difference"]:
+                drop("完全没差异（无缺失 / 多出 / 调序 / 重复段，变化区域 ≤ 2%）", "no_difference", {"compare": cmp})
                 continue
             hits = phash_hits(fake)
             if hits:
@@ -453,8 +460,9 @@ def build_fv_a(n: int) -> None:
                           f"原片删段制作）；interval = 空（数据集没给被删区间，不设 interval_iou）。FMNV {vid}（{data[vid].get('subject', '')}；"
                           f"FMNV 划分 {split_of.get(vid)}）。材料 = 假视频原文件（zip，{duration:.1f} s，不重编码）。上传者 / 频道：{uploader}。"
                           f"g3 探测（walker 同一条 search 层、Lens 关）原片排名：{json.dumps(ranks, ensure_ascii=False)}。"
-                          f"【工具参考测量，非 GT，不参与核验】建卷时 compare_media（A = 假视频、B = 原片）：假视频在原片里 "
-                          f"{cmp.get('fake_in_original')}，原片没用到的份额 {not_in_fake}；{measured}。"
+                          f"建卷时 compare_media 一次（A = 假视频、B = 原片），只作过滤与参考：假视频在原片中的覆盖率 "
+                          f"{cmp.get('fake_in_original'):.0%}（工具参考，非 GT）；原片未用的份额 {not_in_fake:.0%}（工具参考，非 GT；"
+                          f"含 FMNV 截取掉的两端）；差异摘要（工具参考，非 GT，不参与核验）：{measured}。"
                           f"C6 建卷时自查：EVID 编号 0、频道{'不在' if channel else '取不到，未查'} EVID 131–222 频道表、感知哈希 0。"),
             }
             d2.write_case(case)
