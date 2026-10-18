@@ -3,7 +3,7 @@
     python scripts/teacher_compare.py --pack r1 <导出> <runs> qwen --pack g1 <导出> <runs> codex --pack g2 ... \
         --n 20 --out claude/_g2_work/teacher_compare
 
-抽样：accepted 的 HI 动作行（S0 理由 / S1 查询 / S3 选页），层 = (族, 动作列)，只用两边都有的层；两边各抽 n 行、每层行数相同
+抽样：accepted 的 HI 动作行里 S0–S3 槽写的（row_slot_models 含 S0_rationale / S1_query / S3_next），层 = (族, 动作列)，只用两边都有的层；两边各抽 n 行、每层行数相同
 （按 sha1 排序取，可复现）。量（每行）：
 - 查询词长度：SEARCH 文字查询的词数（S1）；
 - 是否照抄声明：查询词里落在声明原文里的词占比 ≥ 0.8 记"照抄"（声明取该步 model_view.task 里引号内 / 冒号后的部分）；
@@ -51,8 +51,10 @@ def metrics(row: dict[str, Any], rc: tm.RunCache) -> dict[str, Any]:
     out: dict[str, Any] = {"rationale_words": len(words(rat))}
     action = tgt.get("action")
     arg_tokens: list[str] = []
-    if action == "SEARCH" and isinstance(args.get("query"), str) and args.get("input_type") == "text":
-        q = words(args["query"])
+    query = args.get("query")
+    query = query.get("text") if isinstance(query, dict) else query
+    if action == "SEARCH" and isinstance(query, str) and args.get("input_type") in ("text", "text_image"):
+        q = words(query)
         out["query_words"] = len(q)
         payload = rc.load(str(md["run"]), str(md["request"]), "request.json").get("payload") or {}
         claim = set(words(claim_of(str((payload.get("model_view") or {}).get("task") or ""))))
@@ -101,8 +103,9 @@ def main(argv: list[str] | None = None) -> int:
         rc = tm.RunCache(ROOT / runs)
         for row in tm.jsonl(ROOT / export / "hi_accepted.jsonl"):
             md = row.get("metadata") or {}
-            if md.get("unit") != "step" or md.get("rationale_source") not in ("s0_teacher", "s1_teacher", "s3_teacher"):
-                continue
+            slots = set(md.get("row_slot_models") or {})
+            if md.get("unit") != "step" or not slots & {"S0_rationale", "S1_query", "S3_next"}:
+                continue                                  # 只要 S0–S3 教师写的行（理由 / 查询词 / 下一步选择）
             cols, _ = tm.row_columns(row, rc)
             if not cols:
                 continue
@@ -110,52 +113,66 @@ def main(argv: list[str] | None = None) -> int:
     teachers = sorted(pools)
     if len(teachers) != 2:
         raise SystemExit(f"需要两种教师，得到 {teachers}")
-    common = sorted(set(pools[teachers[0]]) & set(pools[teachers[1]]))
-    # 每层行数：按层轮流取，直到 n
-    alloc: dict[tuple[str, str], int] = defaultdict(int)
-    i = 0
-    while sum(alloc.values()) < args.n and common:
-        s = common[i % len(common)]
-        if alloc[s] < min(len(pools[t][s]) for t in teachers):
-            alloc[s] += 1
-        i += 1
-        if i > 10000:
-            break
-    sample: dict[str, list[dict[str, Any]]] = {}
-    side = {}
-    for t in teachers:
-        picked = []
-        for s, k in alloc.items():
-            ranked = sorted(pools[t][s], key=lambda x: hashlib.sha1(f"tc-{x[0]['metadata']['run']}-{x[0]['metadata']['request']}".encode()).hexdigest())
-            for row, rc, pack in ranked[:k]:
-                m = metrics(row, rc)
-                tgt = tm.target(row)
-                picked.append({"stratum": list(s), "pack": pack, "run": row["metadata"]["run"], "request": row["metadata"]["request"],
-                               "action": tgt.get("action"), "arguments": tgt.get("arguments"), "rationale": tgt.get("rationale"), **m})
-        sample[t] = picked
-        side[t] = agg(picked)
+    common_all = sorted(set(pools[teachers[0]]) & set(pools[teachers[1]]))
+    groups = {"query": [s for s in common_all if s[1].startswith("S_text") or s[1] == "S_image"],
+              "page": [s for s in common_all if s[1] in ("R_page", "R_page_more", "S_open_page", "S_dates", "S_page_image", "S_open_video")],
+              "action": common_all}
+
+    def take(common: list[tuple[str, str]], n: int) -> dict[tuple[str, str], int]:
+        alloc: dict[tuple[str, str], int] = defaultdict(int)
+        i = 0
+        while sum(alloc.values()) < n and common and i < 10000:
+            s = common[i % len(common)]
+            if alloc[s] < min(len(pools[t][s]) for t in teachers):
+                alloc[s] += 1
+            i += 1
+        return alloc
+
+    out = {"teachers": teachers, "groups": {}}
+    sample_all: dict[str, list[dict[str, Any]]] = {t: [] for t in teachers}
+    for gname, common in groups.items():
+        alloc = take(common, args.n)
+        side = {}
+        for t in teachers:
+            picked = []
+            for s, k in alloc.items():
+                ranked = sorted(pools[t][s], key=lambda x: hashlib.sha1(f"tc-{x[0]['metadata']['run']}-{x[0]['metadata']['request']}".encode()).hexdigest())
+                for row, rc, pack in ranked[:k]:
+                    tgt = tm.target(row)
+                    picked.append({"group": gname, "stratum": list(s), "pack": pack, "run": row["metadata"]["run"],
+                                   "request": row["metadata"]["request"], "action": tgt.get("action"), "arguments": tgt.get("arguments"),
+                                   "rationale": tgt.get("rationale"), **metrics(row, rc)})
+            sample_all[t] += picked
+            side[t] = agg(picked)
+        out["groups"][gname] = {"strata": {f"{k[0]}|{k[1]}": v for k, v in alloc.items()}, "sample_metrics": side}
     full = {t: agg([metrics(r, rc) for rows in pools[t].values() for r, rc, _ in rows]) for t in teachers}
-    out = {"teachers": teachers, "strata": {f"{k[0]}|{k[1]}": v for k, v in alloc.items()}, "sample_metrics": side,
-           "population_metrics": full, "sample": sample}
+    out["population_metrics"] = full
+    out["sample"] = sample_all
+    keys =("rows", "query_rows", "query_words_mean", "query_claim_share_mean", "copies_claim", "page_rationale_rows",
+            "page_rationale_words_mean", "rationale_words_mean", "rationale_arg_overlap_mean")
+    lines = ["# S0–S3 教师并排（只报数）", ""]
+    for gname, g in out["groups"].items():
+        lines += [f"## {gname} 组（每边 {args.n} 行；层 → 行数 {json.dumps(g['strata'], ensure_ascii=False)}）", "",
+                  "| 指标 | " + " | ".join(teachers) + " |", "|---|" + "---|" * len(teachers)]
+        lines += [f"| {k} | " + " | ".join(str(g["sample_metrics"][t].get(k)) for t in teachers) + " |" for k in keys]
+        lines.append("")
+    lines += ["## 全体（不抽样）", "", "| 指标 | " + " | ".join(teachers) + " |", "|---|" + "---|" * len(teachers)]
+    lines += [f"| {k} | " + " | ".join(str(full[t].get(k)) for t in teachers) + " |" for k in keys]
+    lines += ["", "## 并排（同组同层同序）", ""]
+    for gname in out["groups"]:
+        a = {t: [x for x in sample_all[t] if x["group"] == gname] for t in teachers}
+        lines.append(f"### {gname}")
+        for j in range(max(len(v) for v in a.values())):
+            for t in teachers:
+                if j < len(a[t]):
+                    x = a[t][j]
+                    lines.append(f"- **{t}** `{x['stratum'][0]}|{x['stratum'][1]}` {x['run']} {x['request']}：`{json.dumps(x['arguments'], ensure_ascii=False)[:160]}` — {str(x['rationale'])[:220]}")
+            lines.append("")
     prefix = ROOT / args.out
     prefix.parent.mkdir(parents=True, exist_ok=True)
     prefix.with_suffix(".json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
-    lines = ["# S0–S3 教师并排（只报数）", "", f"层（族 | 动作列 → 每边行数）：{json.dumps(out['strata'], ensure_ascii=False)}", "",
-             "| 指标 | " + " | ".join(f"{t}（抽样）" for t in teachers) + " | " + " | ".join(f"{t}（全体）" for t in teachers) + " |",
-             "|---|" + "---|" * (2 * len(teachers))]
-    for key in ("rows", "query_rows", "query_words_mean", "query_claim_share_mean", "copies_claim", "page_rationale_rows",
-                "page_rationale_words_mean", "rationale_words_mean", "rationale_arg_overlap_mean"):
-        lines.append(f"| {key} | " + " | ".join(str(side[t].get(key)) for t in teachers) + " | "
-                     + " | ".join(str(full[t].get(key)) for t in teachers) + " |")
-    lines += ["", "## 并排（同层同序）", ""]
-    for j in range(max(len(v) for v in sample.values())):
-        for t in teachers:
-            if j < len(sample[t]):
-                x = sample[t][j]
-                lines.append(f"- **{t}** `{x['stratum'][0]}|{x['stratum'][1]}` {x['run']} {x['request']}：`{json.dumps(x['arguments'], ensure_ascii=False)[:160]}` — {str(x['rationale'])[:220]}")
-        lines.append("")
     prefix.with_suffix(".md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps({"sample": side, "population": full}, ensure_ascii=False, indent=1))
+    print(json.dumps({g: v["sample_metrics"] for g, v in out["groups"].items()} | {"population": full}, ensure_ascii=False, indent=1))
     return 0
 
 
