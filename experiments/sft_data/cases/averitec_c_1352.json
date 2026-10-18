@@ -1,0 +1,52 @@
+{
+  "case_id": "averitec:c_1352",
+  "dataset": "averitec",
+  "source_id": "c_1352",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：US Rep Mark Pocan stated on January 16, 2020 in a tweet: “There’s an Amazon distribution center that was advertising, last time I was there, up to $12.75 an hour. Your parents made that three decades ago.”（声明日期：2020-01-16）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: US Rep Mark Pocan stated on January 16, 2020 in a tweet: “There’s an Amazon distribution center that was advertising, last time I was there, up to $12.75 an hour. Your parents made that three decades ago.” (claim date: 2020-01-16)",
+  "family_key": "averitec:1352",
+  "media": [],
+  "claims": [
+    "US Rep Mark Pocan stated on January 16, 2020 in a tweet: “There’s an Amazon distribution center that was advertising, last time I was there, up to $12.75 an hour. Your parents made that three decades ago.”"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "politifact.com/factchecks/2020/feb/28/mark-pocan/pocan-money-lagging-wages-claim"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）",
+      "must_cite": true,
+      "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"
+    },
+    {
+      "id": "REQ2",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 02:17:58，scripts/g3/g3_cases.py p4，模板同 walker_d2_cases.build_claim_text）：AVeriTeC 训练集 #1352，label = Conflicting Evidence/Cherrypicking（不设 label_expected），声明日期 2020-01-16；排除原核查文章 https://web.archive.org/web/20210603195214/https://www.politifact.com/factchecks/2020/feb/28/mark-pocan/pocan-money-lagging-wages-claim/。g3 入选理由：检索前 5 条里有正文带视频链接的页（C8 打开页内视频）；探测命中页：[{\"rank\": 5, \"url\": \"https://www.thomhartmann.com/blog/2020/01/wednesday-15-january-20-show-notes\", \"video_links\": [\"http://www.youtube.com/watch?v=eX_eTDP-CSg\", \"https://www.youtube.com/watch?v=0-w47wgdhso\"], \"chars\": 14569}]。"
+}

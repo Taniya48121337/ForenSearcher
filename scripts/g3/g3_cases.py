@@ -12,6 +12,7 @@
 
     python scripts\\g3\\g3_cases.py fmnv_a [--n 40] [--allow-fmnv-test]
     python scripts\\g3\\g3_cases.py fv_a --n 10   # FMNV CE 类（fv）找原片：URL-only GT，compare_media 只作建卷过滤与参考
+    python scripts\\g3\\g3_cases.py p4         # P4 C 族续读 / 页内视频（p4_picks.json，22 个挑选 → 21 个案卷）
     python scripts\\g3\\g3_cases.py list       # 写 experiments/sft_data/walker_g3_cases.json（按 P 分组）
 """
 
@@ -478,12 +479,125 @@ def build_fv_a(n: int) -> None:
     save_json(WORK / "build_fv_funnel.json", {"funnel": funnel, "rejected": rejected})
 
 
+P4_PICKS = WORK / "p4_picks.json"
+AVERITEC_TRAIN = MAIN / "experiments" / "sft_data" / "data" / "annotations" / "averitec_train.json"
+
+
+def build_averitec_c(index: int, row: dict[str, Any], groups: list[str], pages: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """AVeriTeC 训练集文字声明的 C 族案卷。r1 起的 C 族训练案卷里没有 AVeriTeC 模板（主目录 averitec_* 是 9 月手写的 dev_select 案卷），
+    所以照最接近的现行模板 walker_d2_cases.build_claim_text（GroundLie360 文字声明：CLAIM_TEXT + 声明日期、必需证据 external、label_expected），
+    来源策略照旧 AVeriTeC 案卷排除原核查文章（exclude_original，键 = check_unanswerable.norm(fact_checking_article)，同探测）。
+    标签：Supported → true、Refuted → false（别名同 build_claim_text）；Not Enough Evidence / Conflicting 不设 label_expected，标签写 notes。"""
+
+    from check_unanswerable import norm
+
+    claim = " ".join(str(row.get("claim") or "").split())
+    if not claim:
+        return None
+    d, m, y = (str(row.get("claim_date") or "").split("-") + ["", "", ""])[:3]
+    date = f"{y}-{int(m):02d}-{int(d):02d}" if y and m.isdigit() and d.isdigit() else "unknown"
+    label = row.get("label")
+    checks = []
+    if label == "Supported":
+        checks = [{"kind": "label_expected", "params": {"label": "true", "aliases": d2.TRUE_FORMS + ["accurate"]},
+                   "note": "AVeriTeC label = Supported"}]
+    elif label == "Refuted":
+        checks = [{"kind": "label_expected", "params": {"label": "false", "aliases": d2.FAKE_FORMS + ["misleading"]},
+                   "note": "AVeriTeC label = Refuted"}]
+    article = row.get("fact_checking_article") or ""
+    policy = ({"mode": "exclude_original", "excluded_keys": [norm(article)], "date_cutoff": None} if article
+              else {"mode": "unrestricted", "excluded_keys": [], "date_cutoff": None})
+    why = {"P4_C8": "检索前 5 条里有正文带视频链接的页（C8 打开页内视频）", "P4_read_more": "GT 来源页是长页、检索前 5 条有长页（续读）"}
+    return {
+        "case_id": f"averitec:c_{index}", "dataset": "averitec", "source_id": f"c_{index}", "split": "dev_train",
+        "task_kind": "claim_check", "task_text": d2.CLAIM_TEXT_ZH.format(claim=claim, date=date),
+        "task_text_en": d2.CLAIM_TEXT_EN.format(claim=claim, date=date), "family_key": f"averitec:{index}",
+        "media": [], "claims": [claim], "source_policy": policy,
+        "requirements": [
+            {"id": "REQ1", "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）", "must_cite": True,
+             "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"},
+            {"id": "REQ2", "text": "未能确定的内容与结论的适用范围", "must_cite": False,
+             "text_en": "What could not be determined and the scope of the conclusion"},
+        ],
+        "required_evidence": [
+            {"key": "external", "description": "检索打开的外部页面（报道该事件的来源）", "acquired_by": "SEARCH/open",
+             "must_cite": True, "supports": ["REQ1"], "url_pattern": None},
+        ],
+        "required_evidence_rule": "all",
+        "checks": checks,
+        "reference_path": None, "used_for_revision": [],
+        "notes": (f"g3 建卷（{now()}，scripts/g3/g3_cases.py p4，模板同 walker_d2_cases.build_claim_text）：AVeriTeC 训练集 #{index}，"
+                  f"label = {label}{'（不设 label_expected）' if not checks else ''}，声明日期 {date}；排除原核查文章 {article}。"
+                  f"g3 入选理由：{'；'.join(why[g] for g in groups)}；探测命中页：{json.dumps(pages, ensure_ascii=False)[:600]}。"),
+    }
+
+
+def build_p4() -> None:
+    """P4（C 族续读 / 页内视频）：p4_picks.json 的 22 个挑选（averitec 1253 两类都在 → 21 个案卷）。
+    FMNV-C / GroundLie360 用 g1 的现行模板（g1_cases.build_fmnv_c / build_g360 --ids，滤规则照旧，不过的照实记下）；AVeriTeC 见 build_averitec_c。"""
+
+    picks = load_json(P4_PICKS, {})
+    groups: dict[str, list[str]] = {}
+    pages: dict[str, list[dict[str, Any]]] = {}
+    for group in ("P4_C8", "P4_read_more"):
+        for item in picks.get(group) or []:
+            cid = item["case_id"]
+            groups.setdefault(cid, []).append(group)
+            pages.setdefault(cid, []).extend(item.get("pages") or item.get("top_long_pages") or [])
+    by_pool: dict[str, list[str]] = {}
+    for cid in groups:
+        pool, _, sid = cid.partition(":")
+        by_pool.setdefault(pool, []).append(sid.removeprefix("probe_"))
+    before = set(load_json(g1c.MADE_FILE, {}))
+    if by_pool.get("fmnv_c"):
+        g1c.build_fmnv_c(0, 0, set(by_pool["fmnv_c"]))
+    if by_pool.get("groundlie360"):
+        g1c.build_g360(0, 0, set(by_pool["groundlie360"]))
+    ex = existing()
+    rows = json.loads(AVERITEC_TRAIN.read_text(encoding="utf-8"))
+    for sid in by_pool.get("averitec") or []:
+        cid = f"averitec:probe_{sid}"
+        name = f"averitec_c_{sid}"
+        if (CASES / f"{name}.json").exists():
+            continue
+        if f"averitec:{sid}" in ex["families"]:
+            log(f"    averitec {sid}：family 已用，跳过")
+            continue
+        case = build_averitec_c(int(sid), rows[int(sid)], groups[cid], pages[cid])
+        if case:
+            d2.write_case(case)
+            g1c.record_made(case, "C", "averitec", {"label": rows[int(sid)].get("label")})
+            log(f"  AVeriTeC C：{sid}（{rows[int(sid)].get('label')}）{case['claims'][0][:80]}")
+    # 给新建的标 P4 组（g1 模板记的是 family / dataset）；没建成的照实记
+    made = load_json(g1c.MADE_FILE, {})
+    want, name_cid = {}, {}
+    for cid, gs in groups.items():
+        pool, _, sid = cid.partition(":")
+        sid = sid.removeprefix("probe_")
+        name = {"fmnv_c": f"fmnv_c_{sid}".replace("-", "_"), "groundlie360": f"groundlie360_v{sid}", "averitec": f"averitec_c_{sid}"}[pool]
+        want[name] = gs
+        name_cid[name] = cid
+    missing = []
+    for name, gs in want.items():
+        if name in made and (CASES / f"{name}.json").exists():
+            made[name]["group"] = gs[0]
+            made[name]["also_groups"] = gs[1:]
+            made[name]["p4_probe_pages"] = pages[name_cid[name]][:4]
+        else:
+            missing.append(name)
+    save_json(g1c.MADE_FILE, made)
+    new = sorted(set(made) - before)
+    log(f"[P4] 新建 {len(new)}：{new}；没建成 {missing}")
+    save_json(WORK / "build_p4_result.json", {"built": new, "not_built": missing, "groups": want})
+
+
 def write_list() -> None:
     made = load_json(g1c.MADE_FILE, {})
     groups: dict[str, list[str]] = {}
     for name, info in made.items():
         if (CASES / f"{name}.json").exists():
-            groups.setdefault(info.get("group") or f"{info.get('family')}_{info.get('dataset')}", []).append(name)
+            for g in [info.get("group") or f"{info.get('family')}_{info.get('dataset')}", *(info.get("also_groups") or [])]:
+                groups.setdefault(g, []).append(name)
     # P3：r0 时建好、从没跑过的 QVH 三条（媒体在主目录 data/qvhighlights/0–2，本工作树用 junction 只读引用）
     groups.setdefault("P3_qvh", [])
     groups["P3_qvh"] = [n for n in ("qvhighlights_0", "qvhighlights_1", "qvhighlights_2") if (CASES / f"{n}.json").exists()] + \
@@ -506,12 +620,15 @@ def main() -> int:
     sub.add_parser("g360_a")
     p = sub.add_parser("fv_a")
     p.add_argument("--n", type=int, default=10)
+    sub.add_parser("p4")
     sub.add_parser("list")
     args = parser.parse_args()
     if args.cmd == "fmnv_a":
         build_fmnv_a(args.n, args.allow_fmnv_test)
     elif args.cmd == "g360_a":
         build_g360_a()
+    elif args.cmd == "p4":
+        build_p4()
     elif args.cmd == "fv_a":
         build_fv_a(args.n)
     elif args.cmd == "list":
