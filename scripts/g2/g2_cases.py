@@ -161,6 +161,13 @@ def build_videosham(n: int) -> None:
     finally:
         g1.existing = real_existing
     made = g1.load_json(g1.MADE_FILE, {})
+    # g1.build_videosham 把案卷里的媒体 / reference 路径写死成 media/g1/…，文件却按 g1.MEDIA 复制到了 media/g2/…：改回 g2
+    for name, info in made.items():
+        path = g1.CASES / f"{name}.json"
+        if info.get("dataset") == "videosham" and path.is_file():
+            text = path.read_text(encoding="utf-8")
+            if "media/g1/videosham_" in text:
+                path.write_text(text.replace("media/g1/videosham_", "media/g2/videosham_"), encoding="utf-8")
     clash = [k for k in made if k.startswith("videosham_") and k.split("_", 1)[1] in set(res["ids"])]
     if clash:
         raise SystemExit(f"预留对进了训练：{clash}")

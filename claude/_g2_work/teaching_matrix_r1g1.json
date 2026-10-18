@@ -1,0 +1,5341 @@
+{
+ "packs": [
+  {
+   "name": "r1",
+   "export": "E:/Codex/workspaces/ChatGPT/ForenSearcher/experiments/sft_data/export/r1_134runs-6a8cb9f4_hi@0.11.0_gia@0.9.0_compact_16k.claude-cli-claude-sonnet-5-5",
+   "runs": "E:/Codex/workspaces/ChatGPT/ForenSearcher/experiments/sft_data/runs",
+   "teacher": "qwen"
+  },
+  {
+   "name": "g1",
+   "export": "E:/Codex/workspaces/ChatGPT/ForenSearcher/.wt_g1/experiments/sft_data/export/r1g1_147runs-9460dc9a_hi@0.11.0_gia@0.9.0_compact_16k.claude-cli-claude-sonnet-5-5",
+   "runs": "E:/Codex/workspaces/ChatGPT/ForenSearcher/.wt_g1/experiments/sft_data/runs",
+   "teacher": "codex"
+  }
+ ],
+ "totals": {
+  "r1:hi": 1322,
+  "r1:gia": 102,
+  "g1:hi": 1325,
+  "g1:gia": 103
+ },
+ "groups": {
+  "A|ans": {
+   "rows": 131,
+   "cases": 29
+  },
+  "B|ans": {
+   "rows": 315,
+   "cases": 50
+  },
+  "C|ans": {
+   "rows": 1585,
+   "cases": 136
+  },
+  "E|ans": {
+   "rows": 423,
+   "cases": 35
+  },
+  "E|unans": {
+   "rows": 209,
+   "cases": 15
+  },
+  "L|ans": {
+   "rows": 121,
+   "cases": 8
+  },
+  "L|unans": {
+   "rows": 68,
+   "cases": 4
+  }
+ },
+ "columns": [
+  {
+   "key": "S_text_text",
+   "group": "SEARCH",
+   "label": "文字搜 → 网页"
+  },
+  {
+   "key": "S_text_image",
+   "group": "SEARCH",
+   "label": "文字搜 → 图片（参考图）"
+  },
+  {
+   "key": "S_text_video",
+   "group": "SEARCH",
+   "label": "文字搜 → 视频"
+  },
+  {
+   "key": "S_image",
+   "group": "SEARCH",
+   "label": "以图搜"
+  },
+  {
+   "key": "S_text_image_in",
+   "group": "SEARCH",
+   "label": "图 + 文字搜（text_image）"
+  },
+  {
+   "key": "S_dates",
+   "group": "SEARCH",
+   "label": "查页面日期（include dates）"
+  },
+  {
+   "key": "S_open_page",
+   "group": "SEARCH",
+   "label": "打开页面（source → text）"
+  },
+  {
+   "key": "S_page_image",
+   "group": "SEARCH",
+   "label": "取页内主图（source → image）"
+  },
+  {
+   "key": "S_open_video",
+   "group": "SEARCH",
+   "label": "打开视频（source → video）"
+  },
+  {
+   "key": "R_page",
+   "group": "READ_RECORD",
+   "label": "读页面正文"
+  },
+  {
+   "key": "R_page_more",
+   "group": "READ_RECORD",
+   "label": "续读（offset > 0）"
+  },
+  {
+   "key": "R_record",
+   "group": "READ_RECORD",
+   "label": "读工具记录（OCR / 结构等）"
+  },
+  {
+   "key": "R_ref_image",
+   "group": "READ_RECORD",
+   "label": "看参考图（L）"
+  },
+  {
+   "key": "R_transcript",
+   "group": "READ_RECORD",
+   "label": "读整段转写"
+  },
+  {
+   "key": "R_compare_review",
+   "group": "READ_RECORD",
+   "label": "对照图回看"
+  },
+  {
+   "key": "R_frames_review",
+   "group": "READ_RECORD",
+   "label": "交报告前回看帧（C9v）"
+  },
+  {
+   "key": "I_ocr_image",
+   "group": "INSPECT",
+   "label": "OCR 图片"
+  },
+  {
+   "key": "I_ocr_video",
+   "group": "INSPECT",
+   "label": "OCR 视频"
+  },
+  {
+   "key": "I_asr",
+   "group": "INSPECT",
+   "label": "ASR"
+  },
+  {
+   "key": "I_frames_times",
+   "group": "INSPECT",
+   "label": "get_frames times_s"
+  },
+  {
+   "key": "I_frames_box",
+   "group": "INSPECT",
+   "label": "get_frames + box 放大"
+  },
+  {
+   "key": "I_frames_count",
+   "group": "INSPECT",
+   "label": "get_frames count（均匀）"
+  },
+  {
+   "key": "I_frames_range",
+   "group": "INSPECT",
+   "label": "get_frames range_s"
+  },
+  {
+   "key": "I_video_structure",
+   "group": "INSPECT",
+   "label": "video_structure"
+  },
+  {
+   "key": "I_compare_image",
+   "group": "INSPECT",
+   "label": "compare_media 图片模式"
+  },
+  {
+   "key": "I_compare_video",
+   "group": "INSPECT",
+   "label": "compare_media 视频模式"
+  },
+  {
+   "key": "I_compare_range",
+   "group": "INSPECT",
+   "label": "compare_media range_a_s / region"
+  },
+  {
+   "key": "I_locate",
+   "group": "INSPECT",
+   "label": "locate"
+  },
+  {
+   "key": "Q_memory",
+   "group": "QUERY_MEMORY",
+   "label": "QUERY_MEMORY"
+  },
+  {
+   "key": "P_completed",
+   "group": "REPORT",
+   "label": "报告 COMPLETED"
+  },
+  {
+   "key": "P_incomplete_walker",
+   "group": "REPORT",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）"
+  },
+  {
+   "key": "P_inloop_rewritten",
+   "group": "REPORT",
+   "label": "报告循环内改写为 INCOMPLETE"
+  },
+  {
+   "key": "P_posthoc_rewritten",
+   "group": "REPORT",
+   "label": "报告事后 status 改写"
+  },
+  {
+   "key": "G_round1",
+   "group": "GIA",
+   "label": "GIA 第 1 轮派工"
+  },
+  {
+   "key": "G_round2",
+   "group": "GIA",
+   "label": "GIA 第 2 轮按缺口派工"
+  },
+  {
+   "key": "G_round2_scope_compare",
+   "group": "GIA",
+   "label": "第 2 轮 Scope 第一项是取图比对"
+  },
+  {
+   "key": "G_finish",
+   "group": "GIA",
+   "label": "GIA FINISH"
+  },
+  {
+   "key": "G_finish_after_round2",
+   "group": "GIA",
+   "label": "第 2 轮后 FINISH"
+  },
+  {
+   "key": "H_candidate",
+   "group": "习惯",
+   "label": "\"候选\"措辞（candidate）"
+  },
+  {
+   "key": "H_page_vs_image_date",
+   "group": "习惯",
+   "label": "页面日期与图片日期分开"
+  },
+  {
+   "key": "H_attribution",
+   "group": "习惯",
+   "label": "归因保留（according to / reports …）"
+  },
+  {
+   "key": "H_honest_incomplete",
+   "group": "习惯",
+   "label": "如实 INCOMPLETE（写明缺口）"
+  },
+  {
+   "key": "RF_compare",
+   "group": "S4 结论",
+   "label": "比对结论（compare_media / 参考图）"
+  },
+  {
+   "key": "RF_frames",
+   "group": "S4 结论",
+   "label": "帧结论（画面里看到什么）"
+  },
+  {
+   "key": "RF_transcript",
+   "group": "S4 结论",
+   "label": "整段转写概括"
+  },
+  {
+   "key": "RF_interval",
+   "group": "S4 结论",
+   "label": "区间（两侧时间对应）"
+  }
+ ],
+ "matrix": {
+  "A|ans|S_text_text": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|S_text_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|S_text_video": {
+   "rows": 13,
+   "cases": 9,
+   "teacher": {
+    "codex": 13
+   },
+   "packs": {
+    "g1": 13
+   },
+   "produced_all_buckets": {
+    "accepted": 13,
+    "held": 26
+   },
+   "status": "gap"
+  },
+  "A|ans|S_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|S_text_image_in": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "codex": 7
+   },
+   "packs": {
+    "g1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 7,
+    "held": 17
+   },
+   "status": "gap"
+  },
+  "A|ans|S_dates": {
+   "rows": 8,
+   "cases": 8,
+   "teacher": {
+    "codex": 8
+   },
+   "packs": {
+    "g1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 8,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "A|ans|S_open_page": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|S_page_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_page": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_record": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_ref_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_compare_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_ocr_image": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "codex": 1
+   },
+   "packs": {
+    "g1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1
+   },
+   "status": "gap"
+  },
+  "A|ans|I_ocr_video": {
+   "rows": 23,
+   "cases": 23,
+   "teacher": {
+    "codex": 23
+   },
+   "packs": {
+    "g1": 23
+   },
+   "produced_all_buckets": {
+    "accepted": 23,
+    "held": 7
+   },
+   "status": "ok"
+  },
+  "A|ans|I_asr": {
+   "rows": 28,
+   "cases": 28,
+   "teacher": {
+    "codex": 28
+   },
+   "packs": {
+    "g1": 28
+   },
+   "produced_all_buckets": {
+    "accepted": 28,
+    "held": 2
+   },
+   "status": "ok"
+  },
+  "A|ans|I_frames_times": {
+   "rows": 28,
+   "cases": 11,
+   "teacher": {
+    "codex": 28
+   },
+   "packs": {
+    "g1": 28
+   },
+   "produced_all_buckets": {
+    "accepted": 28
+   },
+   "status": "ok"
+  },
+  "A|ans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "A|ans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_video_structure": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_compare_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_compare_video": {
+   "rows": 11,
+   "cases": 11,
+   "teacher": {
+    "codex": 11
+   },
+   "packs": {
+    "g1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 11
+   },
+   "status": "gap"
+  },
+  "A|ans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|P_completed": {
+   "rows": 5,
+   "cases": 5,
+   "teacher": {
+    "codex": 5
+   },
+   "packs": {
+    "g1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 5,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "A|ans|P_incomplete_walker": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "rejected": 19
+   },
+   "status": "gap"
+  },
+  "A|ans|P_inloop_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "A|ans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "A|ans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 30
+   },
+   "status": "gap"
+  },
+  "A|ans|G_round2": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|G_round2_scope_compare": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|G_finish": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "codex": 7
+   },
+   "packs": {
+    "g1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 7,
+    "held": 10,
+    "rejected": 22
+   },
+   "status": "gap"
+  },
+  "A|ans|G_finish_after_round2": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|H_candidate": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "codex": 1
+   },
+   "packs": {
+    "g1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1,
+    "rejected": 6
+   },
+   "status": "gap"
+  },
+  "A|ans|H_page_vs_image_date": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|H_attribution": {
+   "rows": 9,
+   "cases": 7,
+   "teacher": {
+    "codex": 9
+   },
+   "packs": {
+    "g1": 9
+   },
+   "produced_all_buckets": {
+    "accepted": 9,
+    "held": 3,
+    "rejected": 17
+   },
+   "status": "gap"
+  },
+  "A|ans|H_honest_incomplete": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 2,
+    "rejected": 20
+   },
+   "status": "gap"
+  },
+  "A|ans|RF_compare": {
+   "rows": 5,
+   "cases": 5,
+   "teacher": {
+    "codex": 5
+   },
+   "packs": {
+    "g1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 5,
+    "held": 2,
+    "rejected": 4
+   },
+   "status": "gap"
+  },
+  "A|ans|RF_frames": {
+   "rows": 5,
+   "cases": 5,
+   "teacher": {
+    "codex": 5
+   },
+   "packs": {
+    "g1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 5,
+    "held": 1,
+    "rejected": 12
+   },
+   "status": "gap"
+  },
+  "A|ans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "A|ans|RF_interval": {
+   "rows": 5,
+   "cases": 5,
+   "teacher": {
+    "codex": 5
+   },
+   "packs": {
+    "g1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 5,
+    "held": 2,
+    "rejected": 17
+   },
+   "status": "gap"
+  },
+  "B|ans|S_text_text": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_text_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_dates": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_open_page": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_page_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|R_page": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|R_record": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "codex": 1
+   },
+   "packs": {
+    "g1": 1
+   },
+   "produced_all_buckets": {
+    "held": 5,
+    "accepted": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|R_ref_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|R_compare_review": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|I_ocr_image": {
+   "rows": 12,
+   "cases": 5,
+   "teacher": {
+    "qwen": 6,
+    "codex": 6
+   },
+   "packs": {
+    "r1": 6,
+    "g1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 12
+   },
+   "status": "gap"
+  },
+  "B|ans|I_ocr_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|I_asr": {
+   "rows": 56,
+   "cases": 28,
+   "teacher": {
+    "qwen": 31,
+    "codex": 25
+   },
+   "packs": {
+    "r1": 31,
+    "g1": 25
+   },
+   "produced_all_buckets": {
+    "accepted": 56
+   },
+   "status": "ok"
+  },
+  "B|ans|I_frames_times": {
+   "rows": 75,
+   "cases": 28,
+   "teacher": {
+    "qwen": 55,
+    "codex": 20
+   },
+   "packs": {
+    "r1": 55,
+    "g1": 20
+   },
+   "produced_all_buckets": {
+    "accepted": 75,
+    "held": 2
+   },
+   "status": "ok"
+  },
+  "B|ans|I_frames_box": {
+   "rows": 30,
+   "cases": 13,
+   "teacher": {
+    "qwen": 17,
+    "codex": 13
+   },
+   "packs": {
+    "r1": 17,
+    "g1": 13
+   },
+   "produced_all_buckets": {
+    "accepted": 30,
+    "held": 4
+   },
+   "status": "ok"
+  },
+  "B|ans|I_frames_count": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|I_video_structure": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "B|ans|I_compare_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|I_compare_video": {
+   "rows": 52,
+   "cases": 45,
+   "teacher": {
+    "qwen": 34,
+    "codex": 18
+   },
+   "packs": {
+    "r1": 34,
+    "g1": 18
+   },
+   "produced_all_buckets": {
+    "accepted": 52,
+    "held": 1
+   },
+   "status": "ok"
+  },
+  "B|ans|I_compare_range": {
+   "rows": 5,
+   "cases": 5,
+   "teacher": {
+    "qwen": 3,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 3,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 5
+   },
+   "status": "gap"
+  },
+  "B|ans|I_locate": {
+   "rows": 11,
+   "cases": 4,
+   "teacher": {
+    "qwen": 7,
+    "codex": 4
+   },
+   "packs": {
+    "r1": 7,
+    "g1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 11,
+    "held": 10
+   },
+   "status": "gap"
+  },
+  "B|ans|Q_memory": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|P_completed": {
+   "rows": 19,
+   "cases": 18,
+   "teacher": {
+    "qwen": 12,
+    "codex": 7
+   },
+   "packs": {
+    "r1": 12,
+    "g1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 19,
+    "rejected": 3
+   },
+   "status": "ok"
+  },
+  "B|ans|P_incomplete_walker": {
+   "rows": 3,
+   "cases": 3,
+   "teacher": {
+    "qwen": 2,
+    "codex": 1
+   },
+   "packs": {
+    "r1": 2,
+    "g1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 12,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "B|ans|P_inloop_rewritten": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "qwen": 5,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 5,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 7,
+    "held": 11
+   },
+   "status": "gap"
+  },
+  "B|ans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 52
+   },
+   "status": "gap"
+  },
+  "B|ans|G_round2": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 2,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 2,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 4,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|G_round2_scope_compare": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|G_finish": {
+   "rows": 41,
+   "cases": 39,
+   "teacher": {
+    "qwen": 28,
+    "codex": 13
+   },
+   "packs": {
+    "r1": 28,
+    "g1": 13
+   },
+   "produced_all_buckets": {
+    "accepted": 41,
+    "held": 55,
+    "rejected": 9
+   },
+   "status": "ok"
+  },
+  "B|ans|G_finish_after_round2": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 2,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 2,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 4
+   },
+   "status": "gap"
+  },
+  "B|ans|H_candidate": {
+   "rows": 5,
+   "cases": 4,
+   "teacher": {
+    "qwen": 3,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 3,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 5,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "B|ans|H_page_vs_image_date": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|H_attribution": {
+   "rows": 56,
+   "cases": 34,
+   "teacher": {
+    "qwen": 37,
+    "codex": 19
+   },
+   "packs": {
+    "r1": 37,
+    "g1": 19
+   },
+   "produced_all_buckets": {
+    "accepted": 56,
+    "held": 21,
+    "rejected": 7
+   },
+   "status": "ok"
+  },
+  "B|ans|H_honest_incomplete": {
+   "rows": 10,
+   "cases": 10,
+   "teacher": {
+    "qwen": 7,
+    "codex": 3
+   },
+   "packs": {
+    "r1": 7,
+    "g1": 3
+   },
+   "produced_all_buckets": {
+    "accepted": 10,
+    "held": 23,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "B|ans|RF_compare": {
+   "rows": 28,
+   "cases": 27,
+   "teacher": {
+    "qwen": 18,
+    "codex": 10
+   },
+   "packs": {
+    "r1": 18,
+    "g1": 10
+   },
+   "produced_all_buckets": {
+    "accepted": 28,
+    "held": 21,
+    "rejected": 3
+   },
+   "status": "ok"
+  },
+  "B|ans|RF_frames": {
+   "rows": 23,
+   "cases": 22,
+   "teacher": {
+    "qwen": 13,
+    "codex": 10
+   },
+   "packs": {
+    "r1": 13,
+    "g1": 10
+   },
+   "produced_all_buckets": {
+    "accepted": 23,
+    "held": 19,
+    "rejected": 4
+   },
+   "status": "ok"
+  },
+  "B|ans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "B|ans|RF_interval": {
+   "rows": 22,
+   "cases": 21,
+   "teacher": {
+    "qwen": 14,
+    "codex": 8
+   },
+   "packs": {
+    "r1": 14,
+    "g1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 22,
+    "held": 19,
+    "rejected": 3
+   },
+   "status": "ok"
+  },
+  "C|ans|S_text_text": {
+   "rows": 235,
+   "cases": 134,
+   "teacher": {
+    "qwen": 39,
+    "codex": 196
+   },
+   "packs": {
+    "r1": 39,
+    "g1": 196
+   },
+   "produced_all_buckets": {
+    "accepted": 235,
+    "held": 15
+   },
+   "status": "ok"
+  },
+  "C|ans|S_text_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|S_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|S_dates": {
+   "rows": 18,
+   "cases": 15,
+   "teacher": {
+    "qwen": 10,
+    "codex": 8
+   },
+   "packs": {
+    "r1": 10,
+    "g1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 18
+   },
+   "status": "ok"
+  },
+  "C|ans|S_open_page": {
+   "rows": 27,
+   "cases": 13,
+   "teacher": {
+    "codex": 27
+   },
+   "packs": {
+    "g1": 27
+   },
+   "produced_all_buckets": {
+    "accepted": 27,
+    "held": 3
+   },
+   "status": "ok"
+  },
+  "C|ans|S_page_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|S_open_video": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "qwen": 1,
+    "codex": 6
+   },
+   "packs": {
+    "r1": 1,
+    "g1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 7,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "C|ans|R_page": {
+   "rows": 422,
+   "cases": 136,
+   "teacher": {
+    "qwen": 123,
+    "codex": 299
+   },
+   "packs": {
+    "r1": 123,
+    "g1": 299
+   },
+   "produced_all_buckets": {
+    "accepted": 422
+   },
+   "status": "ok"
+  },
+  "C|ans|R_page_more": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "qwen": 3,
+    "codex": 4
+   },
+   "packs": {
+    "r1": 3,
+    "g1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 7
+   },
+   "status": "gap"
+  },
+  "C|ans|R_record": {
+   "rows": 15,
+   "cases": 12,
+   "teacher": {
+    "qwen": 1,
+    "codex": 14
+   },
+   "packs": {
+    "r1": 1,
+    "g1": 14
+   },
+   "produced_all_buckets": {
+    "accepted": 15
+   },
+   "status": "ok"
+  },
+  "C|ans|R_ref_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|R_compare_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|R_frames_review": {
+   "rows": 131,
+   "cases": 131,
+   "teacher": {
+    "qwen": 33,
+    "codex": 98
+   },
+   "packs": {
+    "r1": 33,
+    "g1": 98
+   },
+   "produced_all_buckets": {
+    "accepted": 131,
+    "held": 3
+   },
+   "status": "ok"
+  },
+  "C|ans|I_ocr_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_ocr_video": {
+   "rows": 126,
+   "cases": 126,
+   "teacher": {
+    "qwen": 33,
+    "codex": 93
+   },
+   "packs": {
+    "r1": 33,
+    "g1": 93
+   },
+   "produced_all_buckets": {
+    "accepted": 126,
+    "held": 8
+   },
+   "status": "ok"
+  },
+  "C|ans|I_asr": {
+   "rows": 132,
+   "cases": 132,
+   "teacher": {
+    "qwen": 34,
+    "codex": 98
+   },
+   "packs": {
+    "r1": 34,
+    "g1": 98
+   },
+   "produced_all_buckets": {
+    "accepted": 132,
+    "held": 2
+   },
+   "status": "ok"
+  },
+  "C|ans|I_frames_times": {
+   "rows": 107,
+   "cases": 107,
+   "teacher": {
+    "qwen": 25,
+    "codex": 82
+   },
+   "packs": {
+    "r1": 25,
+    "g1": 82
+   },
+   "produced_all_buckets": {
+    "accepted": 107,
+    "held": 8
+   },
+   "status": "ok"
+  },
+  "C|ans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_video_structure": {
+   "rows": 124,
+   "cases": 124,
+   "teacher": {
+    "qwen": 33,
+    "codex": 91
+   },
+   "packs": {
+    "r1": 33,
+    "g1": 91
+   },
+   "produced_all_buckets": {
+    "accepted": 124,
+    "held": 10
+   },
+   "status": "ok"
+  },
+  "C|ans|I_compare_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_compare_video": {
+   "rows": 3,
+   "cases": 3,
+   "teacher": {
+    "qwen": 1,
+    "codex": 2
+   },
+   "packs": {
+    "r1": 1,
+    "g1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 3
+   },
+   "status": "gap"
+  },
+  "C|ans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|P_completed": {
+   "rows": 103,
+   "cases": 103,
+   "teacher": {
+    "qwen": 32,
+    "codex": 71
+   },
+   "packs": {
+    "r1": 32,
+    "g1": 71
+   },
+   "produced_all_buckets": {
+    "accepted": 103,
+    "held": 6,
+    "rejected": 7
+   },
+   "status": "ok"
+  },
+  "C|ans|P_incomplete_walker": {
+   "rows": 8,
+   "cases": 7,
+   "teacher": {
+    "qwen": 1,
+    "codex": 7
+   },
+   "packs": {
+    "r1": 1,
+    "g1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 8,
+    "rejected": 4,
+    "held": 11
+   },
+   "status": "gap"
+  },
+  "C|ans|P_inloop_rewritten": {
+   "rows": 9,
+   "cases": 9,
+   "teacher": {
+    "qwen": 1,
+    "codex": 8
+   },
+   "packs": {
+    "r1": 1,
+    "g1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 9,
+    "rejected": 3,
+    "held": 6
+   },
+   "status": "gap"
+  },
+  "C|ans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "C|ans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 136
+   },
+   "status": "gap"
+  },
+  "C|ans|G_round2": {
+   "rows": 18,
+   "cases": 18,
+   "teacher": {
+    "qwen": 2,
+    "codex": 16
+   },
+   "packs": {
+    "r1": 2,
+    "g1": 16
+   },
+   "produced_all_buckets": {
+    "accepted": 18,
+    "rejected": 1
+   },
+   "status": "ok"
+  },
+  "C|ans|G_round2_scope_compare": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|G_finish": {
+   "rows": 93,
+   "cases": 93,
+   "teacher": {
+    "qwen": 28,
+    "codex": 65
+   },
+   "packs": {
+    "r1": 28,
+    "g1": 65
+   },
+   "produced_all_buckets": {
+    "accepted": 93,
+    "held": 133,
+    "rejected": 21
+   },
+   "status": "ok"
+  },
+  "C|ans|G_finish_after_round2": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|H_candidate": {
+   "rows": 14,
+   "cases": 10,
+   "teacher": {
+    "qwen": 6,
+    "codex": 8
+   },
+   "packs": {
+    "r1": 6,
+    "g1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 14,
+    "held": 6
+   },
+   "status": "gap"
+  },
+  "C|ans|H_page_vs_image_date": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "C|ans|H_attribution": {
+   "rows": 204,
+   "cases": 119,
+   "teacher": {
+    "qwen": 59,
+    "codex": 145
+   },
+   "packs": {
+    "r1": 59,
+    "g1": 145
+   },
+   "produced_all_buckets": {
+    "accepted": 204,
+    "held": 39,
+    "rejected": 35
+   },
+   "status": "ok"
+  },
+  "C|ans|H_honest_incomplete": {
+   "rows": 17,
+   "cases": 11,
+   "teacher": {
+    "qwen": 2,
+    "codex": 15
+   },
+   "packs": {
+    "r1": 2,
+    "g1": 15
+   },
+   "produced_all_buckets": {
+    "accepted": 17,
+    "rejected": 7,
+    "held": 18
+   },
+   "status": "ok"
+  },
+  "C|ans|RF_compare": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "codex": 4
+   },
+   "packs": {
+    "g1": 4
+   },
+   "produced_all_buckets": {
+    "rejected": 2,
+    "accepted": 4,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "C|ans|RF_frames": {
+   "rows": 110,
+   "cases": 110,
+   "teacher": {
+    "qwen": 31,
+    "codex": 79
+   },
+   "packs": {
+    "r1": 31,
+    "g1": 79
+   },
+   "produced_all_buckets": {
+    "accepted": 110,
+    "held": 14,
+    "rejected": 10
+   },
+   "status": "ok"
+  },
+  "C|ans|RF_transcript": {
+   "rows": 101,
+   "cases": 101,
+   "teacher": {
+    "qwen": 30,
+    "codex": 71
+   },
+   "packs": {
+    "r1": 30,
+    "g1": 71
+   },
+   "produced_all_buckets": {
+    "accepted": 101,
+    "held": 9,
+    "rejected": 8
+   },
+   "status": "ok"
+  },
+  "C|ans|RF_interval": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|S_text_text": {
+   "rows": 13,
+   "cases": 11,
+   "teacher": {
+    "qwen": 13
+   },
+   "packs": {
+    "r1": 13
+   },
+   "produced_all_buckets": {
+    "accepted": 28
+   },
+   "status": "gap"
+  },
+  "E|ans|S_text_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|S_image": {
+   "rows": 35,
+   "cases": 35,
+   "teacher": {
+    "qwen": 35
+   },
+   "packs": {
+    "r1": 35
+   },
+   "produced_all_buckets": {
+    "accepted": 50
+   },
+   "status": "ok"
+  },
+  "E|ans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|S_dates": {
+   "rows": 99,
+   "cases": 35,
+   "teacher": {
+    "qwen": 99
+   },
+   "packs": {
+    "r1": 99
+   },
+   "produced_all_buckets": {
+    "accepted": 139
+   },
+   "status": "ok"
+  },
+  "E|ans|S_open_page": {
+   "rows": 8,
+   "cases": 4,
+   "teacher": {
+    "qwen": 8
+   },
+   "packs": {
+    "r1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 15,
+    "held": 24
+   },
+   "status": "gap"
+  },
+  "E|ans|S_page_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 4
+   },
+   "status": "gap"
+  },
+  "E|ans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|R_page": {
+   "rows": 71,
+   "cases": 35,
+   "teacher": {
+    "qwen": 71
+   },
+   "packs": {
+    "r1": 71
+   },
+   "produced_all_buckets": {
+    "accepted": 123
+   },
+   "status": "ok"
+  },
+  "E|ans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|R_record": {
+   "rows": 15,
+   "cases": 10,
+   "teacher": {
+    "qwen": 15
+   },
+   "packs": {
+    "r1": 15
+   },
+   "produced_all_buckets": {
+    "accepted": 23
+   },
+   "status": "ok"
+  },
+  "E|ans|R_ref_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|R_compare_review": {
+   "rows": 27,
+   "cases": 27,
+   "teacher": {
+    "qwen": 27
+   },
+   "packs": {
+    "r1": 27
+   },
+   "produced_all_buckets": {
+    "accepted": 37,
+    "held": 3
+   },
+   "status": "ok"
+  },
+  "E|ans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_ocr_image": {
+   "rows": 33,
+   "cases": 33,
+   "teacher": {
+    "qwen": 33
+   },
+   "packs": {
+    "r1": 33
+   },
+   "produced_all_buckets": {
+    "accepted": 47,
+    "held": 3
+   },
+   "status": "ok"
+  },
+  "E|ans|I_ocr_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_asr": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_frames_times": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_video_structure": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_compare_image": {
+   "rows": 67,
+   "cases": 35,
+   "teacher": {
+    "qwen": 67
+   },
+   "packs": {
+    "r1": 67
+   },
+   "produced_all_buckets": {
+    "accepted": 88
+   },
+   "status": "ok"
+  },
+  "E|ans|I_compare_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|P_completed": {
+   "rows": 24,
+   "cases": 24,
+   "teacher": {
+    "qwen": 24
+   },
+   "packs": {
+    "r1": 24
+   },
+   "produced_all_buckets": {
+    "accepted": 24,
+    "held": 2,
+    "rejected": 2
+   },
+   "status": "ok"
+  },
+  "E|ans|P_incomplete_walker": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 4
+   },
+   "packs": {
+    "r1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 14,
+    "held": 3,
+    "rejected": 17
+   },
+   "status": "gap"
+  },
+  "E|ans|P_inloop_rewritten": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 4,
+    "held": 1,
+    "rejected": 6
+   },
+   "status": "gap"
+  },
+  "E|ans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 50
+   },
+   "status": "gap"
+  },
+  "E|ans|G_round2": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 10,
+    "rejected": 12
+   },
+   "status": "gap"
+  },
+  "E|ans|G_round2_scope_compare": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|G_finish": {
+   "rows": 23,
+   "cases": 23,
+   "teacher": {
+    "qwen": 23
+   },
+   "packs": {
+    "r1": 23
+   },
+   "produced_all_buckets": {
+    "accepted": 26,
+    "held": 43,
+    "rejected": 3
+   },
+   "status": "ok"
+  },
+  "E|ans|G_finish_after_round2": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 4,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "E|ans|H_candidate": {
+   "rows": 11,
+   "cases": 10,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 24,
+    "held": 15,
+    "rejected": 11
+   },
+   "status": "gap"
+  },
+  "E|ans|H_page_vs_image_date": {
+   "rows": 48,
+   "cases": 27,
+   "teacher": {
+    "qwen": 48
+   },
+   "packs": {
+    "r1": 48
+   },
+   "produced_all_buckets": {
+    "accepted": 53,
+    "held": 19,
+    "rejected": 3
+   },
+   "status": "ok"
+  },
+  "E|ans|H_attribution": {
+   "rows": 47,
+   "cases": 29,
+   "teacher": {
+    "qwen": 47
+   },
+   "packs": {
+    "r1": 47
+   },
+   "produced_all_buckets": {
+    "accepted": 59,
+    "held": 22,
+    "rejected": 25
+   },
+   "status": "ok"
+  },
+  "E|ans|H_honest_incomplete": {
+   "rows": 6,
+   "cases": 6,
+   "teacher": {
+    "qwen": 6
+   },
+   "packs": {
+    "r1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 18,
+    "held": 4,
+    "rejected": 23
+   },
+   "status": "gap"
+  },
+  "E|ans|RF_compare": {
+   "rows": 30,
+   "cases": 30,
+   "teacher": {
+    "qwen": 30
+   },
+   "packs": {
+    "r1": 30
+   },
+   "produced_all_buckets": {
+    "accepted": 41,
+    "held": 6,
+    "rejected": 14
+   },
+   "status": "ok"
+  },
+  "E|ans|RF_frames": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|ans|RF_interval": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|S_text_text": {
+   "rows": 15,
+   "cases": 12,
+   "teacher": {
+    "qwen": 15
+   },
+   "packs": {
+    "r1": 15
+   },
+   "produced_all_buckets": {
+    "accepted": 28
+   },
+   "status": "ok"
+  },
+  "E|unans|S_text_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|S_image": {
+   "rows": 15,
+   "cases": 15,
+   "teacher": {
+    "qwen": 15
+   },
+   "packs": {
+    "r1": 15
+   },
+   "produced_all_buckets": {
+    "accepted": 50
+   },
+   "status": "ok"
+  },
+  "E|unans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|S_dates": {
+   "rows": 40,
+   "cases": 15,
+   "teacher": {
+    "qwen": 40
+   },
+   "packs": {
+    "r1": 40
+   },
+   "produced_all_buckets": {
+    "accepted": 139
+   },
+   "status": "ok"
+  },
+  "E|unans|S_open_page": {
+   "rows": 7,
+   "cases": 5,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 15,
+    "held": 24
+   },
+   "status": "gap"
+  },
+  "E|unans|S_page_image": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 4
+   },
+   "packs": {
+    "r1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 4
+   },
+   "status": "gap"
+  },
+  "E|unans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|R_page": {
+   "rows": 52,
+   "cases": 15,
+   "teacher": {
+    "qwen": 52
+   },
+   "packs": {
+    "r1": 52
+   },
+   "produced_all_buckets": {
+    "accepted": 123
+   },
+   "status": "ok"
+  },
+  "E|unans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|R_record": {
+   "rows": 8,
+   "cases": 6,
+   "teacher": {
+    "qwen": 8
+   },
+   "packs": {
+    "r1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 23
+   },
+   "status": "gap"
+  },
+  "E|unans|R_ref_image": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|R_compare_review": {
+   "rows": 10,
+   "cases": 10,
+   "teacher": {
+    "qwen": 10
+   },
+   "packs": {
+    "r1": 10
+   },
+   "produced_all_buckets": {
+    "accepted": 37,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "E|unans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_ocr_image": {
+   "rows": 14,
+   "cases": 14,
+   "teacher": {
+    "qwen": 14
+   },
+   "packs": {
+    "r1": 14
+   },
+   "produced_all_buckets": {
+    "accepted": 47,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "E|unans|I_ocr_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_asr": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_frames_times": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_video_structure": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_compare_image": {
+   "rows": 21,
+   "cases": 14,
+   "teacher": {
+    "qwen": 21
+   },
+   "packs": {
+    "r1": 21
+   },
+   "produced_all_buckets": {
+    "accepted": 88
+   },
+   "status": "ok"
+  },
+  "E|unans|I_compare_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|P_completed": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 24,
+    "held": 2,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "E|unans|P_incomplete_walker": {
+   "rows": 10,
+   "cases": 10,
+   "teacher": {
+    "qwen": 10
+   },
+   "packs": {
+    "r1": 10
+   },
+   "produced_all_buckets": {
+    "accepted": 14,
+    "held": 3,
+    "rejected": 17
+   },
+   "status": "gap"
+  },
+  "E|unans|P_inloop_rewritten": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 4,
+    "held": 1,
+    "rejected": 6
+   },
+   "status": "gap"
+  },
+  "E|unans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 50
+   },
+   "status": "gap"
+  },
+  "E|unans|G_round2": {
+   "rows": 8,
+   "cases": 8,
+   "teacher": {
+    "qwen": 8
+   },
+   "packs": {
+    "r1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 10,
+    "rejected": 12
+   },
+   "status": "gap"
+  },
+  "E|unans|G_round2_scope_compare": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|G_finish": {
+   "rows": 3,
+   "cases": 3,
+   "teacher": {
+    "qwen": 3
+   },
+   "packs": {
+    "r1": 3
+   },
+   "produced_all_buckets": {
+    "accepted": 26,
+    "held": 43,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "E|unans|G_finish_after_round2": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 4,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "E|unans|H_candidate": {
+   "rows": 13,
+   "cases": 11,
+   "teacher": {
+    "qwen": 13
+   },
+   "packs": {
+    "r1": 13
+   },
+   "produced_all_buckets": {
+    "accepted": 24,
+    "held": 15,
+    "rejected": 11
+   },
+   "status": "gap"
+  },
+  "E|unans|H_page_vs_image_date": {
+   "rows": 5,
+   "cases": 4,
+   "teacher": {
+    "qwen": 5
+   },
+   "packs": {
+    "r1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 53,
+    "held": 19,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "E|unans|H_attribution": {
+   "rows": 12,
+   "cases": 10,
+   "teacher": {
+    "qwen": 12
+   },
+   "packs": {
+    "r1": 12
+   },
+   "produced_all_buckets": {
+    "accepted": 59,
+    "held": 22,
+    "rejected": 25
+   },
+   "status": "gap"
+  },
+  "E|unans|H_honest_incomplete": {
+   "rows": 12,
+   "cases": 11,
+   "teacher": {
+    "qwen": 12
+   },
+   "packs": {
+    "r1": 12
+   },
+   "produced_all_buckets": {
+    "accepted": 18,
+    "held": 4,
+    "rejected": 23
+   },
+   "status": "gap"
+  },
+  "E|unans|RF_compare": {
+   "rows": 11,
+   "cases": 11,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 41,
+    "held": 6,
+    "rejected": 14
+   },
+   "status": "gap"
+  },
+  "E|unans|RF_frames": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "E|unans|RF_interval": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|S_text_text": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 12,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|S_text_image": {
+   "rows": 11,
+   "cases": 8,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 17,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|ans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|S_image": {
+   "rows": 8,
+   "cases": 8,
+   "teacher": {
+    "qwen": 8
+   },
+   "packs": {
+    "r1": 8
+   },
+   "produced_all_buckets": {
+    "accepted": 12,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|ans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|S_dates": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|S_open_page": {
+   "rows": 11,
+   "cases": 5,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 20,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|S_page_image": {
+   "rows": 6,
+   "cases": 4,
+   "teacher": {
+    "qwen": 6
+   },
+   "packs": {
+    "r1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 10,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|ans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|R_page": {
+   "rows": 27,
+   "cases": 7,
+   "teacher": {
+    "qwen": 27
+   },
+   "packs": {
+    "r1": 27
+   },
+   "produced_all_buckets": {
+    "accepted": 38,
+    "held": 2
+   },
+   "status": "ok"
+  },
+  "L|ans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|R_record": {
+   "rows": 7,
+   "cases": 3,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 14,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|ans|R_ref_image": {
+   "rows": 17,
+   "cases": 8,
+   "teacher": {
+    "qwen": 17
+   },
+   "packs": {
+    "r1": 17
+   },
+   "produced_all_buckets": {
+    "accepted": 26,
+    "held": 5
+   },
+   "status": "ok"
+  },
+  "L|ans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|R_compare_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_ocr_image": {
+   "rows": 7,
+   "cases": 7,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 11,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|I_ocr_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_asr": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_frames_times": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_video_structure": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_compare_image": {
+   "rows": 11,
+   "cases": 8,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 17,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|I_compare_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|P_completed": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 1,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|P_incomplete_walker": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 2,
+    "held": 7,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|P_inloop_rewritten": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "L|ans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 13
+   },
+   "status": "gap"
+  },
+  "L|ans|G_round2": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "rejected": 5
+   },
+   "status": "gap"
+  },
+  "L|ans|G_round2_scope_compare": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 2,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|G_finish": {
+   "rows": 3,
+   "cases": 3,
+   "teacher": {
+    "qwen": 3
+   },
+   "packs": {
+    "r1": 3
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 15,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "L|ans|G_finish_after_round2": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 1,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "L|ans|H_candidate": {
+   "rows": 5,
+   "cases": 3,
+   "teacher": {
+    "qwen": 5
+   },
+   "packs": {
+    "r1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 6,
+    "held": 11,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "L|ans|H_page_vs_image_date": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|H_attribution": {
+   "rows": 7,
+   "cases": 4,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 8,
+    "held": 17,
+    "rejected": 5
+   },
+   "status": "gap"
+  },
+  "L|ans|H_honest_incomplete": {
+   "rows": 3,
+   "cases": 3,
+   "teacher": {
+    "qwen": 3
+   },
+   "packs": {
+    "r1": 3
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 10,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|ans|RF_compare": {
+   "rows": 5,
+   "cases": 4,
+   "teacher": {
+    "qwen": 5
+   },
+   "packs": {
+    "r1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 6,
+    "held": 10,
+    "rejected": 4
+   },
+   "status": "gap"
+  },
+  "L|ans|RF_frames": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|ans|RF_interval": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|S_text_text": {
+   "rows": 5,
+   "cases": 4,
+   "teacher": {
+    "qwen": 5
+   },
+   "packs": {
+    "r1": 5
+   },
+   "produced_all_buckets": {
+    "accepted": 12,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|S_text_image": {
+   "rows": 6,
+   "cases": 4,
+   "teacher": {
+    "qwen": 6
+   },
+   "packs": {
+    "r1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 17,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|unans|S_text_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|S_image": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 4
+   },
+   "packs": {
+    "r1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 12,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|unans|S_text_image_in": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|S_dates": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|S_open_page": {
+   "rows": 9,
+   "cases": 3,
+   "teacher": {
+    "qwen": 9
+   },
+   "packs": {
+    "r1": 9
+   },
+   "produced_all_buckets": {
+    "accepted": 20,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|S_page_image": {
+   "rows": 4,
+   "cases": 3,
+   "teacher": {
+    "qwen": 4
+   },
+   "packs": {
+    "r1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 10,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|unans|S_open_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|R_page": {
+   "rows": 11,
+   "cases": 4,
+   "teacher": {
+    "qwen": 11
+   },
+   "packs": {
+    "r1": 11
+   },
+   "produced_all_buckets": {
+    "accepted": 38,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|R_page_more": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|R_record": {
+   "rows": 7,
+   "cases": 4,
+   "teacher": {
+    "qwen": 7
+   },
+   "packs": {
+    "r1": 7
+   },
+   "produced_all_buckets": {
+    "accepted": 14,
+    "held": 1
+   },
+   "status": "gap"
+  },
+  "L|unans|R_ref_image": {
+   "rows": 9,
+   "cases": 4,
+   "teacher": {
+    "qwen": 9
+   },
+   "packs": {
+    "r1": 9
+   },
+   "produced_all_buckets": {
+    "accepted": 26,
+    "held": 5
+   },
+   "status": "gap"
+  },
+  "L|unans|R_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|R_compare_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|R_frames_review": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_ocr_image": {
+   "rows": 4,
+   "cases": 4,
+   "teacher": {
+    "qwen": 4
+   },
+   "packs": {
+    "r1": 4
+   },
+   "produced_all_buckets": {
+    "accepted": 11,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|I_ocr_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_asr": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_frames_times": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_frames_box": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_frames_count": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_frames_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_video_structure": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_compare_image": {
+   "rows": 6,
+   "cases": 4,
+   "teacher": {
+    "qwen": 6
+   },
+   "packs": {
+    "r1": 6
+   },
+   "produced_all_buckets": {
+    "accepted": 17,
+    "held": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|I_compare_video": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_compare_range": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|I_locate": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|Q_memory": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|P_completed": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 1,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|P_incomplete_walker": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 2,
+    "held": 7,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|P_inloop_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 1,
+    "held": 3
+   },
+   "status": "gap"
+  },
+  "L|unans|P_posthoc_rewritten": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|G_round1": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "held": 13
+   },
+   "status": "gap"
+  },
+  "L|unans|G_round2": {
+   "rows": 2,
+   "cases": 2,
+   "teacher": {
+    "qwen": 2
+   },
+   "packs": {
+    "r1": 2
+   },
+   "produced_all_buckets": {
+    "accepted": 3,
+    "rejected": 5
+   },
+   "status": "gap"
+  },
+  "L|unans|G_round2_scope_compare": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 2,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|G_finish": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 15,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "L|unans|G_finish_after_round2": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 1,
+    "rejected": 1
+   },
+   "status": "gap"
+  },
+  "L|unans|H_candidate": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 6,
+    "held": 11,
+    "rejected": 3
+   },
+   "status": "gap"
+  },
+  "L|unans|H_page_vs_image_date": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|H_attribution": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 8,
+    "held": 17,
+    "rejected": 5
+   },
+   "status": "gap"
+  },
+  "L|unans|H_honest_incomplete": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {
+    "accepted": 3,
+    "held": 10,
+    "rejected": 2
+   },
+   "status": "gap"
+  },
+  "L|unans|RF_compare": {
+   "rows": 1,
+   "cases": 1,
+   "teacher": {
+    "qwen": 1
+   },
+   "packs": {
+    "r1": 1
+   },
+   "produced_all_buckets": {
+    "accepted": 6,
+    "held": 10,
+    "rejected": 4
+   },
+   "status": "gap"
+  },
+  "L|unans|RF_frames": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|RF_transcript": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  },
+  "L|unans|RF_interval": {
+   "rows": 0,
+   "cases": 0,
+   "teacher": {},
+   "packs": {},
+   "produced_all_buckets": {},
+   "status": "n/a"
+  }
+ },
+ "gaps": [
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "S_text_video",
+   "label": "文字搜 → 视频",
+   "rows": 13,
+   "cases": 9,
+   "held_or_rejected": 26
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "S_text_image_in",
+   "label": "图 + 文字搜（text_image）",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 17
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "S_dates",
+   "label": "查页面日期（include dates）",
+   "rows": 8,
+   "cases": 8,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "I_ocr_image",
+   "label": "OCR 图片",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "I_frames_box",
+   "label": "get_frames + box 放大",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "I_compare_video",
+   "label": "compare_media 视频模式",
+   "rows": 11,
+   "cases": 11,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "P_completed",
+   "label": "报告 COMPLETED",
+   "rows": 5,
+   "cases": 5,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 19
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "P_posthoc_rewritten",
+   "label": "报告事后 status 改写",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 30
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "G_finish",
+   "label": "GIA FINISH",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 32
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 6
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "H_attribution",
+   "label": "归因保留（according to / reports …）",
+   "rows": 9,
+   "cases": 7,
+   "held_or_rejected": 20
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 22
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "RF_compare",
+   "label": "比对结论（compare_media / 参考图）",
+   "rows": 5,
+   "cases": 5,
+   "held_or_rejected": 6
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "RF_frames",
+   "label": "帧结论（画面里看到什么）",
+   "rows": 5,
+   "cases": 5,
+   "held_or_rejected": 13
+  },
+  {
+   "family": "A",
+   "answerable": "ans",
+   "column": "RF_interval",
+   "label": "区间（两侧时间对应）",
+   "rows": 5,
+   "cases": 5,
+   "held_or_rejected": 19
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "R_record",
+   "label": "读工具记录（OCR / 结构等）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "R_compare_review",
+   "label": "对照图回看",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "I_ocr_image",
+   "label": "OCR 图片",
+   "rows": 12,
+   "cases": 5,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "I_frames_count",
+   "label": "get_frames count（均匀）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "I_video_structure",
+   "label": "video_structure",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "I_compare_range",
+   "label": "compare_media range_a_s / region",
+   "rows": 5,
+   "cases": 5,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "I_locate",
+   "label": "locate",
+   "rows": 11,
+   "cases": 4,
+   "held_or_rejected": 10
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "Q_memory",
+   "label": "QUERY_MEMORY",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 3,
+   "cases": 3,
+   "held_or_rejected": 15
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 11
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 52
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "G_round2",
+   "label": "GIA 第 2 轮按缺口派工",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "G_finish_after_round2",
+   "label": "第 2 轮后 FINISH",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 5,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "B",
+   "answerable": "ans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 10,
+   "cases": 10,
+   "held_or_rejected": 26
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "S_open_video",
+   "label": "打开视频（source → video）",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "R_page_more",
+   "label": "续读（offset > 0）",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "I_compare_video",
+   "label": "compare_media 视频模式",
+   "rows": 3,
+   "cases": 3,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 8,
+   "cases": 7,
+   "held_or_rejected": 15
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 9,
+   "cases": 9,
+   "held_or_rejected": 9
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "P_posthoc_rewritten",
+   "label": "报告事后 status 改写",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 136
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 14,
+   "cases": 10,
+   "held_or_rejected": 6
+  },
+  {
+   "family": "C",
+   "answerable": "ans",
+   "column": "RF_compare",
+   "label": "比对结论（compare_media / 参考图）",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "S_text_text",
+   "label": "文字搜 → 网页",
+   "rows": 13,
+   "cases": 11,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "S_open_page",
+   "label": "打开页面（source → text）",
+   "rows": 8,
+   "cases": 4,
+   "held_or_rejected": 24
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "S_page_image",
+   "label": "取页内主图（source → image）",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 20
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 7
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 50
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "G_round2",
+   "label": "GIA 第 2 轮按缺口派工",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 12
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "G_finish_after_round2",
+   "label": "第 2 轮后 FINISH",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 11,
+   "cases": 10,
+   "held_or_rejected": 26
+  },
+  {
+   "family": "E",
+   "answerable": "ans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 6,
+   "cases": 6,
+   "held_or_rejected": 27
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "S_open_page",
+   "label": "打开页面（source → text）",
+   "rows": 7,
+   "cases": 5,
+   "held_or_rejected": 24
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "S_page_image",
+   "label": "取页内主图（source → image）",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "R_record",
+   "label": "读工具记录（OCR / 结构等）",
+   "rows": 8,
+   "cases": 6,
+   "held_or_rejected": 0
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "R_compare_review",
+   "label": "对照图回看",
+   "rows": 10,
+   "cases": 10,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "I_ocr_image",
+   "label": "OCR 图片",
+   "rows": 14,
+   "cases": 14,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "P_completed",
+   "label": "报告 COMPLETED",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 4
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 10,
+   "cases": 10,
+   "held_or_rejected": 20
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 7
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 50
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "G_round2",
+   "label": "GIA 第 2 轮按缺口派工",
+   "rows": 8,
+   "cases": 8,
+   "held_or_rejected": 12
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "G_finish",
+   "label": "GIA FINISH",
+   "rows": 3,
+   "cases": 3,
+   "held_or_rejected": 46
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "G_finish_after_round2",
+   "label": "第 2 轮后 FINISH",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 13,
+   "cases": 11,
+   "held_or_rejected": 26
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "H_page_vs_image_date",
+   "label": "页面日期与图片日期分开",
+   "rows": 5,
+   "cases": 4,
+   "held_or_rejected": 22
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "H_attribution",
+   "label": "归因保留（according to / reports …）",
+   "rows": 12,
+   "cases": 10,
+   "held_or_rejected": 47
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 12,
+   "cases": 11,
+   "held_or_rejected": 27
+  },
+  {
+   "family": "E",
+   "answerable": "unans",
+   "column": "RF_compare",
+   "label": "比对结论（compare_media / 参考图）",
+   "rows": 11,
+   "cases": 11,
+   "held_or_rejected": 20
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "S_text_text",
+   "label": "文字搜 → 网页",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "S_text_image",
+   "label": "文字搜 → 图片（参考图）",
+   "rows": 11,
+   "cases": 8,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "S_image",
+   "label": "以图搜",
+   "rows": 8,
+   "cases": 8,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "S_open_page",
+   "label": "打开页面（source → text）",
+   "rows": 11,
+   "cases": 5,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "S_page_image",
+   "label": "取页内主图（source → image）",
+   "rows": 6,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "R_record",
+   "label": "读工具记录（OCR / 结构等）",
+   "rows": 7,
+   "cases": 3,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "I_ocr_image",
+   "label": "OCR 图片",
+   "rows": 7,
+   "cases": 7,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "I_compare_image",
+   "label": "compare_media 图片模式",
+   "rows": 11,
+   "cases": 8,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "P_completed",
+   "label": "报告 COMPLETED",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 9
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 13
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "G_round2",
+   "label": "GIA 第 2 轮按缺口派工",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "G_round2_scope_compare",
+   "label": "第 2 轮 Scope 第一项是取图比对",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "G_finish",
+   "label": "GIA FINISH",
+   "rows": 3,
+   "cases": 3,
+   "held_or_rejected": 18
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "G_finish_after_round2",
+   "label": "第 2 轮后 FINISH",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 5,
+   "cases": 3,
+   "held_or_rejected": 14
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "H_attribution",
+   "label": "归因保留（according to / reports …）",
+   "rows": 7,
+   "cases": 4,
+   "held_or_rejected": 22
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 3,
+   "cases": 3,
+   "held_or_rejected": 12
+  },
+  {
+   "family": "L",
+   "answerable": "ans",
+   "column": "RF_compare",
+   "label": "比对结论（compare_media / 参考图）",
+   "rows": 5,
+   "cases": 4,
+   "held_or_rejected": 14
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "S_text_text",
+   "label": "文字搜 → 网页",
+   "rows": 5,
+   "cases": 4,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "S_text_image",
+   "label": "文字搜 → 图片（参考图）",
+   "rows": 6,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "S_image",
+   "label": "以图搜",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "S_open_page",
+   "label": "打开页面（source → text）",
+   "rows": 9,
+   "cases": 3,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "S_page_image",
+   "label": "取页内主图（source → image）",
+   "rows": 4,
+   "cases": 3,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "R_page",
+   "label": "读页面正文",
+   "rows": 11,
+   "cases": 4,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "R_record",
+   "label": "读工具记录（OCR / 结构等）",
+   "rows": 7,
+   "cases": 4,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "R_ref_image",
+   "label": "看参考图（L）",
+   "rows": 9,
+   "cases": 4,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "I_ocr_image",
+   "label": "OCR 图片",
+   "rows": 4,
+   "cases": 4,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "I_compare_image",
+   "label": "compare_media 图片模式",
+   "rows": 6,
+   "cases": 4,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "P_completed",
+   "label": "报告 COMPLETED",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "P_incomplete_walker",
+   "label": "报告 INCOMPLETE（walker / S4 自己判）",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 9
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "P_inloop_rewritten",
+   "label": "报告循环内改写为 INCOMPLETE",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 3
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "G_round1",
+   "label": "GIA 第 1 轮派工",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 13
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "G_round2",
+   "label": "GIA 第 2 轮按缺口派工",
+   "rows": 2,
+   "cases": 2,
+   "held_or_rejected": 5
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "G_round2_scope_compare",
+   "label": "第 2 轮 Scope 第一项是取图比对",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 2
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "G_finish",
+   "label": "GIA FINISH",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 18
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "G_finish_after_round2",
+   "label": "第 2 轮后 FINISH",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 1
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "H_candidate",
+   "label": "\"候选\"措辞（candidate）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 14
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "H_attribution",
+   "label": "归因保留（according to / reports …）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 22
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "H_honest_incomplete",
+   "label": "如实 INCOMPLETE（写明缺口）",
+   "rows": 0,
+   "cases": 0,
+   "held_or_rejected": 12
+  },
+  {
+   "family": "L",
+   "answerable": "unans",
+   "column": "RF_compare",
+   "label": "比对结论（compare_media / 参考图）",
+   "rows": 1,
+   "cases": 1,
+   "held_or_rejected": 14
+  }
+ ],
+ "catalog_forms_seen": {
+  "INSPECT ocr": 220,
+  "SEARCH input_type=image output_type=image": 62,
+  "SEARCH source output_type=text include=[dates]": 165,
+  "READ_RECORD": 838,
+  "INSPECT compare_media": 171,
+  "SEARCH source output_type=text": 62,
+  "SEARCH input_type=text output_type=text": 275,
+  "SEARCH source output_type=image": 14,
+  "SEARCH input_type=text output_type=image": 17,
+  "INSPECT asr": 216,
+  "INSPECT video_structure": 125,
+  "INSPECT get_frames": 241,
+  "INSPECT get_frames · times_s": 240,
+  "READ_RECORD · offset": 7,
+  "SEARCH source output_type=video": 7,
+  "INSPECT locate": 11,
+  "INSPECT locate · query": 11,
+  "INSPECT locate · top_k": 11,
+  "INSPECT video_structure · range_s": 1,
+  "INSPECT compare_media · mode": 4,
+  "INSPECT compare_media · range_a_s": 5,
+  "INSPECT get_frames · count": 1,
+  "INSPECT locate · range_s": 6,
+  "INSPECT get_frames · box": 30,
+  "QUERY_MEMORY": 1,
+  "QUERY_MEMORY · query": 1,
+  "QUERY_MEMORY · record_types": 1,
+  "SEARCH input_type=text output_type=video": 13,
+  "SEARCH input_type=text_image output_type=video": 7
+ },
+ "catalog_forms_any_bucket": {
+  "INSPECT ocr": 240,
+  "SEARCH input_type=image output_type=image": 63,
+  "SEARCH source output_type=text include=[dates]": 166,
+  "READ_RECORD": 857,
+  "INSPECT compare_media": 174,
+  "SEARCH source output_type=text": 91,
+  "SEARCH input_type=text output_type=text": 292,
+  "SEARCH source output_type=image": 15,
+  "SEARCH input_type=text output_type=image": 18,
+  "INSPECT asr": 220,
+  "INSPECT video_structure": 138,
+  "INSPECT get_frames": 256,
+  "INSPECT get_frames · times_s": 255,
+  "READ_RECORD · offset": 7,
+  "SEARCH source output_type=video": 8,
+  "INSPECT locate": 21,
+  "INSPECT locate · query": 21,
+  "INSPECT locate · top_k": 21,
+  "INSPECT video_structure · range_s": 4,
+  "INSPECT compare_media · mode": 4,
+  "INSPECT compare_media · range_a_s": 5,
+  "INSPECT get_frames · count": 1,
+  "INSPECT locate · range_s": 13,
+  "INSPECT get_frames · box": 35,
+  "QUERY_MEMORY": 1,
+  "QUERY_MEMORY · query": 1,
+  "QUERY_MEMORY · record_types": 1,
+  "SEARCH input_type=text output_type=video": 39,
+  "SEARCH input_type=text_image output_type=video": 24
+ },
+ "catalog_never_in_accepted": [
+  "SEARCH input_type=image output_type=text",
+  "SEARCH input_type=image output_type=video",
+  "SEARCH input_type=text_image output_type=text",
+  "SEARCH input_type=text_image output_type=image",
+  "INSPECT get_frames · range_s",
+  "INSPECT get_frames · pages",
+  "INSPECT get_frames · page_range",
+  "INSPECT ocr · range_s",
+  "INSPECT asr · language",
+  "INSPECT asr · range_s",
+  "INSPECT compare_media · region",
+  "INSPECT compare_media · min_area",
+  "QUERY_MEMORY · cursor"
+ ],
+ "catalog_never_produced": [
+  "SEARCH input_type=image output_type=text",
+  "SEARCH input_type=image output_type=video",
+  "SEARCH input_type=text_image output_type=text",
+  "SEARCH input_type=text_image output_type=image",
+  "INSPECT get_frames · range_s",
+  "INSPECT get_frames · pages",
+  "INSPECT get_frames · page_range",
+  "INSPECT ocr · range_s",
+  "INSPECT asr · language",
+  "INSPECT asr · range_s",
+  "INSPECT compare_media · region",
+  "INSPECT compare_media · min_area",
+  "QUERY_MEMORY · cursor"
+ ],
+ "noncatalog_forms_seen": {
+  "INSPECT compare_media · mode": 4
+ },
+ "habits": {
+  "templated_rationale": {
+   "rows_with_rationale": 2852,
+   "templated_rows": 3,
+   "skeleton_templated_rows": 3,
+   "skeleton_share": 0.0011,
+   "skeleton_by_teacher": {
+    "codex": 0,
+    "qwen": 3
+   },
+   "skeleton_top": [
+    {
+     "n": 3,
+     "rationale": "Search for reports of the event the claim describes."
+    }
+   ],
+   "share": 0.0011,
+   "s0_rows": 1644,
+   "s0_templated": 0,
+   "s0_share": 0.0,
+   "by_teacher": {
+    "codex": {
+     "rows": 1428,
+     "templated": 0,
+     "s0_rows": 721,
+     "s0_templated": 0
+    },
+    "qwen": {
+     "rows": 1424,
+     "templated": 3,
+     "s0_rows": 923,
+     "s0_templated": 0
+    }
+   },
+   "top": [
+    {
+     "n": 3,
+     "rationale": "Search for reports of the event the claim describes."
+    }
+   ]
+  },
+  "match_before_compare": {
+   "hi_step_rows_with_rationale": {
+    "r1": 1221,
+    "g1": 1224
+   },
+   "flagged": 296,
+   "share": 0.1211,
+   "assertive": 92,
+   "assertive_share": 0.0376,
+   "by_pack": {
+    "r1": {
+     "flagged": 244,
+     "assertive": 65
+    },
+    "g1": {
+     "flagged": 52,
+     "assertive": 27
+    }
+   },
+   "examples": [
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e107_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "E1 matches E5/E7 (R1) and E8/E10 (R2) showing the same submarine and background, indicating the claim image is a crop of an older South Korean navy photo. I will check R1’s publication date to establish when this image was first published online.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e115_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "R2 (News18) is a near-identical match found by Yandex and mentions hoardings in Andhra during Modi’s visit; checking its publication and platform upload dates will help determine when and where this image first appeared online, addressing the task’s core requirement.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e115_r1_1",
+     "request": "request_0006",
+     "rule": "E5_read_earliest_dated",
+     "rationale": "E10 contains the full text of the News18 article (R2) whose thumbnail matches E1 and is dated 2019-02-10 (E17); reading it will reveal the article's stated location and context for the billboard to compare against the Rajasthan claim.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e120_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "E1 matches E4 and E6 from R1 (Amar Ujala), confirming the image source; now checking R1's publication date to determine when it first appeared and whether the context supports the 2023 Makar Sankranti claim.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e122_r1_1",
+     "request": "request_0005",
+     "rule": "E3_dates_top_results",
+     "rationale": "R1 (Sotwe) shows a near-identical image match but lacks date data; R2's page is archived only from 2023-12-08, after the claim date. Checking R3 (dtnext.in) for publication or archive dates may reveal an earlier occurrence of the image to establish first publication.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e12_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "Image E1 matches E4 from WIRED article R1; I need the publication date of R1 to determine if the image predates the May 2023 claim and verify its original context.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e133_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "Image E5 from R2 visually matches the original image E1, showing the same leaders in the same setting, indicating R2 may be an early publication of the image. This action will retrieve the publication date of R2 to assess whether it predates the claim date of 2023-01-16 and helps establish the image's original context.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e153_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "R6 (yemennewstoday.wordpress.com) shows a partial-match thumbnail of the boy in rubble; checking its declared publication date and earliest archive capture will establish whether this source predates the June 2022 Afghanistan earthquake claim and help determine the image's original context.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e153_r1_1",
+     "request": "request_0005",
+     "rule": "E3_dates_top_results",
+     "rationale": "R6's page date (2016-10-25, E21) predates the 2022 claim, but its thumbnail was only a partial match; R7's article image (E18) also showed a partial match. Checking R7's publication and capture dates will determine if it is an earlier or independent source for Material A.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e153_r1_1",
+     "request": "request_0006",
+     "rule": "E5_read_earliest_dated",
+     "rationale": "E16 is the text page for candidate source R6 (Yemen News Today), which returned a partial image match in the reverse search; reading it will reveal the article's date and context to determine if this image was published before the June 2022 earthquake claim.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e184_r1_1",
+     "request": "request_0006",
+     "rule": "E3_dates_top_results",
+     "rationale": "R5 (NDTV article) appeared in reverse image search with a thumbnail not matching E1; checking its publication date via SEARCH on R5 will establish whether this source predates the 2023-02-08 claim and could represent an earlier context for the image.",
+     "assertive": true
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e193_r1_1",
+     "request": "request_0004",
+     "rule": "E3_dates_top_results",
+     "rationale": "Image E1 matches candidate sources R1 (CBS News) and R2 (blogspot) visually; R1 is a credible news archive likely to include publication dates. This SEARCH will retrieve the page's declared publication date and earliest archive capture to establish when the image first appeared online and assess whether it predates the 2023 claim.",
+     "assertive": true
+    }
+   ]
+  },
+  "gia_unseen_entities": {
+   "answers": 170,
+   "with_miss": 6,
+   "share": 0.0353,
+   "by_pack": {
+    "g1": {
+     "answers": 85,
+     "with_miss": 1
+    },
+    "r1": {
+     "answers": 85,
+     "with_miss": 5
+    }
+   },
+   "examples": [
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "averimatec_e530_r1_1",
+     "family": "E",
+     "misses": [
+      "Afghanistan"
+     ]
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "fmnv_c_X9tDERFjOMw_r1_1",
+     "family": "C",
+     "misses": [
+      "71"
+     ]
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "fmnv_c_ue4pMOsllxc_r1_1",
+     "family": "C",
+     "misses": [
+      "Externally"
+     ]
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "fmnv_c_vumukVWqdZ4_r1_1",
+     "family": "C",
+     "misses": [
+      "47"
+     ]
+    },
+    {
+     "pack": "r1",
+     "teacher": "qwen",
+     "run": "fmnv_c_zcEuCznPmYM_r1_1",
+     "family": "C",
+     "misses": [
+      "Raygun"
+     ]
+    },
+    {
+     "pack": "g1",
+     "teacher": "codex",
+     "run": "fmnv_c_3cu7SWr_IhE_r1g1_1",
+     "family": "C",
+     "misses": [
+      "Participation"
+     ]
+    }
+   ]
+  }
+ },
+ "gap_rule": {
+  "rows_lt": 15,
+  "cases_lt": 5
+ }
+}
