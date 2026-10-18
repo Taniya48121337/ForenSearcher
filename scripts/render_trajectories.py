@@ -76,7 +76,57 @@ def observation_text(view: dict[str, Any]) -> str:
         lines.append(f"  {details.get('evidence_id')} label: {cut(details.get('label') or '', 200)}")
         if details.get("content"):
             lines.append("  content: " + cut(" ".join(str(details["content"]).split()), 300))
-    return cut("\n".join(lines), OBS_LIMIT + 1600)
+    text = cut("\n".join(lines), OBS_LIMIT + 1600)
+    extra = inspect_excerpt(details.get("result")) if latest.get("action") == "INSPECT" else ""
+    return text + ("\n" + extra if extra else "")
+
+
+TRANSCRIPT_LIMIT = 3000
+SUPPORT_LIMIT = 1400       # compact_16k 已把每条支撑记录截到约 1.3 千字：印全
+
+
+def inspect_excerpt(result: Any) -> str:
+    """10-18（D2 r1a 的 3 处 hidden_knowledge 假象）：INSPECT 的结果正文学生看得到，以前只印 items 一句。
+    asr → 分段转写（时间 + 文字）；ocr → 识别出的文字与出现时段（结果里有 texts 时）。按模型实际收到的 rendered_payload 印。"""
+
+    if not isinstance(result, dict):
+        return ""
+    lines: list[str] = []
+    segments = result.get("segments")
+    if isinstance(segments, list) and segments and isinstance(segments[0], dict) and "text" in segments[0]:
+        lines.append(f"  transcript ({len(segments)} segments, language {result.get('language')}):")
+        used = shown = 0
+        for seg in segments:
+            # compact_16k 截短时末尾是一句说明字符串（不是分段），照原样印
+            row = (f"    [{seg.get('start_s')}–{seg.get('end_s')} s] {' '.join(str(seg.get('text') or '').split())}"
+                   if isinstance(seg, dict) else f"    {cut(str(seg), 300)}")
+            if used + len(row) > TRANSCRIPT_LIMIT:
+                lines.append(f"    …[+{len(segments) - shown} more segments]")
+                break
+            lines.append(row)
+            used += len(row)
+            shown += 1
+    texts = (result.get("summary") or {}).get("texts") if isinstance(result.get("summary"), dict) else None
+    if isinstance(texts, list) and texts:
+        lines.append("  OCR texts: " + cut("; ".join(
+            f"\"{t.get('text')}\" ({t.get('first_s')}–{t.get('last_s')} s, {t.get('frames')} frames)"
+            for t in texts if isinstance(t, dict)), 1600))
+    return "\n".join(lines)
+
+
+def support_excerpt(report: dict[str, Any]) -> list[str]:
+    """10-18：GIA 的 latest_reports[i].supporting_records（报告所引 E / Finding 的正文）随报告一起给到 GIA，不用 READ_RECORD；
+    以前只印 Finding 个数，答案里出现的页面原话像是"GIA 没读过"。按 rendered_payload（已截到约 1.3 千字）印。"""
+
+    out = []
+    for rec in report.get("supporting_records") or []:
+        if not isinstance(rec, dict):
+            continue
+        rid = rec.get("evidence_id") or rec.get("finding_id") or rec.get("record_id")
+        body = rec.get("content") or rec.get("statement") or rec.get("content_notice") or ""
+        out.append(f"    {rid} [{cut(rec.get('label') or rec.get('record_type') or '', 120)}]: "
+                   f"{cut(' '.join(str(body).split()), SUPPORT_LIMIT)}")
+    return out
 
 
 def decision_text(resp: dict[str, Any]) -> str:
@@ -121,7 +171,15 @@ def render(run_dir: Path) -> str:
         req, resp, tr = load(d / "request.json") or {}, load(d / "response.json"), load(d / "transport.json") or {}
         payload = req.get("payload") or {}
         role = payload.get("workspace_id") or "GIA"
-        rows.append({"dir": d.name, "role": role, "payload": payload, "resp": resp, "tr": tr})
+        rendered = req.get("rendered_payload")
+        if isinstance(rendered, str):
+            try:
+                rendered = json.loads(rendered)
+            except ValueError:
+                rendered = None
+        # 10-18：观察与 GIA 的支撑记录按模型实际收到的渲染后状态印（compact_16k 会截短正文）；没有渲染版时退回原始 payload
+        seen = rendered if isinstance(rendered, dict) and (rendered.get("model_view") or rendered.get("global_view")) else payload
+        rows.append({"dir": d.name, "role": role, "payload": payload, "seen": seen, "resp": resp, "tr": tr})
     head = [f"# {run_dir.name}", "",
             f"- case: `{cfg.get('case_id') or cfg.get('case')}`；status: {status}；specs: {walker.get('specs')}",
             f"- teacher: {cfg.get('teacher_model')}（role {walker.get('teacher_role')}）；judge planned: {walker.get('judge_planned')}",
@@ -143,7 +201,8 @@ def render(run_dir: Path) -> str:
         if role not in seen_task:
             seen_task.add(role)
             body.append("- task: " + cut(view.get("task") or "", 1200))
-        obs = observation_text(view) if role not in shown_obs else ""
+        seen_view = row["seen"].get("model_view") or row["seen"].get("global_view") or view
+        obs = observation_text(seen_view) if role not in shown_obs else ""
         if obs:
             body.append("- latest observation (result of this workspace's previous action):")
             body.append(fence(obs))
@@ -160,6 +219,10 @@ def render(run_dir: Path) -> str:
                     f"({len(_rep(r).get('finding_ids') or _rep(r).get('findings') or [])} findings)"
                     + (f" — reason: {cut(_rep(r).get('status_reason'), 300)}" if _rep(r).get("status_reason") else "")
                     for r in reports if isinstance(r, dict)))
+                for r in seen_view.get("latest_reports") or []:
+                    if isinstance(r, dict) and r.get("supporting_records"):
+                        body.append(f"  - supporting records of {_rep(r).get('task_id')} (given to GIA with the report, as rendered):")
+                        body.append(fence("\n".join(support_excerpt(r))))
         imgs = images_of(payload)
         body.append(f"- attached images ({len(imgs)}): {', '.join(imgs) if imgs else 'none'}")
         if view.get("focus_evidence_ids"):
@@ -180,7 +243,7 @@ def render(run_dir: Path) -> str:
                 for s in slots))
         nxt = next((r for r in rows[i + 1:] if r["role"] == role), None)
         if nxt is not None:
-            nobs = observation_text(nxt["payload"].get("model_view") or nxt["payload"].get("global_view") or {})
+            nobs = observation_text(nxt["seen"].get("model_view") or nxt["seen"].get("global_view") or {})
             if nobs and role != "GIA":
                 shown_obs.add(role)
                 body.append("")

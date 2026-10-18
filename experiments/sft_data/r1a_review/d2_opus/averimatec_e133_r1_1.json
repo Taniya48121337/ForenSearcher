@@ -1,0 +1,40 @@
+{"run": "averimatec_e133_r1_1", "family": "E", "steps_read": 13,
+ "overall": "problematic",
+ "issues": [
+  {"step": "W1-1 turns 3-5 (request_0004..0006) and report (request_0012)", "category": "missing_step", "severity": "major",
+   "what": "Dates were fetched only for R2, R4 and R6 (R4/R6 are the same OrissaPOST article). R3 (x.com/ombirlakota/status/1425395043238498306), whose visible snippet reads 'लोकसभा की कार्यवाही अनिश्चितकाल के लिए स्थगित होने के बाद सभी दलों के नेताओं से आग्रह किया...' (Speaker meeting all party leaders after Lok Sabha adjourned sine die), and R7 (x.com/AshishBrahmbhat/status/1333711051414761472, image E18 ready) were never dated, and E18 was never compared. Both status ids decode to dates before 2021-08-26 (2021-08-11 and 2020-12-01), yet the report states 'The earliest dated copy found is ... 163.com ... 26 August 2021' and F5 says R3's 'publication date ... [was] not established'.",
+   "why_bad_to_teach": "Teaches declaring an 'earliest' copy and dismissing the context lead from the Speaker's own post without the cheap date lookup that the toolset offers, which likely gives the wrong first-publication date and wrong original occasion.",
+   "ideal": "Run SEARCH dates on R3 and R7 (and compare E18 with E1), then use R3's sine-die/all-party-leaders text as the candidate original context, or at least report it as an undated earlier lead."},
+  {"step": "W1-1 turn 11 (request_0012) F1 vs F4", "category": "overclaim", "severity": "minor",
+   "what": "F1 calls the 163.com picture 'The earliest dated copy' and says it 'places the picture's publication no later than that date', while F4 says 'the green-waistcoated man's raised arm in the reference appears lowered in the given image', meaning it is a different frame, not a copy of the given image.",
+   "why_bad_to_teach": "Teaches treating a near-duplicate frame as a copy and using its page date as a bound on the given image, which contradicts the report's own comparison finding.",
+   "ideal": "Describe it as an earlier related photograph of the same scene (a different frame), which dates the occasion but not the exact image. The final ANSWER does word it this way."},
+  {"step": "W1-1 turn 5 (request_0006)", "category": "wasted_step", "severity": "minor",
+   "what": "SEARCH dates on R6, which the rationale itself calls 'the AMP version of the OrissaPOST article (R4) already dated 2023-01-30'.",
+   "why_bad_to_teach": "Teaches spending a step re-dating a known mirror of a page that is already dated and post-claim, while undated candidates (R3, R7) are left unchecked.",
+   "ideal": "Skip the AMP mirror and date R3 or R7 instead."},
+  {"step": "W1-1 turn 3 (request_0004)", "category": "rationale_mismatch", "severity": "minor",
+   "what": "The rationale says 'Image E5 from R2 visually matches the original image E1, showing the same leaders in the same setting', but the observation just said 'Thumbnail compared with the query image: no match', and no compare_media had been run yet.",
+   "why_bad_to_teach": "Teaches stating a match as fact before the comparison and against the tool's own result.",
+   "ideal": "Call R2 a candidate whose image looks similar and still needs compare_media, and give that as the reason for checking its date."},
+  {"step": "GIA turn 1 (request_0001)", "category": "plan_quality", "severity": "minor",
+   "what": "T1 copies the overall task word for word ('The given image circulated with the following claim: ...') with no decomposition or pointers.",
+   "why_bad_to_teach": "Teaches handing over the case without breaking it down or setting priorities.",
+   "ideal": "Give one task with explicit sub-steps: reverse image search, then date and compare every result with a ready image, then read the earliest matched page for context."},
+  {"step": "GIA FINISH (request_0013)", "category": "plan_quality", "severity": "minor",
+   "what": "GIA finishes after round 1 even though the report itself flags that R3's 'relationship to the photographed occasion and its publication date were not established' and that the exact image's first publication is unresolved.",
+   "why_bad_to_teach": "Teaches finishing while a cheap, open must-answer lead remains.",
+   "ideal": "Open a round-2 task to date R3 and R7 and compare their images before finishing."}
+ ],
+ "good_patterns": [
+  "Uses compare_media to test candidate matches and honestly rejects the 77.7%-different Om Birla image (F5) instead of assuming a match from the search hit.",
+  "Keeps page-declared dates separate from capture or archive dates, with accurate limitations ('page-declared date is not an independently verified archive date').",
+  "The final ANSWER hedges correctly: 'earliest related photograph ... does not establish the exact image's first publication' and 'an article's use of a photograph does not establish that it depicts the event described'.",
+  "Reads the comparison composite (E25) before reporting and describes concrete visible differences instead of relying only on the pixel percentage."
+ ],
+ "cannot_judge": [
+  "The R6 and R7 snippets were truncated ('…[+1588 chars]'), so I cannot confirm whether 'Budget session' (request_0005 rationale) was visible for R4 at that point, or what R7's text said.",
+  "The visual details in F4 ('upper red-and-white badge', the raised or lowered arm) and 'TELUGU' in the watermark (OCR returned only 'FACTCHE', 'POST') depend on the images, which are not rendered here.",
+  "The full E6 article text was truncated (+387 chars), so I cannot check whether it says the photo was taken at the 26 Aug meeting."
+ ],
+ "summary": "The run is a single-workspace provenance trace. Its hedging and use of compare_media are mostly sound, and the final answer is carefully qualified. However, it dates only R2 and the two OrissaPOST mirrors. It never dates the Speaker's X post R3 (whose visible snippet gives the likely original context, the post-sine-die meeting with all party leaders, and whose id implies 2021-08-11) or R7 (id implies 2020-12), and still names 163.com 2021-08-26 as the earliest copy. Minor problems: a redundant AMP date check, a pre-comparison 'visually matches' rationale, a verbatim T1, and finishing with that lead still open."}

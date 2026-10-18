@@ -1,0 +1,447 @@
+{
+ "export": "r1_134runs-6a8cb9f4_hi@0.11.0_gia@0.9.0_compact_16k.claude-cli-claude-sonnet-5-5",
+ "round": "r1",
+ "unanswerable_cases": 19,
+ "buckets_by_family": {
+  "gia:B": {
+   "accepted": 30,
+   "held": 72,
+   "rejected": 6
+  },
+  "gia:C": {
+   "accepted": 30,
+   "held": 67,
+   "rejected": 5
+  },
+  "gia:E": {
+   "accepted": 36,
+   "held": 93,
+   "rejected": 15
+  },
+  "gia:L": {
+   "accepted": 6,
+   "held": 28,
+   "rejected": 8
+  },
+  "hi:B": {
+   "accepted": 173,
+   "held": 34,
+   "rejected": 5
+  },
+  "hi:C": {
+   "accepted": 370,
+   "held": 12,
+   "rejected": 2
+  },
+  "hi:E": {
+   "accepted": 596,
+   "held": 36,
+   "rejected": 25
+  },
+  "hi:L": {
+   "accepted": 183,
+   "held": 30,
+   "rejected": 4
+  }
+ },
+ "report_buckets_by_family": {
+  "B": {
+   "accepted:INCOMPLETE": 7,
+   "accepted:COMPLETED": 12,
+   "held:INCOMPLETE": 14,
+   "rejected:COMPLETED": 3,
+   "rejected:INCOMPLETE": 2
+  },
+  "C": {
+   "accepted:COMPLETED": 32,
+   "accepted:INCOMPLETE": 2,
+   "held:COMPLETED": 2,
+   "rejected:INCOMPLETE": 2
+  },
+  "E": {
+   "accepted:COMPLETED": 24,
+   "accepted:INCOMPLETE": 18,
+   "held:COMPLETED": 2,
+   "held:INCOMPLETE": 4,
+   "rejected:INCOMPLETE": 23,
+   "rejected:COMPLETED": 2
+  },
+  "L": {
+   "accepted:COMPLETED": 3,
+   "accepted:INCOMPLETE": 3,
+   "held:INCOMPLETE": 10,
+   "held:COMPLETED": 1,
+   "rejected:INCOMPLETE": 2,
+   "rejected:COMPLETED": 2
+  }
+ },
+ "answerable_accepted_reports": {
+  "B": {
+   "COMPLETED": 12,
+   "INCOMPLETE": 7
+  },
+  "C": {
+   "COMPLETED": 32,
+   "INCOMPLETE": 2
+  },
+  "E": {
+   "COMPLETED": 24,
+   "INCOMPLETE": 6
+  },
+  "L": {
+   "COMPLETED": 2,
+   "INCOMPLETE": 3
+  }
+ },
+ "hole1_EL_completed": {
+  "E": "24/30",
+  "L": "2/5"
+ },
+ "hole1_EL_completed_cases": {
+  "E": [
+   "averimatec:e107",
+   "averimatec:e115",
+   "averimatec:e12",
+   "averimatec:e120",
+   "averimatec:e133",
+   "averimatec:e17",
+   "averimatec:e193",
+   "averimatec:e238",
+   "averimatec:e260",
+   "averimatec:e297",
+   "averimatec:e31",
+   "averimatec:e372",
+   "averimatec:e378",
+   "averimatec:e382",
+   "averimatec:e402",
+   "averimatec:e411",
+   "averimatec:e414",
+   "averimatec:e484",
+   "averimatec:e486",
+   "averimatec:e516",
+   "averimatec:e522",
+   "averimatec:e530",
+   "averimatec:e84",
+   "averimatec:e9"
+  ],
+  "L": [
+   "averimatec:l208",
+   "averimatec:l623"
+  ]
+ },
+ "hole2_posthoc_rewrite_accepted_answerable": "0/88 = 0.0%",
+ "hole2_posthoc_by_family": {},
+ "hole2_inloop_rewrite_accepted_answerable": "9/88",
+ "hole2_posthoc_rewrite_all_reports": "0/170（runs with status_rewrite.json: 0）",
+ "hole2_posthoc_rewrite_runs": [],
+ "hole3_round2_dispatch": {
+  "count": 35,
+  "by_family": {
+   "E": 22,
+   "L": 8,
+   "C": 2,
+   "B": 3
+  },
+  "runs": [
+   "averimatec_e122_r1_1",
+   "averimatec_e184_r1_1",
+   "averimatec_e28_r1_1",
+   "averimatec_e2_r1_1",
+   "averimatec_e302_r1_1",
+   "averimatec_e360_r1_1",
+   "averimatec_e384_r1_1",
+   "averimatec_e403_r1_1",
+   "averimatec_e421_r1_1",
+   "averimatec_e459_r1_1",
+   "averimatec_e4_r1_1",
+   "averimatec_e500_r1_1",
+   "averimatec_e505_r1_1",
+   "averimatec_e511_r1_1",
+   "averimatec_e513_r1_1",
+   "averimatec_e550_r1_1",
+   "averimatec_e60_r1_1",
+   "averimatec_e72_r1_1",
+   "averimatec_e77_r1_1",
+   "averimatec_e85_r1_1",
+   "averimatec_e94_r1_1",
+   "averimatec_e99_r1_1",
+   "averimatec_l101_r1_1",
+   "averimatec_l167_r1_1",
+   "averimatec_l244_r1_1",
+   "averimatec_l247_r1_1",
+   "averimatec_l313_r1_1",
+   "averimatec_l316_r1_1",
+   "averimatec_l325_r1_1",
+   "averimatec_l623_r1_1",
+   "groundlie360_c_46581202_r1_1",
+   "groundlie360_v1949000_r1_1",
+   "vcsl_pair_13_r1_1",
+   "vcsl_pair_1_r1_1",
+   "vcsl_pair_9_r1_1"
+  ]
+ },
+ "hole3_round2_plan_accepted": {
+  "count": 17,
+  "by_family": {
+   "E": 10,
+   "L": 3,
+   "C": 2,
+   "B": 2
+  }
+ },
+ "round2_scope_first_compare": {
+  "tasks": 4,
+  "did_compare": 2,
+  "runs": [
+   {
+    "run": "averimatec_l101_r1_1",
+    "ws": "W2-1",
+    "did_compare": true
+   },
+   {
+    "run": "averimatec_l167_r1_1",
+    "ws": "W2-1",
+    "did_compare": false
+   },
+   {
+    "run": "averimatec_l325_r1_1",
+    "ws": "W2-1",
+    "did_compare": false
+   },
+   {
+    "run": "averimatec_l623_r1_1",
+    "ws": "W2-1",
+    "did_compare": true
+   }
+  ],
+  "share": "2/4"
+ },
+ "c_visual_frames": {
+  "cases": 33,
+  "frames": 33,
+  "review": 33,
+  "both": 33,
+  "missing": [],
+  "share_frames_and_review": "33/33"
+ },
+ "openrouter_slot_cost_usd": 8.62,
+ "runs": 134,
+ "E_answer_gt": {
+  "cases": 35,
+  "date_ok": 23,
+  "label_ok": 27,
+  "both_ok": 21,
+  "rows": [
+   {
+    "run": "averimatec_e107_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e115_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e120_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e122_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e12_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e133_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e153_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e17_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e184_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e193_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e238_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e248_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e260_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e297_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e31_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e372_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e378_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e382_r1_1",
+    "date_ok": true,
+    "label_ok": false,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e402_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e411_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e414_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": true
+   },
+   {
+    "run": "averimatec_e421_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e484_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e486_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e500_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e511_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e516_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e522_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e530_r1_1",
+    "date_ok": false,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e74_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e77_r1_1",
+    "date_ok": true,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e84_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e92_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e94_r1_1",
+    "date_ok": false,
+    "label_ok": false,
+    "revised": false
+   },
+   {
+    "run": "averimatec_e9_r1_1",
+    "date_ok": true,
+    "label_ok": true,
+    "revised": true
+   }
+  ]
+ }
+}

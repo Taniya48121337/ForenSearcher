@@ -44,7 +44,7 @@
                             每次检查记一条到 inloop_sufficiency.json。E / L / C 第 1 轮报告是 INCOMPLETE 但没写跟进时，也补
                             walker 的可修缺口。mock 槽下不跑。
   FOREN_ORACLE_SLOT=slots   （10-15，对话 5a，r0 口径）教师按槽分：槽 → 后端的映射与各后端的 endpoint / model / 思考 / 温度
-                            从冻结文件 teacher 一节读（默认 specs/r0_freeze.json，FOREN_TEACHER_FREEZE 可换）：
+                            从冻结文件 teacher 一节读（默认 specs/r1_freeze.json——10-18 前是 r0_freeze.json，内容相同；FOREN_TEACHER_FREEZE 可换）：
                             S0 rationale / S1 查询 / S2 任务文本 / S3 充分性 → qwen 后端（服务器 H20 自部署 vLLM，本机 OpenRouter）；
                             S4 报告 / S5 答案（含 S5_answer_revise 核验后只按证据重写）→ strong 后端（API 强模型）。
                             槽名按前缀归槽（S4_report_retry → S4，S5_answer_revise → S5）。所有后端都走同一个 OpenAI 兼容
@@ -1391,7 +1391,7 @@ def _env_flag(name: str, default: bool) -> bool:
 # ---------------------------------------------------------------------------- 10-15 对话 5a：教师按槽分后端
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_FREEZE = ROOT / "specs" / "r0_freeze.json"
+DEFAULT_FREEZE = ROOT / "specs" / "r1_freeze.json"      # 10-18 r1-frozen：槽表切到 r1（teacher 一节与 r0_freeze 逐字段相同）
 SLOT_KEYS = ("S0", "S1", "S2", "S3", "S4", "S5")
 _SLOT_KEY = re.compile(r"^(S[0-9])(?:_|$)")
 # 后端缺省值（冻结文件没写的字段）：与 10-14 单端点后端的缺省相同

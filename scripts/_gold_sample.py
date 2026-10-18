@@ -44,7 +44,7 @@ SFT = ROOT / "experiments" / "sft_data"
 from foren_searcher.datagen.cases import load_cases  # noqa: E402
 from foren_searcher.datagen.runlog import load_run  # noqa: E402
 
-TEXT_LIMIT = 2500
+TEXT_LIMIT = 8000                 # 10-18：2500 字时 r1a 的 F008、A007 证据被截断、判不了（《r1金标与D2通读_Opus预标》四节 4）
 _REF = re.compile(r"\b([EF]\d+)\b")
 
 
