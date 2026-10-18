@@ -2,6 +2,7 @@
 run_cases.search_service_for、Lens 硬关、图床关、Serper 余额前后核），只换候选池与输出位置。不建卷、不跑 walker。
 
     python scripts\\g3\\g3_probe_a.py fmnv            # FMNV 真新闻 YouTube 未用的全部（两半哈希都要），三种查询
+    python scripts\\g3\\g3_probe_a.py fv              # FMNV CE 类（fv，删段假视频）：原片 = 同编号 YouTube，test 划分不取
     python scripts\\g3\\g3_probe_a.py g360            # GroundLie360 假帖子 + 原片都在本地的 49 对
 
 每个候选各搜一次 output_type=video（与 walker A3 同一请求形状）：
@@ -142,6 +143,52 @@ def part_summary(rows: list[dict[str, Any]], hit: Any) -> dict[str, int]:
         "text_image_hit": sum(hit(r, "text_image") for r in rows),
         "reachable": sum(any((r.get("original_in_top10") or {}).values()) for r in rows),
     }
+
+
+def pool_fmnv_fv() -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """FMNV CE 类（class fv，"关键片段被删"）：数据集作者从 YouTube 原片删段做成的假视频，zip 里有假视频、编号沿用原片的
+    YouTube 编号（原片本机没有）。材料 = 假视频本身（真实加工），GT 原片 = youtube.com/watch?v=<同一编号>。test 划分不取。"""
+
+    rows, evid, used, split = pc.fmnv_rows(), pc.evid_text(), used_ids(), pc.fmnv_split()
+    fv = [v for v, r in rows.items() if r.get("class") == "fv"]
+    yt = [v for v in fv if re.fullmatch(r"[\w-]{11}", v) and not v.isdigit()]
+    free = [v for v in yt if v not in evid and v not in used]
+    notest = [v for v in free if split.get(v) != "test"]
+    funnel = {"fv": len(fv), "fv_youtube": len(yt), "unused_not_evid": len(free), "not_fmnv_test": len(notest)}
+    return ([{"pool": "fmnv_fv", "video_id": v, "title": rows[v].get("title"), "subject": rows[v].get("subject"),
+              "transcript": rows[v].get("audio_transcript") or "", "fmnv_split": split.get(v)}
+             for v in pc.ordered(notest, "g3-fmnv-fv")], funnel)
+
+
+async def probe_fmnv_fv() -> None:
+    """同 probe_fmnv：标题 / 转写词 / 转写词 + 假视频中段一帧（zip 预抽帧）各搜一次视频，原片编号进前 10 算可达。"""
+
+    path = pc.OUT_DIR / "probe_a_fmnv_fv.json"
+    old = {r["video_id"]: r for r in (json.loads(path.read_text(encoding="utf-8")).get("rows") or [])} if path.is_file() else {}
+    cands, funnel = pool_fmnv_fv()
+    before = pc.serper_balance()
+    for i, cand in enumerate(cands, 1):
+        if cand["video_id"] in old and "error" not in old[cand["video_id"]]:
+            continue
+        started = time.monotonic()
+        try:
+            row = await pc.a_probe_one(cand, MODES, allow_yandex=True)
+        except (Exception, asyncio.CancelledError) as exc:  # noqa: BLE001
+            row = {**{k: v for k, v in cand.items() if k != "transcript"}, "error": f"{type(exc).__name__}: {str(exc)[:300]}"}
+        row["seconds"] = round(time.monotonic() - started, 1)
+        row["probed_at"] = pc.now()
+        old[cand["video_id"]] = row
+        print(f"[fv {i}/{len(cands)}] {cand['video_id']}: 原片排名 {row.get('original_in_top10')}；{row['seconds']:.0f}s", flush=True)
+        pc.write_json(path, {"generated": pc.now(), "funnel": funnel, "rows": list(old.values())})
+    after = pc.serper_balance()
+    rows = [old[c["video_id"]] for c in cands]
+    hit = lambda r, m: bool((r.get("original_in_top10") or {}).get(m))  # noqa: E731
+    summary = {**funnel, **part_summary(rows, hit)}
+    pc.write_json(path, {"generated": pc.now(), "modes": MODES, "serper_balance_before": before, "serper_balance_after": after,
+                         "summary": summary,
+                         "reachable": [r["video_id"] for r in rows if any((r.get("original_in_top10") or {}).values())],
+                         "rows": rows})
+    print(json.dumps(summary, ensure_ascii=False))
 
 
 # ---------------------------------------------------------------- GroundLie360
@@ -330,6 +377,8 @@ def main() -> int:
     pc.no_lens_env()
     if which == "fmnv":
         asyncio.run(probe_fmnv())
+    elif which == "fv":
+        asyncio.run(probe_fmnv_fv())
     elif which == "g360":
         asyncio.run(probe_g360())
     else:

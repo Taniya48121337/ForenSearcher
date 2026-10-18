@@ -1,0 +1,72 @@
+{
+  "case_id": "qvhighlights:605",
+  "dataset": "qvhighlights",
+  "source_id": "605",
+  "split": "dev_train",
+  "task_kind": "temporal_locate",
+  "task_text": "在给定视频中定位符合以下描述的片段，给出秒数范围及证据；说明定位的不确定性：Vlogger shows the camera from different angles.",
+  "task_text_en": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Vlogger shows the camera from different angles.",
+  "family_key": "qvhighlights:QZJJO5yAPnk",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../data/qvhighlights/605/inputs/A.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "provided_media",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "符合描述的片段在视频中的起止时间（秒）",
+      "must_cite": true,
+      "text_en": "Start and end time (seconds) of the segment in the video that matches the description"
+    },
+    {
+      "id": "REQ2",
+      "text": "支持定位的画面依据：片段内以及边界两侧的帧所显示的内容",
+      "must_cite": true,
+      "text_en": "Visual grounds for the localization: what the frames inside the segment and on both sides of its boundaries show"
+    },
+    {
+      "id": "REQ3",
+      "text": "定位精度与边界的不确定范围（未检查的区间不当作不符合）",
+      "must_cite": false,
+      "text_en": "Localization precision and the uncertain range of the boundaries (unexamined intervals are not treated as non-matching)"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "frames",
+      "description": "给定视频的抽帧（片段内与边界两侧）",
+      "url_pattern": null,
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ1",
+        "REQ2"
+      ]
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "interval_iou",
+      "params": {
+        "start": 36,
+        "end": 60,
+        "min_iou": 0.5
+      },
+      "note": "QVHighlights relevant_windows（片段内秒数）",
+      "requirement": "REQ1"
+    }
+  ],
+  "reference_path": "../data/qvhighlights/605/reference.json",
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 00:14:16，scripts/g3/g3_media_p3.py qvh，模板同 walker_d2_cases.build_qvh）：标注片段 [[36, 60]]（视频 150 秒，源 YouTube QZJJO5yAPnk 的 60.0–210.0 s）；上传者 / 频道：CiMonaa（UCg39AKQNVBcGFoBYrvNh3UQ）；family 按源视频号分组；媒体取自 QVHighlights 官方视频归档（不经 YouTube）。"
+}

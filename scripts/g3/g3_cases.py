@@ -310,6 +310,13 @@ def write_list() -> None:
     for name, info in made.items():
         if (CASES / f"{name}.json").exists():
             groups.setdefault(info.get("group") or f"{info.get('family')}_{info.get('dataset')}", []).append(name)
+    # P3：r0 时建好、从没跑过的 QVH 三条（媒体在主目录 data/qvhighlights/0–2，本工作树用 junction 只读引用）
+    groups.setdefault("P3_qvh", [])
+    groups["P3_qvh"] = [n for n in ("qvhighlights_0", "qvhighlights_1", "qvhighlights_2") if (CASES / f"{n}.json").exists()] + \
+        [n for n in groups["P3_qvh"] if n not in ("qvhighlights_0", "qvhighlights_1", "qvhighlights_2")]
+    # P2：V9 离线模拟（g3_v9_sim.py）在交报告前确实触发 Q1 的底案，每个一次 V9 run；名字 <底案>_v9（g3_run 按它加 --override）
+    sim = load_json(WORK / "v9_sim.json", {})
+    groups["P2_V9"] = [f"{r['base']}_v9" for r in sim.get("results") or [] if r.get("verdict") == "trigger"]
     payload = {"round": "r1g3", "batch": "g3", "made_by": "scripts/g3/g3_cases.py", "written_at": now(),
                "total": sum(len(v) for v in groups.values()), "groups": groups}
     save_json(LIST_FILE, payload)
