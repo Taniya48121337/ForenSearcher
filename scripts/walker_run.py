@@ -544,7 +544,7 @@ def freeze_status(round_tag: str) -> dict[str, Any]:
     from foren_searcher.datagen.specs import Spec
 
     hi_spec, gia_spec = specs_for(round_tag)
-    freeze = load_freeze(ROOT / "specs", hi_spec, gia_spec)
+    freeze = load_freeze(ROOT / "specs", hi_spec, gia_spec, round_tag)
     if not freeze:
         return {"applies": False, "specs": [hi_spec, gia_spec]}
     layer = tool_layer_hash()
@@ -761,7 +761,7 @@ def run_one_case(case_file: str, run_name: str, round_tag: str, overrides: list[
         # 10-15 r0 冻结：顶层也记教师（run_cases 记的是 configured_model.model，这里以 walker 的槽为准），
         # 以及冻结口径里它是主教师还是备用、计划用哪个核验器（核验在 run 之后，实际用的写在 verdicts 文件名与导出行里）
         cfg["teacher_model"] = teacher_model()
-        freeze = rc.load_freeze(ROOT / "specs", hi_spec, gia_spec) or {}
+        freeze = rc.load_freeze(ROOT / "specs", hi_spec, gia_spec, round_tag) or {}
         teacher = freeze.get("teacher") or {}
         cfg["walker"]["teacher_role"] = teacher_check(teacher).get("role") if freeze else None
         cfg["walker"]["judge_planned"] = judge_label()
