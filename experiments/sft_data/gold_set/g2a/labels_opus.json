@@ -1,0 +1,223 @@
+{
+ "batch": "g2a",
+ "annotator": "opus",
+ "exported_at": "2026-10-18T19:21:07.068812+00:00",
+ "labels": [
+  {
+   "id": "A001",
+   "kind": "answer",
+   "run": "fmnv_a_F51nH6oLGfY_r1g2_1",
+   "main": "acceptable",
+   "errors": [],
+   "span": "",
+   "note": "Checked each sentence against E41/E46: the candidate URL and the 2025-01-06 upload/earliest-archive dates match E46 and are presented only as this candidate's dates, not as the original publication; the 27% consistent-match figure, the sound difference A 47.0-90.0 s vs B 0.2-43.2 s, envelope correlation 0.16 and 0/85 windows are all verbatim from E41. REQ1 and REQ2 are not established (no source confirmed, no edit inventory), but the answer states this honestly as undetermined with the supporting measurement, which the batch guide treats as acceptable for A-family negatives; REQ3 (what could not be determined) is covered well, including the explicit caveat that the video is not shown to be unedited. Small precision point (not an error): E41 also lists two partial corresponding spans (A 16.2-19.2 s = B 42.6-45.1 s; A 25.2-40.2 s = B 51.5-66.0 s) that the answer omits, so 'paired timestamps could not be determined' slightly understates the partial overlap, though these spans do not establish the candidate as the source. verifier-FP-pattern: honest 'original not found / cannot determine' answer with must-cite requirements unmet may be flagged as omitted_required_fact or premature_finish; tool measurements quoted verbatim with attribution.",
+   "req": {
+    "REQ1": "no",
+    "REQ2": "no",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A002",
+   "kind": "answer",
+   "run": "fmnv_a_0zC0K0YZEzg_r1g2_1",
+   "main": "acceptable",
+   "errors": [],
+   "span": "",
+   "note": "Checked every line against E25: 95% match, B 2-130 s range, the four removed intervals (B 26.6-42.6 @A27.8, 51.8-65.0 @A37.8, 70.9-79.4 @A44.2, 97.5-118.6 @A63.2), reversal A 1.8-5.2=B 1.9-4.5, freeze A 8.8-11.2 (B 10.5), and sound difference A 28.0-29.5 vs B 42.6-44.1 are all reproduced exactly. E38 gives only this upload's platform date (2025-01-17), and the answer correctly calls it a 'matching source copy' with 'earliest-original status unverified', so it does not overreach to 'original publication'. Limitations (0.5 s precision, reversal/freeze not visually confirmed, sound cause unknown, added footage/alterations unverified) cover REQ3. Tiny nit, not an error: A 5.2-8.8 s and 11.2-16.2 s are not in E25's corresponding_spans and the answer does not mention them, but the tool itself does not list them as differences either. verifier-FP-pattern: compare_media measurements (incl. 'B 10.5-10.5 s', spectral-based sound difference) copied verbatim with attribution to the tool.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A003",
+   "kind": "answer",
+   "run": "fmnv_a_9ACukGwm6O8_r1g2_1",
+   "main": "minor",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "",
+   "note": "Checked against E26 and E33. The URL, the KRGV channel and the 2024-09-25 upload date match E33, and the answer correctly calls the earliest upload unverified rather than calling it the original. The 100% sample match, the removed span (B 31.3-43.1 s, 11.8 s, skipped at A 31.8 s), all four sound-difference intervals on both sides, the three matching face tracks and the 0.5 s boundary limitation are all copied accurately from E26. One minor error: the video title 'Cards Against Humanity suing SpaceX for allegedly trespassing on Boca Chica property' appears in neither E33 nor E26, so it is unsupported. This does not change the verdict, because REQ1 is already met by the URL and channel. The 'no added or reordered footage' claim is attributed to the comparison ('The comparison lists...'), and the content of the sound changes is honestly listed as not established. verifier-FP-pattern: the sound-difference spectral similarities are quoted as the tool's own intervals and should not be flagged as sloppy_numeric.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A004",
+   "kind": "answer",
+   "run": "videosham_0099_r1g2_1",
+   "main": "unacceptable",
+   "errors": [
+    "omitted_required_fact"
+   ],
+   "span": "",
+   "note": "Each sentence checks out against its citation: the 94% match, the B 0-8 s location and the 12/12 sound windows match E21, and the transcript text, 4.68-6.16 s timing and 0-6.2 speech / 6.2-8.1 other-sound labels match E32. The hedges about B's source identity and unsampled regions are honest. REQ1 (must-cite: does A show the described screen flicker, confirmed by the picture, with positions on both sides) is not answered (major). No frame or region evidence is cited at all. The answer also says the locations 'cannot be determined', yet E21's corresponding_spans show an unmatched gap at A 3.3-3.8 s vs B 3.0-4.0 s, and the answer never reports it. REQ2 is covered by E21/E32, and REQ3/REQ4 are covered only as honest 'cannot determine' statements, since no difference was confirmed visually. verifier-FP-pattern: a hedged 'cannot be determined' answer with all sentences supported may pass sentence-level checks, but the investigation stopped without any visual inspection.",
+   "req": {
+    "REQ1": "no",
+    "REQ2": "yes",
+    "REQ3": "yes",
+    "REQ4": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A005",
+   "kind": "answer",
+   "run": "videosham_0109_r1g2_1",
+   "main": "acceptable",
+   "errors": [],
+   "span": "",
+   "note": "Checked images: E21 (A|B at 5.2 s) shows three foreground people in B with a central man in black shirt and gray/blue shorts inside the red box, and pavement in A at the same spot; E25 (B, 0.000 s crop) shows a person in black shirt and gray shorts, E28 (A, 0.000 s crop) shows empty pavement, so the visual difference, its location and the three-vs-two impact are supported (REQ1, REQ3). The 100% sample match, A/B [0.000, 5.680) s pixel-difference segment and 10/10 sound windows are copied faithfully from E24, and the ASR results (A no segments, B 'You' 0-2 s) match E31/E32 and are hedged as not establishing an audible difference (REQ2). The answer does not presume B's source identity or editing direction and lists unverified items (unsampled intervals, audible content, faces) (REQ4). Only cosmetic awkwardness: the sentence that the measured interval 'does not establish the person's absence through continuous visual inspection' is oddly phrased but not wrong. verifier-FP-pattern: tool measurements (100% samples, 10/10 windows, frame-exact interval) quoted verbatim with attribution to the comparison.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes",
+    "REQ4": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F001",
+   "kind": "finding",
+   "run": "fmnv_a_fsdDrrt_maI_r1g2_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“Elon Musk's SpaceX Valuation Reaches Record of $350 Billion,”",
+   "note": "E24 supports the claim that 100% of A's half-second samples are found in B, and E31 supports the URL, the 2024-12-11 upload date and the 2024-12-17 first archive capture. The limitation says the dates are this copy's history, not the earliest upload, so 'source video found' does not overreach into calling it the original. The video title, however, appears in neither E24 nor E31: E31 gives only the URL and the channel (Bloomberg Tech). The title probably comes from an uncited card such as E22, so it is unsupported by the cited evidence (minor; it does not change the conclusion). The statement also leaves out the 16.1 s removal (B 43.6-59.7 s skipped at A 44.3 s) and the sound differences shown in E24, but that is incompleteness, not a support error. verifier-FP-pattern: a title drawn from an uncited search card while the cited cards hold only the URL.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F002",
+   "kind": "finding",
+   "run": "fmnv_a_6C0lUMKMj0w_r1g2_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked each claim against the cited evidence. The first sentence only lists what was cited: E43 (compare_media result), E48 (date lookup for the candidate YouTube URL) and E11 (ASR on Material A), and all three are present. In E11, processed_ranges is [[0.0, 71.78004166666666]], and the segment from 14.0 to 20.56 s begins 'It was so well put together', so both match exactly. The statement draws no conclusion about the original or its dates beyond this, so it has no overreach (it does very little for the task, but every claim is supported). verifier-FP-pattern: the long float 71.78004166666666 is copied verbatim from the tool, which should not be flagged as sloppy_numeric.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F003",
+   "kind": "finding",
+   "run": "fmnv_a_kvsfmJI5nJU_r1g2_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“How Harris or Trump could win the election,”",
+   "note": "The URL and the 2024-11-05 platform upload date match E47, and the limitations say plainly that this is the date of this copy, not the earliest publication, so the date is not overstated. The claim that 100% of A's half-second samples are found in B is copied exactly from the E40 summary, and the statement says A 'uses its footage' rather than calling B the original, which fits the sampled-match limitation. The video title is not in either cited evidence card (E40 has no title and E47 gives only the URL and the channel ABC News), so it is an unsupported assertion. This error is minor because it does not change the conclusion. verifier-FP-pattern: the 100% figure is a verbatim compare_media measurement, and the upload date is correctly hedged as the date of this upload.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F004",
+   "kind": "finding",
+   "run": "fmnv_a_h3uASpEE75Q_r1g2_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "The statement makes only provenance claims: that E39 is the whole-video compare_media result (it is, comparing A=E1 with B=E37), and that frame records exist for A at 11.545 s (E4) and 34.635 s (E6) and for B at 16.884 s (E40, actual time_s 16.884) and 50.617 s (E41, time_s 50.617). All four times match the cited frame records exactly, and the images are readable: a THV11 studio, Trump at a podium, and two Denver7 anchors. The statement claims no correspondence between the frames, and its limitations say outright that sampling times do not establish correspondence or coverage, so nothing overreaches. The finding is nearly content-free, though: it does not report E39's actual conclusion (B is probably not the source, only 9% matched, sound similarity 0.22), but that is an omission, not an unsupported claim. verifier-FP-pattern: a requested_time vs actual time_s difference (E40 requested 16.869, actual 16.884) could be flagged as sloppy_numeric, but the statement uses the actual time_s.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F005",
+   "kind": "finding",
+   "run": "fmnv_a_dgUIwhI09Rc_r1g2_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked each claim against the cited evidence. E2 media profile gives duration 32.4 s, 360x640, fps 30.0 and 1 audio track. E3/E5/E8/E10 are frames whose returned time_s values are 0.0, 8.1, 20.233 and 28.367; all four images are readable and real frames. E12 ASR processed_ranges is [[0.0, 32.4]], and its first segment reads exactly 'Here's how the Paris Olympics opening ceremony generated so much controversy.' The statement only describes Material A and does not claim anything about an original or about edits, and the limitations honestly say that the source and any alterations remain undetermined. verifier-FP-pattern: a purely descriptive restatement of tool measurements (the requested 20.25/28.35 s vs the returned 20.233/28.367 s; a quote with the trailing period dropped) could be wrongly flagged as sloppy_numeric or misquote.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F006",
+   "kind": "finding",
+   "run": "fmnv_a__1wB0eT6YSo_r1g2_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“stYpe Technology | Croatia Presidential Elections 2024”",
+   "note": "The URL, upload date 2025-03-06 and stYpe channel match E41, and the 100% half-second sample match and the statement that A differs from B match E34 (B 23.7-32.9 s is skipped at A 24.2 s, plus six sound-difference intervals). The video title is not in either cited evidence card: E41 gives only the URL, date and channel, and E34 has no title. This is an unsupported detail, minor. Calling B 'the source video' is borderline, because E34 says the tool does not decide which file is the original. The limitation only hedges against reading the date as the earliest publication, so I treat this as minor and do not count it as an error. The vague 'differs' leaves out the cut and sound details, but that is an omission, not a support failure.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F007",
+   "kind": "finding",
+   "run": "fmnv_a_BQBoqdkM4hw_r1g2_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "The source search identified the candidate “Paris can't wait for Olympics to cast its spell,”",
+   "note": "The core claim is supported. E44 shows platform upload date 2023-07-26 for the cited URL, the statement attributes it to the date lookup and calls it 'this copy', and the limitations say an upload date does not establish the earliest appearance, so there is no earliest-source overreach. The video title and the claim that the source search identified this candidate do not appear in the only cited evidence, E44, which holds dates only and no search result or title. This is minor: it does not change any verdict, but it relies on an uncited search card. verifier-FP-pattern: the attributed date ('this copy was uploaded') may be wrongly flagged as an earliest-source or attribution error even though the statement hedges it correctly.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F008",
+   "kind": "finding",
+   "run": "videosham_1056_r1g2_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "E32 (OCR of A crop E29) and E33 (OCR of B crop E26) both report text_boxes 0, distinct_texts 0, and both crops are at time_s 2.002 with the same box, which matches the statement exactly. The crop images E29 (magenta/pink box in a hand) and E26 (white box in a hand) show no legible writing, so the evidence does support comparing only visible color and shape. The limitation that OCR can miss characters properly hedges the zero-text result, so 'no OCR-derived identification' is not stated as a stronger negative than the evidence allows. verifier-FP-pattern: a verifier might read a 'no text recognized' claim as an unsupported negative, but here it is attributed to the OCR and hedged.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F009",
+   "kind": "finding",
+   "run": "videosham_4140_r1g2_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked E39 (RapidOCR on crop E36 from A at 0.0 s: single text 'BEST', conf 0.977) and E40 (OCR on crop E33 from B at 0.0 s: single text 'NEXT', conf 0.897); both crops use the same box [0.095,0.0,0.335,0.265] at time 0.0 s, matching the statement. Opening the images: E36 visibly shows the large upper word 'BEST' (white letters) and E33 shows 'NEXT' (black letters) in the same position on the blue cover, so 'the paired crops visibly support those readings' holds. The statement attributes the words to OCR and makes no claim about which video is edited; limitations properly scope it (the 'poster' wording in limitations looks more like a book cover, but that is not a claim in the statement). verifier-FP-pattern: OCR outputs restated verbatim with attribution to the tool may be flagged as sloppy_numeric/attribution_drift.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F010",
+   "kind": "finding",
+   "run": "videosham_0090_r1g2_1",
+   "main": "partial",
+   "errors": [
+    "sloppy_numeric"
+   ],
+   "span": "with A 0–7 s corresponding to B 0–7 s",
+   "note": "The claims of outdoor gathering footage (seen in E21: a courtyard crowd under umbrellas) and 100% of A's half-second samples matched to B (E22 summary line 1) are supported. But E22's only explicit corresponding_spans entry is 'A 0.0-4.2 s = B 0.0-3.9 s'. The summary says only that A and B are each 7 s long and that the matched footage lies in B 0-7 s, so a clean 'A 0–7 s = B 0–7 s' mapping is the finding's own inference and conflicts with the listed span (minor; it does not change the conclusion that the footage corresponds). The statement also leaves out the main difference E22/E21 report (A 0.2-6.2 s: a region where B shows a man in a dark jacket holding cards and A shows other people instead). That is a gap for the task but not an unsupported claim. verifier-FP-pattern: the summary's duration line ('A 7 s, B 7 s; matched in B 0-7 s') can be read as supporting a 0–7 s mapping even though corresponding_spans is narrower.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  }
+ ]
+}
