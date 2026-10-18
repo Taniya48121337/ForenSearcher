@@ -11,7 +11,8 @@
 - 媒体放 cases/media/g3/，记录 g3_cases_made.json，日志 claude/_g3_work/g3_cases.log。
 
     python scripts\\g3\\g3_cases.py fmnv_a [--n 40] [--allow-fmnv-test]
-    python scripts\\g3\\g3_cases.py list        # 写 experiments/sft_data/walker_g3_cases.json（按 P 分组）
+    python scripts\\g3\\g3_cases.py fv_a --n 10   # FMNV CE 类（fv）找原片：URL-only GT，compare_media 只作建卷过滤与参考
+    python scripts\\g3\\g3_cases.py list       # 写 experiments/sft_data/walker_g3_cases.json（按 P 分组）
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 MAIN = ROOT.parent
 sys.path.insert(0, str(ROOT / "scripts" / "g1"))
+sys.path.insert(0, str(ROOT / "scripts" / "g3"))
 sys.path.insert(0, str(ROOT / "scripts"))
 import g1_cases as g1c  # noqa: E402
 import walker_d2_cases as d2  # noqa: E402
@@ -304,6 +306,170 @@ def build_g360_a() -> None:
         log(f"  GroundLie360 A：{post} → YouTube {yt}；频道 {channel}")
 
 
+FV_PROBE = WORK / "probe_a_fmnv_fv.json"
+FV_DL = WORK / "fv_dl"
+
+
+def fv_compare(fake: Path, original: Path) -> dict[str, Any]:
+    """建卷时只用一次的 compare_media（画面引擎 SourceComparer，同 merged.compare_media 的 visual 部分）：A = 假视频，B = 原片。
+    结果只作过滤与参考，不是 GT。"""
+
+    from threading import Event
+
+    from foren_searcher.inspect.source_compare import CompareConfig, SourceComparer
+
+    comparer = SourceComparer(None, CompareConfig(time_budget_s=600.0))
+    try:
+        report, _ = comparer.compare(fake, original, Event())
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"{type(exc).__name__}: {str(exc)[:200]}"}
+    match = report.get("match") or {}
+    runs = report.get("correspondences") or []
+    b_dur = float(match.get("b_duration_s") or 0) or None
+    b_used = sum(max(0.0, float(r["b_range_s"][1]) - float(r["b_range_s"][0])) for r in runs if r.get("b_range_s"))
+    lines = list(report.get("summary_lines") or [])
+    return {"source_match": bool(report.get("source_match")), "fake_in_original": match.get("fraction_of_a_matched"),
+            "fake_s": match.get("a_duration_s"), "original_s": match.get("b_duration_s"),
+            "original_not_in_fake": round(1 - b_used / b_dur, 3) if b_dur else None,
+            "no_difference": any(l.startswith("No added, missing, re-timed or re-ordered footage") for l in lines),
+            "segments": [{k: r.get(k) for k in ("kind", "a_range_s", "b_range_s")} for r in runs[:8]],
+            "segments_not_in_b": report.get("segments_not_in_b"), "summary_lines": lines[:6]}
+
+
+def build_fv_a(n: int) -> None:
+    """FMNV CE 类（class fv）找原片（负责人 10-19）：材料 = 数据集作者删段做的假视频（zip 原文件，不重编码）；GT 只有原片 URL：
+    答案层核两件事——原片 URL 必须引用；报告指出至少一处与原片的差异并引用比对记录（存在性，不做区间 IoU）。
+    compare_media 只在建卷时用一次作过滤与参考：配准失败、差异 > 35%（假视频不在原片里的份额，或原片没用到的份额）、完全没差异的剔除；
+    量到的差异段写进 notes，标"工具参考测量，非 GT，不参与核验"。案卷 schema 不收未知字段，manipulation_type = fv、interval 留空
+    写进 notes 与 g3_cases_made.json。候选 = g3_probe_a.py fv 的可达清单（原片在前 10），文字 + 帧也能找到的排前。"""
+
+    import shutil
+
+    from _d2_media import probe_duration
+
+    probe = load_json(FV_PROBE, {})
+    rows = {r["video_id"]: r for r in probe.get("rows") or []}
+    reach = [v for v in probe.get("reachable") or []]
+    reach.sort(key=lambda v: (not (rows[v].get("original_in_top10") or {}).get("text_image"),
+                              min(x for x in (rows[v].get("original_in_top10") or {}).values() if x)))
+    ex = existing()
+    data = d2.fmnv_rows()
+    made = load_json(g1c.MADE_FILE, {})
+    funnel = {"reachable": len(reach), "tried": 0, "duration_out": 0, "evid_channel": 0, "download_failed": 0, "compare_error": 0,
+              "no_registration": 0, "difference_over_35": 0, "no_difference": 0, "evid_phash": 0, "built": 0}
+    rejected: list[dict[str, Any]] = []
+    with zipfile.ZipFile(g1c.FMNV_ZIP) as zf:
+        split_of = g1c.fmnv_split_ids(zf)
+        for vid in reach:
+            if sum(1 for v in made.values() if v.get("group") == "P1_A_fmnv_fv") >= n:
+                break
+            sid = f"fv_{vid}".replace("-", "_")
+            name = f"fmnv_{sid}"
+            if (CASES / f"{name}.json").exists() or vid in ex["evid"] or f"fmnv:{vid}" in ex["families"] or vid in ex["blob"]:
+                continue
+            funnel["tried"] += 1
+            fake = g1c.fmnv_extract(zf, vid, f"fmnv_fv_{vid}")
+            if fake is None:
+                continue
+            final = g1c.MEDIA / "fmnv_fv" / fake.name
+            final.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(fake), final)
+            fake = final
+            duration = probe_duration(fake)
+
+            def drop(reason: str, key: str, extra: dict[str, Any] | None = None) -> None:
+                fake.unlink(missing_ok=True)
+                funnel[key] += 1
+                rejected.append({"video_id": vid, "reason": reason, **(extra or {})})
+                log(f"    fv {vid}：{reason}")
+
+            if not duration or not (20.0 <= duration <= g1c.C_MAX_S):
+                drop(f"假视频 {duration} s 不在 20–{g1c.C_MAX_S:.0f} s", "duration_out")
+                continue
+            url = f"https://www.youtube.com/watch?v={vid}"
+            ok, channel = g1c.channel_check(f"fmnv:{sid}", url)
+            if not ok:
+                drop(f"频道 {channel} 在 EVID 131–222 频道表", "evid_channel")
+                continue
+            from g3_confirm_g360 import download  # 同一个 yt-dlp 下载（≤480p、≤20 min），只为比对，比完删
+
+            g3_dl = sys.modules["g3_confirm_g360"]
+            g3_dl.DL = FV_DL
+            original, err = download(vid)
+            if original is None:
+                drop(f"原片下不来（{err}）", "download_failed")
+                continue
+            cmp = fv_compare(fake, original)
+            shutil.rmtree(original.parent, ignore_errors=True)
+            if cmp.get("error"):
+                drop(f"比对出错 {cmp['error']}", "compare_error")
+                continue
+            not_in_orig = 1 - float(cmp.get("fake_in_original") or 0)
+            not_in_fake = cmp.get("original_not_in_fake")
+            if not cmp["source_match"]:
+                drop("配准失败（compare_media 判不是同一来源）", "no_registration", {"compare": cmp})
+                continue
+            # "比不上"= 假视频有 > 35% 在原片里找不到。原片没用到的份额不算比不上：YouTube 原片常比 FMNV 的片段长得多（FMNV 先截取、再删段），
+            # 10-19 第一遍按两侧都卡 35%，62 个候选里 50 个因"原片没用到 45–70%"被剔、0 个入选；只记进 notes 作参考
+            if not_in_orig > 0.35:
+                drop(f"比不上：假视频有 {not_in_orig:.0%} 在原片里找不到（> 35%）", "difference_over_35", {"compare": cmp})
+                continue
+            if cmp["no_difference"] and (not_in_fake or 0) < 0.02:
+                drop("完全没差异", "no_difference", {"compare": cmp})
+                continue
+            hits = phash_hits(fake)
+            if hits:
+                drop(f"感知哈希与 EVID 重复 {hits}", "evid_phash")
+                continue
+            ranks = (rows.get(vid) or {}).get("original_in_top10") or {}
+            uploader = f"{channel[0]}（{channel[1]}）" if channel and len(channel) > 1 else (channel[0] if channel else "取不到（yt-dlp 元数据）")
+            measured = "；".join(cmp["summary_lines"][:4])
+            case = {
+                "case_id": f"fmnv:{sid}", "dataset": "fmnv", "source_id": sid, "split": "dev_train", "task_kind": "provenance",
+                "task_text": d2.PROVENANCE_ZH, "task_text_en": d2.PROVENANCE_EN, "family_key": f"fmnv:{vid}",
+                "media": [{"ref": "I0", "path": g1c.rel_media(fake), "media_type": "video/mp4"}], "claims": [],
+                "source_policy": {"mode": "unrestricted", "excluded_keys": [], "date_cutoff": None},
+                "requirements": [
+                    {"id": "REQ1", "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据", "must_cite": True,
+                     "text_en": "The original source video of the given video (address, channel or title), and the picture correspondence that identifies it"},
+                    {"id": "REQ2", "text": "给定视频与原片的差异：至少指出一处删掉 / 添加 / 调换 / 改变的部分，并引用比对记录", "must_cite": True,
+                     "text_en": "How the given video differs from the original: name at least one part that was removed, added, reordered or altered, citing the comparison"},
+                    {"id": "REQ3", "text": "未能确定的内容（未比对的模态、边界精度等）", "must_cite": False,
+                     "text_en": "What could not be determined (modalities not compared, boundary precision, etc.)"},
+                ],
+                "required_evidence": [
+                    {"key": "original_video", "description": f"原片：YouTube {vid}（FMNV CE 类假视频的来源，标题：{data[vid].get('title', '')[:120]}）",
+                     "url_pattern": f"youtube.com/watch[?]v={vid.replace('[', '[[]').replace('?', '[?]')}*", "must_cite": True,
+                     "supports": ["REQ1"], "acquired_by": None},
+                    {"key": "comparison", "description": "材料与原片的 compare_media 比对结果（报告据以指出至少一处差异）",
+                     "acquired_by": "INSPECT/compare_media", "must_cite": True, "supports": ["REQ2"], "url_pattern": None},
+                ],
+                "required_evidence_rule": "all",
+                "checks": [{"kind": "evidence_key_required", "params": {"key": "original_video"}, "note": "原片 URL 必须引用", "requirement": "REQ1"},
+                           {"kind": "evidence_key_required", "params": {"key": "comparison"},
+                            "note": "报告指出至少一处与原片的差异并引用比对记录（存在性，不做区间 IoU）", "requirement": "REQ2"}],
+                "reference_path": None, "used_for_revision": [],
+                "notes": (f"g3 建卷（{now()}，scripts/g3/g3_cases.py fv_a）：manipulation_type = fv（FMNV CE 类，'关键片段被删'，数据集作者从 YouTube "
+                          f"原片删段制作）；interval = 空（数据集没给被删区间，不设 interval_iou）。FMNV {vid}（{data[vid].get('subject', '')}；"
+                          f"FMNV 划分 {split_of.get(vid)}）。材料 = 假视频原文件（zip，{duration:.1f} s，不重编码）。上传者 / 频道：{uploader}。"
+                          f"g3 探测（walker 同一条 search 层、Lens 关）原片排名：{json.dumps(ranks, ensure_ascii=False)}。"
+                          f"【工具参考测量，非 GT，不参与核验】建卷时 compare_media（A = 假视频、B = 原片）：假视频在原片里 "
+                          f"{cmp.get('fake_in_original')}，原片没用到的份额 {not_in_fake}；{measured}。"
+                          f"C6 建卷时自查：EVID 编号 0、频道{'不在' if channel else '取不到，未查'} EVID 131–222 频道表、感知哈希 0。"),
+            }
+            d2.write_case(case)
+            g1c.record_made(case, "A", "fmnv", {"group": "P1_A_fmnv_fv", "manipulation_type": "fv", "interval": None,
+                                                "media": g1c.rel_media(fake), "fmnv_split": split_of.get(vid), "probe_ranks": ranks,
+                                                "channel": channel, "reference_compare": cmp})
+            made = load_json(g1c.MADE_FILE, {})
+            g1c.record_channel(case["case_id"], channel)
+            funnel["built"] += 1
+            log(f"  FMNV fv：{vid}（{split_of.get(vid)}），{duration:.0f} s；频道 {channel}；探测 {ranks}；"
+                f"假视频在原片 {cmp.get('fake_in_original')}、原片没用到 {not_in_fake}")
+    log(f"[FMNV fv] {json.dumps(funnel, ensure_ascii=False)}")
+    save_json(WORK / "build_fv_funnel.json", {"funnel": funnel, "rejected": rejected})
+
+
 def write_list() -> None:
     made = load_json(g1c.MADE_FILE, {})
     groups: dict[str, list[str]] = {}
@@ -330,12 +496,16 @@ def main() -> int:
     p.add_argument("--n", type=int, default=60)
     p.add_argument("--allow-fmnv-test", action="store_true")
     sub.add_parser("g360_a")
+    p = sub.add_parser("fv_a")
+    p.add_argument("--n", type=int, default=10)
     sub.add_parser("list")
     args = parser.parse_args()
     if args.cmd == "fmnv_a":
         build_fmnv_a(args.n, args.allow_fmnv_test)
     elif args.cmd == "g360_a":
         build_g360_a()
+    elif args.cmd == "fv_a":
+        build_fv_a(args.n)
     elif args.cmd == "list":
         write_list()
     return 0
