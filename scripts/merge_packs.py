@@ -10,8 +10,8 @@
     hi.jsonl / gia.jsonl   各包 data/<role>_accepted.jsonl 的行（包的顺序 = 命令行顺序 = 流水线版本从低到高），三步筛 / 改：
       1. 定案 ②：同一 case_id 出现在几个包里时只留**最高版本**（命令行里最后出现的那个包）的行；
       2. --hold 清单里的行（pack + run + request + role）跳过，manifest 记 bucket_reason（例：rationale_premature_match）；
-      3. 定案 ③ 降权（只 HI，一行不删）：动作行（unit=step）权重先截到 --step-cap（2）→ 每案例权重和 > --case-cap（10）该案例
-         按同一系数缩 → 每分支权重和 > --branch-cap（60）该分支按同一系数缩（报告行不受分支上限）→ **每个角色全局乘一个系数使
+      3. 定案 ③ 降权（只 HI，一行不删）：报告行重标前固定 1、不受下面两个上限（10-19 裁决 3，实现 B）；动作行（unit=step）权重
+         先截到 --step-cap（2）→ 每案例动作行权重和 > --case-cap（10）该案例动作行按同一系数缩 → 每分支权重和 > --branch-cap（60）该分支按同一系数缩 → **每个角色全局乘一个系数使
          平均权重 = 1**（sft_lora 按行乘权重、不归一，不重标梯度会小约 5 倍）。上限比较都在重标前的单位里做；重标只乘同一个
          系数，各分支 / 各族 / 各案例之间的比例不变。原权重留在 metadata.sample_weight_orig，各步系数在 metadata.weight_factors。
       每行 metadata 另加：pack（来源批次）、teacher_source（S0–S3 槽的教师：qwen / codex，按该包 provenance/runs.jsonl 的逐槽
@@ -80,23 +80,32 @@ def hashes(ident: dict[str, Any]) -> dict[str, Any]:
             "state_renderer": ident.get("state_renderer")}
 
 
+def is_report(md: dict[str, Any]) -> bool:
+    return md.get("unit") == "report" or str(md.get("branch") or "").startswith("report_")
+
+
 def downweight(rows: list[dict[str, Any]], step_cap: float, case_cap: float | None, branch_cap: float | None) -> dict[str, Any]:
-    """定案 ③（HI）：截顶 → 每案例 → 每分支；返回重标前的统计。就地写 metadata.sample_weight / weight_factors。"""
+    """定案 ③ + 10-19 裁决 3（实现 B）（HI）：报告行重标前权重固定 1、不受每案例 / 每分支上限；动作行截顶 → 每案例 → 每分支
+    （案例 / 分支的权重和只算动作行）。返回重标前的统计。就地写 metadata.sample_weight / weight_factors。"""
 
     w = []
     for r in rows:
         md = r["metadata"]
         x = float(md["sample_weight_orig"])
-        f = {}
-        if md.get("unit") == "step" and x > step_cap:
+        f: dict[str, Any] = {}
+        if is_report(md):
+            f["report_fixed"] = 1.0                      # 原权重留在 sample_weight_orig
+            x = 1.0
+        elif md.get("unit") == "step" and x > step_cap:
             f["step_cap"] = round(step_cap / x, 6)
             x = step_cap
         w.append(x)
         md["weight_factors"] = f
+    steps = [i for i, r in enumerate(rows) if not is_report(r["metadata"])]
     if case_cap:
         by_case: dict[str, list[int]] = defaultdict(list)
-        for i, r in enumerate(rows):
-            by_case[r["metadata"]["case_id"]].append(i)
+        for i in steps:
+            by_case[rows[i]["metadata"]["case_id"]].append(i)
         for idx in by_case.values():
             tot = sum(w[i] for i in idx)
             if tot > case_cap:
@@ -106,10 +115,8 @@ def downweight(rows: list[dict[str, Any]], step_cap: float, case_cap: float | No
                     rows[i]["metadata"]["weight_factors"]["case_cap"] = round(k, 6)
     if branch_cap:
         by_branch: dict[str, list[int]] = defaultdict(list)
-        for i, r in enumerate(rows):
-            b = str(r["metadata"].get("branch") or "")
-            if not b.startswith("report_"):
-                by_branch[b].append(i)
+        for i in steps:
+            by_branch[str(rows[i]["metadata"].get("branch") or "")].append(i)
         for idx in by_branch.values():
             tot = sum(w[i] for i in idx)
             if tot > branch_cap:
@@ -118,15 +125,17 @@ def downweight(rows: list[dict[str, Any]], step_cap: float, case_cap: float | No
                     w[i] *= k
                     rows[i]["metadata"]["weight_factors"]["branch_cap"] = round(k, 6)
     per_case, per_branch = Counter(), Counter()
-    for r, x in zip(rows, w):
-        per_case[r["metadata"]["case_id"]] += x
-        if not str(r["metadata"].get("branch") or "").startswith("report_"):
-            per_branch[r["metadata"].get("branch")] += x
+    for i in steps:
+        per_case[rows[i]["metadata"]["case_id"]] += w[i]
+        per_branch[rows[i]["metadata"].get("branch")] += w[i]
     for r, x in zip(rows, w):
         r["metadata"]["sample_weight"] = x
-    return {"weight_sum_before_rescale": round(sum(w), 3), "max_case_weight": round(max(per_case.values(), default=0), 4),
+    reports = [x for r, x in zip(rows, w) if is_report(r["metadata"])]
+    return {"weight_sum_before_rescale": round(sum(w), 3), "step_weight_sum_before_rescale": round(sum(w[i] for i in steps), 3),
+            "report_rows": len(reports), "report_weight_sum_before_rescale": round(sum(reports), 3),
+            "max_case_step_weight": round(max(per_case.values(), default=0), 4),
             "max_branch_weight": round(max(per_branch.values(), default=0), 4),
-            "max_step_weight": round(max((x for r, x in zip(rows, w) if r["metadata"].get("unit") == "step"), default=0), 4)}
+            "max_step_weight": round(max((w[i] for i in steps), default=0), 4)}
 
 
 def rescale(rows: list[dict[str, Any]]) -> float:
@@ -285,11 +294,13 @@ def merge(args: argparse.Namespace) -> int:
         "hashes_consistent": True, "hashes": base,
         "dedup": {"rule": "同一 case_id 只留最高版本（命令行最后出现）的包的行（定案 ②）", "rows_dropped": dict(dropped_dedup)},
         "holds": {"files": hold_files, "rows_skipped": dict(dropped_hold)},
-        "weights": {"rule": "定案 ③：只 HI；动作行先截到 step_cap → 每案例 ≤ case_cap → 每分支 ≤ branch_cap（报告行不受分支上限）；"
-                            "上限都在重标前的单位里比；之后每个角色乘同一系数使平均权重 = 1",
+        "weights": {"rule": "定案 ③ + 10-19 裁决 3（实现 B）：只 HI；报告行重标前固定 1、不受每案例 / 每分支上限；动作行先截到 step_cap → "
+                            "每案例（只算动作行）≤ case_cap → 每分支 ≤ branch_cap；上限都在重标前的单位里比；之后每个角色乘同一系数使平均权重 = 1",
                     "step_cap": args.step_cap, "case_cap": args.case_cap, "branch_cap": args.branch_cap,
                     "hi_before": before, "hi_downweight": dw, "rescale_factor": factors,
                     "mean_weight": {r: round(sum(float(x["metadata"]["sample_weight"]) for x in v) / max(1, len(v)), 6) for r, v in kept.items()},
+                    "hi_report_weight_share": round(sum(float(x["metadata"]["sample_weight"]) for x in kept["hi"] if is_report(x["metadata"]))
+                                                    / max(1e-9, sum(float(x["metadata"]["sample_weight"]) for x in kept["hi"])), 4),
                     "hi_family_share_rows": shares(kept["hi"], "family", False),
                     "hi_family_share_weight": shares(kept["hi"], "family", True)},
         "rows": {r: len(v) for r, v in kept.items()}, "images": len(image_owner),
@@ -353,9 +364,12 @@ def verify(path: Path) -> int:
             if role == "hi":
                 k = (md.get("weight_factors") or {}).get("rescale", 1.0)
                 pre = ws[-1] / k
-                pre_case[c] += pre
-                if not str(md.get("branch") or "").startswith("report_"):
+                if is_report(md):
+                    if abs(pre - 1.0) > 1e-6:
+                        problems.append(f"hi#{i}: 报告行重标前权重 {pre:.4f} ≠ 1（裁决 3 实现 B）")
+                else:
                     pre_branch[md.get("branch")] += pre
+                    pre_case[c] += pre
                 if md.get("unit") == "step" and pre > float(w.get("step_cap") or 1e9) + 1e-6:
                     problems.append(f"hi#{i}: 动作行重标前权重 {pre:.4f} > step_cap")
         rows[role] = len(ws)
@@ -371,7 +385,7 @@ def verify(path: Path) -> int:
     ok = not bad and not extra and digest_ok and not problems and all(checks.values())
     print(json.dumps({"dir": str(path), "merged_id": manifest.get("merged_id"), "files": len(listed), "changed_or_missing": bad[:20],
                       "extra": extra[:20], "data_digest_ok": digest_ok, "rows": rows, "mean_weight": {k: round(v, 6) for k, v in means.items()},
-                      "max_case_weight_pre_rescale": round(max(pre_case.values(), default=0), 4),
+                      "max_case_step_weight_pre_rescale": round(max(pre_case.values(), default=0), 4),
                       "max_branch_weight_pre_rescale": round(max(pre_branch.values(), default=0), 4),
                       "checks": checks, "problems": problems[:20], "ok": ok}, ensure_ascii=False, indent=2))
     return 0 if ok else 1
