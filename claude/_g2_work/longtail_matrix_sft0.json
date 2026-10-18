@@ -1,0 +1,1155 @@
+{
+ "packs": [
+  "r1",
+  "g1",
+  "g2"
+ ],
+ "dropped_by_dedup": {
+  "r1": 0,
+  "g1": 0,
+  "g2": 0
+ },
+ "tiers": {
+  "可学": 19,
+  "薄": 6,
+  "薄·条件触发": 2,
+  "零·允许为零": 6
+ },
+ "totals": {
+  "rows": 3192,
+  "rationale_rows": 3192,
+  "templated": 3,
+  "match_before_compare": 324,
+  "match_assertive": 92,
+  "gia_answers": 197,
+  "gia_unseen_entity": 7
+ },
+ "table": [
+  {
+   "branch": "READ_RECORD text",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 635,
+   "cases": 198,
+   "packs": {
+    "r1": [
+     322,
+     98
+    ],
+    "g1": [
+     313,
+     100
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 322,
+    "codex": 313
+   },
+   "families": {
+    "E": 146,
+    "L": 52,
+    "C": 437
+   },
+   "rationale_rows": 635,
+   "templated": 0,
+   "match_before_compare": 67,
+   "match_assertive": 27,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT asr",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 290,
+   "cases": 244,
+   "packs": {
+    "r1": [
+     65,
+     49
+    ],
+    "g1": [
+     151,
+     139
+    ],
+    "g2": [
+     74,
+     56
+    ]
+   },
+   "teacher": {
+    "qwen": 65,
+    "codex": 225
+   },
+   "families": {
+    "C": 132,
+    "B": 92,
+    "A": 66
+   },
+   "rationale_rows": 290,
+   "templated": 0,
+   "match_before_compare": 3,
+   "match_assertive": 1,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT get_frames times_s",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 283,
+   "cases": 179,
+   "packs": {
+    "r1": [
+     80,
+     46
+    ],
+    "g1": [
+     130,
+     100
+    ],
+    "g2": [
+     73,
+     33
+    ]
+   },
+   "teacher": {
+    "qwen": 80,
+    "codex": 203
+   },
+   "families": {
+    "C": 107,
+    "B": 89,
+    "A": 87
+   },
+   "rationale_rows": 283,
+   "templated": 0,
+   "match_before_compare": 2,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH text→text",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 275,
+   "cases": 168,
+   "packs": {
+    "r1": [
+     79,
+     70
+    ],
+    "g1": [
+     196,
+     98
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 79,
+    "codex": 196
+   },
+   "families": {
+    "E": 28,
+    "L": 12,
+    "C": 235
+   },
+   "rationale_rows": 275,
+   "templated": 3,
+   "match_before_compare": 2,
+   "match_assertive": 1,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT compare_media",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 212,
+   "cases": 166,
+   "packs": {
+    "r1": [
+     137,
+     91
+    ],
+    "g1": [
+     29,
+     29
+    ],
+    "g2": [
+     46,
+     46
+    ]
+   },
+   "teacher": {
+    "qwen": 137,
+    "codex": 75
+   },
+   "families": {
+    "E": 88,
+    "L": 17,
+    "C": 3,
+    "B": 67,
+    "A": 37
+   },
+   "rationale_rows": 212,
+   "templated": 0,
+   "match_before_compare": 118,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "GIA FINISH",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 197,
+   "cases": 195,
+   "packs": {
+    "r1": [
+     85,
+     83
+    ],
+    "g1": [
+     85,
+     85
+    ],
+    "g2": [
+     27,
+     27
+    ]
+   },
+   "teacher": {
+    "qwen": 85,
+    "codex": 112
+   },
+   "families": {
+    "E": 26,
+    "L": 3,
+    "C": 93,
+    "B": 56,
+    "A": 19
+   },
+   "rationale_rows": 197,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 197,
+   "gia_unseen_entity": 7
+  },
+  {
+   "branch": "READ_RECORD focus",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 196,
+   "cases": 182,
+   "packs": {
+    "r1": [
+     97,
+     83
+    ],
+    "g1": [
+     99,
+     99
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 97,
+    "codex": 99
+   },
+   "families": {
+    "E": 37,
+    "L": 26,
+    "C": 131,
+    "B": 2
+   },
+   "rationale_rows": 196,
+   "templated": 0,
+   "match_before_compare": 13,
+   "match_assertive": 7,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH open dates",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 188,
+   "cases": 96,
+   "packs": {
+    "r1": [
+     149,
+     57
+    ],
+    "g1": [
+     16,
+     16
+    ],
+    "g2": [
+     23,
+     23
+    ]
+   },
+   "teacher": {
+    "qwen": 149,
+    "codex": 39
+   },
+   "families": {
+    "E": 139,
+    "C": 18,
+    "A": 31
+   },
+   "rationale_rows": 188,
+   "templated": 0,
+   "match_before_compare": 73,
+   "match_assertive": 42,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "report_completed",
+   "coverage": "表外（报告）",
+   "tier": "可学",
+   "rows": 171,
+   "cases": 170,
+   "packs": {
+    "r1": [
+     71,
+     70
+    ],
+    "g1": [
+     83,
+     83
+    ],
+    "g2": [
+     17,
+     17
+    ]
+   },
+   "teacher": {
+    "qwen": 71,
+    "codex": 100
+   },
+   "families": {
+    "E": 24,
+    "L": 3,
+    "C": 103,
+    "B": 30,
+    "A": 11
+   },
+   "rationale_rows": 171,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT ocr(video)",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 163,
+   "cases": 163,
+   "packs": {
+    "r1": [
+     33,
+     33
+    ],
+    "g1": [
+     116,
+     116
+    ],
+    "g2": [
+     14,
+     14
+    ]
+   },
+   "teacher": {
+    "qwen": 33,
+    "codex": 130
+   },
+   "families": {
+    "C": 126,
+    "A": 37
+   },
+   "rationale_rows": 163,
+   "templated": 0,
+   "match_before_compare": 2,
+   "match_assertive": 1,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT video_structure",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 125,
+   "cases": 125,
+   "packs": {
+    "r1": [
+     34,
+     34
+    ],
+    "g1": [
+     91,
+     91
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 34,
+    "codex": 91
+   },
+   "families": {
+    "C": 124,
+    "B": 1
+   },
+   "rationale_rows": 125,
+   "templated": 0,
+   "match_before_compare": 7,
+   "match_assertive": 7,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT ocr(image)",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 77,
+   "cases": 67,
+   "packs": {
+    "r1": [
+     64,
+     60
+    ],
+    "g1": [
+     7,
+     4
+    ],
+    "g2": [
+     6,
+     3
+    ]
+   },
+   "teacher": {
+    "qwen": 64,
+    "codex": 13
+   },
+   "families": {
+    "E": 47,
+    "L": 11,
+    "B": 18,
+    "A": 1
+   },
+   "rationale_rows": 77,
+   "templated": 0,
+   "match_before_compare": 4,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH open URL/R",
+   "coverage": "条件触发（最少 0）",
+   "tier": "可学",
+   "rows": 76,
+   "cases": 36,
+   "packs": {
+    "r1": [
+     49,
+     23
+    ],
+    "g1": [
+     27,
+     13
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 49,
+    "codex": 27
+   },
+   "families": {
+    "E": 19,
+    "L": 30,
+    "C": 27
+   },
+   "rationale_rows": 76,
+   "templated": 0,
+   "match_before_compare": 11,
+   "match_assertive": 2,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH image→image",
+   "coverage": "表外（r1 新）",
+   "tier": "可学",
+   "rows": 62,
+   "cases": 62,
+   "packs": {
+    "r1": [
+     62,
+     62
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 62
+   },
+   "families": {
+    "E": 50,
+    "L": 12
+   },
+   "rationale_rows": 62,
+   "templated": 0,
+   "match_before_compare": 21,
+   "match_assertive": 3,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT get_frames times_s+box",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 54,
+   "cases": 25,
+   "packs": {
+    "r1": [
+     17,
+     7
+    ],
+    "g1": [
+     13,
+     6
+    ],
+    "g2": [
+     24,
+     12
+    ]
+   },
+   "teacher": {
+    "qwen": 17,
+    "codex": 37
+   },
+   "families": {
+    "B": 54
+   },
+   "rationale_rows": 54,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "report_incomplete",
+   "coverage": "表外（报告）",
+   "tier": "可学",
+   "rows": 51,
+   "cases": 44,
+   "packs": {
+    "r1": [
+     30,
+     28
+    ],
+    "g1": [
+     18,
+     13
+    ],
+    "g2": [
+     3,
+     3
+    ]
+   },
+   "teacher": {
+    "qwen": 30,
+    "codex": 21
+   },
+   "families": {
+    "E": 18,
+    "L": 3,
+    "C": 17,
+    "B": 13
+   },
+   "rationale_rows": 51,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "GIA INVESTIGATE round2",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 35,
+   "cases": 35,
+   "packs": {
+    "r1": [
+     17,
+     17
+    ],
+    "g1": [
+     18,
+     18
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 17,
+    "codex": 18
+   },
+   "families": {
+    "E": 10,
+    "L": 3,
+    "C": 18,
+    "B": 4
+   },
+   "rationale_rows": 35,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH text→video",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 30,
+   "cases": 24,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     13,
+     9
+    ],
+    "g2": [
+     17,
+     15
+    ]
+   },
+   "teacher": {
+    "codex": 30
+   },
+   "families": {
+    "A": 30
+   },
+   "rationale_rows": 30,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH text→image",
+   "coverage": "期望≥1",
+   "tier": "可学",
+   "rows": 17,
+   "cases": 12,
+   "packs": {
+    "r1": [
+     17,
+     12
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 17
+   },
+   "families": {
+    "L": 17
+   },
+   "rationale_rows": 17,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH text_image→video",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 13,
+   "cases": 13,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     7,
+     7
+    ],
+    "g2": [
+     6,
+     6
+    ]
+   },
+   "teacher": {
+    "codex": 13
+   },
+   "families": {
+    "A": 13
+   },
+   "rationale_rows": 13,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT locate(image)",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 10,
+   "cases": 3,
+   "packs": {
+    "r1": [
+     6,
+     2
+    ],
+    "g1": [
+     4,
+     1
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 6,
+    "codex": 4
+   },
+   "families": {
+    "B": 10
+   },
+   "rationale_rows": 10,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT compare_media range",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 8,
+   "cases": 8,
+   "packs": {
+    "r1": [
+     3,
+     3
+    ],
+    "g1": [
+     2,
+     2
+    ],
+    "g2": [
+     3,
+     3
+    ]
+   },
+   "teacher": {
+    "qwen": 3,
+    "codex": 5
+   },
+   "families": {
+    "B": 8
+   },
+   "rationale_rows": 8,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT get_frames count",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 8,
+   "cases": 8,
+   "packs": {
+    "r1": [
+     1,
+     1
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     7,
+     7
+    ]
+   },
+   "teacher": {
+    "qwen": 1,
+    "codex": 7
+   },
+   "families": {
+    "B": 1,
+    "A": 7
+   },
+   "rationale_rows": 8,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT locate(text)",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 1,
+   "cases": 1,
+   "packs": {
+    "r1": [
+     1,
+     1
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 1
+   },
+   "families": {
+    "B": 1
+   },
+   "rationale_rows": 1,
+   "templated": 0,
+   "match_before_compare": 1,
+   "match_assertive": 1,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "QUERY_MEMORY (HI)",
+   "coverage": "期望≥1",
+   "tier": "薄",
+   "rows": 1,
+   "cases": 1,
+   "packs": {
+    "r1": [
+     1,
+     1
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 1
+   },
+   "families": {
+    "B": 1
+   },
+   "rationale_rows": 1,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "READ_RECORD offset>0",
+   "coverage": "条件触发（最少 0）",
+   "tier": "薄·条件触发",
+   "rows": 7,
+   "cases": 7,
+   "packs": {
+    "r1": [
+     3,
+     3
+    ],
+    "g1": [
+     4,
+     4
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 3,
+    "codex": 4
+   },
+   "families": {
+    "C": 7
+   },
+   "rationale_rows": 7,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH open video",
+   "coverage": "条件触发（最少 0）",
+   "tier": "薄·条件触发",
+   "rows": 7,
+   "cases": 7,
+   "packs": {
+    "r1": [
+     1,
+     1
+    ],
+    "g1": [
+     6,
+     6
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {
+    "qwen": 1,
+    "codex": 6
+   },
+   "families": {
+    "C": 7
+   },
+   "rationale_rows": 7,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH image→video",
+   "coverage": "允许为零（定案 ④：walker 不可达）",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "SEARCH image→text",
+   "coverage": "条件触发（最少 0；10-18 定：E/L 改走 image→image）",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "INSPECT get_frames pages",
+   "coverage": "允许为零（定案 ④：数据里没有扫描件）",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "GIA INVESTIGATE round1",
+   "coverage": "按设计为零",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "GIA READ_RECORD",
+   "coverage": "按设计为零",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  },
+  {
+   "branch": "GIA QUERY_MEMORY",
+   "coverage": "按设计为零",
+   "tier": "零·允许为零",
+   "rows": 0,
+   "cases": 0,
+   "packs": {
+    "r1": [
+     0,
+     0
+    ],
+    "g1": [
+     0,
+     0
+    ],
+    "g2": [
+     0,
+     0
+    ]
+   },
+   "teacher": {},
+   "families": {},
+   "rationale_rows": 0,
+   "templated": 0,
+   "match_before_compare": 0,
+   "match_assertive": 0,
+   "gia_answers": 0,
+   "gia_unseen_entity": 0
+  }
+ ]
+}

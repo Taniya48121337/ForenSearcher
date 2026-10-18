@@ -1,0 +1,26 @@
+TASK: The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.
+GT: [{"kind": "interval_iou", "params": {"start": 37.9, "end": 51.4, "min_iou": 0.5}, "note": "原片 37.9–51.4 s 被删（材料剪点在 37.9 s）；区间由制作过程确定", "requirement": "REQ2"}]
+0001 G1_round1 | INVESTIGATE round1 | []
+0002 A1_ocr_material | INSPECT ocr(video) | ['S0_rationale']
+0003 A2_asr_material | INSPECT asr | ['S0_rationale']
+0004 A3_search_original_text | SEARCH text video | ['S1_query']
+      S1: {"query": "\"bobsphotons\" Starship \"January 16, 2025\"", "rationale": "The watermark in E5, E8 and E10 identifies bobsphotons, while E11 supplies the Starship launch reference and stated date."}
+      args: {"input_type": "text", "query": "\"bobsphotons\" Starship \"January 16, 2025\"", "output_type": "video"}
+0005 M1_compare_media | INSPECT compare_media | ['S0_rationale']
+0006 M3_frames_B | INSPECT get_frames times_s | ['S0_rationale']
+0007 M3_frames_A | INSPECT get_frames times_s | ['S0_rationale']
+0008 M3_frames_B | INSPECT get_frames times_s | ['S0_rationale']
+0009 M3_frames_A | INSPECT get_frames times_s | ['S0_rationale']
+0010 A6_dates_of_original | SEARCH dates | ['S0_rationale']
+      args: {"source": "R1", "output_type": "text", "include": ["dates"]}
+0011 M7_report | report_completed | ['S4_report']
+      REPORT COMPLETED reason=null
+        - The source video found is “⭕️ SPACEX STARSHIP ESPLOSIONE DELLO STADIO SUPERIORE - 16 gennaio 2025” at https://www.youtube.com/watch?v=_O79TTS6QNk, uploaded on 2025-01-17. Comparing Material A against this video as B found matches for 95% of
+        - The comparison reports four internal omissions: B 26.6–42.6 s is skipped at A 27.8 s; B 51.8–65.0 s at A 37.8 s; B 70.9–79.4 s at A 44.2 s; and B 97.5–118.6 s at A 63.2 s. It places A’s matched footage within B 2–130 s and reports that the 
+        - Specific support consists of the whole-video comparison and timestamped frame extractions around two reported cuts. Around A 27.8 s, Material A was sampled at 27.583333333333332 s and 28.0 s, while B was sampled at 26.4, 26.9, 42.3 and 42.8
+        - The investigation establishes a matching published source and measured candidate differences, with limited audio and provenance conclusions. ASR processed Material A over 0.0–76.5830078125 s and returned no recognized speech segments. OCR r
+0012 G4_look_at_cited_image | GIA READ_RECORD | []
+0013 G3_finish | FINISH | ['S5_answer']
+      ANSWER: A matching source copy was found: “⭕️ SPACEX STARSHIP ESPLOSIONE DELLO STADIO SUPERIORE - 16 gennaio 2025” (https://www.youtube.com/watch?v=_O79TTS6QNk), uploaded 2025-01-17; 95% of the given video's half-second picture samples match, but earliest-original status is unverified.[E25][E38] Let A denote the given video and B this source: the comparison places A’s matched footage within B 2–130 s and reports the rest of B absent.[E25] Reported differences: - Removed B 26.6–42.6 s at A 27.8 s.[E25] - Removed B 51.8–65.0 s at A 37.8 s.[E25] - Removed B 70.9–79.4 s at A 44.2 s.[E25] - Removed B 97.5–
+      GT_CHECK: {"points": ["interval"], "missed_first": ["interval"], "support": {"interval": []}, "gt_review": false}
+INLOOP: W1-1 COMPLETED -> COMPLETED flagged False err None missing []

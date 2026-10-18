@@ -1,0 +1,112 @@
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+{"step": 1, "epoch": 0, "rows": 8, "loss_weighted": 15.6926, "loss_unweighted": 12.46909, "mean_weight": 1.259, "supervised_tokens": 64, "grad_norm": 1.528, "lr": 2.777777777777778e-06, "seen_tokens": 4096, "elapsed_s": 8.1, "peak_alloc_gb": 0.0}
+{"step": 2, "epoch": 0, "rows": 8, "loss_weighted": 11.14275, "loss_unweighted": 12.46856, "mean_weight": 0.894, "supervised_tokens": 64, "grad_norm": 1.0867, "lr": 5.555555555555556e-06, "seen_tokens": 8192, "elapsed_s": 13.8, "peak_alloc_gb": 0.0}
+{
+  "role": "hi",
+  "export_dir": "dist\\sft0-20261019-17a3256f7c49",
+  "files": [
+    "hi.jsonl"
+  ],
+  "rows_in_files": 2868,
+  "rows_selected": 2868,
+  "prescan": {
+    "rows": 2868,
+    "usable": 2868,
+    "skipped_too_long": 0,
+    "too_long": [],
+    "encode_failed": [],
+    "tokens": {
+      "min": 3802,
+      "p50": 10008,
+      "p90": 14351,
+      "p95": 16557,
+      "max": 24204
+    },
+    "supervised_tokens": {
+      "min": 44,
+      "p50": 101,
+      "p90": 156,
+      "p95": 642,
+      "max": 1389
+    },
+    "sample_weight_sum_usable": 2868.0
+  },
+  "steps": 2,
+  "epochs_done": 1,
+  "rows_seen": 16,
+  "max_steps": 2,
+  "steps_per_epoch": 359,
+  "trainable_params": 90112,
+  "total_params": 32207496,
+  "smoke_tiny": true,
+  "adapter": "_smoke_tiny\\sft0_hi\\final",
+  "model": ".models/Qwen3.8-27B-processor",
+  "lora": {
+    "r": 32,
+    "alpha": 64,
+    "dropout": 0.05,
+    "targets": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "coverage": {
+      "modules": {
+        "gate_proj": 4,
+        "up_proj": 4,
+        "down_proj": 4,
+        "q_proj": 1,
+        "k_proj": 1,
+        "v_proj": 1,
+        "o_proj": 1
+      },
+      "by_kind": {
+        "mlp": 12,
+        "self_attn": 4
+      }
+    }
+  },
+  "hyper": {
+    "lr": 0.0001,
+    "min_lr_ratio": 0.1,
+    "epochs": 2,
+    "warmup_steps": 36,
+    "grad_accum": 8,
+    "max_tokens": 32768,
+    "weight_decay": 0.0,
+    "max_grad_norm": 1.0,
+    "use_sample_weight": true,
+    "logits_on_supervised_only": true,
+    "save_each_epoch": true
+  },
+  "seed": 1,
+  "seeds_registered": [
+    1,
+    2
+  ],
+  "gradient_checkpointing": true,
+  "cuda_visible_devices": null,
+  "time_s": {
+    "load_and_prescan": 13.3,
+    "train": 13.8,
+    "per_step": 6.91,
+    "per_row": 0.86
+  },
+  "peak_gpu_mem_gb": 0.0,
+  "peak_gpu_reserved_gb": 0.0,
+  "runtime": {
+    "python": "3.12.7",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "peft": "0.18.1",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_total_gb": 34.2
+  },
+  "reload_forward_ok": true
+}

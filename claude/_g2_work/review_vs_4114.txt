@@ -1,0 +1,21 @@
+TASK: Compare the given video A with the candidate video B, and investigate the differences between them that the materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state where the differences are and what could not be determined. Being given as a candidate does not mean B's source identity has been confirmed; do not treat unexamined regions or mod
+GT: []
+0001 G1_round1 | INVESTIGATE round1 | []
+0002 M1_compare_media | INSPECT compare_media | ['S0_rationale']
+0003 M3_frames_B | INSPECT get_frames times_s+box | ['S0_rationale']
+0004 M3_frames_A | INSPECT get_frames times_s+box | ['S0_rationale']
+0005 B10_asr | INSPECT asr | ['S0_rationale']
+0006 B10_asr | INSPECT asr | ['S0_rationale']
+0007 M7_report | report_completed | ['S4_report']
+      REPORT COMPLETED reason=null
+        - Material A and Material B show corresponding footage of a shopping corridor. The comparison reports that 100% of A's half-second samples match B, and the comparison image at 3.2 s shows matching corridor architecture with a localized differ
+        - At A 0.9009 s versus B 0.9009 s, and A 2.7027 s versus B 2.7027 s, B shows two people near the entrance, including a dark-clothed person carrying a bag. A shows pale, blurred background-like patches in their place, with altered floor reflec
+        - The alteration changes the apparent occupancy of the corridor: B depicts two people together near the entrance, while A makes that location appear unoccupied, apart from conspicuous residual patches. It therefore changes evidence of people 
+        - Specific visual support consists of paired crops at 0.9009 s in both materials and 2.7027 s in both materials, plus the side-by-side whole-frame and enlarged comparison at 3.2 s. These show the people in B and the replacement patches at the
+        - The comparison localizes a changed region near the distant entrance at normalized x 0.47–0.50 and y 0.45–0.65, reporting A 1.2–4.2 s at the same moments in B and approximately 0.4% of the frame. Its separate frame-level measurement reports 
+        - Audio analysis covered 0.0–5.005 s in each material, detected no reliable speech, and classified 0.0–5.0 s as silence. The comparison also reports that no frontal face was available for face comparison. These results delimit the supported c
+0008 G4_look_at_cited_image | GIA READ_RECORD | []
+0009 G3_finish | FINISH | ['S5_answer']
+      ANSWER: A and B show corresponding shopping-corridor footage, but A makes a location occupied by two people in B appear unoccupied, with residual patches; this changes the footage’s evidence of people being present.[E21][E27][E30]  At 0.9009 s and 2.7027 s in both videos, B shows two people near the entrance, while A shows pale, blurred background-like patches and altered floor reflections—consistent with removing the people from A relative to B.[E26][E29][E27][E30]  The comparison reports a localized difference at A 1.2–4.2 s, at the same moments in B, covering approximately 0.4% of the frame; separa
+      GT_CHECK: {"points": [], "missed_first": [], "support": {}, "gt_review": false}
+INLOOP: W1-1 COMPLETED -> COMPLETED flagged False err None missing []

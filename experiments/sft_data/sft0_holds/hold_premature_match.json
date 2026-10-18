@@ -1,17 +1,19 @@
 {
  "kind": "premature_match",
  "bucket_reason": "rationale_premature_match",
- "made_at": "2026-10-18 22:47:16",
+ "made_at": "2026-10-19 02:15:34",
  "made_by": "scripts/sft0_holds.py",
  "rule": "负责人 10-18 定）：\"比对前就说匹配\"的**断言式**动作行——HI 动作行的 rationale 含 match / same（词边界），\n该步之前没有 compare_media 记录（证据卡片里没有 INSPECT/compare_media、历史里没有 compare_media 调用），且不是 compare_media 那一步\n本身、也不是 whether / if / check / verify 一类带保留的问句（口径同 scripts/teaching_matrix.py 的\"断言式\"）。\n带保留措辞的行照常进；不改写教师文本。合包时这些行记 bucket_reason = rationale_premature_match。\n",
  "packs": [
   "r1",
-  "g1"
+  "g1",
+  "g2"
  ],
  "n": 92,
  "by_pack": {
   "r1": 65,
-  "g1": 27
+  "g1": 27,
+  "g2": 0
  },
  "rows": [
   {

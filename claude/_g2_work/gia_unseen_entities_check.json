@@ -1,0 +1,93 @@
+{
+ "checked_at": "2026-10-18",
+ "rule": "实体在学生输入（rows messages / rendered_payload）里可见或是检查器误报 → 不 hold；只在教师载荷或哪里都没有 → hold",
+ "holds": 0,
+ "items": [
+  {
+   "pack": "r1",
+   "run": "averimatec_e530_r1_1",
+   "request": "request_0013",
+   "entity": "Afghanistan",
+   "in_rendered_payload": false,
+   "in_row_messages": false,
+   "payload_locations": [],
+   "answer_context": " 2023 bombing is false on that dating: the matching article reports a car bombing at a crowded market near the Pakistan–Afghanistan border in northern Pakistan, killing 26 people and injuring more tha",
+   "verdict": "渲染可见（翻译）",
+   "detail": "学生输入（rendered_payload，GIA 看到的 W1 报告支撑记录 E9 正文）里是土耳其语 \"Pakistan-Afganistan sınırında kalabalık bir çarşıda bombalı araç patlaması sonucu 26 kişi öldü\"；答案译成英文",
+   "hold": false
+  },
+  {
+   "pack": "r1",
+   "run": "fmnv_c_X9tDERFjOMw_r1_1",
+   "request": "request_0013",
+   "entity": "71",
+   "in_rendered_payload": true,
+   "in_row_messages": true,
+   "payload_locations": [
+    "payload.global_view.latest_reports[0].report.findings[1].statement",
+    "payload.global_view.latest_reports[0].supporting_records[0].content",
+    "payload.global_view.latest_reports[0].supporting_records[1].content"
+   ],
+   "answer_context": "nd eventual Mars missions, not a booster loss or a setback.[E11][E12]\n\nThe footage carries the captions “SPACEX CATCHES 71 METER HIGH BOOSTER” and “BOOSTER CAPTURE CRITICAL STEP TOWARDS FULL STARSHIP ",
+   "verdict": "检查器误报",
+   "detail": "\"71 METER\" 在报告 findings[1] 与支撑记录里，学生输入可见（数字规则误判）",
+   "hold": false
+  },
+  {
+   "pack": "r1",
+   "run": "fmnv_c_ue4pMOsllxc_r1_1",
+   "request": "request_0014",
+   "entity": "Externally",
+   "in_rendered_payload": false,
+   "in_row_messages": false,
+   "payload_locations": [],
+   "answer_context": " labor support and distinguishes Michigan Teamsters support for Harris from the national union's non-endorsement. [E11] Externally, the Teamsters' own announcement confirms its decision not to endorse",
+   "verdict": "检查器误报",
+   "detail": "\"[E11] Externally, …\" 句首普通词，不是实体",
+   "hold": false
+  },
+  {
+   "pack": "r1",
+   "run": "fmnv_c_vumukVWqdZ4_r1_1",
+   "request": "request_0013",
+   "entity": "47",
+   "in_rendered_payload": true,
+   "in_row_messages": true,
+   "payload_locations": [
+    "payload.global_view.latest_reports[0].report.findings[1].statement",
+    "payload.global_view.latest_reports[0].supporting_records[1].content",
+    "payload.global_view.latest_reports[0].supporting_records[3].content"
+   ],
+   "answer_context": "t reports AP calling the presidency for Trump, and the sampled pictures display a banner announcing his election as the 47th president. [E11][E6][E8][E10] The video reports an interim tally of Trump 2",
+   "verdict": "检查器误报",
+   "detail": "\"47th\" 在报告 findings[1] 与支撑记录里，学生输入可见",
+   "hold": false
+  },
+  {
+   "pack": "r1",
+   "run": "fmnv_c_zcEuCznPmYM_r1_1",
+   "request": "request_0014",
+   "entity": "Raygun",
+   "in_rendered_payload": false,
+   "in_row_messages": false,
+   "payload_locations": [],
+   "answer_context": "m LA 2028, not permanent Olympic elimination.[E11][E24]\n\nThe video’s commentary identifies the Australian competitor as Raygun and reports zeroes in three qualifying battles; these are the reporter’s ",
+   "verdict": "拼写变体（教师常识），不是 GT 泄漏",
+   "detail": "学生输入里 W1 报告写 \"identified in the transcript as Rachel Gunn or B-girl Ray Gunn\"；答案写 \"Raygun\"——同一人，教师按常识改了拼写；不 hold，记一条 minor",
+   "hold": false
+  },
+  {
+   "pack": "g1",
+   "run": "fmnv_c_3cu7SWr_IhE_r1g1_1",
+   "request": "request_0014",
+   "entity": "Participation",
+   "in_rendered_payload": false,
+   "in_row_messages": false,
+   "payload_locations": [],
+   "answer_context": "ineup includes J. Yarraji with India's flag, so the footage should not be described as entirely unrelated to India.[E3] Participation alone does not demonstrate the title's claimed excellence.[E3]\n\n“E",
+   "verdict": "检查器误报",
+   "detail": "\"[E3] Participation alone …\" 句首普通词",
+   "hold": false
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+TASK: The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.
+GT: [{"kind": "interval_iou", "params": {"start": 58.6, "end": 78.6, "min_iou": 0.5}, "note": "原片 58.6–78.6 s 被删（材料剪点在 58.6 s）；区间由制作过程确定", "requirement": "REQ2"}]
+0001 G1_round1 | INVESTIGATE round1 | []
+0002 A1_ocr_material | INSPECT ocr(video) | ['S0_rationale']
+0003 A2_asr_material | INSPECT asr | ['S0_rationale']
+0004 A3_search_original_text | SEARCH text video | ['S1_query']
+      S1: {"query": "Sky News California wildfires \"most destructive fires in LA history\"", "rationale": "E3, E5, E8 and E10 show the Sky News branding and the exact headline “MOST DESTRUCTIVE FIRES IN LA HISTORY,” providing specific clues for finding the broadcast."}
+      args: {"input_type": "text", "query": "Sky News California wildfires \"most destructive fires in LA history\"", "output_type": "video"}
+0005 A3_search_original_text_image | SEARCH text_image video | ['S1_query']
+      S1: {"query": "Sky News Altadena wildfires \"intensity of these fires\"", "rationale": "E5 shows the Altadena map label and Sky News branding; E11 transcribes the distinctive phrase “intensity of these fires,” providing a different search clue."}
+      args: {"input_type": "text_image", "query": {"evidence_id": "E5", "text": "Sky News Altadena wildfires \"intensity of these fires\""}, "output_type": "video"}
+0006 M1_compare_media | INSPECT compare_media | ['S0_rationale']
+0007 M3_frames_B | INSPECT get_frames times_s | ['S0_rationale']
+0008 M3_frames_A | INSPECT get_frames times_s | ['S0_rationale']
+0009 A6_dates_of_original | SEARCH dates | ['S0_rationale']
+      args: {"source": "R6", "output_type": "text", "include": ["dates"]}
+0010 M7_report | report_completed | ['S4_report']
+      REPORT COMPLETED reason=null
+        - The source video found is “California wildfires: What is the scale of the fires?” at https://www.youtube.com/watch?v=4aIK1tjpGuk. Comparison with Material A found all of A’s half-second picture samples in this video. The dated copy was uplo
+        - Material A omits source-video footage at B 58.5–79.0 s, reported as 20.5 s removed at A 58.7 s. The comparison reports that A continues directly from the footage before this interval to the footage after it. No additional insertion, reorder
+        - Specific supporting measurements are the comparison’s 100% match of A’s half-second picture samples and its report that sound matches at corresponding moments in 235 of 235 tested windows. Material A’s ASR also transcribed speech at 0.46–4.
+        - The investigation establishes a sampled audiovisual correspondence and an approximately located omission. Its temporal evidence consists of half-second picture sampling and comparison boundaries accurate to about 0.5 s.
+0011 G3_finish | FINISH | ['S5_answer']
+      ANSWER: A matching source video was found: “California wildfires: What is the scale of the fires?” (https://www.youtube.com/watch?v=4aIK1tjpGuk); it contains 100% of the given video's half-second picture samples. [E35][E42] This copy was uploaded on 2025-01-09 and first archived on 2025-01-11; whether it was the earliest upload is not established. [E42]  Removed footage: at approximately 58.7 s in the given video (A), the source video's (B) 58.5–79.0 s interval is skipped—reported as 20.5 s removed—with A continuing directly from before that interval to after it. [E35]  Added, reordered or visually al
+      GT_CHECK: {"points": ["interval"], "missed_first": [], "support": {"interval": ["E35"]}, "gt_review": false}
+INLOOP: W1-1 COMPLETED -> COMPLETED flagged False err None missing []
