@@ -16,6 +16,8 @@ metadata.sample_weight。
 - 一行的损失 = sample_weight × 该行监督 token 的平均交叉熵；grad_accum 行求平均后反传一次。
   即 sample_weight 直接乘进 loss（《SFT数据构造方法v2》§6：权重只在 loss 上乘，不改采样概率）；按行平均而不是按 token
   平均，是为了不让一份 2K token 的报告在梯度里抵 10 条动作行——行与行的相对分量只由 sample_weight 决定。
+- 10-19（sft0 六节裁决 4）：加载时先把进训练的行的 sample_weight 归一到均值 1（normalize_sample_weight，默认开；只改内存，不改包），
+  不同包（r1 均值约 2、sft0 已是 1、r0 基线包）在同一 lr 下才是同一尺度；归一前后的均值 / 系数写进 prescan.sample_weight_normalization。
 - logits 只在监督段上算（logits_to_keep）：Qwen3.5 词表 248K，32K 长度的整段 logits 在 bf16 下约 16GB、转 float
   再翻倍，9B 在 80GB 卡上会被这一项挤爆；监督段通常只有几百 token。数值与整段计算相同（test：--check-loss）。
 
@@ -78,6 +80,9 @@ class TrainConfig:
     dtype: str = "bfloat16"
     device_map: str | None = "auto"
     use_sample_weight: bool = True
+    # 10-19 负责人定（sft0 六节裁决 4）：加载时把进训练的行的 sample_weight 归一到均值 1（只改内存，不改包）。各包的权重尺度不同
+    # （r1 包均值约 2.0、sft0 合包后已是 1、r0 基线包另有尺度），不归一的话同一 lr 下梯度尺度跟着包走，基线与 sft0 不可比
+    normalize_sample_weight: bool = True
     logits_on_supervised_only: bool = True     # logits_to_keep：只在监督段算 logits（见文件头）
     row_select: dict[str, Any] | None = None   # 冒烟用：{"n": 20, "max_input_tokens_est": 16000, "order": "shortest", "exclude_requests": [...]}
     log_every: int = 5
@@ -105,6 +110,21 @@ def load_rows(export_dir: Path, files: list[str]) -> list[dict[str, Any]]:
             if line.strip():
                 rows.append(json.loads(line))
     return rows
+
+
+def normalize_sample_weights(rows: list[dict[str, Any]], usable: list[int], enabled: bool) -> dict[str, Any]:
+    """把 usable 行的 metadata.sample_weight 乘同一系数使均值 = 1（就地改内存里的行；包文件不动）。返回前后均值与系数。"""
+
+    ws = [float((rows[i].get("metadata") or {}).get("sample_weight") or 1.0) for i in usable]
+    mean = sum(ws) / len(ws) if ws else 1.0
+    factor = 1.0 / mean if enabled and mean > 0 else 1.0
+    if factor != 1.0:
+        for i in usable:
+            md = rows[i].setdefault("metadata", {})
+            md["sample_weight"] = float(md.get("sample_weight") or 1.0) * factor
+    after = [float((rows[i].get("metadata") or {}).get("sample_weight") or 1.0) for i in usable]
+    return {"enabled": enabled, "rows": len(ws), "mean_before": round(mean, 6), "sum_before": round(sum(ws), 4), "factor": round(factor, 6),
+            "mean_after": round(sum(after) / len(after), 6) if after else None, "sum_after": round(sum(after), 4)}
 
 
 def row_key(row: dict[str, Any]) -> str:
@@ -350,6 +370,7 @@ def dry_run(cfg: TrainConfig) -> dict[str, Any]:
     rows = select_rows(load_rows(export_dir, files), cfg.row_select)
     processor = AutoProcessor.from_pretrained(cfg.model, local_files_only=True)
     usable, scan = prescan(rows, export_dir, processor, cfg.max_tokens)
+    scan["sample_weight_normalization"] = normalize_sample_weights(rows, usable, cfg.normalize_sample_weight)
     steps_per_epoch = math.ceil(len(usable) / cfg.grad_accum) if usable else 0
     plan = {"role": cfg.role, "export_dir": str(export_dir), "rows": len(rows), "usable": len(usable),
             "steps_per_epoch": steps_per_epoch, "max_steps": cfg.max_steps or math.ceil(steps_per_epoch * cfg.epochs),
@@ -389,6 +410,7 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
     device = next(model.parameters()).device
     load_s = time.time() - t0
     usable, scan = prescan(rows, export_dir, processor, cfg.max_tokens if not smoke_tiny else 10 ** 9)
+    scan["sample_weight_normalization"] = normalize_sample_weights(rows, usable, cfg.normalize_sample_weight)
     if scan["encode_failed"]:
         print(f"!! {len(scan['encode_failed'])} 行编码失败：{scan['encode_failed'][:3]}")
     if not usable:
@@ -504,6 +526,7 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                "hyper": {"lr": cfg.lr, "min_lr_ratio": cfg.min_lr_ratio, "epochs": cfg.epochs, "warmup_steps": cfg.warmup_steps,
                          "grad_accum": cfg.grad_accum, "max_tokens": cfg.max_tokens, "weight_decay": cfg.weight_decay,
                          "max_grad_norm": cfg.max_grad_norm, "use_sample_weight": cfg.use_sample_weight,
+                         "normalize_sample_weight": cfg.normalize_sample_weight,
                          "logits_on_supervised_only": cfg.logits_on_supervised_only, "save_each_epoch": cfg.save_each_epoch},
                "seed": cfg.seed, "seeds_registered": cfg.seeds, "gradient_checkpointing": cfg.gradient_checkpointing,
                "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),

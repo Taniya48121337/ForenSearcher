@@ -38,7 +38,7 @@
     teacher_override  （给 --teacher-override 时）每个 run 的 run_config.teacher_override 文件名、sha256、base_freeze 与本次一致；
                       覆盖文件也进 freeze/、provenance（runs.jsonl 每行 teacher = 覆盖文件名）与身份文件的 teacher_override
     gia_wait_rows     system_variant=wait 的 GIA 行为 0（定时复核关）
-    train_configs     两份配置角色对、export_dir 指向本包 data/、种子 ≥ 2、sample_weight 开、lora_r ≤ 32、max_tokens ≥ 32768
+    train_configs     两份配置角色对、export_dir 指向本包 data/、种子 ≥ 2、sample_weight 开、normalize_sample_weight 不关、lora_r ≤ 32、max_tokens ≥ 32768
     counts            HI ≥ 500、GIA ≥ 60、FINISH ≥ 30（清单 C1；只报警——数量门由 export_gate 管）
 
 不改任何行；行的入选与权重在 export 里已定。
@@ -408,7 +408,8 @@ def pack(args: argparse.Namespace) -> int:
         role = cfg.get("role")
         hyper = {k: cfg.get(k) for k in ("role", "model", "export_dir", "max_tokens", "epochs", "max_steps", "lr", "min_lr_ratio",
                                          "warmup_steps", "grad_accum", "lora_r", "lora_alpha", "lora_dropout", "lora_targets",
-                                         "seeds", "use_sample_weight", "save_each_epoch", "logits_on_supervised_only")}
+                                         "seeds", "use_sample_weight", "normalize_sample_weight", "save_each_epoch",
+                                         "logits_on_supervised_only")}
         cfg_out[rel] = hyper
         if not str(cfg.get("export_dir") or "").replace("\\", "/").rstrip("/").endswith(f"{out.name}/data"):
             problems.append(f"{rel}: export_dir={cfg.get('export_dir')} 不是本包的 data/")
@@ -416,6 +417,8 @@ def pack(args: argparse.Namespace) -> int:
             problems.append(f"{rel}: 种子少于 2 个")
         if not cfg.get("use_sample_weight", True):
             problems.append(f"{rel}: use_sample_weight 关着")
+        if cfg.get("normalize_sample_weight", True) is False:      # 10-19 sft0 六节裁决 4：训练加载时归一到均值 1，不许关
+            problems.append(f"{rel}: normalize_sample_weight 关着（训练时须把 sample_weight 归一到均值 1）")
         if int(cfg.get("lora_r") or 0) > MAX_LORA_RANK:
             problems.append(f"{rel}: lora_r={cfg.get('lora_r')} > vLLM max-lora-rank {MAX_LORA_RANK}")
         if int(cfg.get("max_tokens") or 0) < 32768:

@@ -6,7 +6,7 @@
     "steps": "GIA 61 行（FINISH 58、第 2 轮派工 3）、grad_accum 4 → 每遍 16 次更新，3 遍 48 次；warmup 3 同 9B。行少、过拟合风险高，epoch_1 / epoch_2 / final 都留着让门 B-GIA 选。",
     "other": "lr / lora / 种子 / sample_weight 全部同 gia_r0_9b.json。",
     "warmup_steps": "9：GIA 232 行（sft0）、grad_accum 4 → 每遍 58 次更新，3 遍 174 次，5% 取整。",
-    "sample_weight": "合包核对项（merge_packs --verify）：每角色平均权重 = 1；HI 动作行在重标前 ≤ 2；每案例权重和（重标前）≤ 10；每分支（报告行除外）≤ 60。lr 仍是 r1 的占位，按均值 1 的权重口径与 r1 包（均值约 2.0）相比，同 lr 下每步梯度约为 r1 的一半——要不要调 lr 开训前定。"
+    "sample_weight": "合包时已按定案 ③ 降权并重标到均值 1（merge_packs --verify 核：每角色均值 = 1、HI 动作行重标前 ≤ 2、每案例重标前 ≤ 10、每分支 ≤ 60）；训练加载时再按 normalize_sample_weight 归一到均值 1（10-19 六节裁决 4：统一尺度，r0 基线包同样处理），对 sft0 是 no-op。lr 1e-4 不变（裁决 4：均值 1 才是正确尺度）。"
   },
   "role": "gia",
   "export_dir": "dist/sft0-20261019-17a3256f7c49",
@@ -47,5 +47,6 @@
   "log_every": 2,
   "files": [
     "gia.jsonl"
-  ]
+  ],
+  "normalize_sample_weight": true
 }
