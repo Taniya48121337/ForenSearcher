@@ -602,17 +602,59 @@ def tool_layer_hash(package_root: str | Path | None = None) -> dict[str, Any]:
                          if (root / entry).exists()}}
 
 
-def load_freeze(specs_root: str | Path, hi_spec: str, gia_spec: str) -> dict[str, Any] | None:
-    """specs/ 下与这一对规格一致的冻结文件（specs.hi 与 specs.gia 都相同）；没有返回 None。"""
+# 10-18（长尾六节定案 ⑥ 落地前）：冻结文件按轮次显式选，不再"按文件名排序取第一个规格对上的"——g1_freeze.json 与
+# r1_freeze.json 规格相同、文件名又排在前面，旧取法会让所有 r1 规格的路径悄悄改认 g1 的教师表。
+# 轮次前缀 → 冻结文件（最长前缀优先）；FOREN_FREEZE_FILE（specs/ 下的文件名或路径）覆盖一切。
+FREEZE_BY_ROUND_PREFIX: tuple[tuple[str, str], ...] = (("r1g", "g1_freeze.json"), ("r1", "r1_freeze.json"))
+DEFAULT_FREEZE_FILE = "r1_freeze.json"
+# 只能经轮次映射或 FOREN_FREEZE_FILE 选中的冻结文件：按规格兜底搜索时跳过（不给 round_tag 的调用方永远拿不到它们）
+ROUND_ONLY_FREEZE_FILES = frozenset(f for _, f in FREEZE_BY_ROUND_PREFIX) - {DEFAULT_FREEZE_FILE}
 
-    for path in sorted(Path(specs_root).glob(FREEZE_GLOB)):
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
+
+def _read_freeze(path: Path, hi_spec: str, gia_spec: str) -> dict[str, Any] | None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    specs = data.get("specs") or {}
+    if specs.get("hi") == hi_spec and specs.get("gia") == gia_spec:
+        return {**data, "_file": path.as_posix()}
+    return None
+
+
+def freeze_file_for(round_tag: str | None) -> str | None:
+    """轮次 → 冻结文件名（只看映射，不读文件）；没有映射返回 None。"""
+
+    for prefix, name in sorted(FREEZE_BY_ROUND_PREFIX, key=lambda x: -len(x[0])):
+        if round_tag and round_tag.startswith(prefix):
+            return name
+    return None
+
+
+def load_freeze(specs_root: str | Path, hi_spec: str, gia_spec: str, round_tag: str | None = None) -> dict[str, Any] | None:
+    """与这一对规格一致的冻结文件；没有返回 None。选法（按顺序，选中的文件规格必须对得上，否则返回 None）：
+    1. 环境变量 FOREN_FREEZE_FILE（specs/ 下的文件名，或路径）；
+    2. round_tag 按 FREEZE_BY_ROUND_PREFIX 映射（r1g* → g1_freeze.json，r1* → r1_freeze.json）；
+    3. 兜底（没给 round_tag 或前缀不在映射里，例如 r0* / wk*）：先 DEFAULT_FREEZE_FILE（r1_freeze.json），再按文件名顺序搜规格
+       对得上的，**跳过 ROUND_ONLY_FREEZE_FILES**（g1_freeze 等只能显式选）。"""
+
+    root = Path(specs_root)
+    override = os.environ.get("FOREN_FREEZE_FILE")
+    if override:
+        path = Path(override) if Path(override).is_absolute() or Path(override).parent != Path(".") else root / override
+        return _read_freeze(path, hi_spec, gia_spec)
+    mapped = freeze_file_for(round_tag)
+    if mapped:
+        return _read_freeze(root / mapped, hi_spec, gia_spec)
+    found = _read_freeze(root / DEFAULT_FREEZE_FILE, hi_spec, gia_spec) if (root / DEFAULT_FREEZE_FILE).is_file() else None
+    if found:
+        return found
+    for path in sorted(root.glob(FREEZE_GLOB)):
+        if path.name in ROUND_ONLY_FREEZE_FILES or path.name == DEFAULT_FREEZE_FILE:
             continue
-        specs = data.get("specs") or {}
-        if specs.get("hi") == hi_spec and specs.get("gia") == gia_spec:
-            return {**data, "_file": path.as_posix()}
+        found = _read_freeze(path, hi_spec, gia_spec)
+        if found:
+            return found
     return None
 
 
@@ -825,7 +867,7 @@ async def run_one(case_file: str | Path, run_name: str, *, runs_dir: str | Path,
         "auto_tools": auto_tools,
         "instruction_mode": instruction_mode,
     }
-    freeze = freeze_check(load_freeze(specs_root, hi_spec, gia_spec), frozen_actual)
+    freeze = freeze_check(load_freeze(specs_root, hi_spec, gia_spec, round_tag), frozen_actual)
     run_config = {
         "dataset": case.dataset, "case": case.source_id, "case_id": case.case_id, "case_file": str(case_path.resolve()),
         "split": case.effective_split, "round": round_tag, "sample": sample, "mode": "bridge",

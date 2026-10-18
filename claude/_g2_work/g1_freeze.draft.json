@@ -1,0 +1,257 @@
+{
+  "freeze_id": "g1",
+  "status": "frozen",
+  "frozen_at": "2026-10-18",
+  "doc": "claude/长尾分支补量方案与三包合一前核对_20261018.md（六节定案 ⑥）；claude/g1_核验导出与门_20261018.md",
+  "note": "Codex 教师批次（g1 = 轮次 r1g1、g2 = 轮次 r1g2）的冻结口径（负责人 10-18 晚定案 ⑥：不改 r1_freeze、不动 r1-frozen，新建本文件）。与 specs/r1_freeze.json 逐项相同（specs / spec_hash / checks / allowed_variant_overrides / tool_layer / verifier / walker），**只差 teacher 一节**：S0–S3 由 qwen（OpenRouter Qwen3.5-397B）换成 codex_low（Codex CLI gpt-6-astra，effort low），S4 / S5 仍是 strong（gpt-6-astra）；两个 Codex 后端经 .wt_g1/.g1/bin/codex_gate.exe 全局闸门（内容照抄 specs/g1_teacher.json 的 teacher 一节）。没有 backup_backends（不切 OpenRouter）。注意：run_cases.load_freeze 按文件名排序取第一个规格对上的 *_freeze.json，本文件排在 r1_freeze.json 前，所以在有本文件的工作树里所有 hi@0.11.0 / gia@0.9.0 的 run 都会认 g1——本文件只在 g2 分支；合 main 前要先处理（改 load_freeze 按轮次选，或改名）。",
+  "specs": {
+    "hi": "hi@0.11.0",
+    "gia": "gia@0.9.0"
+  },
+  "spec_hash": {
+    "hi": "sha256:c981099064da5e91b13b5ffbb7f06b6d3b23a662994c1d3907f98d8736a7b504",
+    "gia": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033"
+  },
+  "checks": {
+    "state_renderer": "compact_16k",
+    "image_input_limit": 8,
+    "gia_report_review_delay_s": null,
+    "harness_params_mode": "apply",
+    "harness_overrides": [],
+    "state_renderer_override": null,
+    "auto_tools": "off",
+    "instruction_mode": "teacher"
+  },
+  "allowed_variant_overrides": {
+    "v9": [
+      "max_evidence_cards=6",
+      "max_history_entries=4"
+    ]
+  },
+  "allowed_variant_note": "checks.harness_overrides = [] 之外认可的变体：run 的 harness_overrides 与这里某个组合完全一致（不计顺序、不多不少）时 run_cases.freeze_check 记 ok + variant；其它 overrides 照旧不符。V9（证据卡 6 张、历史 4 条）两条进 r0。冻结前跑的 run 由 run_cases.recheck_freeze 在 export --require-freeze / pack_r0 run_freeze 时按本节改判",
+  "tool_layer": {
+    "hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+    "paths": [
+      "hi/workspace.py",
+      "inspect",
+      "search",
+      "state_render.py"
+    ],
+    "files": 69,
+    "groups": {
+      "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+      "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+      "search": "sha256:11a588f186e62b4067c4fcad6c0b6321de6a5fcd6a8af7f573186ad797a8cc07",
+      "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+    },
+    "line_endings": "crlf_to_lf",
+    "computed_at": "2026-10-17T15:35:22",
+    "status": "frozen（r1-frozen；r1 全量 134 runs 的 run_config 与行里都是这个 hash）",
+    "tag": "r1-frozen",
+    "r0_hash": "sha256:2916c648648b0027b9221fc1be6dd4c04ebcb470a030203247feff891bf814a4"
+  },
+  "verifier": {
+    "version": "verifier@0.4.0",
+    "prompt_version": "verifier@0.4.0",
+    "judge": "claude-cli",
+    "model": "claude-sonnet-5-5",
+    "model_alias": "sonnet",
+    "model_family": "claude-sonnet-5-5",
+    "settings": {
+      "cli": "本机 Claude Code CLI（claude -p，订阅登录 claude.ai / OAuth，不按 token 计费）；--model sonnet，开跑前用一道小题把别名解析成实际模型名，judge_model 记 claude-cli:<实际模型名>",
+      "reasoning_effort": "medium（Claude Code 对 Sonnet 5.5 的默认 effort；不另设）",
+      "temperature": null,
+      "tools": null,
+      "images": "base64 图（与 API 核验器同一 payload 渲染）",
+      "structured_output": "--json-schema",
+      "limit": "订阅额度 / 限流 → ClaudeCliLimit：本步退出，已判的在缓存（verify_cache.claude-cli-claude-sonnet-5-5.jsonl），walker 批处理记断点停批，下次双击续跑"
+    },
+    "concurrency": 3,
+    "mode": "sync",
+    "code_paths": [
+      "datagen/verify",
+      "datagen/errors.py"
+    ],
+    "code_hash": "sha256:c66504d41d96278461c4635376a24d30d101ce6a4b6f3b0c6367048d1b312f96",
+    "code_hash_r0": "sha256:db5a4e8566129f754f9c5b2b124b89a7a724652ecb8bd14bd34a74ae1a51e941",
+    "transport": {
+      "path": "datagen/api_judge.py",
+      "hash": "sha256:7a9be8f2d377b4d84d3188cdd315755912a426c2b8b4cfaa31b577d9588bb3bd",
+      "note": "传输层没改，与 r0 的 server.transport.hash 相同"
+    },
+    "cache_namespace": "verifier@0.4.0",
+    "cache_note": "缓存键 = sha256(cache_namespace + system_prompt + payload + 图片)；0.4.0 的题不命中 0.3.x 的旧回答",
+    "schemas": {
+      "CONFIRM_SCHEMA": "sha256:134d360895c5c25b5bc82d9f49acdf2b38d1ad31746a7cef62f95bed81aa11dc",
+      "COVERAGE_SCHEMA": "sha256:0636663ebe8f66f09bae34d92da84f412a2ba8cec3caf35b65920462ee4b3940",
+      "INFERENCE_SCHEMA": "sha256:7ef0279c399345a4ad22f96e65755190aa7ffab714b80dba126e7df93d713929",
+      "JOINT_SCHEMA": "sha256:4d5d5481af2c0b765b73f0ac9058bce51e9d055d270bcbc5407bb514ddb5a654",
+      "LABEL_SCHEMA": "sha256:ac3428035901f7adf41cd02272e49984a89832ab800686462630b48144a29def",
+      "PAIR_SCHEMA": "sha256:c786d375e7bb6825410662059531976e623e840de056ccadf72d5424dd90005e",
+      "PLAN_SCHEMA": "sha256:51d29f45253b8064c6514d6251612c059afcfd496c3cdb0a522d6947faf075ae",
+      "SEMANTIC_SCHEMA": "sha256:76ad2e88e87ccc21fd570912106e10a1e0459bf59ab0bd4fc34e0888e1485ebd",
+      "SUFFICIENCY_SCHEMA": "sha256:b2578f6f354d37db702d68f3a2ba6d230508403c35b7f59f5336f13922cc52cb"
+    },
+    "schema_list": [
+      "CONFIRM_SCHEMA",
+      "COVERAGE_SCHEMA",
+      "INFERENCE_SCHEMA",
+      "JOINT_SCHEMA",
+      "LABEL_SCHEMA",
+      "PAIR_SCHEMA",
+      "PLAN_SCHEMA",
+      "SEMANTIC_SCHEMA",
+      "SUFFICIENCY_SCHEMA"
+    ],
+    "prompts": {
+      "SUFFICIENCY_SYSTEM_PROMPT": "sha256:70af95fc80af6cd4bc04c0418578b6afe1fecb5181272b851ff0179c5c2377ed",
+      "PAIR_SYSTEM_PROMPTS": "sha256:0ece67fd44c3ea5c20353bd3e987c16838af3c5fe24f0a46443f361d62ca73f9",
+      "COVERAGE_SYSTEM_PROMPTS": "sha256:20066872221fbb7321f45faebc33a4efd3861ee7753c5cbe2231aba885839ae4"
+    },
+    "changes_from_r0": [
+      "1 充分性层不给 GT：参考来源（url_pattern、无 acquired_by）不进清单；改给案卷要求（REQ+must_cite，VideoSham 官方编辑描述换成不含 GT 的要求）与证据索引；missing 用英文",
+      "2 failed 页 / 任务没要求的精度只算 limitation（新字段 limitations_not_gaps；程序兜底 failed_pages_only）",
+      "3 像素检查只对句子所指的那张图（图片对规则 + other_cited_images；pixel_rules：tool_measurement / other_image_referent / cited_unrelated_image）",
+      "4 引语回查认省略号分段与短词；超长来源给开头 + 句中词附近；覆盖汇总带任务文字",
+      "5 sloppy_numeric：写明页面声明日期且与 dates 卡一致的不判错（date_rules.declared_date）",
+      "6 attribution_drift 看转述来源支持的那一部分",
+      "0 缓存键带核验器版本"
+    ]
+  },
+  "changelog": [
+    {
+      "date": "2026-10-17",
+      "change": "建草稿：verifier@0.4.0（核验器修正 6 处 + 缓存分键），tool_layer 记当前 r1 分支 hash；tag 未打。"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "r1 预演之二：specs hi@0.11.0 / gia@0.9.0 + spec_hash；checks / teacher 照抄 r0；walker 策略 walker-r1@2026-10-17；工具层（search 第二家引擎缩略图、notice 英文）hash 重算"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17b：页内主图抽取（工具层 search/openers/image.py）+ E6a/L6a + L4b 必做文字搜 + L 比对 ≤ 2；工具层 hash 重算"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17c：HiState 从 SEARCH 结果材料登记卡片（r1s2 l208 第 2 轮读到的页不能引）；工具层不变"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17d：比对优先取了页内主图的页面；工具层页内主图取不到时试档案馆存档；工具层 hash 重算"
+    },
+    {
+      "date": "2026-10-17",
+      "change": "walker-r1@2026-10-17e：(ii) 第 2 轮先取页内主图并比对；页内主图下载重试；循环内第 2 轮 plan 评判；工具层 hash 重算"
+    },
+    {
+      "date": "2026-10-18",
+      "change": "r1-frozen：status frozen；r1 全量 134 runs（新可回答定义建卷，E 50 / L 13）门 13 项过；allowed_variant_overrides 照抄 r0（V9 两条）；槽表切到 r1_freeze；hash 复核：spec hi c9810990… / gia a43f17ad…、tool_layer 49bb6f7e…、verifier c66504d4…、walker-r1@2026-10-17e"
+    },
+    {
+      "at": "2026-10-18",
+      "what": "新建 g1_freeze（定案 ⑥），自 r1_freeze 复制，teacher 换成 g1_teacher.json 的 Codex 槽表"
+    }
+  ],
+  "teacher": {
+    "mode": "slots",
+    "decided": "2026-10-18 负责人（g1 任务书：S0–S3 primary 改 codex、effort low、备用 Qwen 关；S4 / S5 照 r1_freeze）",
+    "slots": {
+      "S0": "codex_low",
+      "S1": "codex_low",
+      "S2": "codex_low",
+      "S3": "codex_low",
+      "S4": "strong",
+      "S5": "strong"
+    },
+    "slot_meaning": {
+      "S0": "HI 动作的 rationale",
+      "S1": "检索查询词",
+      "S2": "GIA 第 2 轮任务文本",
+      "S3": "检索类下一步 / 充分性",
+      "S4": "HI 报告",
+      "S5": "GIA 答案（含 S5_answer_revise：核验后只按证据重写）"
+    },
+    "slot_name_rule": "槽调用名按前缀归槽：S4_report_retry → S4，S1_query_retry → S1，S5_answer_revise / _review / _gate / _bon<k> → S5（oracle_generator.slot_key）",
+    "backends": {
+      "codex_low": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "low",
+        "serial": false,
+        "timeout_s": 7200,
+        "retry_max_s": 900,
+        "codex_bin": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\.g1\\bin\\codex_gate.exe",
+        "note": "g1：S0–S3 走 Codex CLI（ChatGPT 订阅），effort low；没有备用（Qwen / OpenRouter 关，宁可排队）"
+      },
+      "strong": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "medium",
+        "serial": false,
+        "timeout_s": 7200,
+        "retry_max_s": 900,
+        "server": "Codex CLI（ChatGPT 订阅，不按 token 计费）：本机已登录；服务器按 server/15_walker.sh 末尾的步骤装 Codex CLI 并登录（复制 ~/.codex/auth.json 或 codex login --device-auth），出口走 FS_PROXY。调用 = codex exec --ephemeral --sandbox read-only --json -m gpt-6-astra -c model_reasoning_effort=\"medium\" --image …（无工具、只读）；跨进程串行锁，--jobs 2；429 / usage limit 按 30/60/120/240/480 s 退避，总等待 ≤ FOREN_ORACLE_RETRY_MAX_S（900 s）",
+        "endpoint_alternative": "将来换 CLIProxyAPI 之类 OpenAI 兼容代理：type 改为 endpoint，填 endpoint（如 http://127.0.0.1:8317/v1）、model、endpoint_env / model_env / api_key_env，其余字段同 qwen 后端；只改本节并记 changelog，代码不动",
+        "codex_bin": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\.g1\\bin\\codex_gate.exe"
+      }
+    },
+    "primary": "gpt-6-astra",
+    "base_freeze": "specs/r1_freeze.json",
+    "base_freeze_teacher_differs_from": "specs/r1_freeze.json"
+  },
+  "walker": {
+    "policy_version": "walker-r1@2026-10-17e",
+    "doc": "claude/r1_walker与search整合_20261017.md",
+    "rules": [
+      "E2 以图搜 output_type=image；读过的页面 E6 compare_media(E1, 页面上的图)；没比对 / 没对上只写候选；E7 交报告前补看对照图",
+      "缩略图哈希 no match 只降权不排除；第一家引擎缩略图没对上试第二家（search 层）",
+      "L 报告必须写参考图比对结论（required_findings 进 S4 合同校验）",
+      "C：video_structure + 按镜头取帧；交报告前整段转写 + 场景帧放回附图；画面类声明一条 Finding 写帧里有没有那件事",
+      "第 2 轮沿用第 1 轮的族；循环内充分性检查与事后核验同一份 payload（verifier@0.4.0，lookup=StoreLookup）",
+      "（17b，负责人定 (a)+(c)）读过但没有图的页面先 SEARCH source=R output_type=image 取页内主图（E6a / L6a）再比；L 族比对 ≤ 2 次；L4b 以图搜之后必做一次文字搜（S1 place_text），第 1 个结果页必读",
+      "（17c）SEARCH 结果材料里的 E 也登记成卡片，第 2 轮读过的页面能被 S4 引用",
+      "（17d）特意取了页内主图的页面先比；页内主图网址取不到时试互联网档案馆原样存档（web.archive.org/web/2id_/）",
+      "（17e，负责人定 (ii)）第 1 轮读到写着拍摄地的页、却没比上它的照片 → status_reason / 循环内可修缺口写'fetch the main image of <页面> and compare it'，GIA 第 2 轮 Scope 把它放在最前，第 2 轮先取图 → 比对 → 读这一页；页内主图下载 3 次退避重试（4xx 不重试），档案馆存档仍是最后一招；循环内第 2 轮也按 plan 评判定范围（covered_before 按事后同一算法）"
+    ],
+    "search_policy": {
+      "E": {
+        "image_search": "lens,yandex",
+        "image_host": "imgbb",
+        "image_fallback": "off"
+      },
+      "L": {
+        "image_search": "yandex"
+      },
+      "C": {
+        "image_search": "yandex"
+      },
+      "B": {
+        "image_search": "off"
+      },
+      "normalize": "FOREN_REVERSE_NORMALIZE=1",
+      "lens_max_searches": "FOREN_LENS_MAX_SEARCHES（全量 200、冒烟 40；不写进代码）"
+    },
+    "inloop_sufficiency": true,
+    "answerable": {
+      "definition": "GT 可回答且引擎前 10 召回（以图搜：E Lens+Yandex 合并、L Yandex；文字搜 ddgs，L 另加\"声明画面词 + GT 地点\"一条）里有载图页（页面上的图与给定图 compare_media same / edited，且页面写着 GT 要点：E 有发布日期、L 写明 GT 地点）",
+      "probe": "scripts/check_unanswerable.py → experiments/sft_data/r1_answerable_probe.json",
+      "list": "experiments/sft_data/unanswerable_r1.json",
+      "unanswerable_share_cap": "每族 ≤ 1/3 行，排除出 B6 分母"
+    }
+  },
+  "updated_at": "2026-10-18T23:30:00",
+  "data": {
+    "batches": {
+      "g1": {
+        "round": "r1g1",
+        "runs": 147,
+        "pack": "g1-20261018-5b2618fd55cc（按 pack_r0 --teacher-override 打的包，未按本文件重打）"
+      },
+      "g2": {
+        "round": "r1g2",
+        "runs": 60,
+        "note": "run 跑时教师槽读 g1_teacher.json（内容与本文件 teacher 一节相同）；跑完后 run_config 补 freeze_file 指向本文件；export 用 --freeze-file specs/g1_freeze.json --origin-tag g2"
+      }
+    }
+  }
+}

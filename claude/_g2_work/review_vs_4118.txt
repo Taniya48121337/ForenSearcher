@@ -1,0 +1,18 @@
+TASK: Compare the given video A with the candidate video B, and investigate the differences between them that the materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state where the differences are and what could not be determined. Being given as a candidate does not mean B's source identity has been confirmed; do not treat unexamined regions or mod
+GT: []
+0001 G1_round1 | INVESTIGATE round1 | []
+0002 M1_compare_media | INSPECT compare_media | ['S0_rationale']
+0003 B10_asr | INSPECT asr | ['S0_rationale']
+0004 B10_asr | INSPECT asr | ['S0_rationale']
+0005 M7_report | report_completed | ['S4_report']
+      REPORT COMPLETED reason=null
+        - The comparison found 100% of Material A's half-second samples in Material B, with matched footage located in B 0–8 s. Both materials are 9 s long.
+        - The confirmed difference is in the audio: the comparison reports spectral similarity 0.35. Its visual comparison found no pixel difference with area ≥ 0.0005 across the 135 frames compared in A 0.00–9.00 s.
+        - The materials support distinguishing matching visual footage from a differing soundtrack. Consequently, the visual match alone cannot establish that A preserves B's audiovisual presentation.
+        - The specific support is the whole-video comparison, supplemented by separate ASR analyses of A and B over 0.0–9.0 s. A's analysis labels 0.0–0.05 s as silence and 0.05–9.0 s as other sound; B's analysis labels 0.0–9.0 s as other sound.
+        - The reported audio difference lies at A 0.0–8.5 s versus B -0.0–8.5 s at the same moment.
+        - The established scope is visual correspondence under the comparison threshold and a measured soundtrack difference; the ASR results provide coarse sound timelines rather than intelligible verbal content.
+0006 G3_finish | FINISH | ['S5_answer']
+      ANSWER: A and B have matching visual footage within the comparison’s detection threshold, but different soundtracks; visual correspondence therefore does not establish equivalent audiovisual meaning.[E21]  Both videos are 9 s long, and 100% of A’s half-second samples were found in B, with matched footage located in B 0–8 s.[E21] Across the 135 frames compared in A 0.00–9.00 s, no pixel difference with area ≥ 0.0005 was detected.[E21]  The confirmed audio difference is reported at A 0.0–8.5 s versus B -0.0–8.5 s at the same moment, with spectral similarity 0.35; boundaries have approximately 0.5 s prec
+      GT_CHECK: {"points": [], "missed_first": [], "support": {}, "gt_review": false}
+INLOOP: W1-1 COMPLETED -> COMPLETED flagged False err None missing []
