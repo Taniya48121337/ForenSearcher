@@ -1,0 +1,293 @@
+{
+ "batch": "g1a",
+ "annotator": "opus",
+ "exported_at": "2026-10-18T19:21:07.063966+00:00",
+ "labels": [
+  {
+   "id": "A001",
+   "kind": "answer",
+   "run": "groundlie360_v32327700_r1g1_1",
+   "main": "minor",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "",
+   "note": "External coverage is faithful: Fox criticism and non-salute claims (E14), the Pentagon/Kirby position that the VP need not return salutes (E15, attributed to U.S. News), the C-SPAN border clip (E16) and the DVIDS March 23, 2021 briefing page (E17) are all described accurately, and the 'misleading / deliberate refusal and dislike not determinable' verdict follows from E15 and is honestly hedged (REQ3 covered). Weakness on REQ1: the answer barely says what the video shows. E12 is one low-res night frame (shot 0.0-20.2s) of a person at the top of the aircraft stairs and uniformed personnel at the bottom, and it does not clearly show a salute going unreturned, yet the answer states 'an unreturned salute' citing E12 (minor unsupported_assertion: the fact is backed only by Fox's report in E14 and is not attributed to it). The video-vs-claim question is addressed only by the hedge that the sampled images cannot establish the full actions, which I count as weakly covered rather than omitted; no major errors.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A002",
+   "kind": "answer",
+   "run": "fmnv_a_HrUjS0XArAU_r1g1_1",
+   "main": "minor",
+   "errors": [],
+   "span": "",
+   "note": "The answer honestly says that the original source, and therefore any removed/added/reordered/altered segments and their times, cannot be determined from the examined material. That is the acceptable A-family 'original not found' outcome, so REQ1 and REQ2 are uncovered but not wrongly answered. The checkable claims are supported: E5 (26.994 s) shows the 2020 PENNSYLVANIA / PA STATEWIDE board with Biden 50.0%, Trump 48.8% and a green circle around Erie; E2 gives 108.041 s and 1 audio track; the integrity and audio caveat is properly hedged (REQ3). Minor issues: the cited evidence shows no search or reverse-image attempts, so the 'cannot be determined' claim rests only on frames and ASR of Material A, and the answer does not say what was tried. Citing frames E3/E8/E10 as support for 'original cannot be determined' is weak. The unrounded timestamp 26.99363333333333 s is cosmetic.",
+   "req": {
+    "REQ1": "no",
+    "REQ2": "no",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A003",
+   "kind": "answer",
+   "run": "fmnv_a_IfXu2g_IuBs_r1g1_1",
+   "main": "minor",
+   "errors": [],
+   "span": "",
+   "note": "Checked each sentence: E5 frame (viewed) shows a rocket ascending with a bright plume, 'SOURCE: NASA TV' caption top-left and NASA logo top-right at 24.024 s; E11 OCR confirms 'SOURCE:NASA TV'/'NASA' throughout; E2 gives 96.063 s and 1 audio track; E12 ASR processed 0.0-96.0626 s with failed_ranges empty -- all supported, and the answer correctly treats the NASA caption as a clue, not a matched original. REQ1 and REQ2 are not answered, but the answer honestly states no original was verified and that differences/times cannot be determined, which the batch guide treats as acceptable for A family; REQ3 is covered. Minor issue: the cited evidence (no Findings, no search/reverse-image cards) shows no search attempts, so the 'not found' is not visibly backed by effort, and the NASA TV lead was not pursued; the answer does not claim a strong negative, so this is minor, not premature_finish. The raw float '96.06263333333334' is cosmetic. verifier-FP-pattern: verbatim tool measurement (ASR range float) quoted with attribution to ASR.",
+   "req": {
+    "REQ1": "no",
+    "REQ2": "no",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A004",
+   "kind": "answer",
+   "run": "groundlie360_v21694609_r1g1_1",
+   "main": "minor",
+   "errors": [
+    "other"
+   ],
+   "span": "",
+   "note": "Checked: E11 transcript faithfully summarised (speaker alleges a Republican amendment giving veterans the same benefits was voted down and the main measure 'passed, barely'), framed as allegation/opinion; E5/E9 frames do show only a man in suit and tie filming himself indoors, no vote or provision visible; E15 is correctly attributed to Rogers/committee release dated Sept 26, 2019 with the 90-day DHS EHR requirement and medical-screening research. Issue (minor): the answer says the main measure's 'precise provisions' remain not determinable because 'legislative text ... [was] not examined substantively', yet cited E16 contains the H.R. 3525 text as amended (Sec. 2 medical-screening research, Sec. 3 EHR within 90 days), so it under-uses its own evidence and slightly misstates it; this over-hedging does not change the 'cannot be verified' verdict, which is honest given no amendment text or vote record appears in the evidence. The line 'the second report did not independently verify it' is internal-process wording, cosmetic. REQ1 covered via E11/E5/E9, REQ2 via E15/E16, REQ3 explicitly stated.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A005",
+   "kind": "answer",
+   "run": "fmnv_c_aoq46QuPuMk_r1g1_1",
+   "main": "acceptable",
+   "errors": [],
+   "span": "",
+   "note": "Checked each sentence against the cited evidence. E17 (Guardian: Starship exploded after lifting off from Texas; debris near south Florida and the Bahamas), E19 (ABC: spun out of control, debris streaking across the sky) and E16 (CBC quoting the Bahamian government saying debris fell into its airspace) all support the event claims with correct attribution. E13 (dark sky, one bright streak, caption 'Big Sampson Cay, Bahamas', Guardian logo) and E12 (OCR of Ragged Island, Miami, Florida and Big Sampson Cay) support the imagery and caption sentences, and E11 matches the 'reactions and a question' summary ('That is so sad', 'What is that'). The answer is properly hedged: it treats captions as labels and says the link between this video and the event is unverified. Small points that do not change the verdict: the frame shows one streak, not 'streaks'; 'night sky' is not checked explicitly (the sources say dusk/evening); and the answer does not mention that the Guardian watermark in the video matches E17, which is a conservative omission.",
+   "req": {
+    "REQ1": "yes",
+    "REQ2": "yes",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "A006",
+   "kind": "answer",
+   "run": "vcsl_pair_g1_03_r1g1_1",
+   "main": "unacceptable",
+   "errors": [
+    "omitted_required_fact"
+   ],
+   "span": "",
+   "note": "Everything the answer states is supported. The 92% match, B 18-92 s, the unmatched A 76.2-81.2 s tail and the A 0.8-2.3 s speed/backwards span all appear in E26/E46, and the E36 frame at A 80.747 s is indeed black, which the answer hedges correctly. However, REQ1 (must-cite) asks for the corresponding segments with time ranges on both sides. The answer never gives the six A=B span pairs listed in compare_media (e.g. A 2.8-35.2 s = B 19.3-51.2 s ... A 70.2-74.7 s = B 86.8-90.7 s, picture differs). It gives only an overall B range and no A-side ranges for the matched footage. This omission is major. REQ2 (must-cite) is also not covered: it describes no frame content on either side and none of the listed changed regions or transformations (e.g. A 7.3-68.2 s corner region, A 70.2-76.2 s centre region); 'local visual differences' is too vague. This is also major. REQ3 is roughly covered: the answer hedges the tail and the short span and does not claim authorship, though it omits the ~0.5 s boundary precision.",
+   "req": {
+    "REQ1": "no",
+    "REQ2": "no",
+    "REQ3": "yes"
+   },
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F001",
+   "kind": "finding",
+   "run": "fmnv_c_1525007998925651968_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "CBS News describes Pelosi leading bipartisan House and Senate lawmakers in a moment of silence at the U.S. Capitol",
+   "note": "Core claim (event marked one million COVID-19 deaths, not recoveries) is supported: E19's page title reads 'Lawmakers hold moment of silence for 1 million American COVID deaths' and E18's C-SPAN title/transcript is 'Lawmakers Mark One Million Americans Dying to COVID-19' with a moment of silence. However E19's body text is only navigation links, and neither E19 nor E18 mentions Pelosi leading, 'bipartisan House and Senate', or 'the U.S. Capitol', so attributing those details to CBS is unsupported (minor: does not change the deaths-vs-recoveries verdict). The 'false' verdict is hedged ('as far as the obtained evidence shows') and the limitation honestly notes the given video was not aligned to the source, so the link video-to-event is acceptably covered.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F002",
+   "kind": "finding",
+   "run": "groundlie360_v2256709_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked the quoted lines against E11 ASR segments 46.96-51.24 ('The answer is that there has to be some form of punishment.'), 51.24-51.92 ('For the woman?') and 51.92-53.24 ('Yeah, there has to be some form.'); all are verbatim. The walk-back 'hours later' is in E17 [1] and E15 [1], and the corroboration of the remark is in E17 [2] and E15 [9]-[11]. 'Conditional on abortion being outlawed' is directly in E17 [1] ('if the procedure was outlawed'). The ASR does not identify the speaker, but other transcript lines match the NBC and Vox quotes closely (E17 [4], [15]; E15 [6]-[7]), so attributing the remarks to Trump in this interview is well grounded. The limitations correctly leave out the upload date and his later position. verifier-FP-pattern: a speaker-identity or attribution flag would be a false positive here, because the statement attributes the external facts to NBC and Vox and the transcript content matches their quotes.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F003",
+   "kind": "finding",
+   "run": "videosham_4224_r1g1_1",
+   "main": "none",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "because it found no consistent correspondence between the two videos",
+   "note": "The statement's central claim is contradicted by E29. The compare_media result says 'B matches A: 100% of A's half-second samples are found in B', gives a corresponding span (A 0.0-3.8 s = B 0.0-3.5 s) and lists frame-exact difference segments under a consistent 1:1 mapping, with audio matching in 6 of 6 windows. So the tool did find a consistent correspondence (major error). The idea that the assessment is limited to sampled frames only weakly echoes the tool's limitation that regions and faces are checked only at sampled moments. That limitation is not caused by a lack of correspondence, and the tool did report frame-exact differences.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F004",
+   "kind": "finding",
+   "run": "fmnv_a_47uxQL9Ggdc_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“SpaceX - Starship Flight 7 with DRONE CAM and PAD CAM,”",
+   "note": "Checked against E28 and E41: the 95% half-second sample match, the B 5-108 s matched span (E28 summary line 1), and the 2025-01-19 upload date (E41, attributed to the date lookup and hedged in limitations as not the earliest) are all supported, and 'Material A differs from this source' is backed by E28's missing spans, speed changes and changed regions. The URL appears as E41's source_url. The video title, though, is not in either cited evidence (E28 only names youtube.com via E23, which is not cited). That is an unsupported_assertion, minor: it is descriptive and does not change the verdict. The statement calls B the 'source found', not the original, and its limitations cover that properly. verifier-FP-pattern: date lookup attributed and hedged, so not an earliest-source overclaim.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F005",
+   "kind": "finding",
+   "run": "groundlie360_v16934701_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "including a foreground person holding an object resembling a handgun｜people at the left and foreground appear to hold or point handgun-shaped objects",
+   "note": "E5 (14.633 s) does show several people inside a shop, and E9 (43.833 s) does show a dark figure lying on the floor with people at the left and foreground extending their arms toward it, so the scene layout and timestamps are supported. In both low-resolution CCTV-in-a-meme frames, though, I cannot make out any handgun-shaped object: the white-shirted foreground person in E5 is bent over with their hands hidden, and in E9 the left/foreground figures show only outstretched arms. The handgun claims are hedged ('resembling', 'appear to'), but they are what the closing 'apparent armed confrontation' inference rests on, so I rate this moderate-to-major rather than cosmetic. The limitations correctly concede that no shooting or injuries are shown. The frames also carry a caption ('Armed suspect robs convenience store, gets shot by every customer inside') and a 2017-05-31 timestamp that the statement leaves out; that is not an error. verifier-FP-pattern: hedged visual descriptions of tiny objects in low-res frames are hard to adjudicate, and a verifier could reasonably go either way.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F006",
+   "kind": "finding",
+   "run": "fmnv_c_1524680668705402881_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked every frame: E14 shows a grey-haired male presenter against a London city skyline; E15-E17 show a female correspondent with a 'LIVE Westminster' label; E18 is a Sky News end card. E14-E16 banners read 'more than 100 additional referrals for fixed penalty notices have been made in relation to Partygate', and the later E17 banner drops 'additional' ('more than 100 referrals'), which matches the statement's 'earlier sampled banners include the word additional'. ASR E11 (24.48-31.36 s) says the Met 'have now made more than 100 referrals for fixed penalty notices', so both the on-screen text and the transcript contradict the title's zero-referrals claim. The limitations correctly hedge the location label and the additional-vs-total ambiguity. No overreach found.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F007",
+   "kind": "finding",
+   "run": "groundlie360_v15090806_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "The statement is a process claim: all three task URLs were opened and their text extracted. E19 (dailymotion x66c1kl), E20 (roadiscalling daily-life-in-cambodia) and E21 (yourdictionary foghorn-leghorn-sayings) each match one URL exactly, each was acquired by SEARCH/open/http+trafilatura, and each returned text, so no opening failure appears in the cited evidence. E19 returned only player and navigation boilerplate, and E20's text is cut off at 8000 characters. The limitations cover both points (the embedded video was not inspected, and the readings did not exhaust the later text), and the statement makes no claim about the content. verifier-FP-pattern: meta/process claims ('opened', 'no failure recorded') flagged as unsupported_assertion even though one successful open card is cited for each URL.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F008",
+   "kind": "finding",
+   "run": "fmnv_c_1891991317950956002_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked each claim: E11 ASR (0-45.2s) has the speaker introduce Black History Month and say none is more influential than Martin Luther King Jr., so 'Material A explicitly celebrates him' is supported. E17's page title matches the quoted title word for word, and the body ties King to celebrating Black History Month. E15 does describe SIU's February Black History Month activities. The statement only claims SIU 'describes activities', not that SIU mentions King, though E15 does mention a trip to the Lorraine Motel/National Civil Rights Museum. Listing SIU under 'supports inclusion' is weak, but this is cosmetic and does not change the conclusion. The limitations honestly restrict the conclusion to the US context. verifier-FP-pattern: a contextual rebuttal backed by two example sources may be flagged as scope_overreach even though the limitations cover the scope.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F009",
+   "kind": "finding",
+   "run": "groundlie360_v32327700_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked image E12 (low-res 240x180, zoomed): a dark-clad person near the top of the aircraft stairs has arms down at the sides, and uniformed personnel at the base, including the one beside the stairs and one on the left, have a hand raised to the brow in a salute. The statement is limited to this frame ('This frame shows no returned salute') and does not name the person or claim the whole boarding sequence; the limitations explicitly disclaim identity, date and behaviour beyond the frame. No overreach found.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F010",
+   "kind": "finding",
+   "run": "fmnv_a_HhGABZH0LxM_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“Elon Musk, Cardi B & More Stars React to Donald Trump, Kamala Harris Election Results”",
+   "note": "Core claims check out. E36 compare_media says 'B matches A: 100% of A's half-second samples are found in B', and E43 gives the E! News channel, the URL, a platform upload date of 2024-11-06 and an earliest IA capture on 2024-11-06. The limitations correctly say these dates do not prove an earliest upload and that a sample match does not mean every frame is identical. The video title in quotes appears in neither cited evidence card (E43 lists only the URL and channel), so it is unsupported by what is cited. This is minor: it identifies the same URL and does not change the conclusion. The statement leaves out E36's 20.7 s gap (B 55.0-75.7 s) and the sound differences, but it makes no false claim about them. verifier-FP-pattern: the 100% figure is copied verbatim from compare_media, and the dates are attributed and hedged in the limitations.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F011",
+   "kind": "finding",
+   "run": "fmnv_a_iQ2oXOx6SSE_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "The available evidence therefore includes observations of Material A's pictures, captions",
+   "note": "Checked: E2 media profile gives duration 112.879 s (112.87943) and audio_tracks 1; E12 ASR segment 3.6-5.6 s reads exactly \"I think America got it right.\", so the core claims are fully supported. The closing sentence says the evidence includes observations of pictures and captions, but the cited evidence (E2, E12) has only the media profile and speech; no frame or caption/OCR evidence is cited. The limitations mention sampled frames, but the finding does not cite them. Minor: this is a meta-statement and does not affect any comparison verdict.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F012",
+   "kind": "finding",
+   "run": "fmnv_a_3Oz9RaXz5wc_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "“LA fire captain on wildfires: 'Mother nature just has to cooperate'”",
+   "note": "The URL, the 2025-01-13 platform upload date (E32) and the 100% match of A's half-second samples (E25, 'B matches A: 100% of A's half-second samples are found in B') are all directly supported. The limitations correctly say the upload date is not the earliest source and that the percentage covers samples only. The video title, however, does not appear in either cited evidence card (E32 gives only the URL, the date and channel TODAY), so the title is unsupported by the cited evidence. That error is minor: it is an identifying label and does not change the source or match conclusion. The finding leaves out the B 47.5-65.0 s gap that E25 reports, but that is incomplete, not unsupported. verifier-FP-pattern: compare_media 100% band (same footage) plus a hedged upload date may be wrongly flagged as an overreach about the 'original'.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F013",
+   "kind": "finding",
+   "run": "fmnv_c_1503424514125934593_r1g1_1",
+   "main": "full",
+   "errors": [],
+   "span": "",
+   "note": "Checked each claim against the cited evidence. The E15 frame (8.8 s) shows the lower third 'Transport Secretary / Grant Shapps MP' on Sky News, and the E12 OCR picks up that caption plus the ticker 'Transport Secretary Grant Shapps says all remaining COVID travel measures - including tests for arrivals to the UK - will end on 18 March'. So 'the broadcast identifies the interviewee as Transport Secretary Grant Shapps MP' is supported, and so is the attribution claim, which is scoped to Material A: nothing in the cited evidence names a 'Health Minister Jane Doe'. E19 says the remaining international travel restrictions, including the PLF and tests, are removed from 4am Friday 18 March, and E23 gives the page's declared publication date as 2022-03-14. The limitations honestly cover the unverified 'this week' timing and the fact that the video's own date is not established. verifier-FP-pattern: a scoped verdict ('false as a description of Material A') may be read as an unscoped world claim and flagged as unsupported_assertion/scope_overreach.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  },
+  {
+   "id": "F014",
+   "kind": "finding",
+   "run": "fmnv_c_gPnKb8NEu5M_r1g1_1",
+   "main": "partial",
+   "errors": [
+    "unsupported_assertion"
+   ],
+   "span": "an absentee-ballot counting failure",
+   "note": "All six frame descriptions match the cited images: E15 shows the presenter with a gavel graphic labeled NEW LAWSUIT, E5 a paper-processing machine, E16 hands handling ballots, E17 a 'Now Processing: Ward 65' sign, E18 a person at a voting booth, and E19 a 'Statement from City of Madison' graphic attributed to 'Dylan Brogan, City Spokesperson'. The framing sentence's litigation over uncounted ballots is supported by the broadcaster chyron 'Four Voters Suing City of Madison Over Uncounted Ballots' (E16-E18). However, no cited frame mentions absentee ballots, so 'absentee-ballot counting failure' adds a detail the evidence does not show (minor, it does not change the conclusion). The limitations honestly cover the court filing, Dane County, the 193 count, dates and the outcome. verifier-FP-pattern: the frame-by-frame descriptions are literal and the final sentence attributes the dispute to 'the broadcaster's presentation', so do not count it as attribution drift.",
+   "req": {},
+   "tasks": {},
+   "seconds": 0
+  }
+ ]
+}

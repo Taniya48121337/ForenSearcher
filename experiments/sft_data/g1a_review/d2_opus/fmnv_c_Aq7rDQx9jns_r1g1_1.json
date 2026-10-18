@@ -1,0 +1,39 @@
+{"run": "fmnv_c_Aq7rDQx9jns_r1g1_1", "family": "C", "steps_read": 14, "overall": "minor_issues",
+ "issues": [
+  {"step": "W1-1 turn 5 (request_0006)", "category": "hidden_knowledge", "severity": "major",
+   "what": "Query \"SpaceX Transporter-2 Falcon 9 booster landing on land Landing Zone 1\" adds \"Landing Zone 1\" and \"Falcon 9\". Neither appears in any prior observation: ASR has only the garbled \"Page one, London like a boy\", and OCR shows SOURCE:SPACEX, LIFTOFF, TRANSPORTER2 and numbers. The rationale only gives the caption \"TRANSPORTER 2\" as its basis.",
+   "why_bad_to_teach": "The student learns to put a specific landing site from its own memory into the query, so the search starts from the location it is meant to verify. For other missions the guessed site could be wrong, for example a droneship.",
+   "ideal": "Query from visible cues only, e.g. \"SpaceX Transporter 2 booster landing\" (optionally plus the claim's \"land\"), and let the results supply LZ-1."},
+  {"step": "W1-1 turn 8 (request_0009)", "category": "query_quality", "severity": "minor",
+   "what": "Query \"site.spacex.com Transporter-2 June 30 2021 first stage eighth landing\" uses a malformed operator: \"site.spacex.com\" instead of \"site:spacex.com\".",
+   "why_bad_to_teach": "It teaches malformed search operators that silently become plain keywords.",
+   "ideal": "\"site:spacex.com Transporter-2\", or drop the operator; the date and \"eighth\" are visible in R5/R6/ASR, so those tokens are fine."},
+  {"step": "W1-1 turn 10 (request_0011)", "category": "rationale_mismatch", "severity": "minor",
+   "what": "The rationale says \"Material A's spoken content remains unclear in the visible record\", but the full 8-segment transcript was already shown in the turn-1 ASR observation. \"Material A\" is also not an id used anywhere (the material is E1/C0).",
+   "why_bad_to_teach": "It teaches re-reading a record already in context, with a false reason and an invented id.",
+   "ideal": "Skip the re-read, or justify it accurately (e.g. checking segment timestamps against E16 at 32.566 s) and refer to E1/E11."},
+  {"step": "W1-1 turn 11 report F1 (request_0012)", "category": "citation", "severity": "minor",
+   "what": "F1 rests the \"land\" part and the link to Transporter-2 on E22. The visible part of E22 only says \"landing back on Earth\". E17 and E18, the pages actually read whose snippets state Landing Zone 1, are not cited, and the OCR record E12 (TRANSPORTER2), which is the only link between the video and the event, is not cited in F1 either.",
+   "why_bad_to_teach": "Key claims end up cited to a record that, as visible, does not state them, while the records that do are left out.",
+   "ideal": "Cite E17/E18 (or the part of E22 that names LZ-1) for the land landing, and E12 for linking the video to Transporter-2."},
+  {"step": "W1-1 turn 11 report F3 last limitation (request_0012)", "category": "numeric", "severity": "minor",
+   "what": "\"9 of 15 candidate pages failed to load\": the two searches listed 16 results (R1–R16), and 9 failed. The added \"an earlier or other copy may exist among them\" is a provenance-style boilerplate line in a claim-check task.",
+   "why_bad_to_teach": "It teaches miscounting tool output and pasting limitations that do not fit the task.",
+   "ideal": "\"9 of 16 candidate pages failed to load (including spacex.com and the YouTube copies), so first-party confirmation was not read.\""},
+  {"step": "GIA turn 1 (request_0001)", "category": "plan_quality", "severity": "minor",
+   "what": "T1 is the full task text copied verbatim, with no sub-points such as identifying the event from captions, confirming land vs sea recovery, and checking reuse.",
+   "why_bad_to_teach": "The planner learns to pass the task through unchanged instead of breaking it down.",
+   "ideal": "A single T1 is acceptable, but it should list the points to establish: event identity, land landing, reused booster, success."}
+ ],
+ "good_patterns": [
+  "Search query built from an on-screen caption found by OCR (TRANSPORTER2) rather than copied from the claim title.",
+  "Faithful reporting of tool output: frame times 10.244/32.566 s, ASR quotes and OCR strings are reproduced exactly, and recognition errors are acknowledged.",
+  "Careful scope: the answer separates booster vs whole rocket, treats \"Nails\" as informal, and says that no media comparison against an original SpaceX recording was done.",
+  "The claim is decomposed implicitly into video content (ASR/OCR/frames) and external reporting, and both are combined in the answer."
+ ],
+ "cannot_judge": [
+  "Turn 7 rationale cites \"the contradictory booster flight history reported in E18\"; E18 content is truncated (+4155 chars), so I could not verify a contradiction is actually there.",
+  "Turn 10 rationale says \"E22 reports that Transporter-2's reused Falcon 9 first stage landed at LZ-1\"; the visible part of E22 does not show LZ-1, but the truncated remainder may.",
+  "Frame descriptions (deployed legs, coastal pad) depend on image pixels not visible in this rendering."
+ ],
+ "summary": "This is a mostly clean C-family run. OCR found the TRANSPORTER2 caption, which drove the search, and the report and answer are well scoped and copy tool values faithfully. The main problem to keep out of training is the first query, which adds \"Landing Zone 1\" and \"Falcon 9\" from the teacher's own memory rather than from anything observed. The other issues are minor: a malformed site operator, a false-premise re-read of the ASR record, weak citations for the land-landing claim (E17/E18/E12 not cited), and a miscounted failed-page limitation."}

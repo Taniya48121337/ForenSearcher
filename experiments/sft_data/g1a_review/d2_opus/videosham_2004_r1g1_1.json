@@ -1,0 +1,40 @@
+{"run": "videosham_2004_r1g1_1", "family": "B", "steps_read": 6, "overall": "problematic",
+ "issues": [
+  {"step": "W1-1 turns 1-4 (request_0002-0005)", "category": "missing_step", "severity": "major",
+   "what": "The worker never opens the media metadata of E1/E2 (READ_RECORD on the materials) although every observation says \"evidence cards also include source materials and metadata\". It then reports INCOMPLETE with reason \"The media properties of A and B (duration, frame rate, number of audio tracks) are not reported\".",
+   "why_bad_to_teach": "In a B-family audio-swap case the audio-track and stream properties are the main media-attribute evidence; the student learns to name a cheap, fixable gap instead of closing it.",
+   "ideal": "After compare_media showed a sound-only difference, READ_RECORD E1 and E2 (or their metadata cards) and report duration, fps and audio-track count/codec for each side before the report."},
+  {"step": "W1-1 turn 4 (request_0005) -> GIA round 2 (request_0006)", "category": "plan_quality", "severity": "major",
+   "what": "After the in-loop downgrade to INCOMPLETE, the next step is GIA FINISH under rule `G3_finish_unfixable_gap`, but the stated gaps (media properties, paired frames) are fixable with one READ_RECORD or a frames INSPECT. The answer even acknowledges this: \"the cited comparison also does not establish media-property details or provide paired frames\".",
+   "why_bad_to_teach": "It teaches the coordinator to treat any INCOMPLETE gap as unfixable and finish, rather than dispatch a short round-2 task that targets the named gap.",
+   "ideal": "GIA should INVESTIGATE round 2 with a Scope whose first item is 'read A/B media metadata (audio tracks, duration, fps)' and second 'cite paired frames A/B at matched times'."},
+  {"step": "W1-1 turn 4 (request_0005)", "category": "other", "severity": "minor",
+   "what": "The report repeats itself. F5 restates F2 (\"A 0.0–4.5 s ↔ B 0.0–4.5 s\") and F1 (\"no qualifying pixel differences across its 150 compared frames\"), and F3/F6 both restate 'visual correspondence + acoustic difference'. Six findings carry about two facts.",
+   "why_bad_to_teach": "The student learns to pad reports with restatements instead of separate, located forgery points.",
+   "ideal": "Two or three findings: visual match (E21), soundtrack difference with span and similarity (E21), and the audio-label contrast per side (E22/E23), plus the metadata finding once it is read."},
+  {"step": "W1-1 turn 4 (request_0005)", "category": "underclaim", "severity": "minor",
+   "what": "The compare_media 'Next' line asked to \"say what A shows and what B shows there (see images)\" for the differing span. The report never describes either side's content (e.g. a drummer is visible in the attached frames, per the turn-1 rationale) and falls back to \"The effect on the event's meaning cannot be specified\".",
+   "why_bad_to_teach": "It teaches defaulting to 'meaning cannot be determined' without spelling out what the visible evidence does allow: the picture shows a drummer and the soundtrack under it was swapped.",
+   "ideal": "State that both clips show the same drumming footage and that the audio under it differs (similarity 0.36), so the sound heard in one version is not the sound recorded with the picture in at least one of them."},
+  {"step": "W1-1 turn 4 (request_0005), F4", "category": "hidden_knowledge", "severity": "minor",
+   "what": "F4 states \"A's analysis labels 0.0–5.0 s as other sound; B's labels 0.0–0.05 s as silence and 0.05–5.0 s as other sound\", but the ASR observations shown to the worker (turns 2-3) contain only backend/model/speech_duration/limitations, with no `sounds` field. Those labels appear only in the full E22/E23 records shown later to GIA.",
+   "why_bad_to_teach": "If the student really sees only the short observation, it learns to report tool fields it never saw.",
+   "ideal": "Either have the S4 state include the full E22/E23 records, or limit F4 to what the observation shows (no speech detected in either)."},
+  {"step": "GIA turn 1 round 1 (request_0001)", "category": "plan_quality", "severity": "minor",
+   "what": "T1 copies the overall task verbatim (\"Compare the given video A with the candidate video B, and investigate the differences…\") with no decomposition into visual, audio and media-property checks.",
+   "why_bad_to_teach": "A verbatim task gives the worker no pointer to the media-attribute check that it later skipped.",
+   "ideal": "Keep a single workspace but name the sub-checks: whole-video compare, audio content per side, media properties/audio tracks of A and B, and paired frames."}
+ ],
+ "good_patterns": [
+  "Turn-1 rationale bases only the visible scene (\"show a drummer in the same setting\") on the attached frames and explicitly says the frames \"do not establish temporal correspondence or audiovisual differences\"; it does not claim a match before compare_media runs.",
+  "After compare_media flagged a sound-only difference, the worker switched to audio analysis of both sides (ASR on A, then on B), and each rationale cites the prior evidence ids correctly (E21, E22).",
+  "Numbers copied from E21 are faithful (100% samples, 150 frames, min_area 0.0005, A 0.0–4.5 s vs B 0.0–4.5 s, similarity 0.36, ±0.5 s precision).",
+  "Limitations are honest: an empty transcript is not proof of silence; the tool does not decide which soundtrack is original; B's source identity is unverified."
+ ],
+ "cannot_judge": [
+  "Whether the S4 report slot received the full E22/E23 records (with `sounds` labels) or only the short observation; this decides whether F4 is hidden knowledge.",
+  "Which attached frame ids belong to A vs B: the worker's rationale assigns E9 (@3.136 s) to A and E15 (@1.235 s) to B, while the GIA image list suggests even ids E4–E10 are A and E14–E20 are B. The rendering does not label sides.",
+  "What the E1/E2 metadata cards contain (audio track count, duration), because they were never read or rendered, so it is unknown how much the skipped step would have resolved.",
+  "The truncated tail of E21's note (\"Spans under 3 s that ali…\")."
+ ],
+ "summary": "The worker ran the right first step (compare_media) and audio follow-ups, and it copied the numbers faithfully with honest limitations. But it never read the A/B media metadata, which is the main media-attribute evidence in an audio-swap B case. It then reported INCOMPLETE on exactly that gap, and GIA finished under 'unfixable gap' instead of dispatching a one-step round 2. The report is padded with restated findings and does not describe what each side shows. Imitating this teaches the student to name a fixable gap and stop."}
