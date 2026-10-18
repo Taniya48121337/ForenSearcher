@@ -1,0 +1,500 @@
+{
+ "summary": {
+  "runs": 17,
+  "by_status": {
+   "done": 15,
+   "null": 2
+  },
+  "by_family_dataset": {
+   "A_fmnv": 3,
+   "C_fmnv": 5,
+   "C_groundlie360": 3,
+   "B_vcsl": 3,
+   "B_videosham": 3
+  },
+  "done_by_family_dataset": {
+   "A_fmnv": 3,
+   "C_fmnv": 3,
+   "C_groundlie360": 3,
+   "B_vcsl": 3,
+   "B_videosham": 3
+  },
+  "inloop_rewritten_runs": 4,
+  "round2_runs": 4,
+  "codex_calls_in_runs": 174,
+  "manifest_failed_attempts": 0,
+  "retried_runs": [],
+  "failed_dirs": [],
+  "codex_gate": {
+   "calls": 181,
+   "results": {
+    "ok": 181
+   },
+   "backoffs": 0,
+   "backoff_kinds": {},
+   "slot_wait_s": 0.1,
+   "pause_wait_s": 0.0,
+   "attempt_s_mean": 13.5
+  },
+  "claude_gate": {
+   "calls": 42,
+   "results": {
+    "ok": 42
+   }
+  },
+  "pauses": [],
+  "walls": {
+   "mean_s": 237.4
+  }
+ },
+ "runs": [
+  {
+   "run": "fmnv_a_3elCxlGqUHM_r1g1_1",
+   "case": "fmnv_a_3elCxlGqUHM",
+   "family": "A",
+   "dataset": "fmnv",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 307.3,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 7,
+   "codex_s4_s5": 2,
+   "codex_s": 117.1,
+   "slots": {
+    "S0": 6,
+    "S1": 1,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "fmnv_a_47uxQL9Ggdc_r1g1_1",
+   "case": "fmnv_a_47uxQL9Ggdc",
+   "family": "A",
+   "dataset": "fmnv",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 463.4,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 9,
+   "codex_s4_s5": 2,
+   "codex_s": 170.7,
+   "slots": {
+    "S0": 8,
+    "S1": 1,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "fmnv_a_CqPYUMkicks_r1g1_1",
+   "case": "fmnv_a_CqPYUMkicks",
+   "family": "A",
+   "dataset": "fmnv",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 726.9,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 8,
+   "codex_s4_s5": 2,
+   "codex_s": 137.7,
+   "slots": {
+    "S0": 6,
+    "S1": 2,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "fmnv_c_0NqD96FRgOo_r1g1_1",
+   "case": "fmnv_c_0NqD96FRgOo",
+   "family": "C",
+   "dataset": "fmnv",
+   "kind": "fake",
+   "status": null,
+   "attempt": null,
+   "wall_s": null,
+   "reports": [],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 0,
+   "round2": 0,
+   "codex_s0_s3": 0,
+   "codex_s4_s5": 0,
+   "codex_s": 0,
+   "slots": {}
+  },
+  {
+   "run": "fmnv_c_1484605287315214338_r1g1_1",
+   "case": "fmnv_c_1484605287315214338",
+   "family": "C",
+   "dataset": "fmnv",
+   "kind": "fake",
+   "status": null,
+   "attempt": null,
+   "wall_s": null,
+   "reports": [],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 0,
+   "round2": 0,
+   "codex_s0_s3": 0,
+   "codex_s4_s5": 0,
+   "codex_s": 0,
+   "slots": {}
+  },
+  {
+   "run": "fmnv_c_Aq7rDQx9jns_r1g1_1",
+   "case": "fmnv_c_Aq7rDQx9jns",
+   "family": "C",
+   "dataset": "fmnv",
+   "kind": "real",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": null,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 10,
+   "codex_s4_s5": 2,
+   "codex_s": 140.7,
+   "slots": {
+    "S0": 5,
+    "S3": 5,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "fmnv_c_eLD1XA2UcwQ_r1g1_1",
+   "case": "fmnv_c_eLD1XA2UcwQ",
+   "family": "C",
+   "dataset": "fmnv",
+   "kind": "fake",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": null,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 10,
+   "codex_s4_s5": 2,
+   "codex_s": 154.4,
+   "slots": {
+    "S0": 5,
+    "S3": 5,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "fmnv_c_f6LMYqXwK7w_r1g1_1",
+   "case": "fmnv_c_f6LMYqXwK7w",
+   "family": "C",
+   "dataset": "fmnv",
+   "kind": "fake",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": null,
+   "reports": [
+    "W1:COMPLETED→INCOMPLETE",
+    "W2:INCOMPLETE→INCOMPLETE"
+   ],
+   "inloop_rewritten": 1,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 1,
+   "codex_s0_s3": 17,
+   "codex_s4_s5": 3,
+   "codex_s": 281.0,
+   "slots": {
+    "S0": 11,
+    "S3": 5,
+    "S4": 2,
+    "S2": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "groundlie360_v2276004_r1g1_1",
+   "case": "groundlie360_v2276004",
+   "family": "C",
+   "dataset": "groundlie360",
+   "kind": "fake",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 440.8,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 10,
+   "codex_s4_s5": 2,
+   "codex_s": 136.2,
+   "slots": {
+    "S0": 6,
+    "S3": 4,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "groundlie360_v32327700_r1g1_1",
+   "case": "groundlie360_v32327700",
+   "family": "C",
+   "dataset": "groundlie360",
+   "kind": "fake",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 364.1,
+   "reports": [
+    "W1:COMPLETED→INCOMPLETE",
+    "W2:INCOMPLETE→INCOMPLETE"
+   ],
+   "inloop_rewritten": 1,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 1,
+   "codex_s0_s3": 15,
+   "codex_s4_s5": 3,
+   "codex_s": 261.9,
+   "slots": {
+    "S0": 9,
+    "S3": 5,
+    "S4": 2,
+    "S2": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "groundlie360_v46408700_r1g1_1",
+   "case": "groundlie360_v46408700",
+   "family": "C",
+   "dataset": "groundlie360",
+   "kind": "real",
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 461.7,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 10,
+   "codex_s4_s5": 2,
+   "codex_s": 156.0,
+   "slots": {
+    "S0": 5,
+    "S3": 5,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "vcsl_pair_g1_01_r1g1_1",
+   "case": "vcsl_pair_g1_01",
+   "family": "B",
+   "dataset": "vcsl",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 124.1,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 4,
+   "codex_s4_s5": 2,
+   "codex_s": 86.9,
+   "slots": {
+    "S0": 4,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "vcsl_pair_g1_02_r1g1_1",
+   "case": "vcsl_pair_g1_02",
+   "family": "B",
+   "dataset": "vcsl",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 392.4,
+   "reports": [
+    "W1:COMPLETED→INCOMPLETE",
+    "W2:COMPLETED→INCOMPLETE"
+   ],
+   "inloop_rewritten": 2,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 13,
+   "round2": 2,
+   "codex_s0_s3": 15,
+   "codex_s4_s5": 4,
+   "codex_s": 275.2,
+   "slots": {
+    "S0": 14,
+    "S4": 3,
+    "S2": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "vcsl_pair_g1_03_r1g1_1",
+   "case": "vcsl_pair_g1_03",
+   "family": "B",
+   "dataset": "vcsl",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 210.2,
+   "reports": [
+    "W1:INCOMPLETE→INCOMPLETE",
+    "W2:INCOMPLETE→INCOMPLETE",
+    "W2:INCOMPLETE→INCOMPLETE"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 0,
+   "round2": 2,
+   "codex_s0_s3": 6,
+   "codex_s4_s5": 4,
+   "codex_s": 153.4,
+   "slots": {
+    "S0": 5,
+    "S4": 3,
+    "S2": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "videosham_2004_r1g1_1",
+   "case": "videosham_2004",
+   "family": "B",
+   "dataset": "videosham",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 129.9,
+   "reports": [
+    "W1:COMPLETED→INCOMPLETE"
+   ],
+   "inloop_rewritten": 1,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 3,
+   "codex_s4_s5": 2,
+   "codex_s": 77.6,
+   "slots": {
+    "S0": 3,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "videosham_4008_r1g1_1",
+   "case": "videosham_4008",
+   "family": "B",
+   "dataset": "videosham",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 200.7,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 7,
+   "codex_s4_s5": 2,
+   "codex_s": 127.6,
+   "slots": {
+    "S0": 7,
+    "S4": 1,
+    "S5": 1
+   }
+  },
+  {
+   "run": "videosham_4144_r1g1_1",
+   "case": "videosham_4144",
+   "family": "B",
+   "dataset": "videosham",
+   "kind": null,
+   "status": "done",
+   "attempt": 1,
+   "wall_s": 213.8,
+   "reports": [
+    "W1:COMPLETED→COMPLETED"
+   ],
+   "inloop_rewritten": 0,
+   "inloop_limit_hit": 0,
+   "inloop_errors": 0,
+   "judge_calls": 2,
+   "round2": 0,
+   "codex_s0_s3": 7,
+   "codex_s4_s5": 2,
+   "codex_s": 148.9,
+   "slots": {
+    "S0": 7,
+    "S4": 1,
+    "S5": 1
+   }
+  }
+ ]
+}

@@ -109,6 +109,10 @@ def main() -> int:
                      f"{'；'.join(r['reports']) or '—'} | {r['inloop_rewritten']} | {r['round2']} | {r['codex_s0_s3']} / {r['codex_s4_s5']} | "
                      f"{r['judge_calls']} | {r['wall_s']} |")
     Path(args.md).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # 窗口后 d1（不带 --no-verify）用的清单：只放已完成的 run，免得 d1 把没跑的案例当场生成
+    done_cases = sorted(r["case"] for r in runs if r["status"] == "done")
+    (SFT / f"walker_{ROUND}_done_cases.json").write_text(json.dumps(done_cases, ensure_ascii=False, indent=1) + "\n",
+                                                         encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=1, default=dict)[:4000])
     return 0
 
