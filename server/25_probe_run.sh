@@ -62,13 +62,14 @@ for r in runs:
     ok.setdefault(r["variant"], {})[r["role"]] = r
 cands = []
 for v, roles in ok.items():
-    if set(roles) == {"hi", "gia"} and all(not x["oom"] and x["exit"] == 0 for x in roles.values()):
+    finite = lambda x: bool(x.get("losses")) and all(isinstance(v, (int, float)) and v == v for v in x["losses"])   # 10-19：fa2 变体 loss 全 nan
+    if set(roles) == {"hi", "gia"} and all(not x["oom"] and x["exit"] == 0 and finite(x) for x in roles.values()):
         peak = max(max(x.get("peak_reserved_gb") or 0, x.get("nvidia_smi_peak_gb") or 0) for x in roles.values())
         if peak < 125:
             cands.append((roles["hi"].get("steady_step_s") or 1e9, v, peak))
 cands.sort()
 print(json.dumps({"runs": runs, "eligible": [{"variant": v, "hi_steady_step_s": s, "peak_gb": p} for s, v, p in cands],
-                  "chosen": cands[0][1] if cands else None, "rule": "最快（HI 稳态每步）且两个角色都不 OOM、峰值（reserved 与 nvidia-smi 取大）< 125 GB"},
+                  "chosen": cands[0][1] if cands else None, "rule": "最快（HI 稳态每步）且两个角色都不 OOM、loss 全是有限数、峰值（reserved 与 nvidia-smi 取大）< 125 GB"},
                  ensure_ascii=False, indent=1))
 PY
 grep -E '"chosen"|"eligible"' -A3 "$OUT/probe_results.json" | head -12

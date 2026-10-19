@@ -23,6 +23,7 @@ VARIANTS = {                                           # 名字 → 相对原配
     "nogc_fa2_liger": {"gradient_checkpointing": False, "attn_implementation": "flash_attention_2", "liger": True},
     "gc_fa2_liger": {"attn_implementation": "flash_attention_2", "liger": True},
     "gc_fa2": {"attn_implementation": "flash_attention_2"},
+    "gc_liger": {"liger": True},                       # 10-19：flash-attn2 两个变体第 1 步起 loss / grad_norm 全是 nan，单独看 Liger（sdpa）
 }
 
 

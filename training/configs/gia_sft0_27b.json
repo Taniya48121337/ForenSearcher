@@ -48,5 +48,10 @@
   "files": [
     "gia.jsonl"
   ],
-  "normalize_sample_weight": true
+  "normalize_sample_weight": true,
+  "runtime": {
+    "gradient_checkpointing": true,
+    "liger": true
+  },
+  "_runtime_why": "10-19 Vast 单卡 H200 内存探针（server/25_probe_run.sh，20 条最长行）：base（检查点开、sdpa）HI 1.146 / GIA 1.149 ms/token；+ Liger（RMSNorm / SwiGLU，Liger 没有 Qwen3_5 的 RoPE）0.995 / 0.994 ms/token、loss 与 base 逐步一致、峰值 92 GB；flash-attn2 两个变体 loss 全 nan（无效）；关检查点 OOM（139 GB）。按负责人规则（最快、不 OOM、loss 有限、< 125 GB）选 gc_liger。runtime 只影响速度 / 显存，不是配方，不进配方 hash / 续训身份"
 }
