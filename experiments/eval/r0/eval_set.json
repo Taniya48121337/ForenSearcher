@@ -1,0 +1,796 @@
+{
+ "eval_set_id": "r0_eval_v1",
+ "frozen_at": "2026-10-15",
+ "doc": "claude/r0评测口径与成功标准_20261015.md",
+ "note": "r0（第一次 SFT）训前基线 E2 与训后评测共用的固定评测集。改动本文件 = 换评测口径，训前训后两次必须是同一份（eval_r0.py 记 sha256）。",
+ "sets": {
+  "evid_ctrl20": {
+   "desc": "EVID 剪辑类对照 20 个：002–130 均匀取（2 + round(i·128/19)，i=0..19；不含已降级的 027），单源 14、多源 6，81 个 GT 点。与 evidb12bf（8B bf16 29.6%）、evidsA8（27B 49.4%）同一批。已用于诊断，不干净，只作训前训后对照，不报论文正式分。",
+   "cases_dir": "experiments/evid/cases",
+   "run_cases_split": "test",
+   "score": "EVID 点级（Sonnet 单评委，官方 PROMPT_JUDGE_POINTS）",
+   "n_cases": 20,
+   "n_gt_points": 81,
+   "cases": [
+    {
+     "case_id": "evid:video_002",
+     "case_file": "experiments/evid/cases/evid_video_002.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "daily_life",
+     "n_gt": 5,
+     "gt_sources": [
+      "azjiJ8a-90k"
+     ],
+     "family_key": "evid_src:azjiJ8a-90k",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_002",
+      "index_entries": 43,
+      "index_sha256": "sha256:5342decbbec465d2ed71ad9da8dfa8514dff77cc2fc08391f86a281ce06e63ff",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/failure": 6,
+       "open/ok": 17,
+       "search/failure": 12,
+       "search/ok": 7
+      },
+      "transient_failures": 12,
+      "blob_refs": 40,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1",
+       "evidq27a_1"
+      ],
+      "last_recorded_at": "2026-10-06T16:41:11",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_009",
+     "case_file": "experiments/evid/cases/evid_video_009.json",
+     "category": "single_source_editing",
+     "type": "selective_omission",
+     "topic": "reviews",
+     "n_gt": 3,
+     "gt_sources": [
+      "FEOHwiM69vc"
+     ],
+     "family_key": "evid_src:FEOHwiM69vc",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_009",
+      "index_entries": 112,
+      "index_sha256": "sha256:6e5a6ab2ef7a800495a2432aa71908134ce5e1f008c429fa5cae406aba114d0d",
+      "by_kind": {
+       "open/failure": 29,
+       "open/ok": 55,
+       "search/failure": 4,
+       "search/ok": 24
+      },
+      "transient_failures": 7,
+      "blob_refs": 111,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T16:47:32",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_015",
+     "case_file": "experiments/evid/cases/evid_video_015.json",
+     "category": "multi_source_editing",
+     "type": "magnitude_manipulation",
+     "topic": "on_scene_footage",
+     "n_gt": 4,
+     "gt_sources": [
+      "wEkRjlSgIIQ",
+      "UK2WwLVY5K4"
+     ],
+     "family_key": "evid_src:wEkRjlSgIIQ",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_015",
+      "index_entries": 111,
+      "index_sha256": "sha256:6e597e1870e55f6f3b7bc3b8300a8d0b0b74680610177c82198290f77f9d78f2",
+      "by_kind": {
+       "open/failure": 20,
+       "open/ok": 49,
+       "search/failure": 11,
+       "search/ok": 31
+      },
+      "transient_failures": 15,
+      "blob_refs": 118,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T16:59:34",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_022",
+     "case_file": "experiments/evid/cases/evid_video_022.json",
+     "category": "single_source_editing",
+     "type": "selective_omission",
+     "topic": "reviews",
+     "n_gt": 4,
+     "gt_sources": [
+      "rx7YZmSO4hE"
+     ],
+     "family_key": "evid_src:rx7YZmSO4hE",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_022",
+      "index_entries": 73,
+      "index_sha256": "sha256:8e84bef5a3c706d14c594c59df76b7b0911a1ed8d188bb615bfd2774deeab23f",
+      "by_kind": {
+       "acquire/failure": 1,
+       "acquire/ok": 1,
+       "open/failure": 19,
+       "open/ok": 34,
+       "search/failure": 3,
+       "search/ok": 15
+      },
+      "transient_failures": 10,
+      "blob_refs": 80,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T16:57:50",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_029",
+     "case_file": "experiments/evid/cases/evid_video_029.json",
+     "category": "multi_source_editing",
+     "type": "narrative_fabrication",
+     "topic": "education_and_skills",
+     "n_gt": 4,
+     "gt_sources": [
+      "U5GdB42-rdM",
+      "0PHcnoYXHHY"
+     ],
+     "family_key": "evid_src:U5GdB42-rdM",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_029",
+      "index_entries": 83,
+      "index_sha256": "sha256:6419c0557302c4f8079fdc3a18a453c9feb5e2618429eb6807f6d15ba5e35b6c",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/failure": 21,
+       "open/ok": 43,
+       "search/failure": 2,
+       "search/ok": 16
+      },
+      "transient_failures": 4,
+      "blob_refs": 110,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:07:18",
+      "gt_source_seen_in_snapshot": true,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_036",
+     "case_file": "experiments/evid/cases/evid_video_036.json",
+     "category": "single_source_editing",
+     "type": "manipulative_montage",
+     "topic": "on_scene_footage",
+     "n_gt": 4,
+     "gt_sources": [
+      "aovISOkatIw"
+     ],
+     "family_key": "evid_src:aovISOkatIw",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_036",
+      "index_entries": 84,
+      "index_sha256": "sha256:41d9f0f5cbc956443b5951b0f5da1953cd93ed46233f2e0436ea8a5d17070720",
+      "by_kind": {
+       "acquire/failure": 2,
+       "acquire/ok": 1,
+       "open/failure": 15,
+       "open/ok": 42,
+       "search/failure": 5,
+       "search/ok": 19
+      },
+      "transient_failures": 6,
+      "blob_refs": 89,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:12:43",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_042",
+     "case_file": "experiments/evid/cases/evid_video_042.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "daily_life",
+     "n_gt": 4,
+     "gt_sources": [
+      "m0FYJ3s67hg"
+     ],
+     "family_key": "evid_src:m0FYJ3s67hg",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_042",
+      "index_entries": 76,
+      "index_sha256": "sha256:6f4f324d5d60c602a1d6953d18d9dcd2c8fcf4c20ee8f9da1e3606418845904f",
+      "by_kind": {
+       "acquire/failure": 1,
+       "acquire/ok": 1,
+       "open/failure": 15,
+       "open/ok": 44,
+       "search/failure": 1,
+       "search/ok": 14
+      },
+      "transient_failures": 6,
+      "blob_refs": 111,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:19:40",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_049",
+     "case_file": "experiments/evid/cases/evid_video_049.json",
+     "category": "single_source_editing",
+     "type": "manipulative_montage",
+     "topic": "sports",
+     "n_gt": 3,
+     "gt_sources": [
+      "7-GF22n75L8"
+     ],
+     "family_key": "evid_src:7-GF22n75L8",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_049",
+      "index_entries": 140,
+      "index_sha256": "sha256:82c025f422bb631cc85a4995e36a55dd417309e7ea4825bd4d420cb8bb7b04a7",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/failure": 25,
+       "open/ok": 62,
+       "search/failure": 4,
+       "search/ok": 48
+      },
+      "transient_failures": 10,
+      "blob_refs": 137,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:32:52",
+      "gt_source_seen_in_snapshot": true,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_056",
+     "case_file": "experiments/evid/cases/evid_video_056.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "performance_and_talent",
+     "n_gt": 4,
+     "gt_sources": [
+      "ejNu0cMo9O0"
+     ],
+     "family_key": "evid_src:ejNu0cMo9O0",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_056",
+      "index_entries": 81,
+      "index_sha256": "sha256:3f083f5e0d4f5002028d8db3aed377d0ca9f3544d185ea322e7c68a86cee6a1d",
+      "by_kind": {
+       "open/failure": 7,
+       "open/ok": 52,
+       "search/failure": 5,
+       "search/ok": 17
+      },
+      "transient_failures": 5,
+      "blob_refs": 135,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:38:44",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_063",
+     "case_file": "experiments/evid/cases/evid_video_063.json",
+     "category": "multi_source_editing",
+     "type": "narrative_fabrication",
+     "topic": "on_scene_footage",
+     "n_gt": 4,
+     "gt_sources": [
+      "--XkCnlJisM",
+      "hEZ3PRPJLws",
+      "F19yTBhAsB0"
+     ],
+     "family_key": "evid_src:--XkCnlJisM",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_063",
+      "index_entries": 75,
+      "index_sha256": "sha256:f40d4467642b29353cd40373efd3f3442ee5eaf0c05075a26d6807827c7fcf53",
+      "by_kind": {
+       "open/ok": 60,
+       "search/ok": 15
+      },
+      "transient_failures": 0,
+      "blob_refs": 144,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:47:12",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_069",
+     "case_file": "experiments/evid/cases/evid_video_069.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "education_and_skills",
+     "n_gt": 4,
+     "gt_sources": [
+      "G9FLWI9A9oY"
+     ],
+     "family_key": "evid_src:G9FLWI9A9oY",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_069",
+      "index_entries": 36,
+      "index_sha256": "sha256:efb00c8b9d1414553facf8c4fdf6b80fa196111e47b5353952c8af199f0cc2fe",
+      "by_kind": {
+       "acquire/failure": 1,
+       "open/failure": 8,
+       "open/ok": 16,
+       "search/failure": 3,
+       "search/ok": 8
+      },
+      "transient_failures": 3,
+      "blob_refs": 33,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:56:36",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_076",
+     "case_file": "experiments/evid/cases/evid_video_076.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "daily_life",
+     "n_gt": 5,
+     "gt_sources": [
+      "0saslFui3fI"
+     ],
+     "family_key": "evid_src:0saslFui3fI",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_076",
+      "index_entries": 10,
+      "index_sha256": "sha256:cd11174f4bf85e2a5716e03d19d8e19a8ad66bb5b32cdb379550862738581f44",
+      "by_kind": {
+       "acquire/ok": 2,
+       "open/ok": 5,
+       "search/failure": 1,
+       "search/ok": 2
+      },
+      "transient_failures": 1,
+      "blob_refs": 17,
+      "recorded_by_rounds": [
+       "evidb12bf_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T17:54:05",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_083",
+     "case_file": "experiments/evid/cases/evid_video_083.json",
+     "category": "single_source_editing",
+     "type": "manipulative_montage",
+     "topic": "sports",
+     "n_gt": 4,
+     "gt_sources": [
+      "mJclHaOOrNI"
+     ],
+     "family_key": "evid_src:mJclHaOOrNI",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_083",
+      "index_entries": 95,
+      "index_sha256": "sha256:61f1fdc81066d10e1d86b24760c2416bbeab2697872e7dd00ee3c727e1fe0593",
+      "by_kind": {
+       "acquire/failure": 1,
+       "open/failure": 20,
+       "open/ok": 48,
+       "search/ok": 26
+      },
+      "transient_failures": 1,
+      "blob_refs": 110,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:08:37",
+      "gt_source_seen_in_snapshot": true,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_090",
+     "case_file": "experiments/evid/cases/evid_video_090.json",
+     "category": "multi_source_editing",
+     "type": "contextual_fabrication",
+     "topic": "daily_life",
+     "n_gt": 4,
+     "gt_sources": [
+      "_C5bhsSvOLU",
+      "G2e47y_flZE"
+     ],
+     "family_key": "evid_src:_C5bhsSvOLU",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_090",
+      "index_entries": 44,
+      "index_sha256": "sha256:c1611c5c0371afd5854cb519d986125024cc020b777a5d7a71fa70016c772d9d",
+      "by_kind": {
+       "open/failure": 10,
+       "open/ok": 16,
+       "search/failure": 10,
+       "search/ok": 8
+      },
+      "transient_failures": 12,
+      "blob_refs": 34,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:04:21",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_096",
+     "case_file": "experiments/evid/cases/evid_video_096.json",
+     "category": "single_source_editing",
+     "type": "selective_omission",
+     "topic": "education_and_skills",
+     "n_gt": 4,
+     "gt_sources": [
+      "qex5Nc-N9nw"
+     ],
+     "family_key": "evid_src:qex5Nc-N9nw",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_096",
+      "index_entries": 33,
+      "index_sha256": "sha256:0c93907ca79fd182e6bb68e95b297f38a73f0270de4981161c6047150eac2ae0",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/ok": 26,
+       "search/ok": 6
+      },
+      "transient_failures": 0,
+      "blob_refs": 70,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:21:44",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_103",
+     "case_file": "experiments/evid/cases/evid_video_103.json",
+     "category": "single_source_editing",
+     "type": "causal_inversion",
+     "topic": "on_scene_footage",
+     "n_gt": 3,
+     "gt_sources": [
+      "1hPEiGG4AIo"
+     ],
+     "family_key": "evid_src:1hPEiGG4AIo",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_103",
+      "index_entries": 114,
+      "index_sha256": "sha256:f552dd2b76f9f03edfc9a4b76b59037ec906813ca6076236d6d11f13a49cc513",
+      "by_kind": {
+       "acquire/ok": 3,
+       "open/failure": 23,
+       "open/ok": 63,
+       "search/failure": 2,
+       "search/ok": 23
+      },
+      "transient_failures": 6,
+      "blob_refs": 159,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:37:57",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_110",
+     "case_file": "experiments/evid/cases/evid_video_110.json",
+     "category": "single_source_editing",
+     "type": "manipulative_montage",
+     "topic": "reviews",
+     "n_gt": 4,
+     "gt_sources": [
+      "NxmTRqDHrQQ"
+     ],
+     "family_key": "evid_src:NxmTRqDHrQQ",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_110",
+      "index_entries": 103,
+      "index_sha256": "sha256:2cbbf34c8d34a70a99221ac1706cfcee4466e48279cd6490dff762950af1b731",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/failure": 20,
+       "open/ok": 55,
+       "search/failure": 3,
+       "search/ok": 24
+      },
+      "transient_failures": 3,
+      "blob_refs": 133,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:28:48",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_117",
+     "case_file": "experiments/evid/cases/evid_video_117.json",
+     "category": "single_source_editing",
+     "type": "manipulative_montage",
+     "topic": "reviews",
+     "n_gt": 5,
+     "gt_sources": [
+      "sQ56ve39l2I"
+     ],
+     "family_key": "evid_src:sQ56ve39l2I",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_117",
+      "index_entries": 149,
+      "index_sha256": "sha256:8a6f65cdc252c6a99aa3c3f36e91b37799add6adc10943adb1728a83b4174e66",
+      "by_kind": {
+       "acquire/ok": 2,
+       "open/failure": 25,
+       "open/ok": 87,
+       "search/failure": 2,
+       "search/ok": 33
+      },
+      "transient_failures": 5,
+      "blob_refs": 204,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T18:40:57",
+      "gt_source_seen_in_snapshot": true,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_123",
+     "case_file": "experiments/evid/cases/evid_video_123.json",
+     "category": "multi_source_editing",
+     "type": "magnitude_manipulation",
+     "topic": "education_and_skills",
+     "n_gt": 5,
+     "gt_sources": [
+      "YvMbpHNBE1E",
+      "c5nXIZRry_A"
+     ],
+     "family_key": "evid_src:YvMbpHNBE1E",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_123",
+      "index_entries": 48,
+      "index_sha256": "sha256:c3854fde57959b6e1a9640fb7a68a74578a7e256b47e4cca4de8d64240832567",
+      "by_kind": {
+       "acquire/ok": 1,
+       "open/failure": 11,
+       "open/ok": 22,
+       "search/failure": 3,
+       "search/ok": 11
+      },
+      "transient_failures": 6,
+      "blob_refs": 56,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T08:44:09",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    },
+    {
+     "case_id": "evid:video_130",
+     "case_file": "experiments/evid/cases/evid_video_130.json",
+     "category": "multi_source_editing",
+     "type": "contextual_fabrication",
+     "topic": "daily_life",
+     "n_gt": 4,
+     "gt_sources": [
+      "faC4p0SH7I4",
+      "TwS4GTnrbUc"
+     ],
+     "family_key": "evid_src:faC4p0SH7I4",
+     "snapshot": {
+      "source_dir": "experiments/evid/search_snapshots/evid_video_130",
+      "index_entries": 142,
+      "index_sha256": "sha256:57358955944bb24f4b44b5a963855ada24a7c83f59857def5f88c6ddbd8da66f",
+      "by_kind": {
+       "open/failure": 39,
+       "open/ok": 62,
+       "search/failure": 8,
+       "search/ok": 33
+      },
+      "transient_failures": 16,
+      "blob_refs": 144,
+      "recorded_by_rounds": [
+       "evidb12_1",
+       "evidb12bf_1",
+       "evidb4_1",
+       "evidb6_1"
+      ],
+      "last_recorded_at": "2026-10-06T19:04:42",
+      "gt_source_seen_in_snapshot": false,
+      "index_check": "ok（2026-10-15，容器内逐行解析）",
+      "blob_check": "待本机 eval_r0.py check（逐个 blob 存在性）"
+     }
+    }
+   ]
+  },
+  "dev_eval4": {
+   "desc": "五份划分里的 dev_eval（《案卷扩充与金标_20260928》§3，splits_manifest.json，seed forensearcher-splits-20260928）。只报行为指标与核验器结果，样本太少（4 × 2 种子），不进分数门槛。",
+   "cases_dir": "experiments/sft_data/cases",
+   "run_cases_split": "dev_eval",
+   "score": "核验器 verifier@0.3.6（Sonnet）答案单元严格通过 + 案卷自动 check；只报不判",
+   "n_cases": 4,
+   "cases": [
+    {
+     "case_id": "averitec:2799",
+     "case_file": "experiments/sft_data/cases/averitec_2799.json",
+     "task_kind": "claim_check",
+     "family_key": "averitec:2799",
+     "needs": "search",
+     "auto_check": "label_expected 不实（Refuted）",
+     "snapshot": {
+      "source_dir": null,
+      "index_entries": 0,
+      "status": "没有快照目录（dev_eval 从未在录制模式下跑过）",
+      "plan": "E2 底座首跑时录制；训后按 snapshot_lock.json 的 as_of 回放"
+     }
+    },
+    {
+     "case_id": "averimatec:441",
+     "case_file": "experiments/sft_data/cases/averimatec_441.json",
+     "task_kind": "claim_check",
+     "family_key": "averimatec:441",
+     "needs": "search+image",
+     "auto_check": "label_expected 不实（Refuted）",
+     "snapshot": {
+      "source_dir": null,
+      "index_entries": 0,
+      "status": "没有快照目录（dev_eval 从未在录制模式下跑过）",
+      "plan": "E2 底座首跑时录制；训后按 snapshot_lock.json 的 as_of 回放"
+     }
+    },
+    {
+     "case_id": "qvhighlights:1",
+     "case_file": "experiments/sft_data/cases/qvhighlights_1.json",
+     "task_kind": "temporal_locate",
+     "family_key": "qvhighlights:Q2TqU-Oh7KQ",
+     "needs": "provided_media",
+     "auto_check": "interval_iou ≥0.5，GT 72–102 s",
+     "snapshot": {
+      "source_dir": null,
+      "index_entries": 0,
+      "status": "没有快照目录（dev_eval 从未在录制模式下跑过）",
+      "plan": "E2 底座首跑时录制；训后按 snapshot_lock.json 的 as_of 回放"
+     }
+    },
+    {
+     "case_id": "vcsl:pair_4",
+     "case_file": "experiments/sft_data/cases/vcsl_pair_4.json",
+     "task_kind": "copy_detect",
+     "family_key": "vcsl:pair_4",
+     "needs": "provided_media",
+     "auto_check": "无自动 check，由充分性层判",
+     "snapshot": {
+      "source_dir": "experiments/sft_data/search_snapshots/vcsl_pair_4",
+      "index_entries": 0,
+      "status": "目录在，但只有 usage/（abM27、abO27 两个 run 没检索过），没有 index.jsonl",
+      "plan": "E2 底座首跑时录制；训后按 snapshot_lock.json 的 as_of 回放"
+     }
+    }
+   ]
+  }
+ }
+}

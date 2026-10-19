@@ -1,0 +1,806 @@
+{
+  "meta": {
+    "metrics_version": "behavior_metrics@1.0.0",
+    "script_sha256": "sha256:7f1240e2287531d890ffcb18ae7324967efe38cf4bd0c10d197d3d3047aa96a2",
+    "legacy_script_sha256": "sha256:ebfcb0b279b906b5e334d91ee9f56dcad89ef68e0a4419797f623fb245a1406a",
+    "inputs": [
+      "experiments/evid/scores/evidsA8.sonnet.subset.jsonl"
+    ],
+    "rounds": null,
+    "candidate_types": [
+      "video",
+      "image"
+    ],
+    "compare_ops": [
+      "compare_media",
+      "align_media",
+      "diff_media"
+    ],
+    "eval_set": null,
+    "criteria": null,
+    "criteria_sha256": null
+  },
+  "groups": {
+    "all": {
+      "runs": 20,
+      "runs_with_trajectory": 20,
+      "evid_runs": 0,
+      "open_rate": null,
+      "compare_rate": null,
+      "repeat_rate": {
+        "value": 0.2536,
+        "num": 142,
+        "den": 560,
+        "ci95": [
+          0.2193,
+          0.2912
+        ]
+      },
+      "format_reject_rate": {
+        "value": 0.0542,
+        "num": 43,
+        "den": 856,
+        "ci95": [
+          0.0348,
+          0.0837
+        ],
+        "macro_over_roles": [
+          "HI",
+          "GIA"
+        ],
+        "roles": {
+          "HI": {
+            "value": 0.0459,
+            "num": 29,
+            "den": 632,
+            "ci95": [
+              0.0321,
+              0.0651
+            ]
+          },
+          "GIA": {
+            "value": 0.0625,
+            "num": 14,
+            "den": 224,
+            "ci95": [
+              0.0376,
+              0.1022
+            ]
+          }
+        }
+      },
+      "companions": {
+        "open_rate_runs": null,
+        "src_in_pool_runs": null,
+        "compare_rate_source": null,
+        "candidate_open_rate": null,
+        "compare_rate_of_acquired": null,
+        "auto_compare_runs": null,
+        "format_reject_rate_pooled": {
+          "value": 0.0502,
+          "num": 43,
+          "den": 856,
+          "ci95": [
+            0.0375,
+            0.067
+          ]
+        },
+        "format_reject_rate_hi": {
+          "value": 0.0459,
+          "num": 29,
+          "den": 632,
+          "ci95": [
+            0.0321,
+            0.0651
+          ]
+        },
+        "format_reject_rate_gia": {
+          "value": 0.0625,
+          "num": 14,
+          "den": 224,
+          "ci95": [
+            0.0376,
+            0.1022
+          ]
+        }
+      },
+      "settings": null,
+      "score": {
+        "point_accuracy": {
+          "value": 0.4938,
+          "num": 40,
+          "den": 81,
+          "ci95": [
+            0.3877,
+            0.6005
+          ]
+        },
+        "video_accuracy": {
+          "value": 0.3,
+          "num": 6,
+          "den": 20,
+          "ci95": [
+            0.1455,
+            0.519
+          ]
+        },
+        "runs_scored": 20
+      },
+      "legacy": {
+        "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+        "source_in_pool": 3,
+        "source_downloaded": 3,
+        "source_compared": 1,
+        "candidate_opens": 77,
+        "runs_with_candidate_open": 19,
+        "video_downloads": 16,
+        "runs_with_download": 13,
+        "repeat_rate": 0.2536,
+        "hi_rejection_rate": 0.0459,
+        "gia_rejection_rate": 0.0625
+      }
+    },
+    "round:evidsA8": {
+      "runs": 20,
+      "runs_with_trajectory": 20,
+      "evid_runs": 0,
+      "open_rate": null,
+      "compare_rate": null,
+      "repeat_rate": {
+        "value": 0.2536,
+        "num": 142,
+        "den": 560,
+        "ci95": [
+          0.2193,
+          0.2912
+        ]
+      },
+      "format_reject_rate": {
+        "value": 0.0542,
+        "num": 43,
+        "den": 856,
+        "ci95": [
+          0.0348,
+          0.0837
+        ],
+        "macro_over_roles": [
+          "HI",
+          "GIA"
+        ],
+        "roles": {
+          "HI": {
+            "value": 0.0459,
+            "num": 29,
+            "den": 632,
+            "ci95": [
+              0.0321,
+              0.0651
+            ]
+          },
+          "GIA": {
+            "value": 0.0625,
+            "num": 14,
+            "den": 224,
+            "ci95": [
+              0.0376,
+              0.1022
+            ]
+          }
+        }
+      },
+      "companions": {
+        "open_rate_runs": null,
+        "src_in_pool_runs": null,
+        "compare_rate_source": null,
+        "candidate_open_rate": null,
+        "compare_rate_of_acquired": null,
+        "auto_compare_runs": null,
+        "format_reject_rate_pooled": {
+          "value": 0.0502,
+          "num": 43,
+          "den": 856,
+          "ci95": [
+            0.0375,
+            0.067
+          ]
+        },
+        "format_reject_rate_hi": {
+          "value": 0.0459,
+          "num": 29,
+          "den": 632,
+          "ci95": [
+            0.0321,
+            0.0651
+          ]
+        },
+        "format_reject_rate_gia": {
+          "value": 0.0625,
+          "num": 14,
+          "den": 224,
+          "ci95": [
+            0.0376,
+            0.1022
+          ]
+        }
+      },
+      "settings": null,
+      "score": {
+        "point_accuracy": {
+          "value": 0.4938,
+          "num": 40,
+          "den": 81,
+          "ci95": [
+            0.3877,
+            0.6005
+          ]
+        },
+        "video_accuracy": {
+          "value": 0.3,
+          "num": 6,
+          "den": 20,
+          "ci95": [
+            0.1455,
+            0.519
+          ]
+        },
+        "runs_scored": 20
+      },
+      "legacy": {
+        "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+        "source_in_pool": 3,
+        "source_downloaded": 3,
+        "source_compared": 1,
+        "candidate_opens": 77,
+        "runs_with_candidate_open": 19,
+        "video_downloads": 16,
+        "runs_with_download": 13,
+        "repeat_rate": 0.2536,
+        "hi_rejection_rate": 0.0459,
+        "gia_rejection_rate": 0.0625
+      }
+    }
+  },
+  "verdicts": null,
+  "runs": [
+    {
+      "run": "evid_video_002_evidsA8_1",
+      "case_id": "evid:video_002",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 29,
+      "hi_repeats": 8,
+      "raw_outputs": {
+        "HI": 33,
+        "GIA": 11
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 2,
+        "video_downloads": 0
+      },
+      "n_gt": 5,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_009_evidsA8_1",
+      "case_id": "evid:video_009",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 28,
+      "hi_repeats": 12,
+      "raw_outputs": {
+        "HI": 35,
+        "GIA": 10
+      },
+      "rejected_outputs": {
+        "HI": 5,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 2,
+        "video_downloads": 1
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_015_evidsA8_1",
+      "case_id": "evid:video_015",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 13,
+      "hi_repeats": 4,
+      "raw_outputs": {
+        "HI": 15,
+        "GIA": 12
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 1,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 4
+    },
+    {
+      "run": "evid_video_022_evidsA8_1",
+      "case_id": "evid:video_022",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 21,
+      "hi_repeats": 4,
+      "raw_outputs": {
+        "HI": 23,
+        "GIA": 8
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": true,
+        "source_downloaded": true,
+        "source_compared": true,
+        "candidate_opens": 2,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_029_evidsA8_1",
+      "case_id": "evid:video_029",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 23,
+      "hi_repeats": 7,
+      "raw_outputs": {
+        "HI": 25,
+        "GIA": 11
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": true,
+        "source_downloaded": true,
+        "source_compared": false,
+        "candidate_opens": 2,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 4
+    },
+    {
+      "run": "evid_video_036_evidsA8_1",
+      "case_id": "evid:video_036",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 33,
+      "hi_repeats": 11,
+      "raw_outputs": {
+        "HI": 37,
+        "GIA": 7
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 3,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 4
+    },
+    {
+      "run": "evid_video_042_evidsA8_1",
+      "case_id": "evid:video_042",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 13,
+      "hi_repeats": 2,
+      "raw_outputs": {
+        "HI": 14,
+        "GIA": 14
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 4,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_049_evidsA8_1",
+      "case_id": "evid:video_049",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 11,
+      "hi_repeats": 4,
+      "raw_outputs": {
+        "HI": 12,
+        "GIA": 7
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 3,
+        "video_downloads": 0
+      },
+      "n_gt": 3,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_056_evidsA8_1",
+      "case_id": "evid:video_056",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 20,
+      "hi_repeats": 5,
+      "raw_outputs": {
+        "HI": 22,
+        "GIA": 12
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 4,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 1
+    },
+    {
+      "run": "evid_video_063_evidsA8_1",
+      "case_id": "evid:video_063",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 12,
+      "hi_repeats": 1,
+      "raw_outputs": {
+        "HI": 13,
+        "GIA": 13
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 1,
+        "video_downloads": 0
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_069_evidsA8_1",
+      "case_id": "evid:video_069",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 22,
+      "hi_repeats": 4,
+      "raw_outputs": {
+        "HI": 24,
+        "GIA": 10
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 0,
+        "video_downloads": 0
+      },
+      "n_gt": 4,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_076_evidsA8_1",
+      "case_id": "evid:video_076",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 24,
+      "hi_repeats": 2,
+      "raw_outputs": {
+        "HI": 26,
+        "GIA": 12
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 3,
+        "video_downloads": 0
+      },
+      "n_gt": 5,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_083_evidsA8_1",
+      "case_id": "evid:video_083",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 37,
+      "hi_repeats": 8,
+      "raw_outputs": {
+        "HI": 43,
+        "GIA": 13
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 4,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_090_evidsA8_1",
+      "case_id": "evid:video_090",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 12,
+      "hi_repeats": 2,
+      "raw_outputs": {
+        "HI": 13,
+        "GIA": 9
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 4,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 4
+    },
+    {
+      "run": "evid_video_096_evidsA8_1",
+      "case_id": "evid:video_096",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 48,
+      "hi_repeats": 11,
+      "raw_outputs": {
+        "HI": 54,
+        "GIA": 18
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 5,
+        "video_downloads": 0
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_103_evidsA8_1",
+      "case_id": "evid:video_103",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 76,
+      "hi_repeats": 17,
+      "raw_outputs": {
+        "HI": 84,
+        "GIA": 15
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 2
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 24,
+        "video_downloads": 2
+      },
+      "n_gt": 3,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_110_evidsA8_1",
+      "case_id": "evid:video_110",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 27,
+      "hi_repeats": 6,
+      "raw_outputs": {
+        "HI": 30,
+        "GIA": 14
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 2
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 4,
+        "video_downloads": 1
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_117_evidsA8_1",
+      "case_id": "evid:video_117",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 24,
+      "hi_repeats": 8,
+      "raw_outputs": {
+        "HI": 27,
+        "GIA": 9
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "legacy": {
+        "source_in_pool": true,
+        "source_downloaded": true,
+        "source_compared": false,
+        "candidate_opens": 2,
+        "video_downloads": 1
+      },
+      "n_gt": 5,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_123_evidsA8_1",
+      "case_id": "evid:video_123",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 64,
+      "hi_repeats": 18,
+      "raw_outputs": {
+        "HI": 74,
+        "GIA": 12
+      },
+      "rejected_outputs": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 6,
+        "video_downloads": 3
+      },
+      "n_gt": 5,
+      "passed_gt": 4
+    },
+    {
+      "run": "evid_video_130_evidsA8_1",
+      "case_id": "evid:video_130",
+      "round": "evidsA8",
+      "sample": 1,
+      "from_score_jsonl": true,
+      "has_trajectory": true,
+      "hi_actions": 23,
+      "hi_repeats": 8,
+      "raw_outputs": {
+        "HI": 28,
+        "GIA": 7
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 0
+      },
+      "legacy": {
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false,
+        "candidate_opens": 1,
+        "video_downloads": 0
+      },
+      "n_gt": 4,
+      "passed_gt": 4
+    }
+  ]
+}

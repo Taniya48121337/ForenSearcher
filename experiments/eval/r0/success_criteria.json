@@ -1,0 +1,91 @@
+{
+ "criteria_id": "r0_success_v1",
+ "registered_at": "2026-10-15",
+ "frozen": true,
+ "doc": "claude/r0评测口径与成功标准_20261015.md",
+ "rule": "训前登记（清单 E5），训后不改。任何改动都要新起 criteria_id 并在文档写明原因与改动时间；用改过的标准判 r0 不算数。",
+ "metrics_version": "behavior_metrics@1.0.0",
+ "pooling": "训后评测 2 个种子（r0sft-s1 / r0sft-s2）的全部 run 合计（分子分母先相加再相除）；E2 基线同样合计（r0base-s1 / r0base-s2）",
+ "behavior": [
+  {
+   "id": "B1",
+   "name": "打开候选率",
+   "metric": "open_rate",
+   "set": "evid_ctrl20",
+   "direction": ">=",
+   "target": 0.7,
+   "min_denominator": 5,
+   "regression_tolerance": 0.05,
+   "fallback": {
+    "metric": "open_rate_runs",
+    "direction": ">=",
+    "target": 0.1
+   },
+   "anchors": "27B evidF27 17/19 = 89%；8B evidF8 4/9 = 44%（131–222，同一定义复算）。对照 20 上 8B evidb12bf 原片进池 0/20，27B evidsA8 进池 3 / 下载 3（旧定义）",
+   "why": "原片进池后打开它是 SFT 要教的第一步（B 族链路从打开原片开始）。70% 取在 8B 与 27B 之间偏 27B：要求多数进池的原片被打开。对照 20 上底座原片进池可能只有 0–3 次，分母 < 5 时这一项改看伴随指标\"打开了原片的 run / 全部 EVID run\" ≥ 10%（40 个 run 里至少 4 个；27B 在 131–222 上 18.7%，8B 4.4%，b12bf 0%）"
+  },
+  {
+   "id": "B2",
+   "name": "比对率",
+   "metric": "compare_rate",
+   "set": "all",
+   "direction": ">=",
+   "target": 0.4,
+   "min_denominator": 10,
+   "regression_tolerance": 0.05,
+   "anchors": "27B evidF27 70/173 = 40.5%；8B evidF8 31/138 = 22.5%（打开过的候选里被 compare/align/diff 比对的比例）",
+   "why": "打开候选后调 compare_media 是 B 族核心分支（清单 C4：compare → 读差分 → 取帧 ≥ 15 行）。目标取 27B 水平 40%：8B 到 27B 的差距正是这一步，SFT 学会了就该补上"
+  },
+  {
+   "id": "B3",
+   "name": "重复调用率",
+   "metric": "repeat_rate",
+   "set": "all",
+   "direction": "<=",
+   "target": 0.2,
+   "regression_tolerance": 0.05,
+   "anchors": "8B evidF8 60.7%、evidb12bf 59.0%；27B evidF27 20.8%、evidsA8 25.4%",
+   "why": "教师轨迹不重复调用；8B 底座的主要浪费在这里（同一 OCR / 查询原样重发）。目标 ≤ 20%，即达到或略好于 27B"
+  },
+  {
+   "id": "B4",
+   "name": "格式拒率",
+   "metric": "format_reject_rate",
+   "set": "all",
+   "direction": "<=",
+   "target": 0.05,
+   "regression_tolerance": 0.02,
+   "anchors": "HI、GIA 各自拒率取平均：8B evidF8 11.9%（HI 3.6% / GIA 20.1%）、evidb12bf 14.6%（4.0% / 25.2%）；27B evidF27 4.5%（4.3% / 4.8%）、evidsA8 5.4%（4.6% / 6.2%）",
+   "why": "SFT 直接学输出格式（清单 B8 要求训练行 JSON 100% 合法）。8B 的问题全在 GIA（20–25%），按次数合计会被 HI 淹没（b12bf 合计只有 5.5%），所以按角色平均。目标 ≤ 5%，即 27B 水平"
+  }
+ ],
+ "score": {
+  "id": "S1",
+  "name": "分数最低期望",
+  "set": "evid_ctrl20",
+  "metric": "point_accuracy",
+  "min_abs": 0.296,
+  "min_gain_vs_baseline": 0.07,
+  "regression_tolerance": 0.05,
+  "stretch": 0.494,
+  "anchors": "对照 20 个（81 点，Sonnet 单评委）：8B bf16 evidb12bf 29.6%（24/81）、27B evidsA8 49.4%（40/81）。8B 上几个工具臂互差 ±5 个点（噪声内）",
+  "why": "最低期望 = 训后点级 ≥ E2 基线 + 7 个点，且不低于 8B 的 29.6%。两种子合计 162 个点判定，单种子 20 个视频的波动约 ±5 个点，两种子平均后约 ±3.5，两次评测之差的标准差约 5 个点；+7 个点约 1.4 个标准差（单侧约 92%），低于它就分不清是训练还是噪声。低于基线 5 个点以上记为倒退。达到 49.4%（27B）记为超出预期，不是门槛"
+ },
+ "overall": {
+  "diagnostic_min_behavior_pass": 3,
+  "labels": {
+   "success": "r0 成功：四个行为指标全部通过，分数达到最低期望",
+   "diagnostic_success": "诊断性通过：行为学到了（≥ 3 项通过、无任何倒退），分数没到最低期望但没倒退——下一轮先查答案写法与评分口径，不先加数据量",
+   "fail": "未达标：行为没学到或有倒退——先回到数据（清单 B / C / D）查，不调超参",
+   "not_comparable": "不可比：训后与 E2 的工具层 hash / 规格 / 温度 / 指令模式不一致，或冻结核对出现 instruction_mode 以外的未过项——这次评测不算数，按同一口径重跑（E2 也要重跑时，两次一起重跑）"
+  },
+  "comparability_rule": "训后报告逐项核对：每个 run 的 tool_layer_hash、规格 hash、温度、指令模式在训后与 E2 两边各只有一个值且相同；run_config.freeze.failed 只允许 instruction_mode（评测用学生提示，冻结文件按造数据写的是 teacher）"
+ },
+ "not_criteria": [
+  "dev_eval 4 个的核验器结果只报不判（4 案例 × 2 种子，样本太少）",
+  "检索快照新录率、冻结核对只作口径核对：训后新录率明显高于基线时，分数对比要注明"
+ ],
+ "freeze_expected_failures": [
+  "instruction_mode"
+ ]
+}

@@ -1,0 +1,7115 @@
+{
+  "meta": {
+    "metrics_version": "behavior_metrics@1.0.0",
+    "script_sha256": "sha256:7f1240e2287531d890ffcb18ae7324967efe38cf4bd0c10d197d3d3047aa96a2",
+    "legacy_script_sha256": "sha256:ebfcb0b279b906b5e334d91ee9f56dcad89ef68e0a4419797f623fb245a1406a",
+    "inputs": [
+      "experiments/evid/runs"
+    ],
+    "rounds": [
+      "evidF8"
+    ],
+    "candidate_types": [
+      "video",
+      "image"
+    ],
+    "compare_ops": [
+      "compare_media",
+      "align_media",
+      "diff_media"
+    ],
+    "eval_set": null,
+    "criteria": null,
+    "criteria_sha256": null
+  },
+  "groups": {
+    "all": {
+      "runs": 91,
+      "runs_with_trajectory": 91,
+      "evid_runs": 91,
+      "open_rate": {
+        "value": 0.4444,
+        "num": 4,
+        "den": 9,
+        "ci95": [
+          0.1888,
+          0.7334
+        ],
+        "judgeable": true,
+        "min_denominator": 5
+      },
+      "compare_rate": {
+        "value": 0.2246,
+        "num": 31,
+        "den": 138,
+        "ci95": [
+          0.163,
+          0.3012
+        ]
+      },
+      "repeat_rate": {
+        "value": 0.6066,
+        "num": 3220,
+        "den": 5308,
+        "ci95": [
+          0.5934,
+          0.6197
+        ]
+      },
+      "format_reject_rate": {
+        "value": 0.1187,
+        "num": 318,
+        "den": 6762,
+        "ci95": [
+          0.0993,
+          0.1408
+        ],
+        "macro_over_roles": [
+          "HI",
+          "GIA"
+        ],
+        "roles": {
+          "HI": {
+            "value": 0.036,
+            "num": 227,
+            "den": 6310,
+            "ci95": [
+              0.0317,
+              0.0409
+            ]
+          },
+          "GIA": {
+            "value": 0.2013,
+            "num": 91,
+            "den": 452,
+            "ci95": [
+              0.1669,
+              0.2407
+            ]
+          }
+        }
+      },
+      "companions": {
+        "open_rate_runs": {
+          "value": 0.044,
+          "num": 4,
+          "den": 91,
+          "ci95": [
+            0.0172,
+            0.1076
+          ]
+        },
+        "src_in_pool_runs": {
+          "value": 0.0989,
+          "num": 9,
+          "den": 91,
+          "ci95": [
+            0.0529,
+            0.1774
+          ]
+        },
+        "compare_rate_source": {
+          "value": 0.0,
+          "num": 0,
+          "den": 4,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "candidate_open_rate": {
+          "value": 0.1725,
+          "num": 138,
+          "den": 800,
+          "ci95": [
+            0.1479,
+            0.2002
+          ]
+        },
+        "compare_rate_of_acquired": {
+          "value": 0.4921,
+          "num": 31,
+          "den": 63,
+          "ci95": [
+            0.3727,
+            0.6124
+          ]
+        },
+        "auto_compare_runs": {
+          "value": 0.0,
+          "num": 0,
+          "den": 91,
+          "ci95": [
+            0.0,
+            0.0405
+          ]
+        },
+        "format_reject_rate_pooled": {
+          "value": 0.047,
+          "num": 318,
+          "den": 6762,
+          "ci95": [
+            0.0422,
+            0.0523
+          ]
+        },
+        "format_reject_rate_hi": {
+          "value": 0.036,
+          "num": 227,
+          "den": 6310,
+          "ci95": [
+            0.0317,
+            0.0409
+          ]
+        },
+        "format_reject_rate_gia": {
+          "value": 0.2013,
+          "num": 91,
+          "den": 452,
+          "ci95": [
+            0.1669,
+            0.2407
+          ]
+        }
+      },
+      "settings": null,
+      "score": {
+        "point_accuracy": {
+          "value": 0.0847,
+          "num": 25,
+          "den": 295,
+          "ci95": [
+            0.0581,
+            0.1221
+          ]
+        },
+        "video_accuracy": {
+          "value": 0.0,
+          "num": 0,
+          "den": 91,
+          "ci95": [
+            0.0,
+            0.0405
+          ]
+        },
+        "runs_scored": 91
+      },
+      "legacy": {
+        "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+        "source_in_pool": 9,
+        "source_downloaded": 2,
+        "source_compared": 0,
+        "candidate_opens": 866,
+        "runs_with_candidate_open": 72,
+        "video_downloads": 63,
+        "runs_with_download": 46,
+        "repeat_rate": 0.6066,
+        "hi_rejection_rate": 0.036,
+        "gia_rejection_rate": 0.2013
+      }
+    },
+    "round:evidF8": {
+      "runs": 91,
+      "runs_with_trajectory": 91,
+      "evid_runs": 91,
+      "open_rate": {
+        "value": 0.4444,
+        "num": 4,
+        "den": 9,
+        "ci95": [
+          0.1888,
+          0.7334
+        ],
+        "judgeable": true,
+        "min_denominator": 5
+      },
+      "compare_rate": {
+        "value": 0.2246,
+        "num": 31,
+        "den": 138,
+        "ci95": [
+          0.163,
+          0.3012
+        ]
+      },
+      "repeat_rate": {
+        "value": 0.6066,
+        "num": 3220,
+        "den": 5308,
+        "ci95": [
+          0.5934,
+          0.6197
+        ]
+      },
+      "format_reject_rate": {
+        "value": 0.1187,
+        "num": 318,
+        "den": 6762,
+        "ci95": [
+          0.0993,
+          0.1408
+        ],
+        "macro_over_roles": [
+          "HI",
+          "GIA"
+        ],
+        "roles": {
+          "HI": {
+            "value": 0.036,
+            "num": 227,
+            "den": 6310,
+            "ci95": [
+              0.0317,
+              0.0409
+            ]
+          },
+          "GIA": {
+            "value": 0.2013,
+            "num": 91,
+            "den": 452,
+            "ci95": [
+              0.1669,
+              0.2407
+            ]
+          }
+        }
+      },
+      "companions": {
+        "open_rate_runs": {
+          "value": 0.044,
+          "num": 4,
+          "den": 91,
+          "ci95": [
+            0.0172,
+            0.1076
+          ]
+        },
+        "src_in_pool_runs": {
+          "value": 0.0989,
+          "num": 9,
+          "den": 91,
+          "ci95": [
+            0.0529,
+            0.1774
+          ]
+        },
+        "compare_rate_source": {
+          "value": 0.0,
+          "num": 0,
+          "den": 4,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "candidate_open_rate": {
+          "value": 0.1725,
+          "num": 138,
+          "den": 800,
+          "ci95": [
+            0.1479,
+            0.2002
+          ]
+        },
+        "compare_rate_of_acquired": {
+          "value": 0.4921,
+          "num": 31,
+          "den": 63,
+          "ci95": [
+            0.3727,
+            0.6124
+          ]
+        },
+        "auto_compare_runs": {
+          "value": 0.0,
+          "num": 0,
+          "den": 91,
+          "ci95": [
+            0.0,
+            0.0405
+          ]
+        },
+        "format_reject_rate_pooled": {
+          "value": 0.047,
+          "num": 318,
+          "den": 6762,
+          "ci95": [
+            0.0422,
+            0.0523
+          ]
+        },
+        "format_reject_rate_hi": {
+          "value": 0.036,
+          "num": 227,
+          "den": 6310,
+          "ci95": [
+            0.0317,
+            0.0409
+          ]
+        },
+        "format_reject_rate_gia": {
+          "value": 0.2013,
+          "num": 91,
+          "den": 452,
+          "ci95": [
+            0.1669,
+            0.2407
+          ]
+        }
+      },
+      "settings": null,
+      "score": {
+        "point_accuracy": {
+          "value": 0.0847,
+          "num": 25,
+          "den": 295,
+          "ci95": [
+            0.0581,
+            0.1221
+          ]
+        },
+        "video_accuracy": {
+          "value": 0.0,
+          "num": 0,
+          "den": 91,
+          "ci95": [
+            0.0,
+            0.0405
+          ]
+        },
+        "runs_scored": 91
+      },
+      "legacy": {
+        "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+        "source_in_pool": 9,
+        "source_downloaded": 2,
+        "source_compared": 0,
+        "candidate_opens": 866,
+        "runs_with_candidate_open": 72,
+        "video_downloads": 63,
+        "runs_with_download": 46,
+        "repeat_rate": 0.6066,
+        "hi_rejection_rate": 0.036,
+        "gia_rejection_rate": 0.2013
+      }
+    }
+  },
+  "verdicts": null,
+  "runs": [
+    {
+      "run": "evid_video_131_evidF8_1",
+      "case_id": "evid:video_131",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 57,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 27,
+        "HI/READ_RECORD": 9,
+        "HI/SEARCH": 21
+      },
+      "pool": 11,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "tfB-2X_VUck",
+        "dApuKGrRVG8"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.632,
+        "hi_actions": 57,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 69,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 7,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 5,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_132_evidF8_1",
+      "case_id": "evid:video_132",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 62,
+      "hi_repeats": 33,
+      "raw_outputs": {
+        "GIA": 7,
+        "HI": 73
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 3
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 32,
+        "HI/SEARCH": 7,
+        "HI/READ_RECORD": 23
+      },
+      "pool": 12,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 2,
+      "compared_of_opened": 2,
+      "compare_calls": 10,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "nuNI7tr0YZE"
+      ],
+      "src_in_pool": true,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.532,
+        "hi_actions": 62,
+        "hi_repeats": 33,
+        "hi_rejected": 2,
+        "hi_raw": 73,
+        "gia_rejected": 3,
+        "gia_raw": 7,
+        "candidate_opens": 16,
+        "video_downloads": 1,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_133_evidF8_1",
+      "case_id": "evid:video_133",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 37,
+        "HI/READ_RECORD": 16
+      },
+      "pool": 14,
+      "opened": 2,
+      "acquired": 2,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 2,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "bj_M6w_LGgw",
+        "g2vwgJEcyVk"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.562,
+        "hi_actions": 64,
+        "hi_repeats": 36,
+        "hi_rejected": 3,
+        "hi_raw": 76,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 24,
+        "video_downloads": 2,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_134_evidF8_1",
+      "case_id": "evid:video_134",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 67,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 77
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 76
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 2
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 37,
+        "HI/READ_RECORD": 13,
+        "HI/SEARCH": 17
+      },
+      "pool": 25,
+      "opened": 4,
+      "acquired": 3,
+      "compared": 2,
+      "compared_of_opened": 2,
+      "compare_calls": 9,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "gqv54VojjF4"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.537,
+        "hi_actions": 67,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 77,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 12,
+        "video_downloads": 3,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_135_evidF8_1",
+      "case_id": "evid:video_135",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 55,
+      "hi_repeats": 32,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 65
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 63
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 1,
+        "HI/INSPECT": 48,
+        "HI/READ_RECORD": 6
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "hIUbEH9jAFU",
+        "87IzT8PazGw"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.582,
+        "hi_actions": 55,
+        "hi_repeats": 32,
+        "hi_rejected": 2,
+        "hi_raw": 65,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 16,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_136_evidF8_1",
+      "case_id": "evid:video_136",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 53,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 8,
+        "HI": 62
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 4
+      },
+      "harness_rejections": {
+        "GIA": 2
+      },
+      "action_counts": {
+        "HI/SEARCH": 7,
+        "HI/INSPECT": 15,
+        "HI/READ_RECORD": 31
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 3,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "wgVOgGLtPtc",
+        "Tk_EBNLyqxw"
+      ],
+      "src_in_pool": true,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.679,
+        "hi_actions": 53,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 62,
+        "gia_rejected": 4,
+        "gia_raw": 8,
+        "candidate_opens": 24,
+        "video_downloads": 1,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 1
+    },
+    {
+      "run": "evid_video_137_evidF8_1",
+      "case_id": "evid:video_137",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 69,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 78
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 78
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 24,
+        "HI/READ_RECORD": 24,
+        "HI/INSPECT": 21
+      },
+      "pool": 11,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "9B7aIULFjrc"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.522,
+        "hi_actions": 69,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 78,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 6,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_138_evidF8_1",
+      "case_id": "evid:video_138",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 34,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 75
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 8,
+        "HI/INSPECT": 21,
+        "HI/READ_RECORD": 34,
+        "HI/QUERY_MEMORY": 1
+      },
+      "pool": 16,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "wtKYnta0MgM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.531,
+        "hi_actions": 64,
+        "hi_repeats": 34,
+        "hi_rejected": 2,
+        "hi_raw": 75,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 5,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 5,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_139_evidF8_1",
+      "case_id": "evid:video_139",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 55,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 64
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 43,
+        "HI/INSPECT": 12
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "vbv9RyUHyFg",
+        "DrF-UWvcB6I"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.655,
+        "hi_actions": 55,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 64,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_140_evidF8_1",
+      "case_id": "evid:video_140",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 70
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 29,
+        "HI/INSPECT": 25,
+        "HI/SEARCH": 7
+      },
+      "pool": 14,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 4,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "OUGMAZS5NFk",
+        "J19kTbIHGBM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.59,
+        "hi_actions": 61,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 70,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 31,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 5,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_141_evidF8_1",
+      "case_id": "evid:video_141",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 57,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 7,
+        "HI/READ_RECORD": 21,
+        "HI/INSPECT": 29
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "gYSrzXMAbAQ"
+      ],
+      "src_in_pool": true,
+      "src_opened": true,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.632,
+        "hi_actions": 57,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 69,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 16,
+        "video_downloads": 0,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_142_evidF8_1",
+      "case_id": "evid:video_142",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 69,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 78
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 78
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 57,
+        "HI/INSPECT": 8,
+        "HI/SEARCH": 4
+      },
+      "pool": 5,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "VegN1B4S4Lg",
+        "YGXNYjL1t00"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.522,
+        "hi_actions": 69,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 78,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_143_evidF8_1",
+      "case_id": "evid:video_143",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 51,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 60
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 35,
+        "HI/INSPECT": 16
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "AaAm2R_ciPg",
+        "fO8l5SlpmcA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.706,
+        "hi_actions": 51,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 60,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 6,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_144_evidF8_1",
+      "case_id": "evid:video_144",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 68,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 77
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 77
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 20,
+        "HI/INSPECT": 38,
+        "HI/SEARCH": 10
+      },
+      "pool": 11,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 12,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "7rY0vX6vZBw",
+        "6vOKKtnhJaQ",
+        "EA5AU4zUz2k"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.529,
+        "hi_actions": 68,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 77,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 5,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_145_evidF8_1",
+      "case_id": "evid:video_145",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 73
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 69
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 17,
+        "HI/INSPECT": 38,
+        "HI/READ_RECORD": 6
+      },
+      "pool": 1,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 1,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "3SnSzbb4jo8",
+        "05fRwBn_0jo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.59,
+        "hi_actions": 61,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 73,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 7,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 1
+    },
+    {
+      "run": "evid_video_146_evidF8_1",
+      "case_id": "evid:video_146",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 56,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 80
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 18,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 6
+      },
+      "action_counts": {
+        "HI/SEARCH": 6,
+        "HI/INSPECT": 49,
+        "HI/READ_RECORD": 1
+      },
+      "pool": 20,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 3,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "YySTBxbRNOE",
+        "V2iGFbWWsUI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.643,
+        "hi_actions": 56,
+        "hi_repeats": 36,
+        "hi_rejected": 18,
+        "hi_raw": 80,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 15,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_147_evidF8_1",
+      "case_id": "evid:video_147",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 63,
+      "hi_repeats": 33,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 72
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 10,
+        "HI/INSPECT": 35,
+        "HI/READ_RECORD": 18
+      },
+      "pool": 1,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "NSKFdmku8uQ",
+        "gWo5bH9xHLs"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.524,
+        "hi_actions": 63,
+        "hi_repeats": 33,
+        "hi_rejected": 2,
+        "hi_raw": 74,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 1
+    },
+    {
+      "run": "evid_video_148_evidF8_1",
+      "case_id": "evid:video_148",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 23,
+        "HI/INSPECT": 32,
+        "HI/READ_RECORD": 4
+      },
+      "pool": 37,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "2h4dlU32tWE"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 69,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 5,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_149_evidF8_1",
+      "case_id": "evid:video_149",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 41,
+      "hi_repeats": 28,
+      "raw_outputs": {
+        "GIA": 7,
+        "HI": 48
+      },
+      "accepted_outputs": {
+        "GIA": 3,
+        "HI": 48
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 4
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 25,
+        "HI/SEARCH": 16
+      },
+      "pool": 22,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "Y2SGfMcemaM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "forced_investigate_task"
+      ],
+      "legacy": {
+        "repeat_rate": 0.683,
+        "hi_actions": 41,
+        "hi_repeats": 28,
+        "hi_rejected": 0,
+        "hi_raw": 48,
+        "gia_rejected": 4,
+        "gia_raw": 7,
+        "candidate_opens": 4,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 4,
+      "passed_gt": 2
+    },
+    {
+      "run": "evid_video_150_evidF8_1",
+      "case_id": "evid:video_150",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 51,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 60
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 15,
+        "HI/INSPECT": 30,
+        "HI/READ_RECORD": 6
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 16,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "8SfrccLSHIM",
+        "MJEq6NZ44Hs"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.706,
+        "hi_actions": 51,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 60,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 5,
+      "passed_gt": 3
+    },
+    {
+      "run": "evid_video_152_evidF8_1",
+      "case_id": "evid:video_152",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 53,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 62
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 29,
+        "HI/READ_RECORD": 7,
+        "HI/SEARCH": 17
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "-_PrCVjpmNg"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.679,
+        "hi_actions": 53,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 62,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 3,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_153_evidF8_1",
+      "case_id": "evid:video_153",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 65,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 80
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 72
+      },
+      "rejected_outputs": {
+        "HI": 8,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/INSPECT": 52,
+        "HI/READ_RECORD": 10,
+        "HI/SEARCH": 3
+      },
+      "pool": 10,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 3,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "HN-WH7C4K0Q"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.554,
+        "hi_actions": 65,
+        "hi_repeats": 36,
+        "hi_rejected": 8,
+        "hi_raw": 80,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 10,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_154_evidF8_1",
+      "case_id": "evid:video_154",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 49,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 60
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 58
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 16,
+        "HI/INSPECT": 32,
+        "HI/READ_RECORD": 1
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 4,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "slMV2SvHd-o"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.735,
+        "hi_actions": 49,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 60,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_155_evidF8_1",
+      "case_id": "evid:video_155",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 66,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 80
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 7,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 3,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 46,
+        "HI/SEARCH": 2,
+        "HI/READ_RECORD": 18
+      },
+      "pool": 9,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 11,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "uua-9WFghbc"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.545,
+        "hi_actions": 66,
+        "hi_repeats": 36,
+        "hi_rejected": 7,
+        "hi_raw": 80,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 22,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_156_evidF8_1",
+      "case_id": "evid:video_156",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 66,
+      "hi_repeats": 33,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 78
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 13,
+        "HI/INSPECT": 35,
+        "HI/READ_RECORD": 18
+      },
+      "pool": 31,
+      "opened": 4,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "SCmS8x_iY60"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.5,
+        "hi_actions": 66,
+        "hi_repeats": 33,
+        "hi_rejected": 4,
+        "hi_raw": 78,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 14,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_157_evidF8_1",
+      "case_id": "evid:video_157",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 71
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 10,
+        "HI/INSPECT": 28,
+        "HI/READ_RECORD": 21
+      },
+      "pool": 14,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 10,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "gLt_4CBdqlA"
+      ],
+      "src_in_pool": true,
+      "src_opened": true,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 3,
+        "hi_raw": 71,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 21,
+        "video_downloads": 0,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_158_evidF8_1",
+      "case_id": "evid:video_158",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 70,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 84
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 78
+      },
+      "rejected_outputs": {
+        "HI": 6,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/SEARCH": 4,
+        "HI/INSPECT": 41,
+        "HI/READ_RECORD": 25
+      },
+      "pool": 1,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "qgFWugnChs0"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_points_deduplicated"
+      ],
+      "legacy": {
+        "repeat_rate": 0.514,
+        "hi_actions": 70,
+        "hi_repeats": 36,
+        "hi_rejected": 6,
+        "hi_raw": 84,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 24,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_159_evidF8_1",
+      "case_id": "evid:video_159",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 48,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 57
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 57
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 20,
+        "HI/INSPECT": 22,
+        "HI/READ_RECORD": 6
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "oUobtLvD044"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.75,
+        "hi_actions": 48,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 57,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_160_evidF8_1",
+      "case_id": "evid:video_160",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 53,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 62
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 15,
+        "HI/READ_RECORD": 13,
+        "HI/INSPECT": 25
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "WBDWyHIDpjA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.679,
+        "hi_actions": 53,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 62,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_161_evidF8_1",
+      "case_id": "evid:video_161",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 26,
+        "HI/INSPECT": 25,
+        "HI/READ_RECORD": 7
+      },
+      "pool": 10,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "yeI_xamw4Ws"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 68,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 13,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_162_evidF8_1",
+      "case_id": "evid:video_162",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 26,
+        "HI/READ_RECORD": 24,
+        "HI/SEARCH": 11
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 14,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "Av47Ike9hxA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.59,
+        "hi_actions": 61,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 70,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_163_evidF8_1",
+      "case_id": "evid:video_163",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 63,
+      "hi_repeats": 34,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 72
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 72
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 32,
+        "HI/SEARCH": 5,
+        "HI/READ_RECORD": 26
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "8blfkHzJUQY"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.54,
+        "hi_actions": 63,
+        "hi_repeats": 34,
+        "hi_rejected": 0,
+        "hi_raw": 72,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_164_evidF8_1",
+      "case_id": "evid:video_164",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 13,
+        "HI/INSPECT": 33,
+        "HI/READ_RECORD": 6
+      },
+      "pool": 1,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 8,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "r9ALC5QliQw"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 3,
+        "hi_raw": 64,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 8,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_165_evidF8_1",
+      "case_id": "evid:video_165",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 61
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 15,
+        "HI/INSPECT": 24,
+        "HI/READ_RECORD": 13
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "l4V-P_yxO0M"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 61,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_166_evidF8_1",
+      "case_id": "evid:video_166",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 53,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 62
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 29,
+        "HI/SEARCH": 12,
+        "HI/READ_RECORD": 12
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "xZJYv9hikjM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.679,
+        "hi_actions": 53,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 62,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 1,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_167_evidF8_1",
+      "case_id": "evid:video_167",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 71,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 80
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 80
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 35,
+        "HI/READ_RECORD": 29,
+        "HI/SEARCH": 7
+      },
+      "pool": 15,
+      "opened": 3,
+      "acquired": 2,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 5,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "fd4EZNVlN7k"
+      ],
+      "src_in_pool": true,
+      "src_opened": true,
+      "src_acquired": true,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.507,
+        "hi_actions": 71,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 80,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 12,
+        "video_downloads": 2,
+        "source_in_pool": true,
+        "source_downloaded": true,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_168_evidF8_1",
+      "case_id": "evid:video_168",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 51,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 58
+      },
+      "rejected_outputs": {
+        "HI": 6,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 3
+      },
+      "action_counts": {
+        "HI/INSPECT": 40,
+        "HI/SEARCH": 3,
+        "HI/READ_RECORD": 8
+      },
+      "pool": 5,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 4,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "LZhnCxG5c6s"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.706,
+        "hi_actions": 51,
+        "hi_repeats": 36,
+        "hi_rejected": 6,
+        "hi_raw": 64,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 13,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_169_evidF8_1",
+      "case_id": "evid:video_169",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 3,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 6,
+        "HI/INSPECT": 28,
+        "HI/READ_RECORD": 30
+      },
+      "pool": 17,
+      "opened": 3,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 7,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "rK38rpUy568"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.562,
+        "hi_actions": 64,
+        "hi_repeats": 36,
+        "hi_rejected": 3,
+        "hi_raw": 76,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 21,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_170_evidF8_1",
+      "case_id": "evid:video_170",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 56,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 8,
+        "HI": 68
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 64
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 4
+      },
+      "harness_rejections": {
+        "GIA": 2,
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 25,
+        "HI/SEARCH": 15,
+        "HI/READ_RECORD": 16
+      },
+      "pool": 14,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "vV2xianAXI8"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.643,
+        "hi_actions": 56,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 68,
+        "gia_rejected": 4,
+        "gia_raw": 8,
+        "candidate_opens": 14,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_171_evidF8_1",
+      "case_id": "evid:video_171",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 62
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 10,
+        "HI/INSPECT": 11,
+        "HI/READ_RECORD": 31
+      },
+      "pool": 15,
+      "opened": 3,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "GbAzBERvfMY"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 62,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 16,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_172_evidF8_1",
+      "case_id": "evid:video_172",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 51,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 61
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 40
+      },
+      "pool": 11,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "zpZRRaAbdzo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_points_deduplicated"
+      ],
+      "legacy": {
+        "repeat_rate": 0.706,
+        "hi_actions": 51,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 61,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_173_evidF8_1",
+      "case_id": "evid:video_173",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 45,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 54
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 54
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 15,
+        "HI/READ_RECORD": 30
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "qFDObDh67zs"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.8,
+        "hi_actions": 45,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 54,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_174_evidF8_1",
+      "case_id": "evid:video_174",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 3,
+        "HI/INSPECT": 21,
+        "HI/READ_RECORD": 35
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "mvJHw64fxgQ"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 69,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 20,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_175_evidF8_1",
+      "case_id": "evid:video_175",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 72
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 52,
+        "HI/READ_RECORD": 10,
+        "HI/SEARCH": 2
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 1,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "XiCGwoTWJGA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.562,
+        "hi_actions": 64,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 76,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 15,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_176_evidF8_1",
+      "case_id": "evid:video_176",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 67,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 77
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 76
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 2
+      },
+      "action_counts": {
+        "HI/INSPECT": 38,
+        "HI/READ_RECORD": 17,
+        "HI/SEARCH": 12
+      },
+      "pool": 3,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 7,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "IYg4YLMLiYw"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.537,
+        "hi_actions": 67,
+        "hi_repeats": 36,
+        "hi_rejected": 1,
+        "hi_raw": 77,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 22,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_177_evidF8_1",
+      "case_id": "evid:video_177",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 67,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 82
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "rejected_outputs": {
+        "HI": 8,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/INSPECT": 55,
+        "HI/READ_RECORD": 8,
+        "HI/SEARCH": 4
+      },
+      "pool": 10,
+      "opened": 3,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "raEjyMMuJbc"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.537,
+        "hi_actions": 67,
+        "hi_repeats": 36,
+        "hi_rejected": 8,
+        "hi_raw": 82,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 12,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_178_evidF8_1",
+      "case_id": "evid:video_178",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 35,
+        "HI/READ_RECORD": 5,
+        "HI/SEARCH": 12
+      },
+      "pool": 10,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "7uUxIqpwWQA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 64,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 6,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_179_evidF8_1",
+      "case_id": "evid:video_179",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 61
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 22,
+        "HI/READ_RECORD": 19
+      },
+      "pool": 6,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 2,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "pzlwOI7xQRc"
+      ],
+      "src_in_pool": true,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 61,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 12,
+        "video_downloads": 0,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_180_evidF8_1",
+      "case_id": "evid:video_180",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 57,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 6,
+        "HI/INSPECT": 48,
+        "HI/READ_RECORD": 3
+      },
+      "pool": 19,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 4,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "msRft-g-k_s"
+      ],
+      "src_in_pool": true,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.632,
+        "hi_actions": 57,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 69,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 11,
+        "video_downloads": 1,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_181_evidF8_1",
+      "case_id": "evid:video_181",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 63
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 27,
+        "HI/SEARCH": 13,
+        "HI/READ_RECORD": 12
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "PPydi-ipMb4"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 63,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 5,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_182_evidF8_1",
+      "case_id": "evid:video_182",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 67,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 76
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 45,
+        "HI/READ_RECORD": 20,
+        "HI/SEARCH": 2
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 2,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "vdUWW-xogIM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.537,
+        "hi_actions": 67,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 76,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 5,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_183_evidF8_1",
+      "case_id": "evid:video_183",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 54,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 63
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 41,
+        "HI/SEARCH": 11,
+        "HI/READ_RECORD": 2
+      },
+      "pool": 9,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "1fb8dRwAbaA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.667,
+        "hi_actions": 54,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 65,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 3,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_184_evidF8_1",
+      "case_id": "evid:video_184",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 57,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 73
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 66
+      },
+      "rejected_outputs": {
+        "HI": 7,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 10,
+        "HI/INSPECT": 34,
+        "HI/READ_RECORD": 13
+      },
+      "pool": 15,
+      "opened": 4,
+      "acquired": 2,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 2,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "Epmvg5fTbB0"
+      ],
+      "src_in_pool": true,
+      "src_opened": true,
+      "src_acquired": true,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.632,
+        "hi_actions": 57,
+        "hi_repeats": 36,
+        "hi_rejected": 7,
+        "hi_raw": 73,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 18,
+        "video_downloads": 2,
+        "source_in_pool": true,
+        "source_downloaded": true,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_185_evidF8_1",
+      "case_id": "evid:video_185",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/READ_RECORD": 24,
+        "HI/INSPECT": 24,
+        "HI/SEARCH": 10
+      },
+      "pool": 1,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "Fbz0_lOt0rI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 67,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 2,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_186_evidF8_1",
+      "case_id": "evid:video_186",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 66,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 77
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 75
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 48,
+        "HI/SEARCH": 11,
+        "HI/READ_RECORD": 7
+      },
+      "pool": 17,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 7,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "dNZN8UDs_88"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.545,
+        "hi_actions": 66,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 77,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 20,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_187_evidF8_1",
+      "case_id": "evid:video_187",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 55,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 12,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 4
+      },
+      "action_counts": {
+        "HI/INSPECT": 42,
+        "HI/READ_RECORD": 8,
+        "HI/SEARCH": 5
+      },
+      "pool": 7,
+      "opened": 3,
+      "acquired": 2,
+      "compared": 2,
+      "compared_of_opened": 2,
+      "compare_calls": 6,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "AliSNrQrW0Y"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.655,
+        "hi_actions": 55,
+        "hi_repeats": 36,
+        "hi_rejected": 12,
+        "hi_raw": 74,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 18,
+        "video_downloads": 2,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_188_evidF8_1",
+      "case_id": "evid:video_188",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 72
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/READ_RECORD": 14,
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 34
+      },
+      "pool": 29,
+      "opened": 4,
+      "acquired": 2,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "AoRuxdVDyhY"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 72,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 13,
+        "video_downloads": 2,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_189_evidF8_1",
+      "case_id": "evid:video_189",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 62,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 8,
+        "HI/INSPECT": 34,
+        "HI/READ_RECORD": 20
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "fZOMhrjO1TE"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.581,
+        "hi_actions": 62,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 71,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 16,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_190_evidF8_1",
+      "case_id": "evid:video_190",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 54,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 79
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 59
+      },
+      "rejected_outputs": {
+        "HI": 20,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 6
+      },
+      "action_counts": {
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 38,
+        "HI/READ_RECORD": 5
+      },
+      "pool": 9,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "irgTrG6d6eA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.667,
+        "hi_actions": 54,
+        "hi_repeats": 36,
+        "hi_rejected": 20,
+        "hi_raw": 79,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 8,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_191_evidF8_1",
+      "case_id": "evid:video_191",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 41,
+        "HI/SEARCH": 11,
+        "HI/READ_RECORD": 7
+      },
+      "pool": 18,
+      "opened": 3,
+      "acquired": 3,
+      "compared": 2,
+      "compared_of_opened": 2,
+      "compare_calls": 7,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "T5f3zs-ISMA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 68,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 17,
+        "video_downloads": 3,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_192_evidF8_1",
+      "case_id": "evid:video_192",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 34,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 74
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 40,
+        "HI/SEARCH": 7,
+        "HI/READ_RECORD": 17
+      },
+      "pool": 14,
+      "opened": 3,
+      "acquired": 2,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 4,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "WB1jDFQcpaA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.531,
+        "hi_actions": 64,
+        "hi_repeats": 34,
+        "hi_rejected": 1,
+        "hi_raw": 74,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 10,
+        "video_downloads": 2,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_193_evidF8_1",
+      "case_id": "evid:video_193",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 70
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 30,
+        "HI/READ_RECORD": 17,
+        "HI/SEARCH": 14
+      },
+      "pool": 19,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "vE0SHjeOCnA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.59,
+        "hi_actions": 61,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 70,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 3,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_194_evidF8_1",
+      "case_id": "evid:video_194",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 65,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 10,
+        "HI/INSPECT": 37,
+        "HI/SEARCH": 18
+      },
+      "pool": 9,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 1,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "AcMmLmvOYTo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.554,
+        "hi_actions": 65,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 74,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 3,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_195_evidF8_1",
+      "case_id": "evid:video_195",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 83
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "rejected_outputs": {
+        "HI": 12,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 4
+      },
+      "action_counts": {
+        "HI/INSPECT": 48,
+        "HI/SEARCH": 1,
+        "HI/READ_RECORD": 15
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "5eWTXZHUuWc"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.562,
+        "hi_actions": 64,
+        "hi_repeats": 36,
+        "hi_rejected": 12,
+        "hi_raw": 83,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 20,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_196_evidF8_1",
+      "case_id": "evid:video_196",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 5,
+        "HI/INSPECT": 34,
+        "HI/READ_RECORD": 22
+      },
+      "pool": 10,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "a2io7d6oaIY"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.59,
+        "hi_actions": 61,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 70,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 9,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_197_evidF8_1",
+      "case_id": "evid:video_197",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 57,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 66
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 66
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 32,
+        "HI/READ_RECORD": 12,
+        "HI/SEARCH": 13
+      },
+      "pool": 10,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "pW7EwBDv57s"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.632,
+        "hi_actions": 57,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 66,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 5,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_198_evidF8_1",
+      "case_id": "evid:video_198",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 56,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 65
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 5,
+        "HI/INSPECT": 48,
+        "HI/READ_RECORD": 3
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "wtQ9Pe6Tv3g"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.643,
+        "hi_actions": 56,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 65,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_199_evidF8_1",
+      "case_id": "evid:video_199",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 66
+      },
+      "rejected_outputs": {
+        "HI": 10,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 4
+      },
+      "action_counts": {
+        "HI/INSPECT": 27,
+        "HI/READ_RECORD": 24,
+        "HI/SEARCH": 7
+      },
+      "pool": 10,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "UtH_oTKk9iM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 10,
+        "hi_raw": 76,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_200_evidF8_1",
+      "case_id": "evid:video_200",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 67,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 81
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 75
+      },
+      "rejected_outputs": {
+        "HI": 6,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/INSPECT": 45,
+        "HI/READ_RECORD": 10,
+        "HI/SEARCH": 12
+      },
+      "pool": 14,
+      "opened": 3,
+      "acquired": 3,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "kcBZh-wMUVo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.537,
+        "hi_actions": 67,
+        "hi_repeats": 36,
+        "hi_rejected": 6,
+        "hi_raw": 81,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 11,
+        "video_downloads": 3,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_201_evidF8_1",
+      "case_id": "evid:video_201",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 65,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 51,
+        "HI/READ_RECORD": 3,
+        "HI/SEARCH": 11
+      },
+      "pool": 27,
+      "opened": 4,
+      "acquired": 3,
+      "compared": 3,
+      "compared_of_opened": 3,
+      "compare_calls": 14,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "JTlBmupykGM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.554,
+        "hi_actions": 65,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 74,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 19,
+        "video_downloads": 3,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_202_evidF8_1",
+      "case_id": "evid:video_202",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 69
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1,
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/READ_RECORD": 24,
+        "HI/INSPECT": 24,
+        "HI/SEARCH": 10
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "7YJfqi7mpXI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 69,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_203_evidF8_1",
+      "case_id": "evid:video_203",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 56,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 76
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 62
+      },
+      "rejected_outputs": {
+        "HI": 14,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 4
+      },
+      "action_counts": {
+        "HI/SEARCH": 16,
+        "HI/INSPECT": 31,
+        "HI/READ_RECORD": 9
+      },
+      "pool": 9,
+      "opened": 3,
+      "acquired": 3,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "BVq6PuThosI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.643,
+        "hi_actions": 56,
+        "hi_repeats": 36,
+        "hi_rejected": 14,
+        "hi_raw": 76,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 21,
+        "video_downloads": 3,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_204_evidF8_1",
+      "case_id": "evid:video_204",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 7,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 4,
+        "GIA": 3
+      },
+      "harness_rejections": {
+        "HI": 1,
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 15,
+        "HI/INSPECT": 28,
+        "HI/READ_RECORD": 9
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "vLT3A0a3hoQ"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 4,
+        "hi_raw": 64,
+        "gia_rejected": 3,
+        "gia_raw": 7,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_205_evidF8_1",
+      "case_id": "evid:video_205",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 66,
+      "hi_repeats": 35,
+      "raw_outputs": {
+        "GIA": 8,
+        "HI": 80
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 74
+      },
+      "rejected_outputs": {
+        "HI": 6,
+        "GIA": 4
+      },
+      "harness_rejections": {
+        "GIA": 2,
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/READ_RECORD": 12,
+        "HI/INSPECT": 49,
+        "HI/SEARCH": 5
+      },
+      "pool": 8,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 6,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "_lrhYsPhDDI"
+      ],
+      "src_in_pool": true,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.53,
+        "hi_actions": 66,
+        "hi_repeats": 35,
+        "hi_rejected": 6,
+        "hi_raw": 80,
+        "gia_rejected": 4,
+        "gia_raw": 8,
+        "candidate_opens": 14,
+        "video_downloads": 1,
+        "source_in_pool": true,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_206_evidF8_1",
+      "case_id": "evid:video_206",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 62,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 73
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/SEARCH": 1,
+        "HI/INSPECT": 39,
+        "HI/READ_RECORD": 22
+      },
+      "pool": 5,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 10,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "dkE_xNgwtLw"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.581,
+        "hi_actions": 62,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 73,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 18,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_207_evidF8_1",
+      "case_id": "evid:video_207",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 74,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 85
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 83
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 58,
+        "HI/SEARCH": 2,
+        "HI/READ_RECORD": 14
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "1EoRe8mLBQI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_points_deduplicated"
+      ],
+      "legacy": {
+        "repeat_rate": 0.486,
+        "hi_actions": 74,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 85,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 3,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_208_evidF8_1",
+      "case_id": "evid:video_208",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 22,
+      "hi_repeats": 12,
+      "raw_outputs": {
+        "GIA": 2,
+        "HI": 25
+      },
+      "accepted_outputs": {
+        "GIA": 2,
+        "HI": 25
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 16,
+        "HI/READ_RECORD": 4,
+        "HI/SEARCH": 2
+      },
+      "pool": 9,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 3,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "D32Hay6IQQQ"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.545,
+        "hi_actions": 22,
+        "hi_repeats": 12,
+        "hi_rejected": 0,
+        "hi_raw": 25,
+        "gia_rejected": 0,
+        "gia_raw": 2,
+        "candidate_opens": 6,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_209_evidF8_1",
+      "case_id": "evid:video_209",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 61,
+      "hi_repeats": 35,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 70
+      },
+      "rejected_outputs": {
+        "HI": 1,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 3,
+        "HI/INSPECT": 28,
+        "HI/READ_RECORD": 30
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "SYPFon69vKs"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.574,
+        "hi_actions": 61,
+        "hi_repeats": 35,
+        "hi_rejected": 1,
+        "hi_raw": 71,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 5,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_210_evidF8_1",
+      "case_id": "evid:video_210",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 67
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 28,
+        "HI/READ_RECORD": 25,
+        "HI/SEARCH": 5
+      },
+      "pool": 8,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "acvmaU4BLok"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 67,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 3,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_211_evidF8_1",
+      "case_id": "evid:video_211",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 51,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 60
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 11,
+        "HI/INSPECT": 29,
+        "HI/READ_RECORD": 11
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 1,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "lfHuSkQnBLk"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.706,
+        "hi_actions": 51,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 60,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_212_evidF8_1",
+      "case_id": "evid:video_212",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 47,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 56
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 56
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/SEARCH": 17,
+        "HI/INSPECT": 29,
+        "HI/READ_RECORD": 1
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "K-18fKAr5Eo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.766,
+        "hi_actions": 47,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 56,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_213_evidF8_1",
+      "case_id": "evid:video_213",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 58,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 67
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 22,
+        "HI/INSPECT": 28,
+        "HI/SEARCH": 8
+      },
+      "pool": 10,
+      "opened": 3,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "TCpma-FIbs4"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.621,
+        "hi_actions": 58,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 67,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 17,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_214_evidF8_1",
+      "case_id": "evid:video_214",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 73
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 42,
+        "HI/SEARCH": 6,
+        "HI/READ_RECORD": 16
+      },
+      "pool": 14,
+      "opened": 3,
+      "acquired": 2,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 3,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "EQIgkMMkeMs"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.562,
+        "hi_actions": 64,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 73,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 17,
+        "video_downloads": 2,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_215_evidF8_1",
+      "case_id": "evid:video_215",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 55,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 64
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 64
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 27,
+        "HI/INSPECT": 24,
+        "HI/SEARCH": 4
+      },
+      "pool": 5,
+      "opened": 3,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "fwDS2jSR6OM"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.655,
+        "hi_actions": 55,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 64,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 18,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_216_evidF8_1",
+      "case_id": "evid:video_216",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 56,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 67
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 65
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 0
+      },
+      "harness_rejections": {
+        "HI": 2
+      },
+      "action_counts": {
+        "HI/INSPECT": 33,
+        "HI/READ_RECORD": 13,
+        "HI/SEARCH": 10
+      },
+      "pool": 6,
+      "opened": 2,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 9,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "SCnK92hmv-c"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.643,
+        "hi_actions": 56,
+        "hi_repeats": 36,
+        "hi_rejected": 2,
+        "hi_raw": 67,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 5,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_217_evidF8_1",
+      "case_id": "evid:video_217",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 61
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 45,
+        "HI/SEARCH": 3,
+        "HI/READ_RECORD": 4
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "Csd-w5gwLUU"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 61,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 5,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_218_evidF8_1",
+      "case_id": "evid:video_218",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 52,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 61
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 61
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 1
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 15,
+        "HI/INSPECT": 22,
+        "HI/SEARCH": 15
+      },
+      "pool": 0,
+      "opened": 0,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "G-BYDM44-PQ"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_points_deduplicated"
+      ],
+      "legacy": {
+        "repeat_rate": 0.692,
+        "hi_actions": 52,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 61,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 0,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_219_evidF8_1",
+      "case_id": "evid:video_219",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 0
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/READ_RECORD": 21,
+        "HI/INSPECT": 27,
+        "HI/SEARCH": 11
+      },
+      "pool": 10,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "LrD4QxIkaPA"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 68,
+        "gia_rejected": 0,
+        "gia_raw": 4,
+        "candidate_opens": 11,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_220_evidF8_1",
+      "case_id": "evid:video_220",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 64,
+      "hi_repeats": 33,
+      "raw_outputs": {
+        "GIA": 5,
+        "HI": 75
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 73
+      },
+      "rejected_outputs": {
+        "HI": 2,
+        "GIA": 1
+      },
+      "harness_rejections": {
+        "HI": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 48,
+        "HI/READ_RECORD": 7,
+        "HI/SEARCH": 9
+      },
+      "pool": 8,
+      "opened": 1,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "rX7z_z64fjI"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.516,
+        "hi_actions": 64,
+        "hi_repeats": 33,
+        "hi_rejected": 2,
+        "hi_raw": 75,
+        "gia_rejected": 1,
+        "gia_raw": 5,
+        "candidate_opens": 6,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_221_evidF8_1",
+      "case_id": "evid:video_221",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 59,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 68
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 68
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {},
+      "action_counts": {
+        "HI/INSPECT": 41,
+        "HI/SEARCH": 1,
+        "HI/READ_RECORD": 17
+      },
+      "pool": 5,
+      "opened": 1,
+      "acquired": 1,
+      "compared": 1,
+      "compared_of_opened": 1,
+      "compare_calls": 5,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "gYJQx-YTHOo"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [],
+      "legacy": {
+        "repeat_rate": 0.61,
+        "hi_actions": 59,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 68,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 19,
+        "video_downloads": 1,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    },
+    {
+      "run": "evid_video_222_evidF8_1",
+      "case_id": "evid:video_222",
+      "round": "evidF8",
+      "sample": 1,
+      "has_trajectory": true,
+      "has_store": true,
+      "has_result": true,
+      "has_run_config": false,
+      "hi_actions": 62,
+      "hi_repeats": 36,
+      "raw_outputs": {
+        "GIA": 6,
+        "HI": 71
+      },
+      "accepted_outputs": {
+        "GIA": 4,
+        "HI": 71
+      },
+      "rejected_outputs": {
+        "HI": 0,
+        "GIA": 2
+      },
+      "harness_rejections": {
+        "GIA": 1
+      },
+      "action_counts": {
+        "HI/INSPECT": 41,
+        "HI/READ_RECORD": 15,
+        "HI/SEARCH": 6
+      },
+      "pool": 9,
+      "opened": 2,
+      "acquired": 0,
+      "compared": 0,
+      "compared_of_opened": 0,
+      "compare_calls": 0,
+      "auto_compare_calls": 0,
+      "auto_compared": 0,
+      "gt_sources": [
+        "DHQcuz1DXO0"
+      ],
+      "src_in_pool": false,
+      "src_opened": false,
+      "src_acquired": false,
+      "src_compared": false,
+      "snapshot": null,
+      "freeze": null,
+      "specs": null,
+      "model": null,
+      "model_by_role": null,
+      "temperature": null,
+      "thinking": null,
+      "instruction_mode": null,
+      "tool_layer_hash": null,
+      "decision": "FINISH",
+      "contract_flags": [
+        "finish_without_citation"
+      ],
+      "legacy": {
+        "repeat_rate": 0.581,
+        "hi_actions": 62,
+        "hi_repeats": 36,
+        "hi_rejected": 0,
+        "hi_raw": 71,
+        "gia_rejected": 2,
+        "gia_raw": 6,
+        "candidate_opens": 4,
+        "video_downloads": 0,
+        "source_in_pool": false,
+        "source_downloaded": false,
+        "source_compared": false
+      },
+      "n_gt": 3,
+      "passed_gt": 0
+    }
+  ]
+}
