@@ -8,7 +8,8 @@
 
 产物 dist/sft0-<日期>-<hash>/（hash = 合集 data 文件摘要的前 12 位）：
     hi.jsonl / gia.jsonl   各包 data/<role>_accepted.jsonl 的行（包的顺序 = 命令行顺序 = 流水线版本从低到高），三步筛 / 改：
-      1. 定案 ②：同一 case_id 出现在几个包里时只留**最高版本**（命令行里最后出现的那个包）的行；
+      1. 定案 ②：同一 (case_id, variant) 出现在几个包里时只留**最高版本**（命令行里最后出现的那个包）的行；variant 取包
+         provenance 的 freeze_variant（V9 = v9，底案为空）——V9 run 与底案同 case_id，两者都保留（10-19）；
       2. --hold 清单里的行（pack + run + request + role）跳过，manifest 记 bucket_reason（例：rationale_premature_match）；
       3. 定案 ③ 降权（只 HI，一行不删）：报告行重标前固定 1、不受下面两个上限（10-19 裁决 3，实现 B）；动作行（unit=step）权重
          先截到 --step-cap（2）→ 每案例动作行权重和 > --case-cap（10）该案例动作行按同一系数缩 → 每分支权重和 > --branch-cap（60）该分支按同一系数缩 → **每个角色全局乘一个系数使
@@ -211,21 +212,31 @@ def merge(args: argparse.Namespace) -> int:
             for line in (p["dir"] / "data" / f"{role}_accepted.jsonl").read_text(encoding="utf-8").splitlines():
                 if line.strip():
                     loaded.append((i, role, json.loads(line)))
-    owner: dict[str, int] = {}
+    def variant_of(i: int, row: dict[str, Any]) -> str:
+        """10-19：变体（V9 等）取该包 provenance/runs.jsonl 的 freeze_variant（run_cases.recheck_freeze 认可的 allowed_variant），底案为 ""。"""
+        return str((packs[i]["runs"].get(str(row["metadata"].get("run"))) or {}).get("freeze_variant") or "")
+
+    # 定案 ② + 10-19：去重键 = (case_id, variant)——V9 run 与底案同一个 case_id，两者都保留
+    owner: dict[tuple[str, str], int] = {}
     for i, _role, row in loaded:
-        owner[str(row["metadata"]["case_id"])] = i
+        owner[(str(row["metadata"]["case_id"]), variant_of(i, row))] = i
     kept: dict[str, list[dict[str, Any]]] = {"hi": [], "gia": []}
     dropped_dedup: Counter = Counter()
     dropped_hold: Counter = Counter()
+    hold_superseded: Counter = Counter()
     hold_rows_seen = set()
     for i, role, row in loaded:
         p = packs[i]
         md = row["metadata"]
         case = str(md["case_id"])
-        if owner[case] != i:
-            dropped_dedup[f"{p['name']}→{packs[owner[case]]['name']}"] += 1
-            continue
+        variant = variant_of(i, row)
         key = (p["name"], role, str(md.get("run")), str(md.get("request")))
+        if owner[(case, variant)] != i:
+            dropped_dedup[f"{p['name']}→{packs[owner[(case, variant)]]['name']}"] += 1
+            if key in holds:                                  # 这行先被去重去掉了，hold 清单里的它不用再跳
+                hold_superseded[f"{p['name']}:{holds[key]}"] += 1
+                hold_rows_seen.add(key)
+            continue
         if key in holds:
             dropped_hold[f"{p['name']}:{holds[key]}"] += 1
             hold_rows_seen.add(key)
@@ -235,7 +246,8 @@ def merge(args: argparse.Namespace) -> int:
         fam = family(case)
         md.update({"pack": p["name"], "teacher_source": s03.pop() if len(s03) == 1 else "mixed", "teacher_slots": slots,
                    "family": fam, "answerable": ("unanswerable" if case in unans else "answerable") if fam in ("E", "L") else "not_probed",
-                   "row_kind": f"{md.get('unit')}:{md.get('action') or ''}", "sample_weight_orig": float(md.get("sample_weight") or 0)})
+                   "row_kind": f"{md.get('unit')}:{md.get('action') or ''}", "sample_weight_orig": float(md.get("sample_weight") or 0),
+                   "variant": variant})
         kept[role].append(row)
     unmatched_holds = sorted(set(holds) - hold_rows_seen)
     if unmatched_holds:
@@ -292,8 +304,9 @@ def merge(args: argparse.Namespace) -> int:
                    "teacher_source_rows": dict(Counter(x["metadata"]["teacher_source"] for r in kept for x in kept[r] if x["metadata"]["pack"] == p["name"]))}
                   for p in packs],
         "hashes_consistent": True, "hashes": base,
-        "dedup": {"rule": "同一 case_id 只留最高版本（命令行最后出现）的包的行（定案 ②）", "rows_dropped": dict(dropped_dedup)},
-        "holds": {"files": hold_files, "rows_skipped": dict(dropped_hold)},
+        "dedup": {"rule": "同一 (case_id, variant) 只留最高版本（命令行最后出现）的包的行（定案 ②；10-19：V9 等变体与底案分开计，两者都保留）",
+                  "rows_dropped": dict(dropped_dedup)},
+        "holds": {"files": hold_files, "rows_skipped": dict(dropped_hold), "rows_already_dropped_by_dedup": dict(hold_superseded)},
         "weights": {"rule": "定案 ③ + 10-19 裁决 3（实现 B）：只 HI；报告行重标前固定 1、不受每案例 / 每分支上限；动作行先截到 step_cap → "
                             "每案例（只算动作行）≤ case_cap → 每分支 ≤ branch_cap；上限都在重标前的单位里比；之后每个角色乘同一系数使平均权重 = 1",
                     "step_cap": args.step_cap, "case_cap": args.case_cap, "branch_cap": args.branch_cap,
@@ -306,7 +319,9 @@ def merge(args: argparse.Namespace) -> int:
         "rows": {r: len(v) for r, v in kept.items()}, "images": len(image_owner),
         "rows_by_role_family_kind_teacher": [{"role": k[0], "family": k[1], "row_kind": k[2], "teacher_source": k[3], "rows": v,
                                              "weight": round(by_cell_w[k], 3)} for k, v in sorted(by_cell.items())],
-        "row_fields_added": ["pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors"],
+        "row_fields_added": ["pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors",
+                             "variant"],
+        "variant_rows": {r: dict(Counter(x["metadata"]["variant"] or "base" for x in v)) for r, v in kept.items()},
     }
     (tmp / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     sums = [f"{PACK.sha256_file(f)}  {f.relative_to(tmp).as_posix()}" for f in sorted(tmp.rglob("*")) if f.is_file() and f.name != "SHA256SUMS"]
@@ -338,9 +353,9 @@ def verify(path: Path) -> int:
     digest_ok = PACK.data_digest(data_hashes) == manifest.get("data_digest") and path.name == manifest.get("merged_id")
     w = manifest.get("weights") or {}
     problems, rows, means = [], {}, {}
-    case_pack: dict[str, str] = {}
+    case_pack: dict[tuple[str, str], str] = {}
     pre_case, pre_branch = Counter(), Counter()
-    need = ("pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors")
+    need = ("pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors", "variant")
     for role in ("hi", "gia"):
         ws = []
         for i, line in enumerate((path / f"{role}.jsonl").read_text(encoding="utf-8").splitlines()):
@@ -359,8 +374,9 @@ def verify(path: Path) -> int:
                 if not (path / rel).is_file():
                     problems.append(f"{role}#{i}: 图不在 {rel}")
             c = str(md.get("case_id"))
-            if case_pack.setdefault(c, md.get("pack")) != md.get("pack"):
-                problems.append(f"{role}#{i}: case {c} 跨包（{case_pack[c]} / {md.get('pack')}），违反去重")
+            ck = (c, str(md.get("variant") or ""))
+            if case_pack.setdefault(ck, md.get("pack")) != md.get("pack"):
+                problems.append(f"{role}#{i}: (case, variant) {ck} 跨包（{case_pack[ck]} / {md.get('pack')}），违反去重")
             if role == "hi":
                 k = (md.get("weight_factors") or {}).get("rescale", 1.0)
                 pre = ws[-1] / k
@@ -380,7 +396,7 @@ def verify(path: Path) -> int:
         "case_cap": max(pre_case.values(), default=0) <= float(w.get("case_cap") or 1e9) + eps,
         "branch_cap": max(pre_branch.values(), default=0) <= float(w.get("branch_cap") or 1e9) + eps,
         "rows_match_manifest": rows == manifest.get("rows"), "hashes_consistent": bool(manifest.get("hashes_consistent")),
-        "no_cross_pack_case": not any("跨包" in p for p in problems),
+        "no_cross_pack_case_variant": not any("跨包" in p for p in problems),
     }
     ok = not bad and not extra and digest_ok and not problems and all(checks.values())
     print(json.dumps({"dir": str(path), "merged_id": manifest.get("merged_id"), "files": len(listed), "changed_or_missing": bad[:20],
