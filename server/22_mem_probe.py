@@ -17,6 +17,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = {"hi": ROOT / "training/configs/hi_sft0_27b.json", "gia": ROOT / "training/configs/gia_sft0_27b.json"}
+VARIANTS = {                                           # 名字 → 相对原配置改的字段
+    "base": {},                                        # 现状：梯度检查点开、sdpa
+    "nogc": {"gradient_checkpointing": False},
+    "nogc_fa2_liger": {"gradient_checkpointing": False, "attn_implementation": "flash_attention_2", "liger": True},
+    "gc_fa2_liger": {"attn_implementation": "flash_attention_2", "liger": True},
+}
 
 
 def main() -> int:
@@ -54,9 +60,14 @@ def main() -> int:
         cfg.update({"export_dir": str(sub), "output_dir": str(out / f"{role}_adapter"),
                     "max_steps": math.ceil(len(picked) / int(cfg["grad_accum"])), "log_every": 1, "save_each_epoch": False})
         cfg["_what"] = f"显存探针（server/22_mem_probe.py）：{cfg_path.name} 只改 export_dir / output_dir / max_steps / log_every；最长 {len(picked)} 行"
-        cfg_out = out / f"{role}_long{args.n}.json"
-        cfg_out.write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
-        summary[role] = {"config": str(cfg_out), "rows": len(picked), "max_steps": cfg["max_steps"], "grad_accum": cfg["grad_accum"],
+        configs = {}
+        for variant, change in VARIANTS.items():       # 10-19 负责人：最长 20 行上比几种配置的 step 时间与峰值显存，选最快且不 OOM 的
+            v = {**cfg, **change, "output_dir": str(out / f"{role}_{variant}_adapter")}
+            v["_what"] = cfg["_what"] + f"；变体 {variant}：{json.dumps(change, ensure_ascii=False)}"
+            path = out / f"{role}_long{args.n}_{variant}.json"
+            path.write_text(json.dumps(v, ensure_ascii=False, indent=2), encoding="utf-8")
+            configs[variant] = str(path)
+        summary[role] = {"configs": configs, "rows": len(picked), "max_steps": cfg["max_steps"], "grad_accum": cfg["grad_accum"],
                          "input_tokens": sorted(want.values(), reverse=True)}
     (out / "probe_rows.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: (v if k != "overall_top" else v[:3]) for k, v in summary.items()}, ensure_ascii=False, indent=1))

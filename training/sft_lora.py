@@ -91,6 +91,9 @@ class TrainConfig:
     save_each_epoch: bool = False               # 每个 epoch 末存一份 epoch_<n>/（门 B 可以直接比 epoch 1 与 epoch 2，不用重训）
     gradient_checkpointing: bool = True
     allow_multi_gpu: bool = False
+    # 10-19（Vast 单卡显存 / 速度探针）：None = transformers 默认（Qwen3.5 全注意力层与视觉塔是 sdpa）；"flash_attention_2" 要装 flash-attn
+    attn_implementation: str | None = None
+    liger: bool = False                         # True：加载前打 Liger 的 Qwen3.5 内核（RoPE / RMSNorm / SwiGLU；不碰 loss——这里不给模型传 labels）
 
     @classmethod
     def load(cls, path: str | Path) -> "TrainConfig":
@@ -278,8 +281,12 @@ def load_base(cfg: TrainConfig, *, smoke_tiny: bool) -> Any:
         return tiny_model(cfg)
     if torch.cuda.is_available():
         check_visible_gpus(cfg)
+    if cfg.liger:
+        from liger_kernel.transformers import apply_liger_kernel_to_qwen3_5
+        apply_liger_kernel_to_qwen3_5(rope=True, rms_norm=True, swiglu=True, cross_entropy=False, fused_linear_cross_entropy=False)
+    extra = {"attn_implementation": cfg.attn_implementation} if cfg.attn_implementation else {}
     return AutoModelForImageTextToText.from_pretrained(cfg.model, local_files_only=True, dtype=getattr(torch, cfg.dtype),
-                                                       device_map=cfg.device_map)
+                                                       device_map=cfg.device_map, **extra)
 
 
 def lora_coverage(model: Any) -> dict[str, Any]:
@@ -644,7 +651,9 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                          "grad_accum": cfg.grad_accum, "max_tokens": cfg.max_tokens, "weight_decay": cfg.weight_decay,
                          "max_grad_norm": cfg.max_grad_norm, "use_sample_weight": cfg.use_sample_weight,
                          "normalize_sample_weight": cfg.normalize_sample_weight,
-                         "logits_on_supervised_only": cfg.logits_on_supervised_only, "save_each_epoch": cfg.save_each_epoch},
+                         "logits_on_supervised_only": cfg.logits_on_supervised_only, "save_each_epoch": cfg.save_each_epoch,
+                         "attn_implementation": getattr(getattr(model, "config", None), "_attn_implementation", cfg.attn_implementation),
+                         "liger": cfg.liger},
                "seed": cfg.seed, "seeds_registered": cfg.seeds, "gradient_checkpointing": cfg.gradient_checkpointing,
                "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
                "time_s": {"load_and_prescan": round(load_s, 1), "train": round(train_s, 1),

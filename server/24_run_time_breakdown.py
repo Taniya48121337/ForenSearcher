@@ -132,9 +132,13 @@ def main() -> int:
         for r in recs:
             status.update(r["inspect_status"])
         print(f"  INSPECT 状态：{dict(status)}")
+    print(f"\n{'run':30s} {'组':6s} {'墙钟s':>6s} {'调用':>4s} {'prefill tok':>11s} {'decode tok':>10s} {'模型等待s':>8s} {'工具s':>6s} {'其他s':>6s}  模型 / 工具 / 其他 占墙钟 | INSPECT 前 3")
     for r in per_run:
-        top = ", ".join(f"{k} {v[0]:.0f}s×{v[1]}" for k, v in list(r["inspect"].items())[:4])
-        print(f"{r['run']:32s} {r['group']:6s} 墙钟 {r['wall_s']:6.0f}s 模型 {r['model_s']:6.0f}s×{r['model_calls']} 搜索 {r['search_s']:5.0f}s 打开 {r['open_s']:5.0f}s 其他 {r['other_s']:6.0f}s | {top}")
+        tools = sum(v[0] for v in r["inspect"].values()) + r["search_s"] + r["open_s"]
+        top = ", ".join(f"{k} {v[0]:.0f}s×{v[1]}" for k, v in list(r["inspect"].items())[:3])
+        w = r["wall_s"] or 1
+        print(f"{r['run']:30s} {r['group']:6s} {r['wall_s']:6.0f} {r['model_calls']:4d} {r['in_tokens']:11,d} {r['out_tokens']:10,d} {r['model_s']:8.0f} {tools:6.0f} {r['other_s']:6.0f}"
+              f"  {r['model_s'] / w:4.0%} / {tools / w:4.0%} / {r['other_s'] / w:4.0%} | {top}")
     if args.json:
         Path(args.json).write_text(json.dumps(per_run, ensure_ascii=False, indent=1), encoding="utf-8")
     return 0
