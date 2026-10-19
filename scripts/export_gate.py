@@ -499,14 +499,24 @@ def check_c2(rows: list[dict[str, Any]]) -> dict[str, Any]:
     rr = sum(1 for m in hi if m.get("action") == "READ_RECORD") / len(hi) if hi else 0.0
     fam = Counter(family_of(m.get("case_id")) for m in hi)
     fam_share = max(fam.values()) / len(hi) if hi else 0.0
+    # 10-19 负责人裁决：单一族按权重判（sample_weight 之和的占比），按行一并列出
+    fam_w: Counter[str] = Counter()
+    for m in hi:
+        fam_w[family_of(m.get("case_id"))] += float(m.get("sample_weight") if m.get("sample_weight") is not None else 1.0)
+    total_w = sum(fam_w.values())
+    fam_share_w = max(fam_w.values()) / total_w if total_w else 0.0
     passed = (worst_hi <= THRESHOLDS["C2_hi_per_case"] and worst_gia <= THRESHOLDS["C2_gia_per_case"]
-              and rr <= THRESHOLDS["C2_read_record_share"] and fam_share <= THRESHOLDS["C2_family_share"])
-    return item("C2", "每案例 HI ≤ 40、GIA ≤ 8；READ_RECORD ≤ 40%；单一族 ≤ 50%", ok(passed),
+              and rr <= THRESHOLDS["C2_read_record_share"] and fam_share_w <= THRESHOLDS["C2_family_share"])
+    return item("C2", "每案例 HI ≤ 40、GIA ≤ 8；READ_RECORD ≤ 40%；单一族 ≤ 50%（按权重判）", ok(passed),
                 {"max_hi_per_case": worst_hi, "max_gia_per_case": worst_gia, "read_record_share": round(rr, 3),
                  "family_rows": dict(fam), "max_family_share": round(fam_share, 3),
+                 "family_share_rows": {k: round(v / len(hi), 3) for k, v in fam.most_common()} if hi else {},
+                 "family_share_weight": {k: round(v / total_w, 3) for k, v in fam_w.most_common()} if total_w else {},
+                 "max_family_share_weight": round(fam_share_w, 3),
                  "hi_by_action": dict(Counter(str(m.get("action")) for m in hi))},
-                "每案例 HI ≤ 40、GIA ≤ 8；HI accepted 中 READ_RECORD 行 ≤ 40%；单一族行数 ≤ 50%",
-                "族按 walker 案例族（A/B/C/E/L）算；export 的家族封顶按 case_family 做，这里按 case_id 复核")
+                "每案例 HI ≤ 40、GIA ≤ 8；HI accepted 中 READ_RECORD 行 ≤ 40%；单一族按权重 ≤ 50%（按行同列）",
+                "族按 walker 案例族（A/B/C/E/L；averitec 归 C）算；负责人 10-19 裁决单一族按权重判，按行占比照列"
+                f"（本次最大族按行 {fam_share:.1%}、按权重 {fam_share_w:.1%}）")
 
 
 def check_c3(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str, Any]:
@@ -535,10 +545,11 @@ def check_c4(export_dir: Path) -> tuple[dict[str, Any], list[str]]:
     passed = all(c["ok"] for c in result["chains"])
     return (item("C4", "by_branch 出表；纳入族核心分支达最低行数；允许为零清单", ok(passed),
                  {"chains": {c["chain"]: f"{c['rows']}/{c['minimum']}" for c in result["chains"]},
-                  "allowed_zero": {z["branch"]: z["rows"] for z in result["allowed_zero"]},
+                  "family_rows": result.get("family_rows") or {},
+                 "allowed_zero": {z["branch"]: z["rows"] for z in result["allowed_zero"]},
                   "expected_but_zero": result["expected_but_zero"]},
                  "B 链 ≥ 15；C READ_RECORD ≥ 40、SEARCH page ≥ 20；E 日期 + 读最早页 ≥ 10",
-                 "完整表见报告末尾；A 族本轮不进，A 族 accepted 行数列在允许为零一栏供核对"),
+                 "完整表见报告末尾（先列各族 accepted 行数，含 A 族）"),
             branch_table_markdown(result))
 
 

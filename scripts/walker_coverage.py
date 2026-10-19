@@ -87,7 +87,8 @@ def variant(action: dict[str, Any], payload: dict[str, Any]) -> str | None:
 
 def family_of(case_id: str | None) -> str:
     """案例 → walker 族：A 找原片（fmnv a_）、B 给定媒体比对（videosham / vcsl / qvhighlights）、C 视频声明核查（fmnv c_、
-    GroundLie360）、E 图片出处（AVerImaTeC e*）、L 拍摄地（AVerImaTeC l*）；其余（r0e 的 true_* / averitec_* 等）记 other。"""
+    GroundLie360、AVeriTeC 文字声明）、E 图片出处（AVerImaTeC e*）、L 拍摄地（AVerImaTeC l*）；其余（r0e 的 true_* 等）记 other。
+    10-19（负责人）：averitec 归 C（g3 的 averitec_c_* 是 C 族文字声明核查，与合包 manifest 的族口径一致）。"""
 
     cid = str(case_id or "").lower()
     dataset, _, source = cid.partition(":")
@@ -95,7 +96,7 @@ def family_of(case_id: str | None) -> str:
         return "A" if source.startswith("a_") else "C"
     if dataset in ("videosham", "vcsl", "qvhighlights"):
         return "B"
-    if dataset == "groundlie360":
+    if dataset in ("groundlie360", "averitec"):
         return "C"
     if dataset == "averimatec" and source[:1] in ("e", "l") and source[1:2].isdigit():
         return source[0].upper()
@@ -117,7 +118,6 @@ BY_DESIGN_ZERO: dict[str, str] = {
 }
 # 首批允许为零的分支（清单 C4）：出现 0 行不算不过
 ALLOWED_ZERO: dict[str, str] = {
-    "A 族链路": "A 族本轮不进（wk13 前 A 族 0 正例，S3 修复后再放量）",
     "INSPECT get_frames pages": "get_pages：扫描件 PDF 条件触发",
     "SEARCH image→video": "以图搜视频：文字与图文都没对上时才用",
     "INSPECT compare_media audio": "音轨比对：等 compare_media 逐段音轨（M 族），本轮不排",
@@ -195,16 +195,18 @@ def export_branch_table(export_dir: Path) -> dict[str, Any]:
     all_branches = Counter(b for fam in table.values() for b in fam.elements())
     zero = []
     for name, why in ALLOWED_ZERO.items():
-        n = sum(table["A"].values()) if name == "A 族链路" else all_branches.get(name, 0)
-        zero.append({"branch": name, "rows": n, "why": why})
+        zero.append({"branch": name, "rows": all_branches.get(name, 0), "why": why})
     expected = [m[0] for m in MATRIX if m[3] > 0]
     missing = [b for b in expected if all_branches.get(b, 0) == 0 and b not in ALLOWED_ZERO and b not in BY_DESIGN_ZERO]
-    return {"families": {fam: dict(c.most_common()) for fam, c in sorted(table.items())}, "chains": chain_rows,
+    return {"families": {fam: dict(c.most_common()) for fam, c in sorted(table.items())},
+            "family_rows": {fam: sum(c.values()) for fam, c in sorted(table.items())}, "chains": chain_rows,
             "allowed_zero": zero, "expected_but_zero": missing, "rows": len(metas)}
 
 
 def branch_table_markdown(result: dict[str, Any]) -> list[str]:
-    lines = ["| 族 | 分支 | accepted 行 |", "|---|---|---|"]
+    lines = ["| 族 | accepted 行（HI + GIA） |", "|---|---|"]
+    lines += [f"| {fam} | {n} |" for fam, n in (result.get("family_rows") or {}).items()]
+    lines += ["", "| 族 | 分支 | accepted 行 |", "|---|---|---|"]
     for fam, counts in result["families"].items():
         for branch, n in counts.items():
             lines.append(f"| {fam} | {branch} | {n} |")

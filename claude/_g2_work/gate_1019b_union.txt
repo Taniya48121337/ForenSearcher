@@ -1,0 +1,16 @@
+B2  需人工  hidden_context：证据里出现过的词不算泄漏
+B3  通过   引用可见：accepted 行引用的 E / R ⊂ 该步视图
+B4  通过   决策依赖的工具结果未被截断
+B5  通过   特权词拦截率 ≤ 5%；S5 不用 GT
+B6  通过   INCOMPLETE：status_reason 与实际一致；空 findings 0；可回答案例 INCOMPLETE 率 ≤ 30%
+B7  通过   rationale：教师槽采用率 ≥ 90%；模板句 ≤ 5 次/句
+B8  通过   assistant 合法 JSON；<image> 对齐与 label mask；dataset 字段统一
+B9  通过   整行 token p95 ≤ 32K；超长行丢弃并记数
+B10 通过   对 compare_media / video_structure 记录的 READ_RECORD ≤ 2 次
+C1  通过   HI accepted ≥ 500；GIA ≥ 60（FINISH ≥ 30）
+C2  不通过  每案例 HI ≤ 40、GIA ≤ 8；READ_RECORD ≤ 40%；单一族 ≤ 50%（按权重判）
+C3  通过   GIA 口径：r0e + walker FINISH；抄题 INVESTIGATE 不进或 ×0.3；wait 行剔除
+C4  通过   by_branch 出表；纳入族核心分支达最低行数；允许为零清单
+C5  无数据  r0e 按当前规格重导出，当前核验器仍 positive 才进；origin 区分
+C6  通过   划分泄漏 0；与 EVID 131–222 三重去重；FMNV 排除 EVID 编号
+报告：experiments\sft_data\export\_sft0_union\gate_report.md

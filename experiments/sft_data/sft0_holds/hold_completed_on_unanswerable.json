@@ -1,0 +1,25 @@
+{
+ "kind": "row",
+ "bucket_reason": "completed_on_unanswerable",
+ "made_at": "2026-10-19 19:50:44",
+ "made_by": "scripts/sft0_holds.py",
+ "rule": "不可回答的 L 案例（unanswerable_r1.json）上 HI 报告写 COMPLETED：按 10-15 口径不当正例教（负责人 10-19 定 hold）；sft0 里不可回答案例上只有这一条 COMPLETED 报告",
+ "packs": [
+  "r1"
+ ],
+ "n": 1,
+ "by_pack": {
+  "r1": 1
+ },
+ "rows": [
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l124_r1_1",
+   "request": "request_0012",
+   "case_id": "averimatec:l124",
+   "unit": "report",
+   "status": "COMPLETED"
+  }
+ ]
+}

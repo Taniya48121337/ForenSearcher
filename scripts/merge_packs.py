@@ -2,8 +2,9 @@
 
     python scripts/merge_packs.py --pack r1 experiments/sft_data/r1_pack/r1 dist/ForenSearcher_r1-….tar.gz \
         --pack g1 <g1 包目录> <g1 tar> --pack g2 <g2 包目录> <g2 tar> \
-        --unanswerable experiments/sft_data/unanswerable_r1.json --hold experiments/sft_data/sft0_holds/hold_premature_match.json \
-        --out-dir dist
+        --unanswerable experiments/sft_data/unanswerable_r1.json --hold experiments/sft_data/sft0_holds/hold_*.json \
+        --freeze-label r1 specs/r1_freeze.json r1-frozen --freeze-label g1 specs/g1_freeze.json <提交> ... \
+        --run-manifest g1 <r1g1.jsonl> --run-manifest g2 <r1g2.jsonl> --tar --out-dir dist
     python scripts/merge_packs.py --verify dist/sft0-<日期>-<hash>
 
 产物 dist/sft0-<日期>-<hash>/（hash = 合集 data 文件摘要的前 12 位）：
@@ -17,11 +18,16 @@
          系数，各分支 / 各族 / 各案例之间的比例不变。原权重留在 metadata.sample_weight_orig，各步系数在 metadata.weight_factors。
       每行 metadata 另加：pack（来源批次）、teacher_source（S0–S3 槽的教师：qwen / codex，按该包 provenance/runs.jsonl 的逐槽
       slot_models 判，不只看 S0；S0–S3 不一致记 mixed）、teacher_slots（S0–S5 模型）、family（A/B/C/E/L）、
-      answerable（answerable / unanswerable / not_probed）、row_kind（unit:action）。messages、images 不改。
+      answerable（answerable / unanswerable / not_probed）、row_kind（unit:action）；10-19：freeze_file / freeze_tag（--freeze-label：
+      r1 行记 r1_freeze、g 批次行记 g1_freeze）、teacher_role 缺的从 --run-manifest（该轮 run_manifests/<轮次>.jsonl 最后一条）补并记
+      teacher_role_source；行 freeze_ok=False 的按该包 freeze/ 里的冻结文件跑 run_cases.recheck_freeze（allowed_variant_overrides）
+      改判，改判记 freeze_recheck，改判不过就 hold（bucket_reason = freeze_not_ok）。messages、images 不改。
     images/                被留下的行引用的图（路径原样；三个包的 run 名带轮次后缀，撞名就报错）
     manifest.json          每包：pack_id、tar sha256、freeze（基础冻结文件 / 教师覆盖或 g1_freeze）、三个 hash、行数；三个 hash 跨包一致性；
                            去重 / 跳行 / 降权的明细；行数与权重按 族 × row_kind × 教师来源；族占比按行与按权重（门 C2 的补充列）
     SHA256SUMS
+    --tar：另出 <out-dir>/<merged_id>.tar.gz（图按实体文件打，tarfile dereference=True；sha256 写在同名 .sha256）；解到别处 --verify 要过。
+    已合好的目录补打：python scripts/merge_packs.py --tar-only dist/sft0-<id>
 
 合并前对每个包先跑 pack_r0 的 --verify（不过就不合）。r0 包（hi@0.10.0 / 旧工具层 / verifier 0.3.6）三个 hash 与 r1 不同，
 合不进来——定案 ②：r0 包只训基线、不进 sft0。
@@ -32,14 +38,19 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
 import shutil
 import sys
+import tarfile
 import time
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from foren_searcher.datagen.run_cases import recheck_freeze  # noqa: E402
+
 QWEN_HINT, CODEX_HINT = "qwen", "gpt-"
 
 
@@ -180,6 +191,22 @@ def merge(args: argparse.Namespace) -> int:
         for r in h["rows"]:
             holds[(r["pack"], r["role"], r["run"], r["request"])] = h["bucket_reason"]
 
+    freeze_labels = {}
+    for name, ffile, tag in args.freeze_label:
+        fpath = resolve(ffile)
+        freeze_labels[name] = {"freeze_file": fpath.name, "path": ffile, "sha256": PACK.sha256_file(fpath),
+                               "freeze_id": json.loads(fpath.read_text(encoding="utf-8")).get("freeze_id"), "tag_or_commit": tag}
+    run_roles: dict[str, dict[str, Any]] = {}
+    run_manifest_files = []
+    for name, mfile in args.run_manifest:
+        mpath = resolve(mfile)
+        run_manifest_files.append({"pack": name, "file": mfile, "sha256": PACK.sha256_file(mpath)})
+        for line in mpath.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                rec = json.loads(line)
+                if rec.get("run"):
+                    run_roles[str(rec["run"])] = {"teacher_role": rec.get("teacher_role"), "file": Path(mfile).name}   # 最后一条为准
+
     packs = []
     for name, pack_dir, tar in args.pack:
         pdir = resolve(pack_dir)
@@ -200,6 +227,9 @@ def merge(args: argparse.Namespace) -> int:
         packs.append({"name": name, "dir": pdir, "identity": identity, "identity_file": ident_file.name, "runs": runs,
                       "tar": tar_path, "tar_sha256": PACK.sha256_file(tar_path),
                       "freeze_files": sorted(p.name for p in (pdir / "freeze").glob("*.json"))})
+    missing_labels = [p["name"] for p in packs if p["name"] not in freeze_labels]
+    if args.freeze_label and missing_labels:
+        raise SystemExit(f"--freeze-label 没给这些包：{missing_labels}")
     base = hashes(packs[0]["identity"])
     mismatch = {p["name"]: hashes(p["identity"]) for p in packs if hashes(p["identity"]) != base}
     if mismatch:
@@ -225,6 +255,24 @@ def merge(args: argparse.Namespace) -> int:
     dropped_hold: Counter = Counter()
     hold_superseded: Counter = Counter()
     hold_rows_seen = set()
+    freeze_rechecked: Counter = Counter()
+    freeze_failed_rows: list[dict[str, Any]] = []
+    teacher_role_filled: Counter = Counter()
+
+    def recheck_row_freeze(p: dict[str, Any], run: str) -> dict[str, Any]:
+        """行 freeze_ok=False：读该 run 的 run_config.freeze，按包 freeze/ 里的基础冻结文件跑 run_cases.recheck_freeze。"""
+        prov = p["runs"].get(run) or {}
+        rel = prov.get("run_config")
+        base_freeze = next((f for f in p["freeze_files"] if f.endswith("_freeze.json")), None)
+        if not rel or not base_freeze:
+            return {"ok": False, "why": "provenance 没有 run_config 或包里没有冻结文件"}
+        cfg_path = p["dir"].parents[3] / Path(str(rel).replace("\\", "/"))
+        record = json.loads(cfg_path.read_text(encoding="utf-8")).get("freeze")
+        freeze = json.loads((p["dir"] / "freeze" / base_freeze).read_text(encoding="utf-8"))
+        new = recheck_freeze(record, freeze) or {}
+        return {"ok": bool(new.get("ok")), "was": False, "variant": new.get("variant"), "failed": new.get("failed"),
+                "freeze_file": base_freeze, "by": "run_cases.recheck_freeze（allowed_variant_overrides）", "run_config": str(rel)}
+
     for i, role, row in loaded:
         p = packs[i]
         md = row["metadata"]
@@ -241,6 +289,28 @@ def merge(args: argparse.Namespace) -> int:
             dropped_hold[f"{p['name']}:{holds[key]}"] += 1
             hold_rows_seen.add(key)
             continue
+        if md.get("freeze_ok") is False:
+            rc = recheck_row_freeze(p, str(md.get("run")))
+            if rc.get("ok"):
+                md["freeze_ok"] = True
+                md["freeze_recheck"] = rc
+                freeze_rechecked[f"{p['name']}:{md.get('run')}"] += 1
+            else:
+                dropped_hold[f"{p['name']}:freeze_not_ok"] += 1
+                freeze_failed_rows.append({"pack": p["name"], "role": role, "run": md.get("run"), "request": md.get("request"), "recheck": rc})
+                continue
+        if md.get("teacher_role") is None:
+            src = run_roles.get(str(md.get("run")))
+            if not src or not src.get("teacher_role"):
+                raise SystemExit(f"{p['name']} {md.get('run')}：行没有 teacher_role，--run-manifest 里也找不到")
+            md["teacher_role"] = src["teacher_role"]
+            md["teacher_role_source"] = f"run_manifest:{src['file']}"
+            teacher_role_filled[p["name"]] += 1
+        else:
+            md["teacher_role_source"] = "export"
+        if p["name"] in freeze_labels:
+            md["freeze_file"] = freeze_labels[p["name"]]["freeze_file"]
+            md["freeze_tag"] = freeze_labels[p["name"]]["tag_or_commit"]
         slots = (p["runs"].get(str(md.get("run"))) or {}).get("slot_models") or {}
         s03 = {source_of(slots.get(k)) for k in ("S0", "S1", "S2", "S3")}
         fam = family(case)
@@ -293,11 +363,20 @@ def merge(args: argparse.Namespace) -> int:
     manifest = {
         "merged_id": merged_id, "training_set": "sft0", "created_at": time.strftime("%Y-%m-%d %H:%M:%S"), "data_digest": digest,
         "made_by": "scripts/merge_packs.py", "git": PACK.git_info(),
-        "decisions": "《长尾分支补量方案与三包合一前核对_20261018》六节 ①②③⑥；hold 清单（负责人 10-18 晚）",
+        "decisions": "《长尾分支补量方案与三包合一前核对_20261018》六节 ①②③⑥；hold 清单（负责人 10-18 晚、10-19）",
+        "merge_rules": [
+            "1. 每包先过 pack_r0 --verify；spec / tool_layer / verifier 三个 hash 跨包一致才合",
+            "2. 去重：同一 (case_id, variant) 只留命令行里最后出现（流水线版本最高）的包的行；variant 取包 provenance 的 freeze_variant（V9 与底案分开）",
+            "3. hold：--hold 清单（pack + role + run + request）里的行跳过；被去重先去掉的单独记 rows_already_dropped_by_dedup",
+            "4. 行 freeze_ok=False：按该包冻结文件跑 run_cases.recheck_freeze（allowed_variant_overrides）改判，改判不过就 hold（freeze_not_ok）",
+            "5. 降权（只 HI，一行不删）：报告行重标前固定 1；动作行先截到 step_cap（重标前单位）→ 每案例动作行 ≤ case_cap → 每分支动作行 ≤ branch_cap；"
+            "最后每个角色乘同一系数使平均权重 = 1（系数是归一化，不改变报告行与动作行、各分支、各案例之间的比例）",
+            "6. 行 metadata 补 pack / teacher_source / teacher_slots / family / answerable / row_kind / variant / freeze_file / freeze_tag；teacher_role 缺的从 --run-manifest 补"],
         "packs": [{"name": p["name"], "pack_id": p["identity"].get("pack_id"), "status": p["identity"].get("status"),
                    "pack_dir": str(p["dir"]), "identity_file": p["identity_file"], "tar": str(p["tar"]), "tar_sha256": p["tar_sha256"],
                    "data_digest": p["identity"].get("data_digest"), "freeze_files": p["freeze_files"],
                    "freeze_id": p["identity"].get("freeze_id"), "teacher_override": p["identity"].get("teacher_override"),
+                   "freeze_label": freeze_labels.get(p["name"]),
                    "git_head": (p["identity"].get("git") or {}).get("head"), **hashes(p["identity"]),
                    "rows_in_pack": (p["identity"].get("counts") or {}),
                    "rows_kept": {r: sum(1 for x in kept[r] if x["metadata"]["pack"] == p["name"]) for r in ("hi", "gia")},
@@ -306,10 +385,21 @@ def merge(args: argparse.Namespace) -> int:
         "hashes_consistent": True, "hashes": base,
         "dedup": {"rule": "同一 (case_id, variant) 只留最高版本（命令行最后出现）的包的行（定案 ②；10-19：V9 等变体与底案分开计，两者都保留）",
                   "rows_dropped": dict(dropped_dedup)},
-        "holds": {"files": hold_files, "rows_skipped": dict(dropped_hold), "rows_already_dropped_by_dedup": dict(hold_superseded)},
+        "holds": {"files": hold_files, "rows_skipped": dict(dropped_hold), "rows_already_dropped_by_dedup": dict(hold_superseded),
+                  "freeze_not_ok_rows": freeze_failed_rows},
+        "freeze_recheck": {"rule": "行 freeze_ok=False → run_cases.recheck_freeze（该包冻结文件的 allowed_variant_overrides）改判；不过就 hold",
+                           "rows_rechecked_ok": dict(freeze_rechecked), "rows_failed": len(freeze_failed_rows)},
+        "teacher_role": {"rule": "导出行没有 teacher_role 的（g1 / g2 跑时冻结文件取法未分轮次，run_config.walker.teacher_role 为空），"
+                                 "从该轮 run_manifests/<轮次>.jsonl 每个 run 最后一条的 teacher_role 补；metadata.teacher_role_source 记出处",
+                         "run_manifests": run_manifest_files, "rows_filled": dict(teacher_role_filled),
+                         "rows_by_role": {r: dict(Counter(str(x["metadata"].get("teacher_role")) for x in v)) for r, v in kept.items()}},
         "weights": {"rule": "定案 ③ + 10-19 裁决 3（实现 B）：只 HI；报告行重标前固定 1、不受每案例 / 每分支上限；动作行先截到 step_cap → "
                             "每案例（只算动作行）≤ case_cap → 每分支 ≤ branch_cap；上限都在重标前的单位里比；之后每个角色乘同一系数使平均权重 = 1",
                     "step_cap": args.step_cap, "case_cap": args.case_cap, "branch_cap": args.branch_cap,
+                    "caps_note": f"动作行上限 {args.step_cap:g} 是重缩放前的单位；每案例 {args.case_cap:g}、每分支 {args.branch_cap:g} 也都在重缩放前比。"
+                                 "重缩放后动作行最大权重 = 上限 × HI 重标系数（见 rescale_factor.hi、max_step_weight_after_rescale）",
+                    "max_step_weight_after_rescale": round(max((float(x["metadata"]["sample_weight"]) for x in kept["hi"]
+                                                                if x["metadata"].get("unit") == "step"), default=0), 6),
                     "hi_before": before, "hi_downweight": dw, "rescale_factor": factors,
                     "mean_weight": {r: round(sum(float(x["metadata"]["sample_weight"]) for x in v) / max(1, len(v)), 6) for r, v in kept.items()},
                     "hi_report_weight_share": round(sum(float(x["metadata"]["sample_weight"]) for x in kept["hi"] if is_report(x["metadata"]))
@@ -320,7 +410,8 @@ def merge(args: argparse.Namespace) -> int:
         "rows_by_role_family_kind_teacher": [{"role": k[0], "family": k[1], "row_kind": k[2], "teacher_source": k[3], "rows": v,
                                              "weight": round(by_cell_w[k], 3)} for k, v in sorted(by_cell.items())],
         "row_fields_added": ["pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors",
-                             "variant"],
+                             "variant", "teacher_role_source", "freeze_file", "freeze_tag", "freeze_recheck（只改判过的行）"],
+        "freeze_rows": {r: dict(Counter(f"{x['metadata'].get('freeze_file')}@{x['metadata'].get('freeze_tag')}" for x in v)) for r, v in kept.items()},
         "variant_rows": {r: dict(Counter(x["metadata"]["variant"] or "base" for x in v)) for r, v in kept.items()},
     }
     (tmp / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -332,11 +423,30 @@ def merge(args: argparse.Namespace) -> int:
             raise SystemExit(f"{final} 已存在；要覆盖加 --overwrite（临时目录留在 {tmp}）")
         shutil.rmtree(final)
     tmp.rename(final)
+    if args.tar:
+        write_tar(final)
     print(json.dumps({"merged": str(final), "merged_id": merged_id, "rows": manifest["rows"], "images": manifest["images"],
                       "dedup": manifest["dedup"]["rows_dropped"], "holds": manifest["holds"]["rows_skipped"],
                       "weights": {k: manifest["weights"][k] for k in ("rescale_factor", "mean_weight", "hi_family_share_rows", "hi_family_share_weight")}},
                      ensure_ascii=False, indent=2))
     return 0
+
+
+def write_tar(final: Path) -> Path:
+    """<merged_id>.tar.gz 放在合集目录旁边；图按实体文件打（tarfile dereference=True：符号链接 / 联接都跟进去），sha256 写同名 .sha256。"""
+
+    merged_id = final.name
+    tar_path = final.parent / f"{merged_id}.tar.gz"
+    with tarfile.open(tar_path, "w:gz", dereference=True) as tar:
+        tar.add(final, arcname=merged_id)
+    with tarfile.open(tar_path, "r:gz") as tar:                        # 包里不许有链接成员
+        links = [m.name for m in tar.getmembers() if m.issym() or m.islnk()]
+    if links:
+        raise SystemExit(f"tar 里有链接成员：{links[:5]}")
+    digest_tar = PACK.sha256_file(tar_path)
+    (final.parent / f"{merged_id}.tar.gz.sha256").write_text(f"{digest_tar}  {tar_path.name}\n", encoding="utf-8", newline="\n")   # LF：sha256sum -c 才认
+    print(f"tar：{tar_path}（{tar_path.stat().st_size / 1e6:.1f} MB，sha256 {digest_tar}；链接成员 0）")
+    return tar_path
 
 
 def verify(path: Path) -> int:
@@ -356,6 +466,9 @@ def verify(path: Path) -> int:
     case_pack: dict[tuple[str, str], str] = {}
     pre_case, pre_branch = Counter(), Counter()
     need = ("pack", "teacher_source", "teacher_slots", "family", "answerable", "row_kind", "sample_weight_orig", "weight_factors", "variant")
+    links = [p.relative_to(path).as_posix() for p in path.rglob("*") if p.is_symlink() or (hasattr(p, "is_junction") and p.is_junction())]
+    new_fields = "freeze_rows" in manifest                   # 10-19 起的合集才查 teacher_role / freeze_file
+    no_role, not_frozen, no_freeze_file = 0, 0, 0
     for role in ("hi", "gia"):
         ws = []
         for i, line in enumerate((path / f"{role}.jsonl").read_text(encoding="utf-8").splitlines()):
@@ -368,6 +481,10 @@ def verify(path: Path) -> int:
                 problems.append(f"{role}#{i}: metadata 字段不全")
             if ws[-1] <= 0:
                 problems.append(f"{role}#{i}: sample_weight={md.get('sample_weight')}")
+            if new_fields:
+                no_role += not md.get("teacher_role")
+                not_frozen += md.get("freeze_ok") is not True
+                no_freeze_file += not md.get("freeze_file")
             if (row.get("messages") or [{}])[-1].get("role") != "assistant":
                 problems.append(f"{role}#{i}: 最后一条不是 assistant")
             for rel in row.get("images") or []:
@@ -397,13 +514,16 @@ def verify(path: Path) -> int:
         "branch_cap": max(pre_branch.values(), default=0) <= float(w.get("branch_cap") or 1e9) + eps,
         "rows_match_manifest": rows == manifest.get("rows"), "hashes_consistent": bool(manifest.get("hashes_consistent")),
         "no_cross_pack_case_variant": not any("跨包" in p for p in problems),
+        "no_symlinks": not links,
     }
+    if new_fields:
+        checks.update({"teacher_role_present": no_role == 0, "freeze_ok_all_true": not_frozen == 0, "freeze_file_present": no_freeze_file == 0})
     ok = not bad and not extra and digest_ok and not problems and all(checks.values())
     print(json.dumps({"dir": str(path), "merged_id": manifest.get("merged_id"), "files": len(listed), "changed_or_missing": bad[:20],
                       "extra": extra[:20], "data_digest_ok": digest_ok, "rows": rows, "mean_weight": {k: round(v, 6) for k, v in means.items()},
                       "max_case_step_weight_pre_rescale": round(max(pre_case.values(), default=0), 4),
                       "max_branch_weight_pre_rescale": round(max(pre_branch.values(), default=0), 4),
-                      "checks": checks, "problems": problems[:20], "ok": ok}, ensure_ascii=False, indent=2))
+                      "checks": checks, "symlinks": links[:5], "problems": problems[:20], "ok": ok}, ensure_ascii=False, indent=2))
     return 0 if ok else 1
 
 
@@ -417,10 +537,21 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--branch-cap", type=float, default=60.0)
     ap.add_argument("--out-dir", default="dist")
     ap.add_argument("--overwrite", action="store_true")
+    ap.add_argument("--freeze-label", nargs=3, action="append", default=[], metavar=("NAME", "FREEZE_FILE", "TAG_OR_COMMIT"),
+                    help="每包的冻结口径（行记 freeze_file / freeze_tag）：r1 → specs/r1_freeze.json r1-frozen；g 批次 → specs/g1_freeze.json <提交>")
+    ap.add_argument("--run-manifest", nargs=2, action="append", default=[], metavar=("NAME", "RUN_MANIFEST"),
+                    help="行没有 teacher_role 时从该轮 run_manifests/<轮次>.jsonl 补")
+    ap.add_argument("--tar", action="store_true", help="另出 <merged_id>.tar.gz（图按实体文件）")
+    ap.add_argument("--tar-only", default=None, help="给已合好的 sft0 目录补打 tar（先 --verify，过了才打）")
     ap.add_argument("--verify", default=None)
     args = ap.parse_args(argv)
     if args.verify:
         return verify(resolve(args.verify))
+    if args.tar_only:
+        if verify(resolve(args.tar_only)) != 0:
+            raise SystemExit("--verify 不过，不打 tar")
+        write_tar(resolve(args.tar_only))
+        return 0
     if not args.pack:
         ap.error("需要 --pack 或 --verify")
     return merge(args)

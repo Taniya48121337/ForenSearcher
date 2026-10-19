@@ -1,19 +1,21 @@
 {
  "kind": "premature_match",
  "bucket_reason": "rationale_premature_match",
- "made_at": "2026-10-19 02:15:34",
+ "made_at": "2026-10-19 19:34:58",
  "made_by": "scripts/sft0_holds.py",
- "rule": "负责人 10-18 定）：\"比对前就说匹配\"的**断言式**动作行——HI 动作行的 rationale 含 match / same（词边界），\n该步之前没有 compare_media 记录（证据卡片里没有 INSPECT/compare_media、历史里没有 compare_media 调用），且不是 compare_media 那一步\n本身、也不是 whether / if / check / verify 一类带保留的问句（口径同 scripts/teaching_matrix.py 的\"断言式\"）。\n带保留措辞的行照常进；不改写教师文本。合包时这些行记 bucket_reason = rationale_premature_match。\n",
+ "rule": "负责人 10-18 定）：\"比对前就说匹配\"的**断言式**动作行——HI 动作行的 rationale 含 match / same（词边界），\n该步之前没有 compare_media 记录（证据卡片里没有 INSPECT/compare_media、历史里没有 compare_media 调用），且不是 compare_media 那一步\n本身、也不是 whether / if / check / verify 一类带保留的问句（口径同 scripts/teaching_matrix.py 的\"断言式\"）。\n带保留措辞的行照常进；不改写教师文本。合包时这些行记 bucket_reason = rationale_premature_match。",
  "packs": [
   "r1",
   "g1",
-  "g2"
+  "g2",
+  "g3"
  ],
- "n": 92,
+ "n": 108,
  "by_pack": {
   "r1": 65,
   "g1": 27,
-  "g2": 0
+  "g2": 0,
+  "g3": 16
  },
  "rows": [
   {
@@ -935,6 +937,166 @@
    "walker_rule": "C5_read_page",
    "branch": "READ_RECORD text",
    "rationale": "E15 reports the same event and may corroborate E16 while clarifying Pelosi’s announcement and the March 17 luncheon."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "averitec_c_1352_r1g3_1",
+   "request": "request_0008",
+   "case_id": "averitec:c_1352",
+   "walker_rule": "C7_dates",
+   "branch": "SEARCH open dates",
+   "rationale": "E4 contains Pocan’s closely matching remarks about Kenosha wages; dating R8 will establish whether this interview predates the alleged January 16, 2020 tweet."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "averitec_c_1828_r1g3_1",
+   "request": "request_0008",
+   "case_id": "averitec:c_1828",
+   "walker_rule": "S2f_read_found_page",
+   "branch": "READ_RECORD text",
+   "rationale": "No external source has been read, and the matching transcript at R1 was inaccessible. Reading E2 will establish what the available CBS report actually supports, although its September 2015 date suggests it may not resolve the August 2019 quotation or inherited judicial vacancy count."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "fmnv_fv_cBWdFgsqyVU_r1g3_1",
+   "request": "request_0004",
+   "case_id": "fmnv:fv_cBWdFgsqyVU",
+   "walker_rule": "A3_search_original_text",
+   "branch": "SEARCH text→video",
+   "rationale": "E5 shows the headline “TRUMP WARNS 'CHEATERS' OF PROSECUTION” alongside text about the Trump–Harris presidential debate, providing a specific phrase for finding matching videos."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "groundlie360_v2127605_r1g3_1",
+   "request": "request_0010",
+   "case_id": "groundlie360:v2127605",
+   "walker_rule": "C8b_read_subtitles",
+   "branch": "READ_RECORD text",
+   "rationale": "R10 was reported to match all sampled pictures from Material A, but its spoken wording and context remain unchecked. Reading its English subtitles in E22 will clarify what Clinton said and the scope of the statement attributed to her in the title."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "groundlie360_v27494203_r1g3_1",
+   "request": "request_0002",
+   "case_id": "groundlie360:v27494203",
+   "walker_rule": "C1_asr_material",
+   "branch": "INSPECT asr",
+   "rationale": "E3, E5, E8 and E10 show the same telephone scene and “TEXT TRUMP TO 88022” banner, but do not establish what is said about Biden. ASR on E1 will obtain timestamped speech to identify the claim’s wording and context for external verification."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "groundlie360_v27494203_r1g3_1",
+   "request": "request_0004",
+   "case_id": "groundlie360:v27494203",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show the same telephone scene at four sampled times, but intervening footage remains unobserved. video_structure will check E1 for shot changes, frozen or repeated spans, clarifying whether the sampled image persists or other visual material needs examination."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_4_r1g3_1",
+   "request": "request_0004",
+   "case_id": "qvhighlights:4",
+   "walker_rule": "Q1c_read_structure",
+   "branch": "READ_RECORD text",
+   "rationale": "E18 shows a woman in a headscarf beside clothes and bags, while the structural summary identifies one shot within 105.4–150 seconds. Reading E19 will obtain the detailed structural record and its limits; the matching action’s precise start and end remain unconfirmed."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_4_r1g3_1",
+   "request": "request_0005",
+   "case_id": "qvhighlights:4",
+   "walker_rule": "Q2_probe_shot_cuts",
+   "branch": "INSPECT get_frames times_s",
+   "rationale": "E17 identifies candidate moments at 125.4 and 144.16 seconds, while E19 detects one shot across 105.4–149.96 seconds without establishing the action’s boundaries. Frames around 105 seconds and near the video’s end, alongside E11 and E12, will help assess the matching segment’s extent and localization uncertainty."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_5_r1g3_1",
+   "request": "request_0005",
+   "case_id": "qvhighlights:5",
+   "walker_rule": "Q2_probe_shot_cuts",
+   "branch": "INSPECT get_frames times_s",
+   "rationale": "E17 identified candidate matches around 109–116 seconds, but their boundaries remain unconfirmed. Frames at 86–89.3 seconds and near the 150-second endpoint will check earlier context and whether the action extends to the end, retaining E11 and E12 for comparison."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_604_r1g3_1",
+   "request": "request_0005",
+   "case_id": "qvhighlights:604",
+   "walker_rule": "Q2_probe_boundaries",
+   "branch": "INSPECT get_frames times_s",
+   "rationale": "E17 identifies candidate matches around 76–90 seconds, but E19 does not establish the action’s boundaries. Frames at 70.18, 73.18, 93.26 and 96.26 seconds will probe before and after those candidates, retaining E11–E14 for comparison to narrow the localization uncertainty."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_606_r1g3_1",
+   "request": "request_0002",
+   "case_id": "qvhighlights:606",
+   "walker_rule": "Q1_locate_frames",
+   "branch": "INSPECT locate(text)",
+   "rationale": "E5 at 37.504 seconds shows a woman in the foreground and a man leaning forward at a bench, but does not establish the matching segment’s boundaries or confirm speech. Locating the described scene in E1 will provide candidate times for targeted verification."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_611_r1g3_1",
+   "request": "request_0005",
+   "case_id": "qvhighlights:611",
+   "walker_rule": "Q2_probe_boundaries",
+   "branch": "INSPECT get_frames times_s",
+   "rationale": "E17 places candidate matches around 125.39–141.81 seconds, but the segment boundaries remain unconfirmed. Frames at 119.39, 122.39, 144.81 and 147.81 seconds will check the surrounding context while retaining E11–E14 for comparison with the candidate interval."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_612_r1g3_1",
+   "request": "request_0005",
+   "case_id": "qvhighlights:612",
+   "walker_rule": "Q2_probe_boundaries",
+   "branch": "INSPECT get_frames times_s",
+   "rationale": "E17 identifies candidate matches near 131–144 seconds, but the segment’s boundaries remain unconfirmed. Frames at 128.8, 131.8, 147.14 and 149.97 seconds will check the surrounding footage while retaining E11–E14 for comparison with the candidate segment."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "qvhighlights_8973_r1g3_1",
+   "request": "request_0002",
+   "case_id": "qvhighlights:8973",
+   "walker_rule": "Q1_locate_frames",
+   "branch": "INSPECT locate(text)",
+   "rationale": "E3, E5, E8 and E10 show the woman seated at four sampled times, but do not establish the described departure or its boundaries. Locating the description within E1 will provide candidate timestamps and frames to assess the matching action and narrow its time range."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "vcsl_pair_1_v9_r1g3_1",
+   "request": "request_0007",
+   "case_id": "vcsl:pair_1",
+   "walker_rule": "B8_locate_in_B",
+   "branch": "INSPECT locate(image)",
+   "rationale": "E25, E29 and E32 provide candidate matches for earlier sampled frames of Material A, but continuous correspondence remains unconfirmed. Locating E11, sampled at 23.267 s, in Material B will obtain candidates for the later portion of A and help narrow subsequent temporal comparisons."
+  },
+  {
+   "pack": "g3",
+   "role": "hi",
+   "run": "vcsl_pair_1_v9_r1g3_1",
+   "request": "request_0008",
+   "case_id": "vcsl:pair_1",
+   "walker_rule": "B8_review_pairs",
+   "branch": "READ_RECORD focus",
+   "rationale": "E34 identifies candidate matches for E11, but retrieval scores do not establish temporal correspondence. Reading it with E5/E22, E7/E26, E9/E28 and E11/E33 together will allow direct comparison of the proposed frame pairs; continuous matching ranges and boundaries remain unconfirmed."
   }
  ]
 }

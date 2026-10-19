@@ -52,6 +52,47 @@ def premature_match(packs: list[list[str]]) -> list[dict]:
     return out
 
 
+def plan_errors(packs: list[list[str]], units: list[str], err_type: str, severity: str) -> list[dict]:
+    """10-19 负责人定：GIA 计划行（第 2 轮派工）里核验器标了 err_type（且严重度 = severity）的，按 run + request hold。
+    packs：NAME PACK_DIR（读包 data/gia_accepted.jsonl 的 plan 行）；units：各批的 verdicts_units_*.jsonl。"""
+
+    flagged: dict[tuple[str, str], list[dict]] = {}
+    for f in units:
+        for line in Path(f).read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            d = json.loads(line)
+            if d.get("unit") != "plan":
+                continue
+            errs = [e for e in d.get("errors") or [] if e.get("type") == err_type and e.get("severity") == severity]
+            if errs:
+                flagged[(d["subject"]["run"], d["subject"].get("request"))] = errs
+    out = []
+    for name, pack_dir, *_ in packs:
+        for row in tm.jsonl(Path(pack_dir) / "data" / "gia_accepted.jsonl"):
+            md = row.get("metadata") or {}
+            key = (str(md.get("run")), str(md.get("request")))
+            if md.get("unit") == "plan" and key in flagged:
+                out.append({"pack": name, "role": "gia", "run": key[0], "request": key[1], "case_id": md.get("case_id"),
+                            "walker_rule": md.get("walker_rule"), "errors": [{"detail": e.get("detail"), "span": e.get("span")} for e in flagged[key]]})
+    return out
+
+
+def single_rows(specs: list[str], packs: list[list[str]]) -> list[dict]:
+    dirs = {p[0]: Path(p[1]) for p in packs if len(p) >= 2}
+    out = []
+    for spec in specs:
+        pack, role, run, req = spec.split(":", 3)
+        row = next((r for r in tm.jsonl(dirs[pack] / "data" / f"{role}_accepted.jsonl")
+                    if str(r["metadata"].get("run")) == run and str(r["metadata"].get("request")) == req), None)
+        if row is None:
+            raise SystemExit(f"{spec}：包里没有这一行")
+        md = row["metadata"]
+        out.append({"pack": pack, "role": role, "run": run, "request": req, "case_id": md.get("case_id"), "unit": md.get("unit"),
+                    "status": tm.target(row).get("status") or tm.target(row).get("decision")})
+    return out
+
+
 def gold_items(items: list[str], pack: str) -> list[dict]:
     out = []
     for spec in items:
@@ -66,14 +107,26 @@ def gold_items(items: list[str], pack: str) -> list[dict]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["premature_match", "gold"])
+    ap.add_argument("kind", choices=["premature_match", "gold", "plan_error", "row"])
+    ap.add_argument("--row", nargs="*", default=[], help="row：PACK:ROLE:RUN:REQUEST")
+    ap.add_argument("--rule", default=None, help="row：口径说明")
+    ap.add_argument("--units", nargs="*", default=[], help="plan_error：verdicts_units_*.jsonl")
+    ap.add_argument("--type", default="task_not_gap_driven", help="plan_error：错误类型")
+    ap.add_argument("--severity", default="major", help="plan_error：严重度")
     ap.add_argument("--pack", nargs="+", action="append", metavar="NAME [PACK_DIR RUNS]", required=True,
                     help="premature_match：NAME PACK_DIR RUNS（可多次）；gold：只要 NAME")
     ap.add_argument("--item", nargs="*", default=[], help="gold：<金标目录>:<条目 id>")
     ap.add_argument("--reason", default=None, help="gold：bucket_reason")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
-    if args.kind == "gold":
+    if args.kind == "row":
+        if not args.reason or not args.row or not args.rule:
+            ap.error("row 需要 --row、--reason 与 --rule")
+        rows, reason, rule = single_rows(args.row, args.pack), args.reason, args.rule
+    elif args.kind == "plan_error":
+        rows, reason = plan_errors(args.pack, args.units, args.type, args.severity), f"plan_{args.type}"
+        rule = f"GIA 第 2 轮派工行里核验器标 {args.type}（{args.severity}）的（负责人 10-19 定 hold）"
+    elif args.kind == "gold":
         if not args.reason or not args.item:
             ap.error("gold 需要 --item 与 --reason")
         rows, reason = gold_items(args.item, args.pack[0][0]), args.reason

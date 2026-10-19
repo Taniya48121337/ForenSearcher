@@ -1,0 +1,61 @@
+{
+  "model": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.models\\Qwen3.8-27B-processor",
+  "processor": "Qwen3VLProcessor",
+  "max_tokens": 32768,
+  "files": {
+    "hi.jsonl": {
+      "rows": 3369,
+      "input_tokens": {
+        "min": 3753,
+        "p50": 9943,
+        "p90": 14313,
+        "max": 24204
+      },
+      "supervised_tokens": {
+        "min": 44,
+        "p50": 101,
+        "p90": 156,
+        "max": 1389
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 1476,
+        "p90": 5104,
+        "max": 11832
+      },
+      "above": {
+        "8192": 2787,
+        "16384": 187,
+        "32768": 0
+      }
+    },
+    "gia.jsonl": {
+      "rows": 273,
+      "input_tokens": {
+        "min": 6352,
+        "p50": 17352,
+        "p90": 20673,
+        "max": 26491
+      },
+      "supervised_tokens": {
+        "min": 135,
+        "p50": 277,
+        "p90": 372,
+        "max": 492
+      },
+      "image_tokens": {
+        "min": 0,
+        "p50": 4608,
+        "p90": 7040,
+        "max": 11832
+      },
+      "above": {
+        "8192": 263,
+        "16384": 163,
+        "32768": 0
+      }
+    }
+  },
+  "failed": [],
+  "too_long": []
+}
