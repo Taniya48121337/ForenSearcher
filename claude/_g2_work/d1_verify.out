@@ -1,0 +1,134 @@
+正在运行：教师预检 → 每个案例一条 walker 轨迹（每条约 2–5 分钟）→ 核验（claude-cli:sonnet）与导出 → 与 r0e / tp2 对照。
+中途关窗口没关系，再双击会跳过已跑完的 run。详细输出在 _walker_r1g2日志.txt
+  槽 S0 → codex_low（primary）gpt-6-astra @ codex-cli
+  槽 S1 → codex_low（primary）gpt-6-astra @ codex-cli
+  槽 S2 → codex_low（primary）gpt-6-astra @ codex-cli
+  槽 S3 → codex_low（primary）gpt-6-astra @ codex-cli
+  槽 S4 → strong（primary）gpt-6-astra @ codex-cli
+  槽 S5 → strong（primary）gpt-6-astra @ codex-cli
+[0] 检查codex_low 后端（primary）：Codex CLI，模型 gpt-6-astra，effort low（2026-10-19 00:04:05）
+  E:\Codex\workspaces\ChatGPT\ForenSearcher\.wt_g1\.g1\bin\codex_gate.exe；版本 codex-cli 0.153.4
+  登录状态：Logged in using ChatGPT
+  回复：'ok'（请求模型 gpt-6-astra，Codex 输出里的模型 未给出）
+[0] 检查strong 后端（primary）：Codex CLI，模型 gpt-6-astra，effort medium（2026-10-19 00:04:13）
+  E:\Codex\workspaces\ChatGPT\ForenSearcher\.wt_g1\.g1\bin\codex_gate.exe；版本 codex-cli 0.153.4
+  登录状态：Logged in using ChatGPT
+  回复：'ok'（请求模型 gpt-6-astra，Codex 输出里的模型 未给出）
+  （Codex 后端跨进程串行：--jobs 建议 2——一个 run 等 Codex 时另一个跑 Qwen 槽和工具）
+[0] 检查核验器 Claude CLI（sonnet，订阅）（2026-10-19 00:04:19）
+  C:\Users\Zya\.local\bin\claude.EXE；登录方式 claude.ai
+  可用：claude-cli:claude-sonnet-5-5
+[冻结] g1 口径一致：规格 / 工具层 / 核验器 hash 都对上；教师 gpt-6-astra（主教师）；核验 claude-cli:sonnet
+并行 2 个 run
+[1/60] fmnv_a_0Uc3vwNlDdY_r1g2_1 已完成，跳过
+[2/60] fmnv_a_0zC0K0YZEzg_r1g2_1 已完成，跳过
+[3/60] fmnv_a_4aIK1tjpGuk_r1g2_1 已完成，跳过
+[4/60] fmnv_a_5A6U5EjH048_r1g2_1 已完成，跳过
+[6/60] fmnv_a_6VKUdVYw_j8_r1g2_1 已完成，跳过
+[5/60] fmnv_a_6C0lUMKMj0w_r1g2_1 已完成，跳过
+[7/60] fmnv_a_8SN_JjTXSRY_r1g2_1 已完成，跳过
+[8/60] fmnv_a_96EvZqRmRD0_r1g2_1 已完成，跳过
+[9/60] fmnv_a_9ACukGwm6O8_r1g2_1 已完成，跳过
+[10/60] fmnv_a_9TeYOZWGu8s_r1g2_1 已完成，跳过
+[11/60] fmnv_a_9sTK9zOuZwg_r1g2_1 已完成，跳过
+[12/60] fmnv_a_A5dqLhDAnfQ_r1g2_1 已完成，跳过
+[13/60] fmnv_a_AdNdtUAyK60_r1g2_1 已完成，跳过
+[14/60] fmnv_a_BMljmBWBhek_r1g2_1 已完成，跳过
+[15/60] fmnv_a_BQBoqdkM4hw_r1g2_1 已完成，跳过
+[17/60] fmnv_a_CgK_2lfSASM_r1g2_1 已完成，跳过
+[16/60] fmnv_a_B_JVNt3xtGE_r1g2_1 已完成，跳过
+[18/60] fmnv_a_EFMx_tx4r8o_r1g2_1 已完成，跳过
+[19/60] fmnv_a_Euh9gFFEBtw_r1g2_1 已完成，跳过
+[20/60] fmnv_a_F51nH6oLGfY_r1g2_1 已完成，跳过
+[21/60] fmnv_a_I0bt3tSEwTE_r1g2_1 已完成，跳过
+[22/60] fmnv_a_JAsOglAzTcE_r1g2_1 已完成，跳过
+[23/60] fmnv_a_JOAGzL8SpTk_r1g2_1 已完成，跳过
+[24/60] fmnv_a_Km1Dw8q98PQ_r1g2_1 已完成，跳过
+[25/60] fmnv_a_La9Fi3WfBQc_r1g2_1 已完成，跳过
+[26/60] fmnv_a__0_V_hd_nFs_r1g2_1 已完成，跳过
+[27/60] fmnv_a__1wB0eT6YSo_r1g2_1 已完成，跳过
+[29/60] fmnv_a__HC36OnL_6c_r1g2_1 已完成，跳过
+[28/60] fmnv_a__6kQkSBP84U_r1g2_1 已完成，跳过
+[31/60] fmnv_a_b5HDrQ_M5_Y_r1g2_1 已完成，跳过
+[30/60] fmnv_a__qP0d_xiYTo_r1g2_1 已完成，跳过
+[33/60] fmnv_a_dgUIwhI09Rc_r1g2_1 已完成，跳过
+[32/60] fmnv_a_d4xTktY_lrw_r1g2_1 已完成，跳过
+[34/60] fmnv_a_fTIOGkfNU6I_r1g2_1 已完成，跳过
+[35/60] fmnv_a_fsdDrrt_maI_r1g2_1 已完成，跳过
+[36/60] fmnv_a_gP9y0JAxWWg_r1g2_1 已完成，跳过
+[38/60] fmnv_a_kRBDYNT_UOA_r1g2_1 已完成，跳过
+[37/60] fmnv_a_h3uASpEE75Q_r1g2_1 已完成，跳过
+[39/60] fmnv_a_kvsfmJI5nJU_r1g2_1 已完成，跳过
+[40/60] fmnv_a_l0YMhoSMgro_r1g2_1 已完成，跳过
+[41/60] videosham_0072_r1g2_1 已完成，跳过
+[42/60] videosham_0090_r1g2_1 已完成，跳过
+[43/60] videosham_0099_r1g2_1 已完成，跳过
+[44/60] videosham_0104_r1g2_1 已完成，跳过
+[45/60] videosham_0109_r1g2_1 已完成，跳过
+[46/60] videosham_1021_r1g2_1 已完成，跳过
+[47/60] videosham_1050_r1g2_1 已完成，跳过
+[48/60] videosham_1056_r1g2_1 已完成，跳过
+[49/60] videosham_4002_r1g2_1 已完成，跳过
+[50/60] videosham_4022_r1g2_1 已完成，跳过
+[51/60] videosham_4034_r1g2_1 已完成，跳过
+[52/60] videosham_4037_r1g2_1 已完成，跳过
+[53/60] videosham_4057_r1g2_1 已完成，跳过
+[54/60] videosham_4066_r1g2_1 已完成，跳过
+[55/60] videosham_4099_r1g2_1 已完成，跳过
+[56/60] videosham_4114_r1g2_1 已完成，跳过
+[57/60] videosham_4118_r1g2_1 已完成，跳过
+[59/60] videosham_4151_r1g2_1 已完成，跳过
+[58/60] videosham_4140_r1g2_1 已完成，跳过
+[60/60] videosham_4218_r1g2_1 已完成，跳过
+[循环内核验] 报告 60 份：核 37（COMPLETED），改 INCOMPLETE 5（第 2 轮 0），补跟进 0；出错 0、限额 0；判官新调用 74、命中缓存 0
+[循环内核验] 判官缓存并进 verify_cache.claude-cli-claude-sonnet-5-5.jsonl：37 个 run、74 条、新增 55 条
+[核验] Sonnet 核验（verifier 与 r0e 相同） + 导出（2026-10-19 00:04:24）
+  退出码 0
+[重写] fmnv_a_0Uc3vwNlDdY_r1g2_1：已改写（2 处问题）
+[重写] fmnv_a_0zC0K0YZEzg_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_4aIK1tjpGuk_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_5A6U5EjH048_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_6C0lUMKMj0w_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_6VKUdVYw_j8_r1g2_1：已改写（3 处问题）
+[重写] fmnv_a_9ACukGwm6O8_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_9TeYOZWGu8s_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_9sTK9zOuZwg_r1g2_1：已改写（2 处问题）
+[重写] fmnv_a_A5dqLhDAnfQ_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_BMljmBWBhek_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_B_JVNt3xtGE_r1g2_1：已改写（2 处问题）
+[重写] fmnv_a_CgK_2lfSASM_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_Euh9gFFEBtw_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_F51nH6oLGfY_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_I0bt3tSEwTE_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_JAsOglAzTcE_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_JOAGzL8SpTk_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_Km1Dw8q98PQ_r1g2_1：已改写（3 处问题）
+[重写] fmnv_a__0_V_hd_nFs_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a__1wB0eT6YSo_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a__6kQkSBP84U_r1g2_1：已改写（4 处问题）
+[重写] fmnv_a__qP0d_xiYTo_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_d4xTktY_lrw_r1g2_1：已改写（7 处问题）
+[重写] fmnv_a_fTIOGkfNU6I_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_fsdDrrt_maI_r1g2_1：已改写（1 处问题）
+[重写] fmnv_a_kvsfmJI5nJU_r1g2_1：已改写（1 处问题）
+[重写] videosham_0072_r1g2_1：已改写（1 处问题）
+[重写] videosham_1050_r1g2_1：已改写（1 处问题）
+[重写] videosham_4002_r1g2_1：已改写（2 处问题）
+[重写] videosham_4022_r1g2_1：已改写（2 处问题）
+[重写] videosham_4099_r1g2_1：已改写（1 处问题）
+[重写] videosham_4140_r1g2_1：已改写（1 处问题）
+[重写] videosham_4151_r1g2_1：已改写（1 处问题）
+[重写] videosham_4218_r1g2_1：已改写（2 处问题）
+[循环内核验] 判官缓存并进 verify_cache.claude-cli-claude-sonnet-5-5.jsonl：37 个 run、74 条、新增 0 条
+[核验] Sonnet 核验（verifier 与 r0e 相同） + 导出（2026-10-19 02:00:29）
+  退出码 0
+[重写] 答案核验 positive：重写前 9/60 → 重写后 28/60；明细 experiments\sft_data\walker_r1g2_revise.json
+[status 改写] 4 份报告 COMPLETED → INCOMPLETE（verdicts_r1g2_judged.claude-cli-claude-sonnet-5-5.60runs-20b3224e.jsonl）；之后 GIA 仍 FINISH 且报告带可修缺口的 FINISH 行 0 条（导出 held finish_after_status_rewrite）；明细 walker_r1g2_status_rewrite.json
+[循环内核验] 判官缓存并进 verify_cache.claude-cli-claude-sonnet-5-5.jsonl：37 个 run、74 条、新增 0 条
+[核验] Sonnet 核验（verifier 与 r0e 相同） + 导出（2026-10-19 02:10:00）
+  退出码 0
+[对照] walker vs r0e（同案例）与 tp2（qvhighlights）（2026-10-19 02:12:36）
+  退出码 0
+[覆盖] 各工具 / 参数变体用了几次（对照该在哪里用）（2026-10-19 02:12:40）
+  退出码 0
+结束。对照表 experiments\sft_data\walker_r1g2_compare.md；日志 _walker_r1g2日志.txt

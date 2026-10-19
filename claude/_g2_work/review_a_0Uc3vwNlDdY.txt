@@ -1,0 +1,26 @@
+TASK: The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.
+GT: [{"kind": "interval_iou", "params": {"start": 43.9, "end": 59.6, "min_iou": 0.5}, "note": "原片 43.9–59.6 s 被删（材料剪点在 43.9 s）；区间由制作过程确定", "requirement": "REQ2"}]
+0001 G1_round1 | INVESTIGATE round1 | []
+0002 A1_ocr_material | INSPECT ocr(video) | ['S0_rationale']
+0003 A2_asr_material | INSPECT asr | ['S0_rationale']
+0004 A3_search_original_text | SEARCH text video | ['S1_query']
+      S1: {"query": "Forbes Breaking News Emerson College Polling \"October surprise\"", "rationale": "E3 and E8 show Emerson College Polling and Forbes Breaking News branding; E11 records the interview question about an October surprise."}
+      args: {"input_type": "text", "query": "Forbes Breaking News Emerson College Polling \"October surprise\"", "output_type": "video"}
+0005 M1_compare_media | INSPECT compare_media | ['S0_rationale']
+0006 M3_frames_B | INSPECT get_frames times_s | ['S0_rationale']
+0007 M3_frames_A | INSPECT get_frames times_s | ['S0_rationale']
+0008 M3_frames_B | INSPECT get_frames times_s | ['S0_rationale']
+0009 M3_frames_A | INSPECT get_frames times_s | ['S0_rationale']
+0010 A6_dates_of_original | SEARCH dates | ['S0_rationale']
+      args: {"source": "R2", "output_type": "text", "include": ["dates"]}
+0011 M7_report | report_completed | ['S4_report']
+      REPORT COMPLETED reason=null
+        - The source video found is “How Much Would An ‘October Suprise’ Matter In The 2024 Presidential Election?: Pollster Weighs In,” https://www.youtube.com/watch?v=0Uc3vwNlDdY. The comparison found matches for 99% of Material A’s half-second pic
+        - The comparison reports these changes, using A for Material A and B for the source: B 43.1–59.0 s is omitted at A 43.8 s; B 94.3–98.4 s is omitted at A 79.8 s; at A 81.3 s, the correspondence moves backward from B 99.4 s to B 98.4 s. It also
+        - Specific evidence consists of the whole-video comparison and sampled frames around its reported cuts. Around the first cut, Material A was sampled at 43.610 s and 44.011 s, and the source at 42.910 s, 43.410 s, 58.692 s and 59.192 s. Around
+        - The investigation establishes a matching source copy, comparison-reported omissions and a backward correspondence, and measured sound differences. Its temporal evidence consists of half-second comparison samples and discrete frame observati
+0012 G4_look_at_cited_image | GIA READ_RECORD | []
+0013 G3_finish | FINISH | ['S5_answer']
+      ANSWER: A matching source was found: “How Much Would An ‘October Suprise’ Matter In The 2024 Presidential Election?: Pollster Weighs In,” https://www.youtube.com/watch?v=0Uc3vwNlDdY, uploaded 2024-10-05; it matches 99% of the given video's half-second picture samples, though earliest publication is unconfirmed. [E18][E31]  Using A for the given video and B for the source, comparison reports: - Removed: B 43.1–59.0 s, skipped at A 43.8 s. [E18] - Removed: B 94.3–98.4 s, skipped at A 79.8 s. [E18] - Ending: at A 81.3 s, correspondence moves backward from B 99.4 s to B 98.4 s; reordering versus repetitio
+      GT_CHECK: {"points": ["interval"], "missed_first": [], "support": {"interval": ["E18"]}, "gt_review": false}
+INLOOP: W1-1 COMPLETED -> COMPLETED flagged False err None missing []

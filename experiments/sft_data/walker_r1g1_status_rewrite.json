@@ -1,0 +1,196 @@
+[
+  {
+    "run": "fmnv_a_I_Kze2o_7K8_r1g1_1",
+    "workspace": "W1-1",
+    "request": "request_0012",
+    "changed": true,
+    "old_status": "COMPLETED",
+    "old_status_reason": null,
+    "new_status_reason": "the findings do not cover everything the task asks for",
+    "reason_detail": {
+      "reason": "the findings do not cover everything the task asks for",
+      "source": "generic",
+      "missing": [],
+      "kept": [
+        "the findings do not cover everything the task asks for"
+      ],
+      "dropped": [],
+      "mapped_cjk": [],
+      "rule": "gt_fields@20261016",
+      "detail": [
+        "必需证据 original_video 未取得却报 COMPLETED"
+      ]
+    },
+    "verifier_errors": [
+      {
+        "severity": "critical",
+        "detail": "必需证据 original_video 未取得却报 COMPLETED"
+      }
+    ],
+    "walker": {
+      "family": "A",
+      "walker_status": "COMPLETED",
+      "walker_reason": null,
+      "unread_hit_pages": [],
+      "open_gap_clause": "",
+      "walker_fixable_segments": [],
+      "fixable": false,
+      "replay_error": null
+    },
+    "later_gia": [
+      {
+        "request": "request_0013",
+        "decision": "READ_RECORD",
+        "state_rewritten": true
+      },
+      {
+        "request": "request_0014",
+        "decision": "FINISH",
+        "state_rewritten": true
+      }
+    ],
+    "finish_after": [],
+    "counts": {
+      "execution_links": 2,
+      "response": 1,
+      "trajectory": 5,
+      "store": 6,
+      "requests": {
+        "request_0013": 2,
+        "request_0014": 2
+      }
+    },
+    "at": "2026-10-18T20:11:29",
+    "verdicts": "verdicts_r1g1_judged.claude-cli-claude-sonnet-5-5.147runs-9460dc9a.jsonl"
+  },
+  {
+    "run": "fmnv_a_jRs33dm7rhA_r1g1_1",
+    "workspace": "W1-1",
+    "request": "request_0012",
+    "changed": true,
+    "old_status": "COMPLETED",
+    "old_status_reason": null,
+    "new_status_reason": "the findings do not cover everything the task asks for",
+    "reason_detail": {
+      "reason": "the findings do not cover everything the task asks for",
+      "source": "generic",
+      "missing": [],
+      "kept": [
+        "the findings do not cover everything the task asks for"
+      ],
+      "dropped": [],
+      "mapped_cjk": [],
+      "rule": "gt_fields@20261016",
+      "detail": [
+        "必需证据 original_video 未取得却报 COMPLETED"
+      ]
+    },
+    "verifier_errors": [
+      {
+        "severity": "critical",
+        "detail": "必需证据 original_video 未取得却报 COMPLETED"
+      }
+    ],
+    "walker": {
+      "family": "A",
+      "walker_status": "COMPLETED",
+      "walker_reason": null,
+      "unread_hit_pages": [],
+      "open_gap_clause": "",
+      "walker_fixable_segments": [],
+      "fixable": false,
+      "replay_error": null
+    },
+    "later_gia": [
+      {
+        "request": "request_0013",
+        "decision": "READ_RECORD",
+        "state_rewritten": true
+      },
+      {
+        "request": "request_0014",
+        "decision": "FINISH",
+        "state_rewritten": true
+      }
+    ],
+    "finish_after": [],
+    "counts": {
+      "execution_links": 2,
+      "response": 1,
+      "trajectory": 5,
+      "store": 6,
+      "requests": {
+        "request_0013": 2,
+        "request_0014": 2
+      }
+    },
+    "at": "2026-10-18T20:11:29",
+    "verdicts": "verdicts_r1g1_judged.claude-cli-claude-sonnet-5-5.147runs-9460dc9a.jsonl"
+  },
+  {
+    "run": "fmnv_c_1633777204298649602_r1g1_1",
+    "workspace": "W1-1",
+    "request": "request_0012",
+    "changed": true,
+    "old_status": "COMPLETED",
+    "old_status_reason": null,
+    "new_status_reason": "the findings do not cover everything the task asks for",
+    "reason_detail": {
+      "reason": "the findings do not cover everything the task asks for",
+      "source": "generic",
+      "missing": [],
+      "kept": [
+        "the findings do not cover everything the task asks for"
+      ],
+      "dropped": [],
+      "mapped_cjk": [],
+      "rule": "gt_fields@20261016",
+      "detail": [
+        "必需证据 frames / transcript 未取得却报 COMPLETED"
+      ]
+    },
+    "verifier_errors": [
+      {
+        "severity": "critical",
+        "detail": "必需证据 frames / transcript 未取得却报 COMPLETED"
+      }
+    ],
+    "walker": {
+      "family": "C",
+      "walker_status": "COMPLETED",
+      "walker_reason": null,
+      "unread_hit_pages": [
+        {
+          "evidence_id": "E15",
+          "url": "https://healthwise.punchng.com/lagos-train-crash-lasuth-received-102-victims-says-cmd/",
+          "why": "its title matches the claim"
+        }
+      ],
+      "open_gap_clause": "candidate pages that match the claim were not examined: https://healthwise.punchng.com/lagos-train-crash-lasuth-received-102-victims-says-cmd/",
+      "walker_fixable_segments": [],
+      "fixable": true,
+      "replay_error": null
+    },
+    "later_gia": [
+      {
+        "request": "request_0013",
+        "decision": "FINISH",
+        "state_rewritten": true
+      }
+    ],
+    "finish_after": [
+      "request_0013"
+    ],
+    "counts": {
+      "execution_links": 2,
+      "response": 1,
+      "trajectory": 4,
+      "store": 5,
+      "requests": {
+        "request_0013": 2
+      }
+    },
+    "at": "2026-10-18T20:11:29",
+    "verdicts": "verdicts_r1g1_judged.claude-cli-claude-sonnet-5-5.147runs-9460dc9a.jsonl"
+  }
+]

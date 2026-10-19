@@ -1,0 +1,52 @@
+{
+  "freeze_id": "g1_teacher",
+  "status": "teacher_override",
+  "doc": "claude/g1_Codex窗口批量生成_20261018.md",
+  "note": "g1 批（10-18，Codex 额度窗口）的教师分槽表，只给 FOREN_TEACHER_FREEZE 用；规格 / 工具层 / 核验器口径仍是 specs/r1_freeze.json（不动）。与 r1_freeze 的差别只在 teacher：S0–S3 由 qwen（OpenRouter Qwen3.5-397B）换成 codex_low（Codex CLI gpt-6-astra，effort low）；S4 / S5 仍是 strong（gpt-6-astra，effort medium，模型与 effort 照 r1_freeze）。两个 Codex 后端都经 codex_bin = .g1/bin/codex_gate.exe（scripts/g1/codex_gate.py：同时在飞 ≤ 2、启动间隔 ≥ 2 s、429 / 5xx 指数退避、连续 3 次到顶整批停 15 min），所以 serial=false（并发由闸门管，不再用 walker 的单锁），timeout_s 放到 7200（闸门排队 / 退避的时间也算在 walker 的子进程超时里）。没有 backup_backends：不切 OpenRouter。冻结预检的 teacher_model 一项按 r1_freeze 核对必然不过（S0–S3 模型不同），见报告三节。",
+  "teacher": {
+    "mode": "slots",
+    "decided": "2026-10-18 负责人（g1 任务书：S0–S3 primary 改 codex、effort low、备用 Qwen 关；S4 / S5 照 r1_freeze）",
+    "slots": {
+      "S0": "codex_low",
+      "S1": "codex_low",
+      "S2": "codex_low",
+      "S3": "codex_low",
+      "S4": "strong",
+      "S5": "strong"
+    },
+    "slot_meaning": {
+      "S0": "HI 动作的 rationale",
+      "S1": "检索查询词",
+      "S2": "GIA 第 2 轮任务文本",
+      "S3": "检索类下一步 / 充分性",
+      "S4": "HI 报告",
+      "S5": "GIA 答案（含 S5_answer_revise：核验后只按证据重写）"
+    },
+    "slot_name_rule": "槽调用名按前缀归槽：S4_report_retry → S4，S1_query_retry → S1，S5_answer_revise / _review / _gate / _bon<k> → S5（oracle_generator.slot_key）",
+    "backends": {
+      "codex_low": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "low",
+        "serial": false,
+        "timeout_s": 7200,
+        "retry_max_s": 900,
+        "codex_bin": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\.g1\\bin\\codex_gate.exe",
+        "note": "g1：S0–S3 走 Codex CLI（ChatGPT 订阅），effort low；没有备用（Qwen / OpenRouter 关，宁可排队）"
+      },
+      "strong": {
+        "type": "codex",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "medium",
+        "serial": false,
+        "timeout_s": 7200,
+        "retry_max_s": 900,
+        "server": "Codex CLI（ChatGPT 订阅，不按 token 计费）：本机已登录；服务器按 server/15_walker.sh 末尾的步骤装 Codex CLI 并登录（复制 ~/.codex/auth.json 或 codex login --device-auth），出口走 FS_PROXY。调用 = codex exec --ephemeral --sandbox read-only --json -m gpt-6-astra -c model_reasoning_effort=\"medium\" --image …（无工具、只读）；跨进程串行锁，--jobs 2；429 / usage limit 按 30/60/120/240/480 s 退避，总等待 ≤ FOREN_ORACLE_RETRY_MAX_S（900 s）",
+        "endpoint_alternative": "将来换 CLIProxyAPI 之类 OpenAI 兼容代理：type 改为 endpoint，填 endpoint（如 http://127.0.0.1:8317/v1）、model、endpoint_env / model_env / api_key_env，其余字段同 qwen 后端；只改本节并记 changelog，代码不动",
+        "codex_bin": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\.g1\\bin\\codex_gate.exe"
+      }
+    },
+    "primary": "gpt-6-astra",
+    "base_freeze": "specs/r1_freeze.json"
+  }
+}

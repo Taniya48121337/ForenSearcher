@@ -1,0 +1,25 @@
+{
+ "kind": "gold",
+ "bucket_reason": "omitted_required_fact",
+ "made_at": "2026-10-19 03:41:45",
+ "made_by": "scripts/sft0_holds.py",
+ "rule": "金标人工判 unacceptable、核验器放进 accepted 的单元（负责人 10-19 定 hold）",
+ "packs": [
+  "g1"
+ ],
+ "n": 1,
+ "by_pack": {
+  "g1": 1
+ },
+ "rows": [
+  {
+   "pack": "g1",
+   "role": "gia",
+   "run": "vcsl_pair_g1_03_r1g1_1",
+   "request": "request_0014",
+   "case_id": null,
+   "gold_item": "g1a:A006",
+   "verifier_disposition": "positive"
+  }
+ ]
+}

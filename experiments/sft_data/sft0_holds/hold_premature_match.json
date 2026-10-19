@@ -1,0 +1,940 @@
+{
+ "kind": "premature_match",
+ "bucket_reason": "rationale_premature_match",
+ "made_at": "2026-10-19 02:15:34",
+ "made_by": "scripts/sft0_holds.py",
+ "rule": "负责人 10-18 定）：\"比对前就说匹配\"的**断言式**动作行——HI 动作行的 rationale 含 match / same（词边界），\n该步之前没有 compare_media 记录（证据卡片里没有 INSPECT/compare_media、历史里没有 compare_media 调用），且不是 compare_media 那一步\n本身、也不是 whether / if / check / verify 一类带保留的问句（口径同 scripts/teaching_matrix.py 的\"断言式\"）。\n带保留措辞的行照常进；不改写教师文本。合包时这些行记 bucket_reason = rationale_premature_match。\n",
+ "packs": [
+  "r1",
+  "g1",
+  "g2"
+ ],
+ "n": 92,
+ "by_pack": {
+  "r1": 65,
+  "g1": 27,
+  "g2": 0
+ },
+ "rows": [
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e107_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e107",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "E1 matches E5/E7 (R1) and E8/E10 (R2) showing the same submarine and background, indicating the claim image is a crop of an older South Korean navy photo. I will check R1’s publication date to establish when this image was first published online."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e115_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e115",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R2 (News18) is a near-identical match found by Yandex and mentions hoardings in Andhra during Modi’s visit; checking its publication and platform upload dates will help determine when and where this image first appeared online, addressing the task’s core requirement."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e115_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e115",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E10 contains the full text of the News18 article (R2) whose thumbnail matches E1 and is dated 2019-02-10 (E17); reading it will reveal the article's stated location and context for the billboard to compare against the Rajasthan claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e120_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e120",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "E1 matches E4 and E6 from R1 (Amar Ujala), confirming the image source; now checking R1's publication date to determine when it first appeared and whether the context supports the 2023 Makar Sankranti claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e122_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e122",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1 (Sotwe) shows a near-identical image match but lacks date data; R2's page is archived only from 2023-12-08, after the claim date. Checking R3 (dtnext.in) for publication or archive dates may reveal an earlier occurrence of the image to establish first publication."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e12_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e12",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E1 matches E4 from WIRED article R1; I need the publication date of R1 to determine if the image predates the May 2023 claim and verify its original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e133_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e133",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E5 from R2 visually matches the original image E1, showing the same leaders in the same setting, indicating R2 may be an early publication of the image. This action will retrieve the publication date of R2 to assess whether it predates the claim date of 2023-01-16 and helps establish the image's original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e153_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e153",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R6 (yemennewstoday.wordpress.com) shows a partial-match thumbnail of the boy in rubble; checking its declared publication date and earliest archive capture will establish whether this source predates the June 2022 Afghanistan earthquake claim and help determine the image's original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e153_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e153",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R6's page date (2016-10-25, E21) predates the 2022 claim, but its thumbnail was only a partial match; R7's article image (E18) also showed a partial match. Checking R7's publication and capture dates will determine if it is an earlier or independent source for Material A."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e153_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e153",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E16 is the text page for candidate source R6 (Yemen News Today), which returned a partial image match in the reverse search; reading it will reveal the article's date and context to determine if this image was published before the June 2022 earthquake claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e184_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e184",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R5 (NDTV article) appeared in reverse image search with a thumbnail not matching E1; checking its publication date via SEARCH on R5 will establish whether this source predates the 2023-02-08 claim and could represent an earlier context for the image."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e193_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e193",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E1 matches candidate sources R1 (CBS News) and R2 (blogspot) visually; R1 is a credible news archive likely to include publication dates. This SEARCH will retrieve the page's declared publication date and earliest archive capture to establish when the image first appeared online and assess whether it predates the 2023 claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e238_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e238",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches the Daily Mirror kite festival photo (E7, E4), not the protest claim. To verify the original publication date and context, I will check the dates for R1, the most relevant candidate source."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e248_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e248",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1 (info247plus.wordpress.com, 2015-11-14) is the earliest candidate source found with a partial image match to E1; checking its declared publication and archive dates will establish whether this page is the first known online appearance of the image and help assess if the 2022 World Cup claim reuses older material."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e248_r1_1",
+   "request": "request_0007",
+   "case_id": "averimatec:e248",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E1 shows a Saudi customs officer with a Heineken can inside a Pepsi wrapper, matching the claim's visual. R2 (Imgur) has a partial match and an archive date of 2015-11-13, earlier than R1's 2015-11-14; reading E8 will reveal the Imgur post's text and context to assess original publication and whether it supports the World Cup claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e260_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e260",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches fact-check articles in R1 and R2 that identify it as a flooded Raymond showroom in Patna, not Mumbai; I now need the publication dates of R1 to establish when this correction first appeared and assess the claim's timeline."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e260_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e260",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The ABP Live article (R1/R2) dates to 2021-07-25, predating the 2022 claim, but R3 (naidunia.com) is another match mentioning Patna, Bihar; checking its publication date will determine if it is earlier or independent evidence of the image's true origin and context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e28_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e28",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The claim links the image to a March 2023 egg boycott in Kisumu County. While R9 (The Star) confirms the boycott announcement, R10 (Kenyans.co.ke) reports on Azimio protesters in Kisumu around the same time; checking its publication date (E16) will help determine if the image's context aligns with the claimed event."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e297_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e297",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image E1 matches candidate sources R1 and R2 from India Today dated 2016, predating the 2022 claim. This SEARCH on R1 will obtain its publication date to confirm whether the image's original context (2016 Kerala culling coverage) contradicts the 2022 poisoning claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e302_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e302",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E10 shows the same baby photo in an Instagram post by 'abby_abadii12' with '15 HOURS AGO' timestamp, suggesting an earlier publication than the 2022-08-29 claim date. This action will retrieve the actual publication date of R1 to verify if it predates the claim and determine the original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e31_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e31",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E10 from R5 (SlideServe) shows the same warehouse scene as E1, suggesting it may be an earlier source; checking R5's publication date will help determine if this predates the 2023 claim and reveals the original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e31_r1_1",
+   "request": "request_0007",
+   "case_id": "averimatec:e31",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E1 shows a warehouse with 'UNCLAIMED HOUSEHOLD PALLETS' text, but reverse image search found no match to the Walmart claim. R5 (SlideServe) is a candidate source with a 2014 date; reading E11 will check if this PowerPoint contains the original image and its actual context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e360_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e360",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches earlier Trump Ice photos (E4, E8, E13) but the claim ties it to East Palestine (2023). R2’s page text is already read (E6); checking its declared publication and archive dates will show whether this source predates the claim and what context it gives."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e372_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e372",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 visually matches the bridge collapse images in candidate sources R1 (E5) and R2 (E8), which report the incident occurred in Madhya Pradesh's Narmadapuram, not Gujarat's Surendranagar. I need to verify the publication dates of these sources to establish when the image was first published and confirm the original context contradicts the claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e372_r1_1",
+   "request": "request_0007",
+   "case_id": "averimatec:e372",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E6 is the full article text from DNA India (R1) whose image (E5) matches the query; reading it will confirm the reported location (Madhya Pradesh, not Gujarat), date (2022-04-10), and context (bridge collapse due to heavy vehicle) to assess the claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e378_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e378",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches frames from candidate sources R1-R5, but publication dates are unknown. This SEARCH on R1 with include=[dates] will retrieve the page's declared publication date and earliest archive capture to establish when this image first appeared online."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e384_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e384",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R5 is the only result reporting a partial match to the #StopAdani image; checking R7's dates (E11) helps rule out unrelated sources while prioritizing verification of R5's publication date and context against the 2023 claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e402_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e402",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R4 is a CricTracker page about Rohit Sharma's 2016 thigh surgery with a partial-match thumbnail; obtaining its publication and archive dates (E21 already shows R1's dates) will establish whether this image predates the 2022-12-30 claim and clarify its original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e403_r1_1",
+   "request": "request_0008",
+   "case_id": "averimatec:e403",
+   "walker_rule": "E6a_open_page_image",
+   "branch": "SEARCH open URL/R",
+   "rationale": "E15 confirms the 2018 Little Rock incident textually, but the image from R12 has not been visually compared to E1; retrieving R12's image allows direct visual verification that the claim's photo matches the 2018 Arkansas event, not the 2023 Ohio derailment."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e411_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e411",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "E1 visually matches E4 from R1 (The Tribune), indicating the same event; obtaining R1's publication and platform dates will establish when this image first appeared online and help verify whether the 2023 claim aligns with the original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e414_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e414",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R4 (Thread Reader) returned no publication date in E18; R5 (pulkitkaularticles.wordpress.com) is another near-identical image match from Yandex. Checking R5's dates may reveal an earlier or alternative publication timestamp to help establish when the image first appeared online."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e484_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e484",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1 is the only result with a near-identical image match to E1; obtaining its publication and platform dates will establish when this image first appeared online and whether it predates the March 16, 2023 Arunachal Pradesh claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e484_r1_1",
+   "request": "request_0007",
+   "case_id": "averimatec:e484",
+   "walker_rule": "E5_read_earliest_dated",
+   "branch": "READ_RECORD text",
+   "rationale": "E6 is the text of R2, which dates to 2021-09-21 and shows a helicopter crash image (E5) that may match E1; reading E6 will reveal the original context and location to compare against the 2023 Arunachal Pradesh claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e486_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e486",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches the thumbnails from YouTube sources R1 and R2. To determine when and where this image was first published, I need to check the publication dates of these candidate sources; this action queries R1 for its declared dates."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e486_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e486",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1 (YouTube channel) returned no publication date in E18; R2 is another near-identical match from Yandex. Checking R2's dates may reveal when this image first appeared online, helping establish earliest publication and context relative to the 2023 claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e500_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e500",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E1 matches E4 from R1 (Urhobo Today), indicating the same scene; I need the publication date of R1 to determine when this image first appeared and assess whether it predates the March 2023 claim about Peter Obi."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e513_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e513",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches a scene from Game of Thrones (Cersei and Jaime under rubble), not the 2023 Turkey-Syria earthquake; R4 (YouTube channel Bharat Editz) shows a partial match. Checking its publication date will help determine if this version predates the earthquake claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e513_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e513",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R6 (Lofi Songs YouTube channel) was found via reverse image search with a partial match; checking its publication dates (E19-style) will determine if this source predates the February 2023 earthquake claim and help establish the image's earliest known appearance."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e516_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e516",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches the Rediff article (R1) from 2016-11-11, which is earlier than the 2021 claim date. This action will retrieve the publication date and earliest archive capture of R1 to confirm when the image was first published and verify the original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e522_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e522",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1 (The Tribune) shows a partial match to E1 and describes a Speaker's meet; obtaining its publication date will establish when this image was first published and whether it predates the 2023-01-16 claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e530_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e530",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "E1 matches E8 and E11 (same jeep and rubble), while E4/E6 show a different rusty jeep in a scrapyard; to determine the earliest publication date and original context, I will check the declared and archive dates for R1 (YouTube) which returned a candidate source."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e530_r1_1",
+   "request": "request_0006",
+   "case_id": "averimatec:e530",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R2 dates show a 2012 Hürriyet article about a Pakistan car explosion, but its thumbnail did not match E1; R4 (Asian-voice Media Watch) is another candidate source whose publication date must be checked to assess whether it predates the 2023 claim and could be the original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e74_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e74",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R3 (Sputnik, 2019-02-16) shows the same image as E1; checking its declared publication and archive dates will establish whether this source predates the May 2023 claim and help determine the image's earliest known appearance."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e84_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e84",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R1's thumbnail (E6) is near-identical to E1, but R4's page (E11) and image (E10) show the same photo used in a 9/11 context; checking R4's publication date will help determine whether this image predates the 2023 earthquake claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e85_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e85",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Image E1 shows banners reading 'FROM STARTUP NATION TO SHUTDOWN NATION' and 'MUST RESIST', which match Israeli judicial reform protests, not French pension protests. R2 (minanews.net) has readable page text E6; checking its declared publication date will help establish when this image first appeared online and confirm its original context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e85_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:e85",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "Reverse image search identified R7 (WION) as a matching source for E1; checking its publication date via SEARCH with include=[dates] will establish when this image first appeared online to verify the claim's context."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e94_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e94",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "R3 (Thread Reader App) shows a near-identical image match but lacks publication date metadata; this SEARCH will retrieve the page's declared date and earliest archive capture to establish when the image first appeared online relative to the January 8, 2023 claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e99_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e99",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "E7 shows the image with a caption claiming Indian women Kabaddi players were ignored after winning a world cup, matching the claim in the task. R2 (wolmal.com) is a candidate source where this image appears; checking its publication date will help determine when and where the image was first published online."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_e9_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:e9",
+   "walker_rule": "E3_dates_top_results",
+   "branch": "SEARCH open dates",
+   "rationale": "The image in E1 matches the thumbnail E5 from Premium Times Nigeria (R1), which describes a Ramadan meal at Aso Villa, contradicting the Mecca claim. This SEARCH will retrieve the page's declared publication date and earliest archive capture to establish when this context was first published."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l101_r1_1",
+   "request": "request_0008",
+   "case_id": "averimatec:l101",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E22 is from the blog (R13) that matched the reverse image search for E1, dated January 2023 matching the claim date; it may contain the image's actual location or source information."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l167_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:l167",
+   "walker_rule": "L4_reverse_image",
+   "branch": "SEARCH image→image",
+   "rationale": "E1 shows fish on a city road with high-rises and karst hills, which does not match a remote Australian town; reverse image search on E1 will find where this picture was actually published and identify its true location."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l208_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:l208",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "E1 shows a green mountainside with large fissures, but none of the attached candidate images (E9, E7, E4, E12) visually match it; reading E9's page text will reveal whether this image appears in the 2021 Uttarakhand disaster article and what location or caption is given."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l244_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:l244",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "E1 shows a burnt drilling truck but no text to identify location; E11 is a candidate source image from R4 that may match or differ from E1. Reading E11’s record will reveal its page context and provenance to check if it is the original or a related publication, helping verify the claim’s location."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l313_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:l313",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "E1 shows a destroyed building at night with firefighters, but none of the candidate images (E6, E4, E9) match this scene. Reading E6's record will reveal its title and metadata to confirm whether it depicts Ashkelon and help determine if any search results correspond to the claimed location."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l313_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:l313",
+   "walker_rule": "L4_reverse_image",
+   "branch": "SEARCH image→image",
+   "rationale": "E1 shows a destroyed building at night with firefighters, but its location is unverified; text search for 'Ashkelon' returned only generic stock photos (E6, E4, E9) that do not match the scene. Reverse image search on E1 is needed to find where this specific destruction photo was actually published and identify the real place."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l325_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:l325",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "E1 shows a watermark 'Ralph Mirebs/Exclusivepix Media' and OCR found 'ORaloh Mirebs'. E4 from R1 appears visually identical to E1, suggesting it is the same photo by Ralph Mirebs. Reading E7 (from R2) will confirm whether this candidate source depicts a different room, helping to isolate the true origin of Material A."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l325_r1_1",
+   "request": "request_0005",
+   "case_id": "averimatec:l325",
+   "walker_rule": "L4_reverse_image",
+   "branch": "SEARCH image→image",
+   "rationale": "OCR on E1 identified 'Ralph Mirebs', and visual comparison shows E4 matches E1's scene while E7 and E12 are different rooms. A reverse image search on E1 is needed to find the original publication source, location details, and verify if it depicts Adelakun's bedroom or another abandoned site."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l325_r1_1",
+   "request": "request_0023",
+   "case_id": "averimatec:l325",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "Material A (E1) visually matches the Hachijo Royal Hotel bedroom image E47 from Deserted Places, confirming the location is in Japan, not Nigeria; reading E47's source page will verify the article text explicitly identifies this as the Hachijo Royal Hotel on Hachijojima Island."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "averimatec_l341_r1_1",
+   "request": "request_0004",
+   "case_id": "averimatec:l341",
+   "walker_rule": "L3_view_with_references",
+   "branch": "READ_RECORD focus",
+   "rationale": "E1 shows bodies in an open rocky area, which does not visually match the monastery architecture in E6 or the interior ceiling in E9. Reading E9's page text will confirm its location (Yemrehanna Kristos) and context to determine if it can be ruled out as the scene in E1."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "fmnv_c_XGC31lmdS6s_r1_1",
+   "request": "request_0009",
+   "case_id": "fmnv:c_XGC31lmdS6s",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E18's title closely matches the claim; need to verify if it actually states NASA recovered the booster or if it's about SpaceX."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "fmnv_c_eC8ctVxSglU_r1_1",
+   "request": "request_0004",
+   "case_id": "fmnv:c_eC8ctVxSglU",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "The ASR transcript (E11) indicates a statement about losing contact around 57-63s, and frame E8 at 51.3s shows an on-screen caption claiming the same. Running video_structure on E1 will identify shot boundaries, repeats, and frozen spans to determine if the footage is continuous or edited around that critical moment."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "fmnv_c_jLK70KY4Zz4_r1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_jLK70KY4Zz4",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E21 is from WION (the source named in the claim title) with matching headline; reading it verifies whether WION published this content with this claim."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "qvhighlights_603_r1_1",
+   "request": "request_0002",
+   "case_id": "qvhighlights:603",
+   "walker_rule": "Q1_locate_frames",
+   "branch": "INSPECT locate(text)",
+   "rationale": "The four sampled frames (E3, E5, E8, E10) show a man gesturing near water but do not clearly depict a finger pointing to specific areas. To locate the exact segment matching the task description, I will use INSPECT with operation locate on video E1 using the text query to find candidate frames where this action occurs."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "qvhighlights_603_r1_1",
+   "request": "request_0003",
+   "case_id": "qvhighlights:603",
+   "walker_rule": "Q1b_video_structure",
+   "branch": "INSPECT video_structure",
+   "rationale": "Frames E11, E12, and E14 show a finger pointing at seaweed in the water between 116 s and 123 s, matching the description; video_structure on [96.03, 145.42] will identify shot boundaries to define the segment's start/end and check for continuity or repeats."
+  },
+  {
+   "pack": "r1",
+   "role": "hi",
+   "run": "videosham_1028_v9_r1_1",
+   "request": "request_0007",
+   "case_id": "videosham:1028",
+   "walker_rule": "B10_asr",
+   "branch": "INSPECT asr",
+   "rationale": "OCR shows E25 (Material B) has text \"A conversation about CRPS\" while E28 (Material A) has \"lorem ipsum\" at the same timestamp 0.0s, indicating a visual difference; running ASR on Material A (E1) will check whether the audio content also differs or if one video's soundtrack was replaced."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1491485799170420737_r1g1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_1491485799170420737",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E21 supports reopening after police cleared protesters; E17 reports the same event and may independently clarify whether reopening coincided with any end to COVID-19 mandates."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1491485799170420737_r1g1_1",
+   "request": "request_0009",
+   "case_id": "fmnv:c_1491485799170420737",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E19 covers the same protest weekend and may clarify whether mandates ended when the crossing reopened, a distinction not resolved by E17."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1525492379976974339_r1g1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_1525492379976974339",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E21 reports the same declaration and can provide additional evidence on vaccination status; its attribution must be checked before treating it as independent corroboration of E19."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1613223948786798621_r1g1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_1613223948786798621",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E23 reports the same hospital strike and its resolution, allowing comparison with E24 and clarification of whether returning to work followed a strike rather than replacing one."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1894379323437515187_r1g1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_1894379323437515187",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E17 reports the same event and may provide the exact wording of Trump's description of Zelenskyy, which E15 mentions without quoting."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1896358842776408410_r1g1_1",
+   "request": "request_0004",
+   "case_id": "fmnv:c_1896358842776408410",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show a foreground man over the same meeting composition, but sampled frames leave intervening footage unknown. video_structure will identify cuts, frozen spans or repetitions in E1 that warrant closer examination; these cues alone cannot establish the title’s interpretation."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1896358842776408410_r1g1_1",
+   "request": "request_0010",
+   "case_id": "fmnv:c_1896358842776408410",
+   "walker_rule": "C8b_read_subtitles",
+   "branch": "READ_RECORD text",
+   "rationale": "R8 returned no picture match with Material A, so it is not established as its source. Reading E23 will obtain Schiff’s actual words and clarify whether his statement provides relevant context for the claimed welcome or rejoicing."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1896358842776408410_r1g1_1",
+   "request": "request_0011",
+   "case_id": "fmnv:c_1896358842776408410",
+   "walker_rule": "C9v_review_before_report",
+   "branch": "READ_RECORD focus",
+   "rationale": "E23 contains Schiff’s remarks, but R8 did not match Material A’s pictures. Reading E11 will establish Material A’s transcribed speech to assess whether it supports the title’s claim of rejoicing, while E15 and E16 provide visual context at 16.5 and 35 seconds."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_1897481964464300152_r1g1_1",
+   "request": "request_0009",
+   "case_id": "fmnv:c_1897481964464300152",
+   "walker_rule": "C4_search",
+   "branch": "SEARCH text→text",
+   "rationale": "E23 covers the claim, but E22 repeats the same AFP report; an official source could independently substantiate efforts to improve the sport’s image and broaden its audience."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_5UHSfJHc6H8_r1g1_1",
+   "request": "request_0007",
+   "case_id": "fmnv:c_5UHSfJHc6H8",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E21 is the publisher’s page for a closely matching video titled “destruction”; reading it can establish the reported context and assess whether the claim’s “restoration” wording misrepresents the footage."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_7HN8Apdk28c_r1g1_1",
+   "request": "request_0008",
+   "case_id": "fmnv:c_7HN8Apdk28c",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E24 reports the same flight and may provide corroboration beyond E22; E23 is another copy of the ABC News report."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_E_m8oSqtRZM_r1g1_1",
+   "request": "request_0007",
+   "case_id": "fmnv:c_E_m8oSqtRZM",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E25 directly reports a Starship breakup after launch; reading it can establish the event date and reported circumstances before matching them to the given video."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_Gnv1XWciX8o_r1g1_1",
+   "request": "request_0009",
+   "case_id": "fmnv:c_Gnv1XWciX8o",
+   "walker_rule": "C8b_read_subtitles",
+   "branch": "READ_RECORD text",
+   "rationale": "R11 returned no sampled visual match to Material A, and its cover E26 advertises VPA awards rather than a rocket flight. Reading its subtitles E27 will check the candidate’s actual spoken content and help determine whether it has any relevance to the Starship claim."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_b1Q8WS3iaNQ_r1g1_1",
+   "request": "request_0004",
+   "case_id": "fmnv:c_b1Q8WS3iaNQ",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show sampled scenes bearing the same headline and date, but intervening footage remains unexamined. video_structure will map E1’s shots and flag frozen, repeated or black spans for targeted review; it cannot independently establish the event’s date or verify the election claim."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_gPnKb8NEu5M_r1g1_1",
+   "request": "request_0003",
+   "case_id": "fmnv:c_gPnKb8NEu5M",
+   "walker_rule": "C2_ocr_material",
+   "branch": "INSPECT ocr(video)",
+   "rationale": "E11 records the lawsuit claim, while E8 shows a matching headline and E10 attributes a statement to Dylan Brogan. OCR of E1 will capture on-screen wording for comparison with the transcript and external searches; whether the lawsuit was filed as described remains unverified."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "fmnv_c_imhMnsZI1Xo_r1g1_1",
+   "request": "request_0017",
+   "case_id": "fmnv:c_imhMnsZI1Xo",
+   "walker_rule": "S2f_open_page",
+   "branch": "SEARCH open URL/R",
+   "rationale": "E20 lists the matching title but does not establish the interview’s date, guest credentials or underlying poll. Opening the Insider NJ source associated with E22 will obtain its poll details and any primary-source leads relevant to the age-group figures."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v15090806_r1g1_1",
+   "request": "request_0009",
+   "case_id": "groundlie360:v15090806",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E18 is the Cambodia Daily Life page, matching the credit recorded in E12, and may provide a direct source for the snake-trap footage."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v23240711_r1g1_1",
+   "request": "request_0009",
+   "case_id": "groundlie360:v23240711",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E18 reports the same encounter and may provide direct statements from representatives that clarify whether the missed handshake supports an intentional snub."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v23670804_r1g1_1",
+   "request": "request_0004",
+   "case_id": "groundlie360:v23670804",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show the same memorial graphic, while E12 reports FOX32 text at 7.0–9.2 seconds, leaving intervening footage unresolved. video_structure will identify shots, frozen spans and transitions in E1 to locate segments needing visual inspection; it cannot establish the death claim or BBC provenance."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v25524400_r1g1_1",
+   "request": "request_0008",
+   "case_id": "groundlie360:v25524400",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E18 reports the same event and can provide independent reporting to check E19’s account and distinguish refusing to promise a peaceful transfer from explicitly declaring he would remain after his elected term."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v29046105_r1g1_1",
+   "request": "request_0007",
+   "case_id": "groundlie360:v29046105",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E15 is a local news report about the same purple greenhouse lighting and can provide additional event-specific evidence alongside E17."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v30514713_r1g1_1",
+   "request": "request_0008",
+   "case_id": "groundlie360:v30514713",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E15 reports the same event and may clarify the crows’ behavior and spectators’ conduct, which E19 does not fully establish."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v30514713_r1g1_1",
+   "request": "request_0009",
+   "case_id": "groundlie360:v30514713",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E17 reports the same Central Park sighting and may provide additional evidence about the owl’s response to crows and spectators’ conduct, beyond the quoted claim in E15."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v33671202_r1g1_1",
+   "request": "request_0008",
+   "case_id": "groundlie360:v33671202",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E19 reports the same event and may independently corroborate the context and observed behavior described in E18, while distinguishing apparent drowsiness from confirmed sleep."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v34406100_r1g1_1",
+   "request": "request_0004",
+   "case_id": "groundlie360:v34406100",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show a woman speaking in the same room at four sampled moments, leaving intervening footage unexamined. video_structure will identify shot boundaries and any frozen, repeated or black spans in E1 that warrant closer inspection; it cannot establish the bill’s provisions."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v40015000_r1g1_1",
+   "request": "request_0004",
+   "case_id": "groundlie360:v40015000",
+   "walker_rule": "C2v_scene_frames",
+   "branch": "INSPECT video_structure",
+   "rationale": "E3, E5, E8 and E10 show the same podium setting at sampled moments, but continuity between them remains unknown. Examining E1’s video structure will identify shot boundaries and any frozen, repeated or black spans requiring closer inspection; it cannot independently verify the quoted statement or date."
+  },
+  {
+   "pack": "g1",
+   "role": "hi",
+   "run": "groundlie360_v40015000_r1g1_1",
+   "request": "request_0007",
+   "case_id": "groundlie360:v40015000",
+   "walker_rule": "C5_read_page",
+   "branch": "READ_RECORD text",
+   "rationale": "E15 reports the same event and may corroborate E16 while clarifying Pelosi’s announcement and the March 17 luncheon."
+  }
+ ]
+}

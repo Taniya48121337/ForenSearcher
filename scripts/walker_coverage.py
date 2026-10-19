@@ -32,7 +32,9 @@ MATRIX: list[tuple[str, str, str, int]] = [
     ("SEARCH text→video", "找原片：用 OCR / 语音里的可识别线索搜视频", "A", 3),
     ("SEARCH text_image→video", "找原片：文字查询没对上时，文字 + 一帧同时搜（文字搜索与以图搜图合并）", "A", 1),
     ("SEARCH image→video", "找原片：文字与图文都没对上时只用帧搜", "A", 0),
-    ("SEARCH image→text", "图片最早出处 / 照片拍摄地：反向图片搜索找载有同一张图的网页", "E L", 4),
+    # 10-18 负责人定：r1 起 E / L 的反向图片搜索走 image→image（E2_reverse_image / L4_reverse_image），没有规则再发 image→text，
+    # 这一行是口径遗留——改成条件触发（最少 0），不算缺口（《长尾分支补量方案》五节 ⑥）
+    ("SEARCH image→text", "图片最早出处 / 照片拍摄地：反向图片搜索找载有同一张图的网页（r1 起 E/L 走 image→image；条件触发）", "E L", 0),
     ("SEARCH text→text", "核查声明 / 图片出处：搜事件本身的报道", "C E L", 5),
     ("SEARCH text→image", "照片拍摄地：声明点名了地点 / 地标时，取该地点的参考照片与给定照片当面比对", "L", 3),
     ("SEARCH open dates", "要回答谁先发布 / 某来源是否早于声明：查页面声明日期、上传日期、最早存档", "E A C", 5),

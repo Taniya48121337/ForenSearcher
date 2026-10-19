@@ -230,8 +230,14 @@ def render(run_dir: Path) -> str:
         body.append("")
         body.append("**Decision**")
         body.append("")
-        body.append(fence(decision_text(row["resp"])))
         revise = load(run_dir / "requests" / row["dir"] / "slot_S5_revise.json")
+        resp = row["resp"]
+        # 10-19：S5_answer_revise 会把 response.json 改写成新答案；Decision 一栏要显示核验前的原答案（revise.old），
+        # 否则它与下面的 REVISED ANSWER 是同一段文字，通读会误报"重写与原答案逐字相同"
+        if isinstance(revise, dict) and revise.get("changed") and isinstance(resp, dict) and revise.get("old"):
+            resp = {**resp, "answer": revise["old"]}
+            body.append("- Decision below shows the **original answer before verification** (from slot_S5_revise.json `old`).")
+        body.append(fence(decision_text(resp)))
         if isinstance(revise, dict) and revise.get("changed"):
             body.append("- **answer rewritten after verification** (support-only S5_answer_revise; this is the exported version). "
                         "Verifier issues fed back: " + "; ".join(f"{e.get('type')}/{e.get('severity')}" for e in revise.get("errors") or []))

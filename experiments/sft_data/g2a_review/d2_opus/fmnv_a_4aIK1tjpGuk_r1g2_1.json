@@ -1,0 +1,35 @@
+{"run": "fmnv_a_4aIK1tjpGuk_r1g2_1", "family": "A", "steps_read": 11, "overall": "minor_issues",
+ "issues": [
+  {"step": "W1-1 turns 6-7 (request_0007, request_0008) -> turn 9 REPORT (request_0010)", "category": "underclaim", "severity": "major",
+   "what": "Boundary frames were extracted from B (E36-E39 at 58.3/58.8/78.7/79.2 s, two of them inside the removed 58.5-79.0 s span) and from A (E40, E41), and compare_media said 'say what A shows and what B shows there'. The report never cites E36-E41 and says instead 'No specific visual description of the omitted footage is established' and 'The sampled frames were not used here to ... describe the removed sequence.'",
+   "why_bad_to_teach": "The student learns to collect evidence aimed at the gap and then call the gap unresolved. That is two wasted tool calls plus a boilerplate limitation that contradicts the trajectory's own work. The likely cause is the pipeline: report-time State shows 'attached images (0): none', but the exported Decision still teaches the habit.",
+   "ideal": "Keep E36-E41 attached at report time. In F2, briefly describe what B shows inside 58.5-79.0 s (E37/E38) and how A's frames at 58.48/58.88 s (E40/E41) join across the cut, citing those ids."},
+  {"step": "W1-1 turn 7 (request_0008)", "category": "citation", "severity": "minor",
+   "what": "Rationale says 'E35 reports that E33's 58.5–79.0 s interval is omitted'. The compared source was E22 (turn 5 targets ['E1','E22']), and E33 appears nowhere in visible State/Observation.",
+   "why_bad_to_teach": "It teaches writing a wrong or invisible evidence id into a rationale.",
+   "ideal": "'E35 reports that E22's 58.5–79.0 s interval is skipped at A 58.7 s ...'"},
+  {"step": "W1-1 turn 9 REPORT F3/F4 (request_0010)", "category": "other", "severity": "minor",
+   "what": "F3 repeats E35's numbers and adds an unrelated ASR quote ('The intensity of these fires on the ground is terrifying to see'). F4 is a meta-finding ('The investigation establishes a sampled audiovisual correspondence...') that restates limitations already given in F1/F2, plus generic ones such as 'The editing method, intent ... could not be determined.'",
+   "why_bad_to_teach": "It teaches padding reports with non-findings and boilerplate limitations instead of distinct, task-relevant points.",
+   "ideal": "Fold the sound match into F2 as its own sound statement and drop F3/F4. If the frames were used, add a finding that describes the removed content."},
+  {"step": "GIA round 1 (request_0001)", "category": "plan_quality", "severity": "minor",
+   "what": "T1 copies the overall task verbatim ('The given video circulated online. Find its original source video and determine whether and how...').",
+   "why_bad_to_teach": "It shows no decomposition, although for single-chain A tasks this is the program's intended design and does little harm.",
+   "ideal": "A task text that names the concrete chain: locate the source via the visible Sky News headline/transcript, run compare_media, describe each difference span, get the dates."},
+  {"step": "GIA FINISH (request_0011)", "category": "other", "severity": "minor",
+   "what": "The verifier flagged 'unsupported_assertion/critical', yet the REVISED ANSWER is word-for-word identical to the original ANSWER.",
+   "why_bad_to_teach": "The exported pair shows a 'revision' that ignores the critical feedback. If the feedback was a false positive, this is harmless; otherwise it teaches leaving flagged claims unchanged.",
+   "ideal": "Either change the flagged sentence or have the pipeline record that the issue was a verifier false positive."}
+ ],
+ "good_patterns": [
+  "The tool numbers are copied exactly: B 58.5-79.0 s skipped at A 58.7 s (20.5 s), 100% of A's half-second samples, 235 of 235 sound windows, upload 2025-01-09, first archive 2025-01-11.",
+  "Dates are framed correctly: 'These dates establish the history of this copy, not that it was the earliest upload' and the GIA's 'whether it was the earliest upload is not established'. The upload date is not presented as the earliest source.",
+  "The candidate was compared (compare_media E1 vs E22) before being called the source, and the boundary frames were targeted at the reported cut on both sides in both videos.",
+  "Queries come from visible cues: the on-screen headline 'MOST DESTRUCTIVE FIRES IN LA HISTORY' and the ASR phrase 'intensity of these fires'. After the first text-only search failed, the second changed to text+frame and found the match."
+ ],
+ "cannot_judge": [
+  "The Observation for turn 4 (request_0005, text_image SEARCH) is not rendered, so I could not verify turn 5's claim 'R6 reports matching all sampled E1 pictures to E22, with a correspondence jump near E1 58.8 seconds to source 79.0 seconds' or the R6->E22 mapping.",
+  "The images themselves are not visible, so I could not check whether E3/E5/E8/E10 all show the 'exact headline' (turn 3 rationale) or whether E5 has an 'Altadena map label'. ASR spells it 'Altadina', so the query's 'Altadena' must come from a frame if it is legitimate.",
+  "The verifier's specific 'unsupported_assertion' target is not shown."
+ ],
+ "summary": "This is a clean, correct A-family trajectory: the source was found via a text+frame search, compared with compare_media before it was called the source, the removed interval and dates were copied exactly, and the date limits are stated honestly. The main teaching defect is that the boundary frames (E36-E41) were fetched specifically to describe the cut, then dropped from the report state. The report declares the omitted content 'not established', which teaches gather-then-ignore. There are minor issues: a wrong id (E33) in one rationale, padded findings F3/F4 with boilerplate limitations, a verbatim T1, and a no-op revision after a critical verifier flag."}
