@@ -598,10 +598,8 @@ def write_list() -> None:
         if (CASES / f"{name}.json").exists():
             for g in [info.get("group") or f"{info.get('family')}_{info.get('dataset')}", *(info.get("also_groups") or [])]:
                 groups.setdefault(g, []).append(name)
-    # P3：r0 时建好、从没跑过的 QVH 三条（媒体在主目录 data/qvhighlights/0–2，本工作树用 junction 只读引用）
-    groups.setdefault("P3_qvh", [])
-    groups["P3_qvh"] = [n for n in ("qvhighlights_0", "qvhighlights_1", "qvhighlights_2") if (CASES / f"{n}.json").exists()] + \
-        [n for n in groups["P3_qvh"] if n not in ("qvhighlights_0", "qvhighlights_1", "qvhighlights_2")]
+    # P3：只用本批新建的 QVH。r0 时建的 qvhighlights_0 / 1 / 2 是 dev 划分（dev_confirm / dev_eval / dev_select）、没有 task_text_en，
+    # 10-19 全量里起不来（CaseError），本来也不该进训练批——不列
     # P2：V9 离线模拟（g3_v9_sim.py）在交报告前确实触发 Q1 的底案，每个一次 V9 run；名字 <底案>_v9（g3_run 按它加 --override）
     sim = load_json(WORK / "v9_sim.json", {})
     groups["P2_V9"] = [f"{r['base']}_v9" for r in sim.get("results") or [] if r.get("verdict") == "trigger"]
