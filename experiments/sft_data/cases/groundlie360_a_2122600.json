@@ -1,0 +1,80 @@
+{
+  "case_id": "groundlie360:a_2122600",
+  "dataset": "groundlie360",
+  "source_id": "a_2122600",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定视频在网上流传。找到它的原始来源视频，并确定这一版与原片相比是否有改动、改在哪里：删掉、添加、调换或改变了哪些部分，给出两个视频中的时间。引用具体证据，说明未能确定的内容。",
+  "task_text_en": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+  "family_key": "groundlie360:2122600",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "../../../plan-harness-1/datasets/GroundLie360/videos/vid/2122600.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+      "must_cite": true,
+      "text_en": "The original source video of the given video (address, channel or title), and the picture correspondence that identifies it"
+    },
+    {
+      "id": "REQ2",
+      "text": "给定视频与原片的差异：删掉 / 添加 / 调换 / 改变了哪些部分，两个视频中的时间",
+      "must_cite": true,
+      "text_en": "How the given video differs from the original: which parts were removed, added, reordered or altered, with times in both videos"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容（未比对的模态、边界精度等）",
+      "must_cite": false,
+      "text_en": "What could not be determined (modalities not compared, boundary precision, etc.)"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "original_video",
+      "description": "原片：YouTube 8rn08tINChA（与 GroundLie360 原片 [2122601] 同一段素材，compare_media 确认）",
+      "url_pattern": "youtube.com/watch[?]v=8rn08tINChA*",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "acquired_by": null
+    },
+    {
+      "key": "comparison",
+      "description": "材料与原片的 compare_media 比对结果（对应段、剪掉 / 改动的部分）",
+      "acquired_by": "INSPECT/compare_media",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    },
+    {
+      "key": "frames",
+      "description": "剪辑点两侧的材料帧与原片帧",
+      "acquired_by": "INSPECT/get_frames",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all:original_video; any_one_of:comparison,frames",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-18 23:58:04，scripts/g3/g3_cases.py g360_a）：GroundLie360 假帖子 2122600（facebook，Fake，['false_title', 'temporal_edit']；发布日期 20160313.0；帖子标题：Gardeners can create a hybrid kiwi banana fruit by planting a piece of a banana and a piece of a kiwi in the same pot.），数据集原片编号 [2122601]。材料 = 帖子视频原文件（59.7 s，不重编码）。YouTube 原片 D3kMNTqbyno，上传者 / 频道：Joward Cerk（UCqRt1mXEPNkyNZuR6Bqfx2g）；g3 探测排名 {'text_image': 4}。确认：本地原片 vs D3kMNTqbyno——B matches A: 90% of A's half-second samples are found in B (A 236 s, B 212 s; the matched footage lies in B 0-212 s).；帖子 vs D3kMNTqbyno——B matches A: 100% of A's half-second samples are found in B (A 59 s, B 212 s; the matched footage lies in B 128-187 s).。数据集剪辑点（temporal_edit_location，按镜头边界标 1）：[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]；镜头切分（帧号）：[[ 0 34] [ 35 169] [ 170 255] [ 256 319] [ 320 411] [ 412 448] [ 449 568] [ 569 625] [ 626 675] [ 676 753] [ 754 899] [ 900 1004] [1005 1129] [1130 1254] [1255 1429] [1430 1463] [1464 1567] [1568 1672] [1673 1771] [1772 1782]]。没有被删区间，不设 interval_iou。C6 建卷时自查：EVID 编号 0、频道不在 EVID 131–222 频道表、感知哈希 0。 【10-19 冒烟后更正 GT】原片改为 YouTube 8rn08tINChA（上传者 / 频道：Kin（UCv-D6IpYrkgaYIcUp3pvHcw））：g3 探测标题搜第 2 名，与本地原片 compare_media 双向 100%、同为 235.5 s、无差异，帖子落在其 128–187 s；原定的 D3kMNTqbyno（212 s，只含原片 90%）是较短的转载。原 url_pattern youtube.com/watch[?]v=D3kMNTqbyno*。建卷时的确认只下了缩略图最近的前 3 个，8rn08tINChA 的缩略图判 different 没下到；冒烟 run groundlie360_a_2122600_r1g3_1 找到的正是它。"
+}

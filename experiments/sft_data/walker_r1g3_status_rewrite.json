@@ -1,0 +1,60 @@
+[
+  {
+    "run": "fmnv_a_9h6JM0n1Zu4_r1g3_1",
+    "workspace": "W1-1",
+    "request": "request_0010",
+    "changed": true,
+    "old_status": "COMPLETED",
+    "old_status_reason": null,
+    "new_status_reason": "the findings do not cover everything the task asks for",
+    "reason_detail": {
+      "reason": "the findings do not cover everything the task asks for",
+      "source": "generic",
+      "missing": [],
+      "kept": [
+        "the findings do not cover everything the task asks for"
+      ],
+      "dropped": [],
+      "mapped_cjk": [],
+      "rule": "gt_fields@20261016",
+      "detail": [
+        "必需证据 original_video 未取得却报 COMPLETED"
+      ]
+    },
+    "verifier_errors": [
+      {
+        "severity": "critical",
+        "detail": "必需证据 original_video 未取得却报 COMPLETED"
+      }
+    ],
+    "walker": {
+      "family": "A",
+      "walker_status": "COMPLETED",
+      "walker_reason": null,
+      "unread_hit_pages": [],
+      "open_gap_clause": "",
+      "walker_fixable_segments": [],
+      "fixable": false,
+      "replay_error": null
+    },
+    "later_gia": [
+      {
+        "request": "request_0011",
+        "decision": "FINISH",
+        "state_rewritten": true
+      }
+    ],
+    "finish_after": [],
+    "counts": {
+      "execution_links": 2,
+      "response": 1,
+      "trajectory": 4,
+      "store": 5,
+      "requests": {
+        "request_0011": 2
+      }
+    },
+    "at": "2026-10-19T09:15:32",
+    "verdicts": "verdicts_r1g3_judged.claude-cli-claude-sonnet-5-5.80runs-be437e21.jsonl"
+  }
+]

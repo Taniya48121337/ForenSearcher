@@ -1,0 +1,52 @@
+{
+  "case_id": "averitec:c_2130",
+  "dataset": "averitec",
+  "source_id": "c_2130",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：US, Russia, Israel and France ‘approve’ Biafra’s separation from Nigeria（声明日期：2019-05-31）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: US, Russia, Israel and France ‘approve’ Biafra’s separation from Nigeria (claim date: 2019-05-31)",
+  "family_key": "averitec:2130",
+  "media": [],
+  "claims": [
+    "US, Russia, Israel and France ‘approve’ Biafra’s separation from Nigeria"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "africacheck.org/fact-checks/fbchecks/no-evidence-us-russia-israel-and-france-approve-biafras-separation-nigeria-1"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）",
+      "must_cite": true,
+      "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"
+    },
+    {
+      "id": "REQ2",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 02:17:58，scripts/g3/g3_cases.py p4，模板同 walker_d2_cases.build_claim_text）：AVeriTeC 训练集 #2130，label = Not Enough Evidence（不设 label_expected），声明日期 2019-05-31；排除原核查文章 https://web.archive.org/web/20210720171452/https://africacheck.org/fact-checks/fbchecks/no-evidence-us-russia-israel-and-france-approve-biafras-separation-nigeria-1。g3 入选理由：检索前 5 条里有正文带视频链接的页（C8 打开页内视频）；探测命中页：[{\"rank\": 2, \"url\": \"https://allafrica.com/stories/202511240571.html\", \"video_links\": [\"https://www.youtube.com/watch?v=nB7xhcBhwPU\"], \"chars\": 9656}, {\"rank\": 3, \"url\": \"https://newsverifier.mitafrica.org/netanyahu-biafra-israel-claim/\", \"video_links\": [\"https://youtu.be/b_prLgxVu-8\"], \"chars\": 3089}]。"
+}

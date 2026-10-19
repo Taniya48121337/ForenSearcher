@@ -1,0 +1,87 @@
+{
+  "case_id": "fmnv:fv_Ii4YStnxX4w",
+  "dataset": "fmnv",
+  "source_id": "fv_Ii4YStnxX4w",
+  "split": "dev_train",
+  "task_kind": "provenance",
+  "task_text": "给定视频在网上流传。找到它的原始来源视频，并确定这一版与原片相比是否有改动、改在哪里：删掉、添加、调换或改变了哪些部分，给出两个视频中的时间。引用具体证据，说明未能确定的内容。",
+  "task_text_en": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+  "family_key": "fmnv:Ii4YStnxX4w",
+  "media": [
+    {
+      "ref": "I0",
+      "path": "media/g3/fmnv_fv/fmnv_fv_Ii4YStnxX4w.mp4",
+      "media_type": "video/mp4"
+    }
+  ],
+  "claims": [],
+  "source_policy": {
+    "mode": "unrestricted",
+    "excluded_keys": [],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+      "must_cite": true,
+      "text_en": "The original source video of the given video (address, channel or title), and the picture correspondence that identifies it"
+    },
+    {
+      "id": "REQ2",
+      "text": "给定视频与原片的差异：至少指出一处删掉 / 添加 / 调换 / 改变的部分，并引用比对记录",
+      "must_cite": true,
+      "text_en": "How the given video differs from the original: name at least one part that was removed, added, reordered or altered, citing the comparison"
+    },
+    {
+      "id": "REQ3",
+      "text": "未能确定的内容（未比对的模态、边界精度等）",
+      "must_cite": false,
+      "text_en": "What could not be determined (modalities not compared, boundary precision, etc.)"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "original_video",
+      "description": "原片：YouTube Ii4YStnxX4w（FMNV CE 类假视频的来源，标题：Trump-Harris Election Results: Here’s When We’ll Know The Results In Key States | Forbes Topline）",
+      "url_pattern": "youtube.com/watch[?]v=Ii4YStnxX4w*",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "acquired_by": null
+    },
+    {
+      "key": "comparison",
+      "description": "材料与原片的 compare_media 比对结果（报告据以指出至少一处差异）",
+      "acquired_by": "INSPECT/compare_media",
+      "must_cite": true,
+      "supports": [
+        "REQ2"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "evidence_key_required",
+      "params": {
+        "key": "original_video"
+      },
+      "note": "原片 URL 必须引用",
+      "requirement": "REQ1"
+    },
+    {
+      "kind": "evidence_key_required",
+      "params": {
+        "key": "comparison"
+      },
+      "note": "报告指出至少一处与原片的差异并引用比对记录（存在性，不做区间 IoU）",
+      "requirement": "REQ2"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 01:27:34，scripts/g3/g3_cases.py fv_a）：manipulation_type = fv（FMNV CE 类，'关键片段被删'，数据集作者从 YouTube 原片删段制作）；interval = 空（数据集没给被删区间，不设 interval_iou）。FMNV Ii4YStnxX4w（2024 US presidential election；FMNV 划分 train）。材料 = 假视频原文件（zip，57.1 s，不重编码）。上传者 / 频道：Forbes（UCmh7afBz-uWwOSSNTqUBAhg）。g3 探测（walker 同一条 search 层、Lens 关）原片排名：{\"text_title\": 1, \"text_transcript\": 1, \"text_image\": 1}。建卷时 compare_media 一次（A = 假视频、B = 原片），只作过滤与参考：假视频在原片中的覆盖率 90%（工具参考，非 GT）；原片未用的份额 56%（工具参考，非 GT；含 FMNV 截取掉的两端）；差异摘要（工具参考，非 GT，不参与核验）：B matches A: 90% of A's half-second samples are found in B (A 57 s, B 108 s; the matched footage lies in B 0-98 s).；A uses B 0-98 s only; the rest of B (108 s in all) is not in A.；Not in B: A 40.2-43.3 s (3.0 s); B continues from 80.7 s to 81.6 s around it with no gap, so this footage was added to A. Say what it shows and whether it belongs with the footage around it.；Missing from A: B 2.0-17.8 s (15.8 s) is skipped at A 2.3 s (A continues straight from before it to after it).。C6 建卷时自查：EVID 编号 0、频道不在 EVID 131–222 频道表、感知哈希 0。"
+}

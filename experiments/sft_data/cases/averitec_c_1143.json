@@ -1,0 +1,74 @@
+{
+  "case_id": "averitec:c_1143",
+  "dataset": "averitec",
+  "source_id": "c_1143",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Drinking water with lemon can prevent COVID-19（声明日期：2020-03-08）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: Drinking water with lemon can prevent COVID-19 (claim date: 2020-03-08)",
+  "family_key": "averitec:1143",
+  "media": [],
+  "claims": [
+    "Drinking water with lemon can prevent COVID-19"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "factcheck.afp.com/false-claims-drinking-water-lemon-can-prevent-covid-19-circulate-online"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）",
+      "must_cite": true,
+      "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"
+    },
+    {
+      "id": "REQ2",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading"
+        ]
+      },
+      "note": "AVeriTeC label = Refuted"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 02:17:58，scripts/g3/g3_cases.py p4，模板同 walker_d2_cases.build_claim_text）：AVeriTeC 训练集 #1143，label = Refuted，声明日期 2020-03-08；排除原核查文章 https://web.archive.org/web/20210622024946/https://factcheck.afp.com/false-claims-drinking-water-lemon-can-prevent-covid-19-circulate-online。g3 入选理由：GT 来源页是长页、检索前 5 条有长页（续读）；探测命中页：[{\"rank\": 3, \"url\": \"https://theconversation.com/coronavirus-there-are-no-miracle-foods-or-diets-that-can-prevent-or-cure-covid-19-136666\", \"long\": true, \"chars\": 8139}]。"
+}

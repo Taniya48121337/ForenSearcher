@@ -1,0 +1,74 @@
+{
+  "case_id": "averitec:c_2333",
+  "dataset": "averitec",
+  "source_id": "c_2333",
+  "split": "dev_train",
+  "task_kind": "claim_check",
+  "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：Since its inception 3.881 million tonnes of cargo have been transported on the standard-gauge railway line in Kenya（声明日期：2019-04-04）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: Since its inception 3.881 million tonnes of cargo have been transported on the standard-gauge railway line in Kenya (claim date: 2019-04-04)",
+  "family_key": "averitec:2333",
+  "media": [],
+  "claims": [
+    "Since its inception 3.881 million tonnes of cargo have been transported on the standard-gauge railway line in Kenya"
+  ],
+  "source_policy": {
+    "mode": "exclude_original",
+    "excluded_keys": [
+      "africacheck.org/fact-checks/reports/state-nation-2019-did-kenyatta-get-his-facts-right"
+    ],
+    "date_cutoff": null
+  },
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "外部可靠来源对声明所述事件的记载（谁、何时、何地、发生了什么）",
+      "must_cite": true,
+      "text_en": "What reliable external sources record about the event the claim describes (who, when, where, what happened)"
+    },
+    {
+      "id": "REQ2",
+      "text": "未能确定的内容与结论的适用范围",
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion"
+    }
+  ],
+  "required_evidence": [
+    {
+      "key": "external",
+      "description": "检索打开的外部页面（报道该事件的来源）",
+      "acquired_by": "SEARCH/open",
+      "must_cite": true,
+      "supports": [
+        "REQ1"
+      ],
+      "url_pattern": null
+    }
+  ],
+  "required_evidence_rule": "all",
+  "checks": [
+    {
+      "kind": "label_expected",
+      "params": {
+        "label": "false",
+        "aliases": [
+          "false",
+          "inaccurate",
+          "not accurate",
+          "does not match",
+          "mismatch",
+          "unsupported",
+          "not supported",
+          "misrepresents",
+          "fabricated",
+          "not true",
+          "untrue",
+          "misleading"
+        ]
+      },
+      "note": "AVeriTeC label = Refuted"
+    }
+  ],
+  "reference_path": null,
+  "used_for_revision": [],
+  "notes": "g3 建卷（2026-10-19 02:17:58，scripts/g3/g3_cases.py p4，模板同 walker_d2_cases.build_claim_text）：AVeriTeC 训练集 #2333，label = Refuted，声明日期 2019-04-04；排除原核查文章 https://web.archive.org/web/20210719170145/https://africacheck.org/fact-checks/reports/state-nation-2019-did-kenyatta-get-his-facts-right。g3 入选理由：GT 来源页是长页、检索前 5 条有长页（续读）；探测命中页：[{\"rank\": 3, \"url\": \"https://www.fool.com/earnings/call-transcripts/2026/06/05/stealthgas-gass-q1-2026-earnings-transcript/\", \"long\": true, \"chars\": 25231}, {\"rank\": 5, \"url\": \"https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/apr/doc2026415847301.pdf\", \"long\": true, \"chars\": 20324}]。"
+}
