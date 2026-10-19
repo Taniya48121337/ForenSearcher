@@ -1,0 +1,97 @@
+[r1] 校验 E:\Codex\workspaces\ChatGPT\ForenSearcher\experiments\sft_data\r1_pack\r1
+{
+  "pack": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\experiments\\sft_data\\r1_pack\\r1",
+  "pack_id": "r1-20261018-efa73acc8cee",
+  "status": "ok",
+  "files": 3983,
+  "changed": [],
+  "missing": [],
+  "extra": [],
+  "data_digest_ok": true,
+  "failed_checks_at_pack_time": [],
+  "ok": true
+}
+[r1] tar sha256 …
+[g1] 校验 E:\Codex\workspaces\ChatGPT\ForenSearcher\.wt_g1\experiments\sft_data\g1_pack\g1
+{
+  "pack": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g1\\experiments\\sft_data\\g1_pack\\g1",
+  "pack_id": "g1-20261018-5b2618fd55cc",
+  "status": "ok",
+  "files": 3822,
+  "changed": [],
+  "missing": [],
+  "extra": [],
+  "data_digest_ok": true,
+  "failed_checks_at_pack_time": [],
+  "ok": true
+}
+[g1] tar sha256 …
+[g2] 校验 E:\Codex\workspaces\ChatGPT\ForenSearcher\.wt_g2\experiments\sft_data\g2_pack\g2
+{
+  "pack": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g2\\experiments\\sft_data\\g2_pack\\g2",
+  "pack_id": "g2-20261019-f3c62e87b95e",
+  "status": "ok",
+  "files": 1611,
+  "changed": [],
+  "missing": [],
+  "extra": [],
+  "data_digest_ok": true,
+  "failed_checks_at_pack_time": [],
+  "ok": true
+}
+[g2] tar sha256 …
+[g3] 校验 E:\Codex\workspaces\ChatGPT\ForenSearcher\.wt_g3\experiments\sft_data\g3_pack\g3
+{
+  "pack": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g3\\experiments\\sft_data\\g3_pack\\g3",
+  "pack_id": "g3-20261019-339b16dacdff",
+  "status": "ok",
+  "files": 1901,
+  "changed": [],
+  "missing": [],
+  "extra": [],
+  "data_digest_ok": true,
+  "failed_checks_at_pack_time": [],
+  "ok": true
+}
+[g3] tar sha256 …
+{
+  "merged": "E:\\Codex\\workspaces\\ChatGPT\\ForenSearcher\\.wt_g2\\dist\\sft0-20261019-95652fb8b362",
+  "merged_id": "sft0-20261019-95652fb8b362",
+  "rows": {
+    "hi": 3386,
+    "gia": 287
+  },
+  "images": 10867,
+  "dedup": {
+    "r1→g3": 9
+  },
+  "holds": {
+    "r1:rationale_premature_match": 64,
+    "g1:rationale_premature_match": 27,
+    "g1:omitted_required_fact": 1
+  },
+  "weights": {
+    "rescale_factor": {
+      "hi": 2.923017,
+      "gia": 1.002857
+    },
+    "mean_weight": {
+      "hi": 1.0,
+      "gia": 1.0
+    },
+    "hi_family_share_rows": {
+      "C": 0.5024,
+      "B": 0.1816,
+      "E": 0.1615,
+      "A": 0.1034,
+      "L": 0.0511
+    },
+    "hi_family_share_weight": {
+      "C": 0.4111,
+      "B": 0.2041,
+      "E": 0.1819,
+      "A": 0.1485,
+      "L": 0.0543
+    }
+  }
+}

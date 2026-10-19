@@ -61,6 +61,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--pack", nargs=4, action="append", metavar=("NAME", "EXPORT", "RUNS", "TEACHER"), required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--sft0", default=None, help="合好的 sft0 目录：另出一列 hold 后的 行 / 案例")
     args = ap.parse_args()
     cov = coverage()
     loaded = []
@@ -68,13 +69,15 @@ def main() -> int:
         rc = tm.RunCache(Path(runs))
         rows = [r for role in ("hi", "gia") for r in tm.jsonl(Path(export) / f"{role}_accepted.jsonl")]
         loaded.append((name, teacher, rc, rows))
-    # 定案 ②：同一 case_id 只留最高版本包
+    # 定案 ②（10-19：键 = case_id + variant，V9 run 名带 _v9_，与底案分开计）：同一键只留最高版本包
+    def key(r):
+        return (r["metadata"]["case_id"], "v9" if "_v9_" in str(r["metadata"].get("run")) else "")
     owner = {}
     for i, (name, _t, _rc, rows) in enumerate(loaded):
         for r in rows:
-            owner[r["metadata"]["case_id"]] = i
-    kept = [(name, teacher, rc, r) for i, (name, teacher, rc, rows) in enumerate(loaded) for r in rows if owner[r["metadata"]["case_id"]] == i]
-    dropped = {name: sum(1 for r in rows if owner[r["metadata"]["case_id"]] != i) for i, (name, _t, _rc, rows) in enumerate(loaded)}
+            owner[key(r)] = i
+    kept = [(name, teacher, rc, r) for i, (name, teacher, rc, rows) in enumerate(loaded) for r in rows if owner[key(r)] == i]
+    dropped = {name: sum(1 for r in rows if owner[key(r)] != i) for i, (name, _t, _rc, rows) in enumerate(loaded)}
     sk = Counter(skeleton(tm.norm_rationale(tm.target(r).get("rationale"))) for *_x, r in kept if tm.target(r).get("rationale"))
     stats = defaultdict(lambda: {"rows": 0, "cases": set(), "packs": defaultdict(lambda: [0, set()]), "teacher": Counter(),
                                  "rat": 0, "tmpl": 0, "match": 0, "match_assert": 0, "gia_ans": 0, "gia_miss": 0, "families": Counter()})
@@ -109,6 +112,16 @@ def main() -> int:
             s["gia_ans"] += 1
             if tm.entity_misses(str(tgt.get("answer") or ""), tm.visible_text(r)):
                 s["gia_miss"] += 1
+    post = defaultdict(lambda: [0, set()])
+    if args.sft0:
+        for role in ("hi", "gia"):
+            for r in tm.jsonl(Path(args.sft0) / f"{role}.jsonl"):
+                md = r["metadata"]
+                b = md.get("branch") or "(none)"
+                if md.get("role") == "gia":
+                    b = {"answer": "GIA FINISH", "plan": "GIA INVESTIGATE round2" if str(md.get("walker_rule", "")).startswith("G2") else "GIA INVESTIGATE round1"}.get(md.get("unit"), b)
+                post[b][0] += 1
+                post[b][1].add(md["case_id"])
     names = list(dict.fromkeys([*sorted(stats, key=lambda b: -stats[b]["rows"]), *cov]))
     packs = [p[0] for p in loaded]
     table = []
@@ -124,22 +137,26 @@ def main() -> int:
                       "teacher": dict(s["teacher"]) if s else {}, "families": dict(s["families"]) if s else {},
                       "rationale_rows": s["rat"] if s else 0, "templated": s["tmpl"] if s else 0,
                       "match_before_compare": s["match"] if s else 0, "match_assertive": s["match_assert"] if s else 0,
-                      "gia_answers": s["gia_ans"] if s else 0, "gia_unseen_entity": s["gia_miss"] if s else 0})
+                      "gia_answers": s["gia_ans"] if s else 0, "gia_unseen_entity": s["gia_miss"] if s else 0,
+                      "sft0_post_hold": [post[b][0], len(post[b][1])] if args.sft0 else None,
+                      "tier_post_hold": tier(post[b][0], len(post[b][1]), c) if args.sft0 else None})
     order = {"可学": 0, "薄": 1, "薄·条件触发": 2, "零·期望≥1": 3, "零·允许为零": 4}
     table.sort(key=lambda x: (order[x["tier"]], -x["rows"]))
     tot = {k: sum(x[k] for x in table) for k in ("rows", "rationale_rows", "templated", "match_before_compare", "match_assertive", "gia_answers", "gia_unseen_entity")}
     out = {"packs": packs, "dropped_by_dedup": dropped, "tiers": dict(Counter(x["tier"] for x in table)), "totals": tot, "table": table}
     Path(args.out).with_suffix(".json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     head = ("| 分支（metadata.branch） | 覆盖表 | " + " | ".join(f"{p} 行/案例" for p in packs) +
-            " | sft0 行/案例 | 族 | 档 | 模板化理由 | 比对前说匹配（全部 / 断言式） | GIA 未见实体 |")
-    lines = [f"sft0 = {' + '.join(packs)}（定案 ② 去重丢行：{dropped}）；档：{out['tiers']}", "", head, "|" + "---|" * (8 + len(packs))]
+            " | 合计 行/案例 | 族 | 档 | sft0（hold 后）行/案例 · 档 | 模板化理由 | 比对前说匹配（全部 / 断言式） | GIA 未见实体 |")
+    lines = [f"sft0 = {' + '.join(packs)}（定案 ② 去重丢行：{dropped}）；档（hold 前）：{out['tiers']}"
+             + (f"；hold 后：{dict(Counter(x['tier_post_hold'] for x in table))}" if args.sft0 else ""), "", head, "|" + "---|" * (9 + len(packs))]
     for x in table:
         fam = " ".join(f"{k}{v}" for k, v in sorted(x["families"].items(), key=lambda kv: -kv[1]))
         pk = " | ".join(f"{a}/{b}" for a, b in x["packs"].values())
         tmpl = f"{x['templated']}/{x['rationale_rows']}" if x["rationale_rows"] else "—"
         mb = f"{x['match_before_compare']} / {x['match_assertive']}" if x["match_before_compare"] else "0"
         ge = f"{x['gia_unseen_entity']}/{x['gia_answers']}" if x["gia_answers"] else "—"
-        lines.append(f"| {x['branch']} | {x['coverage']} | {pk} | {x['rows']}/{x['cases']} | {fam} | **{x['tier']}** | {tmpl} | {mb} | {ge} |")
+        ph = f"{x['sft0_post_hold'][0]}/{x['sft0_post_hold'][1]} · {x['tier_post_hold']}" if x.get("sft0_post_hold") else "—"
+        lines.append(f"| {x['branch']} | {x['coverage']} | {pk} | {x['rows']}/{x['cases']} | {fam} | **{x['tier']}** | {ph} | {tmpl} | {mb} | {ge} |")
     hi_steps = sum(x["rationale_rows"] for x in table if not x["branch"].startswith(("GIA", "report_")))
     lines += ["", f"合计：模板化理由 {tot['templated']}/{tot['rationale_rows']} = {tot['templated'] / max(1, tot['rationale_rows']):.1%}；"
               f"比对前说匹配 {tot['match_before_compare']}（{tot['match_before_compare'] / max(1, hi_steps):.1%} 的 HI 动作理由行）/ 断言式 "

@@ -1,0 +1,130 @@
+{
+  "applies": true,
+  "freeze_id": "r1",
+  "file": "E:/Codex/workspaces/ChatGPT/ForenSearcher/.wt_merge/specs/r1_freeze.json",
+  "specs": [
+    "hi@0.11.0",
+    "gia@0.9.0"
+  ],
+  "ok": true,
+  "failed": [],
+  "checks": {
+    "spec_hash.hi": {
+      "expected": "sha256:c981099064da5e91b13b5ffbb7f06b6d3b23a662994c1d3907f98d8736a7b504",
+      "actual": "sha256:c981099064da5e91b13b5ffbb7f06b6d3b23a662994c1d3907f98d8736a7b504",
+      "ok": true
+    },
+    "spec_hash.gia": {
+      "expected": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033",
+      "actual": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033",
+      "ok": true
+    },
+    "tool_layer_hash": {
+      "expected": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+      "actual": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+      "ok": true
+    },
+    "verifier_code_hash": {
+      "expected": "sha256:c66504d41d96278461c4635376a24d30d101ce6a4b6f3b0c6367048d1b312f96",
+      "actual": "sha256:c66504d41d96278461c4635376a24d30d101ce6a4b6f3b0c6367048d1b312f96",
+      "ok": true
+    },
+    "verifier_transport_hash": {
+      "expected": "sha256:7a9be8f2d377b4d84d3188cdd315755912a426c2b8b4cfaa31b577d9588bb3bd",
+      "actual": "sha256:7a9be8f2d377b4d84d3188cdd315755912a426c2b8b4cfaa31b577d9588bb3bd",
+      "ok": true
+    },
+    "teacher_model": {
+      "expected": "分槽表",
+      "actual": "qwen/qwen3.5-397b-a17b+gpt-6-astra",
+      "ok": true,
+      "slots": {
+        "S0": {
+          "backend": "qwen",
+          "expected": [
+            "qwen/qwen3.5-397b-a17b",
+            "qwen/qwen3.5-122b-a10b"
+          ],
+          "actual": "qwen/qwen3.5-397b-a17b",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        },
+        "S1": {
+          "backend": "qwen",
+          "expected": [
+            "qwen/qwen3.5-397b-a17b",
+            "qwen/qwen3.5-122b-a10b"
+          ],
+          "actual": "qwen/qwen3.5-397b-a17b",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        },
+        "S2": {
+          "backend": "qwen",
+          "expected": [
+            "qwen/qwen3.5-397b-a17b",
+            "qwen/qwen3.5-122b-a10b"
+          ],
+          "actual": "qwen/qwen3.5-397b-a17b",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        },
+        "S3": {
+          "backend": "qwen",
+          "expected": [
+            "qwen/qwen3.5-397b-a17b",
+            "qwen/qwen3.5-122b-a10b"
+          ],
+          "actual": "qwen/qwen3.5-397b-a17b",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        },
+        "S4": {
+          "backend": "strong",
+          "expected": [
+            "gpt-6-astra",
+            "anthropic/claude-sonnet-5.5"
+          ],
+          "actual": "gpt-6-astra",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        },
+        "S5": {
+          "backend": "strong",
+          "expected": [
+            "gpt-6-astra",
+            "anthropic/claude-sonnet-5.5"
+          ],
+          "actual": "gpt-6-astra",
+          "role": "primary",
+          "declared_role": "primary",
+          "ok": true
+        }
+      },
+      "role": "primary"
+    },
+    "judge": {
+      "expected": "claude-cli:claude-sonnet-5-5",
+      "actual": "claude-cli:sonnet",
+      "ok": true
+    }
+  },
+  "tool_layer_status": "frozen（r1-frozen；r1 全量 134 runs 的 run_config 与行里都是这个 hash）",
+  "tool_layer_frozen_groups": {
+    "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+    "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+    "search": "sha256:11a588f186e62b4067c4fcad6c0b6321de6a5fcd6a8af7f573186ad797a8cc07",
+    "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+  }
+}
+工具层各部分：{
+  "hi/workspace.py": "sha256:e07c1791209f9273161caea73a6c89e081d3072fc8d7a8567f210b5f89696239",
+  "inspect": "sha256:b1889626d2bac2b2d8fb25a3ec59a7b3d549acb9d9b1ee3ef37b69f5bece07a7",
+  "search": "sha256:11a588f186e62b4067c4fcad6c0b6321de6a5fcd6a8af7f573186ad797a8cc07",
+  "state_render.py": "sha256:d790566e6992994650c660b311d3fbeb53f4cbd30c3684c7aa78a983068b5521"
+}
