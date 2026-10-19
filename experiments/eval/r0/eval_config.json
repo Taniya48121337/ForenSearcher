@@ -28,6 +28,14 @@
   {
    "date": "2026-10-19",
    "what": "17:20:03 看门狗单 run 上限 1800 s → 3600 s（负责人定）：1800 s 时被杀 7 个 run（s1 069 / 083 / 096 / 103，s2 056 / 069 / 090），都是长不是挂；r0base 报告列 killed_by_watchdog、改动时间点、重排后是否完成、超过 45 分钟完成的 run"
+  },
+  {
+   "date": "2026-10-19",
+   "what": "search.after_sft_replay：写明训后评测以 lock 的 as_of 回放基线请求、新请求联网补录并报新录率（负责人定保留 replay_or_record，不改 replay）；口径与登记时的 as_of_policy 相同，只是写明"
+  },
+  {
+   "date": "2026-10-19",
+   "what": "search.machine_change_precondition：换机前置条件（TZ = Etc/UTC、时钟偏差 ≤ 2 s、带上锁定的评测快照），负责人 10-19 定"
   }
  ],
  "eval_set": "experiments/eval/r0/eval_set.json",
@@ -140,7 +148,9 @@
   "lock_file": "experiments/eval/r0/search_snapshots/snapshot_lock.json",
   "as_of_policy": "基线（E2）不设 FOREN_SNAPSHOT_AS_OF：命中回放、未命中联网补录、瞬时失败重新联网（与历次 EVID 基线相同）。基线跑完 eval_r0.py lock 记下 as_of = 快照里最后一条 recorded_at。训后评测设 FOREN_SNAPSHOT_AS_OF=as_of：和基线发出同一请求时看到的是基线当时的结果；新请求照样联网补录（无法避免），新录率在报告里列出",
   "same_machine": "基线与训后在同一台机器上跑（recorded_at 是本地时间，按字符串比较）：10-19 起是 Vast 单卡 H200 服务器",
-  "concurrency": "两个种子可以同时跑（server/21_e2_eval.sh）：快照 index.jsonl 追加有 flock、blob 原子写、未命中时增量重读；两个种子本来就共享同一快照目录（顺序跑时种子 2 也回放种子 1 的补录）"
+  "concurrency": "两个种子可以同时跑（server/21_e2_eval.sh）：快照 index.jsonl 追加有 flock、blob 原子写、未命中时增量重读；两个种子本来就共享同一快照目录（顺序跑时种子 2 也回放种子 1 的补录）",
+  "after_sft_replay": "lock 之后训后评测设 FOREN_SNAPSHOT_AS_OF = lock 的 as_of，search_mode 仍是 replay_or_record（负责人 10-19 定）：基线发过的请求按 as_of 当时的结果原样回放（含当时的瞬时失败）；基线没发过的新请求联网并补录（记录时间晚于 as_of，不改基线那一份）。所以训后会新增记录——不是\"不再新增记录\"；新录率（按集合、按 run）在训后报告里与分数并列。没选 --search-mode replay：新请求会直接 replay_miss 失败，对训后模型是系统性不利",
+  "machine_change_precondition": "\"同一台机器\"的理由是 recorded_at 是本地时间字符串、按字符串和 as_of 比较（负责人 10-19）。换机（如 loop1 换 4×H200）时满足：TZ 必须是 Etc/UTC（本机 /etc/localtime -> Etc/UTC，+0000），时钟与 HTTPS Date 头偏差 ≤ 2 s（容器里没有 timedatectl，用 huggingface.co 的 Date 头比；本机实测 < 1 s）；并带上 lock 时的 experiments/eval/r0/search_snapshots（含 blobs 与 snapshot_lock.json）"
  },
  "runs_dir": "experiments/eval/r0/runs",
  "scores_dir": "experiments/eval/r0/scores",

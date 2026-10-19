@@ -53,6 +53,7 @@ from PIL import Image
 from transformers import AutoConfig, AutoModelForImageTextToText, AutoProcessor
 
 DEFAULT_TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+RUNTIME_KEYS = frozenset({"gradient_checkpointing", "attn_implementation", "liger"})   # 配置 "runtime" 段允许的键（只影响速度 / 显存）
 
 
 @dataclass
@@ -98,6 +99,12 @@ class TrainConfig:
     @classmethod
     def load(cls, path: str | Path) -> "TrainConfig":
         data = json.loads(Path(path).read_text(encoding="utf-8"))
+        # 10-19：配置里的 "runtime" 只放吞吐 / 显存开关（不是配方，不进配方 hash、冻结标识与续训身份），覆盖同名顶层字段
+        runtime = data.pop("runtime", None) or {}
+        bad = sorted(set(runtime) - RUNTIME_KEYS)
+        if bad:
+            raise SystemExit(f"{path}: runtime 里只认 {sorted(RUNTIME_KEYS)}，不认识 {bad}")
+        data.update(runtime)
         known = set(cls.__dataclass_fields__)
         unknown = [k for k in data if not k.startswith("_") and k not in known]
         if unknown:
@@ -305,6 +312,28 @@ def lora_coverage(model: Any) -> dict[str, Any]:
     return {"modules": by_name, "by_kind": by_layer_kind}
 
 
+def linear_attn_kernels(model: Any) -> dict[str, Any]:
+    """Qwen3.5 的线性注意力层（GatedDeltaNet）实际用的是哪套实现：fla / causal-conv1d 的融合内核，还是 transformers 的 torch 回退
+    （缺包时 causal_conv1d_fn = None、chunk_gated_delta_rule = torch_chunk_gated_delta_rule 等）。按"函数所在模块.函数名"计数。"""
+
+    found: dict[str, dict[str, int]] = {}
+    layers = 0
+    for module in model.modules():
+        if "GatedDeltaNet" not in type(module).__name__:
+            continue
+        layers += 1
+        for attr in ("causal_conv1d_fn", "causal_conv1d_update", "chunk_gated_delta_rule", "recurrent_gated_delta_rule"):
+            fn = getattr(module, attr, None)
+            name = "None（torch 回退）" if fn is None else f"{getattr(fn, '__module__', '?')}.{getattr(fn, '__name__', type(fn).__name__)}"
+            found.setdefault(attr, {})[name] = found.setdefault(attr, {}).get(name, 0) + 1
+        norm = getattr(module, "norm", None)
+        if norm is not None:
+            key = f"{type(norm).__module__}.{type(norm).__name__}"
+            found.setdefault("norm", {})[key] = found.setdefault("norm", {}).get(key, 0) + 1
+    fused = layers > 0 and all(not any(k.startswith(("None", "transformers.")) for k in v) for v in found.values())
+    return {"linear_attn_layers": layers, "fused": fused, "impl": found}
+
+
 def attach_lora(model: Any, cfg: TrainConfig) -> Any:
     if cfg.gradient_checkpointing:
         enable_checkpointing(model)
@@ -389,7 +418,7 @@ def dry_run(cfg: TrainConfig) -> dict[str, Any]:
 
 CHECKPOINT_STATE = "trainer_state.pt"
 # 换了这些字段就不是同一次训练，续训时只比其余字段（输出位置、存盘频率、试跑用的停止步不影响训练轨迹）
-_RESUME_IGNORED = frozenset({"output_dir", "save_every", "keep_checkpoints", "log_every"})
+_RESUME_IGNORED = frozenset({"output_dir", "save_every", "keep_checkpoints", "log_every"}) | RUNTIME_KEYS
 
 
 def run_identity(cfg: TrainConfig, rows: list[dict[str, Any]], usable: list[int]) -> dict[str, Any]:
@@ -490,6 +519,8 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
     model, processor = build_model(cfg, smoke_tiny=smoke_tiny)
     device = next(model.parameters()).device
     load_s = time.time() - t0
+    kernels = linear_attn_kernels(model)
+    print(json.dumps({"linear_attn_kernels": kernels}, ensure_ascii=False), flush=True)
     usable, scan = prescan(rows, export_dir, processor, cfg.max_tokens if not smoke_tiny else 10 ** 9)
     scan["sample_weight_normalization"] = normalize_sample_weights(rows, usable, cfg.normalize_sample_weight)
     if scan["encode_failed"]:
@@ -644,7 +675,7 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                "prescan": scan, "steps": step, "epochs_done": epoch, "rows_seen": rows_seen, "max_steps": max_steps,
                "steps_per_epoch": steps_per_epoch, "trainable_params": trainable, "total_params": total,
                "smoke_tiny": smoke_tiny, "history": history, "adapter": str(out_dir / "final"), "model": cfg.model,
-               "resumed_from": resumed_from, "save_every": cfg.save_every,
+               "resumed_from": resumed_from, "save_every": cfg.save_every, "linear_attn_kernels": kernels,
                "lora": {"r": cfg.lora_r, "alpha": cfg.lora_alpha, "dropout": cfg.lora_dropout, "targets": cfg.lora_targets,
                         "coverage": lora_coverage(model)},
                "hyper": {"lr": cfg.lr, "min_lr_ratio": cfg.min_lr_ratio, "epochs": cfg.epochs, "warmup_steps": cfg.warmup_steps,
