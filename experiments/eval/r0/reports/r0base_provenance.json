@@ -1,0 +1,173 @@
+{
+ "server_code": {
+  "commit": "c3d9ca88b9f0082c9ec7d00656a836e0f30f88d6",
+  "describe": "sft0-frozen-2-8-gc3d9ca8",
+  "relation_to_tag": "sft0-frozen-2（c2eaa06）之后 8 个提交；src/ 一个都没改（tool_layer / walker / 核验器 / 规格与 tag 相同）",
+  "commits_after_tag": [
+   {
+    "commit": "ae77e2a",
+    "date": "2026-10-19T20:41+0800",
+    "subject": "sft0 定稿第 2 版报告：sft0-20261019-4b79e1ed432f（HI 3369 / GIA 273）、tag sft0-frozen-2；hold 明细（四包同口径 107、第 2 轮派工 14、l124 1、A006 1；premise_smuggling 18 全留）；冻结改判与 teacher_role 补；B2 分层抽查 0 误扣；门族口径修正后两处门（并集 C2 按权重 50.9% 不通过的说明）；教学矩阵；训练配置；tar 解开后 --verify；r2 核验器待办（plan 层要看 GIA 附图与卡片）",
+    "files": [
+     "claude/sft0定稿与三包合一_20261019.md"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "c78a12f",
+    "date": "2026-10-19T20:50+0800",
+    "subject": "sft0 第 2 版报告：并集 C2 只报不判（负责人 10-19 定：并集没降权、没 hold，不是训进去的东西；有效力的是训练行那套门）",
+    "files": [
+     "claude/sft0定稿与三包合一_20261019.md"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "fd02dcb",
+    "date": "2026-10-20T00:03+0800",
+    "subject": "eval: sft0_eval_v1 口径 + 训后 describer 修复",
+    "files": [
+     "experiments/eval/r0/eval_config.json",
+     "experiments/sft_data/cases/averimatec_441.json",
+     "experiments/sft_data/cases/averitec_2799.json",
+     "experiments/sft_data/cases/qvhighlights_1.json",
+     "experiments/sft_data/cases/vcsl_pair_4.json",
+     "scripts/behavior_metrics.py",
+     "scripts/eval_r0.py",
+     "server/11_loop_layout.sh",
+     "server/12_add_lora.sh",
+     "server/13_train_queue.sh",
+     "server/21_e2_eval.sh",
+     "server/22_mem_probe.py",
+     "server/23_tokenizer_parity.py",
+     "server/jobs/vast1_sft0_s1.txt",
+     "server/jobs/vast1_sft0_s2.txt",
+     "server/loop_env.sh",
+     "server/sync_vast.sh",
+     "server/vast1_env.sh",
+     "tests/test_behavior_metrics_20261015.py",
+     "tests/test_behavior_metrics_20261019.py"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "e266533",
+    "date": "2026-10-20T00:23+0800",
+    "subject": "eval: 提交 eval_set.json、success_criteria.json、anchors/（sft0_eval_v1 登记的文件）",
+    "files": [
+     "experiments/eval/r0/anchors/evidF27.json",
+     "experiments/eval/r0/anchors/evidF27.md",
+     "experiments/eval/r0/anchors/evidF8.json",
+     "experiments/eval/r0/anchors/evidF8.md",
+     "experiments/eval/r0/anchors/evidb12bf.json",
+     "experiments/eval/r0/anchors/evidb12bf.md",
+     "experiments/eval/r0/anchors/evidsA8.json",
+     "experiments/eval/r0/anchors/evidsA8.md",
+     "experiments/eval/r0/eval_set.json",
+     "experiments/eval/r0/success_criteria.json"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "5fb49c9",
+    "date": "2026-10-20T00:46+0800",
+    "subject": "server: requirements.lock（Vast 单卡 H200 的 /venv/main 与 vLLM 环境 pip freeze）+ 说明",
+    "files": [
+     "server/requirements.lock.md",
+     "server/requirements.lock.txt",
+     "server/requirements.vllm.lock.txt"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "5d69404",
+    "date": "2026-10-20T01:31+0800",
+    "subject": "server / training：断点续训、resume.sh、备份、看门狗、线程上限；服务器搭建报告（进行中）",
+    "files": [
+     "claude/服务器搭建与第一次SFT_20261019.md",
+     "experiments/eval/r0/eval_config.json",
+     "server/21_e2_eval.sh",
+     "server/24_run_time_breakdown.py",
+     "server/backup_pull.sh",
+     "server/e2_watchdog.sh",
+     "server/jobs/vast1_sft0_s1.txt",
+     "server/jobs/vast1_sft0_s2.txt",
+     "server/resume.sh",
+     "training/sft_lora.py"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "8c11688",
+    "date": "2026-10-20T01:38+0800",
+    "subject": "training / server：可选 attn_implementation 与 Liger（显存 / 速度探针用），探针四个变体，时间分解按 run 列 token 与模型 / 工具占比",
+    "files": [
+     "server/22_mem_probe.py",
+     "server/24_run_time_breakdown.py",
+     "training/sft_lora.py"
+    ],
+    "touches_src": false
+   },
+   {
+    "commit": "c3d9ca8",
+    "date": "2026-10-20T02:27+0800",
+    "subject": "training / eval / server：runtime 段加载、线性注意力内核实况、训后回放口径与换机前置条件、代码一致性核对脚本",
+    "files": [
+     "experiments/eval/r0/eval_config.json",
+     "server/code_parity.py",
+     "training/sft_lora.py"
+    ],
+    "touches_src": false
+   }
+  ]
+ },
+ "parity_check": {
+  "script": "server/code_parity.py",
+  "manifest": "experiments/eval/r0/reports/parity_c3d9ca8_manifest.tsv",
+  "result": "experiments/eval/r0/reports/parity_c3d9ca8.json",
+  "tracked": 4718,
+  "same": 1886,
+  "different": 0,
+  "extra": 0,
+  "missing": 2832,
+  "missing_mb": 694.2,
+  "missing_by_top": {
+   "_trash_20260924": 1339,
+   "experiments": 1059,
+   "docs": 400,
+   "(root)": 28,
+   "Claude outputs": 4,
+   ".github": 1,
+   "_archive": 1
+  },
+  "missing_under_code_paths": 0,
+  "code_paths_checked": [
+   "src/",
+   "scripts/",
+   "specs/",
+   "training/",
+   "configs/",
+   "server/",
+   "tests/",
+   "experiments/eval/",
+   "experiments/sft_data/cases/",
+   "pyproject.toml"
+  ],
+  "missing_code_extension_files": {
+   "total": 993,
+   "_trash_20260924": 669,
+   "docs/01_早期探索_已放弃": 317,
+   "experiments/image_search_probe_20261016": 5,
+   ".github/workflows": 1
+  },
+  "accepted_by": "负责人 10-19：缺的是不部署的非代码 tracked 文件（gold_set 媒体、旧导出 / 离线 run / 快照、docs、_trash、_archive、根目录日志）；代码里对 docs/ 的引用只在 docstring"
+ },
+ "baseline_run_code": {
+  "src": "= sft0-frozen-2（全程未改）",
+  "eval_launcher": "scripts/eval_r0.py sha256 b272291f…（含 describer_env 与 --image-search off），15:39 起跑前已在服务器",
+  "late_addition": "18:20 补推 tag 里的 experiments/sft_data/*.py（code-only 副本漏了；source_policy.py 缺失使 dev_eval 的 averitec_2799 / averimatec_441 两种子 4 个 run 1 s 失败，重排时重跑；EVID 20 个案例 source_policy.mode = unrestricted，不 import，不受影响）"
+ },
+ "notes": [
+  "vcsl_pair_4：服务器缺 experiments/sft_data/search_snapshots/vcsl_pair_4/usage/ 下两份计数全 0 的旧 usage 日志（不是快照内容，没有 index.jsonl）；seed 本来就 created_empty，结果相同——负责人定记为例外、不重跑"
+ ]
+}

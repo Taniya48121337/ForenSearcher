@@ -200,3 +200,10 @@ def test_eval_r0_after_sft_describer_and_score_commands(capsys, monkeypatch):
     printed = capsys.readouterr().out
     assert "--judges claude-cli:sonnet" in printed
     assert "--judge claude-cli --model sonnet" in printed
+
+
+def test_wilson_ratio_above_one_has_no_ci():
+    """10-19 基线 metrics 崩在 compare_rate_of_acquired（compared > acquired，p > 1 开方为负）：比值照报、CI 为 None。"""
+
+    assert bm.wilson(5, 3) is None and bm.ratio(5, 3) == {"value": 1.6667, "num": 5, "den": 3, "ci95": None}
+    assert bm.wilson(2, 4) is not None and bm.wilson(0, 0) is None

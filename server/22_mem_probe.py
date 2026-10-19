@@ -22,6 +22,7 @@ VARIANTS = {                                           # 名字 → 相对原配
     "nogc": {"gradient_checkpointing": False},
     "nogc_fa2_liger": {"gradient_checkpointing": False, "attn_implementation": "flash_attention_2", "liger": True},
     "gc_fa2_liger": {"attn_implementation": "flash_attention_2", "liger": True},
+    "gc_fa2": {"attn_implementation": "flash_attention_2"},
 }
 
 

@@ -94,7 +94,7 @@ class TrainConfig:
     allow_multi_gpu: bool = False
     # 10-19（Vast 单卡显存 / 速度探针）：None = transformers 默认（Qwen3.5 全注意力层与视觉塔是 sdpa）；"flash_attention_2" 要装 flash-attn
     attn_implementation: str | None = None
-    liger: bool = False                         # True：加载前打 Liger 的 Qwen3.5 内核（RoPE / RMSNorm / SwiGLU；不碰 loss——这里不给模型传 labels）
+    liger: bool = False                         # True：加载前打 Liger 的 Qwen3.5 内核（RMSNorm / SwiGLU；Liger 没有 Qwen3.5 的 RoPE；不碰 loss——这里不给模型传 labels）
 
     @classmethod
     def load(cls, path: str | Path) -> "TrainConfig":
@@ -290,7 +290,8 @@ def load_base(cfg: TrainConfig, *, smoke_tiny: bool) -> Any:
         check_visible_gpus(cfg)
     if cfg.liger:
         from liger_kernel.transformers import apply_liger_kernel_to_qwen3_5
-        apply_liger_kernel_to_qwen3_5(rope=True, rms_norm=True, swiglu=True, cross_entropy=False, fused_linear_cross_entropy=False)
+        # rope=False：Liger 0.8.4 对 Qwen3_5 没有 RoPE 内核（NotImplementedError）
+        apply_liger_kernel_to_qwen3_5(rope=False, rms_norm=True, swiglu=True, cross_entropy=False, fused_linear_cross_entropy=False)
     extra = {"attn_implementation": cfg.attn_implementation} if cfg.attn_implementation else {}
     return AutoModelForImageTextToText.from_pretrained(cfg.model, local_files_only=True, dtype=getattr(torch, cfg.dtype),
                                                        device_map=cfg.device_map, **extra)

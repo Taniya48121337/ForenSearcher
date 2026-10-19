@@ -2,11 +2,12 @@
 # 训练显存 / 速度探针（单卡 Vast，2026-10-19）：最长 20 行上跑四个变体 × HI / GIA，每个记稳态每步耗时（去掉第 1 步）、
 # torch 峰值显存（allocated / reserved）、nvidia-smi 峰值、是否 OOM、线性注意力内核实况。要先停 vLLM（GPU 空）。
 #   bash server/25_probe_run.sh [rows.jsonl]        # rows 默认 /workspace/smoke/check_inputs_1019b.rows.jsonl
+#   PROBE_VARIANTS="gc_fa2_liger gc_fa2" PROBE_OUT=/workspace/smoke/long20b bash server/25_probe_run.sh   # 只跑部分变体、另放一处
 # 结果：/workspace/smoke/long20/probe_results.json（+ 每个任务的日志）。选择规则（负责人 10-19）：最快且峰值 < 125 GB。
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 ROWS=${1:-/workspace/smoke/check_inputs_1019b.rows.jsonl}
-OUT=/workspace/smoke/long20
+OUT=${PROBE_OUT:-/workspace/smoke/long20}
 PY=/venv/main/bin/python
 export PYTHONPATH=src PYTHONUTF8=1 CUDA_VISIBLE_DEVICES=0 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 used=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i 0 | tr -d ' ')
@@ -14,7 +15,7 @@ used=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i 0 | t
 mkdir -p "$OUT"
 $PY server/22_mem_probe.py --pack dist/sft0-20261019-4b79e1ed432f --rows "$ROWS" --out "$OUT" --n 20 > "$OUT/probe_rows.out" || { cat "$OUT/probe_rows.out"; exit 1; }
 : > "$OUT/probe_runs.jsonl"
-for variant in base gc_fa2_liger nogc_fa2_liger nogc; do
+for variant in ${PROBE_VARIANTS:-base gc_fa2_liger gc_fa2 nogc_fa2_liger nogc}; do
   for role in hi gia; do
     cfg="$OUT/${role}_long20_${variant}.json"; log="$OUT/${role}_${variant}.log"; smi="$OUT/${role}_${variant}.smi"
     rm -rf "$OUT/${role}_${variant}_adapter"

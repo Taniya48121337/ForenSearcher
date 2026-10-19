@@ -1,0 +1,7899 @@
+{
+ "meta": {
+  "metrics_version": "behavior_metrics@1.1.0",
+  "script_sha256": "sha256:0bec67e4ae15cc650ea73246c683dac09755156a81ba623792bff416546368a6",
+  "legacy_script_sha256": "sha256:ebfcb0b279b906b5e334d91ee9f56dcad89ef68e0a4419797f623fb245a1406a",
+  "inputs": [
+   "experiments/eval/r0/runs"
+  ],
+  "rounds": [
+   "r0base-s1",
+   "r0base-s2"
+  ],
+  "candidate_types": [
+   "video",
+   "image"
+  ],
+  "compare_ops": [
+   "compare_media",
+   "align_media",
+   "diff_media"
+  ],
+  "eval_set": "experiments/eval/r0/eval_set.json",
+  "criteria": null,
+  "criteria_sha256": null
+ },
+ "groups": {
+  "all": {
+   "runs": 48,
+   "runs_with_trajectory": 48,
+   "evid_runs": 40,
+   "open_rate": {
+    "value": 0.5,
+    "num": 6,
+    "den": 12,
+    "ci95": [
+     0.2538,
+     0.7462
+    ],
+    "judgeable": true,
+    "min_denominator": 5
+   },
+   "compare_rate": {
+    "value": 0.8438,
+    "num": 54,
+    "den": 64,
+    "ci95": [
+     0.7357,
+     0.9129
+    ]
+   },
+   "repeat_rate": {
+    "value": 0.22,
+    "num": 260,
+    "den": 1182,
+    "ci95": [
+     0.1973,
+     0.2445
+    ]
+   },
+   "format_reject_rate": {
+    "value": 0.0337,
+    "num": 70,
+    "den": 1914,
+    "ci95": [
+     0.0238,
+     0.048
+    ],
+    "macro_over_roles": [
+     "HI",
+     "GIA"
+    ],
+    "roles": {
+     "HI": {
+      "value": 0.0407,
+      "num": 55,
+      "den": 1350,
+      "ci95": [
+       0.0314,
+       0.0527
+      ]
+     },
+     "GIA": {
+      "value": 0.0266,
+      "num": 15,
+      "den": 564,
+      "ci95": [
+       0.0162,
+       0.0434
+      ]
+     }
+    }
+   },
+   "companions": {
+    "open_rate_runs": {
+     "value": 0.15,
+     "num": 6,
+     "den": 40,
+     "ci95": [
+      0.0706,
+      0.2907
+     ]
+    },
+    "src_in_pool_runs": {
+     "value": 0.3,
+     "num": 12,
+     "den": 40,
+     "ci95": [
+      0.1807,
+      0.4543
+     ]
+    },
+    "compare_rate_source": {
+     "value": 1.0,
+     "num": 6,
+     "den": 6,
+     "ci95": [
+      0.6097,
+      1.0
+     ]
+    },
+    "candidate_open_rate": {
+     "value": 0.0859,
+     "num": 64,
+     "den": 745,
+     "ci95": [
+      0.0678,
+      0.1082
+     ]
+    },
+    "compare_rate_of_acquired": {
+     "value": 3.0,
+     "num": 54,
+     "den": 18,
+     "ci95": null
+    },
+    "auto_compare_runs": {
+     "value": 0.0,
+     "num": 0,
+     "den": 48,
+     "ci95": [
+      0.0,
+      0.0741
+     ]
+    },
+    "format_reject_rate_pooled": {
+     "value": 0.0366,
+     "num": 70,
+     "den": 1914,
+     "ci95": [
+      0.029,
+      0.046
+     ]
+    },
+    "format_reject_rate_hi": {
+     "value": 0.0407,
+     "num": 55,
+     "den": 1350,
+     "ci95": [
+      0.0314,
+      0.0527
+     ]
+    },
+    "format_reject_rate_gia": {
+     "value": 0.0266,
+     "num": 15,
+     "den": 564,
+     "ci95": [
+      0.0162,
+      0.0434
+     ]
+    }
+   },
+   "workspace_steps": {
+    "n": 113,
+    "min": 2,
+    "p25": 7.0,
+    "p50": 10.0,
+    "p75": 11.0,
+    "p90": 12.0,
+    "max": 12,
+    "mean": 9.19,
+    "histogram": {
+     "2": 1,
+     "3": 1,
+     "4": 5,
+     "5": 6,
+     "6": 10,
+     "7": 7,
+     "8": 8,
+     "9": 7,
+     "10": 17,
+     "11": 35,
+     "12": 16
+    }
+   },
+   "early_report": {
+    "early_report_rate": {
+     "value": 0.8584,
+     "num": 97,
+     "den": 113,
+     "ci95": [
+      0.7823,
+      0.9109
+     ]
+    },
+    "truncated_at_limit_rate": {
+     "value": 0.0,
+     "num": 0,
+     "den": 113,
+     "ci95": [
+      0.0,
+      0.0329
+     ]
+    },
+    "report_at_limit_rate": {
+     "value": 0.1416,
+     "num": 16,
+     "den": 113,
+     "ci95": [
+      0.0891,
+      0.2177
+     ]
+    },
+    "workspaces": 113,
+    "endings": {
+     "early_report": 97,
+     "report_at_limit": 16,
+     "truncated_at_limit": 0,
+     "auto_report_other": 0,
+     "no_report": 0,
+     "self_report_limit_unknown": 0
+    },
+    "limit_unknown": 0,
+    "early_report_on_report_only_turn": 46,
+    "max_turns": {
+     "12": 113
+    },
+    "max_turns_sources": {
+     "trajectory.runtime_constraints": 113
+    }
+   },
+   "snapshot": {
+    "lookups": 1747,
+    "hit": 486,
+    "miss_recorded_live": 1261,
+    "new_record_rate": {
+     "value": 0.7218,
+     "num": 1261,
+     "den": 1747,
+     "ci95": [
+      0.7003,
+      0.7423
+     ]
+    },
+    "modes": {
+     "replay_or_record": 48
+    },
+    "roots": {
+     "experiments/eval/r0/search_snapshots": 48
+    }
+   },
+   "freeze": {
+    "runs_checked": 48,
+    "runs_ok": 0,
+    "failed_items": {
+     "instruction_mode": 48
+    }
+   },
+   "settings": {
+    "runs_with_run_config": 48,
+    "models": {
+     "student": 48
+    },
+    "temperatures": {
+     "0.6": 48
+    },
+    "specs": {
+     "{\"gia\": \"gia@0.9.0#a43f17adec6c\", \"hi\": \"hi@0.11.0#c981099064da\"}": 48
+    },
+    "instruction_modes": {
+     "student": 48
+    },
+    "tool_layer_hashes": {
+     "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16": 48
+    }
+   },
+   "score": {
+    "point_accuracy": {
+     "value": 0.5,
+     "num": 81,
+     "den": 162,
+     "ci95": [
+      0.4239,
+      0.5761
+     ]
+    },
+    "video_accuracy": {
+     "value": 0.25,
+     "num": 10,
+     "den": 40,
+     "ci95": [
+      0.1419,
+      0.4019
+     ]
+    },
+    "runs_scored": 40
+   },
+   "legacy": {
+    "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+    "source_in_pool": 12,
+    "source_downloaded": 1,
+    "source_compared": 6,
+    "candidate_opens": 131,
+    "runs_with_candidate_open": 25,
+    "video_downloads": 17,
+    "runs_with_download": 11,
+    "repeat_rate": 0.22,
+    "hi_rejection_rate": 0.0407,
+    "gia_rejection_rate": 0.0266
+   }
+  },
+  "evid_ctrl20": {
+   "runs": 40,
+   "runs_with_trajectory": 40,
+   "evid_runs": 40,
+   "open_rate": {
+    "value": 0.5,
+    "num": 6,
+    "den": 12,
+    "ci95": [
+     0.2538,
+     0.7462
+    ],
+    "judgeable": true,
+    "min_denominator": 5
+   },
+   "compare_rate": {
+    "value": 0.8438,
+    "num": 54,
+    "den": 64,
+    "ci95": [
+     0.7357,
+     0.9129
+    ]
+   },
+   "repeat_rate": {
+    "value": 0.2235,
+    "num": 230,
+    "den": 1029,
+    "ci95": [
+     0.1991,
+     0.25
+    ]
+   },
+   "format_reject_rate": {
+    "value": 0.0343,
+    "num": 63,
+    "den": 1673,
+    "ci95": [
+     0.0239,
+     0.0499
+    ],
+    "macro_over_roles": [
+     "HI",
+     "GIA"
+    ],
+    "roles": {
+     "HI": {
+      "value": 0.0425,
+      "num": 50,
+      "den": 1177,
+      "ci95": [
+       0.0324,
+       0.0556
+      ]
+     },
+     "GIA": {
+      "value": 0.0262,
+      "num": 13,
+      "den": 496,
+      "ci95": [
+       0.0154,
+       0.0443
+      ]
+     }
+    }
+   },
+   "companions": {
+    "open_rate_runs": {
+     "value": 0.15,
+     "num": 6,
+     "den": 40,
+     "ci95": [
+      0.0706,
+      0.2907
+     ]
+    },
+    "src_in_pool_runs": {
+     "value": 0.3,
+     "num": 12,
+     "den": 40,
+     "ci95": [
+      0.1807,
+      0.4543
+     ]
+    },
+    "compare_rate_source": {
+     "value": 1.0,
+     "num": 6,
+     "den": 6,
+     "ci95": [
+      0.6097,
+      1.0
+     ]
+    },
+    "candidate_open_rate": {
+     "value": 0.0859,
+     "num": 64,
+     "den": 745,
+     "ci95": [
+      0.0678,
+      0.1082
+     ]
+    },
+    "compare_rate_of_acquired": {
+     "value": 3.0,
+     "num": 54,
+     "den": 18,
+     "ci95": null
+    },
+    "auto_compare_runs": {
+     "value": 0.0,
+     "num": 0,
+     "den": 40,
+     "ci95": [
+      0.0,
+      0.0876
+     ]
+    },
+    "format_reject_rate_pooled": {
+     "value": 0.0377,
+     "num": 63,
+     "den": 1673,
+     "ci95": [
+      0.0295,
+      0.0479
+     ]
+    },
+    "format_reject_rate_hi": {
+     "value": 0.0425,
+     "num": 50,
+     "den": 1177,
+     "ci95": [
+      0.0324,
+      0.0556
+     ]
+    },
+    "format_reject_rate_gia": {
+     "value": 0.0262,
+     "num": 13,
+     "den": 496,
+     "ci95": [
+      0.0154,
+      0.0443
+     ]
+    }
+   },
+   "workspace_steps": {
+    "n": 98,
+    "min": 2,
+    "p25": 7.0,
+    "p50": 10.0,
+    "p75": 11.0,
+    "p90": 12.0,
+    "max": 12,
+    "mean": 9.18,
+    "histogram": {
+     "2": 1,
+     "3": 1,
+     "4": 3,
+     "5": 6,
+     "6": 9,
+     "7": 7,
+     "8": 6,
+     "9": 6,
+     "10": 14,
+     "11": 32,
+     "12": 13
+    }
+   },
+   "early_report": {
+    "early_report_rate": {
+     "value": 0.8673,
+     "num": 85,
+     "den": 98,
+     "ci95": [
+      0.7862,
+      0.9208
+     ]
+    },
+    "truncated_at_limit_rate": {
+     "value": 0.0,
+     "num": 0,
+     "den": 98,
+     "ci95": [
+      0.0,
+      0.0377
+     ]
+    },
+    "report_at_limit_rate": {
+     "value": 0.1327,
+     "num": 13,
+     "den": 98,
+     "ci95": [
+      0.0792,
+      0.2138
+     ]
+    },
+    "workspaces": 98,
+    "endings": {
+     "early_report": 85,
+     "report_at_limit": 13,
+     "truncated_at_limit": 0,
+     "auto_report_other": 0,
+     "no_report": 0,
+     "self_report_limit_unknown": 0
+    },
+    "limit_unknown": 0,
+    "early_report_on_report_only_turn": 41,
+    "max_turns": {
+     "12": 98
+    },
+    "max_turns_sources": {
+     "trajectory.runtime_constraints": 98
+    }
+   },
+   "snapshot": {
+    "lookups": 1707,
+    "hit": 483,
+    "miss_recorded_live": 1224,
+    "new_record_rate": {
+     "value": 0.717,
+     "num": 1224,
+     "den": 1707,
+     "ci95": [
+      0.6952,
+      0.7379
+     ]
+    },
+    "modes": {
+     "replay_or_record": 40
+    },
+    "roots": {
+     "experiments/eval/r0/search_snapshots": 40
+    }
+   },
+   "freeze": {
+    "runs_checked": 40,
+    "runs_ok": 0,
+    "failed_items": {
+     "instruction_mode": 40
+    }
+   },
+   "settings": {
+    "runs_with_run_config": 40,
+    "models": {
+     "student": 40
+    },
+    "temperatures": {
+     "0.6": 40
+    },
+    "specs": {
+     "{\"gia\": \"gia@0.9.0#a43f17adec6c\", \"hi\": \"hi@0.11.0#c981099064da\"}": 40
+    },
+    "instruction_modes": {
+     "student": 40
+    },
+    "tool_layer_hashes": {
+     "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16": 40
+    }
+   },
+   "score": {
+    "point_accuracy": {
+     "value": 0.5,
+     "num": 81,
+     "den": 162,
+     "ci95": [
+      0.4239,
+      0.5761
+     ]
+    },
+    "video_accuracy": {
+     "value": 0.25,
+     "num": 10,
+     "den": 40,
+     "ci95": [
+      0.1419,
+      0.4019
+     ]
+    },
+    "runs_scored": 40
+   },
+   "legacy": {
+    "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+    "source_in_pool": 12,
+    "source_downloaded": 1,
+    "source_compared": 6,
+    "candidate_opens": 131,
+    "runs_with_candidate_open": 25,
+    "video_downloads": 17,
+    "runs_with_download": 11,
+    "repeat_rate": 0.2235,
+    "hi_rejection_rate": 0.0425,
+    "gia_rejection_rate": 0.0262
+   }
+  },
+  "dev_eval4": {
+   "runs": 8,
+   "runs_with_trajectory": 8,
+   "evid_runs": 0,
+   "open_rate": {
+    "value": null,
+    "num": 0,
+    "den": 0,
+    "ci95": null,
+    "judgeable": false,
+    "min_denominator": 5
+   },
+   "compare_rate": {
+    "value": null,
+    "num": 0,
+    "den": 0,
+    "ci95": null
+   },
+   "repeat_rate": {
+    "value": 0.1961,
+    "num": 30,
+    "den": 153,
+    "ci95": [
+     0.1409,
+     0.2661
+    ]
+   },
+   "format_reject_rate": {
+    "value": 0.0292,
+    "num": 7,
+    "den": 241,
+    "ci95": [
+     0.0102,
+     0.0834
+    ],
+    "macro_over_roles": [
+     "HI",
+     "GIA"
+    ],
+    "roles": {
+     "HI": {
+      "value": 0.0289,
+      "num": 5,
+      "den": 173,
+      "ci95": [
+       0.0124,
+       0.0659
+      ]
+     },
+     "GIA": {
+      "value": 0.0294,
+      "num": 2,
+      "den": 68,
+      "ci95": [
+       0.0081,
+       0.101
+      ]
+     }
+    }
+   },
+   "companions": {
+    "open_rate_runs": {
+     "value": null,
+     "num": 0,
+     "den": 0,
+     "ci95": null
+    },
+    "src_in_pool_runs": {
+     "value": null,
+     "num": 0,
+     "den": 0,
+     "ci95": null
+    },
+    "compare_rate_source": {
+     "value": null,
+     "num": 0,
+     "den": 0,
+     "ci95": null
+    },
+    "candidate_open_rate": {
+     "value": null,
+     "num": 0,
+     "den": 0,
+     "ci95": null
+    },
+    "compare_rate_of_acquired": {
+     "value": null,
+     "num": 0,
+     "den": 0,
+     "ci95": null
+    },
+    "auto_compare_runs": {
+     "value": 0.0,
+     "num": 0,
+     "den": 8,
+     "ci95": [
+      0.0,
+      0.3244
+     ]
+    },
+    "format_reject_rate_pooled": {
+     "value": 0.029,
+     "num": 7,
+     "den": 241,
+     "ci95": [
+      0.0141,
+      0.0587
+     ]
+    },
+    "format_reject_rate_hi": {
+     "value": 0.0289,
+     "num": 5,
+     "den": 173,
+     "ci95": [
+      0.0124,
+      0.0659
+     ]
+    },
+    "format_reject_rate_gia": {
+     "value": 0.0294,
+     "num": 2,
+     "den": 68,
+     "ci95": [
+      0.0081,
+      0.101
+     ]
+    }
+   },
+   "workspace_steps": {
+    "n": 15,
+    "min": 4,
+    "p25": 8.0,
+    "p50": 10.0,
+    "p75": 11.0,
+    "p90": 12.0,
+    "max": 12,
+    "mean": 9.2,
+    "histogram": {
+     "4": 2,
+     "6": 1,
+     "8": 2,
+     "9": 1,
+     "10": 3,
+     "11": 3,
+     "12": 3
+    }
+   },
+   "early_report": {
+    "early_report_rate": {
+     "value": 0.8,
+     "num": 12,
+     "den": 15,
+     "ci95": [
+      0.5481,
+      0.9295
+     ]
+    },
+    "truncated_at_limit_rate": {
+     "value": 0.0,
+     "num": 0,
+     "den": 15,
+     "ci95": [
+      0.0,
+      0.2039
+     ]
+    },
+    "report_at_limit_rate": {
+     "value": 0.2,
+     "num": 3,
+     "den": 15,
+     "ci95": [
+      0.0705,
+      0.4519
+     ]
+    },
+    "workspaces": 15,
+    "endings": {
+     "early_report": 12,
+     "report_at_limit": 3,
+     "truncated_at_limit": 0,
+     "auto_report_other": 0,
+     "no_report": 0,
+     "self_report_limit_unknown": 0
+    },
+    "limit_unknown": 0,
+    "early_report_on_report_only_turn": 5,
+    "max_turns": {
+     "12": 15
+    },
+    "max_turns_sources": {
+     "trajectory.runtime_constraints": 15
+    }
+   },
+   "snapshot": {
+    "lookups": 40,
+    "hit": 3,
+    "miss_recorded_live": 37,
+    "new_record_rate": {
+     "value": 0.925,
+     "num": 37,
+     "den": 40,
+     "ci95": [
+      0.8014,
+      0.9742
+     ]
+    },
+    "modes": {
+     "replay_or_record": 8
+    },
+    "roots": {
+     "experiments/eval/r0/search_snapshots": 8
+    }
+   },
+   "freeze": {
+    "runs_checked": 8,
+    "runs_ok": 0,
+    "failed_items": {
+     "instruction_mode": 8
+    }
+   },
+   "settings": {
+    "runs_with_run_config": 8,
+    "models": {
+     "student": 8
+    },
+    "temperatures": {
+     "0.6": 8
+    },
+    "specs": {
+     "{\"gia\": \"gia@0.9.0#a43f17adec6c\", \"hi\": \"hi@0.11.0#c981099064da\"}": 8
+    },
+    "instruction_modes": {
+     "student": 8
+    },
+    "tool_layer_hashes": {
+     "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16": 8
+    }
+   }
+  },
+  "round:r0base-s1": {
+   "runs": 24,
+   "runs_with_trajectory": 24,
+   "evid_runs": 20,
+   "open_rate": {
+    "value": 0.6,
+    "num": 3,
+    "den": 5,
+    "ci95": [
+     0.2307,
+     0.8824
+    ],
+    "judgeable": true,
+    "min_denominator": 5
+   },
+   "compare_rate": {
+    "value": 0.8235,
+    "num": 28,
+    "den": 34,
+    "ci95": [
+     0.6649,
+     0.9165
+    ]
+   },
+   "repeat_rate": {
+    "value": 0.2385,
+    "num": 145,
+    "den": 608,
+    "ci95": [
+     0.2063,
+     0.2739
+    ]
+   },
+   "format_reject_rate": {
+    "value": 0.0372,
+    "num": 40,
+    "den": 978,
+    "ci95": [
+     0.0236,
+     0.0597
+    ],
+    "macro_over_roles": [
+     "HI",
+     "GIA"
+    ],
+    "roles": {
+     "HI": {
+      "value": 0.0458,
+      "num": 32,
+      "den": 698,
+      "ci95": [
+       0.0327,
+       0.064
+      ]
+     },
+     "GIA": {
+      "value": 0.0286,
+      "num": 8,
+      "den": 280,
+      "ci95": [
+       0.0145,
+       0.0554
+      ]
+     }
+    }
+   },
+   "companions": {
+    "open_rate_runs": {
+     "value": 0.15,
+     "num": 3,
+     "den": 20,
+     "ci95": [
+      0.0524,
+      0.3604
+     ]
+    },
+    "src_in_pool_runs": {
+     "value": 0.25,
+     "num": 5,
+     "den": 20,
+     "ci95": [
+      0.1119,
+      0.4687
+     ]
+    },
+    "compare_rate_source": {
+     "value": 1.0,
+     "num": 3,
+     "den": 3,
+     "ci95": [
+      0.4385,
+      1.0
+     ]
+    },
+    "candidate_open_rate": {
+     "value": 0.0988,
+     "num": 34,
+     "den": 344,
+     "ci95": [
+      0.0716,
+      0.1349
+     ]
+    },
+    "compare_rate_of_acquired": {
+     "value": 3.5,
+     "num": 28,
+     "den": 8,
+     "ci95": null
+    },
+    "auto_compare_runs": {
+     "value": 0.0,
+     "num": 0,
+     "den": 24,
+     "ci95": [
+      0.0,
+      0.138
+     ]
+    },
+    "format_reject_rate_pooled": {
+     "value": 0.0409,
+     "num": 40,
+     "den": 978,
+     "ci95": [
+      0.0302,
+      0.0552
+     ]
+    },
+    "format_reject_rate_hi": {
+     "value": 0.0458,
+     "num": 32,
+     "den": 698,
+     "ci95": [
+      0.0327,
+      0.064
+     ]
+    },
+    "format_reject_rate_gia": {
+     "value": 0.0286,
+     "num": 8,
+     "den": 280,
+     "ci95": [
+      0.0145,
+      0.0554
+     ]
+    }
+   },
+   "workspace_steps": {
+    "n": 58,
+    "min": 3,
+    "p25": 7.0,
+    "p50": 10.0,
+    "p75": 11.0,
+    "p90": 11.3,
+    "max": 12,
+    "mean": 9.02,
+    "histogram": {
+     "3": 1,
+     "5": 4,
+     "6": 6,
+     "7": 6,
+     "8": 6,
+     "9": 3,
+     "10": 11,
+     "11": 15,
+     "12": 6
+    }
+   },
+   "early_report": {
+    "early_report_rate": {
+     "value": 0.8966,
+     "num": 52,
+     "den": 58,
+     "ci95": [
+      0.7921,
+      0.9517
+     ]
+    },
+    "truncated_at_limit_rate": {
+     "value": 0.0,
+     "num": 0,
+     "den": 58,
+     "ci95": [
+      0.0,
+      0.0621
+     ]
+    },
+    "report_at_limit_rate": {
+     "value": 0.1034,
+     "num": 6,
+     "den": 58,
+     "ci95": [
+      0.0483,
+      0.2079
+     ]
+    },
+    "workspaces": 58,
+    "endings": {
+     "early_report": 52,
+     "report_at_limit": 6,
+     "truncated_at_limit": 0,
+     "auto_report_other": 0,
+     "no_report": 0,
+     "self_report_limit_unknown": 0
+    },
+    "limit_unknown": 0,
+    "early_report_on_report_only_turn": 25,
+    "max_turns": {
+     "12": 58
+    },
+    "max_turns_sources": {
+     "trajectory.runtime_constraints": 58
+    }
+   },
+   "snapshot": {
+    "lookups": 841,
+    "hit": 203,
+    "miss_recorded_live": 638,
+    "new_record_rate": {
+     "value": 0.7586,
+     "num": 638,
+     "den": 841,
+     "ci95": [
+      0.7286,
+      0.7863
+     ]
+    },
+    "modes": {
+     "replay_or_record": 24
+    },
+    "roots": {
+     "experiments/eval/r0/search_snapshots": 24
+    }
+   },
+   "freeze": {
+    "runs_checked": 24,
+    "runs_ok": 0,
+    "failed_items": {
+     "instruction_mode": 24
+    }
+   },
+   "settings": {
+    "runs_with_run_config": 24,
+    "models": {
+     "student": 24
+    },
+    "temperatures": {
+     "0.6": 24
+    },
+    "specs": {
+     "{\"gia\": \"gia@0.9.0#a43f17adec6c\", \"hi\": \"hi@0.11.0#c981099064da\"}": 24
+    },
+    "instruction_modes": {
+     "student": 24
+    },
+    "tool_layer_hashes": {
+     "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16": 24
+    }
+   },
+   "score": {
+    "point_accuracy": {
+     "value": 0.5556,
+     "num": 45,
+     "den": 81,
+     "ci95": [
+      0.4473,
+      0.6588
+     ]
+    },
+    "video_accuracy": {
+     "value": 0.3,
+     "num": 6,
+     "den": 20,
+     "ci95": [
+      0.1455,
+      0.519
+     ]
+    },
+    "runs_scored": 20
+   },
+   "legacy": {
+    "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+    "source_in_pool": 5,
+    "source_downloaded": 1,
+    "source_compared": 3,
+    "candidate_opens": 64,
+    "runs_with_candidate_open": 14,
+    "video_downloads": 8,
+    "runs_with_download": 5,
+    "repeat_rate": 0.2385,
+    "hi_rejection_rate": 0.0458,
+    "gia_rejection_rate": 0.0286
+   }
+  },
+  "round:r0base-s2": {
+   "runs": 24,
+   "runs_with_trajectory": 24,
+   "evid_runs": 20,
+   "open_rate": {
+    "value": 0.4286,
+    "num": 3,
+    "den": 7,
+    "ci95": [
+     0.1582,
+     0.7495
+    ],
+    "judgeable": true,
+    "min_denominator": 5
+   },
+   "compare_rate": {
+    "value": 0.8667,
+    "num": 26,
+    "den": 30,
+    "ci95": [
+     0.7032,
+     0.9469
+    ]
+   },
+   "repeat_rate": {
+    "value": 0.2003,
+    "num": 115,
+    "den": 574,
+    "ci95": [
+     0.1696,
+     0.235
+    ]
+   },
+   "format_reject_rate": {
+    "value": 0.03,
+    "num": 30,
+    "den": 936,
+    "ci95": [
+     0.0178,
+     0.0512
+    ],
+    "macro_over_roles": [
+     "HI",
+     "GIA"
+    ],
+    "roles": {
+     "HI": {
+      "value": 0.0353,
+      "num": 23,
+      "den": 652,
+      "ci95": [
+       0.0236,
+       0.0524
+      ]
+     },
+     "GIA": {
+      "value": 0.0246,
+      "num": 7,
+      "den": 284,
+      "ci95": [
+       0.012,
+       0.05
+      ]
+     }
+    }
+   },
+   "companions": {
+    "open_rate_runs": {
+     "value": 0.15,
+     "num": 3,
+     "den": 20,
+     "ci95": [
+      0.0524,
+      0.3604
+     ]
+    },
+    "src_in_pool_runs": {
+     "value": 0.35,
+     "num": 7,
+     "den": 20,
+     "ci95": [
+      0.1812,
+      0.5671
+     ]
+    },
+    "compare_rate_source": {
+     "value": 1.0,
+     "num": 3,
+     "den": 3,
+     "ci95": [
+      0.4385,
+      1.0
+     ]
+    },
+    "candidate_open_rate": {
+     "value": 0.0748,
+     "num": 30,
+     "den": 401,
+     "ci95": [
+      0.0529,
+      0.1048
+     ]
+    },
+    "compare_rate_of_acquired": {
+     "value": 2.6,
+     "num": 26,
+     "den": 10,
+     "ci95": null
+    },
+    "auto_compare_runs": {
+     "value": 0.0,
+     "num": 0,
+     "den": 24,
+     "ci95": [
+      0.0,
+      0.138
+     ]
+    },
+    "format_reject_rate_pooled": {
+     "value": 0.0321,
+     "num": 30,
+     "den": 936,
+     "ci95": [
+      0.0225,
+      0.0454
+     ]
+    },
+    "format_reject_rate_hi": {
+     "value": 0.0353,
+     "num": 23,
+     "den": 652,
+     "ci95": [
+      0.0236,
+      0.0524
+     ]
+    },
+    "format_reject_rate_gia": {
+     "value": 0.0246,
+     "num": 7,
+     "den": 284,
+     "ci95": [
+      0.012,
+      0.05
+     ]
+    }
+   },
+   "workspace_steps": {
+    "n": 55,
+    "min": 2,
+    "p25": 8.0,
+    "p50": 11.0,
+    "p75": 11.0,
+    "p90": 12.0,
+    "max": 12,
+    "mean": 9.36,
+    "histogram": {
+     "2": 1,
+     "4": 5,
+     "5": 2,
+     "6": 4,
+     "7": 1,
+     "8": 2,
+     "9": 4,
+     "10": 6,
+     "11": 20,
+     "12": 10
+    }
+   },
+   "early_report": {
+    "early_report_rate": {
+     "value": 0.8182,
+     "num": 45,
+     "den": 55,
+     "ci95": [
+      0.6967,
+      0.8981
+     ]
+    },
+    "truncated_at_limit_rate": {
+     "value": 0.0,
+     "num": 0,
+     "den": 55,
+     "ci95": [
+      0.0,
+      0.0653
+     ]
+    },
+    "report_at_limit_rate": {
+     "value": 0.1818,
+     "num": 10,
+     "den": 55,
+     "ci95": [
+      0.1019,
+      0.3033
+     ]
+    },
+    "workspaces": 55,
+    "endings": {
+     "early_report": 45,
+     "report_at_limit": 10,
+     "truncated_at_limit": 0,
+     "auto_report_other": 0,
+     "no_report": 0,
+     "self_report_limit_unknown": 0
+    },
+    "limit_unknown": 0,
+    "early_report_on_report_only_turn": 21,
+    "max_turns": {
+     "12": 55
+    },
+    "max_turns_sources": {
+     "trajectory.runtime_constraints": 55
+    }
+   },
+   "snapshot": {
+    "lookups": 906,
+    "hit": 283,
+    "miss_recorded_live": 623,
+    "new_record_rate": {
+     "value": 0.6876,
+     "num": 623,
+     "den": 906,
+     "ci95": [
+      0.6567,
+      0.717
+     ]
+    },
+    "modes": {
+     "replay_or_record": 24
+    },
+    "roots": {
+     "experiments/eval/r0/search_snapshots": 24
+    }
+   },
+   "freeze": {
+    "runs_checked": 24,
+    "runs_ok": 0,
+    "failed_items": {
+     "instruction_mode": 24
+    }
+   },
+   "settings": {
+    "runs_with_run_config": 24,
+    "models": {
+     "student": 24
+    },
+    "temperatures": {
+     "0.6": 24
+    },
+    "specs": {
+     "{\"gia\": \"gia@0.9.0#a43f17adec6c\", \"hi\": \"hi@0.11.0#c981099064da\"}": 24
+    },
+    "instruction_modes": {
+     "student": 24
+    },
+    "tool_layer_hashes": {
+     "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16": 24
+    }
+   },
+   "score": {
+    "point_accuracy": {
+     "value": 0.4444,
+     "num": 36,
+     "den": 81,
+     "ci95": [
+      0.3412,
+      0.5527
+     ]
+    },
+    "video_accuracy": {
+     "value": 0.2,
+     "num": 4,
+     "den": 20,
+     "ci95": [
+      0.0807,
+      0.416
+     ]
+    },
+    "runs_scored": 20
+   },
+   "legacy": {
+    "note": "旧口径（_evid_behavior 原样复算），与《EVID_baseline效果总表》对照",
+    "source_in_pool": 7,
+    "source_downloaded": 0,
+    "source_compared": 3,
+    "candidate_opens": 67,
+    "runs_with_candidate_open": 11,
+    "video_downloads": 9,
+    "runs_with_download": 6,
+    "repeat_rate": 0.2003,
+    "hi_rejection_rate": 0.0353,
+    "gia_rejection_rate": 0.0246
+   }
+  }
+ },
+ "verdicts": null,
+ "runs": [
+  {
+   "run": "averimatec_441_r0base-s1_1",
+   "case_id": "averimatec:441",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 7,
+   "hi_repeats": 0,
+   "raw_outputs": {
+    "GIA": 6,
+    "HI": 8
+   },
+   "accepted_outputs": {
+    "GIA": 6,
+    "HI": 8
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "HI/SEARCH": 1,
+    "HI/READ_RECORD": 6,
+    "GIA/READ_RECORD": 4
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 8,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 8,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 7,
+    "live_calls": 7
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "averimatec_441_r0base-s2_1",
+   "case_id": "averimatec:441",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 19,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 7,
+    "HI": 22
+   },
+   "accepted_outputs": {
+    "GIA": 7,
+    "HI": 21
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "HI/INSPECT": 5,
+    "HI/READ_RECORD": 12,
+    "HI/SEARCH": 2,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 2,
+    "miss": 5,
+    "live_calls": 5
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "averitec_2799_r0base-s1_1",
+   "case_id": "averitec:2799",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 21,
+   "hi_repeats": 2,
+   "raw_outputs": {
+    "GIA": 8,
+    "HI": 24
+   },
+   "accepted_outputs": {
+    "GIA": 7,
+    "HI": 23
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "HI/SEARCH": 1,
+    "HI/READ_RECORD": 20,
+    "GIA/READ_RECORD": 3,
+    "GIA/QUERY_MEMORY": 2
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 9,
+    "live_calls": 9
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "averitec_2799_r0base-s2_1",
+   "case_id": "averitec:2799",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 20,
+   "hi_repeats": 1,
+   "raw_outputs": {
+    "GIA": 6,
+    "HI": 24
+   },
+   "accepted_outputs": {
+    "GIA": 6,
+    "HI": 22
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "HI/SEARCH": 2,
+    "HI/READ_RECORD": 18,
+    "GIA/READ_RECORD": 4
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 1,
+    "miss": 16,
+    "live_calls": 16
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ]
+  },
+  {
+   "run": "evid_video_002_r0base-s1_1",
+   "case_id": "evid:video_002",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 25,
+   "hi_repeats": 12,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 31
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 28
+   },
+   "rejected_outputs": {
+    "HI": 3,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "GIA/READ_RECORD": 5,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 14,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 3,
+     "tool_actions": 6,
+     "model_outputs": 7,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 2,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "azjiJ8a-90k"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 8,
+    "live_calls": 8
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.48,
+    "hi_actions": 25,
+    "hi_repeats": 12,
+    "hi_rejected": 3,
+    "hi_raw": 31,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 1
+  },
+  {
+   "run": "evid_video_002_r0base-s2_1",
+   "case_id": "evid:video_002",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 23,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 26
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 25
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "GIA/READ_RECORD": 5,
+    "HI/SEARCH": 4,
+    "HI/INSPECT": 12,
+    "HI/READ_RECORD": 7
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 5,
+   "opened": 2,
+   "acquired": 2,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 9,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "azjiJ8a-90k"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 1,
+    "miss": 17,
+    "live_calls": 17
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.348,
+    "hi_actions": 23,
+    "hi_repeats": 8,
+    "hi_rejected": 1,
+    "hi_raw": 26,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 10,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_009_r0base-s1_1",
+   "case_id": "evid:video_009",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 29,
+   "hi_repeats": 6,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 35
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "rejected_outputs": {
+    "HI": 3,
+    "GIA": 1
+   },
+   "harness_rejections": {
+    "HI": 1
+   },
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 10,
+    "HI/READ_RECORD": 18,
+    "HI/SEARCH": 1
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 5,
+   "opened": 1,
+   "acquired": 1,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "FEOHwiM69vc"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 3,
+    "miss": 7,
+    "live_calls": 7
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.207,
+    "hi_actions": 29,
+    "hi_repeats": 6,
+    "hi_rejected": 3,
+    "hi_raw": 35,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 6,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 3,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_009_r0base-s2_1",
+   "case_id": "evid:video_009",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 37,
+   "hi_repeats": 5,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 42
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 40
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "GIA/READ_RECORD": 5,
+    "HI/INSPECT": 13,
+    "HI/READ_RECORD": 19,
+    "HI/SEARCH": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 12,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 16,
+   "opened": 5,
+   "acquired": 2,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 3,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "FEOHwiM69vc"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 13,
+    "miss": 38,
+    "live_calls": 38
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.135,
+    "hi_actions": 37,
+    "hi_repeats": 5,
+    "hi_rejected": 2,
+    "hi_raw": 42,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 12,
+    "video_downloads": 2,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 3,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_015_r0base-s1_1",
+   "case_id": "evid:video_015",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 23,
+   "hi_repeats": 2,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 26
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 25
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 6,
+    "GIA/READ_RECORD": 4,
+    "HI/INSPECT": 9,
+    "HI/READ_RECORD": 4,
+    "HI/SEARCH": 10
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 2,
+   "opened": 1,
+   "acquired": 0,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "wEkRjlSgIIQ",
+    "UK2WwLVY5K4"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 5,
+    "miss": 18,
+    "live_calls": 18
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.087,
+    "hi_actions": 23,
+    "hi_repeats": 2,
+    "hi_rejected": 1,
+    "hi_raw": 26,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 2,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_015_r0base-s2_1",
+   "case_id": "evid:video_015",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 27,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 31
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 30
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/INSPECT": 11,
+    "HI/READ_RECORD": 8,
+    "HI/SEARCH": 8,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 4,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 3,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 23,
+   "opened": 2,
+   "acquired": 1,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 7,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "wEkRjlSgIIQ",
+    "UK2WwLVY5K4"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 15,
+    "miss": 36,
+    "live_calls": 36
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.148,
+    "hi_actions": 27,
+    "hi_repeats": 4,
+    "hi_rejected": 1,
+    "hi_raw": 31,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 10,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_022_r0base-s1_1",
+   "case_id": "evid:video_022",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 24,
+   "hi_repeats": 6,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 27
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 26
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 7,
+    "HI/READ_RECORD": 9,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 10,
+   "opened": 2,
+   "acquired": 1,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "rx7YZmSO4hE"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": true,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 7,
+    "miss": 29,
+    "live_calls": 29
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.25,
+    "hi_actions": 24,
+    "hi_repeats": 6,
+    "hi_rejected": 1,
+    "hi_raw": 27,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 4,
+    "video_downloads": 1,
+    "source_in_pool": true,
+    "source_downloaded": true,
+    "source_compared": true
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_022_r0base-s2_1",
+   "case_id": "evid:video_022",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 25,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 27
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 27
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 8,
+    "HI/READ_RECORD": 8,
+    "HI/SEARCH": 8,
+    "HI/QUERY_MEMORY": 1
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 10,
+   "opened": 2,
+   "acquired": 1,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "rx7YZmSO4hE"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 8,
+    "miss": 27,
+    "live_calls": 27
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.16,
+    "hi_actions": 25,
+    "hi_repeats": 4,
+    "hi_rejected": 0,
+    "hi_raw": 27,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 2,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_029_r0base-s1_1",
+   "case_id": "evid:video_029",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 12,
+   "hi_repeats": 2,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 14
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 13
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "GIA/READ_RECORD": 5,
+    "HI/SEARCH": 5,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 4
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 9,
+   "opened": 1,
+   "acquired": 1,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "U5GdB42-rdM",
+    "0PHcnoYXHHY"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 1,
+    "miss": 28,
+    "live_calls": 28
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.167,
+    "hi_actions": 12,
+    "hi_repeats": 2,
+    "hi_rejected": 1,
+    "hi_raw": 14,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 1,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_029_r0base-s2_1",
+   "case_id": "evid:video_029",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 23,
+   "hi_repeats": 6,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 26
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 25
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/SEARCH": 7,
+    "HI/INSPECT": 9,
+    "HI/READ_RECORD": 7,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 41,
+   "opened": 4,
+   "acquired": 3,
+   "compared": 4,
+   "compared_of_opened": 4,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "U5GdB42-rdM",
+    "0PHcnoYXHHY"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": false,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 29,
+    "miss": 49,
+    "live_calls": 49
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.261,
+    "hi_actions": 23,
+    "hi_repeats": 6,
+    "hi_rejected": 1,
+    "hi_raw": 26,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 5,
+    "video_downloads": 3,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": true
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_036_r0base-s1_1",
+   "case_id": "evid:video_036",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 32,
+   "hi_repeats": 5,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 35
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 2,
+    "GIA/READ_RECORD": 8,
+    "HI/INSPECT": 7,
+    "HI/READ_RECORD": 12,
+    "HI/SEARCH": 13
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 9,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 10,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 34,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "aovISOkatIw"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 5,
+    "miss": 72,
+    "live_calls": 72
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.156,
+    "hi_actions": 32,
+    "hi_repeats": 5,
+    "hi_rejected": 1,
+    "hi_raw": 36,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 6,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_036_r0base-s2_1",
+   "case_id": "evid:video_036",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 33,
+   "hi_repeats": 3,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 36
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {
+    "HI": 1
+   },
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "GIA/READ_RECORD": 5,
+    "HI/INSPECT": 12,
+    "HI/READ_RECORD": 11,
+    "HI/SEARCH": 10
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 18,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "aovISOkatIw"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 7,
+    "miss": 32,
+    "live_calls": 32
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.091,
+    "hi_actions": 33,
+    "hi_repeats": 3,
+    "hi_rejected": 0,
+    "hi_raw": 36,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_042_r0base-s1_1",
+   "case_id": "evid:video_042",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 29,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 5,
+    "HI/READ_RECORD": 15,
+    "HI/SEARCH": 9
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 37,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "m0FYJ3s67hg"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 1,
+    "miss": 54,
+    "live_calls": 54
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.276,
+    "hi_actions": 29,
+    "hi_repeats": 8,
+    "hi_rejected": 0,
+    "hi_raw": 32,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_042_r0base-s2_1",
+   "case_id": "evid:video_042",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 18,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 21
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 20
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 6,
+    "GIA/READ_RECORD": 4,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 5,
+    "HI/SEARCH": 10
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 4,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 3,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 35,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "m0FYJ3s67hg"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 1,
+    "miss": 43,
+    "live_calls": 43
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.222,
+    "hi_actions": 18,
+    "hi_repeats": 4,
+    "hi_rejected": 1,
+    "hi_raw": 21,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_049_r0base-s1_1",
+   "case_id": "evid:video_049",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 31,
+   "hi_repeats": 11,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 34
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/SEARCH": 5,
+    "HI/INSPECT": 10,
+    "HI/READ_RECORD": 16,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 18,
+   "opened": 6,
+   "acquired": 0,
+   "compared": 5,
+   "compared_of_opened": 5,
+   "compare_calls": 6,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "7-GF22n75L8"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": false,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 28,
+    "miss": 32,
+    "live_calls": 32
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.355,
+    "hi_actions": 31,
+    "hi_repeats": 11,
+    "hi_rejected": 2,
+    "hi_raw": 36,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 12,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": true
+   },
+   "n_gt": 3,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_049_r0base-s2_1",
+   "case_id": "evid:video_049",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 24,
+   "hi_repeats": 6,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 28
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 27
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 7,
+    "HI/SEARCH": 3,
+    "HI/READ_RECORD": 12,
+    "HI/INSPECT": 9,
+    "GIA/READ_RECORD": 3
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 5,
+     "tool_actions": 4,
+     "model_outputs": 5,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 5,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 4,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 16,
+   "opened": 5,
+   "acquired": 0,
+   "compared": 5,
+   "compared_of_opened": 5,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "7-GF22n75L8"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": false,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 41,
+    "miss": 15,
+    "live_calls": 15
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.25,
+    "hi_actions": 24,
+    "hi_repeats": 6,
+    "hi_rejected": 1,
+    "hi_raw": 28,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 8,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": true
+   },
+   "n_gt": 3,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_056_r0base-s1_1",
+   "case_id": "evid:video_056",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 23,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 26
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 25
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 7,
+    "HI/SEARCH": 13,
+    "HI/INSPECT": 2,
+    "HI/READ_RECORD": 8,
+    "GIA/READ_RECORD": 3
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 42,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "ejNu0cMo9O0"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 3,
+    "miss": 53,
+    "live_calls": 53
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.348,
+    "hi_actions": 23,
+    "hi_repeats": 8,
+    "hi_rejected": 1,
+    "hi_raw": 26,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_056_r0base-s2_1",
+   "case_id": "evid:video_056",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 22,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 24
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 24
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 3,
+    "GIA/READ_RECORD": 7,
+    "HI/SEARCH": 11,
+    "HI/INSPECT": 2,
+    "HI/READ_RECORD": 9
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 9,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 8,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 48,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "ejNu0cMo9O0"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 14,
+    "miss": 70,
+    "live_calls": 70
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.182,
+    "hi_actions": 22,
+    "hi_repeats": 4,
+    "hi_rejected": 0,
+    "hi_raw": 24,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_063_r0base-s1_1",
+   "case_id": "evid:video_063",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 33,
+   "hi_repeats": 9,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 38
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 9,
+    "HI/READ_RECORD": 16,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 5,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 4,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 20,
+   "opened": 1,
+   "acquired": 0,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "--XkCnlJisM",
+    "hEZ3PRPJLws",
+    "F19yTBhAsB0"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 12,
+    "miss": 35,
+    "live_calls": 35
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.273,
+    "hi_actions": 33,
+    "hi_repeats": 9,
+    "hi_rejected": 2,
+    "hi_raw": 38,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 5,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_063_r0base-s2_1",
+   "case_id": "evid:video_063",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 22,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 24
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 24
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/INSPECT": 7,
+    "HI/READ_RECORD": 9,
+    "HI/SEARCH": 6,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 9,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 8,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 10,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "--XkCnlJisM",
+    "hEZ3PRPJLws",
+    "F19yTBhAsB0"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 18,
+    "live_calls": 18
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.182,
+    "hi_actions": 22,
+    "hi_repeats": 4,
+    "hi_rejected": 0,
+    "hi_raw": 24,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_069_r0base-s1_1",
+   "case_id": "evid:video_069",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 10,
+   "hi_repeats": 1,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 11
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 11
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 8,
+    "HI/INSPECT": 6,
+    "HI/SEARCH": 4,
+    "GIA/READ_RECORD": 2
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 5,
+   "opened": 2,
+   "acquired": 0,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "G9FLWI9A9oY"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 16,
+    "miss": 5,
+    "live_calls": 5
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.1,
+    "hi_actions": 10,
+    "hi_repeats": 1,
+    "hi_rejected": 0,
+    "hi_raw": 11,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 2,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_069_r0base-s2_1",
+   "case_id": "evid:video_069",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 20,
+   "hi_repeats": 0,
+   "raw_outputs": {
+    "GIA": 11,
+    "HI": 23
+   },
+   "accepted_outputs": {
+    "GIA": 11,
+    "HI": 22
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 5,
+    "HI/INSPECT": 7,
+    "HI/READ_RECORD": 5,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 21,
+   "opened": 1,
+   "acquired": 1,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "G9FLWI9A9oY"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 18,
+    "miss": 41,
+    "live_calls": 41
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.0,
+    "hi_actions": 20,
+    "hi_repeats": 0,
+    "hi_rejected": 1,
+    "hi_raw": 23,
+    "gia_rejected": 0,
+    "gia_raw": 11,
+    "candidate_opens": 1,
+    "video_downloads": 1,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_076_r0base-s1_1",
+   "case_id": "evid:video_076",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 20,
+   "hi_repeats": 5,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 23
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 22
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 6,
+    "GIA/READ_RECORD": 4,
+    "HI/INSPECT": 2,
+    "HI/READ_RECORD": 8,
+    "HI/SEARCH": 10
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 16,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "0saslFui3fI"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 31,
+    "live_calls": 31
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.25,
+    "hi_actions": 20,
+    "hi_repeats": 5,
+    "hi_rejected": 1,
+    "hi_raw": 23,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 1
+  },
+  {
+   "run": "evid_video_076_r0base-s2_1",
+   "case_id": "evid:video_076",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 25,
+   "hi_repeats": 5,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 27
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 27
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 5,
+    "HI/READ_RECORD": 11,
+    "HI/SEARCH": 9
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 27,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "0saslFui3fI"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 39,
+    "live_calls": 39
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.2,
+    "hi_actions": 25,
+    "hi_repeats": 5,
+    "hi_rejected": 0,
+    "hi_raw": 27,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_083_r0base-s1_1",
+   "case_id": "evid:video_083",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 29,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 34
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/INSPECT": 11,
+    "HI/READ_RECORD": 15,
+    "HI/SEARCH": 3,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 5,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 4,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 15,
+   "opened": 5,
+   "acquired": 3,
+   "compared": 5,
+   "compared_of_opened": 5,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "mJclHaOOrNI"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 25,
+    "miss": 16,
+    "live_calls": 16
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.276,
+    "hi_actions": 29,
+    "hi_repeats": 8,
+    "hi_rejected": 2,
+    "hi_raw": 34,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 5,
+    "video_downloads": 3,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_083_r0base-s2_1",
+   "case_id": "evid:video_083",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 19,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 22
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 21
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/INSPECT": 9,
+    "HI/READ_RECORD": 6,
+    "HI/SEARCH": 4,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 11,
+   "opened": 3,
+   "acquired": 0,
+   "compared": 3,
+   "compared_of_opened": 3,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "mJclHaOOrNI"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 23,
+    "miss": 9,
+    "live_calls": 9
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.421,
+    "hi_actions": 19,
+    "hi_repeats": 8,
+    "hi_rejected": 1,
+    "hi_raw": 22,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 5,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_090_r0base-s1_1",
+   "case_id": "evid:video_090",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 29,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 34
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 15,
+    "HI/SEARCH": 11
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 7,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 6,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 5,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 4,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 11,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "_C5bhsSvOLU",
+    "G2e47y_flZE"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 2,
+    "miss": 31,
+    "live_calls": 31
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.276,
+    "hi_actions": 29,
+    "hi_repeats": 8,
+    "hi_rejected": 2,
+    "hi_raw": 34,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_090_r0base-s2_1",
+   "case_id": "evid:video_090",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 33,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 41
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "rejected_outputs": {
+    "HI": 5,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/SEARCH": 10,
+    "HI/INSPECT": 10,
+    "HI/READ_RECORD": 13
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 35,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "_C5bhsSvOLU",
+    "G2e47y_flZE"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 12,
+    "miss": 43,
+    "live_calls": 43
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.242,
+    "hi_actions": 33,
+    "hi_repeats": 8,
+    "hi_rejected": 5,
+    "hi_raw": 41,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 3
+  },
+  {
+   "run": "evid_video_096_r0base-s1_1",
+   "case_id": "evid:video_096",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 30,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 33
+   },
+   "rejected_outputs": {
+    "HI": 3,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 18,
+    "HI/SEARCH": 9
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 5,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 4,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 23,
+   "opened": 1,
+   "acquired": 0,
+   "compared": 1,
+   "compared_of_opened": 1,
+   "compare_calls": 1,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "qex5Nc-N9nw"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 27,
+    "miss": 32,
+    "live_calls": 32
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.267,
+    "hi_actions": 30,
+    "hi_repeats": 8,
+    "hi_rejected": 3,
+    "hi_raw": 36,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 1,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_096_r0base-s2_1",
+   "case_id": "evid:video_096",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 26,
+   "hi_repeats": 7,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 28
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 28
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 6,
+    "HI/READ_RECORD": 17,
+    "HI/SEARCH": 3
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 9,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 8,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 10,
+   "opened": 2,
+   "acquired": 0,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "qex5Nc-N9nw"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 6,
+    "miss": 18,
+    "live_calls": 18
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.269,
+    "hi_actions": 26,
+    "hi_repeats": 7,
+    "hi_rejected": 0,
+    "hi_raw": 28,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 2,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_103_r0base-s1_1",
+   "case_id": "evid:video_103",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 32,
+   "hi_repeats": 5,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 36
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 35
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/INSPECT": 13,
+    "HI/READ_RECORD": 11,
+    "HI/SEARCH": 8,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 10,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 5,
+   "opened": 3,
+   "acquired": 2,
+   "compared": 3,
+   "compared_of_opened": 3,
+   "compare_calls": 3,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "1hPEiGG4AIo"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 2,
+    "miss": 25,
+    "live_calls": 25
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.156,
+    "hi_actions": 32,
+    "hi_repeats": 5,
+    "hi_rejected": 1,
+    "hi_raw": 36,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 3,
+    "video_downloads": 2,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 3,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_103_r0base-s2_1",
+   "case_id": "evid:video_103",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 24,
+   "hi_repeats": 6,
+   "raw_outputs": {
+    "GIA": 17,
+    "HI": 29
+   },
+   "accepted_outputs": {
+    "GIA": 17,
+    "HI": 27
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 7,
+    "GIA/READ_RECORD": 7,
+    "HI/INSPECT": 2,
+    "HI/READ_RECORD": 8,
+    "HI/SEARCH": 14
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 9,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W2-1",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W2-2",
+     "steps": 2,
+     "tool_actions": 5,
+     "model_outputs": 6,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 1,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 19,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "1hPEiGG4AIo"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 10,
+    "miss": 35,
+    "live_calls": 35
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.25,
+    "hi_actions": 24,
+    "hi_repeats": 6,
+    "hi_rejected": 2,
+    "hi_raw": 29,
+    "gia_rejected": 0,
+    "gia_raw": 17,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 3,
+   "passed_gt": 2
+  },
+  {
+   "run": "evid_video_110_r0base-s1_1",
+   "case_id": "evid:video_110",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 41,
+   "hi_repeats": 11,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 45
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 44
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 5,
+    "HI/SEARCH": 16,
+    "HI/INSPECT": 8,
+    "HI/READ_RECORD": 17,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 10,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 34,
+   "opened": 4,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "NxmTRqDHrQQ"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 29,
+    "miss": 48,
+    "live_calls": 48
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.268,
+    "hi_actions": 41,
+    "hi_repeats": 11,
+    "hi_rejected": 1,
+    "hi_raw": 45,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 7,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 1
+  },
+  {
+   "run": "evid_video_110_r0base-s2_1",
+   "case_id": "evid:video_110",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 11,
+   "hi_repeats": 1,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 12
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 12
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/SEARCH": 8,
+    "HI/INSPECT": 2,
+    "HI/READ_RECORD": 1
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 21,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "NxmTRqDHrQQ"
+   ],
+   "src_in_pool": true,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 24,
+    "miss": 14,
+    "live_calls": 14
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.091,
+    "hi_actions": 11,
+    "hi_repeats": 1,
+    "hi_rejected": 0,
+    "hi_raw": 12,
+    "gia_rejected": 1,
+    "gia_raw": 13,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_117_r0base-s1_1",
+   "case_id": "evid:video_117",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 31,
+   "hi_repeats": 3,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 35
+   },
+   "accepted_outputs": {
+    "GIA": 11,
+    "HI": 34
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 2
+   },
+   "harness_rejections": {
+    "GIA": 1
+   },
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/SEARCH": 4,
+    "HI/INSPECT": 14,
+    "HI/READ_RECORD": 13
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 9,
+     "tool_actions": 8,
+     "model_outputs": 9,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 9,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 20,
+   "opened": 4,
+   "acquired": 0,
+   "compared": 4,
+   "compared_of_opened": 4,
+   "compare_calls": 5,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "sQ56ve39l2I"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": false,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 28,
+    "miss": 30,
+    "live_calls": 30
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged",
+    "forced_finish_from_draft"
+   ],
+   "legacy": {
+    "repeat_rate": 0.097,
+    "hi_actions": 31,
+    "hi_repeats": 3,
+    "hi_rejected": 1,
+    "hi_raw": 35,
+    "gia_rejected": 2,
+    "gia_raw": 13,
+    "candidate_opens": 7,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": true
+   },
+   "n_gt": 5,
+   "passed_gt": 1
+  },
+  {
+   "run": "evid_video_117_r0base-s2_1",
+   "case_id": "evid:video_117",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 33,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 37
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 36
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 7,
+    "HI/SEARCH": 7,
+    "HI/INSPECT": 12,
+    "HI/READ_RECORD": 14,
+    "GIA/READ_RECORD": 3
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 16,
+   "opened": 2,
+   "acquired": 0,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 3,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "sQ56ve39l2I"
+   ],
+   "src_in_pool": true,
+   "src_opened": true,
+   "src_acquired": false,
+   "src_compared": true,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 48,
+    "miss": 11,
+    "live_calls": 11
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.121,
+    "hi_actions": 33,
+    "hi_repeats": 4,
+    "hi_rejected": 1,
+    "hi_raw": 37,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 10,
+    "video_downloads": 0,
+    "source_in_pool": true,
+    "source_downloaded": false,
+    "source_compared": true
+   },
+   "n_gt": 5,
+   "passed_gt": 0
+  },
+  {
+   "run": "evid_video_123_r0base-s1_1",
+   "case_id": "evid:video_123",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 29,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 34
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 32
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 3,
+    "GIA/READ_RECORD": 7,
+    "HI/INSPECT": 8,
+    "HI/READ_RECORD": 13,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 6,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 5,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 7,
+     "tool_actions": 9,
+     "model_outputs": 10,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 28,
+   "opened": 3,
+   "acquired": 0,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "YvMbpHNBE1E",
+    "c5nXIZRry_A"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 9,
+    "miss": 44,
+    "live_calls": 44
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.276,
+    "hi_actions": 29,
+    "hi_repeats": 8,
+    "hi_rejected": 2,
+    "hi_raw": 34,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 3,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_123_r0base-s2_1",
+   "case_id": "evid:video_123",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 28,
+   "hi_repeats": 9,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 33
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 31
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 6,
+    "HI/READ_RECORD": 14,
+    "HI/SEARCH": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 4,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 3,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 10,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 6,
+   "opened": 2,
+   "acquired": 0,
+   "compared": 2,
+   "compared_of_opened": 2,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "YvMbpHNBE1E",
+    "c5nXIZRry_A"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 10,
+    "miss": 20,
+    "live_calls": 20
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [
+    "report_citations_salvaged"
+   ],
+   "legacy": {
+    "repeat_rate": 0.321,
+    "hi_actions": 28,
+    "hi_repeats": 9,
+    "hi_rejected": 2,
+    "hi_raw": 33,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 2,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 5,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_130_r0base-s1_1",
+   "case_id": "evid:video_130",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 20,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 24
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 22
+   },
+   "rejected_outputs": {
+    "HI": 2,
+    "GIA": 0
+   },
+   "harness_rejections": {
+    "HI": 1
+   },
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 4,
+    "GIA/READ_RECORD": 6,
+    "HI/INSPECT": 5,
+    "HI/SEARCH": 7,
+    "HI/READ_RECORD": 8
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 8,
+     "tool_actions": 10,
+     "model_outputs": 11,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 10,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "faC4p0SH7I4",
+    "TwS4GTnrbUc"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 24,
+    "live_calls": 24
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.2,
+    "hi_actions": 20,
+    "hi_repeats": 4,
+    "hi_rejected": 2,
+    "hi_raw": 24,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "evid_video_130_r0base-s2_1",
+   "case_id": "evid:video_130",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 24,
+   "hi_repeats": 4,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 27
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 26
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 9,
+    "GIA/READ_RECORD": 1,
+    "HI/SEARCH": 13,
+    "HI/INSPECT": 8,
+    "HI/READ_RECORD": 3
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 11,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 11,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 11,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 13,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": [
+    "faC4p0SH7I4",
+    "TwS4GTnrbUc"
+   ],
+   "src_in_pool": false,
+   "src_opened": false,
+   "src_acquired": false,
+   "src_compared": false,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 27,
+    "live_calls": 27
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": [],
+   "legacy": {
+    "repeat_rate": 0.167,
+    "hi_actions": 24,
+    "hi_repeats": 4,
+    "hi_rejected": 1,
+    "hi_raw": 27,
+    "gia_rejected": 0,
+    "gia_raw": 12,
+    "candidate_opens": 0,
+    "video_downloads": 0,
+    "source_in_pool": false,
+    "source_downloaded": false,
+    "source_compared": false
+   },
+   "n_gt": 4,
+   "passed_gt": 4
+  },
+  {
+   "run": "qvhighlights_1_r0base-s1_1",
+   "case_id": "qvhighlights:1",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 14,
+   "hi_repeats": 3,
+   "raw_outputs": {
+    "GIA": 12,
+    "HI": 16
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 15
+   },
+   "rejected_outputs": {
+    "HI": 1,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 3,
+    "GIA/READ_RECORD": 7,
+    "HI/INSPECT": 9,
+    "HI/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 14,
+     "model_outputs": 15,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 0,
+    "live_calls": 0
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "qvhighlights_1_r0base-s2_1",
+   "case_id": "qvhighlights:1",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 24,
+   "hi_repeats": 2,
+   "raw_outputs": {
+    "GIA": 13,
+    "HI": 26
+   },
+   "accepted_outputs": {
+    "GIA": 12,
+    "HI": 26
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 1
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/READ_RECORD": 4,
+    "GIA/QUERY_MEMORY": 6,
+    "HI/INSPECT": 11,
+    "HI/READ_RECORD": 13
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 12,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 12,
+     "tool_actions": 13,
+     "model_outputs": 14,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 12,
+     "ending": "report_at_limit",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 0,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 0,
+    "live_calls": 0
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "vcsl_pair_4_r0base-s1_1",
+   "case_id": "vcsl:pair_4",
+   "round": "r0base-s1",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 34,
+   "hi_repeats": 10,
+   "raw_outputs": {
+    "GIA": 8,
+    "HI": 37
+   },
+   "accepted_outputs": {
+    "GIA": 8,
+    "HI": 37
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 1,
+    "HI/INSPECT": 10,
+    "HI/READ_RECORD": 24,
+    "GIA/READ_RECORD": 5
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 10,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 10,
+     "ending": "early_report",
+     "report_only_turn": false,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 8,
+     "tool_actions": 11,
+     "model_outputs": 12,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 7,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-3",
+     "steps": 9,
+     "tool_actions": 12,
+     "model_outputs": 13,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 8,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 4,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 0,
+    "live_calls": 0
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  },
+  {
+   "run": "vcsl_pair_4_r0base-s2_1",
+   "case_id": "vcsl:pair_4",
+   "round": "r0base-s2",
+   "sample": 1,
+   "has_trajectory": true,
+   "has_store": true,
+   "has_result": true,
+   "has_run_config": true,
+   "hi_actions": 14,
+   "hi_repeats": 8,
+   "raw_outputs": {
+    "GIA": 8,
+    "HI": 16
+   },
+   "accepted_outputs": {
+    "GIA": 8,
+    "HI": 16
+   },
+   "rejected_outputs": {
+    "HI": 0,
+    "GIA": 0
+   },
+   "harness_rejections": {},
+   "action_counts": {
+    "GIA/QUERY_MEMORY": 3,
+    "GIA/READ_RECORD": 3,
+    "HI/INSPECT": 3,
+    "HI/READ_RECORD": 11
+   },
+   "workspaces": [
+    {
+     "workspace_id": "W1-1",
+     "steps": 4,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 3,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    },
+    {
+     "workspace_id": "W1-2",
+     "steps": 4,
+     "tool_actions": 7,
+     "model_outputs": 8,
+     "max_turns": 12,
+     "max_turns_source": "trajectory.runtime_constraints",
+     "report_turn": 3,
+     "ending": "early_report",
+     "report_only_turn": true,
+     "auto_reason": null,
+     "runtime_error": null
+    }
+   ],
+   "pool": 0,
+   "opened": 0,
+   "acquired": 0,
+   "compared": 0,
+   "compared_of_opened": 0,
+   "compare_calls": 2,
+   "auto_compare_calls": 0,
+   "auto_compared": 0,
+   "gt_sources": null,
+   "snapshot": {
+    "mode": "replay_or_record",
+    "root": "experiments/eval/r0/search_snapshots",
+    "hit": 0,
+    "miss": 0,
+    "live_calls": 0
+   },
+   "freeze": {
+    "applies": true,
+    "ok": false,
+    "failed": [
+     "instruction_mode"
+    ]
+   },
+   "specs": {
+    "hi": "hi@0.11.0#c981099064da",
+    "gia": "gia@0.9.0#a43f17adec6c"
+   },
+   "model": "student",
+   "model_by_role": {
+    "HI": "student",
+    "GIA": "student"
+   },
+   "temperature": 0.6,
+   "thinking": false,
+   "instruction_mode": "student",
+   "tool_layer_hash": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+   "decision": "FINISH",
+   "contract_flags": []
+  }
+ ],
+ "workspace_comparison": {
+  "all": {
+   "after": {
+    "workspace_steps": {
+     "n": 113,
+     "min": 2,
+     "p25": 7.0,
+     "p50": 10.0,
+     "p75": 11.0,
+     "p90": 12.0,
+     "max": 12,
+     "mean": 9.19,
+     "histogram": {
+      "2": 1,
+      "3": 1,
+      "4": 5,
+      "5": 6,
+      "6": 10,
+      "7": 7,
+      "8": 8,
+      "9": 7,
+      "10": 17,
+      "11": 35,
+      "12": 16
+     }
+    },
+    "early_report": {
+     "early_report_rate": {
+      "value": 0.8584,
+      "num": 97,
+      "den": 113,
+      "ci95": [
+       0.7823,
+       0.9109
+      ]
+     },
+     "truncated_at_limit_rate": {
+      "value": 0.0,
+      "num": 0,
+      "den": 113,
+      "ci95": [
+       0.0,
+       0.0329
+      ]
+     },
+     "report_at_limit_rate": {
+      "value": 0.1416,
+      "num": 16,
+      "den": 113,
+      "ci95": [
+       0.0891,
+       0.2177
+      ]
+     },
+     "workspaces": 113,
+     "endings": {
+      "early_report": 97,
+      "report_at_limit": 16,
+      "truncated_at_limit": 0,
+      "auto_report_other": 0,
+      "no_report": 0,
+      "self_report_limit_unknown": 0
+     },
+     "limit_unknown": 0,
+     "early_report_on_report_only_turn": 46,
+     "max_turns": {
+      "12": 113
+     },
+     "max_turns_sources": {
+      "trajectory.runtime_constraints": 113
+     }
+    }
+   },
+   "baseline": null
+  },
+  "evid_ctrl20": {
+   "after": {
+    "workspace_steps": {
+     "n": 98,
+     "min": 2,
+     "p25": 7.0,
+     "p50": 10.0,
+     "p75": 11.0,
+     "p90": 12.0,
+     "max": 12,
+     "mean": 9.18,
+     "histogram": {
+      "2": 1,
+      "3": 1,
+      "4": 3,
+      "5": 6,
+      "6": 9,
+      "7": 7,
+      "8": 6,
+      "9": 6,
+      "10": 14,
+      "11": 32,
+      "12": 13
+     }
+    },
+    "early_report": {
+     "early_report_rate": {
+      "value": 0.8673,
+      "num": 85,
+      "den": 98,
+      "ci95": [
+       0.7862,
+       0.9208
+      ]
+     },
+     "truncated_at_limit_rate": {
+      "value": 0.0,
+      "num": 0,
+      "den": 98,
+      "ci95": [
+       0.0,
+       0.0377
+      ]
+     },
+     "report_at_limit_rate": {
+      "value": 0.1327,
+      "num": 13,
+      "den": 98,
+      "ci95": [
+       0.0792,
+       0.2138
+      ]
+     },
+     "workspaces": 98,
+     "endings": {
+      "early_report": 85,
+      "report_at_limit": 13,
+      "truncated_at_limit": 0,
+      "auto_report_other": 0,
+      "no_report": 0,
+      "self_report_limit_unknown": 0
+     },
+     "limit_unknown": 0,
+     "early_report_on_report_only_turn": 41,
+     "max_turns": {
+      "12": 98
+     },
+     "max_turns_sources": {
+      "trajectory.runtime_constraints": 98
+     }
+    }
+   },
+   "baseline": null
+  },
+  "dev_eval4": {
+   "after": {
+    "workspace_steps": {
+     "n": 15,
+     "min": 4,
+     "p25": 8.0,
+     "p50": 10.0,
+     "p75": 11.0,
+     "p90": 12.0,
+     "max": 12,
+     "mean": 9.2,
+     "histogram": {
+      "4": 2,
+      "6": 1,
+      "8": 2,
+      "9": 1,
+      "10": 3,
+      "11": 3,
+      "12": 3
+     }
+    },
+    "early_report": {
+     "early_report_rate": {
+      "value": 0.8,
+      "num": 12,
+      "den": 15,
+      "ci95": [
+       0.5481,
+       0.9295
+      ]
+     },
+     "truncated_at_limit_rate": {
+      "value": 0.0,
+      "num": 0,
+      "den": 15,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "report_at_limit_rate": {
+      "value": 0.2,
+      "num": 3,
+      "den": 15,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "workspaces": 15,
+     "endings": {
+      "early_report": 12,
+      "report_at_limit": 3,
+      "truncated_at_limit": 0,
+      "auto_report_other": 0,
+      "no_report": 0,
+      "self_report_limit_unknown": 0
+     },
+     "limit_unknown": 0,
+     "early_report_on_report_only_turn": 5,
+     "max_turns": {
+      "12": 15
+     },
+     "max_turns_sources": {
+      "trajectory.runtime_constraints": 15
+     }
+    }
+   },
+   "baseline": null
+  },
+  "round:r0base-s1": {
+   "after": {
+    "workspace_steps": {
+     "n": 58,
+     "min": 3,
+     "p25": 7.0,
+     "p50": 10.0,
+     "p75": 11.0,
+     "p90": 11.3,
+     "max": 12,
+     "mean": 9.02,
+     "histogram": {
+      "3": 1,
+      "5": 4,
+      "6": 6,
+      "7": 6,
+      "8": 6,
+      "9": 3,
+      "10": 11,
+      "11": 15,
+      "12": 6
+     }
+    },
+    "early_report": {
+     "early_report_rate": {
+      "value": 0.8966,
+      "num": 52,
+      "den": 58,
+      "ci95": [
+       0.7921,
+       0.9517
+      ]
+     },
+     "truncated_at_limit_rate": {
+      "value": 0.0,
+      "num": 0,
+      "den": 58,
+      "ci95": [
+       0.0,
+       0.0621
+      ]
+     },
+     "report_at_limit_rate": {
+      "value": 0.1034,
+      "num": 6,
+      "den": 58,
+      "ci95": [
+       0.0483,
+       0.2079
+      ]
+     },
+     "workspaces": 58,
+     "endings": {
+      "early_report": 52,
+      "report_at_limit": 6,
+      "truncated_at_limit": 0,
+      "auto_report_other": 0,
+      "no_report": 0,
+      "self_report_limit_unknown": 0
+     },
+     "limit_unknown": 0,
+     "early_report_on_report_only_turn": 25,
+     "max_turns": {
+      "12": 58
+     },
+     "max_turns_sources": {
+      "trajectory.runtime_constraints": 58
+     }
+    }
+   },
+   "baseline": null
+  },
+  "round:r0base-s2": {
+   "after": {
+    "workspace_steps": {
+     "n": 55,
+     "min": 2,
+     "p25": 8.0,
+     "p50": 11.0,
+     "p75": 11.0,
+     "p90": 12.0,
+     "max": 12,
+     "mean": 9.36,
+     "histogram": {
+      "2": 1,
+      "4": 5,
+      "5": 2,
+      "6": 4,
+      "7": 1,
+      "8": 2,
+      "9": 4,
+      "10": 6,
+      "11": 20,
+      "12": 10
+     }
+    },
+    "early_report": {
+     "early_report_rate": {
+      "value": 0.8182,
+      "num": 45,
+      "den": 55,
+      "ci95": [
+       0.6967,
+       0.8981
+      ]
+     },
+     "truncated_at_limit_rate": {
+      "value": 0.0,
+      "num": 0,
+      "den": 55,
+      "ci95": [
+       0.0,
+       0.0653
+      ]
+     },
+     "report_at_limit_rate": {
+      "value": 0.1818,
+      "num": 10,
+      "den": 55,
+      "ci95": [
+       0.1019,
+       0.3033
+      ]
+     },
+     "workspaces": 55,
+     "endings": {
+      "early_report": 45,
+      "report_at_limit": 10,
+      "truncated_at_limit": 0,
+      "auto_report_other": 0,
+      "no_report": 0,
+      "self_report_limit_unknown": 0
+     },
+     "limit_unknown": 0,
+     "early_report_on_report_only_turn": 21,
+     "max_turns": {
+      "12": 55
+     },
+     "max_turns_sources": {
+      "trajectory.runtime_constraints": 55
+     }
+    }
+   },
+   "baseline": null
+  }
+ },
+ "notes": {
+  "runs_complete": "48/48",
+  "failed_after_requeue": 0,
+  "killed_by_watchdog": 7,
+  "killed_runs": [
+   "752166",
+   "752172",
+   "752173",
+   "752174",
+   "753778",
+   "753781",
+   "753784"
+  ],
+  "watchdog_limit_changes": [
+   {
+    "from": "2026-10-19T16:41",
+    "limit_s": 1800
+   },
+   {
+    "from": "2026-10-19T17:20:03",
+    "limit_s": 3600
+   }
+  ],
+  "killed_completed_after_requeue": {
+   "752166": false,
+   "752172": false,
+   "752173": false,
+   "752174": false,
+   "753778": false,
+   "753781": false,
+   "753784": false
+  },
+  "runs_over_45_min": [
+   {
+    "run": "evid_video_009_r0base-s1_1",
+    "wall_s": 3409.3
+   },
+   {
+    "run": "evid_video_002_r0base-s2_1",
+    "wall_s": 3212.6
+   },
+   {
+    "run": "evid_video_029_r0base-s1_1",
+    "wall_s": 2946.1
+   },
+   {
+    "run": "evid_video_022_r0base-s2_1",
+    "wall_s": 2936.6
+   }
+  ],
+  "other_requeued": "averitec_2799 / averimatec_441 两种子 4 个 run：第一遍 ModuleNotFoundError source_policy（code-only 副本漏了 experiments/sft_data/*.py），18:20 补推后重排全部完成",
+  "exceptions": [
+   "vcsl_pair_4：服务器缺 experiments/sft_data/search_snapshots/vcsl_pair_4/usage/ 下两份计数全 0 的旧 usage 日志；seed 本来就 created_empty，两个 run 都没检索；负责人定记为例外、不重跑"
+  ],
+  "thread_caps": "16:40 起 OMP / MKL / OpenBLAS = 4、torch 4、rapidocr onnxruntime 2 / 1（只影响速度）",
+  "metrics_fix": "behavior_metrics.wilson：k > n 不算 CI（报告项 compare_rate_of_acquired 第一次 metrics 崩溃），四个登记指标不变；metrics_script 重新登记 0bec67e4…",
+  "anchors_check": "④ 格式拒率 3.4% 低于最好的锚点 4.5%（27B evidF27）；分数 50.0% 比 27B 锚点 49.4% 高 0.6 个点（95% 区间 42–58%）。负责人规则③：停下来等负责人",
+  "lock": {
+   "sha256": "f6ef05e76521965070cb771c824d26b1724744ca76f1872a1fa698069f8b4bf2",
+   "as_of": "2026-10-19T19:04:13",
+   "index_lines": 3337
+  },
+  "runs_complete_source": "按 run 目录（result.json + execution_links.json）数；evid_video_015_r0base-s2_1 在 16:37:42 写完 result.json，16:40 加线程上限重启时外层进程被停，没写进 run_manifests（墙钟不详，超 45 分钟名单里没有它）"
+ },
+ "provenance": {
+  "server_code": {
+   "commit": "c3d9ca88b9f0082c9ec7d00656a836e0f30f88d6",
+   "describe": "sft0-frozen-2-8-gc3d9ca8",
+   "relation_to_tag": "sft0-frozen-2（c2eaa06）之后 8 个提交；src/ 一个都没改（tool_layer / walker / 核验器 / 规格与 tag 相同）",
+   "commits_after_tag": [
+    {
+     "commit": "ae77e2a",
+     "date": "2026-10-19T20:41+0800",
+     "subject": "sft0 定稿第 2 版报告：sft0-20261019-4b79e1ed432f（HI 3369 / GIA 273）、tag sft0-frozen-2；hold 明细（四包同口径 107、第 2 轮派工 14、l124 1、A006 1；premise_smuggling 18 全留）；冻结改判与 teacher_role 补；B2 分层抽查 0 误扣；门族口径修正后两处门（并集 C2 按权重 50.9% 不通过的说明）；教学矩阵；训练配置；tar 解开后 --verify；r2 核验器待办（plan 层要看 GIA 附图与卡片）",
+     "files": [
+      "claude/sft0定稿与三包合一_20261019.md"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "c78a12f",
+     "date": "2026-10-19T20:50+0800",
+     "subject": "sft0 第 2 版报告：并集 C2 只报不判（负责人 10-19 定：并集没降权、没 hold，不是训进去的东西；有效力的是训练行那套门）",
+     "files": [
+      "claude/sft0定稿与三包合一_20261019.md"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "fd02dcb",
+     "date": "2026-10-20T00:03+0800",
+     "subject": "eval: sft0_eval_v1 口径 + 训后 describer 修复",
+     "files": [
+      "experiments/eval/r0/eval_config.json",
+      "experiments/sft_data/cases/averimatec_441.json",
+      "experiments/sft_data/cases/averitec_2799.json",
+      "experiments/sft_data/cases/qvhighlights_1.json",
+      "experiments/sft_data/cases/vcsl_pair_4.json",
+      "scripts/behavior_metrics.py",
+      "scripts/eval_r0.py",
+      "server/11_loop_layout.sh",
+      "server/12_add_lora.sh",
+      "server/13_train_queue.sh",
+      "server/21_e2_eval.sh",
+      "server/22_mem_probe.py",
+      "server/23_tokenizer_parity.py",
+      "server/jobs/vast1_sft0_s1.txt",
+      "server/jobs/vast1_sft0_s2.txt",
+      "server/loop_env.sh",
+      "server/sync_vast.sh",
+      "server/vast1_env.sh",
+      "tests/test_behavior_metrics_20261015.py",
+      "tests/test_behavior_metrics_20261019.py"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "e266533",
+     "date": "2026-10-20T00:23+0800",
+     "subject": "eval: 提交 eval_set.json、success_criteria.json、anchors/（sft0_eval_v1 登记的文件）",
+     "files": [
+      "experiments/eval/r0/anchors/evidF27.json",
+      "experiments/eval/r0/anchors/evidF27.md",
+      "experiments/eval/r0/anchors/evidF8.json",
+      "experiments/eval/r0/anchors/evidF8.md",
+      "experiments/eval/r0/anchors/evidb12bf.json",
+      "experiments/eval/r0/anchors/evidb12bf.md",
+      "experiments/eval/r0/anchors/evidsA8.json",
+      "experiments/eval/r0/anchors/evidsA8.md",
+      "experiments/eval/r0/eval_set.json",
+      "experiments/eval/r0/success_criteria.json"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "5fb49c9",
+     "date": "2026-10-20T00:46+0800",
+     "subject": "server: requirements.lock（Vast 单卡 H200 的 /venv/main 与 vLLM 环境 pip freeze）+ 说明",
+     "files": [
+      "server/requirements.lock.md",
+      "server/requirements.lock.txt",
+      "server/requirements.vllm.lock.txt"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "5d69404",
+     "date": "2026-10-20T01:31+0800",
+     "subject": "server / training：断点续训、resume.sh、备份、看门狗、线程上限；服务器搭建报告（进行中）",
+     "files": [
+      "claude/服务器搭建与第一次SFT_20261019.md",
+      "experiments/eval/r0/eval_config.json",
+      "server/21_e2_eval.sh",
+      "server/24_run_time_breakdown.py",
+      "server/backup_pull.sh",
+      "server/e2_watchdog.sh",
+      "server/jobs/vast1_sft0_s1.txt",
+      "server/jobs/vast1_sft0_s2.txt",
+      "server/resume.sh",
+      "training/sft_lora.py"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "8c11688",
+     "date": "2026-10-20T01:38+0800",
+     "subject": "training / server：可选 attn_implementation 与 Liger（显存 / 速度探针用），探针四个变体，时间分解按 run 列 token 与模型 / 工具占比",
+     "files": [
+      "server/22_mem_probe.py",
+      "server/24_run_time_breakdown.py",
+      "training/sft_lora.py"
+     ],
+     "touches_src": false
+    },
+    {
+     "commit": "c3d9ca8",
+     "date": "2026-10-20T02:27+0800",
+     "subject": "training / eval / server：runtime 段加载、线性注意力内核实况、训后回放口径与换机前置条件、代码一致性核对脚本",
+     "files": [
+      "experiments/eval/r0/eval_config.json",
+      "server/code_parity.py",
+      "training/sft_lora.py"
+     ],
+     "touches_src": false
+    }
+   ]
+  },
+  "parity_check": {
+   "script": "server/code_parity.py",
+   "manifest": "experiments/eval/r0/reports/parity_c3d9ca8_manifest.tsv",
+   "result": "experiments/eval/r0/reports/parity_c3d9ca8.json",
+   "tracked": 4718,
+   "same": 1886,
+   "different": 0,
+   "extra": 0,
+   "missing": 2832,
+   "missing_mb": 694.2,
+   "missing_by_top": {
+    "_trash_20260924": 1339,
+    "experiments": 1059,
+    "docs": 400,
+    "(root)": 28,
+    "Claude outputs": 4,
+    ".github": 1,
+    "_archive": 1
+   },
+   "missing_under_code_paths": 0,
+   "code_paths_checked": [
+    "src/",
+    "scripts/",
+    "specs/",
+    "training/",
+    "configs/",
+    "server/",
+    "tests/",
+    "experiments/eval/",
+    "experiments/sft_data/cases/",
+    "pyproject.toml"
+   ],
+   "missing_code_extension_files": {
+    "total": 993,
+    "_trash_20260924": 669,
+    "docs/01_早期探索_已放弃": 317,
+    "experiments/image_search_probe_20261016": 5,
+    ".github/workflows": 1
+   },
+   "accepted_by": "负责人 10-19：缺的是不部署的非代码 tracked 文件（gold_set 媒体、旧导出 / 离线 run / 快照、docs、_trash、_archive、根目录日志）；代码里对 docs/ 的引用只在 docstring"
+  },
+  "baseline_run_code": {
+   "src": "= sft0-frozen-2（全程未改）",
+   "eval_launcher": "scripts/eval_r0.py sha256 b272291f…（含 describer_env 与 --image-search off），15:39 起跑前已在服务器",
+   "late_addition": "18:20 补推 tag 里的 experiments/sft_data/*.py（code-only 副本漏了；source_policy.py 缺失使 dev_eval 的 averitec_2799 / averimatec_441 两种子 4 个 run 1 s 失败，重排时重跑；EVID 20 个案例 source_policy.mode = unrestricted，不 import，不受影响）"
+  },
+  "notes": [
+   "vcsl_pair_4：服务器缺 experiments/sft_data/search_snapshots/vcsl_pair_4/usage/ 下两份计数全 0 的旧 usage 日志（不是快照内容，没有 index.jsonl）；seed 本来就 created_empty，结果相同——负责人定记为例外、不重跑"
+  ]
+ }
+}

@@ -76,7 +76,7 @@ def _sha256_file(path: Path) -> str | None:
 
 
 def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float] | None:
-    if n <= 0:
+    if n <= 0 or k < 0 or k > n:      # 10-19：比值 > 1 时（如 compare_rate_of_acquired：比对过的候选不一定是取到的）不是比例，没有 CI
         return None
     p = k / n
     centre = (p + z * z / (2 * n)) / (1 + z * z / n)

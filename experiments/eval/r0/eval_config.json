@@ -36,6 +36,10 @@
   {
    "date": "2026-10-19",
    "what": "search.machine_change_precondition：换机前置条件（TZ = Etc/UTC、时钟偏差 ≤ 2 s、带上锁定的评测快照），负责人 10-19 定"
+  },
+  {
+   "date": "2026-10-19",
+   "what": "19:35 behavior_metrics.wilson：k > n 时不算 CI（返回 None）。基线 metrics 第一次跑崩在报告项 compare_rate_of_acquired（compared > acquired，p > 1 开方为负；tag 版本就有这行）；四个登记指标（open / compare / repeat / format_reject）分子不会超过分母，定义与数值不变；metrics_script 重新登记 8b02d01086d3… → 0bec67e4ae15…；训后用同一份脚本"
   }
  ],
  "eval_set": "experiments/eval/r0/eval_set.json",
@@ -166,7 +170,7 @@
   "after_sft": "同一底座挂 sft0（sft0-20261019-4b79e1ed432f）的两套 LoRA：--model HI=hi_sft0_s<种子>,GIA=gia_sft0_s<种子>（server/12_add_lora.sh 的登记名；先只训种子 1：HI=hi_sft0_s1,GIA=gia_sft0_s1）"
  },
  "registered_hashes": {
-  "metrics_script": "sha256:8b02d01086d302c52a4f7a6d8409a98381c24716c5e1e6949cf966e8cdcf8c29",
+  "metrics_script": "sha256:0bec67e4ae15cc650ea73246c683dac09755156a81ba623792bff416546368a6",
   "launcher": "sha256:b272291f48e91bf2c73ee0f1da5ba01c158fc3cddb12c69198dc87060776bd43",
   "evid_scorer": "sha256:34a8ad5a01f9f17881855f2c245131aa9400f26633877dd4394c9d57e91693b7",
   "dev_verifier": "sha256:e86400656dbbb4cdc60c2ac3cf4f382fe151e29af67e13bc74a4a22fbe184386",
