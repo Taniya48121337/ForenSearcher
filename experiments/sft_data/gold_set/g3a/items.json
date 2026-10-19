@@ -1,0 +1,1165 @@
+{
+ "meta": {
+  "batch": "g3a",
+  "seed": "20261019g3",
+  "report_verdicts": "verdicts_r1g3_judged.claude-cli-claude-sonnet-5-5.80runs-be437e21.jsonl",
+  "unit_verdicts": "units_a_answers.jsonl",
+  "counts": {
+   "finding": 15,
+   "answer": 5,
+   "plan": 0
+  }
+ },
+ "items": [
+  {
+   "id": "F001",
+   "kind": "finding",
+   "run": "fmnv_fv_cBWdFgsqyVU_r1g3_1",
+   "case_id": "fmnv:fv_cBWdFgsqyVU",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "statement": "The source video found is “US Election 2024 | Trump Warns Election 'Cheaters' Ahead Of Debate With Kamala Harris”, https://www.youtube.com/watch?v=cBWdFgsqyVU. Its recorded upload date is 2024-09-09. The comparison found 92% of Material A's half-second picture samples in this source. Material A is 51.640 s long; the source is 95.411 s long. The comparison establishes that Material A differs from this source.",
+   "limitations": [
+    "The upload date establishes when this copy appeared, not whether it was the earliest upload.",
+    "The 92% figure measures sampled picture correspondence, not frame-by-frame identity."
+   ],
+   "evidence": [
+    {
+     "id": "E39",
+     "label": "dates of https://www.youtube.com/watch?v=cBWdFgsqyVU",
+     "source_url": "https://www.youtube.com/watch?v=cBWdFgsqyVU",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=cBWdFgsqyVU:\n- platform upload date: 2024-09-09 (channel: NDTV) — when this upload was posted; an earlier copy may exist on another account or site"
+    },
+    {
+     "id": "E26",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 92% of A's half-second samples are found in B (A 52 s, B 95 s; the matched footage lies in B 0-91 s).\",\"Not in B: A 1.3-4.2 s (3.0 s); B continues from 1.0 s to 9.5 s around it, so it replaces about 8.5 s of B. Say what it shows and whether it belongs with the footage around it.\",\"Sound: A 4.5-11.5 s: the sound differs from B's sound at the same moment (B 9.5-16.5 s; spectral similarity 0.06).\",\"Sound: A 12.0-15.0 s: the sound differs from B's sound at the same moment (B 22.2-25.3 s; spectral similarity 0.12).\",\"Sound: A 16.5-20.5 s: the sound differs from B's sound at the same moment (B 32.6-36.7 s; spectral similarity 0.09).\",\"Sound: A 21.0-35.5 s: the sound differs from B's sound at the same moment (B 39.8-54.4 s; spectral similarity 0.02).\",\"Sound: A 36.0-38.5 s: the sound differs from B's sound at the same moment (B 57.6-60.1 s; spectral similarity 0.04).\",\"Sound: A 38.0-42.5 s: A is silent where B has sound at the same moment (B 59.6-64.1 s; spectral similarity 0.0).\",\"Missing from A: B 1.0-9.5 s (8.5 s) is skipped at A 2.7 s (A continues straight from before it to after it).\",\"Missing from A: B 16.5-22.2 s (5.7 s) is skipped at A 11.8 s (A continues straight from before it to after it).\",\"Missing from A: B 25.4-32.6 s (7.2 s) is skipped at A 15.7 s (A continues straight from before it to after it).\",\"Missing from A: B 36.7-39.8 s (3.1 s) is skipped at A 20.7 s (A continues straight from before it to after it).\",\"Missing from A: B 54.4-57.6 s (3.2 s) is skipped at A 35.8 s (A continues straight from before it to after it).\",\"Missing from A: B 64.1-68.3 s (4.2 s) is skipped at A 42.7 s (A continues straight from before it to after it).\",\"Missing from A: B 72.3-77.7 s (5.4 s) is skipped at A 47.3 s (A continues straight from before it to after it).\",\"Missing from A: B 79.9-89.6 s (9.7 s) is skipped at A 49.8 s (A continues straight from before it to after it).\",\"9 other face track(s) match B (median similarity 0.98, 0.97, 0.95, 0.99).\"],\"corresponding_spans\":[\"A 4.2-11.8 s = B 9.5-16.5 s\",\"A 11.8-15.2 s = B 22.2-25.4 s\",\"A 16.2-20.7 s = B 32.6-36.7 s\",\"A 20.8-35.8 s = B 39.8-54.4 s\",\"A 35.8-42.7 s = B 57.6-64.1 s\",\"A 42.8-47.2 s = B 68.3-72.3 s\"],\"images\":[{\"evidence_id\":\"E25\",\"caption\":\"A 1.3-4.2 s has no counterpart in B: two frames from A, then B at 1.0 s for context\"}],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E2",
+     "label": "media profile: video, 51.640 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源材料：A（E1 → media profile: video, 51.640 s, 1280×720…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":51.64,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":25.0,\"frame_count\":1291,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    },
+    {
+     "id": "E24",
+     "label": "media profile: video, 95.411 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源：外部网页 youtube.com（E23 → media profile: video, 95.411 s, 1280×720…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":95.411,\"format\":\"matroska,webm\",\"fps\":25.0,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    }
+   ]
+  },
+  {
+   "id": "F002",
+   "kind": "finding",
+   "run": "groundlie360_a_2122600_r1g3_1",
+   "case_id": "groundlie360:a_2122600",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "statement": "The source video found is “Banana Kiwi Fruit | Kin Community,” https://www.youtube.com/watch?v=8rn08tINChA. The comparison reports that it contains 100% of Material A’s half-second picture samples. The date lookup records upload on 2014-04-01 and first archive capture on 2014-04-02.",
+   "limitations": [
+    "These dates establish when this copy appeared, not that it was the earliest upload. The correspondence is supported by the comparison tool; paired source frames were not visually examined."
+   ],
+   "evidence": [
+    {
+     "id": "E25",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 59 s, B 235 s; the matched footage lies in B 128-187 s).\",\"A uses B 128-187 s only; the rest of B (235 s in all) is not in A.\",\"2 other face track(s) match B (median similarity 0.9, 0.7).\"],\"corresponding_spans\":[\"A 0.0-4.3 s = B 128.1-131.6 s\",\"A 4.3-59.2 s = B 132.5-187.0 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E26",
+     "label": "dates of https://www.youtube.com/watch?v=8rn08tINChA",
+     "source_url": "https://www.youtube.com/watch?v=8rn08tINChA",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=8rn08tINChA:\n- platform upload date: 2014-04-01 (channel: Kin) — when this upload was posted; an earlier copy may exist on another account or site\n- earliest Internet Archive capture of this page: 2014-04-02 (https://web.archive.org/web/20140402013830/http://www.youtube.com/watch?v=8rn08tINChA&gl=US&hl=en); the page existed no later than this date, which is not a publication date"
+    }
+   ]
+  },
+  {
+   "id": "F003",
+   "kind": "finding",
+   "run": "fmnv_a_9h6JM0n1Zu4_r1g3_1",
+   "case_id": "fmnv:a_9h6JM0n1Zu4",
+   "workspace": "W1-1",
+   "finding_id": "F4",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "statement": "The established scope is a dated source copy, sampled picture correspondence, reported omission and replacement spans, regional differences, and two measured sound-difference intervals. These support an edited relationship between Material A and the source found, at the comparison’s stated precision.",
+   "limitations": [
+    "Earliest publication, the complete edit sequence, the identities of objects within flagged regions, and the origin of unmatched footage could not be determined.",
+    "The sampled frames do not verify continuous content between their timestamps; no side-by-side visual description is asserted from frame labels alone.",
+    "Frame-exact edit boundaries and a complete semantic comparison of both audio tracks were not established.",
+    "The evidence does not establish whether the unmatched footage or regional changes were generated with AI."
+   ],
+   "evidence": [
+    {
+     "id": "E54",
+     "label": "dates of https://www.youtube.com/watch?v=NGow8xJ2RZY",
+     "source_url": "https://www.youtube.com/watch?v=NGow8xJ2RZY",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=NGow8xJ2RZY:\n- platform upload date: 2024-07-30 (channel: LARRY with Larry O'Connor) — when this upload was posted; an earlier copy may exist on another account or site"
+    },
+    {
+     "id": "E48",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E40 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 66% of A's half-second samples are found in B (A 48 s, B 1419 s; the matched footage lies in B 44-86 s).\",\"Matched after warping B onto A's framing (A shows B cropped, scaled, letterboxed or framed differently).\",\"A uses B 44-86 s only; the rest of B (1419 s in all) is not in A.\",\"Not in B: A 20.7-23.7 s (3.0 s); B continues from 63.5 s to 75.0 s around it, so it replaces about 11.5 s of B. Say what it shows and whether it belongs with the footage around it.\",\"Not in B: A 35.3-47.8 s (12.5 s). Say what it shows and whether it belongs with the footage around it.\",\"Changed region: A 1.2-20.3 s, x 0.94-0.99 y 0.02-0.11 (0.4% of the frame) differs from B at the same moment in 20 samples while the rest of the frame matches: an object there was replaced, added or altered (typical of AI video editing); name the object in B and what A shows instead.\",\"Changed region: A 26.3-34.2 s, x 0.05-0.94 y 0.91-0.98 (2.9% of the frame) differs from B at the same moment in 7 samples while the rest of the frame matches: an object there was replaced, added or altered (typical of AI video editing); name the object in B and what A shows instead.\",\"Changed region: A 24.3-35.2 s, x 0.95-0.99 y 0.02-0.11 (0.4% of the frame) differs from B at the same moment in 12 samples while the rest of the frame matches: an object there was replaced, added or altered (typical of AI video editing); name the object in B and what A shows instead.\",\"Changed region: A 29.3-30.3 s, x 0.80-0.93 y 0.93-0.98 (0.3% of the frame) differs from B at the same moment in 2 samples while the rest of the frame matches: an object there was replaced, added or altered (typical of AI video editing); name the object in B and what A shows instead.\",\"Sound: A 1.0-4.5 s: the sound differs from B's sound at the same moment (B 44.0-47.5 s; spectral similarity 0.41).\",\"Sound: A 4.5-13.5 s: the sound differs from B's sound at the same moment (B 47.5-56.5 s; spectral similarity 0.43).\",\"Sound: A 15.5-17.0 s: the sound differs from B's sound at the same moment (B 58.5-60.0 s; spectral similarity 0.47).\",\"Sound: A 25.0-27.0 s: the sound differs from B's sound at the same moment (B 76.0-78.0 s; spectral similarity 0.51).\",\"Sound: A 27.0-28.5 s: the sound differs from B's sound at the same moment (B 78.0-79.5 s; spectral similarity 0.44).\",\"Sound: A 29.5-31.0 s: the sound differs from B's sound at the same moment (B 80.5-82.0 s; spectral similarity 0.54).\",\"Missing from A: B 63.5-75.0 s (11.5 s) is skipped at A 22.2 s (A continues straight from before it to after it).\",\"1 short span(s) under 3 s align with B at another speed or backwards (usually imprecise alignment around a cut, not an edit): A 19.2-20.7 s.\",\"2 other face track(s) match B (median similarity 0.93, 0.7).\"],\"corresponding_spans\":[\"A 0.8-13.8 s = B 44.0-56.5 s\",\"A 14.8-19.2 s = B 58.0-62.0 s\",\"A 23.7-35.3 s = B 75.0-86.0 s\"],\"images\":[{\"evidence_id\":\"E42\",\"caption\":\"A 20.7-23.7 s has no counterpart in B: two frames from A, then B at 63.5 s for context\"},{\"evidence_id\":\"E43\",\"caption\":\"A 35.3-47.8 s has no counterpart in B: two frames from A, then B at 86.0 s for context\"},{\"evidence_id\":\"E44\",\"caption\":\"A 1.2-20.3 s: region in red differs from B at the same moment (top: whole frames A | B; bottom: enlarged A | B)\"},{\"evidence_id\":\"E45\",\"caption\":\"A 26.3-34.2 s: region in red differs from B at the same moment (top: whole frames A | B; bottom: enlarged A | B)\"},{\"evidence_id\":\"E46\",\"caption\":\"A 24.3-35.2 s: region in red differs from B at the same moment (top: whole frames A | B; bottom: enlarged A | B)\"},{\"evidence_id\":\"E47\",\"caption\":\"A 29.3-30.3 s: region in red differs from B at the same moment (top: whole frames A | B; bottom: enlarged A | B)\"}],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    }
+   ]
+  },
+  {
+   "id": "F004",
+   "kind": "finding",
+   "run": "fmnv_a_8HI3SGzxu2Q_r1g3_1",
+   "case_id": "fmnv:a_8HI3SGzxu2Q",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "statement": "The source video found is “NASA, SpaceX launch capsule to bring home Starliner astronauts,” https://www.youtube.com/watch?v=8HI3SGzxu2Q, uploaded on 2024-09-28. The comparison against this source found matches for 100% of Material A’s half-second picture samples and identified omitted footage.",
+   "limitations": [
+    "The upload date establishes when this copy was published, not whether it was the earliest upload.",
+    "The picture-match percentage describes sampled correspondence, not verification of every frame."
+   ],
+   "evidence": [
+    {
+     "id": "E24",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E22 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 125 s, B 145 s; the matched footage lies in B 0-143 s).\",\"Sound: A 61.0-62.5 s: the sound differs from B's sound at the same moment (B 80.1-81.6 s; spectral similarity 0.5).\",\"Sound: A 63.5-67.5 s: the sound differs from B's sound at the same moment (B 82.6-86.6 s; spectral similarity 0.51).\",\"Sound: A 68.5-70.0 s: the sound differs from B's sound at the same moment (B 87.6-89.1 s; spectral similarity 0.54).\",\"Sound: A 70.0-73.0 s: the sound differs from B's sound at the same moment (B 89.1-92.0 s; spectral similarity 0.5).\",\"Sound: A 79.0-80.5 s: the sound differs from B's sound at the same moment (B 98.0-99.5 s; spectral similarity 0.52).\",\"Sound: A 84.0-89.0 s: the sound differs from B's sound at the same moment (B 102.9-107.9 s; spectral similarity 0.51).\",\"Missing from A: B 59.9-80.1 s (20.3 s) is skipped at A 60.7 s (A continues straight from before it to after it).\",\"1 other face track(s) match B (median similarity 0.97).\"],\"corresponding_spans\":[\"A 0.0-60.7 s = B 0.0-59.9 s\",\"A 60.7-124.7 s = B 80.1-143.1 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E31",
+     "label": "dates of https://www.youtube.com/watch?v=8HI3SGzxu2Q",
+     "source_url": "https://www.youtube.com/watch?v=8HI3SGzxu2Q",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=8HI3SGzxu2Q:\n- platform upload date: 2024-09-28 (channel: ABC News) — when this upload was posted; an earlier copy may exist on another account or site\n- note: Internet Archive lookup for the page failed: source hostname could not be resolved"
+    }
+   ]
+  },
+  {
+   "id": "F005",
+   "kind": "finding",
+   "run": "fmnv_fv_f82ltBGY52g_r1g3_1",
+   "case_id": "fmnv:fv_f82ltBGY52g",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "statement": "The source video found is FRANCE 24’s “USA 2024 presidential election: Trump wins Arizona, sweeping all seven swing states,” https://www.youtube.com/watch?v=f82ltBGY52g. The comparison reports that 100% of Material A’s half-second picture samples occur in this source. Material A is 55.920 seconds long; the source is 110.480 seconds long. The date lookup records upload and first archive dates of 2024-11-10.",
+   "limitations": [
+    "The matching samples establish a source relationship, not that every pixel or intervening frame is unchanged.",
+    "The upload and archive dates do not establish that this was the earliest publication."
+   ],
+   "evidence": [
+    {
+     "id": "E25",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 56 s, B 110 s; the matched footage lies in B 2-110 s).\",\"Sound: A 0.0-24.5 s: the sound differs from B's sound at the same moment (B 1.6-26.2 s; spectral similarity 0.06).\",\"Sound: A 25.0-43.5 s: the sound differs from B's sound at the same moment (B 45.1-63.9 s; spectral similarity 0.04).\",\"Sound: A 44.0-46.5 s: the sound differs from B's sound at the same moment (B 69.5-72.0 s; spectral similarity 0.09).\",\"Sound: A 47.0-49.0 s: the sound differs from B's sound at the same moment (B 75.5-77.4 s; spectral similarity 0.14).\",\"Sound: A 49.5-53.0 s: the sound differs from B's sound at the same moment (B 99.0-102.6 s; spectral similarity 0.08).\",\"Sound: A 53.5-55.5 s: the sound differs from B's sound at the same moment (B 108.0-110.0 s; spectral similarity 0.2).\",\"Missing from A: B 26.2-45.1 s (18.8 s) is skipped at A 24.7 s (A continues straight from before it to after it).\",\"Missing from A: B 63.9-69.5 s (5.6 s) is skipped at A 43.8 s (A continues straight from before it to after it).\",\"Missing from A: B 72.0-75.5 s (3.5 s) is skipped at A 46.7 s (A continues straight from before it to after it).\",\"Missing from A: B 77.4-99.0 s (21.6 s) is skipped at A 49.3 s (A continues straight from before it to after it).\",\"Missing from A: B 102.6-108.0 s (5.4 s) is skipped at A 53.3 s (A continues straight from before it to after it).\",\"10 other face track(s) match B (median similarity 0.99, 0.88, 0.91, 0.84).\"],\"corresponding_spans\":[\"A 0.0-24.7 s = B 1.6-26.2 s\",\"A 24.8-43.8 s = B 45.1-63.9 s\",\"A 49.3-53.2 s = B 99.0-102.6 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E2",
+     "label": "media profile: video, 55.920 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源材料：A（E1 → media profile: video, 55.920 s, 1280×720…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":55.92,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":25.0,\"frame_count\":1398,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    },
+    {
+     "id": "E24",
+     "label": "media profile: video, 110.480 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源：外部网页 youtube.com（E23 → media profile: video, 110.480 s, 1280×72…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":110.48,\"format\":\"matroska,webm\",\"fps\":25.0,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    },
+    {
+     "id": "E38",
+     "label": "dates of https://www.youtube.com/watch?v=f82ltBGY52g",
+     "source_url": "https://www.youtube.com/watch?v=f82ltBGY52g",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=f82ltBGY52g:\n- platform upload date: 2024-11-10 (channel: FRANCE 24 English) — when this upload was posted; an earlier copy may exist on another account or site\n- earliest Internet Archive capture of this page: 2024-11-10 (https://web.archive.org/web/20241110230205/https://www.youtube.com/watch?si=S0GnCkS7NqtAEiip&v=f82ltBGY52g&feature=youtu.be); the page existed no later than this date, which is not a publication date"
+    }
+   ]
+  },
+  {
+   "id": "F006",
+   "kind": "finding",
+   "run": "qvhighlights_610_r1g3_1",
+   "case_id": "qvhighlights:610",
+   "workspace": "W1-1",
+   "finding_id": "F2",
+   "task": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: A man in yellow is getting and trying an expresso shot.",
+   "statement": "The supported approximate localization is 17.067–40.0 s, including the espresso close-ups at 35.5 s and 37.0 s. The man in yellow remains with the cup at 40.0 s, so this is a supported scene window rather than an established complete event interval.",
+   "limitations": [
+    "The final endpoint is not established; 40.0 s is a matching observation, not evidence that the sequence ends then.",
+    "Intervals between sampled frames were not continuously verified."
+   ],
+   "evidence": [
+    {
+     "id": "E25",
+     "label": "frame of video E1 at 17.067 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 17.067 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":17.07,\"time_s\":17.066666666666666}",
+     "image": "media/qvhighlights_610_r1g3_1_E25.jpg"
+    },
+    {
+     "id": "E26",
+     "label": "frame of video E1 at 34.500 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 34.500 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":34.5,\"time_s\":34.5}",
+     "image": "media/qvhighlights_610_r1g3_1_E26.jpg"
+    },
+    {
+     "id": "E27",
+     "label": "frame of video E1 at 35.500 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 35.500 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":35.5,\"time_s\":35.5}",
+     "image": "media/qvhighlights_610_r1g3_1_E27.jpg"
+    },
+    {
+     "id": "E22",
+     "label": "frame of video E1 at 37.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 37.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":37.0,\"time_s\":37.0}",
+     "image": "media/qvhighlights_610_r1g3_1_E22.jpg"
+    },
+    {
+     "id": "E23",
+     "label": "frame of video E1 at 40.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 40.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03333333333333333,\"requested_time_s\":40.0,\"time_s\":40.0}",
+     "image": "media/qvhighlights_610_r1g3_1_E23.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F007",
+   "kind": "finding",
+   "run": "qvhighlights_606_r1g3_1",
+   "case_id": "qvhighlights:606",
+   "workspace": "W1-1",
+   "finding_id": "F3",
+   "task": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Man sits on a bench while a woman is talking.",
+   "statement": "Localization remains uncertain: the inspected frame at 105.138 s shows a narrow gap between cars, the frame at 106.139 s shows people standing on the sidewalk, and frames at 123.557 s and 124.558 s show standing men.",
+   "limitations": [
+    "Sampled instants do not establish the content throughout intervening intervals.",
+    "The 29.970 fps video frame rate does not make the sampled probes exact event boundaries.",
+    "Audio was not transcribed; whether a woman is talking during a matching bench scene remains unverified."
+   ],
+   "evidence": [
+    {
+     "id": "E24",
+     "label": "frame of video E1 at 105.138 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 105.138 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":105.14,\"time_s\":105.13836666666667}",
+     "image": "media/qvhighlights_606_r1g3_1_E24.jpg"
+    },
+    {
+     "id": "E25",
+     "label": "frame of video E1 at 106.139 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 106.139 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":106.14,\"time_s\":106.13936666666666}",
+     "image": "media/qvhighlights_606_r1g3_1_E25.jpg"
+    },
+    {
+     "id": "E26",
+     "label": "frame of video E1 at 123.557 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 123.557 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":123.56,\"time_s\":123.55676666666666}",
+     "image": "media/qvhighlights_606_r1g3_1_E26.jpg"
+    },
+    {
+     "id": "E27",
+     "label": "frame of video E1 at 124.558 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 124.558 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":124.56,\"time_s\":124.55776666666667}",
+     "image": "media/qvhighlights_606_r1g3_1_E27.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F008",
+   "kind": "finding",
+   "run": "qvhighlights_4_r1g3_1",
+   "case_id": "qvhighlights:4",
+   "workspace": "W1-1",
+   "finding_id": "F3",
+   "task": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Muslim woman is organizing clothes into bags.",
+   "statement": "Localization is reliable at the two matching sampled instants but coarse at the boundaries: the onset bracket is 105.68–125.4 s and the ending bracket is 144.16–149.96 s. Earlier probes at 102.4 s and 104.92 s also show close-ups rather than clothing organization.",
+   "limitations": [
+    "The video is 25.000 fps, but sampling does not provide frame-exact action boundaries.",
+    "Intervals between the cited frames were not visually verified continuously; the reported single-shot structure alone does not establish continuous clothing organization.",
+    "Audio was not examined for this visual localization."
+   ],
+   "evidence": [
+    {
+     "id": "E20",
+     "label": "frame of video E1 at 102.400 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 102.400 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":102.4,\"time_s\":102.4}",
+     "image": "media/qvhighlights_4_r1g3_1_E20.jpg"
+    },
+    {
+     "id": "E21",
+     "label": "frame of video E1 at 104.920 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 104.920 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":104.9,\"time_s\":104.92}",
+     "image": "media/qvhighlights_4_r1g3_1_E21.jpg"
+    },
+    {
+     "id": "E22",
+     "label": "frame of video E1 at 105.680 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 105.680 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":105.7,\"time_s\":105.68}",
+     "image": "media/qvhighlights_4_r1g3_1_E22.jpg"
+    },
+    {
+     "id": "E12",
+     "label": "frame of video E1 at 125.400 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 125.400 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":125.390625,\"time_s\":125.4}",
+     "image": "media/qvhighlights_4_r1g3_1_E12.jpg"
+    },
+    {
+     "id": "E11",
+     "label": "frame of video E1 at 144.160 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 144.160 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":144.140625,\"time_s\":144.16}",
+     "image": "media/qvhighlights_4_r1g3_1_E11.jpg"
+    },
+    {
+     "id": "E23",
+     "label": "frame of video E1 at 149.640 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 149.640 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":149.66,\"time_s\":149.64}",
+     "image": "media/qvhighlights_4_r1g3_1_E23.jpg"
+    },
+    {
+     "id": "E24",
+     "label": "frame of video E1 at 149.960 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 149.960 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":149.95,\"time_s\":149.96}",
+     "image": "media/qvhighlights_4_r1g3_1_E24.jpg"
+    },
+    {
+     "id": "E2",
+     "label": "media profile: video, 150.000 s, 534×300, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源材料：A（E1 → media profile: video, 150.000 s, 534×300…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":150.0,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":25.0,\"frame_count\":3750,\"height\":300,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":534}"
+    }
+   ]
+  },
+  {
+   "id": "F009",
+   "kind": "finding",
+   "run": "qvhighlights_8973_r1g3_1",
+   "case_id": "qvhighlights:8973",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Woman leaves the frame to drink in a kid.",
+   "statement": "The best visual match in Material A is the late sequence where the woman bends partly out of the frame beside the kid in purple, then appears seated with that kid. At 139.44 s her head and upper body occupy the upper-right edge; at 148.84 s she is seated beside the kid.",
+   "limitations": [
+    "The wording 'drink in a kid' is ambiguous. These images support interaction with the kid, not a literal drinking action or the woman's purpose."
+   ],
+   "evidence": [
+    {
+     "id": "E13",
+     "label": "frame of video E1 at 139.440 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 139.440 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":139.453125,\"time_s\":139.44}",
+     "image": "media/qvhighlights_8973_r1g3_1_E13.jpg"
+    },
+    {
+     "id": "E11",
+     "label": "frame of video E1 at 148.840 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 148.840 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":148.828125,\"time_s\":148.84}",
+     "image": "media/qvhighlights_8973_r1g3_1_E11.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F010",
+   "kind": "finding",
+   "run": "qvhighlights_5_r1g3_1",
+   "case_id": "qvhighlights:5",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Chef peels an onion on a cutting board.",
+   "statement": "The matching scene in Material A shows the chef preparing and peeling an onion on a white cutting board: the onion initially has brown skin, loose skin is removed, and a peeled onion remains beside the discarded skins.",
+   "limitations": [
+    "The sampled images establish stages of the action, not continuous observation of every movement."
+   ],
+   "evidence": [
+    {
+     "id": "E20",
+     "label": "frame of video E1 at 86.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 86.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":86.0,\"time_s\":86.0}",
+     "image": "media/qvhighlights_5_r1g3_1_E20.jpg"
+    },
+    {
+     "id": "E21",
+     "label": "frame of video E1 at 88.480 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 88.480 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":88.5,\"time_s\":88.48}",
+     "image": "media/qvhighlights_5_r1g3_1_E21.jpg"
+    },
+    {
+     "id": "E22",
+     "label": "frame of video E1 at 89.280 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 89.280 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":89.3,\"time_s\":89.28}",
+     "image": "media/qvhighlights_5_r1g3_1_E22.jpg"
+    },
+    {
+     "id": "E11",
+     "label": "frame of video E1 at 109.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 109.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":108.984375,\"time_s\":109.0}",
+     "image": "media/qvhighlights_5_r1g3_1_E11.jpg"
+    },
+    {
+     "id": "E12",
+     "label": "frame of video E1 at 113.680 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 113.680 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":113.671875,\"time_s\":113.68}",
+     "image": "media/qvhighlights_5_r1g3_1_E12.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F011",
+   "kind": "finding",
+   "run": "vcsl_pair_1_v9_r1g3_1",
+   "case_id": "vcsl:pair_1",
+   "workspace": "W2-1",
+   "finding_id": "F6",
+   "task": "Resolve the two sampled candidate correspondences by directly comparing the surrounding footage in A (E1) and B (E2): A 9.967 s ↔ B 9.840 s and A 3.333 s ↔ B 25.880 s. Establish whether each represents identical or transformed footage and, where supported, determine the corresponding start and end times on both sides. Cite observed visual evidence for the correspondence, transformations and boundaries, and state any remaining boundary uncertainty or ambiguity from repeated footage. The existing whole-video comparison E21 yielded no consistent match; do not repeat that completed comparison or treat its negative result as excluding local matches. Do not infer original authorship or assess audio. Scope: correspondence A 9.967 s ↔ B 9.840 s; correspondence A 3.333 s ↔ B 25.880 s; the whole-video comparison found no correspondence.",
+   "statement": "For A 3.333 s ↔ B 25.880 s, the recorded investigation reports a candidate start bracket of A 0.333–1.833 s ↔ B 22.880–24.380 s and an end bracket of A 3.333–6.333 s ↔ B 25.880–28.880 s. The visible A samples at 1.833 s and 3.333 s show crowned snowmen carrying gold ice-cream sceptres; the latter includes the shop behind their line.",
+   "limitations": [
+    "The brackets are recorded investigation results, with respective uncertainties of 1.500 s and 3.000 s.",
+    "The B 25.880 s frame label establishes its time and source; its visual content was not examined in this decision. Consequently, the second pair's transformation cannot be independently described from the currently displayed pictures.",
+    "Windowed alignment reportedly did not establish a match consistent with this anchor; repeated similar footage leaves the exact occurrence ambiguous."
+   ],
+   "evidence": [
+    {
+     "id": "E55",
+     "label": "frame of video E1 at 1.833 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 1.833 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.033,\"requested_time_s\":1.833,\"time_s\":1.833}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E55.jpg"
+    },
+    {
+     "id": "E5",
+     "label": "frame of video E1 at 3.333 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 3.333 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.034,\"requested_time_s\":3.325,\"time_s\":3.333}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E5.jpg"
+    },
+    {
+     "id": "E22",
+     "label": "frame of video E2 at 25.880 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：B（E2 → frame of video E2 at 25.880 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":25.8928125,\"time_s\":25.88}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E22.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F012",
+   "kind": "finding",
+   "run": "videosham_4008_v9_r1g3_1",
+   "case_id": "videosham:4008",
+   "workspace": "W1-1",
+   "finding_id": "F2",
+   "task": "Compare the given video A with the candidate video B, and investigate the differences between them that the materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state where the differences are and what could not be determined. Being given as a candidate does not mean B's source identity has been confirmed; do not treat unexamined regions or modalities as having no difference.",
+   "statement": "Specific textual evidence from Material A is the OCR of its derived image: “TRINITARIAN”, “HE”, and “FAITH”.",
+   "limitations": [
+    "These recognised strings do not establish a textual difference from Material B.",
+    "OCR can miss characters; the strings alone do not establish the complete wording or its meaning."
+   ],
+   "evidence": [
+    {
+     "id": "E33",
+     "label": "OCR of E26: 3 text boxes, 3 distinct texts (\"TRINITARIAN\", \"HE\", \"FAITH\")",
+     "source_url": null,
+     "acquired_by": "INSPECT/ocr",
+     "provenance": "来源材料：B（E2 → frame of video E2 at 0.000 s (cropped re… → OCR of E26: 3 text boxes, 3 distinct tex…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"kind\":\"ocr\",\"operation\":\"ocr\",\"source_evidence_ids\":[\"E26\"],\"summary\":{\"text_boxes\":3,\"frames\":1,\"frames_with_text\":1,\"distinct_texts\":3,\"video\":false,\"texts\":[{\"text\":\"TRINITARIAN\",\"frames\":1,\"max_confidence\":0.912},{\"text\":\"HE\",\"frames\":1,\"max_confidence\":0.87},{\"text\":\"FAITH\",\"frames\":1,\"max_confidence\":0.991}]},\"backend\":\"RapidOCR\",\"limitations\":[\"coverage only describes temporal sampling of a video; null for a still image means not applicable, not that text recognition is complete or incomplete. OCR itself can still miss characters.\"],\"results\":[{\"image_evidence_id\":\"E26\",\"items\":[{\"text\":\"TRINITARIAN\",\"box\":[0.0151,0.0054,0.997,0.6087],\"confidence\":0.912},{\"text\":\"HE\",\"box\":[0.503,0.0,0.6958,0.1685],\"confidence\":0.87},{\"text\":\"FAITH\",\"box\":[0.244,0.3913,0.7139,0.788],\"confidence\":0.991}]}]}"
+    }
+   ]
+  },
+  {
+   "id": "F013",
+   "kind": "finding",
+   "run": "videosham_4144_v9_r1g3_1",
+   "case_id": "videosham:4144",
+   "workspace": "W1-1",
+   "finding_id": "F2",
+   "task": "Compare the given video A with the candidate video B, and investigate the differences between them that the materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state where the differences are and what could not be determined. Being given as a candidate does not mean B's source identity has been confirmed; do not treat unexamined regions or modalities as having no difference.",
+   "statement": "The recorded frame labels establish sampling of both materials: Material A at 0.000 s and 3.770 s, and Material B at 2.236 s and a cropped region at 5.505 s.",
+   "limitations": [
+    "The frame labels establish source and sampling time only; they do not establish depicted objects, matching scenes or visual differences."
+   ],
+   "evidence": [
+    {
+     "id": "E4",
+     "label": "frame of video E1 at 0.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 0.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "image": "media/videosham_4144_v9_r1g3_1_E4.jpg"
+    },
+    {
+     "id": "E9",
+     "label": "frame of video E1 at 3.770 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 3.770 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":3.754,\"time_s\":3.7704333333333335}",
+     "image": "media/videosham_4144_v9_r1g3_1_E9.jpg"
+    },
+    {
+     "id": "E28",
+     "label": "frame of video E2 at 5.505 s (cropped region)",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：B（E2 → frame of video E2 at 5.505 s (cropped re…）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"box\":[0.145,0.195,0.325,0.515],\"box_px\":[185,140,416,371],\"frame_duration_s\":0.03336666666666667,\"requested_time_s\":5.5,\"time_s\":5.5055}",
+     "image": "media/videosham_4144_v9_r1g3_1_E28.jpg"
+    }
+   ]
+  },
+  {
+   "id": "F014",
+   "kind": "finding",
+   "run": "videosham_0104_v9_r1g3_1",
+   "case_id": "videosham:0104",
+   "workspace": "W1-1",
+   "finding_id": "F1",
+   "task": "Compare the given video A with the candidate video B, and investigate the differences between them that the materials can confirm and how those differences affect what the footage means. Cite specific evidence, and state where the differences are and what could not be determined. Being given as a candidate does not mean B's source identity has been confirmed; do not treat unexamined regions or modalities as having no difference.",
+   "statement": "The comparison of Material A and Material B found no consistent correspondence. Comparisons therefore rest on sampled frames rather than an established temporal alignment.",
+   "limitations": [
+    "This result does not establish that the videos contain entirely different footage or identify an editing method.",
+    "Material B's source identity is not established."
+   ],
+   "evidence": [
+    {
+     "id": "E21",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源材料：A、B（E1、E2 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B is probably not the source of A: only 0% of A's half-second samples have a consistent match in B. Nothing else is reported.\",\"The pictures do not match, so the sound was compared on its own:\",\"Sound of A lines up with B at B = A +0.00 s (envelope correlation 1.00).\",\"28 of 28 one-second windows sound the same (100%).\"],\"images\":[],\"limitations\":[\"Only the same footage is matched (also mirrored, re-encoded, cropped or with overlays when the SIFT fallback ran); a re-shot or heavily re-edited version is not recognised.\",\"Sound is compared as spectral envelopes in one-second windows at a single global offset; a re-timed or re-ordered track is only partly matched.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    }
+   ]
+  },
+  {
+   "id": "F015",
+   "kind": "finding",
+   "run": "vcsl_pair_1_v9_r1g3_1",
+   "case_id": "vcsl:pair_1",
+   "workspace": "W2-1",
+   "finding_id": "F7",
+   "task": "Resolve the two sampled candidate correspondences by directly comparing the surrounding footage in A (E1) and B (E2): A 9.967 s ↔ B 9.840 s and A 3.333 s ↔ B 25.880 s. Establish whether each represents identical or transformed footage and, where supported, determine the corresponding start and end times on both sides. Cite observed visual evidence for the correspondence, transformations and boundaries, and state any remaining boundary uncertainty or ambiguity from repeated footage. The existing whole-video comparison E21 yielded no consistent match; do not repeat that completed comparison or treat its negative result as excluding local matches. Do not infer original authorship or assess audio. Scope: correspondence A 9.967 s ↔ B 9.840 s; correspondence A 3.333 s ↔ B 25.880 s; the whole-video comparison found no correspondence.",
+   "statement": "The displayed evidence supports local visual correspondence at the first anchor and at the later heart gesture, rather than a demonstrated whole-video alignment.",
+   "limitations": [
+    "The supplied task records that the existing whole-video comparison found no consistent match; that negative result does not exclude these local correspondences.",
+    "The whole-video comparison was not repeated.",
+    "Repeated-scene retrieval candidates cannot establish unique source times or continuous ranges. Audio and original authorship are outside this task."
+   ],
+   "evidence": [
+    {
+     "id": "E7",
+     "label": "frame of video E1 at 9.967 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 9.967 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.033,\"requested_time_s\":9.975,\"time_s\":9.967}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E7.jpg"
+    },
+    {
+     "id": "E26",
+     "label": "frame of video E2 at 9.840 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/locate_frames",
+     "provenance": "来源材料：B（E2 → frame of video E2 at 9.840 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":9.8465625,\"time_s\":9.84}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E26.jpg"
+    },
+    {
+     "id": "E57",
+     "label": "frame of video E1 at 15.967 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 15.967 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.033,\"requested_time_s\":15.967,\"time_s\":15.967}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E57.jpg"
+    },
+    {
+     "id": "E66",
+     "label": "frame of video E2 at 15.840 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：B（E2 → frame of video E2 at 15.840 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":15.84,\"time_s\":15.84}",
+     "image": "media/vcsl_pair_1_v9_r1g3_1_E66.jpg"
+    }
+   ]
+  },
+  {
+   "id": "A001",
+   "kind": "answer",
+   "run": "fmnv_fv_f82ltBGY52g_r1g3_1",
+   "case_id": "fmnv:fv_f82ltBGY52g",
+   "request": "request_0014",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "answer": "A source was found: the FRANCE 24 English upload at https://www.youtube.com/watch?v=f82ltBGY52g. [E38] All of the given video’s half-second picture samples match this source. [E25]\nThe given video (A) lasts 55.920 seconds. [E2] The original lasts 110.480 seconds. [E24]\n\nReported removals:\n- At A 24.7 s: original 26.2–45.1 s omitted. [E25]\n- At A 43.8 s: original 63.9–69.5 s omitted. [E25]\n- At A 46.7 s: original 72.0–75.5 s omitted. [E25]\n- At A 49.3 s: original 77.4–99.0 s omitted. [E25]\n\nSound differs across these corresponding spans (A ↔ original): 0.0–24.5 ↔ 1.6–26.2 s; 25.0–43.5 ↔ 45.1–63.9 s; 44.0–46.5 ↔ 69.5–72.0 s; 47.0–49.0 ↔ 75.5–77.4 s; 49.5–53.0 ↔ 99.0–102.6 s; 53.5–55.5 ↔ 108.0–110.0 s. [E25]\n\nBoundaries are approximate to 0.5 seconds; removed-scene content, exhaustive omissions, additions, reordering, speed changes, local visual alterations and the specific speech/background-sound changes remain unverified. [E25]",
+   "requirements": [
+    {
+     "id": "REQ1",
+     "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+     "must_cite": true
+    },
+    {
+     "id": "REQ2",
+     "text": "给定视频与原片的差异：至少指出一处删掉 / 添加 / 调换 / 改变的部分，并引用比对记录",
+     "must_cite": true
+    },
+    {
+     "id": "REQ3",
+     "text": "未能确定的内容（未比对的模态、边界精度等）",
+     "must_cite": false
+    }
+   ],
+   "findings": [],
+   "evidence": [
+    {
+     "id": "E2",
+     "label": "media profile: video, 55.920 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源材料：A（E1 → media profile: video, 55.920 s, 1280×720…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":55.92,\"format\":\"mov,mp4,m4a,3gp,3g2,mj2\",\"fps\":25.0,\"frame_count\":1398,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    },
+    {
+     "id": "E24",
+     "label": "media profile: video, 110.480 s, 1280×720, 25.000 fps, 1 audio track; this record does not verify date, place, author or other source metadata and cannot show that such information is absent.",
+     "source_url": null,
+     "acquired_by": "INSPECT/media_profile",
+     "provenance": "来源：外部网页 youtube.com（E23 → media profile: video, 110.480 s, 1280×72…）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_tracks\":1,\"backend\":\"PyAV\",\"duration_s\":110.48,\"format\":\"matroska,webm\",\"fps\":25.0,\"height\":720,\"media_kind\":\"video\",\"version\":\"17.0.0\",\"width\":1280}"
+    },
+    {
+     "id": "E25",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 56 s, B 110 s; the matched footage lies in B 2-110 s).\",\"Sound: A 0.0-24.5 s: the sound differs from B's sound at the same moment (B 1.6-26.2 s; spectral similarity 0.06).\",\"Sound: A 25.0-43.5 s: the sound differs from B's sound at the same moment (B 45.1-63.9 s; spectral similarity 0.04).\",\"Sound: A 44.0-46.5 s: the sound differs from B's sound at the same moment (B 69.5-72.0 s; spectral similarity 0.09).\",\"Sound: A 47.0-49.0 s: the sound differs from B's sound at the same moment (B 75.5-77.4 s; spectral similarity 0.14).\",\"Sound: A 49.5-53.0 s: the sound differs from B's sound at the same moment (B 99.0-102.6 s; spectral similarity 0.08).\",\"Sound: A 53.5-55.5 s: the sound differs from B's sound at the same moment (B 108.0-110.0 s; spectral similarity 0.2).\",\"Missing from A: B 26.2-45.1 s (18.8 s) is skipped at A 24.7 s (A continues straight from before it to after it).\",\"Missing from A: B 63.9-69.5 s (5.6 s) is skipped at A 43.8 s (A continues straight from before it to after it).\",\"Missing from A: B 72.0-75.5 s (3.5 s) is skipped at A 46.7 s (A continues straight from before it to after it).\",\"Missing from A: B 77.4-99.0 s (21.6 s) is skipped at A 49.3 s (A continues straight from before it to after it).\",\"Missing from A: B 102.6-108.0 s (5.4 s) is skipped at A 53.3 s (A continues straight from before it to after it).\",\"10 other face track(s) match B (median similarity 0.99, 0.88, 0.91, 0.84).\"],\"corresponding_spans\":[\"A 0.0-24.7 s = B 1.6-26.2 s\",\"A 24.8-43.8 s = B 45.1-63.9 s\",\"A 49.3-53.2 s = B 99.0-102.6 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E38",
+     "label": "dates of https://www.youtube.com/watch?v=f82ltBGY52g",
+     "source_url": "https://www.youtube.com/watch?v=f82ltBGY52g",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=f82ltBGY52g:\n- platform upload date: 2024-11-10 (channel: FRANCE 24 English) — when this upload was posted; an earlier copy may exist on another account or site\n- earliest Internet Archive capture of this page: 2024-11-10 (https://web.archive.org/web/20241110230205/https://www.youtube.com/watch?si=S0GnCkS7NqtAEiip&v=f82ltBGY52g&feature=youtu.be); the page existed no later than this date, which is not a publication date"
+    }
+   ]
+  },
+  {
+   "id": "A002",
+   "kind": "answer",
+   "run": "fmnv_fv_oY_u5QPE9F0_r1g3_1",
+   "case_id": "fmnv:fv_oY_u5QPE9F0",
+   "request": "request_0007",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "answer": "No original source video was identified: the reported two searches found no confirmed picture match, so the source remains undetermined.[E11] Consequently, removals, additions, reordering or alterations—and their corresponding times in Material A and the original—cannot be determined from the available observations.[E3][E5][E8][E10]\n\nSearchable clues include “Siege” at 0.8–12.2 s, “By Fire” at 0.8–11.4 s, “TENNEWSFIRSTEXCLUSIVE” and “YESTERDAY” at 46.2–50.7 s, and “THEPROJECT” at 62.4–67.4 s in Material A; these do not establish a source match.[E11]\n\nVisual examination covered individual samples rather than continuous footage, and speech recognition covered 0.0–67.5700625 s without comparison to an identified original, leaving visual and sound changes unverified.[E3][E5][E8][E10][E12]",
+   "requirements": [
+    {
+     "id": "REQ1",
+     "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+     "must_cite": true
+    },
+    {
+     "id": "REQ2",
+     "text": "给定视频与原片的差异：至少指出一处删掉 / 添加 / 调换 / 改变的部分，并引用比对记录",
+     "must_cite": true
+    },
+    {
+     "id": "REQ3",
+     "text": "未能确定的内容（未比对的模态、边界精度等）",
+     "must_cite": false
+    }
+   ],
+   "findings": [],
+   "evidence": [
+    {
+     "id": "E3",
+     "label": "frame of video E1 at 0.000 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 0.000 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":0.0,\"time_s\":0.0}",
+     "image": "media/fmnv_fv_oY_u5QPE9F0_r1g3_1_E3.jpg"
+    },
+    {
+     "id": "E5",
+     "label": "frame of video E1 at 16.880 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 16.880 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":16.9,\"time_s\":16.88}",
+     "image": "media/fmnv_fv_oY_u5QPE9F0_r1g3_1_E5.jpg"
+    },
+    {
+     "id": "E8",
+     "label": "frame of video E1 at 42.240 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 42.240 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":42.25,\"time_s\":42.24}",
+     "image": "media/fmnv_fv_oY_u5QPE9F0_r1g3_1_E8.jpg"
+    },
+    {
+     "id": "E10",
+     "label": "frame of video E1 at 59.160 s",
+     "source_url": null,
+     "acquired_by": "INSPECT/get_frames",
+     "provenance": "来源材料：A（E1 → frame of video E1 at 59.160 s）",
+     "modalities": [
+      "image"
+     ],
+     "text": "{\"frame_duration_s\":0.04,\"requested_time_s\":59.15,\"time_s\":59.16}",
+     "image": "media/fmnv_fv_oY_u5QPE9F0_r1g3_1_E10.jpg"
+    },
+    {
+     "id": "E11",
+     "label": "OCR of E1: 700 text boxes, 100 distinct texts (\"Siege\", \"By Fire\", \"PROJECT\", \"sunday\", …)",
+     "source_url": null,
+     "acquired_by": "INSPECT/ocr",
+     "provenance": "来源材料：A（E1 → OCR of E1: 700 text boxes, 100 distinct …）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"kind\":\"ocr\",\"operation\":\"ocr\",\"source_evidence_ids\":[\"E1\"],\"summary\":{\"text_boxes\":700,\"frames\":325,\"frames_with_text\":317,\"distinct_texts\":100,\"video\":true,\"texts\":[{\"text\":\"'0\",\"frames\":29,\"max_confidence\":0.682,\"first_s\":0.12,\"last_s\":60.64},{\"text\":\"'O\",\"frames\":23,\"max_confidence\":0.664,\"first_s\":0.24,\"last_s\":60.88},{\"text\":\"Siege\",\"frames\":56,\"max_confidence\":0.994,\"first_s\":0.76,\"last_s\":12.16},{\"text\":\"By Fire\",\"frames\":43,\"max_confidence\":0.996,\"first_s\":0.76,\"last_s\":11.44},{\"text\":\"ByF\",\"frames\":13,\"max_confidence\":0.977,\"first_s\":8.2,\"last_s\":12.16},{\"text\":\"PROJECT\",\"frames\":43,\"max_confidence\":0.994,\"first_s\":13.44,\"last_s\":61.88},{\"text\":\"sunday\",\"frames\":108,\"max_confidence\":0.994,\"first_s\":18.88,\"last_s\":59.64},{\"text\":\"AEpuns\",\"frames\":41,\"max_confidence\":0.805,\"first_s\":19.36,\"last_s\":58.4},{\"text\":\"TENNEWSFIRSTEXCLUSIVE\",\"frames\":24,\"max_confidence\":0.994,\"first_s\":46.2,\"last_s\":50.72},{\"text\":\"YESTERDAY\",\"frames\":24,\"max_confidence\":0.99,\"first_s\":46.2,\"last_s\":50.72},{\"text\":\"THEPROJECT\",\"frames\":25,\"max_confidence\":0.998,\"first_s\":62.4,\"last_s\":67.36},{\"text\":\"News Delivered Differently\",\"frames\":23,\"max_confidence\":0.998,\"first_s\":62.88,\"last_s\":67.36}]},\"coverage\":{\"range_s\":[0.0,67.6],\"sampling\":{\"base_fps\":2.0,\"base_frames\":136,\"scene_frames\":1,\"refinement_frames\":188,\"processed_frames\":325},\"failed_ranges\":[]},\"backend\":\"RapidOCR\",\"results\":[{\"time_s\":0.12,\"items\":[{\"text\":\"'0\",\"box\":[0.9031,0.8792,0.9422,0.9347],\"confidence\":0.595}]},{\"time_s\":0.24,\"items\":[{\"text\":\"'O\",\"box\":[0.9,0.8736,0.9445,0.9389],\"confidence\":0.643}]},{\"time_s\":0.36,\"items\":[{\"text\":\"THE\",\"box\":[0.2367,0.0722,0.4133,0.3],\"confidence\":0.991},{\"text\":\"S\",\"box\":[0.1578,0.3208,0.5625,0.9167],\"confidence\":0.924},{\"text\":\"'O\",\"box\":[0.9031,0.8792,0.9422,0.9333],\"confidence\":0.606}]},{\"time_s\":0.48,\"items\":[{\"text\":\"'O\",\"box\":[0.9031,0.8792,0.943,0.9361],\"confidence\":0.592}]},{\"time_s\":0.52,\"items\":[{\"text\":\"'O\",\"box\":[0.9031,0.8792,0.943,0.9361],\"confidence\":0.592}]},{\"time_s\":0.76,\"items\":[{\"text\":\"Siege\",\"box\":[0.1133,0.4931,0.3336,0.6486],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1117,0.6306,0.3812,0.7944],\"confidence\":0.942}]},{\"time_s\":1.0,\"items\":[{\"text\":\"Siege\",\"box\":[0.1266,0.4931,0.3312,0.6542],\"confidence\":0.989},{\"text\":\"By Fire\",\"box\":[0.1062,0.6236,0.3789,0.8],\"confidence\":0.955}]},{\"time_s\":1.24,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.4958,0.3273,0.6569],\"confidence\":0.99},{\"text\":\"By Fire\",\"box\":[0.1039,0.6347,0.3742,0.7972],\"confidence\":0.986}]},{\"time_s\":1.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.4958,0.3281,0.6611],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1039,0.6361,0.3742,0.7986],\"confidence\":0.983}]},{\"time_s\":1.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.1055,0.4972,0.3281,0.6625],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1047,0.6403,0.3734,0.7986],\"confidence\":0.987}]},{\"time_s\":1.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.1055,0.5014,0.3281,0.6639],\"confidence\":0.989},{\"text\":\"By Fire\",\"box\":[0.1047,0.6403,0.3742,0.8028],\"confidence\":0.987}]},{\"time_s\":2.0,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5,0.3281,0.6653],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1047,0.6389,0.3758,0.8083],\"confidence\":0.99}]},{\"time_s\":2.24,\"items\":[{\"text\":\"Siege\",\"box\":[0.1055,0.5014,0.3289,0.6681],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1047,0.6444,0.375,0.8028],\"confidence\":0.992}]},{\"time_s\":2.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.1055,0.5028,0.3289,0.6694],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1047,0.6458,0.3742,0.8056],\"confidence\":0.99}]},{\"time_s\":2.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.1055,0.5083,0.3281,0.6681],\"confidence\":0.99},{\"text\":\"By Fire\",\"box\":[0.1055,0.6472,0.3742,0.8069],\"confidence\":0.989}]},{\"time_s\":2.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5097,0.3281,0.6708],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1055,0.6486,0.3742,0.8097],\"confidence\":0.995}]},{\"time_s\":3.0,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5097,0.3281,0.6681],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1055,0.6486,0.3742,0.8097],\"confidence\":0.995}]},{\"time_s\":3.24,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5125,0.3281,0.6694],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1055,0.6514,0.375,0.8111],\"confidence\":0.995}]},{\"time_s\":3.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5139,0.3281,0.6722],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.107,0.6556,0.3742,0.8111],\"confidence\":0.996}]},{\"time_s\":3.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5167,0.3281,0.6736],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1039,0.6528,0.375,0.8153],\"confidence\":0.992}]},{\"time_s\":3.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5194,0.3281,0.675],\"confidence\":0.99},{\"text\":\"By Fire\",\"box\":[0.1039,0.6542,0.375,0.8167],\"confidence\":0.994}]},{\"time_s\":4.0,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5181,0.3281,0.6764],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1039,0.6542,0.375,0.8181],\"confidence\":0.994}]},{\"time_s\":4.24,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5222,0.3273,0.6764],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1039,0.6556,0.3758,0.8194],\"confidence\":0.994}]},{\"time_s\":4.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5236,0.3273,0.6778],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1039,0.6569,0.3758,0.8208],\"confidence\":0.995}]},{\"time_s\":4.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.525,0.3273,0.6792],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1055,0.6611,0.3758,0.8222],\"confidence\":0.994}]},{\"time_s\":4.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5264,0.3273,0.6806],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1055,0.6625,0.3758,0.8236],\"confidence\":0.995}]},{\"time_s\":5.2,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5278,0.3266,0.6819],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1047,0.6625,0.3766,0.8278],\"confidence\":0.936}]},{\"time_s\":5.44,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5292,0.3258,0.6833],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1047,0.6667,0.3766,0.8278],\"confidence\":0.995}]},{\"time_s\":5.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5292,0.3258,0.6833],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1047,0.6667,0.3766,0.8278],\"confidence\":0.996}]},{\"time_s\":5.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5306,0.3273,0.6861],\"confidence\":0.992},{\"text\":\"By Fire\",\"box\":[0.1047,0.6681,0.3766,0.8278],\"confidence\":0.994}]},{\"time_s\":5.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5306,0.3273,0.6861],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1055,0.6681,0.3766,0.8292],\"confidence\":0.991}]},{\"time_s\":6.2,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5333,0.3266,0.6875],\"confidence\":0.991},{\"text\":\"By Fire\",\"box\":[0.1055,0.6694,0.3766,0.8306],\"confidence\":0.991}]},{\"time_s\":6.44,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5319,0.3273,0.6889],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1062,0.6736,0.375,0.8306],\"confidence\":0.99}]},{\"time_s\":6.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5333,0.3273,0.6917],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1055,0.6722,0.3758,0.8333],\"confidence\":0.994}]},{\"time_s\":6.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5333,0.3273,0.6903],\"confidence\":0.994},{\"text\":\"By Fire\",\"box\":[0.1055,0.6722,0.3758,0.8333],\"confidence\":0.994}]},{\"time_s\":6.96,\"items\":[{\"text\":\"Siege\",\"box\":[0.1062,0.5347,0.3273,0.6931],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1039,0.6722,0.3758,0.8347],\"confidence\":0.989}]},{\"time_s\":7.2,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5347,0.3273,0.6931],\"confidence\":0.994},{\"text\":\"By Fire\",\"box\":[0.1039,0.6722,0.3758,0.8347],\"confidence\":0.991}]},{\"time_s\":7.44,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5361,0.3273,0.6944],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1039,0.6722,0.3758,0.8361],\"confidence\":0.995}]},{\"time_s\":7.48,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5347,0.3273,0.6958],\"confidence\":0.994},{\"text\":\"By Fire\",\"box\":[0.1039,0.6736,0.3758,0.8375],\"confidence\":0.995}]},{\"time_s\":7.72,\"items\":[{\"text\":\"Siege\",\"box\":[0.107,0.5361,0.3273,0.6958],\"confidence\":0.993},{\"text\":\"By Fire\",\"box\":[0.1023,0.6708,0.3766,0.8389],\"confidence\":0.935}]},{\"time_s\":7.96,\"items\":[\n…（原文共 61440 字，只显示前 8000 字）"
+    },
+    {
+     "id": "E12",
+     "label": "INSPECT asr result",
+     "source_url": null,
+     "acquired_by": "INSPECT/asr",
+     "provenance": "来源材料：A（E1 → INSPECT asr result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"audio_track\":0,\"backend\":\"faster-whisper\",\"coverage\":{\"failed_ranges\":[],\"processed_ranges\":[[0.0,67.5700625]],\"range_s\":[0.0,67.5700625]},\"language\":\"en\",\"limitations\":[\"Speech detection is enabled to filter silence and non-speech; segments may be empty when no reliable speech is detected. Detection may miss weak speech, so an empty transcript does not prove there is no voice at all.\",\"Timestamps refer to positions in the original audio; speech recognition does not verify the number or identity of speakers, music, applause or other non-speech sounds, and their absence from the transcript does not mean they are absent.\"],\"model\":\"faster-whisper-small\",\"segments\":[{\"end_s\":5.4,\"start_s\":0.0,\"text\":\"LA is on high alert as Santa Ana wins worse and already devastating fires.\"},{\"end_s\":9.68,\"start_s\":5.4,\"text\":\"At least 13 people have died, including one Australian.\"},{\"end_s\":15.32,\"start_s\":9.68,\"text\":\"Residents are grappling with immense loss, with one saying, life as we know it is over.\"},{\"end_s\":19.64,\"start_s\":15.32,\"text\":\"The fight against the fires continues, with predictions of life threatening conditions\"},{\"end_s\":20.64,\"start_s\":19.64,\"text\":\"ahead.\"},{\"end_s\":26.2,\"start_s\":20.64,\"text\":\"Over 10,000 structures have been destroyed and nearly 180,000 people evacuated due\"},{\"end_s\":28.92,\"start_s\":26.2,\"text\":\"to fears of new fires igniting.\"},{\"end_s\":33.56,\"start_s\":28.92,\"text\":\"The mayor and fire chief are united in their efforts to manage the crisis.\"},{\"end_s\":39.4,\"start_s\":33.56,\"text\":\"Tragically, one victim was former child star Rory Callum Sykes, who was blind and had cerebral\"},{\"end_s\":40.8,\"start_s\":39.4,\"text\":\"palsy.\"},{\"end_s\":44.76,\"start_s\":40.8,\"text\":\"As help pours in, the question remains, how long can LA hold on?\"}],\"sound_method\":\"energy + transcript speech segments\",\"sounds\":[{\"end_s\":44.8,\"kind\":\"speech\",\"label\":null,\"start_s\":0.0},{\"end_s\":44.85,\"kind\":\"other_sound\",\"label\":null,\"start_s\":44.8},{\"end_s\":67.55,\"kind\":\"silence\",\"label\":null,\"start_s\":44.85}],\"speech_duration_s\":45.168,\"vad_filter\":true}"
+    }
+   ]
+  },
+  {
+   "id": "A003",
+   "kind": "answer",
+   "run": "fmnv_a_G0zCu_vX5Ow_r1g3_1",
+   "case_id": "fmnv:a_G0zCu_vX5Ow",
+   "request": "request_0011",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "answer": "A matching source copy was found: https://www.youtube.com/watch?v=G0zCu-vX5Ow, uploaded 2024-08-11; it contains 100% of the given video’s half-second picture samples, but is not established as the earliest upload or original recording. [E25][E32]\n\nDifferences, with A = given video and B = matching source:\n- Removed footage: B 31.2–42.9 s is skipped at A 32.8 s; the comparison reports 11.8 s omitted. [E25]\n- Different sound: A 35.0–37.0 s versus B 44.9–46.8 s. [E25]\n- Different sound: A 44.5–46.0 s versus B 54.0–55.5 s. [E25]\n- Different sound: A 50.5–52.0 s versus B 59.8–61.2 s. [E25]\n- Different sound: A 60.5–64.0 s versus B 69.4–72.8 s. [E25]\n\nThe removed passage’s full content, specific sound changes and their cause, speed changes, and alterations between samples remain unverified; reported boundaries have approximately 0.5 s precision. [E25]",
+   "requirements": [
+    {
+     "id": "REQ1",
+     "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+     "must_cite": true
+    },
+    {
+     "id": "REQ2",
+     "text": "给定视频与原片的差异：删掉 / 添加 / 调换 / 改变了哪些部分，两个视频中的时间",
+     "must_cite": true
+    },
+    {
+     "id": "REQ3",
+     "text": "未能确定的内容（未比对的模态、边界精度等）",
+     "must_cite": false
+    }
+   ],
+   "findings": [],
+   "evidence": [
+    {
+     "id": "E25",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 67 s, B 78 s; the matched footage lies in B 0-75 s).\",\"Sound: A 35.0-37.0 s: the sound differs from B's sound at the same moment (B 44.9-46.8 s; spectral similarity 0.42).\",\"Sound: A 44.5-46.0 s: the sound differs from B's sound at the same moment (B 54.0-55.5 s; spectral similarity 0.48).\",\"Sound: A 50.5-52.0 s: the sound differs from B's sound at the same moment (B 59.8-61.2 s; spectral similarity 0.53).\",\"Sound: A 60.5-64.0 s: the sound differs from B's sound at the same moment (B 69.4-72.8 s; spectral similarity 0.28).\",\"Missing from A: B 31.2-42.9 s (11.8 s) is skipped at A 32.8 s (A continues straight from before it to after it).\",\"1 other face track(s) match B (median similarity 0.78).\"],\"corresponding_spans\":[\"A 0.0-32.8 s = B 0.0-31.2 s\",\"A 32.8-66.2 s = B 42.9-74.6 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E32",
+     "label": "dates of https://www.youtube.com/watch?v=G0zCu-vX5Ow",
+     "source_url": "https://www.youtube.com/watch?v=G0zCu-vX5Ow",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=G0zCu-vX5Ow:\n- platform upload date: 2024-08-11 (channel: Basket Lampung Timur) — when this upload was posted; an earlier copy may exist on another account or site\n- earliest Internet Archive capture of this page: 2024-08-14 (https://web.archive.org/web/20240814153304/https://www.youtube.com/watch?si=dp6DCaTthIaN9PC9&v=G0zCu-vX5Ow&feature=youtu.be); the page existed no later than this date, which is not a publication date"
+    }
+   ]
+  },
+  {
+   "id": "A004",
+   "kind": "answer",
+   "run": "fmnv_fv_Nm0Kod6eHPg_r1g3_1",
+   "case_id": "fmnv:fv_Nm0Kod6eHPg",
+   "request": "request_0013",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "answer": "A matching longer source was found: https://www.youtube.com/watch?v=Nm0Kod6eHPg (B); it matches 100% of the given video A’s half-second picture samples, though earliest publication remains unconfirmed.[E25][E38]\n\nConfirmed differences, with all times in seconds:\n- Removed: B 8.8–19.5, skipped at A 3.8.[E25]\n- Removed: B 29.2–37.5, skipped at A 13.2.[E25]\n- Removed: B 38.5–42.1, skipped at A 14.8.[E25]\n- Different sound: A 0.0–3.5 ↔ B 5.4–8.8.[E25]\n- Different sound: A 5.5–7.0 ↔ B 21.7–23.2.[E25]\n- A silent while B has sound: A 6.5–13.0 ↔ B 22.7–29.2.[E25]\n- A silent while B has sound: A 15.0–21.5 ↔ B 42.1–48.6.[E25]\n- A silent while B has sound: A 22.0–32.0 ↔ B 51.5–61.4.[E25]\n- A silent while B has sound: A 35.5–37.5 ↔ B 74.7–76.7.[E25]\n\nBoundaries have approximately 0.5 s precision; exhaustive removals, additions, reordering, speed changes, local visual alterations and complete soundtrack content were not verified.[E25]",
+   "requirements": [
+    {
+     "id": "REQ1",
+     "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+     "must_cite": true
+    },
+    {
+     "id": "REQ2",
+     "text": "给定视频与原片的差异：至少指出一处删掉 / 添加 / 调换 / 改变的部分，并引用比对记录",
+     "must_cite": true
+    },
+    {
+     "id": "REQ3",
+     "text": "未能确定的内容（未比对的模态、边界精度等）",
+     "must_cite": false
+    }
+   ],
+   "findings": [],
+   "evidence": [
+    {
+     "id": "E25",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E23 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 38 s, B 78 s; the matched footage lies in B 5-77 s).\",\"A uses B 5-77 s only; the rest of B (78 s in all) is not in A.\",\"Sound: A 0.0-3.5 s: the sound differs from B's sound at the same moment (B 5.4-8.8 s; spectral similarity 0.12).\",\"Sound: A 5.5-7.0 s: the sound differs from B's sound at the same moment (B 21.7-23.2 s; spectral similarity 0.19).\",\"Sound: A 6.5-13.0 s: A is silent where B has sound at the same moment (B 22.7-29.2 s; spectral similarity 0.0).\",\"Sound: A 15.0-21.5 s: A is silent where B has sound at the same moment (B 42.1-48.6 s; spectral similarity 0.0).\",\"Sound: A 22.0-32.0 s: A is silent where B has sound at the same moment (B 51.5-61.4 s; spectral similarity 0.0).\",\"Sound: A 35.5-37.5 s: A is silent where B has sound at the same moment (B 74.7-76.7 s; spectral similarity 0.0).\",\"Missing from A: B 8.8-19.5 s (10.7 s) is skipped at A 3.8 s (A continues straight from before it to after it).\",\"Missing from A: B 29.2-37.5 s (8.3 s) is skipped at A 13.2 s (A continues straight from before it to after it).\",\"Missing from A: B 38.5-42.1 s (3.6 s) is skipped at A 14.8 s (A continues straight from before it to after it).\",\"Missing from A: B 48.6-51.5 s (2.9 s) is skipped at A 21.8 s (A continues straight from before it to after it).\",\"Missing from A: B 61.4-64.2 s (2.8 s) is skipped at A 32.2 s (A continues straight from before it to after it).\",\"Missing from A: B 67.7-74.7 s (7.0 s) is skipped at A 35.2 s (A continues straight from before it to after it).\",\"1 other face track(s) match B (median similarity 0.89).\"],\"corresponding_spans\":[\"A 0.0-3.8 s = B 5.4-8.8 s\",\"A 5.2-13.2 s = B 21.7-29.2 s\",\"A 14.8-21.8 s = B 42.1-48.6 s\",\"A 21.8-32.2 s = B 51.5-61.4 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E38",
+     "label": "dates of https://www.youtube.com/watch?v=Nm0Kod6eHPg",
+     "source_url": "https://www.youtube.com/watch?v=Nm0Kod6eHPg",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=Nm0Kod6eHPg:\n- platform upload date: 2024-07-17 (channel: High Great Drone Show) — when this upload was posted; an earlier copy may exist on another account or site\n- earliest Internet Archive capture of this page: 2024-08-15 (https://web.archive.org/web/20240815210745/https://www.youtube.com/watch?si=ueU2-Zlh-XBxUWU8&v=Nm0Kod6eHPg); the page existed no later than this date, which is not a publication date"
+    }
+   ]
+  },
+  {
+   "id": "A005",
+   "kind": "answer",
+   "run": "fmnv_a_8HI3SGzxu2Q_r1g3_1",
+   "case_id": "fmnv:a_8HI3SGzxu2Q",
+   "request": "request_0011",
+   "task": "The given video circulated online. Find its original source video and determine whether and how this version differs from the original: which parts were removed, added, reordered or altered, with times in both videos. Cite specific evidence, and state what could not be determined.",
+   "answer": "A matching source was found: https://www.youtube.com/watch?v=8HI3SGzxu2Q, uploaded 2024-09-28; 100% of the given video's half-second picture samples matched this source. [E24][E31]\n\nWith A denoting the given video and B the source, the differences are:\n- Removed footage: B 59.9–80.1 s is skipped at A 60.7 s; the comparison reports 20.3 s removed. [E24]\n- Different sound: A 61.0–62.5 s ↔ B 80.1–81.6 s. [E24]\n- Different sound: A 63.5–67.5 s ↔ B 82.6–86.6 s. [E24]\n- Different sound: A 68.5–70.0 s ↔ B 87.6–89.1 s. [E24]\n- Different sound: A 70.0–73.0 s ↔ B 89.1–92.0 s. [E24]\n- Different sound: A 79.0–80.5 s ↔ B 98.0–99.5 s. [E24]\n- Different sound: A 84.0–89.0 s ↔ B 102.9–107.9 s. [E24]\n\nThe comparison identified no added or reordered footage. [E24]\nEarliest publication, frame-exact cut boundaries, changes between sampled frames, and the precise content or cause of the sound differences were not determined. [E24][E31]",
+   "requirements": [
+    {
+     "id": "REQ1",
+     "text": "给定视频的原始来源视频（地址、频道或标题），以及据以认定的画面对应证据",
+     "must_cite": true
+    },
+    {
+     "id": "REQ2",
+     "text": "给定视频与原片的差异：删掉 / 添加 / 调换 / 改变了哪些部分，两个视频中的时间",
+     "must_cite": true
+    },
+    {
+     "id": "REQ3",
+     "text": "未能确定的内容（未比对的模态、边界精度等）",
+     "must_cite": false
+    }
+   ],
+   "findings": [],
+   "evidence": [
+    {
+     "id": "E24",
+     "label": "INSPECT compare_media result",
+     "source_url": null,
+     "acquired_by": "INSPECT/compare_media",
+     "provenance": "来源：材料 A、外部网页 youtube.com（E1、E22 → INSPECT compare_media result）",
+     "modalities": [
+      "text"
+     ],
+     "text": "{\"operation\":\"compare_media\",\"summary_lines\":[\"B matches A: 100% of A's half-second samples are found in B (A 125 s, B 145 s; the matched footage lies in B 0-143 s).\",\"Sound: A 61.0-62.5 s: the sound differs from B's sound at the same moment (B 80.1-81.6 s; spectral similarity 0.5).\",\"Sound: A 63.5-67.5 s: the sound differs from B's sound at the same moment (B 82.6-86.6 s; spectral similarity 0.51).\",\"Sound: A 68.5-70.0 s: the sound differs from B's sound at the same moment (B 87.6-89.1 s; spectral similarity 0.54).\",\"Sound: A 70.0-73.0 s: the sound differs from B's sound at the same moment (B 89.1-92.0 s; spectral similarity 0.5).\",\"Sound: A 79.0-80.5 s: the sound differs from B's sound at the same moment (B 98.0-99.5 s; spectral similarity 0.52).\",\"Sound: A 84.0-89.0 s: the sound differs from B's sound at the same moment (B 102.9-107.9 s; spectral similarity 0.51).\",\"Missing from A: B 59.9-80.1 s (20.3 s) is skipped at A 60.7 s (A continues straight from before it to after it).\",\"1 other face track(s) match B (median similarity 0.97).\"],\"corresponding_spans\":[\"A 0.0-60.7 s = B 0.0-59.9 s\",\"A 60.7-124.7 s = B 80.1-143.1 s\"],\"images\":[],\"limitations\":[\"Differences are measured between two files; which one is the original is not decided by this tool.\",\"Time boundaries are accurate to about 0.5 s; pass range_a_s for frame-exact differences inside one span.\",\"Regions and faces are checked only at the sampled moments listed in coverage; short changes between samples can be missed.\",\"Overlays (subtitles, logos), crops, colour grading or a different upload of the same footage also produce differences.\"],\"note\":\"These lines are the conclusions of the measurement; the raw tables behind them (alignment runs, shot list, frame statistics) are not part of this record. Spans under 3 s that align at another speed or backwards are alignment noise around cuts.\"}"
+    },
+    {
+     "id": "E31",
+     "label": "dates of https://www.youtube.com/watch?v=8HI3SGzxu2Q",
+     "source_url": "https://www.youtube.com/watch?v=8HI3SGzxu2Q",
+     "acquired_by": "SEARCH/dates",
+     "provenance": "来源：外部网页 youtube.com",
+     "modalities": [
+      "text"
+     ],
+     "text": "Dates for https://www.youtube.com/watch?v=8HI3SGzxu2Q:\n- platform upload date: 2024-09-28 (channel: ABC News) — when this upload was posted; an earlier copy may exist on another account or site\n- note: Internet Archive lookup for the page failed: source hostname could not be resolved"
+    }
+   ]
+  }
+ ]
+}
