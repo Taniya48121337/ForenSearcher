@@ -6,5 +6,7 @@
 #   FS_PROFILE=vast1 bash server/13_train_queue.sh server/jobs/vast1_sft0_s1.txt      # in tmux; follow: tail -f server_logs/train/<n>_*.log
 # Logs: server_logs/train/1__workspace_outputs_lora_sft0_27b_hi_s1.log, 2__workspace_outputs_lora_sft0_27b_gia_s1.log (13 turns '/' into '_').
 # Then: bash server/12_add_lora.sh hi_sft0_s1 /workspace/outputs/lora/sft0_27b/hi_s1/final (and gia_sft0_s1 …/gia_s1/final).
---config training/configs/hi_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/hi_s1
---config training/configs/gia_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/gia_s1
+# 10-19: --save-every 50 --resume — a checkpoint-<step>/ (adapter + optimizer + data position + RNG) every 50 updates, last 2 kept;
+# rerunning a job continues from its latest complete checkpoint (bitwise-identical adapter, tested with --smoke-tiny). Restart: bash server/resume.sh train
+--config training/configs/hi_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/hi_s1 --save-every 50 --resume
+--config training/configs/gia_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/gia_s1 --save-every 50 --resume

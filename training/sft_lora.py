@@ -86,7 +86,8 @@ class TrainConfig:
     logits_on_supervised_only: bool = True     # logits_to_keep：只在监督段算 logits（见文件头）
     row_select: dict[str, Any] | None = None   # 冒烟用：{"n": 20, "max_input_tokens_est": 16000, "order": "shortest", "exclude_requests": [...]}
     log_every: int = 5
-    save_every: int = 0
+    save_every: int = 0                         # >0：每 N 次更新存一个可续训的 checkpoint-<N>/（adapter + 优化器 + 数据位置 + RNG），见 save_checkpoint
+    keep_checkpoints: int = 2                   # 只留最近几个 checkpoint-*（epoch_* / final 不受影响）
     save_each_epoch: bool = False               # 每个 epoch 末存一份 epoch_<n>/（门 B 可以直接比 epoch 1 与 epoch 2，不用重训）
     gradient_checkpointing: bool = True
     allow_multi_gpu: bool = False
@@ -379,6 +380,78 @@ def dry_run(cfg: TrainConfig) -> dict[str, Any]:
     return plan
 
 
+CHECKPOINT_STATE = "trainer_state.pt"
+# 换了这些字段就不是同一次训练，续训时只比其余字段（输出位置、存盘频率、试跑用的停止步不影响训练轨迹）
+_RESUME_IGNORED = frozenset({"output_dir", "save_every", "keep_checkpoints", "log_every"})
+
+
+def run_identity(cfg: TrainConfig, rows: list[dict[str, Any]], usable: list[int]) -> dict[str, Any]:
+    """续训的身份：配置（去掉 _RESUME_IGNORED）+ 进训练的行（键与顺序）的 hash。不一致就不续。"""
+
+    keys = "\n".join(row_key(rows[i]) for i in usable).encode("utf-8")
+    return {"config": {k: v for k, v in asdict(cfg).items() if k not in _RESUME_IGNORED},
+            "usable_rows": len(usable), "usable_sha256": hashlib.sha256(keys).hexdigest()}
+
+
+def complete_checkpoints(out_dir: Path) -> list[Path]:
+    found = [p for p in out_dir.glob("checkpoint-*") if (p / "COMPLETE").is_file() and p.name.split("-", 1)[1].isdigit()]
+    return sorted(found, key=lambda p: int(p.name.split("-", 1)[1]))
+
+
+def save_checkpoint(model: Any, optimizer: Any, out_dir: Path, state: dict[str, Any], keep: int) -> Path:
+    """10-19（Vast 单卡、宿主机维护期间实例可能被停）：在一次更新之后（梯度累积窗口为空）存可续训的状态。
+    先写到 .tmp-checkpoint-<step>/，写完 COMPLETE 再改名，断电 / 被杀时不会留下半个 checkpoint；只留最近 keep 个。"""
+
+    import shutil
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    target, tmp = out_dir / f"checkpoint-{state['step']}", out_dir / f".tmp-checkpoint-{state['step']}"
+    shutil.rmtree(tmp, ignore_errors=True)
+    model.save_pretrained(tmp)
+    rng = {"python": random.getstate(), "torch": torch.get_rng_state(),
+           "cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None}
+    torch.save({**state, "optimizer": optimizer.state_dict(), "rng": rng}, tmp / CHECKPOINT_STATE)
+    (tmp / "COMPLETE").write_text(json.dumps({"step": state["step"], "epoch": state["epoch"], "saved_at": time.strftime("%Y-%m-%dT%H:%M:%S")}),
+                                  encoding="utf-8")
+    if target.exists():
+        shutil.rmtree(target)
+    tmp.rename(target)
+    for old in complete_checkpoints(out_dir)[:-max(1, keep)]:
+        shutil.rmtree(old, ignore_errors=True)
+    print(json.dumps({"checkpoint": str(target), "step": state["step"], "epoch": state["epoch"]}, ensure_ascii=False), flush=True)
+    return target
+
+
+def load_checkpoint(model: Any, optimizer: Any, path: Path, identity: dict[str, Any]) -> dict[str, Any]:
+    """把 adapter 权重、优化器与 RNG 恢复到 path 存盘时的样子；身份（配置 + 训练行）不一致就停。"""
+
+    from peft import set_peft_model_state_dict
+
+    state = torch.load(path / CHECKPOINT_STATE, map_location="cpu", weights_only=False)
+    if state.get("identity") != identity:
+        saved, now = state.get("identity") or {}, identity
+        diff = sorted(k for k in set(saved.get("config", {})) | set(now["config"]) if saved.get("config", {}).get(k) != now["config"].get(k))
+        raise SystemExit(f"{path} 与这次的配置 / 训练行不是同一次训练，不能续（不同的配置项 {diff}；"
+                         f"训练行 {saved.get('usable_rows')} / {now['usable_rows']}，hash 相同 {saved.get('usable_sha256') == now['usable_sha256']}）")
+    weights_file = path / "adapter_model.safetensors"
+    if weights_file.is_file():
+        from safetensors.torch import load_file
+        weights = load_file(str(weights_file))
+    else:
+        weights = torch.load(path / "adapter_model.bin", map_location="cpu", weights_only=True)
+    result = set_peft_model_state_dict(model, weights)
+    unexpected = list(getattr(result, "unexpected_keys", []) or [])
+    if unexpected:
+        raise SystemExit(f"{path} 的 adapter 权重有 {len(unexpected)} 个对不上的键（{unexpected[:3]}…）")
+    optimizer.load_state_dict(state["optimizer"])
+    rng = state["rng"]
+    random.setstate(rng["python"])
+    torch.set_rng_state(rng["torch"])
+    if rng.get("cuda") is not None and torch.cuda.is_available():
+        torch.cuda.set_rng_state_all(rng["cuda"])
+    return state
+
+
 def check_pack_status(export_dir: Path, allow_trial: bool) -> None:
     """r0 包（data/ 的上一级有 r0_pack.json）只认 status=ok 的；试包要显式 --allow-trial-pack。"""
 
@@ -393,7 +466,8 @@ def check_pack_status(export_dir: Path, allow_trial: bool) -> None:
         print("!! " + msg)
 
 
-def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = False, allow_trial_pack: bool = False) -> dict[str, Any]:
+def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = False, allow_trial_pack: bool = False,
+          resume: bool = False, stop_at_step: int | None = None) -> dict[str, Any]:
     check_pack_status(Path(cfg.export_dir), allow_trial_pack)
     random.seed(cfg.seed)
     torch.manual_seed(cfg.seed)
@@ -437,7 +511,31 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
     win_loss_w, win_loss_raw, win_weight, win_rows, win_tokens = 0.0, 0.0, 0.0, 0, 0
     history: list[dict[str, Any]] = []
     loss_checks: list[dict[str, float]] = []
-    train_started = time.time()
+    out_dir = Path(cfg.output_dir)
+    identity = run_identity(cfg, rows, usable)
+    pending: tuple[list[int], int] | None = None        # 续训：本 epoch 的打乱顺序与已过的行数
+    resumed_from, elapsed_before = None, 0.0
+    if resume:
+        found = complete_checkpoints(out_dir)
+        if found:
+            state = load_checkpoint(model, optimizer, found[-1], identity)
+            step, epoch, rows_seen, seen_tokens = state["step"], state["epoch"], state["rows_seen"], state["seen_tokens"]
+            history, elapsed_before = list(state.get("history") or []), float(state.get("elapsed_s") or 0.0)
+            if state.get("order") is not None:
+                pending = (list(state["order"]), int(state["pos"]))
+            resumed_from = str(found[-1])
+            print(json.dumps({"resumed_from": resumed_from, "step": step, "epoch": epoch, "max_steps": max_steps}, ensure_ascii=False), flush=True)
+        else:
+            print(f"--resume：{out_dir} 里没有完整的 checkpoint-*，从头训", flush=True)
+    train_started = time.time() - elapsed_before
+    stopped_early = False
+
+    def checkpoint(order: list[int] | None, pos: int) -> None:
+        """order = None：本 epoch 已走完（epoch 计数已加 1），续训时从下一次打乱开始。"""
+        save_checkpoint(model, optimizer, out_dir, {"step": step, "epoch": epoch, "order": order, "pos": pos, "rows_seen": rows_seen,
+                                                    "seen_tokens": seen_tokens, "history": history, "identity": identity,
+                                                    "elapsed_s": round(time.time() - train_started, 1), "max_steps": max_steps},
+                        cfg.keep_checkpoints)
 
     def optimizer_step() -> None:
         nonlocal step, micro_in_window, win_loss_w, win_loss_raw, win_weight, win_rows, win_tokens
@@ -466,10 +564,16 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
         win_loss_w = win_loss_raw = win_weight = 0.0
         win_rows = win_tokens = 0
 
-    while step < max_steps:
-        order = list(usable)
-        random.shuffle(order)
-        for index in order:
+    while step < max_steps and not stopped_early:
+        if pending is not None:                        # 续训：接着存盘时那个 epoch 的同一顺序往下走
+            order, start = pending
+            pending = None
+        else:
+            order = list(usable)
+            random.shuffle(order)
+            start = 0
+        for pos in range(start, len(order)):
+            index = order[pos]
             batch = encode(rows[index], export_dir, processor)
             n_prefix = batch.pop("n_prefix")
             weight = batch.pop("sample_weight") if cfg.use_sample_weight else 1.0
@@ -501,19 +605,31 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
             micro_in_window += 1
             if micro_in_window == cfg.grad_accum:
                 optimizer_step()
-                if cfg.save_every and step % cfg.save_every == 0:
-                    model.save_pretrained(Path(cfg.output_dir) / f"step_{step}")
+                if cfg.save_every and step % cfg.save_every == 0 and step < max_steps:
+                    checkpoint(order, pos + 1)
+                    if stop_at_step and step >= stop_at_step:
+                        stopped_early = True
+                        break
                 if step >= max_steps:
                     break
-        if micro_in_window and step < max_steps:        # epoch 末尾不足 grad_accum 的余数
+        if stopped_early:
+            break
+        remainder_step = bool(micro_in_window) and step < max_steps
+        if remainder_step:                              # epoch 末尾不足 grad_accum 的余数
             optimizer_step()
         epoch += 1
         if cfg.save_each_epoch and step < max_steps:    # 最后一个 epoch 存成 final，不重复存
             model.save_pretrained(Path(cfg.output_dir) / f"epoch_{epoch}")
+        if remainder_step and cfg.save_every and step % cfg.save_every == 0 and step < max_steps:
+            checkpoint(None, 0)
+            if stop_at_step and step >= stop_at_step:
+                stopped_early = True
 
     train_s = time.time() - train_started
-    out_dir = Path(cfg.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    if stopped_early:                                   # --stop-at-step（续训试跑）：只留 checkpoint，不写 final
+        print(json.dumps({"stopped_at_step": step, "checkpoint": str(complete_checkpoints(out_dir)[-1])}, ensure_ascii=False), flush=True)
+        return {"stopped_at_step": step, "history": history}
     model.save_pretrained(out_dir / "final")
     (out_dir / "train_config.json").write_text(json.dumps(asdict(cfg), ensure_ascii=False, indent=2), encoding="utf-8")
     summary = {"role": cfg.role, "export_dir": str(export_dir), "files": files, "rows_in_files": len(all_rows),
@@ -521,6 +637,7 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                "prescan": scan, "steps": step, "epochs_done": epoch, "rows_seen": rows_seen, "max_steps": max_steps,
                "steps_per_epoch": steps_per_epoch, "trainable_params": trainable, "total_params": total,
                "smoke_tiny": smoke_tiny, "history": history, "adapter": str(out_dir / "final"), "model": cfg.model,
+               "resumed_from": resumed_from, "save_every": cfg.save_every,
                "lora": {"r": cfg.lora_r, "alpha": cfg.lora_alpha, "dropout": cfg.lora_dropout, "targets": cfg.lora_targets,
                         "coverage": lora_coverage(model)},
                "hyper": {"lr": cfg.lr, "min_lr_ratio": cfg.min_lr_ratio, "epochs": cfg.epochs, "warmup_steps": cfg.warmup_steps,
@@ -565,16 +682,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--dry-run", action="store_true", help="只预扫数据、算步数，不加载模型")
     parser.add_argument("--allow-trial-pack", action="store_true", help="允许用 status!=ok 的 r0 试包训练（只用于调试）")
+    parser.add_argument("--save-every", type=int, default=None, help="每 N 次更新存一个可续训的 checkpoint-<N>/（覆盖配置的 save_every）")
+    parser.add_argument("--resume", action="store_true", help="从 output_dir 里最近一个完整的 checkpoint-* 接着训（没有就从头训）")
+    parser.add_argument("--stop-at-step", type=int, default=None, help="试跑续训：存完第 N 步之后的 checkpoint 就停（不写 final）")
     args = parser.parse_args(argv)
     cfg = TrainConfig.load(args.config)
-    for name in ("seed", "output_dir", "export_dir", "model", "max_steps"):
+    for name in ("seed", "output_dir", "export_dir", "model", "max_steps", "save_every"):
         value = getattr(args, name)
         if value is not None:
             setattr(cfg, name, value)
     if args.dry_run:
         plan = dry_run(cfg)
         return 0 if plan["usable"] else 1
-    train(cfg, smoke_tiny=args.smoke_tiny, check_loss=args.check_loss, allow_trial_pack=args.allow_trial_pack)
+    if args.stop_at_step and not cfg.save_every:
+        raise SystemExit("--stop-at-step 要配 --save-every（停在一个存过的 checkpoint 上）")
+    train(cfg, smoke_tiny=args.smoke_tiny, check_loss=args.check_loss, allow_trial_pack=args.allow_trial_pack,
+          resume=args.resume, stop_at_step=args.stop_at_step)
     return 0
 
 

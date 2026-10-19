@@ -32,6 +32,10 @@ cd "$FS_ROOT" || exit 1
 PY="$FS_ENV_AGENT/bin/python"
 export PYTHONPATH="$FS_ROOT/src" PYTHONUTF8=1 PYTHONIOENCODING=utf-8 PYTHONUNBUFFERED=1 NO_PROXY="127.0.0.1,localhost"
 export CUDA_VISIBLE_DEVICES="$FS_TOOL_GPUS"           # agent processes (tools) see only the student's GPU
+# 10-19 thread caps (eval_config harness.thread_caps; speed only, same values before and after SFT): 12 concurrent run_cases
+# processes otherwise each open full-width onnxruntime / torch / BLAS pools on 128 cores. rapidocr's onnxruntime threads are set
+# in its installed config.yaml (intra 2 / inter 1, see server/requirements.lock.md). Per-run 30 min wall limit: server/e2_watchdog.sh.
+export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4
 
 PHASE=${1:-}; shift || true
 case "$PHASE" in baseline|after_sft) ;; *) echo "usage: $0 baseline|after_sft [preflight check seed run lock score metrics ...]"; exit 2 ;; esac

@@ -20,6 +20,14 @@
     "registered_hashes 全部重算（改过的：eval_r0.py 加固定描述模型 describer_env、behavior_metrics.py 加两项报告指标、eval_set / success_criteria / _evid_score.py / complete_verify_local.py / _evid_behavior.py / eval_r0.toml 未改，hash 照算）"
    ],
    "unchanged": "success_criteria.json 一个字不改（criteria_id r0_success_v1、metrics_version 写的仍是 behavior_metrics@1.0.0：四项口径在 1.1.0 里不变）；eval_set.json 不改（24 个案例与 sft0 训练行没有 case_id / case_family 重合，10-19 核过）；温度 0.6、关思考、两个种子、检索快照方案、轮次名 r0base / r0sft（success_criteria 的 pooling 写的是这两个名字）"
+  },
+  {
+   "date": "2026-10-19",
+   "what": "16:40 基线中途加每进程线程上限（负责人定）：12 个并发 run_cases 进程各开 300–800 线程（onnxruntime OCR、CPU faster-whisper、torch），load 85–125 / 128 核，单 run 40–50 分钟、一个 run 在 FINISH 后 35 分钟不退出。改为 OMP / MKL / OpenBLAS = 4、torch 4、rapidocr onnxruntime intra 2 / inter 1，单 run 30 分钟上限（看门狗）。线程上限只影响速度；看门狗超时按 failed（EVID 计 0 分），训后用同一组值；不进冻结口径，registered_hashes 不变；已完成的 7 个 run 保留，半截的 11 个改名 .failed-<时间> 后重跑；训后评测用同一组值"
+  },
+  {
+   "date": "2026-10-19",
+   "what": "17:20:03 看门狗单 run 上限 1800 s → 3600 s（负责人定）：1800 s 时被杀 7 个 run（s1 069 / 083 / 096 / 103，s2 056 / 069 / 090），都是长不是挂；r0base 报告列 killed_by_watchdog、改动时间点、重排后是否完成、超过 45 分钟完成的 run"
   }
  ],
  "eval_set": "experiments/eval/r0/eval_set.json",
@@ -95,7 +103,35 @@
   "auto_tools": "跟 specs/r1_freeze.json 的 checks.auto_tools（登记时为 off；清单 A9 若改，评测随之改，eval_r0.py 自动读取）。--auto-tools on 时运行时代跑的比对不计入比对率，另列",
   "unchanged_defaults": "--inspect-ops auto、--video-search ytdlp、--query-guard on、--harness-params apply、--tool-cache off",
   "image_search": "off",
-  "image_search_note": "负责人 10-19 定：--image-search off（基线与训后、EVID 20 与 dev_eval 4 同一值）。auto 时 Yandex 总开（multipart 上传帧字节）、有 Serper key 时 Lens 也开，会把 EVID 帧送进以图搜，违反硬边界；现有 20 个 EVID 快照 459 条 search 全是文字输入、0 条以图搜，历史不受影响。代价：averimatec_441（dev_eval，公开图）也没有以图搜"
+  "image_search_note": "负责人 10-19 定：--image-search off（基线与训后、EVID 20 与 dev_eval 4 同一值）。auto 时 Yandex 总开（multipart 上传帧字节）、有 Serper key 时 Lens 也开，会把 EVID 帧送进以图搜，违反硬边界；现有 20 个 EVID 快照 459 条 search 全是文字输入、0 条以图搜，历史不受影响。代价：averimatec_441（dev_eval，公开图）也没有以图搜",
+  "thread_caps": {
+   "env": {
+    "OMP_NUM_THREADS": 4,
+    "MKL_NUM_THREADS": 4,
+    "OPENBLAS_NUM_THREADS": 4
+   },
+   "torch_intra_op_threads": "4（随 OMP_NUM_THREADS）",
+   "rapidocr_onnxruntime": {
+    "intra_op_num_threads": 2,
+    "inter_op_num_threads": 1,
+    "where": "/venv/main/.../rapidocr_onnxruntime/config.yaml（安装包里的配置；项目代码 RapidOCR() 不传参数，原值 -1 = 全部核）"
+   },
+   "run_wall_limit_s": 3600,
+   "run_wall_limit_how": "server/e2_watchdog.sh（只认 run_cases --one、轮次 r0base-s* / r0sft-s*、cwd = 仓库根）：超时 TERM→KILL，父进程记失败、继续别的 run；一个阶段跑完后 failed 的统一重排一轮",
+   "scope": "线程上限只影响速度；看门狗超时按 failed（EVID 计 0 分），训后用同一组值。不进冻结口径",
+   "report": "r0base / r0sft 报告各列两个数：被看门狗杀过的 run 数、重排一轮后仍 failed 的 run 数（failed 的 run 基线跑完后统一重排一轮）",
+   "run_wall_limit_history": [
+    {
+     "from": "2026-10-19T16:41",
+     "limit_s": 1800
+    },
+    {
+     "from": "2026-10-19T17:20:03",
+     "limit_s": 3600,
+     "why": "1800 s 时第一波被杀 7 个 run（17:11–17:13，都在正常推进，31–57 个请求）；同时段完成的 run 1,021–1,692 s。负责人定改 3600 s"
+    }
+   ]
+  }
  },
  "search": {
   "mode": "replay_or_record",
