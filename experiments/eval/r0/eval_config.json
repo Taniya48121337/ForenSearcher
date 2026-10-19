@@ -1,0 +1,142 @@
+{
+ "eval_id": "sft0_eval_v1",
+ "frozen_at": "2026-10-19",
+ "previous_eval_id": "r0_eval_v1",
+ "doc": "claude/r0评测口径与成功标准_20261015.md",
+ "rule": "清单 E3 评测口径冻结：训前基线（E2）与训后评测用同一份配置、同一评测集、同一指标脚本、同一评委。改任何一项 = 换口径，要新起 eval_id，两次都按新口径重跑。eval_r0.py check 会核对下面 registered_hashes。",
+ "changelog": [
+  {
+   "date": "2026-10-19",
+   "what": "由 r0 口径改为 sft0 口径，基线未跑（负责人裁决 10-19）。这一版是训前（E2 基线）与训后共用的冻结版：基线跑后不再改",
+   "eval_id": "rule 写明改任何一项 = 换口径、要新起 eval_id：规格、冻结文件、核验器、底座、评委、指标版本都换了，所以 r0_eval_v1 → sft0_eval_v1。r0_eval_v1 没有跑过任何 run，不需要按新口径重跑旧结果",
+   "changes": [
+    "harness：hi@0.10.0 → hi@0.11.0（gia@0.9.0 不变）、specs/r0_freeze.json → specs/r1_freeze.json，与 sft0 训练行一致（训练行 100% hi@0.11.0 / gia@0.9.0）",
+    "核验器：verifier@0.3.6（hash cc5be4…，登记后已与代码不符）→ verifier@0.4.0（code_hash c66504d4…，= r1_freeze）",
+    "models：Qwen3.5-9B → Qwen3.8-27B（未训练底座 / sft0 LoRA）",
+    "评委：EVID 仍是 claude-cli:sonnet（= claude-sonnet-5-5，同一官方提示，未改）；dev_eval 核验器 claude-cli --model sonnet（= r1_freeze 核验器 judge / model_alias，判定记 claude-cli:claude-sonnet-5-5）。负责人 10-19 定：评委走订阅不走 API，取消一致率检查",
+    "metrics：behavior_metrics@1.0.0 → @1.1.0（四项定义与数值不变，只加报告项 ⑤ 每工作区步数分布、⑥ 提前交报告比例）",
+    "harness.describer：INSPECT 比对图的固定描述模型 = 被测端点上的底座 student（eval_r0.py run 自动设 FOREN_DESCRIBE_*）",
+    "harness.image_search = off（新增；原默认 auto）：EVID 帧不进任何以图搜（Yandex / Lens / 图床），负责人 10-19 定，两阶段同一值",
+    "registered_hashes 全部重算（改过的：eval_r0.py 加固定描述模型 describer_env、behavior_metrics.py 加两项报告指标、eval_set / success_criteria / _evid_score.py / complete_verify_local.py / _evid_behavior.py / eval_r0.toml 未改，hash 照算）"
+   ],
+   "unchanged": "success_criteria.json 一个字不改（criteria_id r0_success_v1、metrics_version 写的仍是 behavior_metrics@1.0.0：四项口径在 1.1.0 里不变）；eval_set.json 不改（24 个案例与 sft0 训练行没有 case_id / case_family 重合，10-19 核过）；温度 0.6、关思考、两个种子、检索快照方案、轮次名 r0base / r0sft（success_criteria 的 pooling 写的是这两个名字）"
+  }
+ ],
+ "eval_set": "experiments/eval/r0/eval_set.json",
+ "success_criteria": "experiments/eval/r0/success_criteria.json",
+ "metrics": {
+  "script": "scripts/behavior_metrics.py",
+  "version": "behavior_metrics@1.1.0",
+  "compatible_with": "behavior_metrics@1.0.0（success_criteria.metrics_version）：① open_rate ② compare_rate ③ repeat_rate ④ format_reject_rate 的定义与数值逐字不变（10-19 在 evidF27 / evidF8 共 182 个 run 上新旧脚本输出逐键相同）；成功标准只判这四项",
+  "report_items": {
+   "workspace_steps": "⑤ HI 每工作区用掉的回合数分布（n / min / p25 / p50 / p75 / p90 / max / mean + histogram），按 all / evid_ctrl20 / dev_eval4 / 各轮次分别给",
+   "early_report": "⑥ early_report_rate = 模型自己写的 REPORT 所在回合 < 该工作区回合上限的工作区 / 全部工作区；另列 truncated_at_limit_rate、report_at_limit_rate、endings 计数、limit_unknown；回合上限取轨迹 runtime_constraints.max_turns，其次 run_config.runtime_limits / harness_params_applied",
+   "judged": "不进 success_criteria 判定；训后报告（--baseline）与 E2 并排"
+  },
+  "legacy_script": "scripts/_evid_behavior.py（旧口径复算，原样调用）"
+ },
+ "judge": {
+  "evid": {
+   "script": "scripts/_evid_score.py",
+   "judges": [
+    "claude-cli:sonnet"
+   ],
+   "model": "claude-sonnet-5-5（Claude CLI 的 sonnet 别名；10-19 服务器 Claude Code 2.1.303 实测 --model sonnet 的 modelUsage = claude-sonnet-5-5）",
+   "transport": "Claude CLI 订阅（服务器上装 Claude Code 并登录 Claude Max 账号）；与 r0 登记时同一写法，不走 Anthropic API",
+   "prompt": "官方 PROMPT_JUDGE_POINTS（EVID-Bench 仓库 commit 6f4237b0941112da546d78cd660e3a71acf2c48d，逐字照抄，GT / 预测两段放 user 消息）",
+   "votes": "单评委（论文是三评委多数票，数字不能和论文严格对比）",
+   "unfinished": "没跑完 / 没写出答案的按 0",
+   "dataset": "plan-harness-1/datasets/EVID-Bench/evid_bench.json",
+   "cache": "scores_dir/judge_cache.jsonl（重跑命中缓存）"
+  },
+  "dev_eval": {
+   "script": "scripts/complete_verify_local.py",
+   "judge": "claude-cli",
+   "model": "sonnet",
+   "to_step": 2,
+   "verifier": "verifier@0.4.0",
+   "verifier_code_hash": "sha256:c66504d41d96278461c4635376a24d30d101ce6a4b6f3b0c6367048d1b312f96",
+   "judge_model_frozen": "claude-cli:claude-sonnet-5-5（= specs/r1_freeze.json verifier：judge claude-cli、model_alias sonnet、model claude-sonnet-5-5；CLI 以 --model sonnet 调用，判定行记实际模型名）",
+   "use": "只报不判：答案单元严格通过（positive 且无 major / critical）与案卷自动 check"
+  }
+ },
+ "sampling": {
+  "temperature": 0.6,
+  "temperature_source": "datagen/teacher.py EndpointTeacher 默认值；run_cases 不能改，run_config.configured_model.temperature 逐 run 记，behavior_metrics 的口径核对会列出",
+  "seeds": 2,
+  "seed_scheme": "两个轮次名 <tag>-s1、<tag>-s2，各 --samples 1（_evid_score.py 只认 run 名末尾 _1）；端点不收随机种子（EndpointTeacher 不发 seed），两次是同温度的独立抽样，不能逐字复现",
+  "thinking": "off（--no-think → chat_template_kwargs {\"enable_thinking\": false}；sft0 训练行的 assistant 是不带思考的 JSON）",
+  "top_p_top_k": "请求只发 temperature 0.6 与 max_tokens；top_p / top_k 用 vLLM 读到的底座 generation_config.json 默认值（训前训后同一份权重目录，相同）"
+ },
+ "harness": {
+  "hi_spec": "hi@0.11.0",
+  "gia_spec": "gia@0.9.0",
+  "freeze_file": "specs/r1_freeze.json",
+  "freeze_tool_layer_hash_at_registration": "sha256:49bb6f7e740f84dd4018c5cbb12e56bcb634db2e544938cf43a95998782fba16",
+  "freeze_spec_hash_at_registration": {
+   "hi": "sha256:c981099064da5e91b13b5ffbb7f06b6d3b23a662994c1d3907f98d8736a7b504",
+   "gia": "sha256:a43f17adec6cba2048a47ab8cb68cd20b33227128198cbea43d3e66bb506b033"
+  },
+  "instruction_mode": "student",
+  "runtime_guards": "eval",
+  "blocklist": "exclude",
+  "no_think": true,
+  "config": "configs/eval_r0.toml",
+  "state_renderer": "不传 --state-renderer：两份规格的 harness_params 都是 compact_16k（传了会被冻结守卫记成 harness_overrides）",
+  "turn_limits": "HI 每工作区 12 回合（hi@0.11.0 harness_params.max_workspace_turns，--harness-params apply 覆盖 eval_r0.toml 的 8）；GIA 6 回合、每轮最多 3 个工作区、3 轮、工作区串行（eval_r0.toml）",
+  "freeze_expected_failures": [
+   "instruction_mode"
+  ],
+  "freeze_note": "冻结文件按造数据口径写的是 instruction_mode=teacher；评测用学生提示，所以每个 run 的 freeze.failed 只应有 instruction_mode 一项。轮次名 r0base-s* / r0sft-s* 不匹配 run_cases 的轮次映射（r1g → g1_freeze，r1 → r1_freeze），落到默认文件 r1_freeze.json，规格对得上即用它（别设 FOREN_FREEZE_FILE）。10-19 本机不调模型预检（按 run_cases 的 frozen_actual 逐项算）：两个阶段都选中 r1_freeze，failed = [instruction_mode]，其余 spec_hash.hi / spec_hash.gia / tool_layer_hash / state_renderer / image_input_limit / gia_report_review_delay_s / harness_params_mode / harness_overrides / state_renderer_override / auto_tools 全部一致。出现别的项（工具层 hash、规格 hash 等）说明环境变了，这次评测不算数",
+  "describer": {
+   "model": "student",
+   "what": "INSPECT 比对图的固定描述模型（inspect/describe.py）= 被测端点上未挂 LoRA 的底座；eval_r0.py run 设 FOREN_DESCRIBE_ENDPOINT=<--endpoint>、FOREN_DESCRIBE_MODEL=student（思考关）。基线时与不设完全相同（不设时取 run 自己的 --model student）；训后不设的话会拿 \"HI=…,GIA=…\" 当模型名，服务上没有，比对图描述整行缺失"
+  },
+  "auto_tools": "跟 specs/r1_freeze.json 的 checks.auto_tools（登记时为 off；清单 A9 若改，评测随之改，eval_r0.py 自动读取）。--auto-tools on 时运行时代跑的比对不计入比对率，另列",
+  "unchanged_defaults": "--inspect-ops auto、--video-search ytdlp、--query-guard on、--harness-params apply、--tool-cache off",
+  "image_search": "off",
+  "image_search_note": "负责人 10-19 定：--image-search off（基线与训后、EVID 20 与 dev_eval 4 同一值）。auto 时 Yandex 总开（multipart 上传帧字节）、有 Serper key 时 Lens 也开，会把 EVID 帧送进以图搜，违反硬边界；现有 20 个 EVID 快照 459 条 search 全是文字输入、0 条以图搜，历史不受影响。代价：averimatec_441（dev_eval，公开图）也没有以图搜"
+ },
+ "search": {
+  "mode": "replay_or_record",
+  "snapshot_root": "experiments/eval/r0/search_snapshots",
+  "seed_from": "eval_set.json 里每个案例的 snapshot.source_dir（EVID 20 个：experiments/evid/search_snapshots/evid_video_XXX；dev_eval 4 个没有可用快照，建空目录）",
+  "lock_file": "experiments/eval/r0/search_snapshots/snapshot_lock.json",
+  "as_of_policy": "基线（E2）不设 FOREN_SNAPSHOT_AS_OF：命中回放、未命中联网补录、瞬时失败重新联网（与历次 EVID 基线相同）。基线跑完 eval_r0.py lock 记下 as_of = 快照里最后一条 recorded_at。训后评测设 FOREN_SNAPSHOT_AS_OF=as_of：和基线发出同一请求时看到的是基线当时的结果；新请求照样联网补录（无法避免），新录率在报告里列出",
+  "same_machine": "基线与训后在同一台机器上跑（recorded_at 是本地时间，按字符串比较）：10-19 起是 Vast 单卡 H200 服务器",
+  "concurrency": "两个种子可以同时跑（server/21_e2_eval.sh）：快照 index.jsonl 追加有 flock、blob 原子写、未命中时增量重读；两个种子本来就共享同一快照目录（顺序跑时种子 2 也回放种子 1 的补录）"
+ },
+ "runs_dir": "experiments/eval/r0/runs",
+ "scores_dir": "experiments/eval/r0/scores",
+ "reports_dir": "experiments/eval/r0/reports",
+ "round_tags": {
+  "baseline": "r0base",
+  "after_sft": "r0sft"
+ },
+ "models": {
+  "base_weights": "Qwen/Qwen3.8-27B（bf16，Qwen3_5ForConditionalGeneration；服务器 /workspace/models/Qwen3.8-27B = .models/llm/Qwen3.8-27B，与 training/configs/*_sft0_27b.json 的 model 同一目录）",
+  "server": "vLLM 单副本，服务名 student，端口 8002（FS_PROFILE=vast1 bash server/11_loop_layout.sh serve）；LoRA rank ≤ 32",
+  "baseline": "未训练的 Qwen3.8-27B 底座：--model student",
+  "after_sft": "同一底座挂 sft0（sft0-20261019-4b79e1ed432f）的两套 LoRA：--model HI=hi_sft0_s<种子>,GIA=gia_sft0_s<种子>（server/12_add_lora.sh 的登记名；先只训种子 1：HI=hi_sft0_s1,GIA=gia_sft0_s1）"
+ },
+ "registered_hashes": {
+  "metrics_script": "sha256:8b02d01086d302c52a4f7a6d8409a98381c24716c5e1e6949cf966e8cdcf8c29",
+  "launcher": "sha256:b272291f48e91bf2c73ee0f1da5ba01c158fc3cddb12c69198dc87060776bd43",
+  "evid_scorer": "sha256:34a8ad5a01f9f17881855f2c245131aa9400f26633877dd4394c9d57e91693b7",
+  "dev_verifier": "sha256:e86400656dbbb4cdc60c2ac3cf4f382fe151e29af67e13bc74a4a22fbe184386",
+  "legacy_metrics": "sha256:ebfcb0b279b906b5e334d91ee9f56dcad89ef68e0a4419797f623fb245a1406a",
+  "eval_set": "sha256:71d6894469f515b372b5182b83a09373dd35e2e8fa69a8be004ce1e4f55cfeae",
+  "success_criteria": "sha256:e4737702d205e193e38abee557126eee332a6115744005a2c1bbb3819ba38a5c",
+  "runtime_config": "sha256:ec2e609740f965372b23444cb045eacb9c86cd2fbf9924d026309f418d7fbe31"
+ },
+ "registered_files": {
+  "metrics_script": "scripts/behavior_metrics.py",
+  "launcher": "scripts/eval_r0.py",
+  "evid_scorer": "scripts/_evid_score.py",
+  "dev_verifier": "scripts/complete_verify_local.py",
+  "legacy_metrics": "scripts/_evid_behavior.py",
+  "eval_set": "experiments/eval/r0/eval_set.json",
+  "success_criteria": "experiments/eval/r0/success_criteria.json",
+  "runtime_config": "configs/eval_r0.toml"
+ }
+}

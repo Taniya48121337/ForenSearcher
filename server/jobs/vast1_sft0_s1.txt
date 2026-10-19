@@ -1,0 +1,10 @@
+# sft0 on the Vast single H200 (FS_PROFILE=vast1), seed 1 only: HI s1, then GIA s1 (one slot "0", so 13_train_queue.sh runs them in this order).
+# Same arguments as training/jobs/sft0_sft_27b.txt (seed 1 lines), output outside the repo copy: /workspace/outputs/lora/sft0_27b/.
+# Seed 2 waits in server/jobs/vast1_sft0_s2.txt. Before: the pack must be unpacked at /workspace/repo/dist/sft0-20261019-4b79e1ed432f
+# (export_dir of the configs, relative to /workspace/repo) and checked: python training/sft_lora.py --config training/configs/hi_sft0_27b.json --dry-run
+#   FS_PROFILE=vast1 bash server/11_loop_layout.sh train
+#   FS_PROFILE=vast1 bash server/13_train_queue.sh server/jobs/vast1_sft0_s1.txt      # in tmux; follow: tail -f server_logs/train/<n>_*.log
+# Logs: server_logs/train/1__workspace_outputs_lora_sft0_27b_hi_s1.log, 2__workspace_outputs_lora_sft0_27b_gia_s1.log (13 turns '/' into '_').
+# Then: bash server/12_add_lora.sh hi_sft0_s1 /workspace/outputs/lora/sft0_27b/hi_s1/final (and gia_sft0_s1 …/gia_s1/final).
+--config training/configs/hi_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/hi_s1
+--config training/configs/gia_sft0_27b.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/gia_s1

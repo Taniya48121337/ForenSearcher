@@ -8,6 +8,19 @@
 
 另附分数（--scores 给 _evid_score.py 的评分 jsonl 时）、检索快照命中 / 新录率、冻结核对、旧口径复算（与总表旧数对照）。
 
+1.1.0（2026-10-19）只加两个报告项，上面四项的定义与数值不变（不进 success_criteria 判定）：
+    ⑤ 每工作区步数分布  workspace_steps    HI 每个工作区用掉的回合数（运行时的 turn_index 计数，即 max_workspace_turns 管的
+                                          那个数）：n / min / p25 / p50 / p75 / p90 / max / 均值 + 直方图
+    ⑥ 提前交报告比例    early_report       early_report_rate = 以模型自己写的 REPORT 结束、且 REPORT 所在回合 < 该工作区回合
+                                          上限的工作区 / 全部工作区；另列 truncated_at_limit_rate（撞上限被截断：运行时代交的
+                                          "turn limit reached" 空报告，或没开代交时的 WorkspaceTurnLimit）、report_at_limit_rate
+                                          （最后一个回合自己交的报告）与各种结束方式的计数
+    回合上限按工作区取：轨迹 model_input 的 model_view.runtime_constraints.max_turns（运行时实际执行的值）> run_config
+    .runtime_limits.max_workspace_turns > run_config.harness_params_applied.max_workspace_turns.value；都取不到时这个工作区
+    记为 self_report_limit_unknown：留在分母里、不进分子，个数单列（limit_unknown）。
+    步数 = 工作区内 HI model_output / observation 事件的最大 turn_index（重复动作被短路、"只可交报告"的回合不耗回合，与运行时
+    一致）；轨迹里没有 turn_index（旧格式 / 合成数据）时退回 HI model_output 的条数。
+
 用法：
 
     python scripts/behavior_metrics.py experiments/evid/runs --round evidF27              # 一轮
@@ -45,7 +58,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
-METRICS_VERSION = "behavior_metrics@1.0.0"
+METRICS_VERSION = "behavior_metrics@1.1.0"     # 1.1.0 = 1.0.0 的四项不变 + 报告项 ⑤⑥（见文件头）
 DEFAULT_EVID_BENCH = ROOT / "plan-harness-1" / "datasets" / "EVID-Bench" / "evid_bench.json"
 COMPARE_OPS = ("compare_media", "align_media", "diff_media")
 CANDIDATE_TYPES = ("video", "image")
@@ -148,6 +161,141 @@ def evid_sample(case_id: str | None) -> str | None:
     return match.group(1) if match else None
 
 
+# ---------------------------------------------------------------- ⑤⑥ 工作区步数与提前交报告（1.1.0，报告项）
+
+AUTO_REPORT_PREFIX = "auto_report"          # hi/workspace.py AUTO_REPORT_PREFIX（"auto_report:"）
+TURN_LIMIT_REASON = "turn limit reached"    # hi/workspace.py _auto_incomplete("turn limit reached")
+WORKSPACE_ENDINGS = ("early_report", "report_at_limit", "truncated_at_limit", "auto_report_other", "no_report",
+                     "self_report_limit_unknown")
+
+
+def _new_workspace(actor: str) -> dict[str, Any]:
+    return {"workspace_id": actor, "max_turn_index": 0, "outputs": 0, "tool_actions": 0, "max_turns_seen": None,
+            "report_turn": None, "report_kind": None, "status_reason": None, "auto_reason": None,
+            "turn_limit_error": False, "runtime_error": None, "next_output": None, "report_prompt": None}
+
+
+def track_workspace(workspaces: dict[str, dict[str, Any]], event: dict[str, Any]) -> None:
+    """HI 工作区的一条轨迹事件 → 回合数、回合上限、结束方式（只读，不影响四项指标的统计）。"""
+
+    if event.get("actor_role") != "HI" or event.get("actor_id") in (None, ""):
+        return
+    kind, payload = event.get("event_type"), event.get("payload") or {}
+    if not isinstance(payload, dict):
+        return
+    actor = str(event["actor_id"])
+    if kind not in ("model_input", "model_output", "observation", "workspace_report", "auto_report", "runtime_error"):
+        return
+    w = workspaces.setdefault(actor, _new_workspace(actor))
+    turn = payload.get("turn_index")
+    if kind == "model_input":
+        view = payload.get("model_view") if isinstance(payload.get("model_view"), dict) else {}
+        constraints = view.get("runtime_constraints") if isinstance(view.get("runtime_constraints"), dict) else {}
+        limit = constraints.get("max_turns")
+        if isinstance(limit, int) and not isinstance(limit, bool):
+            w["max_turns_seen"] = max(w["max_turns_seen"] or 0, limit)
+        w["next_output"] = constraints.get("next_output")
+        return
+    if kind in ("model_output", "observation") and isinstance(turn, int) and not isinstance(turn, bool):
+        w["max_turn_index"] = max(w["max_turn_index"], turn)
+    if kind == "model_output":
+        w["outputs"] += 1
+        output = payload.get("output")
+        if isinstance(output, dict) and output.get("action"):
+            w["tool_actions"] += 1
+        elif isinstance(output, dict):           # 没有 action 的输出 = 工作区报告（parse_hi_decision）
+            w["report_turn"] = turn if isinstance(turn, int) and not isinstance(turn, bool) else None
+            w["report_prompt"] = w["next_output"]
+    elif kind == "workspace_report":
+        reason = str(payload.get("status_reason") or "")
+        w["status_reason"] = reason[:200]
+        w["report_kind"] = "auto" if reason.startswith(AUTO_REPORT_PREFIX) else "self"
+    elif kind == "auto_report":
+        w["auto_reason"] = str(payload.get("reason") or "")[:200]
+    elif kind == "runtime_error":
+        error = payload.get("error") if isinstance(payload.get("error"), dict) else {}
+        if error.get("type") == "WorkspaceTurnLimit":
+            w["turn_limit_error"] = True
+        else:
+            w["runtime_error"] = str(error.get("type") or "?")
+
+
+def finish_workspaces(workspaces: dict[str, dict[str, Any]], run_config: dict[str, Any]) -> list[dict[str, Any]]:
+    """每个工作区：steps、回合上限（及来源）、结束方式 ending（WORKSPACE_ENDINGS 之一）。"""
+
+    limits = run_config.get("runtime_limits") if isinstance(run_config.get("runtime_limits"), dict) else {}
+    applied = (run_config.get("harness_params_applied") or {}).get("max_workspace_turns") \
+        if isinstance(run_config.get("harness_params_applied"), dict) else None
+    fallback, fallback_source = None, None
+    if isinstance(limits.get("max_workspace_turns"), int):
+        fallback, fallback_source = limits["max_workspace_turns"], "run_config.runtime_limits"
+    elif isinstance(applied, dict) and isinstance(applied.get("value"), int):
+        fallback, fallback_source = applied["value"], "run_config.harness_params_applied"
+    rows = []
+    for w in workspaces.values():
+        if not w["outputs"] and not w["max_turns_seen"] and not w["report_kind"]:
+            continue                               # 没有任何模型回合的 actor（不是工作区）
+        steps = w["max_turn_index"] or w["outputs"]
+        limit, source = (w["max_turns_seen"], "trajectory.runtime_constraints") if w["max_turns_seen"] else (fallback, fallback_source)
+        report_turn = w["report_turn"] if w["report_turn"] is not None else steps
+        auto_reason = w["auto_reason"] or (w["status_reason"] or "")
+        if w["report_kind"] == "self":
+            ending = ("self_report_limit_unknown" if limit is None
+                      else "early_report" if report_turn < limit else "report_at_limit")
+        elif w["report_kind"] == "auto":
+            ending = "truncated_at_limit" if TURN_LIMIT_REASON in auto_reason else "auto_report_other"
+        elif w["turn_limit_error"]:
+            ending = "truncated_at_limit"
+        else:
+            ending = "no_report"
+        rows.append({"workspace_id": w["workspace_id"], "steps": steps, "tool_actions": w["tool_actions"],
+                     "model_outputs": w["outputs"], "max_turns": limit, "max_turns_source": source,
+                     "report_turn": report_turn if w["report_kind"] == "self" else None, "ending": ending,
+                     "report_only_turn": bool(w["report_kind"] == "self" and w["report_prompt"]),
+                     "auto_reason": w["auto_reason"], "runtime_error": w["runtime_error"]})
+    return rows
+
+
+def _quantile(sorted_values: list[float], q: float) -> float:
+    position = (len(sorted_values) - 1) * q          # 线性插值（numpy 默认的 linear）
+    low = math.floor(position)
+    high = math.ceil(position)
+    return sorted_values[low] + (sorted_values[high] - sorted_values[low]) * (position - low)
+
+
+def distribution(values: list[int]) -> dict[str, Any]:
+    if not values:
+        return {"n": 0, "min": None, "p25": None, "p50": None, "p75": None, "p90": None, "max": None, "mean": None,
+                "histogram": {}}
+    xs = sorted(values)
+    out: dict[str, Any] = {"n": len(xs), "min": xs[0]}
+    for name, q in (("p25", 0.25), ("p50", 0.5), ("p75", 0.75), ("p90", 0.9)):
+        out[name] = round(_quantile(xs, q), 2)
+    out.update({"max": xs[-1], "mean": round(sum(xs) / len(xs), 2),
+                "histogram": {str(k): v for k, v in sorted(Counter(xs).items())}})
+    return out
+
+
+def workspace_summary(runs: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]]:
+    """(workspace_steps, early_report)：所有 run 的工作区合在一起（按工作区计数，micro）。"""
+
+    rows = [w for r in runs for w in r.get("workspaces") or []]
+    endings = Counter(w["ending"] for w in rows)
+    n = len(rows)
+    early = {
+        "early_report_rate": ratio(endings["early_report"], n),
+        "truncated_at_limit_rate": ratio(endings["truncated_at_limit"], n),
+        "report_at_limit_rate": ratio(endings["report_at_limit"], n),
+        "workspaces": n,
+        "endings": {key: endings.get(key, 0) for key in WORKSPACE_ENDINGS},
+        "limit_unknown": endings.get("self_report_limit_unknown", 0),
+        "early_report_on_report_only_turn": sum(1 for w in rows if w["ending"] == "early_report" and w["report_only_turn"]),
+        "max_turns": {str(k): v for k, v in sorted(Counter(w["max_turns"] for w in rows if w["max_turns"] is not None).items())},
+        "max_turns_sources": dict(Counter(str(w["max_turns_source"]) for w in rows)),
+    }
+    return distribution([int(w["steps"]) for w in rows]), early
+
+
 # ---------------------------------------------------------------- 单个 run
 
 def run_metrics(run_dir: Path, sources: list[str] | None, *, candidate_types: tuple[str, ...] = CANDIDATE_TYPES
@@ -171,7 +319,9 @@ def run_metrics(run_dir: Path, sources: list[str] | None, *, candidate_types: tu
     model_compare_calls = 0
     auto_compares: list[list[str]] = []
     action_counts: Counter[str] = Counter()
+    workspaces: dict[str, dict[str, Any]] = {}
     for event in _events(run_dir):
+        track_workspace(workspaces, event)          # ⑤⑥（1.1.0）：只读同一条事件，不改下面四项的统计
         kind, role, payload = event.get("event_type"), event.get("actor_role"), event.get("payload") or {}
         if kind == "raw_model_output" and role in ("HI", "GIA"):
             raw[role] += 1
@@ -214,7 +364,8 @@ def run_metrics(run_dir: Path, sources: list[str] | None, *, candidate_types: tu
     rejected = {role: max(0, raw[role] - accepted[role]) for role in ("HI", "GIA")}
     out.update({"hi_actions": hi_actions, "hi_repeats": hi_repeats,
                 "raw_outputs": dict(raw), "accepted_outputs": dict(accepted), "rejected_outputs": rejected,
-                "harness_rejections": dict(harness_rejections), "action_counts": dict(action_counts)})
+                "harness_rejections": dict(harness_rejections), "action_counts": dict(action_counts),
+                "workspaces": finish_workspaces(workspaces, run_config)})
 
     # ---- store：候选池、打开、下载、比对
     store = run_dir / "store.sqlite3"
@@ -370,6 +521,8 @@ def summarize(rows: list[dict[str, Any]], *, min_denominator: int = MIN_DENOMINA
             "format_reject_rate_gia": ratio(rej["GIA"], raw["GIA"]),
         },
     }
+    if raw_runs:      # ⑤⑥（1.1.0，报告项）：要轨迹，--from-score-jsonl 的行没有
+        summary["workspace_steps"], summary["early_report"] = workspace_summary(raw_runs)
     snapshots = [r["snapshot"] for r in raw_runs if r.get("snapshot")]
     if snapshots:
         hit = sum(s["hit"] for s in snapshots)
@@ -584,8 +737,65 @@ def _pct(metric: dict[str, Any] | None) -> str:
     return f"{100 * metric['value']:.1f}%（{metric['num']}/{metric['den']}{'' if not ci else f'，95% 区间 {100 * ci[0]:.0f}–{100 * ci[1]:.0f}%'}）"
 
 
+def _bar(count: int, top: int, width: int = 24) -> str:
+    return "█" * max(1, round(width * count / top)) if count and top else ""
+
+
+def workspace_comparison(groups: dict[str, dict[str, Any]], baseline_groups: dict[str, dict[str, Any]] | None
+                         ) -> dict[str, Any]:
+    """⑤⑥ 训后与 E2 基线逐集合并排（基线 .json 由 1.0.0 生成时没有这两项，记 None）。"""
+
+    out: dict[str, Any] = {}
+    for name, summary in groups.items():
+        base = (baseline_groups or {}).get(name) or {}
+        out[name] = {"after": {"workspace_steps": summary.get("workspace_steps"), "early_report": summary.get("early_report")},
+                     "baseline": {"workspace_steps": base.get("workspace_steps"), "early_report": base.get("early_report")}
+                     if baseline_groups is not None else None}
+    return out
+
+
+def workspace_markdown(groups: dict[str, dict[str, Any]], names: list[str],
+                       baseline_groups: dict[str, dict[str, Any]] | None) -> list[str]:
+    shown = [n for n in names if groups[n].get("workspace_steps")]
+    if not shown:
+        return []
+    sides = [("", groups)] + ([("（E2 基线）", baseline_groups)] if baseline_groups is not None else [])
+    lines = ["", "## ⑤ 每工作区步数分布 / ⑥ 提前交报告（报告项，1.1.0；不参与成功标准判定）", "",
+             "步数 = HI 工作区用掉的回合数（运行时 turn_index，回合上限管的那个数）。提前交报告 = 模型自己写的 REPORT 所在回合 < "
+             "该工作区回合上限；到上限被截断 = 运行时代交的 turn limit 空报告（或 WorkspaceTurnLimit）。比例的分母都是全部工作区。", "",
+             "| 集合 | 工作区 | min | p25 | p50 | p75 | p90 | max | 均值 |", "|---|---|---|---|---|---|---|---|---|"]
+    for name in shown:
+        for label, source in sides:
+            d = ((source or {}).get(name) or {}).get("workspace_steps")
+            if not d:
+                lines.append(f"| {name}{label} | —（无此项） |  |  |  |  |  |  |  |")
+                continue
+            lines.append(f"| {name}{label} | {d['n']} | " + " | ".join(str(d[k]) for k in ("min", "p25", "p50", "p75", "p90", "max", "mean")) + " |")
+    lines += ["", "直方图（步数：工作区个数）：", ""]
+    for name in shown:
+        for label, source in sides:
+            hist = ((((source or {}).get(name) or {}).get("workspace_steps")) or {}).get("histogram") or {}
+            if hist:
+                top = max(hist.values())
+                lines.append(f"- {name}{label}：" + "；".join(f"{k} 步 {v} {_bar(v, top, 12)}" for k, v in hist.items()))
+    lines += ["", "| 集合 | ⑥ 提前交报告 | 到上限被截断 | 最后一回合自交 | 其他代交 | 无报告 | 上限不明 | 其中\"只可交报告\"回合交的 | 回合上限（来源） |",
+              "|---|---|---|---|---|---|---|---|---|"]
+    for name in shown:
+        for label, source in sides:
+            e = ((source or {}).get(name) or {}).get("early_report")
+            if not e:
+                lines.append(f"| {name}{label} | —（无此项） |  |  |  |  |  |  |  |")
+                continue
+            ends = e.get("endings") or {}
+            lines.append(f"| {name}{label} | {_pct(e['early_report_rate'])} | {_pct(e['truncated_at_limit_rate'])} | "
+                         f"{_pct(e['report_at_limit_rate'])} | {ends.get('auto_report_other', 0)} | {ends.get('no_report', 0)} | "
+                         f"{e.get('limit_unknown', 0)} | {e.get('early_report_on_report_only_turn', 0)} | "
+                         f"{e.get('max_turns')}（{e.get('max_turns_sources')}） |")
+    return lines
+
+
 def markdown(title: str, groups: dict[str, dict[str, Any]], verdicts: list[dict[str, Any]] | None,
-             meta: dict[str, Any]) -> str:
+             meta: dict[str, Any], baseline_groups: dict[str, dict[str, Any]] | None = None) -> str:
     lines = [f"# {title}", "", f"- 指标脚本：{meta['metrics_version']}（{meta['script_sha256']}）",
              f"- 输入：{meta['inputs']}", ""]
     names = [n for n in groups if not n.startswith("round:")] + [n for n in groups if n.startswith("round:")]
@@ -606,6 +816,7 @@ def markdown(title: str, groups: dict[str, dict[str, Any]], verdicts: list[dict[
         _pct((groups[n].get("snapshot") or {}).get("new_record_rate")) for n in names) + " |")
     lines.append("| run 数（有轨迹 / 其中 EVID） | " + " | ".join(
         f"{groups[n]['runs']}（{groups[n]['runs_with_trajectory']} / {groups[n]['evid_runs']}）" for n in names) + " |")
+    lines += workspace_markdown(groups, names, baseline_groups)
     legacy = groups["all"].get("legacy")
     if legacy:
         lines += ["", "## 旧口径复算（与《EVID_baseline效果总表》对照）", "",
@@ -690,9 +901,9 @@ def main(argv: list[str] | None = None) -> int:
     grouped = group_rows(rows, eval_set)
     summaries = {name: summarize(rs, min_denominator=args.min_denominator) for name, rs in grouped.items() if rs}
     verdicts = None
+    baseline = (_read_json(args.baseline) or {}).get("groups") if args.baseline else None
     if args.criteria:
         criteria = _read_json(args.criteria) or {}
-        baseline = (_read_json(args.baseline) or {}).get("groups") if args.baseline else None
         verdicts = evaluate_criteria(criteria, summaries, baseline)
     meta = {"metrics_version": METRICS_VERSION, "script_sha256": _sha256_file(Path(__file__)),
             "legacy_script_sha256": _sha256_file(ROOT / "scripts" / "_evid_behavior.py"),
@@ -701,12 +912,15 @@ def main(argv: list[str] | None = None) -> int:
             "eval_set": str(args.eval_set) if args.eval_set else None,
             "criteria": str(args.criteria) if args.criteria else None,
             "criteria_sha256": _sha256_file(args.criteria) if args.criteria else None}
-    report = {"meta": meta, "groups": summaries, "verdicts": verdicts, "runs": rows}
+    report = {"meta": meta, "groups": summaries, "verdicts": verdicts, "runs": rows,
+              "workspace_comparison": workspace_comparison(summaries, baseline)}
+    if args.baseline:
+        meta["baseline"] = str(args.baseline)
     title = args.title or f"r0 行为指标：{', '.join(args.rounds or []) or ', '.join(str(p) for p in args.paths)}"
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         Path(f"{args.out}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-        Path(f"{args.out}.md").write_text(markdown(title, summaries, verdicts, meta), encoding="utf-8")
+        Path(f"{args.out}.md").write_text(markdown(title, summaries, verdicts, meta, baseline), encoding="utf-8")
         print(f"写入 {args.out}.json / .md", file=sys.stderr)
     print(json.dumps({name: {k: s.get(k) for k in ("open_rate", "compare_rate", "repeat_rate", "format_reject_rate", "score")}
                       for name, s in summaries.items() if not name.startswith("round:") or len(summaries) <= 4},

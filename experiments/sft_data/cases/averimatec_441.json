@@ -5,6 +5,7 @@
   "split": "dev_eval",
   "task_kind": "claim_check",
   "task_text": "核查以下声明，必要时检查给定媒体并搜索外部证据。依据实际证据回答，说明结论范围与不确定性：A photo shows that Pakistani parents locked their daughter's grave to avoid her corpse falling prey to necrophilia（声明日期：2023-04-26）",
+  "task_text_en": "Fact-check the following claim, examining the given media where needed and searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: A photo shows that Pakistani parents locked their daughter's grave to avoid her corpse falling prey to necrophilia (claim date: 2023-04-26)",
   "family_key": "averimatec:441",
   "media": [
     {
@@ -27,17 +28,20 @@
     {
       "id": "REQ1",
       "text": "图中坟墓的实际所在地",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "The actual location of the grave in the photo"
     },
     {
       "id": "REQ2",
       "text": "坟墓加装铁栅和锁的真实原因",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "The real reason the grave was fitted with an iron grille and a lock"
     },
     {
       "id": "REQ3",
       "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
-      "must_cite": false
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion (sources not obtained, details that could not be verified)"
     }
   ],
   "required_evidence": [
@@ -116,7 +120,13 @@
           "虚假",
           "Refuted",
           "False",
-          "不属实"
+          "不属实",
+          "Fake",
+          "Not true",
+          "Untrue",
+          "Inaccurate",
+          "Debunked",
+          "Fabricated"
         ]
       },
       "note": "数据集标签 Refuted",

@@ -27,7 +27,7 @@ for slot in "${SLOTS[@]}"; do
   for g in ${slot//,/ }; do
     used=$(gpu_used_mib "$g")
     [ -z "$used" ] && { fail "GPU $g not found by nvidia-smi"; exit 1; }
-    [ "$used" -gt 2000 ] && { fail "GPU $g already uses ${used} MiB (teacher still up? run: bash server/11_loop_layout.sh B)"; exit 1; }
+    [ "$used" -gt 2000 ] && { fail "GPU $g already uses ${used} MiB ($([ "${FS_PROFILE:-}" = vast1 ] && echo "student still up? run: FS_PROFILE=vast1 bash server/11_loop_layout.sh train" || echo "teacher still up? run: bash server/11_loop_layout.sh B"))"; exit 1; }
   done
 done
 

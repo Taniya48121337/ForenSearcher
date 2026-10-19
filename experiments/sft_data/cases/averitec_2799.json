@@ -5,6 +5,7 @@
   "split": "dev_eval",
   "task_kind": "claim_check",
   "task_text": "核查以下声明，搜索外部证据。依据实际证据回答，说明结论范围与不确定性：California wildfire is as a result of poor forest management.（声明日期：2018-11-10）",
+  "task_text_en": "Fact-check the following claim by searching for external evidence. Answer based on the evidence actually obtained, and state the scope of the conclusion and its uncertainties: California wildfire is as a result of poor forest management. (claim date: 2018-11-10)",
   "family_key": "averitec:2799",
   "media": [],
   "claims": [
@@ -23,17 +24,20 @@
     {
       "id": "REQ1",
       "text": "消防部门或消防员组织对\"林业管理不善导致加州山火\"这一说法的公开回应",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Public responses by fire departments or firefighter organizations to the claim that poor forest management caused the California wildfires"
     },
     {
       "id": "REQ2",
       "text": "2018 年 11 月加州山火的类型、位置与起因的可靠说明，能否支持\"林业管理不善\"的归因",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Reliable accounts of the type, location and cause of the November 2018 California wildfires, and whether they support attributing them to poor forest management"
     },
     {
       "id": "REQ3",
       "text": "未能确定的内容与结论的适用范围（未取得的来源、无法核实的细节）",
-      "must_cite": false
+      "must_cite": false,
+      "text_en": "What could not be determined and the scope of the conclusion (sources not obtained, details that could not be verified)"
     }
   ],
   "required_evidence": [
@@ -89,7 +93,13 @@
           "虚假",
           "Refuted",
           "False",
-          "不属实"
+          "不属实",
+          "Fake",
+          "Not true",
+          "Untrue",
+          "Inaccurate",
+          "Debunked",
+          "Fabricated"
         ]
       },
       "note": "数据集标签 Refuted",

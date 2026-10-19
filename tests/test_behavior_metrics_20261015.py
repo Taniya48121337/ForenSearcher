@@ -178,7 +178,8 @@ def test_eval_r0_commands_and_case_key():
     commands = er.build_commands(cfg, "baseline", "http://127.0.0.1:8002/v1", "student", 4, [1, 2])
     assert len(commands) == 4 and {c["round"] for c in commands} == {"r0base-s1", "r0base-s2"}
     argv = commands[0]["argv"]
-    assert argv[argv.index("--hi-spec") + 1] == "hi@0.10.0" and argv[argv.index("--gia-spec") + 1] == "gia@0.9.0"
+    # 10-19 评测口径改为 sft0（eval_config sft0_eval_v1）：hi@0.10.0 → hi@0.11.0，与训练行一致
+    assert argv[argv.index("--hi-spec") + 1] == "hi@0.11.0" and argv[argv.index("--gia-spec") + 1] == "gia@0.9.0"
     assert argv[argv.index("--search-mode") + 1] == "replay_or_record" and "--state-renderer" not in argv
     assert argv[argv.index("--instruction-mode") + 1] == "student" and "--no-think" in argv
     ids = argv[argv.index("--ids") + 1: argv.index("--round")]

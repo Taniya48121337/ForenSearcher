@@ -24,7 +24,7 @@ ok "registered $NAME -> $DIR ($(wc -l < "$FS_LORA_REGISTRY") LoRAs; FS_MAX_CPU_L
 [ "$(wc -l < "$FS_LORA_REGISTRY")" -gt "$FS_MAX_CPU_LORAS" ] && warn "more LoRAs registered than FS_MAX_CPU_LORAS: vLLM will swap them in and out (slower, still correct)"
 
 if ! served_on "$FS_STUDENT_ENDPOINT" "$FS_STUDENT_NAME"; then
-  say "student not running: it will load $NAME when started (bash server/11_loop_layout.sh A)"; exit 0
+  say "student not running: it will load $NAME when started (bash server/11_loop_layout.sh $([ "${FS_PROFILE:-}" = vast1 ] && echo serve || echo A))"; exit 0
 fi
 if served_on "$FS_STUDENT_ENDPOINT" "$NAME"; then
   curl -s -m 30 -X POST "$FS_STUDENT_ENDPOINT/unload_lora_adapter" -H 'Content-Type: application/json' -d "{\"lora_name\": \"$NAME\"}" >/dev/null

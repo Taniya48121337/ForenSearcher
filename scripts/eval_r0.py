@@ -237,6 +237,8 @@ def build_commands(cfg: dict[str, Any], phase: str, endpoint: str, model: str, j
                     "--retry-failed"]
             if h.get("no_think"):
                 argv.append("--no-think")
+            if h.get("image_search"):                  # 10-19：EVID 帧不进任何以图搜（负责人定 off，两阶段两集合同一值）
+                argv += ["--image-search", h["image_search"]]
             if auto_tools != "off":
                 argv += ["--auto-tools", auto_tools]
             commands.append({"seed": seed, "set": set_name, "round": round_tag, "argv": argv})
@@ -253,8 +255,16 @@ def phase_env(cfg: dict[str, Any], phase: str) -> dict[str, str]:
     return env
 
 
+def describer_env(cfg: dict[str, Any], endpoint: str) -> dict[str, str]:
+    """INSPECT 比对图的固定描述模型（inspect/describe.py）：训前训后都用被测端点上未挂 LoRA 的底座。不设时它取 run 自己的
+    --model，训后是 "HI=…,GIA=…"（服务上没有这个名字），比对图描述整行缺失，两次的观察不一样。"""
+
+    model = (cfg["harness"].get("describer") or {}).get("model")
+    return {"FOREN_DESCRIBE_ENDPOINT": endpoint.rstrip("/"), "FOREN_DESCRIBE_MODEL": model} if model else {}
+
+
 def cmd_plan(cfg: dict[str, Any], args: argparse.Namespace, *, execute: bool = False) -> int:
-    env = phase_env(cfg, args.phase)
+    env = {**phase_env(cfg, args.phase), **describer_env(cfg, args.endpoint)}
     commands = build_commands(cfg, args.phase, args.endpoint, args.model, args.jobs, args.seeds)
     print("环境变量：" + " ".join(f"{k}={v}" for k, v in env.items()))
     for item in commands:

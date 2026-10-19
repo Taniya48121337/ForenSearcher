@@ -10,6 +10,7 @@
 #   Layout B (outer-loop training window)
 #     GPU 0-3  teacher stopped; one LoRA training job per GPU (server/13_train_queue.sh)
 #     GPU 4-7  unchanged: the student keeps its LoRAs loaded, so gate B starts as soon as a job finishes
+# Single GPU (Vast 1×H200, 2026-10-19): FS_PROFILE=vast1 -> server/vast1_env.sh is sourced at the end (layouts serve / train).
 source "$(dirname "${BASH_SOURCE[0]}")/env.sh"
 
 # ---- weights (Hugging Face repos; 10_loop_setup.sh downloads them to $FS_MODEL_DIR/<repo basename>) -------------------
@@ -59,3 +60,13 @@ served_on() {  # endpoint name -> 0 if the server lists that model
 gpu_used_mib() {  # gpu index -> MiB in use
   nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i "$1" 2>/dev/null | tr -d ' '
 }
+
+# ---- hardware profiles (2026-10-19) -----------------------------------------------------------------------------------
+# FS_PROFILE unset = the 8-GPU layout above. FS_PROFILE=vast1 = one H200 on Vast: server/vast1_env.sh overrides the layout.
+FS_LOOP_ENV_SOURCED=1
+case "${FS_PROFILE:-}" in
+  "") ;;
+  vast1) source "$(dirname "${BASH_SOURCE[0]}")/vast1_env.sh" ;;
+  *) fail "unknown FS_PROFILE=$FS_PROFILE (known: vast1; leave it unset for the 8-GPU layout)"
+     if [[ $- == *i* ]]; then return 1; else exit 1; fi ;;
+esac

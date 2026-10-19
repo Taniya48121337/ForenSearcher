@@ -5,6 +5,7 @@
   "split": "dev_eval",
   "task_kind": "temporal_locate",
   "task_text": "在给定视频中定位符合以下描述的片段，给出秒数范围及证据；说明定位的不确定性：Woman wears a white top walking down the street.",
+  "task_text_en": "Locate the segment of the given video that matches the following description; give its time range in seconds with supporting evidence, and state the uncertainty of the localization: Woman wears a white top walking down the street.",
   "family_key": "qvhighlights:Q2TqU-Oh7KQ",
   "media": [
     {
@@ -23,17 +24,20 @@
     {
       "id": "REQ1",
       "text": "符合描述的片段在视频中的起止时间（秒）",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Start and end time (seconds) of the segment in the video that matches the description"
     },
     {
       "id": "REQ2",
       "text": "支持定位的画面依据：片段内以及边界两侧的帧所显示的内容",
-      "must_cite": true
+      "must_cite": true,
+      "text_en": "Visual grounds for the localization: what the frames inside the segment and on both sides of its boundaries show"
     },
     {
       "id": "REQ3",
       "text": "定位精度与边界的不确定范围（未检查的区间不当作不符合）",
-      "must_cite": false
+      "must_cite": false,
+      "text_en": "Localization precision and the uncertain range of the boundaries (unexamined intervals are not treated as non-matching)"
     }
   ],
   "required_evidence": [

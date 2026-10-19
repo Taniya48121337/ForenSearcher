@@ -1,0 +1,6 @@
+# sft0 on the Vast single H200 (FS_PROFILE=vast1), seed 2: kept for later, not started (decision 10-19: seed 1 first).
+# Same order and arguments as vast1_sft0_s1.txt with --seed 2.
+#   FS_PROFILE=vast1 bash server/11_loop_layout.sh train
+#   FS_PROFILE=vast1 bash server/13_train_queue.sh server/jobs/vast1_sft0_s2.txt
+--config training/configs/hi_sft0_27b.json --seed 2 --output-dir /workspace/outputs/lora/sft0_27b/hi_s2
+--config training/configs/gia_sft0_27b.json --seed 2 --output-dir /workspace/outputs/lora/sft0_27b/gia_s2
