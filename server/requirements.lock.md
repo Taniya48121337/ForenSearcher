@@ -42,6 +42,18 @@ sed -i 's/intra_op_num_threads: &intra_nums -1/intra_op_num_threads: \&intra_num
 同一组线程上限里另外三项是环境变量，在评测启动脚本里设（不改 site-packages）：`OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4`
 （torch intra-op 随 OMP = 4，faster-whisper / ctranslate2 同）。
 
+## 2b. 训练吞吐相关（2026-10-19 晚加，内存探针前装）
+
+- **tilelang 0.1.15（必装）**：fla 0.5.2 在 Hopper（H200）+ Triton ≥ 3.4 且 < 3.7.1 时，`fla/ops/common/chunk_o.py` 的 `chunk_bwd_dqkwg`
+  直接 `RuntimeError`（"produces incorrect results … upgrade Triton to >= 3.7.1 or install tilelang"）——torch 2.11 钉 triton 3.6.0，不能升；
+  装 tilelang 后 fla 走 tilelang 后端（首次调用 JIT 编译几秒）。`pip install -c constraints tilelang==0.1.15`（带进 apache-tvm-ffi、z3-solver 等，不动 torch）。
+  核对：fla `chunk_gated_delta_rule` 与 transformers 的 `torch_chunk_gated_delta_rule` 在随机输入上（T=512、H=4、K=V=128、bf16）前向相对误差 0.37%、
+  q / k / v / g / beta 梯度相对误差 0.10–0.47%。训练日志开头的 `linear_attn_kernels` 应显示 48 层都是 fla / causal_conv1d（`fused: true`）。
+- **flash-attn 2.8.3.post2**：官方没有 torch 2.11 / cp312 的 wheel，源码编：`MAX_JOBS=16 FLASH_ATTN_CUDA_ARCHS=90 TORCH_CUDA_ARCH_LIST=9.0
+  FLASH_ATTENTION_FORCE_BUILD=TRUE pip wheel --no-build-isolation --no-deps flash-attn==2.8.3.post2`（需 ninja、packaging、psutil、einops；约 8 分钟）。
+- **liger-kernel 0.8.4**：`pip install --no-deps liger-kernel==0.8.4`（有 `apply_liger_kernel_to_qwen3_5`）。
+- flash-attn / Liger 只在训练配置 `runtime` 段选中时才用（`training/sft_lora.py` 的 `attn_implementation` / `liger`）。
+
 ## 3. 不在 pip 里的东西
 
 - 工具模型：`/workspace/models/inspect/{faster-whisper-small,clip-vit-base-patch32,grounding-dino-tiny}`（`server/02_download_models.sh`），
