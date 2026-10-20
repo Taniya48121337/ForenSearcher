@@ -228,6 +228,35 @@ def prescan(rows: list[dict[str, Any]], export_dir: Path, processor: Any, max_to
 
 # --------------------------------------------------------------------------- loss
 
+def prescan_cached(rows: list[dict[str, Any]], export_dir: Path, files: list[str], processor: Any, model_path: str, max_tokens: int,
+                   row_select: dict[str, Any] | None, cache_dir: Path) -> tuple[list[int], dict[str, Any]]:
+    """10-20：prescan 的结果按"数据文件 + processor 文件 + max_tokens + row_select"缓存到 output_dir/prescan_cache.json。
+    续训 / 重启时 key 相同就直接用（预扫要把每行编码一遍，HI 3,369 行约 13 分钟 GPU 空转）；key 不同就重扫并覆盖。"""
+
+    proc_files = sorted(p for p in Path(model_path).glob("*") if p.name in
+                        {"tokenizer.json", "tokenizer_config.json", "preprocessor_config.json", "chat_template.jinja", "video_preprocessor_config.json"})
+    key_src = {"data": {name: sha256_file(export_dir / name) for name in files},
+               "processor": {p.name: sha256_file(p) for p in proc_files}, "max_tokens": max_tokens, "row_select": row_select,
+               "rows": [row_key(r) for r in rows]}
+    key = hashlib.sha256(json.dumps(key_src, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+    cache = cache_dir / "prescan_cache.json"
+    if cache.is_file():
+        try:
+            data = json.loads(cache.read_text(encoding="utf-8"))
+            if data.get("key") == key:
+                print(f"prescan：用缓存 {cache}（key {key[:12]}）", flush=True)
+                return list(data["usable"]), dict(data["stats"], cached=True)
+        except (OSError, ValueError, KeyError):
+            pass
+    usable, stats = prescan(rows, export_dir, processor, max_tokens)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    tmp = cache.with_suffix(".tmp")
+    tmp.write_text(json.dumps({"key": key, "key_src": {k: v for k, v in key_src.items() if k != "rows"}, "usable": usable, "stats": stats},
+                              ensure_ascii=False), encoding="utf-8")
+    tmp.replace(cache)
+    return usable, stats
+
+
 def weighted_loss(logits: torch.Tensor, labels: torch.Tensor, weight: float) -> tuple[torch.Tensor, int, float]:
     """logits 与 labels 末端对齐（logits 可以只覆盖最后 K 个位置）。返回 (weight × 平均 CE, 监督 token 数, 未加权平均 CE)。"""
 
@@ -522,7 +551,10 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
     load_s = time.time() - t0
     kernels = linear_attn_kernels(model)
     print(json.dumps({"linear_attn_kernels": kernels}, ensure_ascii=False), flush=True)
-    usable, scan = prescan(rows, export_dir, processor, cfg.max_tokens if not smoke_tiny else 10 ** 9)
+    if smoke_tiny:
+        usable, scan = prescan(rows, export_dir, processor, 10 ** 9)
+    else:
+        usable, scan = prescan_cached(rows, export_dir, files, processor, cfg.model, cfg.max_tokens, cfg.row_select, Path(cfg.output_dir))
     scan["sample_weight_normalization"] = normalize_sample_weights(rows, usable, cfg.normalize_sample_weight)
     if scan["encode_failed"]:
         print(f"!! {len(scan['encode_failed'])} 行编码失败：{scan['encode_failed'][:3]}")
