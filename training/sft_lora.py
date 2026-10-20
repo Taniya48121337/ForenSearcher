@@ -36,6 +36,7 @@ steps_per_epoch 按实际可用行数算。
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import math
@@ -53,7 +54,7 @@ from PIL import Image
 from transformers import AutoConfig, AutoModelForImageTextToText, AutoProcessor
 
 DEFAULT_TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
-RUNTIME_KEYS = frozenset({"gradient_checkpointing", "attn_implementation", "liger"})   # 配置 "runtime" 段允许的键（只影响速度 / 显存）
+RUNTIME_KEYS = frozenset({"gradient_checkpointing", "attn_implementation", "liger", "mixed_precision"})   # 配置 "runtime" 段允许的键（只影响速度 / 显存）
 
 
 @dataclass
@@ -95,6 +96,9 @@ class TrainConfig:
     # 10-19（Vast 单卡显存 / 速度探针）：None = transformers 默认（Qwen3.5 全注意力层与视觉塔是 sdpa）；"flash_attention_2" 要装 flash-attn
     attn_implementation: str | None = None
     liger: bool = False                         # True：加载前打 Liger 的 Qwen3.5 内核（RMSNorm / SwiGLU；Liger 没有 Qwen3.5 的 RoPE；不碰 loss——这里不给模型传 labels）
+    # 10-20：True = 前向与 loss 在 torch.autocast(bf16) 下算，并关掉 peft 把 bf16 激活转成 fp32 的输入转换（LoRA 权重仍是 fp32 主权重、梯度 fp32）；
+    # 默认关。关时 peft 每个挂 LoRA 的层每次调用都把激活拷成 fp32（profiler 里 copy / cast 约 14%）
+    mixed_precision: bool = False
 
     @classmethod
     def load(cls, path: str | Path) -> "TrainConfig":
@@ -382,6 +386,25 @@ def attach_lora(model: Any, cfg: TrainConfig) -> Any:
     return model
 
 
+def apply_mixed_precision(model: Any) -> int:
+    """runtime.mixed_precision：关掉 peft 层的输入 dtype 转换（整个训练期间都关——梯度检查点的重算发生在 backward 里，
+    只包住前向的 context manager 管不到）。返回改了多少层。"""
+
+    from peft.tuners.tuners_utils import BaseTunerLayer
+
+    n = 0
+    for module in model.modules():
+        if isinstance(module, BaseTunerLayer):
+            module.cast_input_dtype_enabled = False
+            n += 1
+    return n
+
+
+def autocast_ctx(cfg: TrainConfig) -> Any:
+    import contextlib
+    return torch.autocast("cuda", dtype=torch.bfloat16) if cfg.mixed_precision and torch.cuda.is_available() else contextlib.nullcontext()
+
+
 def build_model(cfg: TrainConfig, *, smoke_tiny: bool) -> tuple[Any, Any]:
     processor = AutoProcessor.from_pretrained(cfg.model, local_files_only=True)
     model = attach_lora(load_base(cfg, smoke_tiny=smoke_tiny), cfg)
@@ -551,6 +574,8 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
     load_s = time.time() - t0
     kernels = linear_attn_kernels(model)
     print(json.dumps({"linear_attn_kernels": kernels}, ensure_ascii=False), flush=True)
+    if cfg.mixed_precision and not smoke_tiny:
+        print(json.dumps({"mixed_precision": {"peft_layers_input_cast_off": apply_mixed_precision(model), "autocast": "bfloat16"}}), flush=True)
     if smoke_tiny:
         usable, scan = prescan(rows, export_dir, processor, 10 ** 9)
     else:
@@ -663,8 +688,9 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                 n_prefix = int((labels == -100).cumprod(dim=1).sum())
             length = int(inputs["input_ids"].shape[1])
             keep = keep_count(length, n_prefix) if cfg.logits_on_supervised_only else 0
-            outputs = model(**inputs, logits_to_keep=keep)
-            loss, n_tokens, raw = weighted_loss(outputs.logits, labels, weight)
+            with autocast_ctx(cfg) if not smoke_tiny else contextlib.nullcontext():
+                outputs = model(**inputs, logits_to_keep=keep)
+                loss, n_tokens, raw = weighted_loss(outputs.logits, labels, weight)
             if check_loss:                               # 与整段 logits 的结果对比（只在小模型 / 少量行上用）
                 with torch.no_grad():
                     full_logits = model(**inputs, logits_to_keep=0).logits
@@ -717,7 +743,7 @@ def train(cfg: TrainConfig, *, smoke_tiny: bool = False, check_loss: bool = Fals
                          "normalize_sample_weight": cfg.normalize_sample_weight,
                          "logits_on_supervised_only": cfg.logits_on_supervised_only, "save_each_epoch": cfg.save_each_epoch,
                          "attn_implementation": getattr(getattr(model, "config", None), "_attn_implementation", cfg.attn_implementation),
-                         "liger": cfg.liger},
+                         "liger": cfg.liger, "mixed_precision": cfg.mixed_precision},
                "seed": cfg.seed, "seeds_registered": cfg.seeds, "gradient_checkpointing": cfg.gradient_checkpointing,
                "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
                "time_s": {"load_and_prescan": round(load_s, 1), "train": round(train_s, 1),
