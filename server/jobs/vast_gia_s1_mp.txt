@@ -1,0 +1,5 @@
+# GIA s1 on the second H200 (10-20, owner): runtime.mixed_precision on, trained from scratch (the earlier mp-off attempt stopped at step 6,
+# no checkpoint, moved to /workspace/aborted/). training/configs/gia_sft0_27b_mp.json = gia_sft0_27b.json + runtime.mixed_precision; recipe unchanged.
+# --resume only continues this mp=on run's own checkpoints (none at start = from scratch).
+#   FS_PROFILE=vast1 bash server/resume.sh train server/jobs/vast_gia_s1_mp.txt
+--config training/configs/gia_sft0_27b_mp.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/gia_s1 --save-every 50 --resume
