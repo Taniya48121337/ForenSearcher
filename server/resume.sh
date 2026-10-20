@@ -6,6 +6,7 @@
 #   bash server/resume.sh e2 baseline|after_sft   serve + 看门狗 + tmux e2_<阶段> 里接着跑 21_e2_eval.sh（done 的 run 跳过、半截的重跑；
 #                                         run 跑两遍 = failed / 被看门狗杀的统一重排一轮）
 #   bash server/resume.sh train [jobs]    停看门狗与 vLLM → 只排没写出 final 的任务 → tmux sft 里 13_train_queue.sh（任务带 --resume，从最近 checkpoint 接着训）
+# tmux 不继承调用方的环境变量：每个 tmux 命令都显式带 FS_PROFILE=vast1（10-20 一次：13 用了 8 卡默认槽位，GIA 被派到不存在的 GPU 1）。
 # jobs 默认 server/jobs/vast1_sft0_s1.txt（种子 1；负责人 10-19 定先只训种子 1）。日志：/workspace/logs、server_logs/train/。
 set -uo pipefail
 export FS_PROFILE=vast1 FS_LOG_DIR=${FS_LOG_DIR:-/workspace/logs}   # logs where server/backup_pull.sh picks them up
@@ -53,7 +54,7 @@ status() {
 }
 
 start_watchdog() {
-  pgrep -f "server/e2_watchdog[.]sh" >/dev/null || tmux new-session -d -s e2_watchdog "bash server/e2_watchdog.sh 1800"
+  pgrep -f "server/e2_watchdog[.]sh" >/dev/null || tmux new-session -d -s e2_watchdog "FS_PROFILE=vast1 FS_LOG_DIR=$FS_LOG_DIR bash server/e2_watchdog.sh ${E2_WATCHDOG_S:-3600}"
   ok "watchdog running (tmux e2_watchdog)"
 }
 stop_watchdog() { tmux kill-session -t e2_watchdog 2>/dev/null; pkill -f "server/e2_watchdog[.]sh" 2>/dev/null; return 0; }
@@ -73,7 +74,7 @@ e2() {  # phase
     steps="$steps score metrics"
   else steps="run run score metrics"; fi
   tmux has-session -t "e2_$phase" 2>/dev/null && { fail "tmux e2_$phase already exists (attach: tmux attach -t e2_$phase)"; return 1; }
-  tmux new-session -d -s "e2_$phase" "bash server/21_e2_eval.sh $phase $steps 2>&1 | tee -a $FS_LOG_DIR/e2_${phase}_resume.log"
+  tmux new-session -d -s "e2_$phase" "FS_PROFILE=vast1 FS_LOG_DIR=$FS_LOG_DIR bash server/21_e2_eval.sh $phase $steps 2>&1 | tee -a $FS_LOG_DIR/e2_${phase}_resume.log"
   ok "E2 $phase resumed in tmux e2_$phase (steps: $steps; done runs are skipped, half-finished ones rerun)"
 }
 
@@ -84,12 +85,12 @@ train() {
   grep -q -- "--resume" "$todo" || warn "jobs have no --resume: they would start from scratch"
   if pgrep -f "training/sft_lora[.]py" >/dev/null; then fail "a training job is already running"; return 1; fi
   stop_watchdog
-  if is_up student && [ ! -f "$(pidf student)" ]; then   # started by hand (e.g. /workspace/logs/serve_cmd.sh in tmux serve)
+  if served_on "$FS_STUDENT_ENDPOINT" "$FS_STUDENT_NAME" && [ ! -f "$FS_LOG_DIR/loop_student.pid" ]; then   # started by hand (e.g. /workspace/logs/serve_cmd.sh in tmux serve)
     tmux kill-session -t serve 2>/dev/null; sleep 10
   fi
   bash server/11_loop_layout.sh train || return 1
   while IFS= read -r line; do out=$(job_out "$line"); echo "  queued: $out (resume from: $(last_ckpt "$out" || true))"; done < "$todo"
-  tmux new-session -d -s sft "bash server/13_train_queue.sh $todo 2>&1 | tee -a $FS_LOG_DIR/sft_queue.log"
+  tmux new-session -d -s sft "FS_PROFILE=vast1 FS_LOG_DIR=$FS_LOG_DIR bash server/13_train_queue.sh $todo 2>&1 | tee -a $FS_LOG_DIR/sft_queue.log"
   ok "training queue in tmux sft ($(wc -l < "$todo") jobs); follow: tail -f server_logs/train/*.log"
 }
 

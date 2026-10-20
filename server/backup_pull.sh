@@ -25,7 +25,7 @@ touch /workspace/.backup_new
 NEWER=""
 if [ "$full" != 1 ] && [ -e /workspace/.backup_last ]; then NEWER="-newer /workspace/.backup_last"; fi
 {
-  find repo/experiments/eval/r0/runs repo/experiments/eval/r0/reports repo/experiments/eval/r0/scores repo/server \
+  find repo/experiments/eval/r0/runs repo/experiments/eval/r0/reports repo/experiments/eval/r0/scores repo/server repo/server_logs \
        repo/experiments/sft_data/run_manifests repo/experiments/sft_data/batch_logs logs \
        -type f \$NEWER \( -name '*.json' -o -name '*.jsonl' -o -name '*.sqlite3' -o -name '*.sqlite3-wal' -o -name '*.md' -o -name '*.txt' \
        -o -name '*.log' -o -name '*.tsv' -o -name '*.html' -o -name '*.sh' -o -name '*.py' \) 2>/dev/null
