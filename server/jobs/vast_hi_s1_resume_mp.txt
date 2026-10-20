@@ -1,0 +1,5 @@
+# HI s1 continuation on the third H200 (10-20, owner): resume from checkpoint-50 (or the handed-off checkpoint) of the first machine,
+# runtime.mixed_precision on (training/configs/hi_sft0_27b_mp.json = hi_sft0_27b.json + runtime.mixed_precision; same resume identity).
+# Put the handed-off checkpoint-<step>/ (and prescan_cache.json) under /workspace/outputs/lora/sft0_27b/hi_s1/ first, then:
+#   FS_PROFILE=vast1 bash server/resume.sh train server/jobs/vast_hi_s1_resume_mp.txt
+--config training/configs/hi_sft0_27b_mp.json --seed 1 --output-dir /workspace/outputs/lora/sft0_27b/hi_s1 --save-every 50 --resume

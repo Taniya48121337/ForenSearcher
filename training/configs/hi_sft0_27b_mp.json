@@ -1,0 +1,59 @@
+{
+  "_what": "sft0（循环第 0 轮训练集 = r1 + g1 + g2 + g3，sft0-20261019-4b79e1ed432f）HI LoRA，Qwen3.8-27B 占位。超参照 hi_r1_27b.json，只改数据目录、文件名、output_dir、warmup。权重在合包时按定案 ③ + 10-19 裁决 3（实现 B）降权并重标到均值 1；训练加载时再归一（normalize_sample_weight）。",
+  "_why": {
+    "model": "服务器权重目录 $FS_MODEL_DIR = .models/llm（server/env.sh），server/02_download_models.sh 把 Qwen/Qwen3.8-27B（bf16，约 55 GB）下到这里。本机只有 .models/Qwen3.8-27B-processor（processor + config），打包时用它做 dry-run 预扫 token。",
+    "architecture": "config.json：Qwen3_5ForConditionalGeneration，64 层，3 层线性注意力 + 1 层全注意力交替（full_attention_interval 4），dense，词表 248,320——与 Qwen3.5-9B 同一族，lora_targets 理由同 hi_r0_9b.json（只挂全注意力 q/k/v/o 与全部 MLP，GatedDeltaNet 投影不挂）。",
+    "allow_multi_gpu": "true：27B bf16 权重约 55 GB，32K 长度的激活加梯度检查点在一张 80 GB A100 上放不下，一个任务 2 张卡（server/README_自进化循环_GPU分配.md §5：FS_TRAIN_SLOTS=\"0,1;2,3\"，8×A100 上一次 2 个任务）。device_map=auto 按层摊到两张卡上串行跑。",
+    "warmup_steps": "42：HI 3369 行（sft0-20261019-4b79e1ed432f，10-19 重合）、grad_accum 8 → 每遍 422 次更新，2 遍 844 次，5% 取整。",
+    "other": "lr / epochs / grad_accum / lora_r 32 / alpha 64 / 种子 1、2 / sample_weight / logits 只算监督段 / 梯度检查点，全部同 hi_r0_9b.json；lora_r 32 = vLLM 学生的 --max-lora-rank。27B 是否需要更小 lr 没有实测，占位不改。",
+    "sample_weight": "合包时已按定案 ③ 降权并重标到均值 1（merge_packs --verify 核：每角色均值 = 1、HI 动作行重标前 ≤ 2、每案例重标前 ≤ 10、每分支 ≤ 60）；训练加载时再按 normalize_sample_weight 归一到均值 1（10-19 六节裁决 4：统一尺度，r0 基线包同样处理），对 sft0 是 no-op。lr 1e-4 不变（裁决 4：均值 1 才是正确尺度）。"
+  },
+  "role": "hi",
+  "export_dir": "dist/sft0-20261019-4b79e1ed432f",
+  "model": ".models/llm/Qwen3.8-27B",
+  "output_dir": "outputs/lora/sft0_27b/hi",
+  "max_tokens": 32768,
+  "epochs": 2,
+  "lr": 0.0001,
+  "min_lr_ratio": 0.1,
+  "warmup_steps": 42,
+  "grad_accum": 8,
+  "max_grad_norm": 1.0,
+  "weight_decay": 0.0,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "lora_dropout": 0.05,
+  "lora_targets": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "seed": 1,
+  "seeds": [
+    1,
+    2
+  ],
+  "dtype": "bfloat16",
+  "device_map": "auto",
+  "allow_multi_gpu": true,
+  "use_sample_weight": true,
+  "logits_on_supervised_only": true,
+  "gradient_checkpointing": true,
+  "save_each_epoch": true,
+  "log_every": 5,
+  "files": [
+    "hi.jsonl"
+  ],
+  "normalize_sample_weight": true,
+  "runtime": {
+    "gradient_checkpointing": true,
+    "liger": true,
+    "mixed_precision": true
+  },
+  "_runtime_why": "10-19 Vast 单卡 H200 内存探针（server/25_probe_run.sh，20 条最长行）：base（检查点开、sdpa）HI 1.146 / GIA 1.149 ms/token；+ Liger（RMSNorm / SwiGLU，Liger 没有 Qwen3_5 的 RoPE）0.995 / 0.994 ms/token、loss 与 base 逐步一致、峰值 92 GB；flash-attn2 两个变体 loss 全 nan（无效）；关检查点 OOM（139 GB）。按负责人规则（最快、不 OOM、loss 有限、< 125 GB）选 gc_liger。runtime 只影响速度 / 显存，不是配方，不进配方 hash / 续训身份",
+  "_runtime_mp_why": "10-20 负责人裁决：mixed_precision 通过（门槛 = 第 20 步 loss 相对差 < 1%；proxy 0.28%、提速 1.775×）。HI s1 从第一台的 checkpoint-50 起在第三台 H200 以 mixed_precision=on 续训（第一台 HI 本身不改）；runtime 不进续训身份，与 hi_sft0_27b.json 同一次训练"
+}
